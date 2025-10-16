@@ -59,11 +59,11 @@ NOISE = 1
 
 # 保存したモデルの重みを用いるかどうか
 PREVIOUS_MODEL = False
-SAVE_DATE = "20251002"
+SAVE_DATE = "20251016"
 # SAVE_DATE = "cnn+tra系_tune"
 
 # 使用するデータの日付
-DATA_DATE = "20250523"
+DATA_DATE = "20251015"
 
 # 周波数解析のパラメータ
 CHUNK = 1
@@ -78,13 +78,13 @@ noise = "whitenoise" if NOISE == 0 else "waterflow"
 highpass = f"_{DATA_DATE}_{CHUNK}s"
 noise = noise + highpass
 BASE_DATA_PATH = r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2024.11.12_1_2.13_1\data\npy" + "\\" + noise + f"\\{max_freq_hz}" + "\\"
-DATA_PATH = [BASE_DATA_PATH + "heatflux_no_noise",
-             BASE_DATA_PATH + "heatflux_SNR=0",
-             BASE_DATA_PATH + "heatflux_SNR=-4",
-             BASE_DATA_PATH + "heatflux_SNR=-8",
-             BASE_DATA_PATH + "heatflux_SNR=-12",
-             BASE_DATA_PATH + "heatflux_SNR=-16",
-             BASE_DATA_PATH + "heatflux_SNR=-20"]
+DATA_PATH = [BASE_DATA_PATH + "heatflux_no_noise"]
+            #  BASE_DATA_PATH + "heatflux_SNR=0",
+            #  BASE_DATA_PATH + "heatflux_SNR=-4",
+            #  BASE_DATA_PATH + "heatflux_SNR=-8",
+            #  BASE_DATA_PATH + "heatflux_SNR=-12",
+            #  BASE_DATA_PATH + "heatflux_SNR=-16",
+            #  BASE_DATA_PATH + "heatflux_SNR=-20"]
 
 #### regression_resultとROC曲線の保存先フォルダ ####
 BASE_SAVE_PATH = r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2024.11.12_1_2.13_1\regression_result\npy\ensemble"
