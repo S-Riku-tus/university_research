@@ -50,9 +50,9 @@ max_freq_hz = 22050
 # max_freq_hz = 5000
 # max_freq_hz = 2000
 
-SAVE_DATE = 20251010
+SAVE_DATE = 20251015
 
-CHUNK = 10
+CHUNK = 1
 
 # 音声ファイルが格納されたフォルダパス
 folder_path = r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2024.11.12_1_2.13_1\録音データ_熱流束_合計"

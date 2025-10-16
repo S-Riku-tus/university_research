@@ -44,13 +44,13 @@ sample_number = 672
 
 # ★表示・処理するスペクトログラムの最大周波数 (Hz)★
 # この値を変更することで、表示範囲とデータ処理範囲が変わります
-# max_freq_hz = 22050
+max_freq_hz = 22050
 # max_freq_hz = 15000
 # max_freq_hz = 10000
-max_freq_hz = 5000
+# max_freq_hz = 5000
 # max_freq_hz = 2000
 
-SAVE_DATE = 20251010
+SAVE_DATE = 20251015
 
 CHUNK = 1
 

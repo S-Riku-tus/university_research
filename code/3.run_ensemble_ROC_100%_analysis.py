@@ -59,11 +59,11 @@ NOISE = 1
 
 # 保存したモデルの重みを用いるかどうか
 PREVIOUS_MODEL = False
-SAVE_DATE = "20251002"
+SAVE_DATE = "20251016"
 # SAVE_DATE = "cnn+tra系_tune"
 
 # 使用するデータの日付
-DATA_DATE = "20250523"
+DATA_DATE = "20251015"
 
 # 周波数解析のパラメータ
 CHUNK = 1
