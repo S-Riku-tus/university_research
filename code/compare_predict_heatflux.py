@@ -14,13 +14,14 @@ plt.rcParams['ytick.direction'] = 'in'
 # ステップ1：【重要】推論の前提条件を設定するフェーズ
 # =====================================================================
 
-# --- ▼ ここからユーザーが設定する項目 ▼ ---
-
 # 1. 読み込む学習済みモデルの情報を指定
-SAVE_DATE = "20251002"
+SAVE_DATE = "20251020"
 EPOCH_NUM = 100
 CHUNK = 1
 SNR_VALUE = "no_noise"
+
+# 学習済みモデルの重みが保存されているディレクトリパ
+WEIGHTS_BASE_DIR = rf"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2024.11.12_1_2.13_1\all_weights\{SAVE_DATE}_epoch{EPOCH_NUM}_chunk{CHUNK}\{SNR_VALUE}"
 
 # 評価したいfoldの番号をリストで指定
 FOLD_NUMBERS = [1, 2, 3, 4, 5] 
@@ -36,17 +37,21 @@ INFERENCE_IMAGE_PATHS = [
 ]
 
 # 3. 学習時に使用したデータ全体のディレクトリパス（スケーラーの復元に必須）
-DATA_DATE = "20250523"
+DATA_DATE = "20251015"
 noise_type = "waterflow"
 highpass_info = f"_{DATA_DATE}_{CHUNK}s"
 noise_folder_name = noise_type + highpass_info
 BASE_DATA_PATH = rf"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2024.11.12_1_2.13_1\data\npy\{noise_folder_name}\maxfreq=22kHz"
 DATA_PATH_FOR_SCALER = os.path.join(BASE_DATA_PATH, f"heatflux_{SNR_VALUE}")
 
-# --- ▲ ここまでユーザーが設定する項目 ▲ ---
+BASE_RESULT_PATH = r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2024.11.12_1_2.13_1\regression_result\npy\ensemble\heatflux_no_noise\pre_20251020_ep100_bs12_lr0.001"
+# 今回の「3サンプル推論」の結果を保存するサブディレクトリ
+INFERENCE_SUBDIR_NAME = "inference_on_ramdom_samples"
+FINAL_SAVE_DIRECTORY = os.path.join(BASE_RESULT_PATH, INFERENCE_SUBDIR_NAME)
 
-# 学習済みモデルの重みが保存されているディレクトリパスを自動生成
-WEIGHTS_BASE_DIR = rf"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2024.11.12_1_2.13_1\all_weights\{SAVE_DATE}_epoch{EPOCH_NUM}_chunk{CHUNK}\{SNR_VALUE}"
+# 保存先ディレクトリを作成
+os.makedirs(FINAL_SAVE_DIRECTORY, exist_ok=True)
+print(f"結果は {FINAL_SAVE_DIRECTORY} に保存されます。")
 
 print("ステップ1: 準備を開始します...")
 
@@ -174,4 +179,13 @@ ax.bar_label(rects1, padding=3, fmt='{:,.0f}')
 ax.bar_label(rects2, padding=3, fmt='{:,.0f}')
 
 fig.tight_layout()
-plt.show()
+
+# ファイル名を定義 (SNR値やFold数を含めると分かりやすい)
+save_filename = f"inference_result_{SNR_VALUE}_{len(FOLD_NUMBERS)}folds_4.png"
+full_save_path = os.path.join(FINAL_SAVE_DIRECTORY, save_filename)
+
+try:
+    plt.savefig(full_save_path, dpi=300) # dpiを指定して解像度を上げる
+    print(f"グラフを {full_save_path} に保存しました。")
+except Exception as e:
+    print(f"[エラー] グラフの保存に失敗しました: {e}")
