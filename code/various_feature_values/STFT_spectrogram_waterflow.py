@@ -2,8 +2,8 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
-# import librosa as lr
-import soundfile as sf
+import librosa as lr
+# import soundfile as sf
 import math
 import seaborn as sns
 from scipy import signal
@@ -51,13 +51,13 @@ max_freq_hz = 22050
 # max_freq_hz = 5000
 # max_freq_hz = 2000
 
-SAVE_DATE = 20251016
+SAVE_DATE = 20251105
 
 CHUNK = 1
 
 # 音声ファイルが格納されたフォルダパス
-# folder_path = r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2024.11.12_1_2.13_1\録音データ_熱流束_合計"
-folder_path = r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2024.11.12_1\録音データ_熱流束"
+folder_path = r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2024.11.12_1_2.13_1\録音データ_熱流束_合計"
+# folder_path = r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2024.11.12_1\録音データ_熱流束"
 waterflow_path = r"C:\Users\Casper4\Python\ueki\shibasaki\研究\water_flow\water_flow_125.wav"
 
 # 生成された画像を保存するフォルダのパス
@@ -129,11 +129,11 @@ def add_waterflow_noise(y, waterflow_noise, snr):
 
 
 def save_spectrogram_chunks_with_snr(file_path, waterflow_path, base_save_folder_path, max_freq_hz, CHUNK, snr_db=SNR_list):
-    y, sr = sf.read(file_path)
-    waterflow_noise, _ = sf.read(waterflow_path)
+    # y, sr = sf.read(file_path)
+    # waterflow_noise, _ = sf.read(waterflow_path)
 
-    # y, sr = lr.load(file_path, sr=None, mono=False)
-    # waterflow_noise, _ = lr.load(waterflow_path, sr=sr, mono=False)
+    y, sr = lr.load(file_path, sr=None, mono=False)
+    waterflow_noise, _ = lr.load(waterflow_path, sr=sr, mono=False)
 
     # ★追加★ サンプリングレートを確認
     print(f"DEBUG: サンプリングレート (sr): {sr} Hz")

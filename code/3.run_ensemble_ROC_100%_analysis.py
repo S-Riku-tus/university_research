@@ -59,7 +59,7 @@ NOISE = 1
 
 # 保存したモデルの重みを用いるかどうか
 PREVIOUS_MODEL = False
-SAVE_DATE = "20251020"
+SAVE_DATE = "20251031"
 # SAVE_DATE = "cnn+tra系_tune"
 
 # 使用するデータの日付

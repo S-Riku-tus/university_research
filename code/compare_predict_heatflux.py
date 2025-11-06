@@ -20,21 +20,74 @@ EPOCH_NUM = 100
 CHUNK = 1
 SNR_VALUE = "no_noise"
 
-# 学習済みモデルの重みが保存されているディレクトリパ
+# 学習済みモデルの重みが保存されているディレクトリパス
 WEIGHTS_BASE_DIR = rf"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2024.11.12_1_2.13_1\all_weights\{SAVE_DATE}_epoch{EPOCH_NUM}_chunk{CHUNK}\{SNR_VALUE}"
 
 # 評価したいfoldの番号をリストで指定
 FOLD_NUMBERS = [1, 2, 3, 4, 5] 
 
 # 2. 推論したい3つの画像ファイル（.npy）のフルパスを指定
-INFERENCE_IMAGE_PATHS = [
-    # 例：未沸騰のデータ
-    r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2024.11.12_1_2.13_1\data\npy\waterflow_20250523_1s\maxfreq=22kHz\heatflux_no_noise\1.09e+05_5.npy",
-    # 例：核沸騰開始点近傍のデータ
-    r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2024.11.12_1_2.13_1\data\npy\waterflow_20250523_1s\maxfreq=22kHz\heatflux_no_noise\2.17e+05_18.npy",
-    # 例：核沸騰が進んだデータ
-    r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2024.11.12_1_2.13_1\data\npy\waterflow_20250523_1s\maxfreq=22kHz\heatflux_no_noise\1.29e+06_57.npy"
-]
+# # 205未沸騰
+# INFERENCE_IMAGE_PATHS = [
+#     r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2024.11.12_1_2.13_1\data\npy\waterflow_20251015_1s\maxfreq=22kHz\heatflux_no_noise\2.05e+04_1.npy",
+#     r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2024.11.12_1_2.13_1\data\npy\waterflow_20251015_1s\maxfreq=22kHz\heatflux_no_noise\2.05e+04_2.npy",
+#     r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2024.11.12_1_2.13_1\data\npy\waterflow_20251015_1s\maxfreq=22kHz\heatflux_no_noise\2.05e+04_3.npy"
+# ]
+# # 261沸騰
+# INFERENCE_IMAGE_PATHS = [
+#     r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2024.11.12_1_2.13_1\data\npy\waterflow_20251015_1s\maxfreq=22kHz\heatflux_no_noise\2.61e+05_9.npy",
+#     r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2024.11.12_1_2.13_1\data\npy\waterflow_20251015_1s\maxfreq=22kHz\heatflux_no_noise\2.61e+05_19.npy",
+#     r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2024.11.12_1_2.13_1\data\npy\waterflow_20251015_1s\maxfreq=22kHz\heatflux_no_noise\2.61e+05_34.npy"
+# ]
+# # 261未沸騰
+# INFERENCE_IMAGE_PATHS = [
+#     r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2024.11.12_1_2.13_1\data\npy\waterflow_20251015_1s\maxfreq=22kHz\heatflux_no_noise\2.61e+05_1.npy",
+#     r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2024.11.12_1_2.13_1\data\npy\waterflow_20251015_1s\maxfreq=22kHz\heatflux_no_noise\2.61e+05_2.npy",
+#     r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2024.11.12_1_2.13_1\data\npy\waterflow_20251015_1s\maxfreq=22kHz\heatflux_no_noise\2.61e+05_3.npy"
+# ]
+# # 308沸騰
+# INFERENCE_IMAGE_PATHS = [
+#     r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2024.11.12_1_2.13_1\data\npy\waterflow_20251015_1s\maxfreq=22kHz\heatflux_no_noise\3.08e+05_3.npy",
+#     r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2024.11.12_1_2.13_1\data\npy\waterflow_20251015_1s\maxfreq=22kHz\heatflux_no_noise\3.08e+05_7.npy",
+#     r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2024.11.12_1_2.13_1\data\npy\waterflow_20251015_1s\maxfreq=22kHz\heatflux_no_noise\3.08e+05_23.npy"
+# ]
+# # 360沸騰
+# INFERENCE_IMAGE_PATHS = [
+#     r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2024.11.12_1_2.13_1\data\npy\waterflow_20251015_1s\maxfreq=22kHz\heatflux_no_noise\3.60e+05_7.npy",
+#     r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2024.11.12_1_2.13_1\data\npy\waterflow_20251015_1s\maxfreq=22kHz\heatflux_no_noise\3.60e+05_37.npy",
+#     r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2024.11.12_1_2.13_1\data\npy\waterflow_20251015_1s\maxfreq=22kHz\heatflux_no_noise\3.60e+05_40.npy"
+# ]
+# # 360_2沸騰
+# INFERENCE_IMAGE_PATHS = [
+#     r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2024.11.12_1_2.13_1\data\npy\waterflow_20251015_1s\maxfreq=22kHz\heatflux_no_noise\3.60e+05_28.npy",
+#     r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2024.11.12_1_2.13_1\data\npy\waterflow_20251015_1s\maxfreq=22kHz\heatflux_no_noise\3.60e+05_36.npy",
+#     r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2024.11.12_1_2.13_1\data\npy\waterflow_20251015_1s\maxfreq=22kHz\heatflux_no_noise\3.60e+05_38.npy"
+# ]
+# # 416沸騰？
+# INFERENCE_IMAGE_PATHS = [
+#     r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2024.11.12_1_2.13_1\data\npy\waterflow_20251015_1s\maxfreq=22kHz\heatflux_no_noise\4.16e+05_16.npy",
+#     r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2024.11.12_1_2.13_1\data\npy\waterflow_20251015_1s\maxfreq=22kHz\heatflux_no_noise\4.16e+05_17.npy",
+#     r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2024.11.12_1_2.13_1\data\npy\waterflow_20251015_1s\maxfreq=22kHz\heatflux_no_noise\4.16e+05_18.npy"
+# ]
+# # 416未沸騰
+# INFERENCE_IMAGE_PATHS = [
+#     r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2024.11.12_1_2.13_1\data\npy\waterflow_20251015_1s\maxfreq=22kHz\heatflux_no_noise\4.16e+05_3.npy",
+#     r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2024.11.12_1_2.13_1\data\npy\waterflow_20251015_1s\maxfreq=22kHz\heatflux_no_noise\4.16e+05_4.npy",
+#     r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2024.11.12_1_2.13_1\data\npy\waterflow_20251015_1s\maxfreq=22kHz\heatflux_no_noise\4.16e+05_5.npy"
+# ]
+# # 540沸騰
+# INFERENCE_IMAGE_PATHS = [
+#     r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2024.11.12_1_2.13_1\data\npy\waterflow_20251015_1s\maxfreq=22kHz\heatflux_no_noise\5.40e+05_56.npy",
+#     r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2024.11.12_1_2.13_1\data\npy\waterflow_20251015_1s\maxfreq=22kHz\heatflux_no_noise\5.40e+05_57.npy",
+#     r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2024.11.12_1_2.13_1\data\npy\waterflow_20251015_1s\maxfreq=22kHz\heatflux_no_noise\5.40e+05_58.npy"
+# ]
+# # 676沸騰
+# INFERENCE_IMAGE_PATHS = [
+#     r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2024.11.12_1_2.13_1\data\npy\waterflow_20251015_1s\maxfreq=22kHz\heatflux_no_noise\6.76e+05_29.npy",
+#     r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2024.11.12_1_2.13_1\data\npy\waterflow_20251015_1s\maxfreq=22kHz\heatflux_no_noise\6.76e+05_30.npy",
+#     r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2024.11.12_1_2.13_1\data\npy\waterflow_20251015_1s\maxfreq=22kHz\heatflux_no_noise\6.76e+05_31.npy"
+# ]
+TMP = "360_2沸騰"
 
 # 3. 学習時に使用したデータ全体のディレクトリパス（スケーラーの復元に必須）
 DATA_DATE = "20251015"
@@ -181,7 +234,7 @@ ax.bar_label(rects2, padding=3, fmt='{:,.0f}')
 fig.tight_layout()
 
 # ファイル名を定義 (SNR値やFold数を含めると分かりやすい)
-save_filename = f"inference_result_{SNR_VALUE}_{len(FOLD_NUMBERS)}folds_4.png"
+save_filename = f"inference_result_{SNR_VALUE}_{len(FOLD_NUMBERS)}folds_{TMP}.png"
 full_save_path = os.path.join(FINAL_SAVE_DIRECTORY, save_filename)
 
 try:
