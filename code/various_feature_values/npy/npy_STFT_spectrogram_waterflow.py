@@ -44,13 +44,14 @@ sample_number = 672
 
 # ★表示・処理するスペクトログラムの最大周波数 (Hz)★
 # この値を変更することで、表示範囲とデータ処理範囲が変わります
-max_freq_hz = 22050
+# max_freq_hz = 22050
 # max_freq_hz = 15000
 # max_freq_hz = 10000
 # max_freq_hz = 5000
 # max_freq_hz = 2000
+MAX_FREQ_HZ = [2000, 5000, 10000, 15000, 22050]
 
-SAVE_DATE = 20250708
+SAVE_DATE = 20251114
 
 CHUNK = 1
 
@@ -248,14 +249,15 @@ def save_spectrogram_chunks_with_snr(file_path, waterflow_path, base_save_folder
             plt.close()
 
 
-# フォルダ内の全wavファイルに対してスペクトログラムを生成
-# save_spectrogram_chunks_with_snr 関数に max_freq_hz を渡すように変更
-for i, filename in enumerate(os.listdir(folder_path)):
-    if filename.endswith(".wav"):
-        len_file = len(os.listdir(folder_path))
-        file_path = os.path.join(folder_path, filename)
-        save_spectrogram_chunks_with_snr(file_path, waterflow_path, base_save_folder_path, max_freq_hz,
-                                         CHUNK, snr_db=SNR_list) # ★ここで max_freq_hz を渡す★
-        print(f"---------- {i+1} / {len_file} ({filename}) done! ----------")
+for max_freq_hz in MAX_FREQ_HZ:
+    # フォルダ内の全wavファイルに対してスペクトログラムを生成
+    # save_spectrogram_chunks_with_snr 関数に max_freq_hz を渡すように変更
+    for i, filename in enumerate(os.listdir(folder_path)):
+        if filename.endswith(".wav"):
+            len_file = len(os.listdir(folder_path))
+            file_path = os.path.join(folder_path, filename)
+            save_spectrogram_chunks_with_snr(file_path, waterflow_path, base_save_folder_path, max_freq_hz,
+                                            CHUNK, snr_db=SNR_list) # ★ここで max_freq_hz を渡す★
+            print(f"---------- {i+1} / {len_file} ({filename}) done! ----------")
 
 print("---------- All done! ----------")

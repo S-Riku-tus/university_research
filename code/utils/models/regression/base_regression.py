@@ -249,15 +249,19 @@ class RegressionModelMaker:
             shape = x.shape
             x = Reshape((shape[1], shape[2] * shape[3]))(x)
 
-            model_dim = 32 # Transformerが扱うモデル次元
+            model_dim = head_size # Transformerが扱うモデル次元
             x = TimeDistributed(Dense(model_dim, activation='relu'))(x)
 
             x = PositionalEmbedding(sequence_length=shape[1], output_dim=x.shape[-1])(x)
 
+            key_dim_per_head = head_size // num_heads
+            
             # --- Transformer Encoder ブロック ---
             # Transformer Encoderを複数重ねる
             for _ in range(num_transformer_blocks):
-                x = transformer_encoder(x, head_size, num_heads, ff_dim, dropout=0.2)
+            # [重要] 呼び出し時に渡す引数を head_size (256) から key_dim_per_head (64) に変更
+                x = transformer_encoder(x, key_dim_per_head, num_heads, ff_dim, dropout=0.2)
+
 
             # --- 時間平均 → 回帰線形出力 (seldnet_regressorと同じ) ---
             # x = GlobalAveragePooling1D()(x)
@@ -419,3 +423,111 @@ class RegressionModelMaker:
     #     output = Dense(1, activation='linear', name='output')(x)
 
     #     return Model(inputs=x_in, outputs=output)
+
+
+if __name__ == '__main__':
+    # 
+    # このスクリプト（models.pyなど）が直接実行された場合にのみ以下のコードが実行されます。
+    # 
+
+    # 
+    # 1. モデルの入力形状を定義
+    # 
+    INPUT_SHAPE = (224, 224, 1) # (時間, 周波数, チャンネル) を想定
+
+    # 
+    # 2. RegressionModelMaker のインスタンスを作成
+    # 
+    maker = RegressionModelMaker(input_shape=INPUT_SHAPE)
+
+    print("==============================================================")
+    print(f"モデルのサマリーを表示します。入力形状: {INPUT_SHAPE}")
+    print("==============================================================\n")
+
+    # 
+    # 3. 各モデルを作成して .summary() を実行
+    # 
+
+    # # --- CNN系モデル ---
+
+    # print("\n--- 1. AlexNet ---")
+    # try:
+    #     model_alexnet = maker.alexnet()
+    #     model_alexnet.summary()
+    # except Exception as e:
+    #     print(f"AlexNet のビルドに失敗しました: {e}")
+
+    # print("\n--- 2. VGG16 ---")
+    # try:
+    #     model_vgg16 = maker.vgg16()
+    #     model_vgg16.summary()
+    # except Exception as e:
+    #     print(f"VGG16 のビルドに失敗しました: {e}")
+
+    # print("\n--- 3. ResNet50 ---")
+    # try:
+    #     model_resnet50 = maker.resnet50()
+    #     model_resnet50.summary()
+    # except Exception as e:
+    #     print(f"ResNet50 のビルドに失敗しました: {e}")
+
+    # print("\n--- 4. MobileNetV2 ---")
+    # try:
+    #     model_mobilenet = maker.mobilenet_v2()
+    #     model_mobilenet.summary()
+    # except Exception as e:
+    #     print(f"MobileNetV2 のビルドに失敗しました: {e}")
+
+    # print("\n--- 5. SELDnet Regressor ---")
+    # try:
+    #     model_seldnet = maker.seldnet_regressor()
+    #     model_seldnet.summary()
+    # except Exception as e:
+    #     print(f"SELDnet Regressor のビルドに失敗しました: {e}")
+        
+    # print("\n--- 6. EfficientNetB0 ---")
+    # try:
+    #     model_efficientnet = maker.efficientnet_b0()
+    #     model_efficientnet.summary()
+    # except Exception as e:
+    #     print(f"EfficientNetB0 のビルドに失敗しました: {e}")
+
+
+    # --- Transformer系モデル (!!注意!!) ---
+
+    print("\n--- 7. cnn_transformer_v1 ---")
+    print("!!注意: このモデルは前回の議論の通り、形状の不一致によりエラーが発生する可能性が高いです。")
+    try:
+        model_cnn_tf_v1 = maker.cnn_transformer_v1()
+        model_cnn_tf_v1.summary()
+    except Exception as e:
+        print(f"cnn_transformer_v1 のビルドに失敗しました: {e}")
+        print("エラーの理由 (予測): transformer_encoder内の残差接続 (x + inputs) で、")
+        print(f"MHAの出力 (例: 4 * 256 = 1024次元) と入力 (model_dim=32) の形状が一致していません。")
+
+
+    print("\n--- 8. cnn_transformer_v2 ---")
+    print("!!注意: v1と同様、このモデルも形状の不一致によりエラーが発生する可能性が高いです。")
+    try:
+        model_cnn_tf_v2 = maker.cnn_transformer_v2()
+        model_cnn_tf_v2.summary()
+    except Exception as e:
+        print(f"cnn_transformer_v2 のビルドに失敗しました: {e}")
+        print("エラーの理由 (予測): v1 と同じ問題です。")
+
+
+    # print("\n--- 9. efficientnet_transformer_v1 ---")
+    # print("!!注意: このモデルも transformer_encoder の呼び出し方に問題があるため、エラーが発生する可能性が高いです。")
+    # try:
+    #     model_eff_tf_v1 = maker.efficientnet_transformer_v1(
+    #         model_dim=128,
+    #         num_transformer_blocks=4,
+    #         num_heads=4,
+    #         ff_dim=512
+    #     )
+    #     model_eff_tf_v1.summary()
+    # except Exception as e:
+    #     print(f"efficientnet_transformer_v1 のビルドに失敗しました: {e}")
+    #     print("エラーの理由 (予測): transformer_encoder内の残差接続 (x + inputs) で、")
+    #     print(f"MHAの出力 (4 * 128 = 512次元) と入力 (model_dim=128) の形状が一致していません。")
+    #     print("transformer_encoder の引数 'head_size' を (model_dim // num_heads) に修正する必要があります。")
