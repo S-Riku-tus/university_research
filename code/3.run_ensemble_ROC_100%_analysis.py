@@ -2,6 +2,7 @@ import os
 import numpy as np
 import time
 import csv
+from pathlib import Path
 from sklearn.model_selection import KFold
 from tensorflow.keras.optimizers import Adam, SGD
 from sklearn.utils import resample
@@ -11,6 +12,7 @@ from sklearn.preprocessing import MinMaxScaler
 from matplotlib.ticker import ScalarFormatter
 from datetime import datetime
 from utils.models.regression.base_regression import RegressionModelMaker
+from utils.models.regression.new_regression import RegressionModelMaker1106
 from utils.models.regression.swin_transformer import SwinTransformerModelMaker
 from utils.dataloading.dataloading_and_conversion import DataLoadingConversion
 from utils.calculation.calc_r2_auc import AUCorR2Calculation
@@ -59,35 +61,41 @@ NOISE = 1
 
 # 保存したモデルの重みを用いるかどうか
 PREVIOUS_MODEL = False
-SAVE_DATE = "20251031"
+SAVE_DATE = "20251114"
 # SAVE_DATE = "cnn+tra系_tune"
 
 # 使用するデータの日付
-DATA_DATE = "20251015"
+DATA_DATE = "20251114"
 
 # 周波数解析のパラメータ
 CHUNK = 1
-max_freq_hz = "maxfreq=22kHz"
-# max_freq_hz = 15000
-# max_freq_hz = 10000
-# max_freq_hz = 5000
-# max_freq_hz = 2000
+# max_freq_hz = "maxfreq=22kHz"
+# max_freq_hz = "maxfreq=15kHz"
+# max_freq_hz = "maxfreq=10kHz"
+max_freq_hz = "maxfreq=5kHz"
+# max_freq_hz = "maxfreq=2kHz"
 
 #### データフォルダの設定 ####
 noise = "whitenoise" if NOISE == 0 else "waterflow"
 highpass = f"_{DATA_DATE}_{CHUNK}s"
 noise = noise + highpass
-BASE_DATA_PATH = r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2024.11.12_1_2.13_1\data\npy" + "\\" + noise + f"\\{max_freq_hz}" + "\\"
-DATA_PATH = [BASE_DATA_PATH + "heatflux_no_noise",
-            #  BASE_DATA_PATH + "heatflux_SNR=0",
-             BASE_DATA_PATH + "heatflux_SNR=-4",
-            #  BASE_DATA_PATH + "heatflux_SNR=-8",
-             BASE_DATA_PATH + "heatflux_SNR=-12",
-            #  BASE_DATA_PATH + "heatflux_SNR=-16",
-             BASE_DATA_PATH + "heatflux_SNR=-20"]
+
+BASA_PATH = r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2024.11.12_1_2.13_1"
+base_path = Path(BASA_PATH)
+
+BASE_DATA_PATH = base_path / "data" / "npy" / noise / str(max_freq_hz)
+DATA_PATH = [
+    BASE_DATA_PATH / "heatflux_no_noise",
+    BASE_DATA_PATH / "heatflux_SNR=0",
+    BASE_DATA_PATH / "heatflux_SNR=-4",
+    BASE_DATA_PATH / "heatflux_SNR=-8",
+    BASE_DATA_PATH / "heatflux_SNR=-12",
+    BASE_DATA_PATH / "heatflux_SNR=-16",
+    BASE_DATA_PATH / "heatflux_SNR=-20"
+]
 
 #### regression_resultとROC曲線の保存先フォルダ ####
-BASE_SAVE_PATH = r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2024.11.12_1_2.13_1\regression_result\npy\ensemble"
+BASE_SAVE_PATH = base_path / "regression_result" / "npy" / "ensemble"
 
 # matplotlibの設定
 plt.rcParams['font.family'] = 'Times New Roman'
@@ -98,7 +106,7 @@ plt.rcParams['ytick.direction'] = 'in'
 for all_bs in BATCH_SIZES_ALL:
     for all_lr in LEARNING_RATE_ALL:
         # LEARNING_RATE = {"AlexNet": 0.05, "ResNet50": 0.0005, "VGG16": 0.0005}
-        LEARNING_RATE = {"AlexNet": 0.001, "ResNet50": 0.001, "VGG16": 0.001}
+        LEARNING_RATE = {"AlexNet": 0.001, "ResNet50": 0.005, "VGG16": 0.0001}
         BATCH_SIZES = {"AlexNet": 12, "ResNet50": 12, "VGG16": 12}
         # LEARNING_RATE = {"AlexNet": all_lr, "ResNet50": all_lr, "VGG16": all_lr}
         # BATCH_SIZES = {"AlexNet": all_bs, "ResNet50": all_bs, "VGG16": all_bs}
@@ -243,7 +251,7 @@ for all_bs in BATCH_SIZES_ALL:
         def main():
             for data_path in DATA_PATH:
                 # SNR値をパスから抽出
-                if "no_noise" in data_path:
+                if "no_noise" in str(data_path):
                     snr_value = "no_noise"
                 else:
                     snr_value = data_path.split("SNR=")[-1]  # "SNR=" の後の部分を取得
@@ -316,15 +324,18 @@ for all_bs in BATCH_SIZES_ALL:
 
                         # 各モデルの作成
                         regressionmodelmaker = RegressionModelMaker((224, 224, COLOR_CHANNEL))
+                        # regressionmodelmaker1106 = RegressionModelMaker1106((224, 224, COLOR_CHANNEL))
                         # swintransformermodelmaker = SwinTransformerModelMaker((224, 224, COLOR_CHANNEL))
                 
                         alexnet_model = regressionmodelmaker.alexnet()
-                        # resnet50_model = regressionmodelmaker.resnet50()
-                        # vgg16_model = regressionmodelmaker.vgg16()
+                        # # resnet50_model = regressionmodelmaker.resnet50()
+                        # # vgg16_model = regressionmodelmaker.vgg16()
 
-                        # alexnet_model = regressionmodelmaker.cnn_transformer_v1()
+                        # # alexnet_model = regressionmodelmaker.cnn_transformer_v1()
                         resnet50_model = regressionmodelmaker.cnn_transformer_v1()
-                        vgg16_model = regressionmodelmaker.cnn_transformer_v2()    
+                        vgg16_model = regressionmodelmaker.cnn_transformer_v2()
+                        # alexnet_model = regressionmodelmaker.cnn_transformer_v1()
+                        # vgg16_model = regressionmodelmaker1106.cnn_transformer_v2_time_series_corrected()  
 
                         # # モデルのコンパイル
                         # alexnet_model.compile(optimizer=Adam(learning_rate=LEARNING_RATE['AlexNet']), loss='mean_squared_error')
