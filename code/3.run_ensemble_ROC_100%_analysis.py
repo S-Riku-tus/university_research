@@ -34,13 +34,14 @@ from utils.calculation.calc_r2_auc import AUCorR2Calculation
 # 訓練時のバッチサイズとエポック数のリスト
 # BATCH_SIZES = {"AlexNet": 12, "ResNet50": 12, "VGG16": 16}  # これは卒論時の値
 BATCH_SIZES_ALL = [12, 24, 32, 48, 64]
-EPOCH_NUM = 100
+EPOCH_NUM = 200
 # 学習率
 # 今のところ一番良いやつ
 LEARNING_RATE_ALL = [0.05, 0.01, 0.005, 0.001, 0.0005, 0.0001, 0.00005]
 
 # 閾値
-threshold_list = [260675.103239721, 353145.749413166, 264418.48987934]  # TODO: ここの値が、csvファイルで求めた沸騰開始点での熱流束となれば、沸騰-非沸騰分類モデルでのROC曲線が書けるのではないか？
+# threshold_list = [260675.103239721, 353145.749413166, 264418.48987934]  # TODO: ここの値が、csvファイルで求めた沸騰開始点での熱流束となれば、沸騰-非沸騰分類モデルでのROC曲線が書けるのではないか？
+threshold_list = [266907.6965]
 THRESHOLD = sum(threshold_list) / len(threshold_list)
 
 # パラメータをループさせて検証するかどうか
@@ -61,18 +62,20 @@ NOISE = 1
 
 # 保存したモデルの重みを用いるかどうか
 PREVIOUS_MODEL = False
-SAVE_DATE = "20251114"
+
+SAVE_DATE = "20251126"
 # SAVE_DATE = "cnn+tra系_tune"
 
 # 使用するデータの日付
-DATA_DATE = "20251114"
+DATA_DATE = "20251126"
 
 # 周波数解析のパラメータ
 CHUNK = 1
 # max_freq_hz = "maxfreq=22kHz"
 # max_freq_hz = "maxfreq=15kHz"
-# max_freq_hz = "maxfreq=10kHz"
-max_freq_hz = "maxfreq=5kHz"
+max_freq_hz = "maxfreq=10kHz"
+# max_freq_hz = "maxfreq=5kHz"
+# max_freq_hz = "maxfreq=3kHz"
 # max_freq_hz = "maxfreq=2kHz"
 
 #### データフォルダの設定 ####
@@ -80,7 +83,7 @@ noise = "whitenoise" if NOISE == 0 else "waterflow"
 highpass = f"_{DATA_DATE}_{CHUNK}s"
 noise = noise + highpass
 
-BASA_PATH = r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2024.11.12_1_2.13_1"
+BASA_PATH = r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2025.06.11_0.3_2"
 base_path = Path(BASA_PATH)
 
 BASE_DATA_PATH = base_path / "data" / "npy" / noise / str(max_freq_hz)
@@ -254,18 +257,18 @@ for all_bs in BATCH_SIZES_ALL:
                 if "no_noise" in str(data_path):
                     snr_value = "no_noise"
                 else:
-                    snr_value = data_path.split("SNR=")[-1]  # "SNR=" の後の部分を取得
+                    snr_value = str(data_path).split("SNR=")[-1]  # "SNR=" の後の部分を取得
 
                 noise_dir_name = os.path.basename(data_path)
 
                 if ENSEMBLE_METHOD == 0:
-                    SAVE_PATH = os.path.join(BASE_SAVE_PATH, noise_dir_name, f"{SAVE_DATE}_ep{EPOCH_NUM}_chu{CHUNK}", f"average")
+                    SAVE_PATH = os.path.join(BASE_SAVE_PATH, noise_dir_name, max_freq_hz, f"{SAVE_DATE}_ep{EPOCH_NUM}_chu{CHUNK}", f"average")
                 elif ENSEMBLE_METHOD == 1:
                     # SAVE_PATH = os.path.join(BASE_SAVE_PATH, f"{SAVE_DATE}_ep{EPOCH_NUM}_chu{CHUNK}_bsAl{bsare}_Re{bsres}_Vg{bsvgg}_lrAl{lrale}_Re{lrres}_Vg{lrvgg}", f"weight_average")
                     # SAVE_PATH = os.path.join(BASE_SAVE_PATH, noise_dir_name, f"pre_{SAVE_DATE}_ep{EPOCH_NUM}_bsAl{bsare}_Re{bsres}_Vg{bsvgg}_lrAl{lrale}_Re{lrres}_Vg{lrvgg}")
-                    SAVE_PATH = os.path.join(BASE_SAVE_PATH, noise_dir_name, f"pre_{SAVE_DATE}_ep{EPOCH_NUM}_bs{bsvgg}_lr{lrale}")
+                    SAVE_PATH = os.path.join(BASE_SAVE_PATH, noise_dir_name, max_freq_hz, f"pre_{SAVE_DATE}_ep{EPOCH_NUM}_bs{bsvgg}_lr{lrale}")
                 elif ENSEMBLE_METHOD == 2:
-                    SAVE_PATH = os.path.join(BASE_SAVE_PATH, noise_dir_name, f"{SAVE_DATE}_ep{EPOCH_NUM}_chu{CHUNK}", f"min")
+                    SAVE_PATH = os.path.join(BASE_SAVE_PATH, noise_dir_name, max_freq_hz, f"{SAVE_DATE}_ep{EPOCH_NUM}_chu{CHUNK}", f"min")
 
                 if not os.path.exists(SAVE_PATH):
                     os.makedirs(SAVE_PATH, exist_ok=True)

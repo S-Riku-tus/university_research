@@ -49,18 +49,19 @@ sample_number = 672
 # max_freq_hz = 10000
 # max_freq_hz = 5000
 # max_freq_hz = 2000
-MAX_FREQ_HZ = [2000, 5000, 10000, 15000, 22050]
+# MAX_FREQ_HZ = [2000, 5000, 10000, 15000, 22050]
+MAX_FREQ_HZ = [3000]
 
 SAVE_DATE = 20251114
 
 CHUNK = 1
 
 # 音声ファイルが格納されたフォルダパス
-folder_path = r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2024.11.12_1_2.13_1\録音データ_熱流束_合計"
+folder_path = r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2025.06.11_0.3_2\録音データ"
 waterflow_path = r"C:\Users\Casper4\Python\ueki\shibasaki\研究\water_flow\water_flow_125.wav"
 
 # 生成された画像を保存するフォルダのパス
-base_save_folder_path = r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2024.11.12_1_2.13_1\data\npy\waterflow_" + f"{SAVE_DATE}_" + f"{CHUNK}s"
+base_save_folder_path = r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2025.06.11_0.3_2\data\npy\waterflow_" + f"{SAVE_DATE}_" + f"{CHUNK}s"
 
 if not os.path.exists(base_save_folder_path):
     os.makedirs(base_save_folder_path)
