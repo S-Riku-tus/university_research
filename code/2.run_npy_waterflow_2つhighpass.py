@@ -2,6 +2,7 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
+import librosa as lr
 import soundfile as sf
 import math
 import seaborn as sns
@@ -35,8 +36,8 @@ plt.rcParams["font.size"] = 30
 #######################################################################
 
 # ハイパスフィルタの設定
-fp = 1000  # 通過域端周波数 (Hz)
-fs = 900  # 阻止域端周波数 (Hz)
+fp = 500  # 通過域端周波数 (Hz)
+fs = 400  # 阻止域端周波数 (Hz)
 gpass = 0.00001  # 通過域リップル (dB)
 gstop = 0.0001  # 阻止域減衰量 (dB)
 
@@ -44,22 +45,24 @@ sample_number = 672
 
 # ★表示・処理するスペクトログラムの最大周波数 (Hz)★
 # この値を変更することで、表示範囲とデータ処理範囲が変わります
-max_freq_hz = 22050
+# max_freq_hz = 22050
 # max_freq_hz = 15000
 # max_freq_hz = 10000
 # max_freq_hz = 5000
 # max_freq_hz = 2000
+# MAX_FREQ_HZ = [2000, 5000, 10000, 15000, 22050]
+MAX_FREQ_HZ = [3000, 10000]
 
-SAVE_DATE = 20251015
+SAVE_DATE = 20251126
 
 CHUNK = 1
 
 # 音声ファイルが格納されたフォルダパス
-folder_path = r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2024.11.12_1_2.13_1\録音データ_熱流束_合計"
+folder_path = r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2025.06.11_0.3_2\録音データ_熱流束"
 waterflow_path = r"C:\Users\Casper4\Python\ueki\shibasaki\研究\water_flow\water_flow_125.wav"
 
 # 生成された画像を保存するフォルダのパス
-base_save_folder_path = r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2024.11.12_1_2.13_1\data\npy\waterflow_" + f"{SAVE_DATE}_" + f"{CHUNK}s"
+base_save_folder_path = r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2025.06.11_0.3_2\data\npy\waterflow_" + f"{SAVE_DATE}_" + f"{CHUNK}s"
 
 if not os.path.exists(base_save_folder_path):
     os.makedirs(base_save_folder_path)
@@ -125,11 +128,14 @@ def add_waterflow_noise(y, waterflow_noise, snr):
 
 
 def save_spectrogram_chunks_with_snr(file_path, waterflow_path, base_save_folder_path, max_freq_hz, CHUNK, snr_db=SNR_list):
-    y, sr = sf.read(file_path)
-    waterflow_noise, _ = sf.read(waterflow_path)
+    # y, sr = sf.read(file_path)
+    # waterflow_noise, _ = sf.read(waterflow_path)
 
-    y = highpass_filter(y[:2646000,0], sr, fp, fs, gpass, gstop)
-    waterflow_noise = highpass_filter(waterflow_noise[:2646000,0], sr, fp, fs, gpass, gstop)
+    y, sr = lr.load(file_path, sr=44100)
+    waterflow_noise, _ = lr.load(waterflow_path, sr=sr, mono=False)
+
+    y = highpass_filter(y[:2646000], sr, fp, fs, gpass, gstop)
+    waterflow_noise = highpass_filter(waterflow_noise[0, :2646000], sr, fp, fs, gpass, gstop)
 
     # segment length
     data_length = int(44100 * CHUNK)
@@ -248,14 +254,15 @@ def save_spectrogram_chunks_with_snr(file_path, waterflow_path, base_save_folder
             plt.close()
 
 
-# フォルダ内の全wavファイルに対してスペクトログラムを生成
-# save_spectrogram_chunks_with_snr 関数に max_freq_hz を渡すように変更
-for i, filename in enumerate(os.listdir(folder_path)):
-    if filename.endswith(".wav"):
-        len_file = len(os.listdir(folder_path))
-        file_path = os.path.join(folder_path, filename)
-        save_spectrogram_chunks_with_snr(file_path, waterflow_path, base_save_folder_path, max_freq_hz,
-                                         CHUNK, snr_db=SNR_list) # ★ここで max_freq_hz を渡す★
-        print(f"---------- {i+1} / {len_file} ({filename}) done! ----------")
+for max_freq_hz in MAX_FREQ_HZ:
+    # フォルダ内の全wavファイルに対してスペクトログラムを生成
+    # save_spectrogram_chunks_with_snr 関数に max_freq_hz を渡すように変更
+    for i, filename in enumerate(os.listdir(folder_path)):
+        if filename.endswith(".wav"):
+            len_file = len(os.listdir(folder_path))
+            file_path = os.path.join(folder_path, filename)
+            save_spectrogram_chunks_with_snr(file_path, waterflow_path, base_save_folder_path, max_freq_hz,
+                                            CHUNK, snr_db=SNR_list) # ★ここで max_freq_hz を渡す★
+            print(f"---------- {i+1} / {len_file} ({filename}) done! ----------")
 
 print("---------- All done! ----------")
