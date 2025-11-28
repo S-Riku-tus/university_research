@@ -51,7 +51,7 @@ sample_number = 672
 # max_freq_hz = 5000
 # max_freq_hz = 2000
 # MAX_FREQ_HZ = [2000, 5000, 10000, 15000, 22050]
-MAX_FREQ_HZ = [3000, 10000]
+MAX_FREQ_HZ = [3000, 5000, 10000]
 
 SAVE_DATE = 20251126
 
