@@ -47,8 +47,8 @@ sample_number = 672
 # この値を変更することで、表示範囲とデータ処理範囲が変わります
 # max_freq_hz = 22050
 # max_freq_hz = 15000
-max_freq_hz = 10000
-# max_freq_hz = 5000
+# max_freq_hz = 10000
+max_freq_hz = 5000
 # max_freq_hz = 3000
 # max_freq_hz = 2000
 

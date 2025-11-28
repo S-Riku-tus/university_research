@@ -73,8 +73,8 @@ DATA_DATE = "20251126"
 CHUNK = 1
 # max_freq_hz = "maxfreq=22kHz"
 # max_freq_hz = "maxfreq=15kHz"
-max_freq_hz = "maxfreq=10kHz"
-# max_freq_hz = "maxfreq=5kHz"
+# max_freq_hz = "maxfreq=10kHz"
+max_freq_hz = "maxfreq=5kHz"
 # max_freq_hz = "maxfreq=3kHz"
 # max_freq_hz = "maxfreq=2kHz"
 
