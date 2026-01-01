@@ -2,6 +2,7 @@ import os
 import numpy as np
 import time
 import csv
+import joblib
 from pathlib import Path
 from sklearn.model_selection import KFold
 from tensorflow.keras.optimizers import Adam, SGD
@@ -41,7 +42,7 @@ LEARNING_RATE_ALL = [0.05, 0.01, 0.005, 0.001, 0.0005, 0.0001, 0.00005]
 
 # 閾値
 # threshold_list = [260675.103239721, 353145.749413166, 264418.48987934]  # TODO: ここの値が、csvファイルで求めた沸騰開始点での熱流束となれば、沸騰-非沸騰分類モデルでのROC曲線が書けるのではないか？
-threshold_list = [266907.6965]
+threshold_list = [275174.6641]
 THRESHOLD = sum(threshold_list) / len(threshold_list)
 
 # パラメータをループさせて検証するかどうか
@@ -63,27 +64,29 @@ NOISE = 1
 # 保存したモデルの重みを用いるかどうか
 PREVIOUS_MODEL = False
 
-SAVE_DATE = "20251126"
+SAVE_DATE = "20260101"
 # SAVE_DATE = "cnn+tra系_tune"
 
 # 使用するデータの日付
-DATA_DATE = "20251126"
+DATA_DATE = "20251219"
 
 # 周波数解析のパラメータ
 CHUNK = 1
-# max_freq_hz = "maxfreq=22kHz"
+max_freq_hz = "maxfreq=22kHz"
 # max_freq_hz = "maxfreq=15kHz"
 # max_freq_hz = "maxfreq=10kHz"
-max_freq_hz = "maxfreq=5kHz"
+# max_freq_hz = "maxfreq=5kHz"
 # max_freq_hz = "maxfreq=3kHz"
 # max_freq_hz = "maxfreq=2kHz"
+# max_freq_hz = ["maxfreq=22kHz",
+#                "maxfreq=3kHz"]
 
 #### データフォルダの設定 ####
 noise = "whitenoise" if NOISE == 0 else "waterflow"
 highpass = f"_{DATA_DATE}_{CHUNK}s"
 noise = noise + highpass
 
-BASA_PATH = r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2025.06.11_0.3_2"
+BASA_PATH = r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2025.07.09_0.3_1"
 base_path = Path(BASA_PATH)
 
 BASE_DATA_PATH = base_path / "data" / "npy" / noise / str(max_freq_hz)
@@ -109,10 +112,10 @@ plt.rcParams['ytick.direction'] = 'in'
 for all_bs in BATCH_SIZES_ALL:
     for all_lr in LEARNING_RATE_ALL:
         # LEARNING_RATE = {"AlexNet": 0.05, "ResNet50": 0.0005, "VGG16": 0.0005}
-        LEARNING_RATE = {"AlexNet": 0.001, "ResNet50": 0.005, "VGG16": 0.0001}
-        BATCH_SIZES = {"AlexNet": 12, "ResNet50": 12, "VGG16": 12}
-        # LEARNING_RATE = {"AlexNet": all_lr, "ResNet50": all_lr, "VGG16": all_lr}
-        # BATCH_SIZES = {"AlexNet": all_bs, "ResNet50": all_bs, "VGG16": all_bs}
+        # LEARNING_RATE = {"AlexNet": 0.001, "ResNet50": 0.005, "VGG16": 0.0001}
+        # BATCH_SIZES = {"AlexNet": 12, "ResNet50": 12, "VGG16": 12}
+        LEARNING_RATE = {"AlexNet": all_lr, "ResNet50": all_lr, "VGG16": all_lr}
+        BATCH_SIZES = {"AlexNet": all_bs, "ResNet50": all_bs, "VGG16": all_bs}
 
         bsare , bsres, bsvgg, lrale, lrres, lrvgg = BATCH_SIZES["AlexNet"], BATCH_SIZES["ResNet50"], BATCH_SIZES["VGG16"], LEARNING_RATE["AlexNet"], LEARNING_RATE["ResNet50"], LEARNING_RATE["VGG16"]
 
@@ -340,7 +343,7 @@ for all_bs in BATCH_SIZES_ALL:
                         # alexnet_model = regressionmodelmaker.cnn_transformer_v1()
                         # vgg16_model = regressionmodelmaker1106.cnn_transformer_v2_time_series_corrected()  
 
-                        # # モデルのコンパイル
+                        # # モデルのコンパイル1
                         # alexnet_model.compile(optimizer=Adam(learning_rate=LEARNING_RATE['AlexNet']), loss='mean_squared_error')
                         # resnet50_model.compile(optimizer=Adam(learning_rate=LEARNING_RATE['ResNet50']), loss='mean_squared_error')
                         # vgg16_model.compile(optimizer=Adam(learning_rate=LEARNING_RATE['VGG16']), loss='mean_squared_error')
@@ -367,14 +370,20 @@ for all_bs in BATCH_SIZES_ALL:
                             resnet50_history = resnet50_model.fit(x_train, y_train_scaled, batch_size=BATCH_SIZES['ResNet50'], epochs=EPOCH_NUM, verbose=1)
                             print(f"VGG16 Model Start : Fold {fold} / {DIVISIONS}")
                             vgg16_history = vgg16_model.fit(x_train, y_train_scaled, batch_size=BATCH_SIZES['VGG16'], epochs=EPOCH_NUM, verbose=1)
+                            # x_train_flat = x_train.reshape(x_train.shape[0], -1)
+                            # # alexnet_model.fit(x_train_flat, y_train_scaled.ravel())
+                            # alexnet_history = None
 
                             # モデルの重みの保存
-                            alexnet_weights_path = os.path.join(save_dir, f"AlexNet_fold{fold}_{snr_value}.weights.h5")
-                            alexnet_model.save_weights(alexnet_weights_path)
-                            resnet50_weights_path = os.path.join(save_dir, f"resnet50_fold{fold}_{snr_value}.weights.h5")
-                            resnet50_model.save_weights(resnet50_weights_path)
-                            vgg16_weights_path = os.path.join(save_dir, f"vgg16_fold{fold}_{snr_value}.weights.h5")
-                            vgg16_model.save_weights(vgg16_weights_path)
+                            # alexnet_weights_path = os.path.join(save_dir, f"AlexNet_fold{fold}_{snr_value}.weights.h5")
+                            # alexnet_model.save_weights(alexnet_weights_path)
+                            # resnet50_weights_path = os.path.join(save_dir, f"resnet50_fold{fold}_{snr_value}.weights.h5")
+                            # resnet50_model.save_weights(resnet50_weights_path)
+                            # vgg16_weights_path = os.path.join(save_dir, f"vgg16_fold{fold}_{snr_value}.weights.h5")
+                            # vgg16_model.save_weights(vgg16_weights_path)
+
+                            # rf_save_path = os.path.join(save_dir, f"RandomForest_fold{fold}_{snr_value}.joblib")
+                            # joblib.dump(alexnet_model, rf_save_path)
                         else:
                             alexnet_model.load_weights(os.path.join(save_dir, f"AlexNet_fold{fold}_{snr_value}.weights.h5"))
                             resnet50_model.load_weights(os.path.join(save_dir, f"resnet50_fold{fold}_{snr_value}.weights.h5"))
@@ -390,7 +399,10 @@ for all_bs in BATCH_SIZES_ALL:
                         alexnet_pred = alexnet_model.predict(x_val)
                         resnet50_pred = resnet50_model.predict(x_val)
                         vgg16_pred = vgg16_model.predict(x_val)
+                        # x_val_flat = x_val.reshape(x_val.shape[0], -1)
+                        # alexnet_pred = alexnet_model.predict(x_val_flat).reshape(-1, 1)
                         predictions = [alexnet_pred, resnet50_pred, vgg16_pred]
+                        # predictions = [resnet50_pred, vgg16_pred]
 
                         # 予測結果と正解データを元のスケールに戻す
                         alexnet_pred = scaler.inverse_transform(alexnet_pred)

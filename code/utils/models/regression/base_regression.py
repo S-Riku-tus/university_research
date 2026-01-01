@@ -9,6 +9,8 @@ from tensorflow.keras import backend as K
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.applications import ResNet50, MobileNetV2, VGG16, EfficientNetB0
 from tensorflow.keras.regularizers import l2
+from xgboost import XGBRFRegressor
+import numpy as np
 import tensorflow as tf
 
 
@@ -143,6 +145,19 @@ class RegressionModelMaker:
         model = Model(inputs=base_model.input, outputs=x)
         return model
 
+    def random_forest(self):
+        # XGBRFRegressor: ランダムフォレストとして振る舞うXGBoostモデル
+        # tree_method='hist', device='cuda' でGPUを使用します
+        return XGBRFRegressor(
+            n_estimators=100,      # 木の本数
+            subsample=0.8,         # データのサンプリング率（RFらしさ）
+            colsample_bynode=0.8,  # 特徴量のサンプリング率（RFらしさ）
+            learning_rate=1.0,     # RFの場合は学習率1.0にするのが基本
+            tree_method='hist',    # GPU計算用アルゴリズム
+            device='cuda',         # ★GPUを指定
+            n_jobs=-1,             # CPU並列化（GPU使用時は補助的）
+            random_state=42
+        )
 
     def mobilenet_v2(self):
         # 1. ImageNetで学習済みのMobileNetV2をロード (weights='imagenet')
