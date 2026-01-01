@@ -127,7 +127,7 @@ def add_waterflow_noise(y, waterflow_noise, snr):
 
 
 def save_spectrogram_chunks_with_snr(file_path, waterflow_path, base_save_folder_path, max_freq_hz, CHUNK, snr_db=SNR_list):
-    y, sr = sf.read(file_path)
+    y, sr = sf.read(file_path, sr=None)
     waterflow_noise, _ = sf.read(waterflow_path)
 
     y = highpass_filter(y[:2646000,0], sr, fp, fs, gpass, gstop)
@@ -140,7 +140,7 @@ def save_spectrogram_chunks_with_snr(file_path, waterflow_path, base_save_folder
     sample_number = 672
 
     # calc_stft関数内で使用されている FFT のウィンドウサイズは sample_number * 2 です
-    fft_window_size = sample_number * 2 # 672 * 2 = 1344
+    fft_window_size = sample_number * 2
 
     # ★最大周波数に対応するデータ行数の計算★
     # 周波数ビン k の周波数は k * sr / n_fft
