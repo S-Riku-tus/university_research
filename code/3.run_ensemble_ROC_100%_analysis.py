@@ -5,6 +5,8 @@ import csv
 import joblib
 from pathlib import Path
 from sklearn.model_selection import KFold
+import gc
+from tensorflow.keras import backend as K
 from tensorflow.keras.optimizers import Adam, SGD
 from sklearn.utils import resample
 import matplotlib.pyplot as plt
@@ -46,7 +48,7 @@ threshold_list = [275174.6641]
 THRESHOLD = sum(threshold_list) / len(threshold_list)
 
 # パラメータをループさせて検証するかどうか
-FLG_ROOP = False
+FLG_ROOP = True
 
 # フォールド数
 DIVISIONS = 5
@@ -64,7 +66,7 @@ NOISE = 1
 # 保存したモデルの重みを用いるかどうか
 PREVIOUS_MODEL = False
 
-SAVE_DATE = "20260101"
+SAVE_DATE = "20260108"
 # SAVE_DATE = "cnn+tra系_tune"
 
 # 使用するデータの日付
@@ -86,8 +88,8 @@ noise = "whitenoise" if NOISE == 0 else "waterflow"
 highpass = f"_{DATA_DATE}_{CHUNK}s"
 noise = noise + highpass
 
-BASA_PATH = r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2025.07.09_0.3_1"
-base_path = Path(BASA_PATH)
+BASE_PATH = r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2025.07.09_0.3_1"
+base_path = Path(BASE_PATH)
 
 BASE_DATA_PATH = base_path / "data" / "npy" / noise / str(max_freq_hz)
 DATA_PATH = [
@@ -109,158 +111,179 @@ plt.rcParams['xtick.direction'] = 'in'
 plt.rcParams['ytick.direction'] = 'in'
 
 
-for all_bs in BATCH_SIZES_ALL:
-    for all_lr in LEARNING_RATE_ALL:
-        # LEARNING_RATE = {"AlexNet": 0.05, "ResNet50": 0.0005, "VGG16": 0.0005}
-        # LEARNING_RATE = {"AlexNet": 0.001, "ResNet50": 0.005, "VGG16": 0.0001}
-        # BATCH_SIZES = {"AlexNet": 12, "ResNet50": 12, "VGG16": 12}
-        LEARNING_RATE = {"AlexNet": all_lr, "ResNet50": all_lr, "VGG16": all_lr}
-        BATCH_SIZES = {"AlexNet": all_bs, "ResNet50": all_bs, "VGG16": all_bs}
+#######################################################################
 
-        bsare , bsres, bsvgg, lrale, lrres, lrvgg = BATCH_SIZES["AlexNet"], BATCH_SIZES["ResNet50"], BATCH_SIZES["VGG16"], LEARNING_RATE["AlexNet"], LEARNING_RATE["ResNet50"], LEARNING_RATE["VGG16"]
+#                    回帰分析とROC曲線の描画する関数
 
-        #######################################################################
+#######################################################################
 
-        #                    回帰分析とROC曲線の描画する関数
+def save_combined_r2_auc(valuation, valuation_indicators_scores, error_list, model_name):
+    """
+    5分割交差検証のROC曲線の平均AUCと95%信頼区間を計算し、グラフを保存
+    """
+    mean = np.mean(valuation_indicators_scores)
+    std_valuation = np.std(valuation_indicators_scores, ddof=1)
+    se_valuation = std_valuation / np.sqrt(len(valuation_indicators_scores))
+    confidence_interval = 1.96 * se_valuation
+    
+    # 信頼区間を計算
+    upper_bound = mean + confidence_interval
+    lower_bound = mean - confidence_interval
+    error_list.append(upper_bound - mean)
+    print('Error list size : ', len(error_list))
+    print(f'upper_bound : {upper_bound} | Lower bound : {lower_bound} | Confidence interval : {confidence_interval:.4f}')
+    if valuation == "r2":
+        print(f'Model : {model_name} | Combined Regression saved for Mean R^2 score = {mean:.4f} ± {confidence_interval:.4f}%')
+    else:
+        print(f'Model : {model_name} | Combined ROC curve saved for Mean AUC = {mean:.4f} ± {confidence_interval:.4f}%')
 
-        #######################################################################
+    return f'{mean:.4f} ± {confidence_interval:.4f}', mean, error_list
 
-        def save_combined_r2_auc(valuation, valuation_indicators_scores, error_list, model_name):
-            """
-            5分割交差検証のROC曲線の平均AUCと95%信頼区間を計算し、グラフを保存
-            """
-            mean = np.mean(valuation_indicators_scores)
-            std_valuation = np.std(valuation_indicators_scores, ddof=1)
-            se_valuation = std_valuation / np.sqrt(len(valuation_indicators_scores))
-            confidence_interval = 1.96 * se_valuation
-            
-            # 信頼区間を計算
-            upper_bound = mean + confidence_interval
-            lower_bound = mean - confidence_interval
-            error_list.append(upper_bound - mean)
-            print('Error list size : ', len(error_list))
-            print(f'upper_bound : {upper_bound} | Lower bound : {lower_bound} | Confidence interval : {confidence_interval:.4f}')
-            if valuation == "r2":
-                print(f'Model : {model_name} | Combined Regression saved for Mean R^2 score = {mean:.4f} ± {confidence_interval:.4f}%')
-            else:
-                print(f'Model : {model_name} | Combined ROC curve saved for Mean AUC = {mean:.4f} ± {confidence_interval:.4f}%')
+def plot_model_variables(valuation, str_valuation_list, valuation_list, error_list, epochs, save_path, snr_value):
+    if valuation == "r2":
+        print("R^2 score List:", valuation_list)
+        print("String R^2 score List:", str_valuation_list)
+        print("R^2 score List Length:", len(valuation_list))
+        print("String R^2 score List Length:", len(str_valuation_list))
 
-            return f'{mean:.4f} ± {confidence_interval:.4f}', mean, error_list
-
-        def plot_model_variables(valuation, str_valuation_list, valuation_list, error_list, epochs, save_path, snr_value):
-            if valuation == "r2":
-                print("R^2 score List:", valuation_list)
-                print("String R^2 score List:", str_valuation_list)
-                print("R^2 score List Length:", len(valuation_list))
-                print("String R^2 score List Length:", len(str_valuation_list))
-
-                plt.figure(figsize=(8, 6))
-                # models = ['AlexNet', 'ResNet50', 'VGG16', 'Ensemble']
-                models = ['AlexNet', 'Alex+Tf AP', 'Alex+Tf GAP', 'Ensemble']
-                
-                # AUCリストの長さをチェック
-                if len(valuation_list) != len(models) or len(str_valuation_list) != len(models):
-                    raise ValueError("Length of r2_list or str_r2_list does not match the number of models.")
-
-                # プロットの処理
-                bars = plt.bar(models, valuation_list, color=['c', 'cadetblue', 'skyblue', 'dodgerblue'], yerr=error_list, capsize=5, width=0.5)
-                plt.ylim(0.0, 1.05)
-                # plt.title(f'Comparison of R^2 score for each model (Epochs: {epochs}, SNR: {snr_value})', fontsize=15, pad=8)
-                plt.ylabel('R² Score', fontsize=23)
-
-                # 軸のフォントサイズ
-                plt.xticks(fontsize=20)
-                plt.yticks(fontsize=18)
-
-                # 各棒の中に精度の数値を表示
-                for i, (auc, str_auc) in enumerate(zip(valuation_list, str_valuation_list)):
-                    plt.text(i, 0.03, str_auc, ha='center', va='bottom', fontsize=25, color='black', rotation=90)
-
-                # 画像を保存
-                output_path_base = os.path.join(save_path, "roc_results")
-                if not os.path.exists(output_path_base):
-                    os.makedirs(output_path_base)
-                # output_path = os.path.join(output_path_base, f'Comparison_of_R^2 score_ep{epochs}_SNR={snr_value}.png')
-                output_path = os.path.join(output_path_base, f'R^2_ep{epochs}_SNR={snr_value}.png')
-                plt.savefig(output_path)
-                plt.close()
-            else:
-                print("AUC List:", valuation_list)
-                print("String AUC List:", str_valuation_list)
-                print("AUC List Length:", len(valuation_list))
-                print("String AUC List Length:", len(str_valuation_list))
-
-                plt.figure(figsize=(8, 6))
-                # models = ['AlexNet', 'ResNet50', 'VGG16', 'Ensemble']
-                models = ['AlexNet', 'Alex+Tf AP', 'Alex+Tf GAP', 'Ensemble']
-                
-                # AUCリストの長さをチェック
-                if len(valuation_list) != len(models) or len(str_valuation_list) != len(models):
-                    raise ValueError("Length of auc_list or str_auc_list does not match the number of models.")
-
-                # プロットの処理
-                bars = plt.bar(models, valuation_list, color=['c', 'cadetblue', 'skyblue', 'dodgerblue'], yerr=error_list, capsize=5, width=0.5)
-                plt.ylim(0.0, 1.05)
-                # plt.title(f'Comparison of AUC for each model (Epochs: {epochs}, SNR: {snr_value})', fontsize=16, pad=8)
-                plt.ylabel('AUC', fontsize=20)
-
-                # 軸のフォントサイズ
-                plt.xticks(fontsize=19)
-                plt.yticks(fontsize=18)
-
-                # 各棒の中に精度の数値を表示
-                for i, (auc, str_auc) in enumerate(zip(valuation_list, str_valuation_list)):
-                    plt.text(i, 0.03, str_auc, ha='center', va='bottom', fontsize=25, color='black', rotation=90)
-
-                # 画像を保存
-                output_path_base = os.path.join(save_path, "roc_results")
-                if not os.path.exists(output_path_base):
-                    os.makedirs(output_path_base)
-                # output_path = os.path.join(output_path_base, f'Comparison_of_AUC_ep{epochs}_SNR={snr_value}.png')
-                output_path = os.path.join(output_path_base, f'AUC_ep{epochs}_SNR={snr_value}.png')
-                plt.savefig(output_path)
-                plt.close()
-
-
-        # 損失関数
-        def plot_loss_history(history, epochs, model_name, fold, save_path, snr_value):
-            plt.figure(figsize=(10, 6))
-            plt.plot(history.history['loss'], label='Training Loss')
-            # もし検証データセットの損失も記録している場合（model.fitのvalidation_data引数を使用した場合）
-            # if 'val_loss' in history.history:
-            #     plt.plot(history.history['val_loss'], label='Validation Loss')
-            plt.title(f'{model_name} Loss History (Epochs: {epochs}, Fold: {fold}, SNR: {snr_value})')
-            plt.xlabel('Epoch')
-            plt.ylabel('Loss (Mean Squared Error)')
-            plt.legend()
-            plt.grid(True)
-
-            output_path_base = os.path.join(save_path, "loss_histories")
-            if not os.path.exists(output_path_base):
-                os.makedirs(output_path_base, exist_ok=True) # exist_ok=True を追加
-
-            # output_path = os.path.join(output_path_base, f'loss_history_{model_name}_ep{epochs}_fold{fold}_SNR={snr_value}.png')
-            output_path = os.path.join(output_path_base, f'ep{epochs}_fold{fold}_SNR={snr_value}.png')
-            plt.savefig(output_path)
-            plt.close()
+        plt.figure(figsize=(8, 6))
+        # models = ['AlexNet', 'ResNet50', 'VGG16', 'Ensemble']
+        models = ['AlexNet', 'Alex+Tf AP', 'Alex+Tf GAP', 'Ensemble']
         
-        def _mean_se(arr):
-            arr = np.asarray(arr, dtype=float)
-            return float(np.mean(arr)), float(np.std(arr, ddof=1) / np.sqrt(len(arr)))
+        # AUCリストの長さをチェック
+        if len(valuation_list) != len(models) or len(str_valuation_list) != len(models):
+            raise ValueError("Length of r2_list or str_r2_list does not match the number of models.")
 
-        #######################################################################
+        # プロットの処理
+        bars = plt.bar(models, valuation_list, color=['c', 'cadetblue', 'skyblue', 'dodgerblue'], yerr=error_list, capsize=5, width=0.5)
+        plt.ylim(0.0, 1.05)
+        # plt.title(f'Comparison of R^2 score for each model (Epochs: {epochs}, SNR: {snr_value})', fontsize=15, pad=8)
+        plt.ylabel('R² Score', fontsize=23)
 
-        #                                実行部
+        # 軸のフォントサイズ
+        plt.xticks(fontsize=20)
+        plt.yticks(fontsize=18)
 
-        #######################################################################
+        # 各棒の中に精度の数値を表示
+        for i, (auc, str_auc) in enumerate(zip(valuation_list, str_valuation_list)):
+            plt.text(i, 0.03, str_auc, ha='center', va='bottom', fontsize=25, color='black', rotation=90)
 
-        def main():
-            for data_path in DATA_PATH:
-                # SNR値をパスから抽出
-                if "no_noise" in str(data_path):
-                    snr_value = "no_noise"
-                else:
-                    snr_value = str(data_path).split("SNR=")[-1]  # "SNR=" の後の部分を取得
+        # 画像を保存
+        output_path_base = os.path.join(save_path, "roc_results")
+        if not os.path.exists(output_path_base):
+            os.makedirs(output_path_base)
+        # output_path = os.path.join(output_path_base, f'Comparison_of_R^2 score_ep{epochs}_SNR={snr_value}.png')
+        output_path = os.path.join(output_path_base, f'R^2_ep{epochs}_SNR={snr_value}.png')
+        plt.savefig(output_path)
+        plt.close()
+    else:
+        print("AUC List:", valuation_list)
+        print("String AUC List:", str_valuation_list)
+        print("AUC List Length:", len(valuation_list))
+        print("String AUC List Length:", len(str_valuation_list))
+
+        plt.figure(figsize=(8, 6))
+        # models = ['AlexNet', 'ResNet50', 'VGG16', 'Ensemble']
+        models = ['AlexNet', 'Alex+Tf AP', 'Alex+Tf GAP', 'Ensemble']
+        
+        # AUCリストの長さをチェック
+        if len(valuation_list) != len(models) or len(str_valuation_list) != len(models):
+            raise ValueError("Length of auc_list or str_auc_list does not match the number of models.")
+
+        # プロットの処理
+        bars = plt.bar(models, valuation_list, color=['c', 'cadetblue', 'skyblue', 'dodgerblue'], yerr=error_list, capsize=5, width=0.5)
+        plt.ylim(0.0, 1.05)
+        # plt.title(f'Comparison of AUC for each model (Epochs: {epochs}, SNR: {snr_value})', fontsize=16, pad=8)
+        plt.ylabel('AUC', fontsize=20)
+
+        # 軸のフォントサイズ
+        plt.xticks(fontsize=19)
+        plt.yticks(fontsize=18)
+
+        # 各棒の中に精度の数値を表示
+        for i, (auc, str_auc) in enumerate(zip(valuation_list, str_valuation_list)):
+            plt.text(i, 0.03, str_auc, ha='center', va='bottom', fontsize=25, color='black', rotation=90)
+
+        # 画像を保存
+        output_path_base = os.path.join(save_path, "roc_results")
+        if not os.path.exists(output_path_base):
+            os.makedirs(output_path_base)
+        # output_path = os.path.join(output_path_base, f'Comparison_of_AUC_ep{epochs}_SNR={snr_value}.png')
+        output_path = os.path.join(output_path_base, f'AUC_ep{epochs}_SNR={snr_value}.png')
+        plt.savefig(output_path)
+        plt.close()
+
+
+# 損失関数
+def plot_loss_history(history, epochs, model_name, fold, save_path, snr_value):
+    plt.figure(figsize=(10, 6))
+    plt.plot(history.history['loss'], label='Training Loss')
+    # もし検証データセットの損失も記録している場合（model.fitのvalidation_data引数を使用した場合）
+    # if 'val_loss' in history.history:
+    #     plt.plot(history.history['val_loss'], label='Validation Loss')
+    plt.title(f'{model_name} Loss History (Epochs: {epochs}, Fold: {fold}, SNR: {snr_value})')
+    plt.xlabel('Epoch')
+    plt.ylabel('Loss (Mean Squared Error)')
+    plt.legend()
+    plt.grid(True)
+
+    output_path_base = os.path.join(save_path, "loss_histories")
+    if not os.path.exists(output_path_base):
+        os.makedirs(output_path_base, exist_ok=True) # exist_ok=True を追加
+
+    # output_path = os.path.join(output_path_base, f'loss_history_{model_name}_ep{epochs}_fold{fold}_SNR={snr_value}.png')
+    output_path = os.path.join(output_path_base, f'ep{epochs}_fold{fold}_SNR={snr_value}.png')
+    plt.savefig(output_path)
+    plt.close()
+
+def _mean_se(arr):
+    arr = np.asarray(arr, dtype=float)
+    return float(np.mean(arr)), float(np.std(arr, ddof=1) / np.sqrt(len(arr)))
+
+
+#######################################################################
+
+#                                実行部
+
+#######################################################################
+
+def main():
+    for data_path in DATA_PATH:
+        # --- メモリ管理: 前のループのゴミを掃除 ---
+        K.clear_session()
+        gc.collect()
+
+        # SNR値をパスから抽出
+        if "no_noise" in str(data_path):
+            snr_value = "no_noise"
+        else:
+            snr_value = str(data_path).split("SNR=")[-1]  # "SNR=" の後の部分を取得
+
+        print(f"\n{'='*40}")
+        print(f"データセット読み込み開始: {snr_value}")
+
+        # データのロード
+        start_time = time.time()
+        data_loading = DataLoadingConversion()
+        if COLOR_CHANNEL == 1:
+            x, y = data_loading.load_npy_data(data_path)
+        else:
+            x, y = data_loading.load_image_data(data_path)
+        load_time = time.time() - start_time
+
+        print("x shape:", x.shape)
+        print("y shape:", y.shape)
+        print(f"データの読み込み時間: {load_time:.2f} 秒")
+
+        # X_train, X_test, Y_train, Y_test = train_test_split(x, y, test_size=0.2, random_state=42)
+
+        for all_bs in BATCH_SIZES_ALL:
+            for all_lr in LEARNING_RATE_ALL:
+                # LEARNING_RATE = {"AlexNet": 0.05, "ResNet50": 0.0005, "VGG16": 0.0005}
+                # LEARNING_RATE = {"AlexNet": 0.001, "ResNet50": 0.005, "VGG16": 0.0001}
+                # BATCH_SIZES = {"AlexNet": 12, "ResNet50": 12, "VGG16": 12}
+                LEARNING_RATE = {"AlexNet": all_lr, "ResNet50": all_lr, "VGG16": all_lr}
+                BATCH_SIZES = {"AlexNet": all_bs, "ResNet50": all_bs, "VGG16": all_bs}
 
                 noise_dir_name = os.path.basename(data_path)
 
@@ -269,27 +292,12 @@ for all_bs in BATCH_SIZES_ALL:
                 elif ENSEMBLE_METHOD == 1:
                     # SAVE_PATH = os.path.join(BASE_SAVE_PATH, f"{SAVE_DATE}_ep{EPOCH_NUM}_chu{CHUNK}_bsAl{bsare}_Re{bsres}_Vg{bsvgg}_lrAl{lrale}_Re{lrres}_Vg{lrvgg}", f"weight_average")
                     # SAVE_PATH = os.path.join(BASE_SAVE_PATH, noise_dir_name, f"pre_{SAVE_DATE}_ep{EPOCH_NUM}_bsAl{bsare}_Re{bsres}_Vg{bsvgg}_lrAl{lrale}_Re{lrres}_Vg{lrvgg}")
-                    SAVE_PATH = os.path.join(BASE_SAVE_PATH, noise_dir_name, max_freq_hz, f"pre_{SAVE_DATE}_ep{EPOCH_NUM}_bs{bsvgg}_lr{lrale}")
+                    SAVE_PATH = os.path.join(BASE_SAVE_PATH, noise_dir_name, max_freq_hz, f"pre_{SAVE_DATE}_ep{EPOCH_NUM}_bs{BATCH_SIZES['AlexNet']}_lr{LEARNING_RATE['AlexNet']}")
                 elif ENSEMBLE_METHOD == 2:
                     SAVE_PATH = os.path.join(BASE_SAVE_PATH, noise_dir_name, max_freq_hz, f"{SAVE_DATE}_ep{EPOCH_NUM}_chu{CHUNK}", f"min")
 
                 if not os.path.exists(SAVE_PATH):
                     os.makedirs(SAVE_PATH, exist_ok=True)
-
-                # データのロード
-                start_time = time.time()
-                data_loading = DataLoadingConversion()
-                if COLOR_CHANNEL == 1:
-                    x, y = data_loading.load_npy_data(data_path)
-                else:
-                    x, y = data_loading.load_image_data(data_path)
-                load_time = time.time() - start_time
-
-                print("x shape:", x.shape)
-                print("y shape:", y.shape)
-                print(f"データの読み込み時間: {load_time:.2f} 秒")
-
-                # X_train, X_test, Y_train, Y_test = train_test_split(x, y, test_size=0.2, random_state=42)
 
                 # 分割交差検証の準備
                 kf = KFold(n_splits=DIVISIONS, shuffle=True, random_state=42)
@@ -678,6 +686,26 @@ for all_bs in BATCH_SIZES_ALL:
 
                         fold += 1
 
+                        # =========================================================
+                        # ループの最後でメモリを確実に解放する処理
+                        # =========================================================
+                        
+                        # 1. 重い変数を明示的に削除する
+                        #    (変数が存在する場合のみ削除するように try-except または if で囲むと安全ですが、
+                        #     このフローなら確実に生成されているため del でOKです)
+                        del x_train, x_val, y_train, y_val, y_train_scaled, y_val_scaled
+                        del alexnet_model, resnet50_model, vgg16_model
+                        del alexnet_history, resnet50_history, vgg16_history
+                        del predictions, ensemble_pred
+                        # 必要であれば以下も削除
+                        del alexnet_pred, resnet50_pred, vgg16_pred
+                        
+                        # 2. TensorFlowのセッションをクリアする
+                        K.clear_session()
+                        
+                        # 3. ガベージコレクションを強制実行する(参照を切ったメモリ領域を即座にOSに返却させる）
+                        gc.collect()
+
                     # 各モデルの回帰分析とR^2 scoreを保存
                     str_r2_alexnet, r2_alexnet, r2_error_list = save_combined_r2_auc("r2", alexnet_r2_scores, r2_error_list, "AlexNet")
                     str_r2_resnet, r2_resnet, r2_error_list = save_combined_r2_auc("r2", resnet50_r2_scores, r2_error_list, "ResNet50")
@@ -736,12 +764,12 @@ for all_bs in BATCH_SIZES_ALL:
                             f"{mae_high_mean:.4f} ± {mae_high_se:.4f}\n")
                     f.write("="*30 + "\n\n")
 
+                if not FLG_ROOP:
+                    break
+            if not FLG_ROOP:
+                break
+        del x, y
+        gc.collect()
 
-        if __name__ == '__main__':
-            main()
-        
-        if not FLG_ROOP:
-            break
-
-    if not FLG_ROOP:
-        break
+if __name__ == '__main__':
+    main()
