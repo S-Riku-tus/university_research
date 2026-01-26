@@ -93,12 +93,12 @@ base_path = Path(BASE_PATH)
 
 BASE_DATA_PATH = base_path / "data" / "npy" / noise / str(max_freq_hz)
 DATA_PATH = [
-    BASE_DATA_PATH / "heatflux_no_noise",
-    BASE_DATA_PATH / "heatflux_SNR=0",
-    BASE_DATA_PATH / "heatflux_SNR=-4",
-    BASE_DATA_PATH / "heatflux_SNR=-8",
-    BASE_DATA_PATH / "heatflux_SNR=-12",
-    BASE_DATA_PATH / "heatflux_SNR=-16",
+    # BASE_DATA_PATH / "heatflux_no_noise",
+    # BASE_DATA_PATH / "heatflux_SNR=0",
+    # BASE_DATA_PATH / "heatflux_SNR=-4",
+    # BASE_DATA_PATH / "heatflux_SNR=-8",
+    # BASE_DATA_PATH / "heatflux_SNR=-12",
+    # BASE_DATA_PATH / "heatflux_SNR=-16",
     BASE_DATA_PATH / "heatflux_SNR=-20"
 ]
 
