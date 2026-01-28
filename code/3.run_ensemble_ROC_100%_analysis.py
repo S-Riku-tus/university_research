@@ -36,11 +36,11 @@ from utils.calculation.calc_r2_auc import AUCorR2Calculation
 
 # 訓練時のバッチサイズとエポック数のリスト
 # BATCH_SIZES = {"AlexNet": 12, "ResNet50": 12, "VGG16": 16}  # これは卒論時の値
-BATCH_SIZES_ALL = [12, 24, 32, 48, 64]
+BATCH_SIZES_ALL = [48]
 EPOCH_NUM = 200
 # 学習率
 # 今のところ一番良いやつ
-LEARNING_RATE_ALL = [0.05, 0.01, 0.005, 0.001, 0.0005, 0.0001, 0.00005]
+LEARNING_RATE_ALL = [0.005]
 
 # 閾値
 # threshold_list = [260675.103239721, 353145.749413166, 264418.48987934]  # TODO: ここの値が、csvファイルで求めた沸騰開始点での熱流束となれば、沸騰-非沸騰分類モデルでのROC曲線が書けるのではないか？
@@ -66,7 +66,7 @@ NOISE = 1
 # 保存したモデルの重みを用いるかどうか
 PREVIOUS_MODEL = False
 
-SAVE_DATE = "20260108"
+SAVE_DATE = "20260128"
 # SAVE_DATE = "cnn+tra系_tune"
 
 # 使用するデータの日付
@@ -93,13 +93,13 @@ base_path = Path(BASE_PATH)
 
 BASE_DATA_PATH = base_path / "data" / "npy" / noise / str(max_freq_hz)
 DATA_PATH = [
-    # BASE_DATA_PATH / "heatflux_no_noise",
+    BASE_DATA_PATH / "heatflux_no_noise",
     # BASE_DATA_PATH / "heatflux_SNR=0",
     # BASE_DATA_PATH / "heatflux_SNR=-4",
     # BASE_DATA_PATH / "heatflux_SNR=-8",
     # BASE_DATA_PATH / "heatflux_SNR=-12",
     # BASE_DATA_PATH / "heatflux_SNR=-16",
-    BASE_DATA_PATH / "heatflux_SNR=-20"
+    # BASE_DATA_PATH / "heatflux_SNR=-20"
 ]
 
 #### regression_resultとROC曲線の保存先フォルダ ####
@@ -335,28 +335,21 @@ def main():
                         # 2. 訓練データで学習したスケーラーを検証データ（y_val）に適用する
                         y_val_scaled = scaler.transform(y_val.reshape(-1, 1))
 
+                        # === Random Forest用のデータ加工 ===
+                        # 画像データ (N, 224, 224, 1) を (N, 50176) に平坦化する
+                        # 224 * 224 * 1 = 50,176特徴量
+                        x_train_flat = x_train.reshape(x_train.shape[0], -1)
+                        x_val_flat = x_val.reshape(x_val.shape[0], -1)
 
                         # 各モデルの作成
                         regressionmodelmaker = RegressionModelMaker((224, 224, COLOR_CHANNEL))
-                        # regressionmodelmaker1106 = RegressionModelMaker1106((224, 224, COLOR_CHANNEL))
-                        # swintransformermodelmaker = SwinTransformerModelMaker((224, 224, COLOR_CHANNEL))
                 
-                        alexnet_model = regressionmodelmaker.alexnet()
-                        # # resnet50_model = regressionmodelmaker.resnet50()
-                        # # vgg16_model = regressionmodelmaker.vgg16()
-
-                        # # alexnet_model = regressionmodelmaker.cnn_transformer_v1()
+                        # alexnet_model = regressionmodelmaker.alexnet()
                         resnet50_model = regressionmodelmaker.cnn_transformer_v1()
                         vgg16_model = regressionmodelmaker.cnn_transformer_v2()
-                        # alexnet_model = regressionmodelmaker.cnn_transformer_v1()
-                        # vgg16_model = regressionmodelmaker1106.cnn_transformer_v2_time_series_corrected()  
+                        rf_model = regressionmodelmaker.random_forest()
 
-                        # # モデルのコンパイル1
-                        # alexnet_model.compile(optimizer=Adam(learning_rate=LEARNING_RATE['AlexNet']), loss='mean_squared_error')
-                        # resnet50_model.compile(optimizer=Adam(learning_rate=LEARNING_RATE['ResNet50']), loss='mean_squared_error')
-                        # vgg16_model.compile(optimizer=Adam(learning_rate=LEARNING_RATE['VGG16']), loss='mean_squared_error')
-
-                        alexnet_model.compile(optimizer=SGD(learning_rate=LEARNING_RATE['AlexNet'], momentum=0.9, clipnorm=1.0), loss='mean_squared_error')
+                        # alexnet_model.compile(optimizer=SGD(learning_rate=LEARNING_RATE['AlexNet'], momentum=0.9, clipnorm=1.0), loss='mean_squared_error')
                         resnet50_model.compile(optimizer=SGD(learning_rate=LEARNING_RATE['ResNet50'], momentum=0.9, clipnorm=1.0), loss='mean_squared_error')
                         vgg16_model.compile(optimizer=SGD(learning_rate=LEARNING_RATE['VGG16'], momentum=0.9, clipnorm=1.0), loss='mean_squared_error')
 
@@ -372,15 +365,15 @@ def main():
                         if not os.path.exists(save_dir):
                             os.makedirs(save_dir)
                         if not PREVIOUS_MODEL:
-                            print(f"AlexNet Model Start : Fold {fold} / {DIVISIONS}")
-                            alexnet_history = alexnet_model.fit(x_train, y_train_scaled, batch_size=BATCH_SIZES["AlexNet"], epochs=EPOCH_NUM, verbose=1)
+                            # print(f"AlexNet Model Start : Fold {fold} / {DIVISIONS}")
+                            # alexnet_history = alexnet_model.fit(x_train, y_train_scaled, batch_size=BATCH_SIZES["AlexNet"], epochs=EPOCH_NUM, verbose=1)
                             print(f"ResNet50 Model Start : Fold {fold} / {DIVISIONS}")
                             resnet50_history = resnet50_model.fit(x_train, y_train_scaled, batch_size=BATCH_SIZES['ResNet50'], epochs=EPOCH_NUM, verbose=1)
                             print(f"VGG16 Model Start : Fold {fold} / {DIVISIONS}")
                             vgg16_history = vgg16_model.fit(x_train, y_train_scaled, batch_size=BATCH_SIZES['VGG16'], epochs=EPOCH_NUM, verbose=1)
-                            # x_train_flat = x_train.reshape(x_train.shape[0], -1)
-                            # # alexnet_model.fit(x_train_flat, y_train_scaled.ravel())
-                            # alexnet_history = None
+                            print(f"Random Forest Model Start : Fold {fold}")
+                            # RFは平坦化したデータ(x_train_flat)と、1次元化したラベル(ravel)を使うのが一般的
+                            rf_model.fit(x_train_flat, y_train_scaled.ravel())
 
                             # モデルの重みの保存
                             # alexnet_weights_path = os.path.join(save_dir, f"AlexNet_fold{fold}_{snr_value}.weights.h5")
@@ -393,30 +386,31 @@ def main():
                             # rf_save_path = os.path.join(save_dir, f"RandomForest_fold{fold}_{snr_value}.joblib")
                             # joblib.dump(alexnet_model, rf_save_path)
                         else:
-                            alexnet_model.load_weights(os.path.join(save_dir, f"AlexNet_fold{fold}_{snr_value}.weights.h5"))
+                            # alexnet_model.load_weights(os.path.join(save_dir, f"AlexNet_fold{fold}_{snr_value}.weights.h5"))
                             resnet50_model.load_weights(os.path.join(save_dir, f"resnet50_fold{fold}_{snr_value}.weights.h5"))
                             vgg16_model.load_weights(os.path.join(save_dir, f"vgg16_fold{fold}_{snr_value}.weights.h5"))
 
                         # 各モデルの損失履歴をプロットして保存
                         if not PREVIOUS_MODEL: # 以前のモデルをロードした場合は損失履歴がないためスキップ
-                            plot_loss_history(alexnet_history, EPOCH_NUM, "AlexNet", fold, SAVE_PATH, snr_value)
+                            # plot_loss_history(alexnet_history, EPOCH_NUM, "AlexNet", fold, SAVE_PATH, snr_value)
                             plot_loss_history(resnet50_history, EPOCH_NUM, "ResNet50", fold, SAVE_PATH, snr_value)
                             plot_loss_history(vgg16_history, EPOCH_NUM, "VGG16", fold, SAVE_PATH, snr_value)
 
                         # 各モデルの予測
-                        alexnet_pred = alexnet_model.predict(x_val)
+                        # alexnet_pred = alexnet_model.predict(x_val)
                         resnet50_pred = resnet50_model.predict(x_val)
                         vgg16_pred = vgg16_model.predict(x_val)
-                        # x_val_flat = x_val.reshape(x_val.shape[0], -1)
-                        # alexnet_pred = alexnet_model.predict(x_val_flat).reshape(-1, 1)
-                        predictions = [alexnet_pred, resnet50_pred, vgg16_pred]
-                        # predictions = [resnet50_pred, vgg16_pred]
+                        rf_pred = rf_model.predict(x_val_flat).reshape(-1, 1)
+                        # predictions = [alexnet_pred, resnet50_pred, vgg16_pred]
+                        predictions = [rf_pred, resnet50_pred, vgg16_pred]
 
                         # 予測結果と正解データを元のスケールに戻す
-                        alexnet_pred = scaler.inverse_transform(alexnet_pred)
+                        # alexnet_pred = scaler.inverse_transform(alexnet_pred)
                         resnet50_pred = scaler.inverse_transform(resnet50_pred)
                         vgg16_pred = scaler.inverse_transform(vgg16_pred)
-                        predictions = [alexnet_pred, resnet50_pred, vgg16_pred]
+                        rf_pred = scaler.inverse_transform(rf_pred)
+                        # predictions = [alexnet_pred, resnet50_pred, vgg16_pred]
+                        predictions = [rf_pred, resnet50_pred, vgg16_pred]
 
                         # 回帰分析の結果とR^2 scoreの計算
                         calc = AUCorR2Calculation()

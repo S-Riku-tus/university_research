@@ -146,18 +146,25 @@ class RegressionModelMaker:
         return model
 
     def random_forest(self):
-        # XGBRFRegressor: ランダムフォレストとして振る舞うXGBoostモデル
-        # tree_method='hist', device='cuda' でGPUを使用します
-        return XGBRFRegressor(
-            n_estimators=100,      # 木の本数
-            subsample=0.8,         # データのサンプリング率（RFらしさ）
-            colsample_bynode=0.8,  # 特徴量のサンプリング率（RFらしさ）
-            learning_rate=1.0,     # RFの場合は学習率1.0にするのが基本
-            tree_method='hist',    # GPU計算用アルゴリズム
-            device='cuda',         # ★GPUを指定
-            n_jobs=-1,             # CPU並列化（GPU使用時は補助的）
-            random_state=42
+        """
+        XGBoostを使用したランダムフォレスト回帰モデル
+        入力は (Batch, Feature_Size) の2次元配列である必要があります。
+        """
+        model = XGBRFRegressor(
+            n_estimators=100,       # 木の数
+            subsample=0.8,          # 各木で使うデータの割合
+            colsample_bynode=0.8,   # 各分岐で使う特徴量の割合
+            learning_rate=1.0,      # RFは学習率1.0が基本
+            max_depth=10,           # 木の深さ（深すぎると過学習、浅すぎると精度不足）
+            random_state=42,
+            n_jobs=-1,              # CPU並列処理
+            tree_method='hist',     
+            device='cuda',          # GPU指定
+            
+            objective='reg:squarederror' # 回帰問題（二乗誤差最小化）
         )
+        return model
+
 
     def mobilenet_v2(self):
         # 1. ImageNetで学習済みのMobileNetV2をロード (weights='imagenet')
@@ -438,111 +445,3 @@ class RegressionModelMaker:
     #     output = Dense(1, activation='linear', name='output')(x)
 
     #     return Model(inputs=x_in, outputs=output)
-
-
-if __name__ == '__main__':
-    # 
-    # このスクリプト（models.pyなど）が直接実行された場合にのみ以下のコードが実行されます。
-    # 
-
-    # 
-    # 1. モデルの入力形状を定義
-    # 
-    INPUT_SHAPE = (224, 224, 1) # (時間, 周波数, チャンネル) を想定
-
-    # 
-    # 2. RegressionModelMaker のインスタンスを作成
-    # 
-    maker = RegressionModelMaker(input_shape=INPUT_SHAPE)
-
-    print("==============================================================")
-    print(f"モデルのサマリーを表示します。入力形状: {INPUT_SHAPE}")
-    print("==============================================================\n")
-
-    # 
-    # 3. 各モデルを作成して .summary() を実行
-    # 
-
-    # # --- CNN系モデル ---
-
-    # print("\n--- 1. AlexNet ---")
-    # try:
-    #     model_alexnet = maker.alexnet()
-    #     model_alexnet.summary()
-    # except Exception as e:
-    #     print(f"AlexNet のビルドに失敗しました: {e}")
-
-    # print("\n--- 2. VGG16 ---")
-    # try:
-    #     model_vgg16 = maker.vgg16()
-    #     model_vgg16.summary()
-    # except Exception as e:
-    #     print(f"VGG16 のビルドに失敗しました: {e}")
-
-    # print("\n--- 3. ResNet50 ---")
-    # try:
-    #     model_resnet50 = maker.resnet50()
-    #     model_resnet50.summary()
-    # except Exception as e:
-    #     print(f"ResNet50 のビルドに失敗しました: {e}")
-
-    # print("\n--- 4. MobileNetV2 ---")
-    # try:
-    #     model_mobilenet = maker.mobilenet_v2()
-    #     model_mobilenet.summary()
-    # except Exception as e:
-    #     print(f"MobileNetV2 のビルドに失敗しました: {e}")
-
-    # print("\n--- 5. SELDnet Regressor ---")
-    # try:
-    #     model_seldnet = maker.seldnet_regressor()
-    #     model_seldnet.summary()
-    # except Exception as e:
-    #     print(f"SELDnet Regressor のビルドに失敗しました: {e}")
-        
-    # print("\n--- 6. EfficientNetB0 ---")
-    # try:
-    #     model_efficientnet = maker.efficientnet_b0()
-    #     model_efficientnet.summary()
-    # except Exception as e:
-    #     print(f"EfficientNetB0 のビルドに失敗しました: {e}")
-
-
-    # --- Transformer系モデル (!!注意!!) ---
-
-    print("\n--- 7. cnn_transformer_v1 ---")
-    print("!!注意: このモデルは前回の議論の通り、形状の不一致によりエラーが発生する可能性が高いです。")
-    try:
-        model_cnn_tf_v1 = maker.cnn_transformer_v1()
-        model_cnn_tf_v1.summary()
-    except Exception as e:
-        print(f"cnn_transformer_v1 のビルドに失敗しました: {e}")
-        print("エラーの理由 (予測): transformer_encoder内の残差接続 (x + inputs) で、")
-        print(f"MHAの出力 (例: 4 * 256 = 1024次元) と入力 (model_dim=32) の形状が一致していません。")
-
-
-    print("\n--- 8. cnn_transformer_v2 ---")
-    print("!!注意: v1と同様、このモデルも形状の不一致によりエラーが発生する可能性が高いです。")
-    try:
-        model_cnn_tf_v2 = maker.cnn_transformer_v2()
-        model_cnn_tf_v2.summary()
-    except Exception as e:
-        print(f"cnn_transformer_v2 のビルドに失敗しました: {e}")
-        print("エラーの理由 (予測): v1 と同じ問題です。")
-
-
-    # print("\n--- 9. efficientnet_transformer_v1 ---")
-    # print("!!注意: このモデルも transformer_encoder の呼び出し方に問題があるため、エラーが発生する可能性が高いです。")
-    # try:
-    #     model_eff_tf_v1 = maker.efficientnet_transformer_v1(
-    #         model_dim=128,
-    #         num_transformer_blocks=4,
-    #         num_heads=4,
-    #         ff_dim=512
-    #     )
-    #     model_eff_tf_v1.summary()
-    # except Exception as e:
-    #     print(f"efficientnet_transformer_v1 のビルドに失敗しました: {e}")
-    #     print("エラーの理由 (予測): transformer_encoder内の残差接続 (x + inputs) で、")
-    #     print(f"MHAの出力 (4 * 128 = 512次元) と入力 (model_dim=128) の形状が一致していません。")
-    #     print("transformer_encoder の引数 'head_size' を (model_dim // num_heads) に修正する必要があります。")
