@@ -158,9 +158,10 @@ class RegressionModelMaker:
             max_depth=10,           # 木の深さ（深すぎると過学習、浅すぎると精度不足）
             random_state=42,
             n_jobs=-1,              # CPU並列処理
-            tree_method='hist',     
-            device='cuda',          # GPU指定
-            
+            # tree_method='hist',     
+            # device='cuda',          # GPU指定
+            tree_method='auto',
+            device='cpu',
             objective='reg:squarederror' # 回帰問題（二乗誤差最小化）
         )
         return model

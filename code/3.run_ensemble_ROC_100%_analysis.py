@@ -6,6 +6,7 @@ import joblib
 from pathlib import Path
 from sklearn.model_selection import KFold
 import gc
+from sklearn.decomposition import PCA
 from tensorflow.keras import backend as K
 from tensorflow.keras.optimizers import Adam, SGD
 from sklearn.utils import resample
@@ -37,7 +38,7 @@ from utils.calculation.calc_r2_auc import AUCorR2Calculation
 # 訓練時のバッチサイズとエポック数のリスト
 # BATCH_SIZES = {"AlexNet": 12, "ResNet50": 12, "VGG16": 16}  # これは卒論時の値
 BATCH_SIZES_ALL = [48]
-EPOCH_NUM = 200
+EPOCH_NUM = 500
 # 学習率
 # 今のところ一番良いやつ
 LEARNING_RATE_ALL = [0.005]
@@ -66,7 +67,7 @@ NOISE = 1
 # 保存したモデルの重みを用いるかどうか
 PREVIOUS_MODEL = False
 
-SAVE_DATE = "20260128"
+SAVE_DATE = "20260208"
 # SAVE_DATE = "cnn+tra系_tune"
 
 # 使用するデータの日付
@@ -336,10 +337,12 @@ def main():
                         y_val_scaled = scaler.transform(y_val.reshape(-1, 1))
 
                         # === Random Forest用のデータ加工 ===
-                        # 画像データ (N, 224, 224, 1) を (N, 50176) に平坦化する
-                        # 224 * 224 * 1 = 50,176特徴量
                         x_train_flat = x_train.reshape(x_train.shape[0], -1)
                         x_val_flat = x_val.reshape(x_val.shape[0], -1)
+                        pca = PCA(n_components=100, random_state=42)
+                        x_train_pca = pca.fit_transform(x_train_flat)
+                        x_val_pca = pca.transform(x_val_flat)
+                        print(f"PCA完了: {x_train_flat.shape} -> {x_train_pca.shape}")
 
                         # 各モデルの作成
                         regressionmodelmaker = RegressionModelMaker((224, 224, COLOR_CHANNEL))
@@ -373,7 +376,7 @@ def main():
                             vgg16_history = vgg16_model.fit(x_train, y_train_scaled, batch_size=BATCH_SIZES['VGG16'], epochs=EPOCH_NUM, verbose=1)
                             print(f"Random Forest Model Start : Fold {fold}")
                             # RFは平坦化したデータ(x_train_flat)と、1次元化したラベル(ravel)を使うのが一般的
-                            rf_model.fit(x_train_flat, y_train_scaled.ravel())
+                            rf_model.fit(x_train_pca, y_train_scaled.ravel())
 
                             # モデルの重みの保存
                             # alexnet_weights_path = os.path.join(save_dir, f"AlexNet_fold{fold}_{snr_value}.weights.h5")
@@ -400,7 +403,7 @@ def main():
                         # alexnet_pred = alexnet_model.predict(x_val)
                         resnet50_pred = resnet50_model.predict(x_val)
                         vgg16_pred = vgg16_model.predict(x_val)
-                        rf_pred = rf_model.predict(x_val_flat).reshape(-1, 1)
+                        rf_pred = rf_model.predict(x_val_pca).reshape(-1, 1)
                         # predictions = [alexnet_pred, resnet50_pred, vgg16_pred]
                         predictions = [rf_pred, resnet50_pred, vgg16_pred]
 
@@ -408,9 +411,9 @@ def main():
                         # alexnet_pred = scaler.inverse_transform(alexnet_pred)
                         resnet50_pred = scaler.inverse_transform(resnet50_pred)
                         vgg16_pred = scaler.inverse_transform(vgg16_pred)
-                        rf_pred = scaler.inverse_transform(rf_pred)
-                        # predictions = [alexnet_pred, resnet50_pred, vgg16_pred]
-                        predictions = [rf_pred, resnet50_pred, vgg16_pred]
+                        alexnet_pred = scaler.inverse_transform(rf_pred)
+                        # ↑もとはrf_pred
+                        predictions = [alexnet_pred, resnet50_pred, vgg16_pred]
 
                         # 回帰分析の結果とR^2 scoreの計算
                         calc = AUCorR2Calculation()
@@ -688,8 +691,10 @@ def main():
                         #    (変数が存在する場合のみ削除するように try-except または if で囲むと安全ですが、
                         #     このフローなら確実に生成されているため del でOKです)
                         del x_train, x_val, y_train, y_val, y_train_scaled, y_val_scaled
-                        del alexnet_model, resnet50_model, vgg16_model
-                        del alexnet_history, resnet50_history, vgg16_history
+                        # del alexnet_model, resnet50_model, vgg16_model
+                        # del alexnet_history, resnet50_history, vgg16_history
+                        del rf_model, resnet50_model, vgg16_model
+                        del resnet50_history, vgg16_history
                         del predictions, ensemble_pred
                         # 必要であれば以下も削除
                         del alexnet_pred, resnet50_pred, vgg16_pred
