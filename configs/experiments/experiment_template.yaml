@@ -1,0 +1,52 @@
+# Experiment config template
+name: "YYYY-MM-DD_experiment_name"
+created_at: "YYYY-MM-DD"
+purpose: ""
+
+dataset:
+  config: "../datasets/dataset_template.yaml"
+  data_path: ""
+  color_channel: 1
+
+training:
+  script: "code/3.run_ensemble_ROC_100%_analysis.py"
+  epochs: null
+  batch_size: null
+  learning_rate: null
+  k_folds: 5
+  random_seed: 42
+
+models:
+  - name: "RandomForest"
+    enabled: true
+  - name: "CNN+Transformer v1"
+    enabled: true
+  - name: "CNN+Transformer v2"
+    enabled: true
+
+ensemble:
+  method: "weighted_average"
+  weight_source: "1 - r2"
+
+threshold:
+  heatflux_threshold: null
+  unit: "W/m2"
+  source: ""
+
+outputs:
+  result_dir: ""
+  save_figures: true
+  save_weights: false
+
+metrics:
+  - r2
+  - r2_high
+  - auc
+  - accuracy
+  - precision
+  - recall
+  - f1
+  - rmse
+  - mae
+
+notes: ""

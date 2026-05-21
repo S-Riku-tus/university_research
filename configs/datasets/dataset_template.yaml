@@ -1,0 +1,40 @@
+# Dataset config template
+name: "YYYY-MM-DD_dataset_name"
+created_at: "YYYY-MM-DD"
+
+paths:
+  base_dir: ""
+  raw_audio_dir: ""
+  generated_data_dir: ""
+  noise_audio: ""
+
+experiment_condition:
+  pool_boiling_case: ""
+  subcooling_degrees: null
+  wire_diameter_mm: null
+  wire_length_mm: null
+  pressure_condition: ""
+
+preprocessing:
+  feature_type: "STFT"
+  chunk_seconds: 1.0
+  sample_rate_hz: 44100
+  highpass:
+    enabled: true
+    fp_hz: null
+    fs_hz: null
+  max_freq_hz: 22050
+  resize_shape: [224, 224]
+  noise_type: "waterflow"
+  snr_db: ["no_noise"]
+
+labeling:
+  label_source: "filename_prefix_heatflux"
+  unit: "W/m2"
+  notes: ""
+
+generated_by:
+  script: ""
+  git_commit: ""
+
+notes: ""

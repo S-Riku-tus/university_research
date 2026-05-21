@@ -8,6 +8,10 @@
 
 ## 重要ファイル
 
+- `docs/repository_management.md`: リポジトリを大きく崩さず管理するための方針。
+- `docs/code_map.md`: コード配置と主要スクリプトの地図。
+- `docs/data_inventory.md`: 巨大データと生成データの索引。
+- `docs/naming_rules.md`: 新規ファイル名・実験名のゆるい命名ルール。
 - `code/3.run_ensemble_ROC_100%_analysis.py`: 現在の中心的な回帰・アンサンブル・評価スクリプト。
 - `code/utils/models/regression/base_regression.py`: AlexNet系、CNN+Transformer、RandomForest系などの回帰モデル定義。
 - `code/utils/dataloading/dataloading_and_conversion.py`: `.npy` や画像から入力 `x` と熱流束ラベル `y` を作る処理。
@@ -19,6 +23,8 @@
 - 研究資料の原本は基本的に動かさない。
 - AI用の要約は `docs/` に置く。
 - 繰り返し使う文書形式は `templates/` に置く。
+- 新しい実験条件は `configs/` に、結果の要約は `experiments/` に置く。
+- 既存の使い慣れたファイル名やフォルダ名は急に変えない。改善は案内文書とテンプレートから始める。
 - 週次報告はSOAP形式、つまり `S: Subjective`, `O: Objective`, `A: Assessment`, `P: Plan` を基本形にする。
 - コード改善時は、データの流れ、モデルの入出力、評価指標、保存先を必ず確認する。
 - 研究報告文では、断定しすぎず、「現時点では」「今後確認する」「検討中」といった研究進行中の文体を自然に使う。

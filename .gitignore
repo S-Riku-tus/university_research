@@ -3,3 +3,31 @@ logs/
 Pool_boiling/
 water_flow/
 白金計算/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Large generated data and model artifacts
+*.npy
+*.npz
+*.h5
+*.weights.h5
+*.keras
+*.joblib
+*.pkl
+
+# Generated experiment outputs
+all_weights/
+regression_result/
+training_results/
+wandb/
+mlruns/
+
+# OS/editor
+.DS_Store
+Thumbs.db

@@ -13,11 +13,22 @@
 - `water_flow/`: 水流音など、ノイズ付与に使う音源。
 - `研究進捗報告/`: 週次進捗、発表資料、論文輪講、学会資料、卒論・修論関連資料。
 - `docs/`: Codexや自分が研究文脈を素早く把握するための要約・索引・運用メモ。
+- `configs/`: 新しい実験やデータセット条件を残すための設定テンプレート。
+- `experiments/`: 実験結果の要約、評価指標、図、考察を残す場所。
 - `templates/`: 週次報告など、繰り返し作成する文書のテンプレート。
 
 ## Codexに読ませる入口
 
 Codexに研究を手伝わせるときは、まず `AGENTS.md` と `docs/research_context.md` を読ませます。週次進捗報告を作るときは、`docs/weekly_report_guide.md` と `templates/weekly_progress_SOAP.md` を使います。過去報告を参照するときは、重いPDFやPPTXを直接すべて読ませる前に、`docs/progress_index.md` を更新してから使います。
+
+## 管理用の地図
+
+- `docs/repository_management.md`: このリポジトリ全体の管理方針。
+- `docs/code_map.md`: `code/` のどこに何があるかの地図。
+- `docs/data_inventory.md`: 巨大データの場所・意味・規模の索引。
+- `docs/naming_rules.md`: 新しく作るファイル名・フォルダ名のゆるいルール。
+- `configs/README.md`: 実験条件を設定ファイルとして残すための入口。
+- `experiments/README.md`: 実験結果の要約を残すための入口。
 
 ## よく使う作業
 
