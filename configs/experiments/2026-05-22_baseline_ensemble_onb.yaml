@@ -1,0 +1,84 @@
+# Baseline experiment plan after the 2026-05-22 presentation discussion.
+name: "2026-05-22_baseline_ensemble_onb"
+created_at: "2026-05-22"
+purpose: >
+  Establish a baseline for heat-flux regression and ONB-neighborhood detection
+  before expanding input representations or explanation methods. Compare single
+  models with ensemble predictions, and evaluate whether the ensemble improves
+  accuracy, robustness, and ONB-neighborhood behavior.
+
+dataset:
+  config: ""
+  data_path: "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/data/npy/waterflow_20251219_1s/maxfreq=22kHz"
+  color_channel: 1
+  input_representation: "STFT-like npy"
+  chunk_seconds: 1
+  max_freq_hz: 22000
+  noise_conditions:
+    - "heatflux_no_noise"
+    - "waterflow representative SNR condition"
+
+training:
+  script: "code/3.run_ensemble_ROC_100%_analysis.py"
+  epochs: 500
+  batch_size: 48
+  learning_rate: 0.005
+  k_folds: 5
+  random_seed: 42
+
+models:
+  - name: "RandomForest or XGBRF"
+    enabled: true
+    role: "Non-deep-learning comparison model after PCA."
+  - name: "CNN+Transformer v1"
+    enabled: true
+    role: "CNN local feature extractor with transformer sequence modeling."
+  - name: "CNN+Transformer v2"
+    enabled: true
+    role: "Alternative CNN+Transformer architecture."
+
+ensemble:
+  compare_methods:
+    - "simple_average"
+    - "weighted_average"
+  weight_source: "Do not use the same evaluation fold directly if possible; use an inner validation split or a fixed rule."
+  hypothesis: >
+    Ensemble prediction should reduce model-specific instability and improve
+    ONB-neighborhood detection robustness compared with the best single model.
+
+threshold:
+  heatflux_threshold: 275174.6641
+  unit: "W/m2"
+  source: "Current central script threshold_list average."
+
+outputs:
+  result_dir: "experiments/2026-05-22_baseline_ensemble_onb/"
+  save_figures: true
+  save_weights: false
+
+metrics:
+  regression:
+    - r2
+    - rmse_all
+    - mae_all
+  threshold_detection:
+    - auc_continuous_score
+    - auc_binary_prediction
+    - accuracy
+    - precision
+    - recall
+    - f1
+  onb_neighborhood:
+    - r2_high
+    - rmse_high
+    - mae_high
+    - detection_delay
+    - missed_onb_rate
+  robustness:
+    - fold_variance
+    - noise_condition_variance
+
+notes: >
+  Before using this experiment for a report, align variable names in the central
+  script so that RandomForest predictions are not labeled as AlexNet, and add a
+  continuous-score AUC calculation from predicted heat flux.
