@@ -33,11 +33,11 @@
 
 現在の目的文はよくまとまっているが、手段が多く入っているため、目的と方法が少し混ざって見える。次のようにすると修士研究の芯が出やすい。
 
-> 本研究の目的は、プール沸騰音に含まれるONB近傍の微弱かつ非定常な時間・周波数特徴が、熱流束推定および沸騰開始点近傍の早期検知に有効な物理的根拠として利用できるかを明らかにすることである。特に、入力表現、単体モデル、アンサンブル統合を比較し、ノイズ条件下でも検知性能が安定する構成と、その判断根拠の妥当性を評価する。
+> 本研究の目的は、プール沸騰音に含まれるONB近傍の微弱かつ非定常な時間・周波数変化が、ノイズ条件下における熱流束推定とONB近傍検知の根拠としてどこまで利用できるかを明らかにすることである。具体的には、音響スペクトログラムを用いた熱流束回帰と閾値検知を基盤とし、入力表現、単体モデル、アンサンブル統合の比較を通じて、見逃し、検知遅れ、条件間ばらつきを抑える構成と、その判断根拠の物理的妥当性および限界を評価する。
 
 この形にすると、結論を「アンサンブルで性能が上がった」ではなく、次のように置ける。
 
-> 本研究では、ONB近傍検知において、単に平均精度が高い構成ではなく、低SNR条件や条件変化下でも見逃しと検知遅れを抑え、かつ沸騰に関係する時間・周波数領域に基づいて予測する構成を明らかにした。
+> 本研究では、ONB近傍検知において、単に平均精度が高い構成ではなく、低SNR条件や条件変化下でも見逃し、検知遅れ、条件間ばらつきを抑え、かつ沸騰に関係する時間・周波数領域に基づいて予測していると説明できる構成と限界を明らかにした。
 
 ## 追加した方がよい研究問い
 
@@ -56,6 +56,8 @@ ONB近傍を評価すると書いているが、どの範囲を近傍とする�
 - 熱流束基準: `q_ONB ± 10%` または `q_ONB` から限界熱流束までの相対位置0-20%。
 - 時間基準: 目視ONB時刻の前後数十秒。
 - サンプル基準: ONB前後の一定チャンク数。
+
+「早期検知」と強く書く場合は、ONB時刻から何秒前後で検知できたか、または検知遅れをどのように定義するかも合わせて決める必要がある。定義が固まるまでは「ONB近傍検知」と書く方が安全である。
 
 ### 2. アンサンブルの重み決定に注意
 
@@ -81,7 +83,7 @@ Grad-CAMやAttention mapを出すだけだと、「それらしく見える図�
 
 - Dunlapらは、プール沸騰の音響信号から熱流束を非侵襲に定量化する枠組みを示している。音から熱流束推定という大枠は既に近い先行研究があるため、修士ではONB近傍、ノイズ下、説明性、評価設計の差分が重要になる。
 - 2025年の外部音響と深層学習による沸騰熱流束・熱伝達係数・沸騰様式推定の研究では、CNN系とTransformer系の比較や、音響データから沸騰状態を推定する方向がさらに進んでいる。したがって「CNN/Transformerを試した」だけでは新規性が弱く、なぜその構成がONB近傍で有効かを示す必要がある。
-- 2026年の沸騰音響ロードマップでは、音響沸騰研究の標準化、センサ選択、データセット、AI/ML、説明性が今後の課題として扱われている。これは本研究の「説明性と頑健性を含む評価」に追い風である。
+- 2026年の沸騰音響ロードマップでは、音響沸騰研究の標準化、センサ選択、データセット、AI/ML、説明性が今後の課題として扱われている。これは本研究の「説明性と頑健性を含む評価」に追い風である。文献情報としては、`A roadmap for decoding the sound of boiling`, `npj Thermal Science and Engineering`, 2026として扱う。
 - 注意機構は有用だが、Attention mapをそのまま説明とみなすことには慎重さが必要である。Sanity checkやマスク実験を入れることで、可視化の信頼性を補強できる。
 
 ## 次にやるとよいこと
@@ -97,7 +99,7 @@ Grad-CAMやAttention mapを出すだけだと、「それらしく見える図�
 - Nonintrusive heat flux quantification using acoustic emissions during pool boiling, Applied Thermal Engineering, 2023.
 - A temporal-spatial framework for efficient heat flux monitoring of transient boiling, IEEE Transactions on Instrumentation and Measurement, 2024.
 - Predicting boiling heat flux, heat transfer coefficient, and regimes using external acoustics and deep learning, Scientific Reports, 2025.
-- A roadmap for boiling acoustics research, Communications Engineering, 2026.
+- A roadmap for decoding the sound of boiling, npj Thermal Science and Engineering, 2026.
 - Attention is not Explanation, NAACL, 2019.
 - Sanity Checks for Saliency Maps, NeurIPS, 2018.
 - Grad-CAM, ICCV, 2017.
