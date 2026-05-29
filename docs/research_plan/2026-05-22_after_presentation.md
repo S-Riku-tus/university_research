@@ -205,7 +205,7 @@ ONB近傍は、評価がぶれないように先に定義する必要がある�
 
 - `docs/research_context.md`: 研究目的にアンサンブル学習の位置づけを明記する。
 - `docs/progress_index.md`: 2026-05-22発表後の先生コメントと対応方針を追記する。
-- `docs/model_notes.md`: 現在の中心スクリプトにおけるモデル名、AUC計算、重み付き平均の注意点を追記する。
+- `docs/notes/model_notes.md`: 現在の中心スクリプトにおけるモデル名、AUC計算、重み付き平均の注意点を追記する。
 - `configs/experiments/`: 次に回す条件をyamlで残す。
 - `experiments/`: 実験を実行したら、数値と考察をrun summaryとして残す。
 
