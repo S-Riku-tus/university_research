@@ -8,7 +8,14 @@
   音声データにハイパスフィルタや水流音ノイズ付与を行い、STFT特徴を `.npy` として保存する前処理スクリプト。
 
 - `code/3.run_ensemble_ROC_100%_analysis.py`  
-  `.npy` データを読み込み、RandomForest系、CNN+Transformer系モデルを学習・評価し、R2, AUC, RMSE, MAE, 100%分類閾値などを出す中心スクリプト。
+  `.npy` データを読み込み、RandomForest系、CNN+Transformer系モデルを学習・評価し、R2, AUC, RMSE, MAE, 100%分類閾値などを出す中心スクリプト（旧版・再現用に保持）。
+
+- `code/run_ensemble_regression_onb.py`  
+  上記中心スクリプトの作り直し版（2026-06-12 計画 Phase 0 対応）。次の3点を修正済み：
+  ①モデルをレジストリ(`MODEL_SPECS`)で定義しラベルが実体に追従（RFをAlexNetと誤記しない）、
+  ②AUCを「連続スコア版(ROC/PR-AUC)」と「二値化後の分類指標」に分離、
+  ③アンサンブル重みを `WEIGHT_STRATEGY` で選択式（simple/fixed/inner_holdout=リークなし/val_fold_legacy=旧リークあり）。
+  データパスは別マシン運用のため旧版と同じハードコードのまま。
 
 - `code/compare_predict_heatflux.py`  
   学習済みモデルを使って、指定したサンプルの熱流束予測を比較する推論・確認用スクリプト。

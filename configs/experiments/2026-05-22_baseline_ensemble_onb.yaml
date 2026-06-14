@@ -82,3 +82,10 @@ notes: >
   Before using this experiment for a report, align variable names in the central
   script so that RandomForest predictions are not labeled as AlexNet, and add a
   continuous-score AUC calculation from predicted heat flux.
+
+  2026-06-13 update: these Phase 0 fixes are implemented in the rewritten script
+  code/run_ensemble_regression_onb.py (model registry MODEL_SPECS so labels follow
+  the actual model; continuous-score ROC/PR-AUC separated from binary classification
+  metrics; ensemble weights selectable via WEIGHT_STRATEGY with a leak-free
+  inner_holdout option). The old script code/3.run_ensemble_ROC_100%_analysis.py is
+  kept only for reproducing past results.
