@@ -16,6 +16,8 @@
   ②AUCを「連続スコア版(ROC/PR-AUC)」と「二値化後の分類指標」に分離、
   ③アンサンブル重みを `WEIGHT_STRATEGY` で選択式（simple/fixed/inner_holdout=リークなし/val_fold_legacy=旧リークあり）。
   データパスは別マシン運用のため旧版と同じハードコードのまま。
+  再利用可能な処理（指標計算・学習/予測・重み付け・作図）は下記 utils に分離済みで、
+  本ファイルにはこの実験固有の設定と `main()` のオーケストレーションだけを置く。
 
 - `code/compare_predict_heatflux.py`  
   学習済みモデルを使って、指定したサンプルの熱流束予測を比較する推論・確認用スクリプト。
@@ -38,7 +40,19 @@
   Swin Transformer系の回帰モデル。
 
 - `code/utils/calculation/calc_r2_auc.py`  
-  R2やAUC計算の補助。
+  R2やAUC計算の補助（旧スクリプト用）。
+
+- `code/utils/calculation/regression_detection_metrics.py`  
+  熱流束回帰と ONB 検知の評価指標（`RegressionDetectionMetrics`）。回帰指標／連続スコアAUC（ROC・PR）／二値化後の分類指標を分けて算出する。`run_ensemble_regression_onb.py` 用。
+
+- `code/utils/training/model_training.py`  
+  1モデルの学習・予測と PCA 前処理（`ModelTrainer`）。MODEL_SPECS の kind（keras/sklearn）に応じて入力形態を切り替える。
+
+- `code/utils/ensemble/ensemble_weighting.py`  
+  アンサンブルの重み決定と予測統合（`EnsembleWeighting`）。simple/fixed/inner_holdout/val_fold_legacy の各戦略に対応。
+
+- `code/utils/plotting/regression_plots.py`  
+  回帰・アンサンブル評価まわりの作図（`RegressionPlotter`）。損失曲線・指標棒グラフ・予測散布図（100%分類閾値線つき）。
 
 ## 実験・過去コード
 

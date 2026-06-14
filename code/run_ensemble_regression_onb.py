@@ -33,6 +33,14 @@ Phase 0「評価軸とコードの整理」に対応する。
   ④ データパスは別マシン運用のためそのまま (旧コードと同じハードコード)
 
 旧スクリプト (code/3.run_ensemble_ROC_100%_analysis.py) は再現性のため残す。
+
+再利用可能な処理 (指標計算・学習/予測・重み付け・作図) は、既存の utils 方針に
+合わせて用途別のクラスに分離してある。本ファイルにはこの実験固有の設定と
+main() のオーケストレーションだけを置く。
+    - 指標計算    : utils/calculation/regression_detection_metrics.py
+    - 学習/予測   : utils/training/model_training.py
+    - 重み付け    : utils/ensemble/ensemble_weighting.py
+    - 作図        : utils/plotting/regression_plots.py
 """
 
 import os
@@ -42,24 +50,20 @@ from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
 
-import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.ticker import ScalarFormatter
 
 from sklearn.model_selection import KFold, train_test_split
-from sklearn.decomposition import PCA
 from sklearn.preprocessing import MinMaxScaler
-from sklearn.metrics import (
-    r2_score, mean_absolute_error, mean_squared_error,
-    accuracy_score, precision_score, recall_score, f1_score,
-    roc_auc_score, average_precision_score,
-)
+from sklearn.metrics import r2_score
 
 from tensorflow.keras import backend as K
-from tensorflow.keras.optimizers import SGD
 
 from utils.models.regression.base_regression import RegressionModelMaker
 from utils.dataloading.dataloading_and_conversion import DataLoadingConversion
+from utils.calculation.regression_detection_metrics import RegressionDetectionMetrics
+from utils.training.model_training import ModelTrainer
+from utils.ensemble.ensemble_weighting import EnsembleWeighting
+from utils.plotting.regression_plots import RegressionPlotter
 
 
 #######################################################################
@@ -186,317 +190,16 @@ plt.rcParams['ytick.direction'] = 'in'
 
 
 #######################################################################
-#                              指標の計算
-#   ② 回帰 / 連続スコア検知 / 二値化後分類 の 3 種類に分けて算出する。
-#######################################################################
-
-def _safe_roc_auc(y_true_bin, y_score):
-    """連続スコア ROC-AUC。fold 内に片方のクラスしかない場合は nan を返す。"""
-    if len(np.unique(y_true_bin)) < 2:
-        return np.nan
-    return roc_auc_score(y_true_bin, y_score)
-
-
-def _safe_pr_auc(y_true_bin, y_score):
-    """連続スコア PR-AUC。正例が無い場合は nan を返す。"""
-    if y_true_bin.sum() == 0:
-        return np.nan
-    return average_precision_score(y_true_bin, y_score)
-
-
-def regression_metrics(y_true, y_pred, threshold, band_frac):
-    """
-    回帰指標を返す。
-      - 全体        : r2 / rmse / mae
-      - 高熱流束域   : 閾値以上 (沸騰域) の rmse / mae と r2_high
-      - ONB 近傍     : |y - threshold| <= threshold * band_frac の rmse / mae
-    """
-    y_true = np.asarray(y_true, dtype=float).ravel()
-    y_pred = np.asarray(y_pred, dtype=float).ravel()
-
-    m_high = y_true >= threshold
-    band = np.abs(y_true - threshold) <= threshold * band_frac
-
-    out = {
-        "r2": r2_score(y_true, y_pred),
-        "rmse_all": np.sqrt(mean_squared_error(y_true, y_pred)),
-        "mae_all": mean_absolute_error(y_true, y_pred),
-    }
-    # 高熱流束域 (沸騰域)
-    if m_high.sum() >= 2:
-        out["r2_high"] = r2_score(y_true[m_high], y_pred[m_high])
-        out["rmse_high"] = np.sqrt(mean_squared_error(y_true[m_high], y_pred[m_high]))
-        out["mae_high"] = mean_absolute_error(y_true[m_high], y_pred[m_high])
-    else:
-        out["r2_high"] = np.nan
-        out["rmse_high"] = np.nan
-        out["mae_high"] = np.nan
-    # ONB 近傍 band
-    if band.sum() >= 1:
-        out["rmse_onb"] = np.sqrt(mean_squared_error(y_true[band], y_pred[band]))
-        out["mae_onb"] = mean_absolute_error(y_true[band], y_pred[band])
-        out["n_onb"] = int(band.sum())
-    else:
-        out["rmse_onb"] = np.nan
-        out["mae_onb"] = np.nan
-        out["n_onb"] = 0
-    return out
-
-
-def detection_metrics_continuous(y_true, y_score, threshold):
-    """
-    連続スコア検知指標。予測熱流束 (連続値) をそのままスコアとして使う。
-    正解は y_true を閾値で二値化したもの。
-      - roc_auc_cont : ROC-AUC (連続スコア)
-      - pr_auc_cont  : PR-AUC (連続スコア)
-    """
-    y_true_bin = (np.asarray(y_true).ravel() >= threshold).astype(int)
-    y_score = np.asarray(y_score, dtype=float).ravel()
-    return {
-        "roc_auc_cont": _safe_roc_auc(y_true_bin, y_score),
-        "pr_auc_cont": _safe_pr_auc(y_true_bin, y_score),
-    }
-
-
-def detection_metrics_binary(y_true, y_pred, threshold):
-    """
-    二値化後の分類指標。予測も正解も閾値で 0/1 化してから算出する。
-      - accuracy / precision / recall / f1
-      - auc_binary : 旧コードと同じ二値化後 AUC (後方比較用。意味は限定的)
-    """
-    y_true_bin = (np.asarray(y_true).ravel() >= threshold).astype(int)
-    y_pred_bin = (np.asarray(y_pred).ravel() >= threshold).astype(int)
-    out = {
-        "accuracy": accuracy_score(y_true_bin, y_pred_bin),
-        "precision": precision_score(y_true_bin, y_pred_bin, zero_division=0),
-        "recall": recall_score(y_true_bin, y_pred_bin, zero_division=0),
-        "f1": f1_score(y_true_bin, y_pred_bin, zero_division=0),
-    }
-    # 旧コード互換の二値化後 AUC (ROC が 2 点しか持たないので参考値)
-    out["auc_binary"] = _safe_roc_auc(y_true_bin, y_pred_bin)
-    return out
-
-
-def _mean_se(arr):
-    """平均と標準誤差 (nan を除外)。"""
-    arr = np.asarray(arr, dtype=float)
-    arr = arr[~np.isnan(arr)]
-    if len(arr) == 0:
-        return float("nan"), float("nan")
-    if len(arr) == 1:
-        return float(arr[0]), 0.0
-    return float(np.mean(arr)), float(np.std(arr, ddof=1) / np.sqrt(len(arr)))
-
-
-#######################################################################
-#                          モデルの学習と予測
-#######################################################################
-
-def make_pca(x_fit, x_other_list, n_components):
-    """sklearn 系モデル用に平坦化 + PCA。学習データのみで fit する。"""
-    x_fit_flat = x_fit.reshape(x_fit.shape[0], -1)
-    pca = PCA(n_components=min(n_components, x_fit_flat.shape[0], x_fit_flat.shape[1]),
-              random_state=RANDOM_SEED)
-    x_fit_pca = pca.fit_transform(x_fit_flat)
-    others = []
-    for x_other in x_other_list:
-        if x_other is None:
-            others.append(None)
-        else:
-            others.append(pca.transform(x_other.reshape(x_other.shape[0], -1)))
-    return x_fit_pca, others
-
-
-def train_one_model(spec, mm, x_fit, y_fit_scaled,
-                    x_fit_pca, batch_size, epochs):
-    """1 モデルを学習して返す。kind に応じて入力形態を変える。"""
-    model = spec["builder"](mm)
-    if spec["kind"] == "keras":
-        lr = spec.get("lr", 0.005)
-        model.compile(optimizer=SGD(learning_rate=lr, momentum=0.9, clipnorm=1.0),
-                      loss='mean_squared_error')
-        history = model.fit(x_fit, y_fit_scaled,
-                            batch_size=spec.get("batch_size", batch_size),
-                            epochs=epochs, verbose=1)
-        return model, history
-    else:  # sklearn / xgboost
-        model.fit(x_fit_pca, y_fit_scaled.ravel())
-        return model, None
-
-
-def predict_one_model(spec, model, x, x_pca, scaler):
-    """学習済みモデルで予測し、元スケールの熱流束に戻して返す。"""
-    if spec["kind"] == "keras":
-        pred_scaled = model.predict(x)
-    else:
-        pred_scaled = model.predict(x_pca).reshape(-1, 1)
-    return scaler.inverse_transform(pred_scaled).ravel()
-
-
-#######################################################################
-#                        アンサンブル重みの決定 (③)
-#######################################################################
-
-def compute_weights(strategy, enabled_specs, errors_for_weight):
-    """
-    戦略に応じてモデル重みを返す (合計 1 に正規化)。
-      errors_for_weight: key -> 誤差 (1 - R2)。simple/fixed では使わない。
-    """
-    keys = [s["key"] for s in enabled_specs]
-    n = len(keys)
-
-    if strategy == "simple":
-        return {k: 1.0 / n for k in keys}
-
-    if strategy == "fixed":
-        raw = np.array([max(FIXED_WEIGHTS.get(k, 0.0), 0.0) for k in keys], dtype=float)
-        if raw.sum() == 0:
-            return {k: 1.0 / n for k in keys}
-        raw = raw / raw.sum()
-        return {k: float(w) for k, w in zip(keys, raw)}
-
-    # inner_holdout / val_fold_legacy : 誤差の逆数で重み付け
-    weights = []
-    for k in keys:
-        err = errors_for_weight.get(k, np.nan)
-        if err is None or np.isinf(err) or np.isnan(err) or err <= 0:
-            weights.append(1e-6)
-        else:
-            weights.append(1.0 / err)
-    weights = np.array(weights, dtype=float)
-    if weights.sum() == 0:
-        weights = np.ones(n) / n
-    else:
-        weights = weights / weights.sum()
-    return {k: float(w) for k, w in zip(keys, weights)}
-
-
-def combine_predictions(preds_by_key, weights, combine):
-    """preds_by_key: key -> 1D 予測配列。weights: key -> 重み。"""
-    keys = list(preds_by_key.keys())
-    stacked = np.stack([preds_by_key[k] for k in keys], axis=0)  # (n_models, n_samples)
-    if combine == "min":
-        return np.min(stacked, axis=0)
-    w = np.array([weights[k] for k in keys], dtype=float).reshape(-1, 1)
-    return np.sum(stacked * w, axis=0)
-
-
-#######################################################################
-#                               作図
-#######################################################################
-
-def plot_loss_history(history, epochs, label, fold, save_path, snr_value):
-    if history is None:
-        return
-    plt.figure(figsize=(10, 6))
-    plt.plot(history.history['loss'], label='Training Loss')
-    plt.title(f'{label} Loss History (Epochs: {epochs}, Fold: {fold}, SNR: {snr_value})')
-    plt.xlabel('Epoch')
-    plt.ylabel('Loss (Mean Squared Error)')
-    plt.legend()
-    plt.grid(True)
-    out_dir = os.path.join(save_path, "loss_histories")
-    os.makedirs(out_dir, exist_ok=True)
-    plt.savefig(os.path.join(out_dir, f'{label}_ep{epochs}_fold{fold}_SNR={snr_value}.png'))
-    plt.close()
-
-
-def plot_bar(metric_name, labels, values, errors, epochs, save_path, snr_value):
-    """モデル別の指標を棒グラフで保存 (R2 / 連続スコア ROC-AUC など)。"""
-    plt.figure(figsize=(8, 6))
-    colors = ['c', 'cadetblue', 'skyblue', 'dodgerblue', 'steelblue', 'lightblue']
-    plt.bar(labels, values, color=colors[:len(labels)],
-            yerr=errors, capsize=5, width=0.5)
-    plt.ylim(0.0, 1.05)
-    plt.ylabel(metric_name, fontsize=20)
-    plt.xticks(fontsize=13, rotation=20)
-    plt.yticks(fontsize=18)
-    for i, v in enumerate(values):
-        if not np.isnan(v):
-            plt.text(i, 0.03, f'{v:.3f}', ha='center', va='bottom',
-                     fontsize=18, color='black', rotation=90)
-    out_dir = os.path.join(save_path, "bar_results")
-    os.makedirs(out_dir, exist_ok=True)
-    safe = metric_name.replace(" ", "_").replace("/", "_")
-    plt.tight_layout()
-    plt.savefig(os.path.join(out_dir, f'{safe}_ep{epochs}_SNR={snr_value}.png'))
-    plt.close()
-
-
-def plot_regression_scatter(y_val, ensemble_pred, y_all, metrics_ens,
-                            threshold, save_path, snr_value, fold):
-    """アンサンブル予測の回帰散布図 + 閾値 + 100% 分類閾値線。"""
-    y_val = np.asarray(y_val).ravel()
-    ensemble_pred = np.asarray(ensemble_pred).ravel()
-
-    plt.figure(figsize=(12, 9))
-    plt.scatter(y_val, ensemble_pred, label='Data', alpha=0.6)
-    plt.plot([min(y_all), max(y_all)], [min(y_all), max(y_all)], 'r--')
-    plt.xlabel('True Heat Flux MW/m²', fontsize=40)
-    plt.ylabel('Predicted Heat Flux MW/m²', fontsize=40)
-
-    ax = plt.gca()
-    ax.xaxis.set_major_formatter(ScalarFormatter(useMathText=True))
-    ax.yaxis.set_major_formatter(ScalarFormatter(useMathText=True))
-    ax.ticklabel_format(style="plain", axis="both")
-    ax.xaxis.offsetText.set_visible(False)
-    ax.yaxis.offsetText.set_visible(False)
-
-    plt.axvline(x=threshold, color='k', linestyle='dashed',
-                label=f'Threshold (Boiling Point):\n{threshold / 1e6:.4f} MW/m²')
-    plt.axhline(y=threshold, color='k', linestyle='dashed', label=None)
-
-    # --- 100% 分類性能の評価 (連続して同じ y_val を 1 ブロックとみなす) ---
-    blocks, current_block = [], [0]
-    for i in range(1, len(y_val)):
-        if y_val[i] == y_val[i - 1]:
-            current_block.append(i)
-        else:
-            blocks.append(current_block)
-            current_block = [i]
-    blocks.append(current_block)
-
-    block_labels = [y_val[b[0]] for b in blocks]
-    sorted_blocks = [blocks[i] for i in np.argsort(block_labels)]
-
-    block_flags, block_val_values = [], []
-    for b in sorted_blocks:
-        bp = ensemble_pred[b].flatten()
-        block_flags.append(np.all(bp > threshold))
-        block_val_values.append(y_val[b[0]])
-
-    for i, val_value in enumerate(block_val_values):
-        if not block_flags[i]:
-            continue
-        if all(block_flags[i:]):
-            plt.axvline(x=val_value, linestyle='dashdot', color='green',
-                        label=f"100% Classification Threshold:\n{val_value / 1e6:.4f} MW/m²")
-            break
-
-    r2 = metrics_ens.get("r2", np.nan)
-    r2_high = metrics_ens.get("r2_high", np.nan)
-    plt.text(0.72, 0.10, f'R² All :  {r2:.4f}\nR² High: {r2_high:.4f}',
-             ha='center', va='center', transform=ax.transAxes, fontsize=40)
-    legend = plt.legend(loc=(0.007, 0.72), fontsize=20)
-    legend.get_frame().set_edgecolor('black')
-    legend.get_frame().set_linewidth(0.7)
-
-    xticks = np.arange(0, 1.3e6, step=2e5)
-    plt.xticks(xticks, fontsize=24, labels=[f'{x/1e6:.1f}' for x in xticks])
-    plt.yticks(xticks, fontsize=24, labels=[f'{x/1e6:.1f}' for x in xticks])
-    plt.tick_params(axis='both', labelsize=30)
-
-    out_dir = os.path.join(save_path, "regression_results")
-    os.makedirs(out_dir, exist_ok=True)
-    plt.savefig(os.path.join(out_dir, f'regression_split_{snr_value}_{fold}.png'))
-    plt.close()
-
-
-#######################################################################
 #                                実行部
 #######################################################################
 
 def main():
+    # 再利用ヘルパー (用途別の utils クラス) を用意する
+    metrics = RegressionDetectionMetrics()
+    trainer = ModelTrainer(random_seed=RANDOM_SEED)
+    weighting = EnsembleWeighting()
+    plotter = RegressionPlotter()
+
     enabled_specs = [s for s in MODEL_SPECS if s.get("enabled", True)]
     use_sklearn = any(s["kind"] == "sklearn" for s in enabled_specs)
     all_keys = [s["key"] for s in enabled_specs] + ["ensemble"]
@@ -571,7 +274,7 @@ def main():
 
                         # sklearn 系モデル用の PCA (学習データのみで fit)
                         if use_sklearn:
-                            x_fit_pca, (x_val_pca, x_inner_pca) = make_pca(
+                            x_fit_pca, (x_val_pca, x_inner_pca) = trainer.make_pca(
                                 x_fit, [x_val, x_inner], PCA_COMPONENTS)
                         else:
                             x_fit_pca = x_val_pca = x_inner_pca = None
@@ -583,19 +286,19 @@ def main():
                         errors_for_weight = {}  # key -> 重み用の誤差 (1 - R2)
                         for spec in enabled_specs:
                             print(f"[{spec['label']}] Fold {fold}/{DIVISIONS} 学習開始")
-                            model, history = train_one_model(
+                            model, history = trainer.train_one_model(
                                 spec, mm, x_fit, y_fit_scaled, x_fit_pca,
                                 all_bs, EPOCH_NUM)
-                            plot_loss_history(history, EPOCH_NUM, spec["label"],
-                                              fold, SAVE_PATH, snr_value)
+                            plotter.plot_loss_history(history, EPOCH_NUM, spec["label"],
+                                                      fold, SAVE_PATH, snr_value)
 
                             # 検証 fold への予測
-                            val_preds[spec["key"]] = predict_one_model(
+                            val_preds[spec["key"]] = trainer.predict_one_model(
                                 spec, model, x_val, x_val_pca, scaler)
 
                             # --- 重み用の誤差 (③ 戦略ごとにリークしない/する を切替) ---
                             if WEIGHT_STRATEGY == "inner_holdout":
-                                inner_pred = predict_one_model(
+                                inner_pred = trainer.predict_one_model(
                                     spec, model, x_inner, x_inner_pca, scaler)
                                 errors_for_weight[spec["key"]] = 1.0 - r2_score(y_inner, inner_pred)
                             elif WEIGHT_STRATEGY == "val_fold_legacy":
@@ -607,18 +310,20 @@ def main():
                             gc.collect()
 
                         # --- アンサンブル ---
-                        weights = compute_weights(WEIGHT_STRATEGY, enabled_specs, errors_for_weight)
+                        weights = weighting.compute_weights(
+                            WEIGHT_STRATEGY, enabled_specs, errors_for_weight, FIXED_WEIGHTS)
                         weight_log.append((fold, dict(weights)))
-                        ensemble_pred = combine_predictions(val_preds, weights, ENSEMBLE_COMBINE)
+                        ensemble_pred = weighting.combine_predictions(
+                            val_preds, weights, ENSEMBLE_COMBINE)
 
                         # --- 指標の算出 (② 3 種類に分離) ---
                         preds_all = dict(val_preds)
                         preds_all["ensemble"] = ensemble_pred
                         for key in all_keys:
                             pred = preds_all[key]
-                            reg = regression_metrics(y_val, pred, THRESHOLD, ONB_BAND_FRAC)
-                            det_c = detection_metrics_continuous(y_val, pred, THRESHOLD)
-                            det_b = detection_metrics_binary(y_val, pred, THRESHOLD)
+                            reg = metrics.regression_metrics(y_val, pred, THRESHOLD, ONB_BAND_FRAC)
+                            det_c = metrics.detection_metrics_continuous(y_val, pred, THRESHOLD)
+                            det_b = metrics.detection_metrics_binary(y_val, pred, THRESHOLD)
                             for d in (reg, det_c, det_b):
                                 for mk, mv in d.items():
                                     store[key][mk].append(mv)
@@ -626,7 +331,7 @@ def main():
                         # --- 作図 (アンサンブルの散布図) ---
                         ens_fold_metrics = {mk: store["ensemble"][mk][-1]
                                             for mk in store["ensemble"]}
-                        plot_regression_scatter(
+                        plotter.plot_regression_scatter(
                             y_val, ensemble_pred, y, ens_fold_metrics,
                             THRESHOLD, SAVE_PATH, snr_value, fold)
 
@@ -669,19 +374,19 @@ def main():
                     for key in all_keys:
                         f.write(f"  [{label_of[key]}]\n")
                         for mk in summary_metrics:
-                            mean, se = _mean_se(store[key][mk])
+                            mean, se = metrics.mean_se(store[key][mk])
                             f.write(f"    {mk:14s}: {mean:.4f} ± {se:.4f}\n")
                     f.write("=" * 30 + "\n\n")
 
                 # --- 棒グラフ (モデル別: R2 と 連続スコア ROC-AUC) ---
                 labels = [label_of[k] for k in all_keys]
-                r2_means = [_mean_se(store[k]["r2"])[0] for k in all_keys]
-                r2_ses = [_mean_se(store[k]["r2"])[1] for k in all_keys]
-                roc_means = [_mean_se(store[k]["roc_auc_cont"])[0] for k in all_keys]
-                roc_ses = [_mean_se(store[k]["roc_auc_cont"])[1] for k in all_keys]
-                plot_bar("R2 Score", labels, r2_means, r2_ses, EPOCH_NUM, SAVE_PATH, snr_value)
-                plot_bar("ROC-AUC (continuous)", labels, roc_means, roc_ses,
-                         EPOCH_NUM, SAVE_PATH, snr_value)
+                r2_means = [metrics.mean_se(store[k]["r2"])[0] for k in all_keys]
+                r2_ses = [metrics.mean_se(store[k]["r2"])[1] for k in all_keys]
+                roc_means = [metrics.mean_se(store[k]["roc_auc_cont"])[0] for k in all_keys]
+                roc_ses = [metrics.mean_se(store[k]["roc_auc_cont"])[1] for k in all_keys]
+                plotter.plot_bar("R2 Score", labels, r2_means, r2_ses, EPOCH_NUM, SAVE_PATH, snr_value)
+                plotter.plot_bar("ROC-AUC (continuous)", labels, roc_means, roc_ses,
+                                 EPOCH_NUM, SAVE_PATH, snr_value)
 
                 # --- 指標 CSV (fold 平均をモデル別に保存。後で比較しやすくする) ---
                 csv_path = os.path.join(SAVE_PATH, f'metrics_summary_{snr_value}.csv')
@@ -690,8 +395,8 @@ def main():
                                        + [f"{mk}_se" for mk in summary_metrics]
                     cf.write(",".join(header) + "\n")
                     for key in all_keys:
-                        means = [f"{_mean_se(store[key][mk])[0]:.6f}" for mk in summary_metrics]
-                        ses = [f"{_mean_se(store[key][mk])[1]:.6f}" for mk in summary_metrics]
+                        means = [f"{metrics.mean_se(store[key][mk])[0]:.6f}" for mk in summary_metrics]
+                        ses = [f"{metrics.mean_se(store[key][mk])[1]:.6f}" for mk in summary_metrics]
                         cf.write(",".join([label_of[key]] + means + ses) + "\n")
                 print(f"指標 CSV を保存: {csv_path}")
 
