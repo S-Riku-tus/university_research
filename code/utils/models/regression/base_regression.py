@@ -145,7 +145,7 @@ class RegressionModelMaker:
         model = Model(inputs=base_model.input, outputs=x)
         return model
 
-    def random_forest(self):
+    def random_forest(self, **params):
         """
         XGBoostを使用したランダムフォレスト回帰モデル
         入力は (Batch, Feature_Size) の2次元配列である必要があります。
@@ -164,6 +164,8 @@ class RegressionModelMaker:
             device='cpu',
             objective='reg:squarederror' # 回帰問題（二乗誤差最小化）
         )
+        if params:
+            model.set_params(**params)
         return model
 
 

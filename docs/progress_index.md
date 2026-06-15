@@ -6,6 +6,11 @@
 - 主題: RF単体・旧3モデル実行の完了整理、`cnntf_v2` からAlexNetへの差し替え、保存日付修正、fold予測保存の追加。
 - 次にやること: `RandomForest + CNN+Tf (AttnPool) + AlexNet` を本番設定で実行し、保存済み予測から重み付けやONB近傍評価を再学習なしで比較する。
 
+## 2026-06-15 パラメータチューニング
+
+- 参照: [research_plan/2026-06-15_parameter_tuning.md](research_plan/2026-06-15_parameter_tuning.md)
+- 主題: `MODEL_SPECS` と学習率・バッチサイズの責務を分離し、`PARAMETER_SETS` でモデル別チューニングを管理する。RF単体探索で選んだRFパラメータを `RF_FIXED_PARAMS` として固定し、現在は `cnntf_v1` と `alexnet` の42条件を検証する。
+
 このファイルは、過去の進捗報告をCodexが素早く把握するための索引です。原本は `研究進捗報告/` に残し、ここには要約だけを追記します。
 
 ## 2026-05-22 発表後コメント整理

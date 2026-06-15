@@ -79,10 +79,18 @@ DIVISIONS = 5            # 交差検証の fold 数
 COLOR_CHANNEL = 1
 RANDOM_SEED = 42
 
+
+def format_param_value(value):
+    if isinstance(value, float):
+        text = f"{value:.8f}".rstrip("0").rstrip(".")
+    else:
+        text = str(value)
+    return text.replace("-", "m").replace(".", "p")
+
 # 実行確認用スイッチ。
 # True にすると epoch と fold を小さくして「最後まで通るか」だけを素早く確認する。
 # 本番の評価をするときは必ず False に戻す (出力先も _smoke が付いて本番結果と混ざらない)。
-SMOKE_TEST = True
+SMOKE_TEST = False
 if SMOKE_TEST:
     EPOCH_NUM = 3
     DIVISIONS = 2
@@ -97,9 +105,34 @@ THRESHOLD = sum(threshold_list) / len(threshold_list)
 ONB_BAND_FRAC = 0.10
 
 # パラメータをループさせて検証するかどうか (旧コード踏襲)
+# True runs every entry in PARAMETER_SETS. False stops after the first one.
 FLG_ROOP = True
-BATCH_SIZES_ALL = [48]
-LEARNING_RATE_ALL = [0.005]
+
+# RF is fixed while tuning the two Keras models.
+RF_FIXED_PARAMS = {
+    "n_estimators": 300,
+    "max_depth": 8,
+    "subsample": 0.8,
+    "colsample_bynode": 0.6,
+}
+
+# CNN/Keras grid: 6 batch sizes x 7 learning rates = 42 parameter sets.
+KERAS_BATCH_SIZE_GRID = [12, 24, 32, 48, 64, 128]
+KERAS_LEARNING_RATE_GRID = [0.05, 0.01, 0.005, 0.001, 0.0005, 0.0001, 0.00005]
+
+def build_parameter_sets():
+    parameter_sets = []
+    for lr in KERAS_LEARNING_RATE_GRID:
+        for batch_size in KERAS_BATCH_SIZE_GRID:
+            parameter_sets.append({
+                "name": f"k_lr{format_param_value(lr)}_bs{batch_size}",
+                "default_keras": {"lr": lr, "batch_size": batch_size},
+                "models": {"rf": dict(RF_FIXED_PARAMS)},
+            })
+    return parameter_sets
+
+
+PARAMETER_SETS = build_parameter_sets()
 
 # ホワイトノイズ (=0) か水流動音 (=1) か (旧コード踏襲)
 NOISE = 1
@@ -140,7 +173,7 @@ MODEL_SPECS = [
         "key": "rf",
         "label": "RandomForest",
         "kind": "sklearn",
-        "builder": lambda mm: mm.random_forest(),
+        "builder": lambda mm, **params: mm.random_forest(**params),
         "enabled": True,
     },
     {
@@ -148,8 +181,6 @@ MODEL_SPECS = [
         "label": "CNN+Tf (AttnPool)",
         "kind": "keras",
         "builder": lambda mm: mm.cnn_transformer_v1(),
-        "lr": 0.005,
-        "batch_size": 48,
         "enabled": True,
     },
     {
@@ -157,8 +188,6 @@ MODEL_SPECS = [
         "label": "AlexNet",
         "kind": "keras",
         "builder": lambda mm: mm.alexnet(),
-        "lr": 0.005,
-        "batch_size": 48,
         "enabled": True,
     },
 ]
@@ -219,6 +248,70 @@ plt.rcParams['ytick.direction'] = 'in'
 #                                実行部
 #######################################################################
 
+def safe_tag(text, max_len=32):
+    safe = []
+    for ch in str(text):
+        if ch.isalnum() or ch in "-_.":
+            safe.append(ch)
+        else:
+            safe.append("_")
+    return "".join(safe).strip("_")[:max_len] or "params"
+
+
+def resolve_parameter_set(enabled_specs, parameter_set):
+    resolved = []
+    default_keras = parameter_set.get("default_keras", {})
+    per_model = parameter_set.get("models", {})
+    for spec in enabled_specs:
+        resolved_spec = dict(spec)
+        if resolved_spec["kind"] == "keras":
+            params = dict(default_keras)
+            params.update(per_model.get(resolved_spec["key"], {}))
+            missing = [name for name in ("lr", "batch_size") if name not in params]
+            if missing:
+                raise ValueError(
+                    f"PARAMETER_SETS entry '{parameter_set.get('name', '<unnamed>')}' "
+                    f"does not define {missing} for {resolved_spec['key']}."
+            )
+            resolved_spec["lr"] = params["lr"]
+            resolved_spec["batch_size"] = params["batch_size"]
+        elif resolved_spec["kind"] == "sklearn":
+            params = dict(per_model.get(resolved_spec["key"], {}))
+            if params:
+                resolved_spec["builder_params"] = params
+        resolved.append(resolved_spec)
+    return resolved
+
+
+def parameter_set_tag(parameter_set, resolved_specs):
+    if parameter_set.get("name"):
+        return safe_tag(parameter_set["name"])
+    parts = []
+    for spec in resolved_specs:
+        if spec["kind"] == "keras":
+            parts.append(
+                f"{spec['key']}_lr{format_param_value(spec['lr'])}"
+                f"_bs{format_param_value(spec['batch_size'])}"
+            )
+    return safe_tag("__".join(parts))
+
+
+def model_param_summary(resolved_specs):
+    summary = {}
+    for spec in resolved_specs:
+        if spec["kind"] == "keras":
+            summary[spec["key"]] = {
+                "lr": spec["lr"],
+                "batch_size": spec["batch_size"],
+            }
+        else:
+            summary[spec["key"]] = {
+                "kind": spec["kind"],
+                "params": spec.get("builder_params", {}),
+            }
+    return summary
+
+
 def set_global_seed(seed):
     """Keep KFold, sklearn, and Keras runs as reproducible as practical."""
     random.seed(seed)
@@ -252,11 +345,11 @@ def main():
     # Windows のパス長制限に当たりやすいため、代表的な3モデル構成は短いタグにする。
     model_keys = [s["key"] for s in enabled_specs]
     if model_keys == ["rf", "cnntf_v1", "alexnet"]:
-        model_tag = "3models"
+        model_tag = "3m"
     else:
         model_tag = "-".join(model_keys)
     if SMOKE_TEST:
-        model_tag = "smoke_" + model_tag
+        model_tag = "s_" + model_tag
 
     use_sklearn = any(s["kind"] == "sklearn" for s in enabled_specs)
     all_keys = [s["key"] for s in enabled_specs] + ["ensemble"]
@@ -297,12 +390,15 @@ def main():
         print(f"x shape: {x.shape} | y shape: {y.shape} | "
               f"読み込み {time.time() - start_time:.2f} 秒")
 
-        for all_bs in BATCH_SIZES_ALL:
-            for all_lr in LEARNING_RATE_ALL:
+        for parameter_set in PARAMETER_SETS:
+                run_specs = resolve_parameter_set(enabled_specs, parameter_set)
+                param_tag = parameter_set_tag(parameter_set, run_specs)
+                param_summary = model_param_summary(run_specs)
+                print(f"parameter_set={parameter_set.get('name', param_tag)} | model_params={param_summary}")
                 noise_dir_name = os.path.basename(data_path)
                 SAVE_PATH = os.path.join(
                     BASE_SAVE_PATH, noise_dir_name, max_freq_hz,
-                    f"{SAVE_DATE}_ep{EPOCH_NUM}_bs{all_bs}_lr{all_lr}_{WEIGHT_STRATEGY}_{model_tag}")
+                    f"{SAVE_DATE}_ep{EPOCH_NUM}_{param_tag}_{WEIGHT_STRATEGY}_{model_tag}")
                 os.makedirs(SAVE_PATH, exist_ok=True)
 
                 kf = KFold(n_splits=DIVISIONS, shuffle=True, random_state=RANDOM_SEED)
@@ -315,7 +411,9 @@ def main():
                 output_file = os.path.join(SAVE_PATH, f'validation_results_{snr_value}.txt')
                 with open(output_file, 'w', encoding='utf-8') as f:
                     f.write("K-fold Cross-Validation Results\n")
-                    f.write(f"models={[s['label'] for s in enabled_specs]}\n")
+                    f.write(f"models={[s['label'] for s in run_specs]}\n")
+                    f.write(f"parameter_set={parameter_set.get('name', param_tag)}\n")
+                    f.write(f"model_params={param_summary}\n")
                     f.write(f"weight_strategy={WEIGHT_STRATEGY}, combine={ENSEMBLE_COMBINE}\n")
                     f.write("=" * 30 + "\n")
 
@@ -349,11 +447,13 @@ def main():
                         # --- 各モデルの学習と予測 ---
                         val_preds = {}        # key -> 検証 fold への予測 (元スケール)
                         errors_for_weight = {}  # key -> 重み用の誤差 (1 - R2)
-                        for spec in enabled_specs:
+                        for spec in run_specs:
+                            if spec["kind"] == "keras":
+                                print(f"  params for {spec['key']}: lr={spec['lr']}, batch_size={spec['batch_size']}")
                             print(f"[{spec['label']}] Fold {fold}/{DIVISIONS} 学習開始")
                             model, history = trainer.train_one_model(
                                 spec, mm, x_fit, y_fit_scaled, x_fit_pca,
-                                all_bs, EPOCH_NUM)
+                                EPOCH_NUM)
                             plotter.plot_loss_history(history, EPOCH_NUM, spec["label"],
                                                       fold, SAVE_PATH, snr_value)
 
@@ -376,7 +476,7 @@ def main():
 
                         # --- アンサンブル ---
                         weights = weighting.compute_weights(
-                            WEIGHT_STRATEGY, enabled_specs, errors_for_weight, FIXED_WEIGHTS)
+                            WEIGHT_STRATEGY, run_specs, errors_for_weight, FIXED_WEIGHTS)
                         weight_log.append((fold, dict(weights)))
                         ensemble_pred = weighting.combine_predictions(
                             val_preds, weights, ENSEMBLE_COMBINE)
@@ -488,8 +588,6 @@ def main():
 
                 if not FLG_ROOP:
                     break
-            if not FLG_ROOP:
-                break
 
         del x, y
         gc.collect()

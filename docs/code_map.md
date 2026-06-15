@@ -24,6 +24,10 @@
   出力先 `SAVE_PATH` 末尾にモデルセットのタグが付くので、RF単体と3モデルの結果は別フォルダに残る。
   foldごとの `y_true`、各モデル予測、アンサンブル予測は `fold_predictions/` にCSV保存し、
   アンサンブル重みは `ensemble_weights_*.csv` に保存する。
+  学習率とバッチサイズは `MODEL_SPECS` ではなく `PARAMETER_SETS` で管理し、モデル別に
+  `cnntf_v1` と `alexnet` の値を変えられる。現在はRF単体探索で良かったRFパラメータを
+  `RF_FIXED_PARAMS` として固定し、`KERAS_BATCH_SIZE_GRID` と `KERAS_LEARNING_RATE_GRID`
+  から `cnntf_v1` と `alexnet` の42条件を自動生成する。
 
 - `code/compare_predict_heatflux.py`  
   学習済みモデルを使って、指定したサンプルの熱流束予測を比較する推論・確認用スクリプト。

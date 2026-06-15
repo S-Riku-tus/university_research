@@ -28,15 +28,21 @@ class ModelTrainer:
         return x_fit_pca, others
 
     def train_one_model(self, spec, mm, x_fit, y_fit_scaled,
-                        x_fit_pca, batch_size, epochs):
+                        x_fit_pca, epochs):
         """1 モデルを学習して返す。kind に応じて入力形態を変える。"""
-        model = spec["builder"](mm)
+        model = spec["builder"](mm, **spec.get("builder_params", {}))
         if spec["kind"] == "keras":
-            lr = spec.get("lr", 0.005)
+            if "lr" not in spec or "batch_size" not in spec:
+                raise ValueError(
+                    f"Keras model '{spec.get('key', spec.get('label'))}' needs "
+                    "resolved 'lr' and 'batch_size'. Check PARAMETER_SETS."
+                )
+            lr = spec["lr"]
+            batch_size = spec["batch_size"]
             model.compile(optimizer=SGD(learning_rate=lr, momentum=0.9, clipnorm=1.0),
                           loss='mean_squared_error')
             history = model.fit(x_fit, y_fit_scaled,
-                                batch_size=spec.get("batch_size", batch_size),
+                                batch_size=batch_size,
                                 epochs=epochs, verbose=1)
             return model, history
         else:  # sklearn / xgboost

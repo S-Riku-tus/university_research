@@ -43,7 +43,7 @@ class RegressionPlotter:
         plt.ylabel('Loss (Mean Squared Error)')
         plt.legend()
         plt.grid(True)
-        out_dir = os.path.join(save_path, "loss_histories")
+        out_dir = os.path.join(save_path, "loss")
         os.makedirs(out_dir, exist_ok=True)
         label_stem = _safe_stem(label)
         snr_stem = _safe_stem(snr_value, max_len=16)
@@ -64,7 +64,7 @@ class RegressionPlotter:
             if not np.isnan(v):
                 plt.text(i, 0.03, f'{v:.3f}', ha='center', va='bottom',
                          fontsize=18, color='black', rotation=90)
-        out_dir = os.path.join(save_path, "bar_results")
+        out_dir = os.path.join(save_path, "bar")
         os.makedirs(out_dir, exist_ok=True)
         safe = _safe_stem(metric_name)
         plt.tight_layout()
@@ -135,7 +135,7 @@ class RegressionPlotter:
         plt.yticks(xticks, fontsize=24, labels=[f'{x/1e6:.1f}' for x in xticks])
         plt.tick_params(axis='both', labelsize=30)
 
-        out_dir = os.path.join(save_path, "regression_results")
+        out_dir = os.path.join(save_path, "scatter")
         os.makedirs(out_dir, exist_ok=True)
         snr_stem = _safe_stem(snr_value, max_len=16)
         plt.savefig(os.path.join(out_dir, f'scatter_{snr_stem}_f{fold}.png'))
