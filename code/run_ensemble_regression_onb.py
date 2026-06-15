@@ -75,6 +75,14 @@ DIVISIONS = 5            # 交差検証の fold 数
 COLOR_CHANNEL = 1
 RANDOM_SEED = 42
 
+# 実行確認用スイッチ。
+# True にすると epoch と fold を小さくして「最後まで通るか」だけを素早く確認する。
+# 本番の評価をするときは必ず False に戻す (出力先も _smoke が付いて本番結果と混ざらない)。
+SMOKE_TEST = True
+if SMOKE_TEST:
+    EPOCH_NUM = 3
+    DIVISIONS = 2
+
 # 閾値 (沸騰開始点 ONB の熱流束)。旧コードと同じ値。
 threshold_list = [275174.6641]
 THRESHOLD = sum(threshold_list) / len(threshold_list)
@@ -111,7 +119,16 @@ max_freq_hz = "maxfreq=22kHz"
 #       "sklearn" ... 平坦化 + PCA した特徴量を入力する非深層モデル
 #                     (RandomForest / XGBRF など)
 #    builder: RegressionModelMaker のインスタンスを受け取りモデルを返す関数
+#
+#    どのモデルを実行するかは下の ACTIVE_MODEL_KEYS で選ぶ。研究計画 (2026-06-12) の
+#    「まず RandomForest 単体で回帰が成立する状態を作り、その後 3 モデルを同条件で
+#    比較する」という段取りを、ここの 1 行だけで切り替えられるようにしている。
+#       RF 単体の動作確認 : ACTIVE_MODEL_KEYS = ["rf"]
+#       3 モデル同条件     : ACTIVE_MODEL_KEYS = ["rf", "cnntf_v1", "cnntf_v2"]
+#    None にすると各 spec の "enabled" フラグに従う (従来動作)。
 # ===================================================================
+ACTIVE_MODEL_KEYS = ["rf"]
+
 MODEL_SPECS = [
     {
         "key": "rf",
@@ -200,17 +217,43 @@ def main():
     weighting = EnsembleWeighting()
     plotter = RegressionPlotter()
 
-    enabled_specs = [s for s in MODEL_SPECS if s.get("enabled", True)]
+    # 実行するモデルを決める。ACTIVE_MODEL_KEYS が指定されていればそれを優先し、
+    # None のときだけ各 spec の "enabled" フラグに従う。
+    if ACTIVE_MODEL_KEYS is None:
+        enabled_specs = [s for s in MODEL_SPECS if s.get("enabled", True)]
+    else:
+        spec_by_key = {s["key"]: s for s in MODEL_SPECS}
+        unknown = [k for k in ACTIVE_MODEL_KEYS if k not in spec_by_key]
+        if unknown:
+            raise ValueError(f"ACTIVE_MODEL_KEYS に未定義の key があります: {unknown} "
+                             f"(定義済み: {list(spec_by_key)})")
+        enabled_specs = [spec_by_key[k] for k in ACTIVE_MODEL_KEYS]
+    if not enabled_specs:
+        raise ValueError("実行するモデルが 0 個です。ACTIVE_MODEL_KEYS を確認してください。")
+
+    # 出力先を混ぜないためのモデルセットのタグ (例: "rf" / "rf-cnntf_v1-cnntf_v2")
+    model_tag = "-".join(s["key"] for s in enabled_specs)
+    if SMOKE_TEST:
+        model_tag = "smoke_" + model_tag
+
     use_sklearn = any(s["kind"] == "sklearn" for s in enabled_specs)
     all_keys = [s["key"] for s in enabled_specs] + ["ensemble"]
     label_of = {s["key"]: s["label"] for s in enabled_specs}
     label_of["ensemble"] = "Ensemble"
 
-    print(f"有効なモデル: {[s['label'] for s in enabled_specs]}")
-    print(f"重み戦略: {WEIGHT_STRATEGY} | 統合: {ENSEMBLE_COMBINE}")
+    print("#" * 60)
+    if SMOKE_TEST:
+        print("### SMOKE_TEST = True : 動作確認モードです ###")
+        print(f"###   epoch={EPOCH_NUM} / fold={DIVISIONS} に縮小しています。")
+        print("###   この結果は本番評価には使えません。本番では SMOKE_TEST = False に戻してください。")
+    else:
+        print("### 本番モード (SMOKE_TEST = False) ###")
+    print(f"有効なモデル: {[s['label'] for s in enabled_specs]}  (model_tag={model_tag})")
+    print(f"重み戦略: {WEIGHT_STRATEGY} | 統合: {ENSEMBLE_COMBINE} | epoch={EPOCH_NUM} | fold={DIVISIONS}")
     if WEIGHT_STRATEGY == "val_fold_legacy":
         print("【警告】val_fold_legacy は検証 fold の正解から重みを決めるリークあり方式です。"
               "旧結果の再現用にのみ使用してください。")
+    print("#" * 60)
 
     for data_path in DATA_PATH:
         K.clear_session()
@@ -237,7 +280,7 @@ def main():
                 noise_dir_name = os.path.basename(data_path)
                 SAVE_PATH = os.path.join(
                     BASE_SAVE_PATH, noise_dir_name, max_freq_hz,
-                    f"{SAVE_DATE}_ep{EPOCH_NUM}_bs{all_bs}_lr{all_lr}_{WEIGHT_STRATEGY}")
+                    f"{SAVE_DATE}_ep{EPOCH_NUM}_bs{all_bs}_lr{all_lr}_{WEIGHT_STRATEGY}_{model_tag}")
                 os.makedirs(SAVE_PATH, exist_ok=True)
 
                 kf = KFold(n_splits=DIVISIONS, shuffle=True, random_state=RANDOM_SEED)
@@ -248,7 +291,7 @@ def main():
                 weight_log = []
 
                 output_file = os.path.join(SAVE_PATH, f'validation_results_{snr_value}.txt')
-                with open(output_file, 'a', encoding='utf-8') as f:
+                with open(output_file, 'w', encoding='utf-8') as f:
                     f.write("K-fold Cross-Validation Results\n")
                     f.write(f"models={[s['label'] for s in enabled_specs]}\n")
                     f.write(f"weight_strategy={WEIGHT_STRATEGY}, combine={ENSEMBLE_COMBINE}\n")
