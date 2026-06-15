@@ -67,7 +67,7 @@ NOISE = 1
 # 保存したモデルの重みを用いるかどうか
 PREVIOUS_MODEL = False
 
-SAVE_DATE = "20260208"
+SAVE_DATE = os.environ.get("SAVE_DATE", datetime.now().strftime("%Y%m%d"))
 # SAVE_DATE = "cnn+tra系_tune"
 
 # 使用するデータの日付

@@ -19,9 +19,11 @@
   再利用可能な処理（指標計算・学習/予測・重み付け・作図）は下記 utils に分離済みで、
   本ファイルにはこの実験固有の設定と `main()` のオーケストレーションだけを置く。
   実行モデルは `ACTIVE_MODEL_KEYS` の1行で切替（RF単体検証 `["rf"]` ⇄ 3モデル
-  `["rf","cnntf_v1","cnntf_v2"]`）。`SMOKE_TEST=True` で epoch/fold を縮小し
+  `["rf","cnntf_v1","alexnet"]`）。`SMOKE_TEST=True` で epoch/fold を縮小し
   「最後まで通るか」だけを高速確認できる（出力先に `smoke_` が付き本番結果と混ざらない）。
   出力先 `SAVE_PATH` 末尾にモデルセットのタグが付くので、RF単体と3モデルの結果は別フォルダに残る。
+  foldごとの `y_true`、各モデル予測、アンサンブル予測は `fold_predictions/` にCSV保存し、
+  アンサンブル重みは `ensemble_weights_*.csv` に保存する。
 
 - `code/compare_predict_heatflux.py`  
   学習済みモデルを使って、指定したサンプルの熱流束予測を比較する推論・確認用スクリプト。

@@ -4,6 +4,26 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import ScalarFormatter
 
 
+def _safe_stem(text, max_len=32):
+    """Return a short Windows-friendly file stem."""
+    aliases = {
+        "RandomForest": "rf",
+        "AlexNet": "alexnet",
+        "CNN+Tf (AttnPool)": "cnntf_v1",
+        "CNN+Tf (GAP)": "cnntf_v2",
+        "ROC-AUC (continuous)": "roc_auc_cont",
+        "R2 Score": "r2",
+    }
+    text = aliases.get(text, str(text))
+    safe = []
+    for ch in text:
+        if ch.isalnum() or ch in "-_.":
+            safe.append(ch)
+        else:
+            safe.append("_")
+    return "".join(safe).strip("_")[:max_len] or "plot"
+
+
 class RegressionPlotter:
     """
     熱流束回帰・アンサンブル評価まわりの作図をまとめたクラス。
@@ -25,7 +45,9 @@ class RegressionPlotter:
         plt.grid(True)
         out_dir = os.path.join(save_path, "loss_histories")
         os.makedirs(out_dir, exist_ok=True)
-        plt.savefig(os.path.join(out_dir, f'{label}_ep{epochs}_fold{fold}_SNR={snr_value}.png'))
+        label_stem = _safe_stem(label)
+        snr_stem = _safe_stem(snr_value, max_len=16)
+        plt.savefig(os.path.join(out_dir, f'loss_{label_stem}_f{fold}_{snr_stem}.png'))
         plt.close()
 
     def plot_bar(self, metric_name, labels, values, errors, epochs, save_path, snr_value):
@@ -44,9 +66,10 @@ class RegressionPlotter:
                          fontsize=18, color='black', rotation=90)
         out_dir = os.path.join(save_path, "bar_results")
         os.makedirs(out_dir, exist_ok=True)
-        safe = metric_name.replace(" ", "_").replace("/", "_")
+        safe = _safe_stem(metric_name)
         plt.tight_layout()
-        plt.savefig(os.path.join(out_dir, f'{safe}_ep{epochs}_SNR={snr_value}.png'))
+        snr_stem = _safe_stem(snr_value, max_len=16)
+        plt.savefig(os.path.join(out_dir, f'{safe}_ep{epochs}_{snr_stem}.png'))
         plt.close()
 
     def plot_regression_scatter(self, y_val, ensemble_pred, y_all, metrics_ens,
@@ -114,5 +137,6 @@ class RegressionPlotter:
 
         out_dir = os.path.join(save_path, "regression_results")
         os.makedirs(out_dir, exist_ok=True)
-        plt.savefig(os.path.join(out_dir, f'regression_split_{snr_value}_{fold}.png'))
+        snr_stem = _safe_stem(snr_value, max_len=16)
+        plt.savefig(os.path.join(out_dir, f'scatter_{snr_stem}_f{fold}.png'))
         plt.close()

@@ -46,11 +46,15 @@ main() のオーケストレーションだけを置く。
 import os
 import gc
 import time
+import csv
+import random
 from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
 
 import matplotlib.pyplot as plt
+import numpy as np
+import tensorflow as tf
 
 from sklearn.model_selection import KFold, train_test_split
 from sklearn.preprocessing import MinMaxScaler
@@ -100,7 +104,9 @@ LEARNING_RATE_ALL = [0.005]
 # ホワイトノイズ (=0) か水流動音 (=1) か (旧コード踏襲)
 NOISE = 1
 PREVIOUS_MODEL = False
-SAVE_DATE = "20260208"
+# Default to the actual run date. Set the SAVE_DATE environment variable or
+# override this module variable when reproducing an older run.
+SAVE_DATE = os.environ.get("SAVE_DATE", datetime.now().strftime("%Y%m%d"))
 DATA_DATE = "20251219"
 
 # 周波数解析のパラメータ
@@ -124,10 +130,10 @@ max_freq_hz = "maxfreq=22kHz"
 #    「まず RandomForest 単体で回帰が成立する状態を作り、その後 3 モデルを同条件で
 #    比較する」という段取りを、ここの 1 行だけで切り替えられるようにしている。
 #       RF 単体の動作確認 : ACTIVE_MODEL_KEYS = ["rf"]
-#       3 モデル同条件     : ACTIVE_MODEL_KEYS = ["rf", "cnntf_v1", "cnntf_v2"]
+#       3 モデル同条件     : ACTIVE_MODEL_KEYS = ["rf", "cnntf_v1", "alexnet"]
 #    None にすると各 spec の "enabled" フラグに従う (従来動作)。
 # ===================================================================
-ACTIVE_MODEL_KEYS = ["rf"]
+ACTIVE_MODEL_KEYS = ["rf", "cnntf_v1", "alexnet"]
 
 MODEL_SPECS = [
     {
@@ -147,10 +153,10 @@ MODEL_SPECS = [
         "enabled": True,
     },
     {
-        "key": "cnntf_v2",
-        "label": "CNN+Tf (GAP)",
+        "key": "alexnet",
+        "label": "AlexNet",
         "kind": "keras",
-        "builder": lambda mm: mm.cnn_transformer_v2(),
+        "builder": lambda mm: mm.alexnet(),
         "lr": 0.005,
         "batch_size": 48,
         "enabled": True,
@@ -169,7 +175,7 @@ MODEL_SPECS = [
 #                        リークありなので新たな主張には使わない。旧結果の再現用。
 # ===================================================================
 WEIGHT_STRATEGY = "simple"
-FIXED_WEIGHTS = {"rf": 1.0, "cnntf_v1": 1.0, "cnntf_v2": 1.0}
+FIXED_WEIGHTS = {"rf": 1.0, "cnntf_v1": 1.0, "alexnet": 1.0}
 INNER_HOLDOUT_FRAC = 0.2   # inner_holdout のときの内部検証の割合
 
 # アンサンブルの統合方法 ("mean" ... 重み付き平均 | "min" ... 各サンプル最小値)
@@ -177,6 +183,9 @@ ENSEMBLE_COMBINE = "mean"
 
 # PCA 次元 (sklearn 系モデル用)
 PCA_COMPONENTS = 100
+
+# 後から重み付け・ONB近傍評価をやり直せるように、foldごとの予測値を保存する。
+SAVE_FOLD_PREDICTIONS = True
 
 
 #### データフォルダの設定 (④: 別マシン運用のためそのまま) ####
@@ -210,7 +219,15 @@ plt.rcParams['ytick.direction'] = 'in'
 #                                実行部
 #######################################################################
 
+def set_global_seed(seed):
+    """Keep KFold, sklearn, and Keras runs as reproducible as practical."""
+    random.seed(seed)
+    np.random.seed(seed)
+    tf.random.set_seed(seed)
+
+
 def main():
+    set_global_seed(RANDOM_SEED)
     # 再利用ヘルパー (用途別の utils クラス) を用意する
     metrics = RegressionDetectionMetrics()
     trainer = ModelTrainer(random_seed=RANDOM_SEED)
@@ -231,8 +248,13 @@ def main():
     if not enabled_specs:
         raise ValueError("実行するモデルが 0 個です。ACTIVE_MODEL_KEYS を確認してください。")
 
-    # 出力先を混ぜないためのモデルセットのタグ (例: "rf" / "rf-cnntf_v1-cnntf_v2")
-    model_tag = "-".join(s["key"] for s in enabled_specs)
+    # 出力先を混ぜないためのモデルセットのタグ。
+    # Windows のパス長制限に当たりやすいため、代表的な3モデル構成は短いタグにする。
+    model_keys = [s["key"] for s in enabled_specs]
+    if model_keys == ["rf", "cnntf_v1", "alexnet"]:
+        model_tag = "3models"
+    else:
+        model_tag = "-".join(model_keys)
     if SMOKE_TEST:
         model_tag = "smoke_" + model_tag
 
@@ -362,6 +384,18 @@ def main():
                         # --- 指標の算出 (② 3 種類に分離) ---
                         preds_all = dict(val_preds)
                         preds_all["ensemble"] = ensemble_pred
+                        if SAVE_FOLD_PREDICTIONS:
+                            pred_dir = os.path.join(SAVE_PATH, "fold_predictions")
+                            os.makedirs(pred_dir, exist_ok=True)
+                            pred_csv = os.path.join(pred_dir, f"pred_f{fold}_{snr_value}.csv")
+                            with open(pred_csv, "w", newline="", encoding="utf-8") as pf:
+                                writer = csv.writer(pf)
+                                writer.writerow(["sample_index", "y_true"] + all_keys)
+                                for row_i, sample_idx in enumerate(val_index):
+                                    writer.writerow(
+                                        [int(sample_idx), f"{float(y_val[row_i]):.10g}"]
+                                        + [f"{float(preds_all[key][row_i]):.10g}" for key in all_keys]
+                                    )
                         for key in all_keys:
                             pred = preds_all[key]
                             reg = metrics.regression_metrics(y_val, pred, THRESHOLD, ONB_BAND_FRAC)
@@ -420,6 +454,15 @@ def main():
                             mean, se = metrics.mean_se(store[key][mk])
                             f.write(f"    {mk:14s}: {mean:.4f} ± {se:.4f}\n")
                     f.write("=" * 30 + "\n\n")
+
+                weights_csv = os.path.join(SAVE_PATH, f"ensemble_weights_{snr_value}.csv")
+                with open(weights_csv, "w", newline="", encoding="utf-8") as wf:
+                    writer = csv.writer(wf)
+                    writer.writerow(["fold"] + model_keys)
+                    for fold_num, weights in weight_log:
+                        writer.writerow(
+                            [fold_num] + [f"{float(weights.get(key, 0.0)):.10g}" for key in model_keys]
+                        )
 
                 # --- 棒グラフ (モデル別: R2 と 連続スコア ROC-AUC) ---
                 labels = [label_of[k] for k in all_keys]
