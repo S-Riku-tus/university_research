@@ -95,9 +95,14 @@ if SMOKE_TEST:
     EPOCH_NUM = 3
     DIVISIONS = 2
 
-# 閾値 (沸騰開始点 ONB の熱流束)。旧コードと同じ値。
-threshold_list = [275174.6641]
-THRESHOLD = sum(threshold_list) / len(threshold_list)
+# 閾値 (沸騰開始点 ONB の熱流束) は実験日ごとに異なる。
+# 未設定の実験日は、誤った ONB 評価を出さないよう実行前に止める。
+THRESHOLD_BY_EXPERIMENT = {
+    "2025.07.09_0.3_1": 275174.6641,
+    # "2025.06.11_0.3_2": TODO,
+    # "2025.06.18_0.3_3": TODO,
+}
+REQUIRE_EXPERIMENT_THRESHOLD = True
 
 # ONB 近傍 band の幅 (閾値に対する相対割合)。
 # |y - THRESHOLD| <= THRESHOLD * ONB_BAND_FRAC を ONB 近傍サンプルとして
@@ -116,35 +121,68 @@ RF_FIXED_PARAMS = {
     "colsample_bynode": 0.6,
 }
 
-# CNN/Keras grid: 6 batch sizes x 7 learning rates = 42 parameter sets.
-KERAS_BATCH_SIZE_GRID = [12, 24, 32, 48, 64, 128]
-KERAS_LEARNING_RATE_GRID = [0.05, 0.01, 0.005, 0.001, 0.0005, 0.0001, 0.00005]
-
-def build_parameter_sets():
-    parameter_sets = []
-    for lr in KERAS_LEARNING_RATE_GRID:
-        for batch_size in KERAS_BATCH_SIZE_GRID:
-            parameter_sets.append({
-                "name": f"k_lr{format_param_value(lr)}_bs{batch_size}",
-                "default_keras": {"lr": lr, "batch_size": batch_size},
-                "models": {"rf": dict(RF_FIXED_PARAMS)},
-            })
-    return parameter_sets
-
-
-PARAMETER_SETS = build_parameter_sets()
+# Next confirmation run after the 42-point Keras tuning.
+# The saved tuning results indicate:
+#   cnntf_v1 best regression: lr=0.01, batch_size=24
+#   alexnet  best regression: lr=0.005, batch_size=32
+PARAMETER_SETS = [
+    {
+        "name": "bestreg_ct01b24_ax005b32",
+        "models": {
+            "rf": dict(RF_FIXED_PARAMS),
+            "cnntf_v1": {"lr": 0.01, "batch_size": 24},
+            "alexnet": {"lr": 0.005, "batch_size": 32},
+        },
+    },
+]
 
 # ホワイトノイズ (=0) か水流動音 (=1) か (旧コード踏襲)
+# 現在の一括評価では waterflow_* フォルダ内に no_noise と SNR 条件がある前提。
 NOISE = 1
 PREVIOUS_MODEL = False
 # Default to the actual run date. Set the SAVE_DATE environment variable or
 # override this module variable when reproducing an older run.
 SAVE_DATE = os.environ.get("SAVE_DATE", datetime.now().strftime("%Y%m%d"))
-DATA_DATE = "20251219"
+# 結果が増えても混ざらないように、保存先の最上位に日付フォルダを作る。
+RESULT_DATE_DIR = os.environ.get("RESULT_DATE_DIR", SAVE_DATE)
+RUN_NAME_SUFFIX = os.environ.get("RUN_NAME_SUFFIX", "").strip()
 
 # 周波数解析のパラメータ
 CHUNK = 1
-max_freq_hz = "maxfreq=22kHz"
+
+# まずは THRESHOLD が確定している実験日で、4 maxfreq x 7 noise = 28 条件を評価する。
+# 3実験日で評価するときは、THRESHOLD_BY_EXPERIMENT を埋めてから下の2行を追加する。
+EXPERIMENT_DIR_NAMES = [
+    "2025.07.09_0.3_1",
+    # "2025.06.11_0.3_2",
+    # "2025.06.18_0.3_3",
+]
+MAX_FREQ_HZ_LIST = [
+    "maxfreq=3kHz",
+    "maxfreq=5kHz",
+    "maxfreq=10kHz",
+    "maxfreq=22kHz",
+]
+NOISE_DIR_NAMES = [
+    "heatflux_no_noise",
+    "heatflux_SNR=0",
+    "heatflux_SNR=-4",
+    "heatflux_SNR=-8",
+    "heatflux_SNR=-12",
+    "heatflux_SNR=-16",
+    "heatflux_SNR=-20",
+]
+
+# 既知の npy 生成フォルダ。None の実験日は自動検出に任せる。
+DATA_SOURCE_DIR_BY_EXPERIMENT = {
+    "2025.06.11_0.3_2": "waterflow_20251126_1s",
+    "2025.06.18_0.3_3": None,
+    "2025.07.09_0.3_1": "waterflow_20251219_1s",
+}
+
+# True: 未生成の実験日/maxfreq/noise があっても一括実行を続ける。
+# False: 1つでも欠けていたら実行前に止める。84条件の検証では取りこぼし防止のため False 推奨。
+SKIP_MISSING_DATASETS = False
 
 
 # ===================================================================
@@ -203,8 +241,8 @@ MODEL_SPECS = [
 #    "val_fold_legacy" : 旧コードと同じく検証 fold 誤差から重みを決める。
 #                        リークありなので新たな主張には使わない。旧結果の再現用。
 # ===================================================================
-WEIGHT_STRATEGY = "simple"
-FIXED_WEIGHTS = {"rf": 1.0, "cnntf_v1": 1.0, "alexnet": 1.0}
+WEIGHT_STRATEGY = "fixed"
+FIXED_WEIGHTS = {"rf": 0.90, "cnntf_v1": 0.05, "alexnet": 0.05}
 INNER_HOLDOUT_FRAC = 0.2   # inner_holdout のときの内部検証の割合
 
 # アンサンブルの統合方法 ("mean" ... 重み付き平均 | "min" ... 各サンプル最小値)
@@ -217,26 +255,10 @@ PCA_COMPONENTS = 100
 SAVE_FOLD_PREDICTIONS = True
 
 
-#### データフォルダの設定 (④: 別マシン運用のためそのまま) ####
-noise = "whitenoise" if NOISE == 0 else "waterflow"
-highpass = f"_{DATA_DATE}_{CHUNK}s"
-noise = noise + highpass
-
-BASE_PATH = r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2025.07.09_0.3_1"
-base_path = Path(BASE_PATH)
-
-BASE_DATA_PATH = base_path / "data" / "npy" / noise / str(max_freq_hz)
-DATA_PATH = [
-    BASE_DATA_PATH / "heatflux_no_noise",
-    # BASE_DATA_PATH / "heatflux_SNR=0",
-    # BASE_DATA_PATH / "heatflux_SNR=-4",
-    # BASE_DATA_PATH / "heatflux_SNR=-8",
-    # BASE_DATA_PATH / "heatflux_SNR=-12",
-    # BASE_DATA_PATH / "heatflux_SNR=-16",
-    # BASE_DATA_PATH / "heatflux_SNR=-20"
-]
-
-BASE_SAVE_PATH = base_path / "regression_result" / "npy" / "ensemble"
+#### データフォルダの設定 ####
+REPO_ROOT = Path(__file__).resolve().parents[1]
+EXPERIMENT_ROOT = REPO_ROOT / "Pool_boiling" / "Subcooling_20_degrees" / "0.3"
+NOISE_SOURCE_PREFIX = "whitenoise" if NOISE == 0 else "waterflow"
 
 # matplotlib の設定
 plt.rcParams['font.family'] = 'Times New Roman'
@@ -256,6 +278,86 @@ def safe_tag(text, max_len=32):
         else:
             safe.append("_")
     return "".join(safe).strip("_")[:max_len] or "params"
+
+
+def chunk_tag():
+    if isinstance(CHUNK, (int, float)):
+        return f"{CHUNK:g}s"
+    return f"{CHUNK}s"
+
+
+def snr_value_from_noise_dir(noise_dir_name):
+    if noise_dir_name == "heatflux_no_noise":
+        return "no_noise"
+    if "SNR=" in noise_dir_name:
+        return noise_dir_name.split("SNR=", 1)[1]
+    return safe_tag(noise_dir_name)
+
+
+def run_dir_name(param_tag, model_tag):
+    suffix = f"_{safe_tag(RUN_NAME_SUFFIX, max_len=24)}" if RUN_NAME_SUFFIX else ""
+    return f"ep{EPOCH_NUM}_{param_tag}_{WEIGHT_STRATEGY}_{model_tag}{suffix}"
+
+
+def has_input_files(data_path):
+    extension = "*.npy" if COLOR_CHANNEL == 1 else "*.png"
+    return data_path.is_dir() and any(data_path.glob(extension))
+
+
+def find_data_source_dir(experiment_root, experiment_name):
+    npy_root = experiment_root / "data" / "npy"
+    configured = DATA_SOURCE_DIR_BY_EXPERIMENT.get(experiment_name)
+    if configured:
+        configured_path = npy_root / configured
+        if configured_path.is_dir():
+            return configured_path
+
+    candidates = sorted(npy_root.glob(f"{NOISE_SOURCE_PREFIX}_*_{chunk_tag()}"))
+    if not candidates:
+        return None
+    return candidates[-1]
+
+
+def build_dataset_jobs():
+    jobs = []
+    missing = []
+    for experiment_name in EXPERIMENT_DIR_NAMES:
+        experiment_root = EXPERIMENT_ROOT / experiment_name
+        source_dir = find_data_source_dir(experiment_root, experiment_name)
+        threshold = THRESHOLD_BY_EXPERIMENT.get(experiment_name)
+        for max_freq_name in MAX_FREQ_HZ_LIST:
+            for noise_dir_name in NOISE_DIR_NAMES:
+                data_path = None if source_dir is None else source_dir / max_freq_name / noise_dir_name
+                job = {
+                    "experiment_name": experiment_name,
+                    "experiment_root": experiment_root,
+                    "source_dir": source_dir,
+                    "threshold": threshold,
+                    "max_freq_hz": max_freq_name,
+                    "noise_dir_name": noise_dir_name,
+                    "snr_value": snr_value_from_noise_dir(noise_dir_name),
+                    "data_path": data_path,
+                    "save_base_path": (
+                        experiment_root / "regression_result" / "npy" / "ensemble" / RESULT_DATE_DIR
+                    ),
+                }
+                if REQUIRE_EXPERIMENT_THRESHOLD and threshold is None:
+                    missing.append({**job, "missing_reason": "threshold"})
+                elif data_path is not None and has_input_files(data_path):
+                    jobs.append(job)
+                else:
+                    missing.append({**job, "missing_reason": "data"})
+
+    print(f"dataset plan: existing={len(jobs)} / intended={len(EXPERIMENT_DIR_NAMES) * len(MAX_FREQ_HZ_LIST) * len(NOISE_DIR_NAMES)}")
+    if missing:
+        print("missing datasets:")
+        for job in missing:
+            missing_path = job["data_path"] if job["data_path"] is not None else job["experiment_root"] / "data" / "npy"
+            reason = job.get("missing_reason", "data")
+            print(f"  - {reason} | {job['experiment_name']} | {job['max_freq_hz']} | {job['noise_dir_name']} | {missing_path}")
+        if not SKIP_MISSING_DATASETS:
+            raise FileNotFoundError("Some intended datasets are missing. Set SKIP_MISSING_DATASETS=True to continue.")
+    return jobs
 
 
 def resolve_parameter_set(enabled_specs, parameter_set):
@@ -370,16 +472,28 @@ def main():
               "旧結果の再現用にのみ使用してください。")
     print("#" * 60)
 
-    for data_path in DATA_PATH:
+    dataset_jobs = build_dataset_jobs()
+    if not dataset_jobs:
+        raise FileNotFoundError("No datasets were found for the requested experiment/maxfreq/noise plan.")
+
+    for job_i, job in enumerate(dataset_jobs, start=1):
         K.clear_session()
         gc.collect()
 
-        if "no_noise" in str(data_path):
-            snr_value = "no_noise"
-        else:
-            snr_value = str(data_path).split("SNR=")[-1]
+        data_path = job["data_path"]
+        snr_value = job["snr_value"]
+        noise_dir_name = job["noise_dir_name"]
+        max_freq_name = job["max_freq_hz"]
+        base_save_path = job["save_base_path"]
+        threshold = job["threshold"]
 
-        print(f"\n{'='*40}\nデータセット読み込み開始: {snr_value}")
+        print(
+            f"\n{'='*40}\n"
+            f"dataset {job_i}/{len(dataset_jobs)} | "
+            f"{job['experiment_name']} | {max_freq_name} | {noise_dir_name}"
+        )
+        print(f"data_path={data_path}")
+        print(f"threshold={threshold}")
 
         start_time = time.time()
         data_loading = DataLoadingConversion()
@@ -395,10 +509,9 @@ def main():
                 param_tag = parameter_set_tag(parameter_set, run_specs)
                 param_summary = model_param_summary(run_specs)
                 print(f"parameter_set={parameter_set.get('name', param_tag)} | model_params={param_summary}")
-                noise_dir_name = os.path.basename(data_path)
                 SAVE_PATH = os.path.join(
-                    BASE_SAVE_PATH, noise_dir_name, max_freq_hz,
-                    f"{SAVE_DATE}_ep{EPOCH_NUM}_{param_tag}_{WEIGHT_STRATEGY}_{model_tag}")
+                    base_save_path, noise_dir_name, max_freq_name,
+                    run_dir_name(param_tag, model_tag))
                 os.makedirs(SAVE_PATH, exist_ok=True)
 
                 kf = KFold(n_splits=DIVISIONS, shuffle=True, random_state=RANDOM_SEED)
@@ -411,6 +524,13 @@ def main():
                 output_file = os.path.join(SAVE_PATH, f'validation_results_{snr_value}.txt')
                 with open(output_file, 'w', encoding='utf-8') as f:
                     f.write("K-fold Cross-Validation Results\n")
+                    f.write(f"experiment={job['experiment_name']}\n")
+                    f.write(f"data_source={job['source_dir']}\n")
+                    f.write(f"data_path={data_path}\n")
+                    f.write(f"max_freq={max_freq_name}\n")
+                    f.write(f"noise_dir={noise_dir_name}\n")
+                    f.write(f"threshold={threshold}\n")
+                    f.write(f"result_date_dir={RESULT_DATE_DIR}\n")
                     f.write(f"models={[s['label'] for s in run_specs]}\n")
                     f.write(f"parameter_set={parameter_set.get('name', param_tag)}\n")
                     f.write(f"model_params={param_summary}\n")
@@ -498,9 +618,9 @@ def main():
                                     )
                         for key in all_keys:
                             pred = preds_all[key]
-                            reg = metrics.regression_metrics(y_val, pred, THRESHOLD, ONB_BAND_FRAC)
-                            det_c = metrics.detection_metrics_continuous(y_val, pred, THRESHOLD)
-                            det_b = metrics.detection_metrics_binary(y_val, pred, THRESHOLD)
+                            reg = metrics.regression_metrics(y_val, pred, threshold, ONB_BAND_FRAC)
+                            det_c = metrics.detection_metrics_continuous(y_val, pred, threshold)
+                            det_b = metrics.detection_metrics_binary(y_val, pred, threshold)
                             for d in (reg, det_c, det_b):
                                 for mk, mv in d.items():
                                     store[key][mk].append(mv)
@@ -510,7 +630,7 @@ def main():
                                             for mk in store["ensemble"]}
                         plotter.plot_regression_scatter(
                             y_val, ensemble_pred, y, ens_fold_metrics,
-                            THRESHOLD, SAVE_PATH, snr_value, fold)
+                            threshold, SAVE_PATH, snr_value, fold)
 
                         # --- fold 結果を txt に追記 ---
                         f.write(f"Recorded at: {datetime.now():%Y-%m-%d %H:%M:%S}\n")

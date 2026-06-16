@@ -3,12 +3,24 @@
 current_mode:
   active_model_keys: [rf, cnntf_v1, alexnet]
   fixed_rf_params: {n_estimators: 300, max_depth: 8, subsample: 0.8, colsample_bynode: 0.6}
-  total_patterns: 42
+  total_patterns: 1
+  weight_strategy: fixed
+  fixed_weights: {rf: 0.90, cnntf_v1: 0.05, alexnet: 0.05}
 
 keras_grid:
   batch_size: [12, 24, 32, 48, 64, 128]
   learning_rate: [0.05, 0.01, 0.005, 0.001, 0.0005, 0.0001, 0.00005]
   total_patterns: 42
+
+recommended_confirmation_after_tuning:
+  name: bestreg_cnntf_lr0p01_bs24_alex_lr0p005_bs32
+  models:
+    rf: {n_estimators: 300, max_depth: 8, subsample: 0.8, colsample_bynode: 0.6}
+    cnntf_v1: {lr: 0.01, batch_size: 24}
+    alexnet: {lr: 0.005, batch_size: 32}
+  weight_strategy: fixed
+  fixed_weights: {rf: 0.90, cnntf_v1: 0.05, alexnet: 0.05}
+  note: RF is still the strongest regressor; this condition checks an RF-dominant 3-model ensemble without rerunning the full grid.
 
 manual_parameter_set_example:
   name: cnntf_lr0p001_alex_lr0p005_rf_md8
@@ -27,7 +39,8 @@ manual_parameter_set_example:
       max_depth: 8
 
 notes:
-  - Current mode fixes RF to fixed_rf_params and tunes cnntf_v1/AlexNet over the 42 Keras candidates.
+  - The 42-condition Keras tuning is complete; keep keras_grid as the reproducible search space.
+  - Current code mode now runs the recommended confirmation condition only.
   - MODEL_SPECS defines model identity only.
   - PARAMETER_SETS controls Keras lr and batch_size.
   - RF parameters can be passed through models.rf.
