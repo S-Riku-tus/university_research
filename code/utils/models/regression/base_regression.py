@@ -248,52 +248,72 @@ class RegressionModelMaker:
             
             return model
 
-    def cnn_transformer_v1(self, num_transformer_blocks=4, 
-                            head_size=256, num_heads=4, ff_dim=2048):
+    def cnn_transformer_v1(self, num_time_patches=8, num_transformer_blocks=2,
+                           model_dim=128, num_heads=4, ff_dim=256,
+                           dropout=0.3):
             """
-            AlexNetをCNNベースとして利用し、Transformer Encoderに接続する回帰モデル。
+            CNN + Transformer regressor that treats spectrogram width as time.
+
+            Input is expected to be (frequency, time, channel), for example
+            (224, 224, 1). The time axis is split into patches. A shared CNN
+            extracts one feature vector from each time patch, then Transformer
+            blocks model the temporal sequence before regression.
             """
+            freq_bins, time_bins, channels = self.input_shape
+            if time_bins is None or time_bins % num_time_patches != 0:
+                raise ValueError(
+                    "input_shape[1] must be divisible by num_time_patches "
+                    f"(got time_bins={time_bins}, num_time_patches={num_time_patches})."
+                )
+            if model_dim % num_heads != 0:
+                raise ValueError(
+                    "model_dim must be divisible by num_heads "
+                    f"(got model_dim={model_dim}, num_heads={num_heads})."
+                )
+
+            patch_width = time_bins // num_time_patches
             x_in = Input(shape=self.input_shape, name='spec_input')
 
-            # --- AlexNetベースの特徴抽出器 ---
-            # 元のalexnetのConv層とPooling層をFunctional APIで記述
-            x = Conv2D(96, (11, 11), strides=(4, 4), activation='relu', padding="same")(x_in)
-            x = BatchNormalization()(x)
-            x = MaxPooling2D(pool_size=(3, 3), strides=(2, 2), padding="same")(x)
-            
-            x = Conv2D(256, (5, 5), strides=(1, 1), activation='relu', padding="same")(x)
-            x = BatchNormalization()(x)
-            x = MaxPooling2D(pool_size=(3, 3), strides=(2, 2), padding="same")(x)
-            
-            x = Conv2D(384, (3, 3), strides=(1, 1), activation='relu', padding="same")(x)
-            x = Conv2D(384, (3, 3), strides=(1, 1), activation='relu', padding="same")(x)
-            x = Conv2D(256, (3, 3), strides=(1, 1), activation='relu', padding="same")(x)
-            x = MaxPooling2D(pool_size=(3, 3), strides=(2, 2), padding="same")(x)
+            # (frequency, time, channel) -> (time_patch, frequency, patch_width, channel)
+            x = Reshape((freq_bins, num_time_patches, patch_width, channels),
+                        name='split_time_axis')(x_in)
+            x = Permute((2, 1, 3, 4), name='time_patch_first')(x)
 
-            # --- 2D->3D reshape (seldnet_regressorと同じ) ---
-            shape = x.shape
-            x = Reshape((shape[1], shape[2] * shape[3]))(x)
+            patch_input = Input(shape=(freq_bins, patch_width, channels),
+                                name='time_patch_input')
+            p = Conv2D(32, (3, 3), padding='same', activation='relu',
+                       name='patch_conv1')(patch_input)
+            p = BatchNormalization(name='patch_bn1')(p)
+            p = MaxPooling2D(pool_size=(2, 2), name='patch_pool1')(p)
+            p = Conv2D(64, (3, 3), padding='same', activation='relu',
+                       name='patch_conv2')(p)
+            p = BatchNormalization(name='patch_bn2')(p)
+            p = MaxPooling2D(pool_size=(2, 2), name='patch_pool2')(p)
+            p = Conv2D(128, (3, 3), padding='same', activation='relu',
+                       name='patch_conv3')(p)
+            p = BatchNormalization(name='patch_bn3')(p)
+            p = GlobalAveragePooling2D(name='patch_gap')(p)
+            p = Dense(model_dim, activation='relu', name='patch_projection')(p)
+            p = Dropout(dropout, name='patch_dropout')(p)
+            patch_encoder = Model(patch_input, p, name='time_patch_encoder')
 
-            model_dim = head_size # Transformerが扱うモデル次元
-            x = TimeDistributed(Dense(model_dim, activation='relu'))(x)
+            x = TimeDistributed(patch_encoder, name='encode_time_patches')(x)
+            x = PositionalEmbedding(sequence_length=num_time_patches,
+                                    output_dim=model_dim,
+                                    name='time_positional_embedding')(x)
 
-            x = PositionalEmbedding(sequence_length=shape[1], output_dim=x.shape[-1])(x)
-
-            key_dim_per_head = head_size // num_heads
-            
-            # --- Transformer Encoder ブロック ---
-            # Transformer Encoderを複数重ねる
+            key_dim_per_head = model_dim // num_heads
             for _ in range(num_transformer_blocks):
-            # [重要] 呼び出し時に渡す引数を head_size (256) から key_dim_per_head (64) に変更
-                x = transformer_encoder(x, key_dim_per_head, num_heads, ff_dim, dropout=0.2)
+                x = transformer_encoder(x, key_dim_per_head, num_heads,
+                                        ff_dim, dropout=dropout)
 
-
-            # --- 時間平均 → 回帰線形出力 (seldnet_regressorと同じ) ---
-            # x = GlobalAveragePooling1D()(x)
-            x = AttentionPooling()(x)
+            x = AttentionPooling(name='temporal_attention_pooling')(x)
+            x = Dense(128, activation='relu', name='dense1')(x)
+            x = Dropout(dropout, name='dense_dropout')(x)
             output = Dense(1, activation='linear', name='output')(x)
 
-            return Model(inputs=x_in, outputs=output)
+            return Model(inputs=x_in, outputs=output,
+                         name='cnn_transformer_v1_time_axis')
     
     def cnn_transformer_v2(self, num_transformer_blocks=4, 
                             head_size=256, num_heads=4, ff_dim=2048):

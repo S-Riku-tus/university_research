@@ -16,7 +16,6 @@ from sklearn.preprocessing import MinMaxScaler
 from matplotlib.ticker import ScalarFormatter
 from datetime import datetime
 from utils.models.regression.base_regression import RegressionModelMaker
-from utils.models.regression.new_regression import RegressionModelMaker1106
 from utils.models.regression.swin_transformer import SwinTransformerModelMaker
 from utils.dataloading.dataloading_and_conversion import DataLoadingConversion
 from utils.calculation.calc_r2_auc import AUCorR2Calculation

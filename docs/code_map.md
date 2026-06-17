@@ -43,9 +43,6 @@
 - `code/utils/models/regression/base_regression.py`  
   AlexNet系、CNN+Transformer、RandomForest系などの回帰モデル定義。
 
-- `code/utils/models/regression/new_regression.py`  
-  CNN+LSTM、改善版CNN+Transformer、時系列処理系のモデル候補。
-
 - `code/utils/models/regression/swin_transformer.py`  
   Swin Transformer系の回帰モデル。
 

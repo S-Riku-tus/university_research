@@ -24,6 +24,8 @@ class DataLoadingConversion:
         # y_min, y_max = y.min(), y.max()
         # y = (y - y_min) / (y_max - y_min)
         x = x.astype('float32')
+        if x.ndim == 3:
+            x = x[..., None]
 
         return x, y
     

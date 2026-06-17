@@ -47,6 +47,8 @@ import os
 import gc
 import time
 import csv
+import hashlib
+import json
 import random
 from collections import defaultdict
 from datetime import datetime
@@ -79,9 +81,9 @@ from utils.plotting.regression_plots import RegressionPlotter
 VALIDATION_CONFIG = {
     "run": {
         "smoke_test": False,
-        "epochs": 10,
+        "epochs": 500,
         "folds": 5,
-        "smoke_epochs": 3,
+        "smoke_epochs": 10,
         "smoke_folds": 2,
         "color_channel": 1,
         "random_seed": 42,
@@ -97,19 +99,21 @@ VALIDATION_CONFIG = {
             # "2025.06.18_0.3_3",
         ],
         "max_freq_hz_list": [
-            # "maxfreq=3kHz",
-            # "maxfreq=5kHz",
-            # "maxfreq=10kHz",
+            "maxfreq=2kHz",
+            "maxfreq=3kHz",
+            "maxfreq=5kHz",
+            "maxfreq=10kHz",
+            "maxfreq=15kHz",
             "maxfreq=22kHz",
         ],
         "noise_dir_names": [
             "heatflux_no_noise",
-            # "heatflux_SNR=0",
-            # "heatflux_SNR=-4",
-            # "heatflux_SNR=-8",
-            # "heatflux_SNR=-12",
-            # "heatflux_SNR=-16",
-            # "heatflux_SNR=-20",
+            "heatflux_SNR=0",
+            "heatflux_SNR=-4",
+            "heatflux_SNR=-8",
+            "heatflux_SNR=-12",
+            "heatflux_SNR=-16",
+            "heatflux_SNR=-20",
         ],
         "data_source_dir_by_experiment": {
             "2025.06.11_0.3_2": "waterflow_20251126_1s",
@@ -140,7 +144,7 @@ VALIDATION_CONFIG = {
         "parameter_sets": [
             {
                 "name": "legacy",
-                "default_keras": {"early_stopping": False},
+                "default_keras": {"early_stopping": True},
                 "models": {
                     "cnntf_v1": {"lr": 0.01, "batch_size": 24},
                     "alexnet": {"lr": 0.005, "batch_size": 32},
@@ -214,6 +218,14 @@ SAVE_DATE = _cfg("output", "save_date")
 RESULT_DATE_DIR = _cfg("output", "result_date_dir") or SAVE_DATE
 RUN_NAME_SUFFIX = _cfg("output", "run_name_suffix")
 SAVE_FOLD_PREDICTIONS = _cfg("output", "save_fold_predictions")
+RUN_INSTANCE_ID = os.environ.get("RUN_ID", datetime.now().strftime("%H%M%S"))
+
+WEIGHT_STRATEGY_TAGS = {
+    "simple": "simp",
+    "fixed": "fix",
+    "inner_holdout": "ih",
+    "val_fold_legacy": "vleg",
+}
 
 
 def format_param_value(value):
@@ -380,9 +392,45 @@ def snr_value_from_noise_dir(noise_dir_name):
     return safe_tag(noise_dir_name)
 
 
-def run_dir_name(param_tag, model_tag):
-    suffix = f"_{safe_tag(RUN_NAME_SUFFIX, max_len=24)}" if RUN_NAME_SUFFIX else ""
-    return f"ep{EPOCH_NUM}_{param_tag}_{WEIGHT_STRATEGY}_{model_tag}{suffix}"
+def json_default(obj):
+    if isinstance(obj, Path):
+        return str(obj)
+    return repr(obj)
+
+
+def short_digest(payload, length=8):
+    text = json.dumps(payload, sort_keys=True, ensure_ascii=False, default=json_default)
+    return hashlib.sha1(text.encode("utf-8")).hexdigest()[:length]
+
+
+def compact_weight_strategy_tag():
+    return WEIGHT_STRATEGY_TAGS.get(WEIGHT_STRATEGY, safe_tag(WEIGHT_STRATEGY, max_len=8))
+
+
+def run_config_digest(parameter_set, run_specs, model_tag):
+    config = validation_config_snapshot()
+    config["output"] = {
+        "save_fold_predictions": SAVE_FOLD_PREDICTIONS,
+    }
+    return short_digest({
+        "validation_config": config,
+        "parameter_set": parameter_set,
+        "model_tag": model_tag,
+        "model_params": model_param_summary(run_specs),
+    }, length=6)
+
+
+def run_dir_name(param_tag, model_tag, run_hash):
+    suffix = f"_{safe_tag(RUN_NAME_SUFFIX, max_len=16)}" if RUN_NAME_SUFFIX else ""
+    return (
+        f"e{EPOCH_NUM}_"
+        f"{safe_tag(param_tag, max_len=16)}_"
+        f"{compact_weight_strategy_tag()}_"
+        f"{safe_tag(model_tag, max_len=12)}_"
+        f"{safe_tag(run_hash, max_len=6)}_"
+        f"{safe_tag(RUN_INSTANCE_ID, max_len=10)}"
+        f"{suffix}"
+    )
 
 
 def has_input_files(data_path):
@@ -502,6 +550,50 @@ def model_param_summary(resolved_specs):
     return summary
 
 
+def serializable_run_specs(run_specs):
+    clean_specs = []
+    for spec in run_specs:
+        clean_specs.append({
+            key: value
+            for key, value in spec.items()
+            if key not in {"builder"}
+        })
+    return clean_specs
+
+
+def write_run_manifest(save_path, job, parameter_set, run_specs,
+                       param_tag, model_tag, run_hash, run_dir):
+    manifest = {
+        "created_at": datetime.now().isoformat(timespec="seconds"),
+        "run_instance_id": RUN_INSTANCE_ID,
+        "run_hash": run_hash,
+        "run_dir": run_dir,
+        "folder_naming": {
+            "scheme": "e{epochs}_{param}_{weight}_{models}_{hash}_{run_id}",
+            "reason": "Keep Windows paths short while avoiding collisions between reruns.",
+            "details": "Full conditions are stored in this manifest and validation_results_*.txt.",
+        },
+        "dataset": {
+            "experiment_name": job["experiment_name"],
+            "source_dir": str(job["source_dir"]),
+            "data_path": str(job["data_path"]),
+            "max_freq_hz": job["max_freq_hz"],
+            "noise_dir_name": job["noise_dir_name"],
+            "snr_value": job["snr_value"],
+            "threshold": job["threshold"],
+        },
+        "parameter_set_name": parameter_set.get("name"),
+        "parameter_set_tag": param_tag,
+        "model_tag": model_tag,
+        "model_params": model_param_summary(run_specs),
+        "run_specs": serializable_run_specs(run_specs),
+        "validation_config": validation_config_snapshot(),
+    }
+    manifest_path = os.path.join(save_path, "run_manifest.json")
+    with open(manifest_path, "w", encoding="utf-8") as mf:
+        json.dump(manifest, mf, ensure_ascii=False, indent=2, default=json_default)
+
+
 def validation_config_snapshot():
     return {
         "run": {
@@ -545,6 +637,7 @@ def validation_config_snapshot():
             "save_date": SAVE_DATE,
             "result_date_dir": RESULT_DATE_DIR,
             "run_name_suffix": RUN_NAME_SUFFIX,
+            "run_instance_id": RUN_INSTANCE_ID,
             "save_fold_predictions": SAVE_FOLD_PREDICTIONS,
         },
     }
@@ -687,11 +780,17 @@ def main():
                 run_specs = resolve_parameter_set(enabled_specs, parameter_set)
                 param_tag = parameter_set_tag(parameter_set, run_specs)
                 param_summary = model_param_summary(run_specs)
+                run_hash = run_config_digest(parameter_set, run_specs, model_tag)
+                run_dir = run_dir_name(param_tag, model_tag, run_hash)
                 print(f"parameter_set={parameter_set.get('name', param_tag)} | model_params={param_summary}")
+                print(f"run_dir={run_dir}")
                 SAVE_PATH = os.path.join(
                     base_save_path, noise_dir_name, max_freq_name,
-                    run_dir_name(param_tag, model_tag))
+                    run_dir)
                 os.makedirs(SAVE_PATH, exist_ok=True)
+                write_run_manifest(
+                    SAVE_PATH, job, parameter_set, run_specs,
+                    param_tag, model_tag, run_hash, run_dir)
 
                 kf = KFold(n_splits=DIVISIONS, shuffle=True, random_state=RANDOM_SEED)
 
@@ -714,6 +813,9 @@ def main():
                     f.write(f"result_date_dir={RESULT_DATE_DIR}\n")
                     f.write(f"models={[s['label'] for s in run_specs]}\n")
                     f.write(f"parameter_set={parameter_set.get('name', param_tag)}\n")
+                    f.write(f"run_dir={run_dir}\n")
+                    f.write(f"run_hash={run_hash}\n")
+                    f.write(f"run_instance_id={RUN_INSTANCE_ID}\n")
                     f.write(f"model_params={param_summary}\n")
                     f.write(f"weight_strategy={WEIGHT_STRATEGY}, combine={ENSEMBLE_COMBINE}\n")
                     f.write("=" * 30 + "\n")
