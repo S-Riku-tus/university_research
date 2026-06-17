@@ -1,6 +1,33 @@
+import gc
+
 import numpy as np
+import tensorflow as tf
 from sklearn.decomposition import PCA
+from tensorflow.keras import backend as K
+from tensorflow.keras.callbacks import Callback, EarlyStopping
 from tensorflow.keras.optimizers import SGD
+
+
+class LightweightHistory(Callback):
+    """Keep only the small loss history needed for plotting."""
+
+    def __init__(self):
+        super().__init__()
+        self.history = {"loss": []}
+        self.params = {}
+        self.epochs_completed = 0
+
+    def on_epoch_end(self, epoch, logs=None):
+        logs = logs or {}
+        self.epochs_completed = epoch + 1
+        self.history["loss"].append(float(logs.get("loss", np.nan)))
+
+
+def _is_memory_error(exc):
+    return (
+        isinstance(exc, (tf.errors.ResourceExhaustedError, MemoryError))
+        or exc.__class__.__name__ == "_ArrayMemoryError"
+    )
 
 
 class ModelTrainer:
@@ -30,7 +57,6 @@ class ModelTrainer:
     def train_one_model(self, spec, mm, x_fit, y_fit_scaled,
                         x_fit_pca, epochs):
         """1 モデルを学習して返す。kind に応じて入力形態を変える。"""
-        model = spec["builder"](mm, **spec.get("builder_params", {}))
         if spec["kind"] == "keras":
             if "lr" not in spec or "batch_size" not in spec:
                 raise ValueError(
@@ -38,14 +64,72 @@ class ModelTrainer:
                     "resolved 'lr' and 'batch_size'. Check PARAMETER_SETS."
                 )
             lr = spec["lr"]
-            batch_size = spec["batch_size"]
-            model.compile(optimizer=SGD(learning_rate=lr, momentum=0.9, clipnorm=1.0),
-                          loss='mean_squared_error')
-            history = model.fit(x_fit, y_fit_scaled,
-                                batch_size=batch_size,
-                                epochs=epochs, verbose=1)
-            return model, history
+            requested_batch_size = int(spec["batch_size"])
+            min_batch_size = int(spec.get("min_batch_size", 8))
+            accept_partial_min_epochs = int(spec.get("accept_partial_min_epochs", 100))
+            batch_size = requested_batch_size
+            last_oom = None
+
+            while batch_size >= min_batch_size:
+                K.clear_session()
+                gc.collect()
+                model = spec["builder"](mm, **spec.get("builder_params", {}))
+                model.compile(optimizer=SGD(learning_rate=lr, momentum=0.9, clipnorm=1.0),
+                              loss='mean_squared_error')
+                lightweight_history = LightweightHistory()
+                callbacks = [
+                    lightweight_history,
+                    EarlyStopping(
+                        monitor="loss",
+                        min_delta=float(spec.get("early_stopping_min_delta", 1e-4)),
+                        patience=int(spec.get("early_stopping_patience", 20)),
+                        restore_best_weights=False,
+                        verbose=1,
+                    )
+                ]
+                try:
+                    history = model.fit(
+                        x_fit, y_fit_scaled,
+                        batch_size=batch_size,
+                        epochs=epochs,
+                        verbose=1,
+                        callbacks=callbacks,
+                    )
+                    history.history = lightweight_history.history
+                    history.params["requested_batch_size"] = requested_batch_size
+                    history.params["actual_batch_size"] = batch_size
+                    history.params["epochs_completed"] = lightweight_history.epochs_completed
+                    return model, history
+                except Exception as exc:
+                    if not _is_memory_error(exc):
+                        raise
+                    last_oom = exc
+                    if lightweight_history.epochs_completed >= accept_partial_min_epochs:
+                        lightweight_history.params["requested_batch_size"] = requested_batch_size
+                        lightweight_history.params["actual_batch_size"] = batch_size
+                        lightweight_history.params["epochs_completed"] = lightweight_history.epochs_completed
+                        lightweight_history.params["stopped_by_memory_error"] = True
+                        print(
+                            f"[OOM accepted] {spec.get('key', spec.get('label'))}: "
+                            f"{lightweight_history.epochs_completed} epochs completed; "
+                            "current weights will be used."
+                        )
+                        return model, lightweight_history
+                    print(
+                        f"[OOM retry] {spec.get('key', spec.get('label'))}: "
+                        f"batch_size={batch_size} でメモリ不足。"
+                    )
+                    del model
+                    K.clear_session()
+                    gc.collect()
+                    next_batch_size = batch_size // 2
+                    if next_batch_size < min_batch_size:
+                        break
+                    batch_size = next_batch_size
+
+            raise last_oom
         else:  # sklearn / xgboost
+            model = spec["builder"](mm, **spec.get("builder_params", {}))
             model.fit(x_fit_pca, y_fit_scaled.ravel())
             return model, None
 

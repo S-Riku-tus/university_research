@@ -574,6 +574,25 @@ def main():
                             model, history = trainer.train_one_model(
                                 spec, mm, x_fit, y_fit_scaled, x_fit_pca,
                                 EPOCH_NUM)
+                            if history is not None:
+                                actual_batch_size = history.params.get("actual_batch_size")
+                                requested_batch_size = history.params.get("requested_batch_size")
+                                stopped_by_memory_error = history.params.get("stopped_by_memory_error")
+                                epochs_completed = history.params.get("epochs_completed")
+                                if actual_batch_size and requested_batch_size and actual_batch_size != requested_batch_size:
+                                    msg = (
+                                        f"  [OOM retry used] {spec['key']}: "
+                                        f"batch_size {requested_batch_size} -> {actual_batch_size}"
+                                    )
+                                    print(msg)
+                                    f.write(msg + "\n")
+                                if stopped_by_memory_error:
+                                    msg = (
+                                        f"  [OOM accepted] {spec['key']}: "
+                                        f"epochs_completed={epochs_completed}, current weights used"
+                                    )
+                                    print(msg)
+                                    f.write(msg + "\n")
                             plotter.plot_loss_history(history, EPOCH_NUM, spec["label"],
                                                       fold, SAVE_PATH, snr_value)
 
@@ -591,6 +610,7 @@ def main():
                                 errors_for_weight[spec["key"]] = 1.0 - r2_score(y_val, val_preds[spec["key"]])
 
                             del model
+                            del history
                             K.clear_session()
                             gc.collect()
 
@@ -655,7 +675,10 @@ def main():
                         f.write("-" * 30 + "\n")
 
                         fold += 1
-                        del x_train, x_val, y_train, y_val, y_fit_scaled
+                        del x_train, x_val, y_train, y_val
+                        del x_fit, y_fit, x_inner, y_inner, y_fit_scaled
+                        del x_fit_pca, x_val_pca, x_inner_pca
+                        del val_preds, preds_all, ensemble_pred
                         K.clear_session()
                         gc.collect()
 
