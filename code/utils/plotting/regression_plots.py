@@ -54,16 +54,39 @@ class RegressionPlotter:
         """モデル別の指標を棒グラフで保存 (R2 / 連続スコア ROC-AUC など)。"""
         plt.figure(figsize=(8, 6))
         colors = ['c', 'cadetblue', 'skyblue', 'dodgerblue', 'steelblue', 'lightblue']
-        plt.bar(labels, values, color=colors[:len(labels)],
+        display_label_aliases = {
+            "RandomForest": "RandomForest",
+            "CNN+Tf (AttnPool)": "Conformer",
+            "CNN+Tf (GAP)": "CNN+Tf GAP",
+        }
+        display_labels = [display_label_aliases.get(label, label) for label in labels]
+        plt.bar(display_labels, values, color=colors[:len(labels)],
                 yerr=errors, capsize=5, width=0.5)
         plt.ylim(0.0, 1.05)
-        plt.ylabel(metric_name, fontsize=20)
-        plt.xticks(fontsize=13, rotation=20)
+        display_metric_name = metric_name
+        if metric_name == "R2 Score":
+            display_metric_name = "R\u00b2 Score"
+            ylabel_size = 23
+            xtick_size = 20
+        elif metric_name.startswith("AUC"):
+            display_metric_name = "AUC"
+            ylabel_size = 20
+            xtick_size = 19
+        else:
+            ylabel_size = 20
+            xtick_size = 19
+        plt.ylabel(display_metric_name, fontsize=ylabel_size)
+        plt.xticks(fontsize=xtick_size)
         plt.yticks(fontsize=18)
         for i, v in enumerate(values):
             if not np.isnan(v):
-                plt.text(i, 0.03, f'{v:.3f}', ha='center', va='bottom',
-                         fontsize=18, color='black', rotation=90)
+                err = errors[i] if errors is not None and i < len(errors) else np.nan
+                if np.isnan(err):
+                    text = f'{v:.4f}'
+                else:
+                    text = f'{v:.4f} \u00b1 {err:.4f}'
+                plt.text(i, 0.03, text, ha='center', va='bottom',
+                         fontsize=25, color='black', rotation=90)
         out_dir = os.path.join(save_path, "bar")
         os.makedirs(out_dir, exist_ok=True)
         safe = _safe_stem(metric_name)

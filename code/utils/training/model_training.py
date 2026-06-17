@@ -65,6 +65,7 @@ class ModelTrainer:
                 )
             lr = spec["lr"]
             requested_batch_size = int(spec["batch_size"])
+            use_early_stopping = bool(spec.get("early_stopping", True))
             min_batch_size = int(spec.get("min_batch_size", 8))
             accept_partial_min_epochs = int(spec.get("accept_partial_min_epochs", 100))
             batch_size = requested_batch_size
@@ -77,16 +78,17 @@ class ModelTrainer:
                 model.compile(optimizer=SGD(learning_rate=lr, momentum=0.9, clipnorm=1.0),
                               loss='mean_squared_error')
                 lightweight_history = LightweightHistory()
-                callbacks = [
-                    lightweight_history,
-                    EarlyStopping(
-                        monitor="loss",
-                        min_delta=float(spec.get("early_stopping_min_delta", 1e-4)),
-                        patience=int(spec.get("early_stopping_patience", 20)),
-                        restore_best_weights=False,
-                        verbose=1,
+                callbacks = [lightweight_history]
+                if use_early_stopping:
+                    callbacks.append(
+                        EarlyStopping(
+                            monitor="loss",
+                            min_delta=float(spec.get("early_stopping_min_delta", 1e-4)),
+                            patience=int(spec.get("early_stopping_patience", 20)),
+                            restore_best_weights=False,
+                            verbose=1,
+                        )
                     )
-                ]
                 try:
                     history = model.fit(
                         x_fit, y_fit_scaled,
@@ -99,6 +101,7 @@ class ModelTrainer:
                     history.params["requested_batch_size"] = requested_batch_size
                     history.params["actual_batch_size"] = batch_size
                     history.params["epochs_completed"] = lightweight_history.epochs_completed
+                    history.params["early_stopping"] = use_early_stopping
                     return model, history
                 except Exception as exc:
                     if not _is_memory_error(exc):
@@ -108,6 +111,7 @@ class ModelTrainer:
                         lightweight_history.params["requested_batch_size"] = requested_batch_size
                         lightweight_history.params["actual_batch_size"] = batch_size
                         lightweight_history.params["epochs_completed"] = lightweight_history.epochs_completed
+                        lightweight_history.params["early_stopping"] = use_early_stopping
                         lightweight_history.params["stopped_by_memory_error"] = True
                         print(
                             f"[OOM accepted] {spec.get('key', spec.get('label'))}: "

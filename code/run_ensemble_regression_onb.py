@@ -74,7 +74,7 @@ from utils.plotting.regression_plots import RegressionPlotter
 #                              変数の指定
 #######################################################################
 
-EPOCH_NUM = 500
+EPOCH_NUM = 10
 DIVISIONS = 5            # 交差検証の fold 数
 COLOR_CHANNEL = 1
 RANDOM_SEED = 42
@@ -99,7 +99,7 @@ if SMOKE_TEST:
 # 未設定の実験日は、誤った ONB 評価を出さないよう実行前に止める。
 THRESHOLD_BY_EXPERIMENT = {
     "2025.07.09_0.3_1": 275174.6641,
-    # "2025.06.11_0.3_2": TODO,
+    # "2025.06.11_0.3_2": 266907.6965,
     # "2025.06.18_0.3_3": TODO,
 }
 REQUIRE_EXPERIMENT_THRESHOLD = True
@@ -121,13 +121,14 @@ RF_FIXED_PARAMS = {
     "colsample_bynode": 0.6,
 }
 
-# Next confirmation run after the 42-point Keras tuning.
+# Old-code comparison run after the 42-point Keras tuning.
 # The saved tuning results indicate:
 #   cnntf_v1 best regression: lr=0.01, batch_size=24
 #   alexnet  best regression: lr=0.005, batch_size=32
 PARAMETER_SETS = [
     {
-        "name": "bestreg_ct01b24_ax005b32",
+        "name": "legacy",
+        "default_keras": {"early_stopping": False},
         "models": {
             "rf": dict(RF_FIXED_PARAMS),
             "cnntf_v1": {"lr": 0.01, "batch_size": 24},
@@ -150,27 +151,27 @@ RUN_NAME_SUFFIX = os.environ.get("RUN_NAME_SUFFIX", "").strip()
 # 周波数解析のパラメータ
 CHUNK = 1
 
-# まずは THRESHOLD が確定している実験日で、4 maxfreq x 7 noise = 28 条件を評価する。
-# 3実験日で評価するときは、THRESHOLD_BY_EXPERIMENT を埋めてから下の2行を追加する。
+# 旧コードとの比較用に、いったん旧コードが見ていた 22kHz/no_noise だけを評価する。
+# 複数条件へ戻すときは、下の2リストに maxfreq/noise 条件を追加する。
 EXPERIMENT_DIR_NAMES = [
     "2025.07.09_0.3_1",
     # "2025.06.11_0.3_2",
     # "2025.06.18_0.3_3",
 ]
 MAX_FREQ_HZ_LIST = [
-    "maxfreq=3kHz",
-    "maxfreq=5kHz",
-    "maxfreq=10kHz",
+    # "maxfreq=3kHz",
+    # "maxfreq=5kHz",
+    # "maxfreq=10kHz",
     "maxfreq=22kHz",
 ]
 NOISE_DIR_NAMES = [
     "heatflux_no_noise",
-    "heatflux_SNR=0",
-    "heatflux_SNR=-4",
-    "heatflux_SNR=-8",
-    "heatflux_SNR=-12",
-    "heatflux_SNR=-16",
-    "heatflux_SNR=-20",
+    # "heatflux_SNR=0",
+    # "heatflux_SNR=-4",
+    # "heatflux_SNR=-8",
+    # "heatflux_SNR=-12",
+    # "heatflux_SNR=-16",
+    # "heatflux_SNR=-20",
 ]
 
 # 既知の npy 生成フォルダ。None の実験日は自動検出に任せる。
@@ -241,7 +242,7 @@ MODEL_SPECS = [
 #    "val_fold_legacy" : 旧コードと同じく検証 fold 誤差から重みを決める。
 #                        リークありなので新たな主張には使わない。旧結果の再現用。
 # ===================================================================
-WEIGHT_STRATEGY = "fixed"
+WEIGHT_STRATEGY = "val_fold_legacy"
 FIXED_WEIGHTS = {"rf": 0.90, "cnntf_v1": 0.05, "alexnet": 0.05}
 INNER_HOLDOUT_FRAC = 0.2   # inner_holdout のときの内部検証の割合
 
@@ -375,8 +376,8 @@ def resolve_parameter_set(enabled_specs, parameter_set):
                     f"PARAMETER_SETS entry '{parameter_set.get('name', '<unnamed>')}' "
                     f"does not define {missing} for {resolved_spec['key']}."
             )
-            resolved_spec["lr"] = params["lr"]
-            resolved_spec["batch_size"] = params["batch_size"]
+            for name, value in params.items():
+                resolved_spec[name] = value
         elif resolved_spec["kind"] == "sklearn":
             params = dict(per_model.get(resolved_spec["key"], {}))
             if params:
@@ -405,6 +406,7 @@ def model_param_summary(resolved_specs):
             summary[spec["key"]] = {
                 "lr": spec["lr"],
                 "batch_size": spec["batch_size"],
+                "early_stopping": spec.get("early_stopping", True),
             }
         else:
             summary[spec["key"]] = {
@@ -665,13 +667,13 @@ def main():
                                 f"R2_high={m.get('r2_high', float('nan')):.4f} "
                                 f"RMSE_onb={m.get('rmse_onb', float('nan')):.1f} "
                                 f"(n_onb={m.get('n_onb', 0)}) | "
+                                f"AUC_bin={m.get('auc_binary', float('nan')):.4f} "
                                 f"ROC_cont={m.get('roc_auc_cont', float('nan')):.4f} "
                                 f"PR_cont={m.get('pr_auc_cont', float('nan')):.4f} | "
                                 f"Acc={m.get('accuracy', float('nan')):.4f} "
                                 f"Prec={m.get('precision', float('nan')):.4f} "
                                 f"Rec={m.get('recall', float('nan')):.4f} "
-                                f"F1={m.get('f1', float('nan')):.4f} "
-                                f"AUC_bin={m.get('auc_binary', float('nan')):.4f}\n")
+                                f"F1={m.get('f1', float('nan')):.4f}\n")
                         f.write("-" * 30 + "\n")
 
                         fold += 1
@@ -688,8 +690,8 @@ def main():
                     summary_metrics = [
                         "r2", "rmse_all", "mae_all", "r2_high", "rmse_high", "mae_high",
                         "rmse_onb", "mae_onb",
-                        "roc_auc_cont", "pr_auc_cont",
-                        "accuracy", "precision", "recall", "f1", "auc_binary",
+                        "auc_binary", "roc_auc_cont", "pr_auc_cont",
+                        "accuracy", "precision", "recall", "f1",
                     ]
                     for key in all_keys:
                         f.write(f"  [{label_of[key]}]\n")
@@ -707,14 +709,14 @@ def main():
                             [fold_num] + [f"{float(weights.get(key, 0.0)):.10g}" for key in model_keys]
                         )
 
-                # --- 棒グラフ (モデル別: R2 と 連続スコア ROC-AUC) ---
+                # --- 棒グラフ (モデル別: R2 と旧コード互換の二値化後 AUC) ---
                 labels = [label_of[k] for k in all_keys]
                 r2_means = [metrics.mean_se(store[k]["r2"])[0] for k in all_keys]
                 r2_ses = [metrics.mean_se(store[k]["r2"])[1] for k in all_keys]
-                roc_means = [metrics.mean_se(store[k]["roc_auc_cont"])[0] for k in all_keys]
-                roc_ses = [metrics.mean_se(store[k]["roc_auc_cont"])[1] for k in all_keys]
+                auc_bin_means = [metrics.mean_se(store[k]["auc_binary"])[0] for k in all_keys]
+                auc_bin_ses = [metrics.mean_se(store[k]["auc_binary"])[1] for k in all_keys]
                 plotter.plot_bar("R2 Score", labels, r2_means, r2_ses, EPOCH_NUM, SAVE_PATH, snr_value)
-                plotter.plot_bar("ROC-AUC (continuous)", labels, roc_means, roc_ses,
+                plotter.plot_bar("AUC (binary legacy)", labels, auc_bin_means, auc_bin_ses,
                                  EPOCH_NUM, SAVE_PATH, snr_value)
 
                 # --- 指標 CSV (fold 平均をモデル別に保存。後で比較しやすくする) ---
