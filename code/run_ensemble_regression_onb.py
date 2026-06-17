@@ -51,6 +51,7 @@ import random
 from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
+from pprint import pformat
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -73,11 +74,146 @@ from utils.plotting.regression_plots import RegressionPlotter
 #######################################################################
 #                              変数の指定
 #######################################################################
+# Validation controls: edit this block first.
 
-EPOCH_NUM = 10
-DIVISIONS = 5            # 交差検証の fold 数
-COLOR_CHANNEL = 1
-RANDOM_SEED = 42
+VALIDATION_CONFIG = {
+    "run": {
+        "smoke_test": False,
+        "epochs": 10,
+        "folds": 5,
+        "smoke_epochs": 3,
+        "smoke_folds": 2,
+        "color_channel": 1,
+        "random_seed": 42,
+        "loop_parameter_sets": True,
+    },
+    "data": {
+        "experiment_root_parts": ["Pool_boiling", "Subcooling_20_degrees", "0.3"],
+        "noise_source": "waterflow",  # "waterflow" or "whitenoise"
+        "chunk_seconds": 1,
+        "experiment_names": [
+            "2025.07.09_0.3_1",
+            # "2025.06.11_0.3_2",
+            # "2025.06.18_0.3_3",
+        ],
+        "max_freq_hz_list": [
+            # "maxfreq=3kHz",
+            # "maxfreq=5kHz",
+            # "maxfreq=10kHz",
+            "maxfreq=22kHz",
+        ],
+        "noise_dir_names": [
+            "heatflux_no_noise",
+            # "heatflux_SNR=0",
+            # "heatflux_SNR=-4",
+            # "heatflux_SNR=-8",
+            # "heatflux_SNR=-12",
+            # "heatflux_SNR=-16",
+            # "heatflux_SNR=-20",
+        ],
+        "data_source_dir_by_experiment": {
+            "2025.06.11_0.3_2": "waterflow_20251126_1s",
+            "2025.06.18_0.3_3": None,
+            "2025.07.09_0.3_1": "waterflow_20251219_1s",
+        },
+        "skip_missing_datasets": False,
+    },
+    "thresholds": {
+        "by_experiment": {
+            "2025.07.09_0.3_1": 275174.6641,
+            # "2025.06.11_0.3_2": 266907.6965,
+            # "2025.06.18_0.3_3": TODO,
+        },
+        "require_experiment_threshold": True,
+        "onb_band_frac": 0.10,
+    },
+    "models": {
+        "active_model_keys": ["rf", "cnntf_v1", "alexnet"],
+        "default_model_params": {
+            "rf": {
+                "n_estimators": 300,
+                "max_depth": 8,
+                "subsample": 0.8,
+                "colsample_bynode": 0.6,
+            },
+        },
+        "parameter_sets": [
+            {
+                "name": "legacy",
+                "default_keras": {"early_stopping": False},
+                "models": {
+                    "cnntf_v1": {"lr": 0.01, "batch_size": 24},
+                    "alexnet": {"lr": 0.005, "batch_size": 32},
+                    # Add "rf": {...} here only when overriding the default RF params.
+                },
+            },
+        ],
+    },
+    "ensemble": {
+        # "simple", "fixed", "inner_holdout", or "val_fold_legacy"
+        "weight_strategy": "val_fold_legacy",
+        "fixed_weights": {"rf": 0.90, "cnntf_v1": 0.05, "alexnet": 0.05},
+        "inner_holdout_frac": 0.2,
+        "combine": "mean",  # "mean" or "min"
+    },
+    "features": {
+        "pca_components": 100,
+    },
+    "output": {
+        "save_date": os.environ.get("SAVE_DATE", datetime.now().strftime("%Y%m%d")),
+        "result_date_dir": os.environ.get("RESULT_DATE_DIR"),
+        "run_name_suffix": os.environ.get("RUN_NAME_SUFFIX", "").strip(),
+        "save_fold_predictions": True,
+    },
+}
+
+
+def _cfg(section, key):
+    return VALIDATION_CONFIG[section][key]
+
+
+def _noise_source_prefix(noise_source):
+    if noise_source in (0, "0", "whitenoise"):
+        return "whitenoise"
+    if noise_source in (1, "1", "waterflow"):
+        return "waterflow"
+    raise ValueError("noise_source must be 'waterflow' or 'whitenoise'.")
+
+
+SMOKE_TEST = _cfg("run", "smoke_test")
+EPOCH_NUM = _cfg("run", "smoke_epochs" if SMOKE_TEST else "epochs")
+DIVISIONS = _cfg("run", "smoke_folds" if SMOKE_TEST else "folds")
+COLOR_CHANNEL = _cfg("run", "color_channel")
+RANDOM_SEED = _cfg("run", "random_seed")
+FLG_ROOP = _cfg("run", "loop_parameter_sets")
+
+NOISE_SOURCE_PREFIX = _noise_source_prefix(_cfg("data", "noise_source"))
+CHUNK = _cfg("data", "chunk_seconds")
+EXPERIMENT_DIR_NAMES = _cfg("data", "experiment_names")
+MAX_FREQ_HZ_LIST = _cfg("data", "max_freq_hz_list")
+NOISE_DIR_NAMES = _cfg("data", "noise_dir_names")
+DATA_SOURCE_DIR_BY_EXPERIMENT = _cfg("data", "data_source_dir_by_experiment")
+SKIP_MISSING_DATASETS = _cfg("data", "skip_missing_datasets")
+
+THRESHOLD_BY_EXPERIMENT = _cfg("thresholds", "by_experiment")
+REQUIRE_EXPERIMENT_THRESHOLD = _cfg("thresholds", "require_experiment_threshold")
+ONB_BAND_FRAC = _cfg("thresholds", "onb_band_frac")
+
+DEFAULT_MODEL_PARAMS = _cfg("models", "default_model_params")
+PARAMETER_SETS = _cfg("models", "parameter_sets")
+ACTIVE_MODEL_KEYS = _cfg("models", "active_model_keys")
+
+WEIGHT_STRATEGY = _cfg("ensemble", "weight_strategy")
+FIXED_WEIGHTS = _cfg("ensemble", "fixed_weights")
+INNER_HOLDOUT_FRAC = _cfg("ensemble", "inner_holdout_frac")
+ENSEMBLE_COMBINE = _cfg("ensemble", "combine")
+
+PCA_COMPONENTS = _cfg("features", "pca_components")
+
+SAVE_DATE = _cfg("output", "save_date")
+RESULT_DATE_DIR = _cfg("output", "result_date_dir") or SAVE_DATE
+RUN_NAME_SUFFIX = _cfg("output", "run_name_suffix")
+SAVE_FOLD_PREDICTIONS = _cfg("output", "save_fold_predictions")
 
 
 def format_param_value(value):
@@ -90,100 +226,52 @@ def format_param_value(value):
 # 実行確認用スイッチ。
 # True にすると epoch と fold を小さくして「最後まで通るか」だけを素早く確認する。
 # 本番の評価をするときは必ず False に戻す (出力先も _smoke が付いて本番結果と混ざらない)。
-SMOKE_TEST = False
-if SMOKE_TEST:
-    EPOCH_NUM = 3
-    DIVISIONS = 2
+# Configure this in VALIDATION_CONFIG["run"].
 
 # 閾値 (沸騰開始点 ONB の熱流束) は実験日ごとに異なる。
 # 未設定の実験日は、誤った ONB 評価を出さないよう実行前に止める。
-THRESHOLD_BY_EXPERIMENT = {
-    "2025.07.09_0.3_1": 275174.6641,
-    # "2025.06.11_0.3_2": 266907.6965,
-    # "2025.06.18_0.3_3": TODO,
-}
-REQUIRE_EXPERIMENT_THRESHOLD = True
+# Configure this in VALIDATION_CONFIG["thresholds"].
 
 # ONB 近傍 band の幅 (閾値に対する相対割合)。
 # |y - THRESHOLD| <= THRESHOLD * ONB_BAND_FRAC を ONB 近傍サンプルとして
 # 別途 RMSE/MAE を見る (計画 RQ で要求されている ONB 近傍誤差に対応)。
-ONB_BAND_FRAC = 0.10
+# Configure this in VALIDATION_CONFIG["thresholds"]["onb_band_frac"].
 
 # パラメータをループさせて検証するかどうか (旧コード踏襲)
 # True runs every entry in PARAMETER_SETS. False stops after the first one.
-FLG_ROOP = True
+# Configure this in VALIDATION_CONFIG["run"]["loop_parameter_sets"].
 
 # RF is fixed while tuning the two Keras models.
-RF_FIXED_PARAMS = {
-    "n_estimators": 300,
-    "max_depth": 8,
-    "subsample": 0.8,
-    "colsample_bynode": 0.6,
-}
+# Configure this in VALIDATION_CONFIG["models"]["default_model_params"]["rf"].
 
 # Old-code comparison run after the 42-point Keras tuning.
 # The saved tuning results indicate:
 #   cnntf_v1 best regression: lr=0.01, batch_size=24
 #   alexnet  best regression: lr=0.005, batch_size=32
-PARAMETER_SETS = [
-    {
-        "name": "legacy",
-        "default_keras": {"early_stopping": False},
-        "models": {
-            "rf": dict(RF_FIXED_PARAMS),
-            "cnntf_v1": {"lr": 0.01, "batch_size": 24},
-            "alexnet": {"lr": 0.005, "batch_size": 32},
-        },
-    },
-]
+# Configure this in VALIDATION_CONFIG["models"]["parameter_sets"].
 
 # ホワイトノイズ (=0) か水流動音 (=1) か (旧コード踏襲)
 # 現在の一括評価では waterflow_* フォルダ内に no_noise と SNR 条件がある前提。
-NOISE = 1
-PREVIOUS_MODEL = False
+# Configure this in VALIDATION_CONFIG["data"]["noise_source"].
 # Default to the actual run date. Set the SAVE_DATE environment variable or
 # override this module variable when reproducing an older run.
-SAVE_DATE = os.environ.get("SAVE_DATE", datetime.now().strftime("%Y%m%d"))
+# Configure this in VALIDATION_CONFIG["output"]["save_date"].
 # 結果が増えても混ざらないように、保存先の最上位に日付フォルダを作る。
-RESULT_DATE_DIR = os.environ.get("RESULT_DATE_DIR", SAVE_DATE)
-RUN_NAME_SUFFIX = os.environ.get("RUN_NAME_SUFFIX", "").strip()
+# Configure this in VALIDATION_CONFIG["output"].
 
 # 周波数解析のパラメータ
-CHUNK = 1
+# Configure this in VALIDATION_CONFIG["data"]["chunk_seconds"].
 
 # 旧コードとの比較用に、いったん旧コードが見ていた 22kHz/no_noise だけを評価する。
 # 複数条件へ戻すときは、下の2リストに maxfreq/noise 条件を追加する。
-EXPERIMENT_DIR_NAMES = [
-    "2025.07.09_0.3_1",
-    # "2025.06.11_0.3_2",
-    # "2025.06.18_0.3_3",
-]
-MAX_FREQ_HZ_LIST = [
-    # "maxfreq=3kHz",
-    # "maxfreq=5kHz",
-    # "maxfreq=10kHz",
-    "maxfreq=22kHz",
-]
-NOISE_DIR_NAMES = [
-    "heatflux_no_noise",
-    # "heatflux_SNR=0",
-    # "heatflux_SNR=-4",
-    # "heatflux_SNR=-8",
-    # "heatflux_SNR=-12",
-    # "heatflux_SNR=-16",
-    # "heatflux_SNR=-20",
-]
+# Configure these in VALIDATION_CONFIG["data"].
 
 # 既知の npy 生成フォルダ。None の実験日は自動検出に任せる。
-DATA_SOURCE_DIR_BY_EXPERIMENT = {
-    "2025.06.11_0.3_2": "waterflow_20251126_1s",
-    "2025.06.18_0.3_3": None,
-    "2025.07.09_0.3_1": "waterflow_20251219_1s",
-}
+# Configure this in VALIDATION_CONFIG["data"]["data_source_dir_by_experiment"].
 
 # True: 未生成の実験日/maxfreq/noise があっても一括実行を続ける。
 # False: 1つでも欠けていたら実行前に止める。84条件の検証では取りこぼし防止のため False 推奨。
-SKIP_MISSING_DATASETS = False
+# Configure this in VALIDATION_CONFIG["data"]["skip_missing_datasets"].
 
 
 # ===================================================================
@@ -205,7 +293,7 @@ SKIP_MISSING_DATASETS = False
 #       3 モデル同条件     : ACTIVE_MODEL_KEYS = ["rf", "cnntf_v1", "alexnet"]
 #    None にすると各 spec の "enabled" フラグに従う (従来動作)。
 # ===================================================================
-ACTIVE_MODEL_KEYS = ["rf", "cnntf_v1", "alexnet"]
+# Active model keys are derived from VALIDATION_CONFIG above.
 
 MODEL_SPECS = [
     {
@@ -242,24 +330,21 @@ MODEL_SPECS = [
 #    "val_fold_legacy" : 旧コードと同じく検証 fold 誤差から重みを決める。
 #                        リークありなので新たな主張には使わない。旧結果の再現用。
 # ===================================================================
-WEIGHT_STRATEGY = "val_fold_legacy"
-FIXED_WEIGHTS = {"rf": 0.90, "cnntf_v1": 0.05, "alexnet": 0.05}
-INNER_HOLDOUT_FRAC = 0.2   # inner_holdout のときの内部検証の割合
+# Ensemble settings are derived from VALIDATION_CONFIG above.
 
 # アンサンブルの統合方法 ("mean" ... 重み付き平均 | "min" ... 各サンプル最小値)
-ENSEMBLE_COMBINE = "mean"
+# Derived from VALIDATION_CONFIG["ensemble"]["combine"].
 
 # PCA 次元 (sklearn 系モデル用)
-PCA_COMPONENTS = 100
+# Derived from VALIDATION_CONFIG["features"]["pca_components"].
 
 # 後から重み付け・ONB近傍評価をやり直せるように、foldごとの予測値を保存する。
-SAVE_FOLD_PREDICTIONS = True
+# Derived from VALIDATION_CONFIG["output"]["save_fold_predictions"].
 
 
 #### データフォルダの設定 ####
 REPO_ROOT = Path(__file__).resolve().parents[1]
-EXPERIMENT_ROOT = REPO_ROOT / "Pool_boiling" / "Subcooling_20_degrees" / "0.3"
-NOISE_SOURCE_PREFIX = "whitenoise" if NOISE == 0 else "waterflow"
+EXPERIMENT_ROOT = REPO_ROOT.joinpath(*_cfg("data", "experiment_root_parts"))
 
 # matplotlib の設定
 plt.rcParams['font.family'] = 'Times New Roman'
@@ -379,7 +464,8 @@ def resolve_parameter_set(enabled_specs, parameter_set):
             for name, value in params.items():
                 resolved_spec[name] = value
         elif resolved_spec["kind"] == "sklearn":
-            params = dict(per_model.get(resolved_spec["key"], {}))
+            params = dict(DEFAULT_MODEL_PARAMS.get(resolved_spec["key"], {}))
+            params.update(per_model.get(resolved_spec["key"], {}))
             if params:
                 resolved_spec["builder_params"] = params
         resolved.append(resolved_spec)
@@ -416,6 +502,93 @@ def model_param_summary(resolved_specs):
     return summary
 
 
+def validation_config_snapshot():
+    return {
+        "run": {
+            "smoke_test": SMOKE_TEST,
+            "epochs": EPOCH_NUM,
+            "folds": DIVISIONS,
+            "color_channel": COLOR_CHANNEL,
+            "random_seed": RANDOM_SEED,
+            "loop_parameter_sets": FLG_ROOP,
+        },
+        "data": {
+            "experiment_root": str(EXPERIMENT_ROOT),
+            "noise_source": NOISE_SOURCE_PREFIX,
+            "chunk_seconds": CHUNK,
+            "experiment_names": EXPERIMENT_DIR_NAMES,
+            "max_freq_hz_list": MAX_FREQ_HZ_LIST,
+            "noise_dir_names": NOISE_DIR_NAMES,
+            "data_source_dir_by_experiment": DATA_SOURCE_DIR_BY_EXPERIMENT,
+            "skip_missing_datasets": SKIP_MISSING_DATASETS,
+        },
+        "thresholds": {
+            "by_experiment": THRESHOLD_BY_EXPERIMENT,
+            "require_experiment_threshold": REQUIRE_EXPERIMENT_THRESHOLD,
+            "onb_band_frac": ONB_BAND_FRAC,
+        },
+        "models": {
+            "active_model_keys": ACTIVE_MODEL_KEYS,
+            "default_model_params": DEFAULT_MODEL_PARAMS,
+            "parameter_sets": PARAMETER_SETS,
+        },
+        "ensemble": {
+            "weight_strategy": WEIGHT_STRATEGY,
+            "fixed_weights": FIXED_WEIGHTS,
+            "inner_holdout_frac": INNER_HOLDOUT_FRAC,
+            "combine": ENSEMBLE_COMBINE,
+        },
+        "features": {
+            "pca_components": PCA_COMPONENTS,
+        },
+        "output": {
+            "save_date": SAVE_DATE,
+            "result_date_dir": RESULT_DATE_DIR,
+            "run_name_suffix": RUN_NAME_SUFFIX,
+            "save_fold_predictions": SAVE_FOLD_PREDICTIONS,
+        },
+    }
+
+
+def validation_config_text():
+    return pformat(validation_config_snapshot(), sort_dicts=False)
+
+
+def validate_validation_config(enabled_specs):
+    if DIVISIONS < 2:
+        raise ValueError("folds must be at least 2.")
+    if not PARAMETER_SETS:
+        raise ValueError("VALIDATION_CONFIG['models']['parameter_sets'] must not be empty.")
+    if WEIGHT_STRATEGY not in {"simple", "fixed", "inner_holdout", "val_fold_legacy"}:
+        raise ValueError(f"Unknown weight_strategy: {WEIGHT_STRATEGY}")
+    if ENSEMBLE_COMBINE not in {"mean", "min"}:
+        raise ValueError(f"Unknown ensemble combine method: {ENSEMBLE_COMBINE}")
+    if not 0 < float(INNER_HOLDOUT_FRAC) < 1:
+        raise ValueError("inner_holdout_frac must be between 0 and 1.")
+    if int(PCA_COMPONENTS) <= 0:
+        raise ValueError("pca_components must be a positive integer.")
+
+    model_keys = [spec["key"] for spec in enabled_specs]
+    if len(model_keys) != len(set(model_keys)):
+        raise ValueError(f"Duplicate active model keys: {model_keys}")
+
+    if WEIGHT_STRATEGY == "fixed":
+        missing_weights = [key for key in model_keys if key not in FIXED_WEIGHTS]
+        if missing_weights:
+            raise ValueError(f"FIXED_WEIGHTS does not define weights for: {missing_weights}")
+
+    if REQUIRE_EXPERIMENT_THRESHOLD:
+        missing_thresholds = [
+            name for name in EXPERIMENT_DIR_NAMES
+            if THRESHOLD_BY_EXPERIMENT.get(name) is None
+        ]
+        if missing_thresholds:
+            raise ValueError(
+                "Missing ONB threshold for experiments: "
+                f"{missing_thresholds}. Add them to VALIDATION_CONFIG['thresholds']['by_experiment']."
+            )
+
+
 def set_global_seed(seed):
     """Keep KFold, sklearn, and Keras runs as reproducible as practical."""
     random.seed(seed)
@@ -447,6 +620,8 @@ def main():
 
     # 出力先を混ぜないためのモデルセットのタグ。
     # Windows のパス長制限に当たりやすいため、代表的な3モデル構成は短いタグにする。
+    validate_validation_config(enabled_specs)
+
     model_keys = [s["key"] for s in enabled_specs]
     if model_keys == ["rf", "cnntf_v1", "alexnet"]:
         model_tag = "3m"
@@ -469,6 +644,8 @@ def main():
         print("### 本番モード (SMOKE_TEST = False) ###")
     print(f"有効なモデル: {[s['label'] for s in enabled_specs]}  (model_tag={model_tag})")
     print(f"重み戦略: {WEIGHT_STRATEGY} | 統合: {ENSEMBLE_COMBINE} | epoch={EPOCH_NUM} | fold={DIVISIONS}")
+    print("validation_config:")
+    print(validation_config_text())
     if WEIGHT_STRATEGY == "val_fold_legacy":
         print("【警告】val_fold_legacy は検証 fold の正解から重みを決めるリークあり方式です。"
               "旧結果の再現用にのみ使用してください。")
@@ -526,6 +703,8 @@ def main():
                 output_file = os.path.join(SAVE_PATH, f'validation_results_{snr_value}.txt')
                 with open(output_file, 'w', encoding='utf-8') as f:
                     f.write("K-fold Cross-Validation Results\n")
+                    f.write("validation_config:\n")
+                    f.write(validation_config_text() + "\n")
                     f.write(f"experiment={job['experiment_name']}\n")
                     f.write(f"data_source={job['source_dir']}\n")
                     f.write(f"data_path={data_path}\n")
