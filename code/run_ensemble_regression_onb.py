@@ -71,6 +71,7 @@ from utils.calculation.regression_detection_metrics import RegressionDetectionMe
 from utils.training.model_training import ModelTrainer
 from utils.ensemble.ensemble_weighting import EnsembleWeighting
 from utils.plotting.regression_plots import RegressionPlotter
+from utils.config.parameter_sets import expand_parameter_sets
 
 
 #######################################################################
@@ -81,8 +82,8 @@ from utils.plotting.regression_plots import RegressionPlotter
 VALIDATION_CONFIG = {
     "run": {
         "smoke_test": False,
-        "epochs": 500,
-        "folds": 5,
+        "epochs": 300,
+        "folds": 3,
         "smoke_epochs": 10,
         "smoke_folds": 2,
         "color_channel": 1,
@@ -99,21 +100,21 @@ VALIDATION_CONFIG = {
             # "2025.06.18_0.3_3",
         ],
         "max_freq_hz_list": [
-            "maxfreq=2kHz",
-            "maxfreq=3kHz",
-            "maxfreq=5kHz",
-            "maxfreq=10kHz",
-            "maxfreq=15kHz",
+            # "maxfreq=2kHz",
+            # "maxfreq=3kHz",
+            # "maxfreq=5kHz",
+            # "maxfreq=10kHz",
+            # "maxfreq=15kHz",
             "maxfreq=22kHz",
         ],
         "noise_dir_names": [
             "heatflux_no_noise",
-            "heatflux_SNR=0",
-            "heatflux_SNR=-4",
-            "heatflux_SNR=-8",
-            "heatflux_SNR=-12",
-            "heatflux_SNR=-16",
-            "heatflux_SNR=-20",
+            # "heatflux_SNR=0",
+            # "heatflux_SNR=-4",
+            # "heatflux_SNR=-8",
+            # "heatflux_SNR=-12",
+            # "heatflux_SNR=-16",
+            # "heatflux_SNR=-20",
         ],
         "data_source_dir_by_experiment": {
             "2025.06.11_0.3_2": "waterflow_20251126_1s",
@@ -141,17 +142,14 @@ VALIDATION_CONFIG = {
                 "colsample_bynode": 0.6,
             },
         },
-        "parameter_sets": [
-            {
-                "name": "legacy",
-                "default_keras": {"early_stopping": True},
-                "models": {
-                    "cnntf_v1": {"lr": 0.01, "batch_size": 24},
-                    "alexnet": {"lr": 0.005, "batch_size": 32},
-                    # Add "rf": {...} here only when overriding the default RF params.
-                },
-            },
-        ],
+        "parameter_sets": {
+            "type": "keras_grid",
+            "name_prefix": "k",
+            "default_keras": {"early_stopping": True},
+            "model_keys": ["cnntf_v1", "alexnet"],
+            "lrs": [0.05, 0.01, 0.005, 0.001, 0.0005, 0.0001, 0.00005],
+            "batch_sizes": [12, 24, 32, 64, 128],
+        },
     },
     "ensemble": {
         # "simple", "fixed", "inner_holdout", or "val_fold_legacy"
@@ -204,7 +202,7 @@ REQUIRE_EXPERIMENT_THRESHOLD = _cfg("thresholds", "require_experiment_threshold"
 ONB_BAND_FRAC = _cfg("thresholds", "onb_band_frac")
 
 DEFAULT_MODEL_PARAMS = _cfg("models", "default_model_params")
-PARAMETER_SETS = _cfg("models", "parameter_sets")
+PARAMETER_SETS = expand_parameter_sets(_cfg("models", "parameter_sets"))
 ACTIVE_MODEL_KEYS = _cfg("models", "active_model_keys")
 
 WEIGHT_STRATEGY = _cfg("ensemble", "weight_strategy")
@@ -256,10 +254,9 @@ def format_param_value(value):
 # RF is fixed while tuning the two Keras models.
 # Configure this in VALIDATION_CONFIG["models"]["default_model_params"]["rf"].
 
-# Old-code comparison run after the 42-point Keras tuning.
-# The saved tuning results indicate:
-#   cnntf_v1 best regression: lr=0.01, batch_size=24
-#   alexnet  best regression: lr=0.005, batch_size=32
+# Keras hyperparameter grid.
+# The "keras_grid" config expands to len(lrs) * len(batch_sizes) parameter sets.
+# RF keeps the default params unless an "rf" override is added manually.
 # Configure this in VALIDATION_CONFIG["models"]["parameter_sets"].
 
 # ホワイトノイズ (=0) か水流動音 (=1) か (旧コード踏襲)
