@@ -20,6 +20,15 @@ def _safe_pr_auc(y_true_bin, y_score):
     return average_precision_score(y_true_bin, y_score)
 
 
+def _has_threshold(threshold):
+    if threshold is None:
+        return False
+    try:
+        return np.isfinite(float(threshold))
+    except (TypeError, ValueError):
+        return False
+
+
 class RegressionDetectionMetrics:
     """
     熱流束回帰と ONB 検知の評価指標をまとめたクラス。
@@ -38,14 +47,25 @@ class RegressionDetectionMetrics:
         y_true = np.asarray(y_true, dtype=float).ravel()
         y_pred = np.asarray(y_pred, dtype=float).ravel()
 
-        m_high = y_true >= threshold
-        band = np.abs(y_true - threshold) <= threshold * band_frac
-
         out = {
             "r2": r2_score(y_true, y_pred),
             "rmse_all": np.sqrt(mean_squared_error(y_true, y_pred)),
             "mae_all": mean_absolute_error(y_true, y_pred),
         }
+        if not _has_threshold(threshold):
+            out.update({
+                "r2_high": np.nan,
+                "rmse_high": np.nan,
+                "mae_high": np.nan,
+                "rmse_onb": np.nan,
+                "mae_onb": np.nan,
+                "n_onb": 0,
+            })
+            return out
+
+        threshold = float(threshold)
+        m_high = y_true >= threshold
+        band = np.abs(y_true - threshold) <= threshold * band_frac
         # 高熱流束域 (沸騰域)
         if m_high.sum() >= 2:
             out["r2_high"] = r2_score(y_true[m_high], y_pred[m_high])
@@ -73,7 +93,12 @@ class RegressionDetectionMetrics:
           - roc_auc_cont : ROC-AUC (連続スコア)
           - pr_auc_cont  : PR-AUC (連続スコア)
         """
-        y_true_bin = (np.asarray(y_true).ravel() >= threshold).astype(int)
+        if not _has_threshold(threshold):
+            return {
+                "roc_auc_cont": np.nan,
+                "pr_auc_cont": np.nan,
+            }
+        y_true_bin = (np.asarray(y_true).ravel() >= float(threshold)).astype(int)
         y_score = np.asarray(y_score, dtype=float).ravel()
         return {
             "roc_auc_cont": _safe_roc_auc(y_true_bin, y_score),
@@ -86,6 +111,15 @@ class RegressionDetectionMetrics:
           - accuracy / precision / recall / f1
           - auc_binary : 旧コードと同じ二値化後 AUC (後方比較用。意味は限定的)
         """
+        if not _has_threshold(threshold):
+            return {
+                "accuracy": np.nan,
+                "precision": np.nan,
+                "recall": np.nan,
+                "f1": np.nan,
+                "auc_binary": np.nan,
+            }
+        threshold = float(threshold)
         y_true_bin = (np.asarray(y_true).ravel() >= threshold).astype(int)
         y_pred_bin = (np.asarray(y_pred).ravel() >= threshold).astype(int)
         out = {

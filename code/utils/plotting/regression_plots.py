@@ -9,6 +9,7 @@ def _safe_stem(text, max_len=32):
     aliases = {
         "RandomForest": "rf",
         "AlexNet": "alexnet",
+        "Conformer": "conformer",
         "CNN+Tf (AttnPool)": "cnntf_v1",
         "CNN+Tf (GAP)": "cnntf_v2",
         "ROC-AUC (continuous)": "roc_auc_cont",
@@ -56,6 +57,7 @@ class RegressionPlotter:
         colors = ['c', 'cadetblue', 'skyblue', 'dodgerblue', 'steelblue', 'lightblue']
         display_label_aliases = {
             "RandomForest": "RandomForest",
+            "Conformer": "Conformer",
             "CNN+Tf (AttnPool)": "Conformer",
             "CNN+Tf (GAP)": "CNN+Tf GAP",
         }
