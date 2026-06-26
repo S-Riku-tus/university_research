@@ -55,6 +55,10 @@ from datetime import datetime
 from pathlib import Path
 from pprint import pformat
 
+# Avoid grabbing most of the GPU memory before the first model fit. This also
+# makes OOM recovery by smaller batch sizes more reliable on Windows/TensorFlow.
+os.environ.setdefault("TF_FORCE_GPU_ALLOW_GROWTH", "true")
+
 import matplotlib.pyplot as plt
 import numpy as np
 import tensorflow as tf
@@ -92,14 +96,17 @@ def _env_int(name, default):
 #                              変数の指定
 #######################################################################
 # Validation controls: edit this block first.
+# Current default is a small production-like tuning run:
+# 6/18 data, 3 folds, 50 epochs, full LR/batch-size grid.
+# Use smoke_test=True only when checking that the script finishes end-to-end.
 
 VALIDATION_CONFIG = {
     "run": {
-        "smoke_test": _env_bool("SMOKE_TEST", False),
-        "epochs": _env_int("EPOCHS", 500),
-        "folds": _env_int("FOLDS", 5),
-        "smoke_epochs": _env_int("SMOKE_EPOCHS", 10),
-        "smoke_folds": _env_int("SMOKE_FOLDS", 2),
+        "smoke_test": False,
+        "epochs": 50,
+        "folds": 3,
+        "smoke_epochs": 2,
+        "smoke_folds": 2,
         "color_channel": 1,
         "random_seed": 42,
         "loop_parameter_sets": True,
@@ -173,7 +180,7 @@ VALIDATION_CONFIG = {
     "ensemble": {
         "enabled": False,
         # "simple", "fixed", "inner_holdout", or "val_fold_legacy"
-        "weight_strategy": "simple",
+        "weight_strategy": "val_fold_legacy",
         "fixed_weights": {"rf": 0.90, "cnntf_v1": 0.05, "alexnet": 0.05},
         "inner_holdout_frac": 0.2,
         "combine": "mean",  # "mean" or "min"
@@ -182,9 +189,9 @@ VALIDATION_CONFIG = {
         "pca_components": 100,
     },
     "output": {
-        "save_date": os.environ.get("SAVE_DATE", datetime.now().strftime("%Y%m%d")),
-        "result_date_dir": os.environ.get("RESULT_DATE_DIR"),
-        "run_name_suffix": os.environ.get("RUN_NAME_SUFFIX", "").strip(),
+        "save_date": datetime.now().strftime("%Y%m%d"),
+        "result_date_dir": None,
+        "run_name_suffix": "f3",
         "save_fold_predictions": True,
         "save_tuning_summary": True,
     },
@@ -450,16 +457,15 @@ def run_config_digest(parameter_set, run_specs, model_tag):
 
 
 def run_dir_name(param_tag, model_tag, run_hash):
-    suffix = f"_{safe_tag(RUN_NAME_SUFFIX, max_len=16)}" if RUN_NAME_SUFFIX else ""
-    return (
-        f"e{EPOCH_NUM}_"
-        f"{safe_tag(param_tag, max_len=16)}_"
-        f"{compact_weight_strategy_tag()}_"
-        f"{safe_tag(model_tag, max_len=12)}_"
-        f"{safe_tag(run_hash, max_len=6)}_"
-        f"{safe_tag(RUN_INSTANCE_ID, max_len=10)}"
-        f"{suffix}"
-    )
+    parts = [
+        f"e{EPOCH_NUM}",
+        safe_tag(param_tag, max_len=16),
+        compact_weight_strategy_tag(),
+        safe_tag(model_tag, max_len=12),
+    ]
+    if RUN_NAME_SUFFIX:
+        parts.append(safe_tag(RUN_NAME_SUFFIX, max_len=16))
+    return "_".join(parts)
 
 
 def has_input_files(data_path):

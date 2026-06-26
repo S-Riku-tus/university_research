@@ -24,9 +24,20 @@ class LightweightHistory(Callback):
 
 
 def _is_memory_error(exc):
+    text = " ".join(
+        str(part).lower()
+        for part in (exc, repr(exc), getattr(exc, "message", ""))
+        if part
+    )
     return (
         isinstance(exc, (tf.errors.ResourceExhaustedError, MemoryError))
         or exc.__class__.__name__ == "_ArrayMemoryError"
+        or "out of memory" in text
+        or "cuda_error_out_of_memory" in text
+        or "failed to allocate" in text
+        or "could not create cudnn handle" in text
+        or "cudnn_status_internal_error" in text
+        or "dnn library is not found" in text
     )
 
 
@@ -66,7 +77,7 @@ class ModelTrainer:
             lr = spec["lr"]
             requested_batch_size = int(spec["batch_size"])
             use_early_stopping = bool(spec.get("early_stopping", True))
-            min_batch_size = int(spec.get("min_batch_size", 8))
+            min_batch_size = int(spec.get("min_batch_size", 1))
             accept_partial_min_epochs = int(spec.get("accept_partial_min_epochs", 100))
             batch_size = requested_batch_size
             last_oom = None
