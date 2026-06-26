@@ -96,8 +96,11 @@ def _env_int(name, default):
 #                              変数の指定
 #######################################################################
 # Validation controls: edit this block first.
-# Current default is a small production-like tuning run:
-# 6/18 data, 3 folds, 50 epochs, full LR/batch-size grid.
+# Current default is a 3-model run for Conformer tuning:
+# RF and AlexNet use fixed parameters inside each generated parameter_set.
+# Conformer is expanded over the LR/batch-size grid below.
+# AlexNet is fixed to the balanced best from the 2026-06-26 result:
+# lr=0.005, batch_size=12.
 # Use smoke_test=True only when checking that the script finishes end-to-end.
 
 VALIDATION_CONFIG = {
@@ -123,8 +126,8 @@ VALIDATION_CONFIG = {
             # "2025.06.11_0.3_2",
         ],
         "max_freq_hz_list": [
-            "maxfreq=2kHz",
-            "maxfreq=3kHz",
+            # "maxfreq=2kHz",
+            # "maxfreq=3kHz",
             # "maxfreq=5kHz",
             # "maxfreq=10kHz",
             # "maxfreq=15kHz",
@@ -133,11 +136,11 @@ VALIDATION_CONFIG = {
         "noise_dir_names": [
             "heatflux_no_noise",
             # "heatflux_SNR=0",
-            "heatflux_SNR=-4",
+            # "heatflux_SNR=-4",
             # "heatflux_SNR=-8",
-            "heatflux_SNR=-12",
+            # "heatflux_SNR=-12",
             # "heatflux_SNR=-16",
-            "heatflux_SNR=-20",
+            # "heatflux_SNR=-20",
         ],
         "data_source_dir_by_experiment": {
             "2025.06.11_0.3_2": "waterflow_20251126_1s",
@@ -159,7 +162,7 @@ VALIDATION_CONFIG = {
         "onb_band_frac": 0.10,
     },
     "models": {
-        "active_model_keys": ["cnntf_v1", "alexnet"],
+        "active_model_keys": ["rf", "cnntf_v1", "alexnet"],
         "default_model_params": {
             "rf": {
                 "n_estimators": 500,
@@ -170,9 +173,22 @@ VALIDATION_CONFIG = {
         },
         "parameter_sets": {
             "type": "keras_grid",
-            "name_prefix": "k",
+            "name_prefix": "cf",
             "default_keras": {"early_stopping": True},
-            "model_keys": ["cnntf_v1", "alexnet"],
+            # Tuning targets: these models receive each lr/batch_size pair.
+            "model_keys": ["cnntf_v1"],
+            # Per-model parameters written into every generated parameter_set.
+            # Models not listed in model_keys keep these values fixed.
+            "models": {
+                "rf": {
+                    "n_estimators": 500,
+                    "max_depth": 8,
+                    "subsample": 0.8,
+                    "colsample_bynode": 0.6,
+                },
+                "cnntf_v1": {},
+                "alexnet": {"lr": 0.005, "batch_size": 12},
+            },
             "lrs": [0.05, 0.01, 0.005, 0.001, 0.0005, 0.0001, 0.00005],
             "batch_sizes": [12, 24, 32, 48, 64, 128],
         },
@@ -180,7 +196,7 @@ VALIDATION_CONFIG = {
     "ensemble": {
         "enabled": False,
         # "simple", "fixed", "inner_holdout", or "val_fold_legacy"
-        "weight_strategy": "val_fold_legacy",
+        "weight_strategy": "simple",
         "fixed_weights": {"rf": 0.90, "cnntf_v1": 0.05, "alexnet": 0.05},
         "inner_holdout_frac": 0.2,
         "combine": "mean",  # "mean" or "min"
@@ -190,8 +206,8 @@ VALIDATION_CONFIG = {
     },
     "output": {
         "save_date": datetime.now().strftime("%Y%m%d"),
-        "result_date_dir": None,
-        "run_name_suffix": "f3",
+        "result_date_dir": datetime.now().strftime("%Y%m%d") + "_cf3m",
+        "run_name_suffix": "cf3m",
         "save_fold_predictions": True,
         "save_tuning_summary": True,
     },
@@ -459,7 +475,7 @@ def run_config_digest(parameter_set, run_specs, model_tag):
 def run_dir_name(param_tag, model_tag, run_hash):
     parts = [
         f"e{EPOCH_NUM}",
-        safe_tag(param_tag, max_len=16),
+        safe_tag(param_tag, max_len=24),
         compact_weight_strategy_tag(),
         safe_tag(model_tag, max_len=12),
     ]

@@ -12,20 +12,36 @@ def build_keras_grid_parameter_sets(
     model_keys,
     name_prefix="k",
     default_keras=None,
+    models=None,
 ):
     default_keras = dict(default_keras or {"early_stopping": True})
+    base_models = {}
+    for model_key, params in (models or {}).items():
+        if params is None:
+            base_models[model_key] = {}
+        elif isinstance(params, dict):
+            base_models[model_key] = dict(params)
+        else:
+            raise TypeError(f"models['{model_key}'] must be a dict or None.")
+
     parameter_sets = []
 
     for lr in lrs:
         for batch_size in batch_sizes:
+            set_models = {
+                model_key: dict(params)
+                for model_key, params in base_models.items()
+            }
+            for model_key in model_keys:
+                params = dict(set_models.get(model_key, {}))
+                params.update({"lr": lr, "batch_size": batch_size})
+                set_models[model_key] = params
+
             parameter_sets.append(
                 {
                     "name": f"{name_prefix}_lr{_param_tag(lr)}_bs{batch_size}",
                     "default_keras": dict(default_keras),
-                    "models": {
-                        model_key: {"lr": lr, "batch_size": batch_size}
-                        for model_key in model_keys
-                    },
+                    "models": set_models,
                 }
             )
 
@@ -47,6 +63,7 @@ def expand_parameter_sets(parameter_sets_config):
             model_keys=parameter_sets_config["model_keys"],
             name_prefix=parameter_sets_config.get("name_prefix", "k"),
             default_keras=parameter_sets_config.get("default_keras"),
+            models=parameter_sets_config.get("models"),
         )
 
     raise ValueError(f"Unknown parameter_sets config type: {config_type}")
