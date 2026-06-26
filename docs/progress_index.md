@@ -7,6 +7,7 @@
 - 当たり: RF(木モデル)=TreeSHAP（回帰出力に直接）＋帯域/時間マスク、AlexNet=Grad-CAM/IG、CNN+Transformer=Attention(Rollout)+IG+パッチ/帯域マスク。共通軸は周波数帯マスクのΔR2でモデル横断比較。
 - 解釈・課題: RFのTreeSHAPは特徴が解釈可能であって初めて物理解釈になるため、②PCA→周波数帯×時間ビン特徴への置換が③説明性付与の前提（②→③の順序依存）。CNN系は入力(224,224,1)を保持しており説明性は付けやすい。
 - 並行作業: 6/18新データの`.npy`化、`waterflow_20260622_1s_1`の45,360個確認、DLチューニング環境整備（チューニング本体は⑤＝最後の上積みに位置づけ深追いしない）。
+- 確定版（3モデル＋選定理由＋評価指標）: [research_plan/2026-06-26_xai_method_and_metric_selection.md](research_plan/2026-06-26_xai_method_and_metric_selection.md)。原理を「加法的特徴属性（公理を満たす属性法）を各構造に最適化」で統一し、RF=TreeSHAP / AlexNet=IG / Conformer(CNN+Tf v1)=IG に確定。検証は層B（Deletion/Insertion AUC・sanity check・SHAP安定性・周波数帯マスクΔR2）で同一土俵採点。選定理由は①構造整合②回帰の数値分解③定番性④代替案棄却の4段で言語化。
 - 次にやること: 説明性手法の当たりを先生に確認→確定、①集計定義の明文化と回帰グラフ精査、②PCA中身確認と解釈可能特徴の試作、整い次第③でRFのTreeSHAP試行。
 
 ## 2026-06-19 発表後の研究方針更新
