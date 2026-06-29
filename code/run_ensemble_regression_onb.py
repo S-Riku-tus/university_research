@@ -96,18 +96,16 @@ def _env_int(name, default):
 #                              変数の指定
 #######################################################################
 # Validation controls: edit this block first.
-# Current default is a 3-model run for Conformer tuning:
-# RF and AlexNet use fixed parameters inside each generated parameter_set.
-# Conformer is expanded over the LR/batch-size grid below.
-# AlexNet is fixed to the balanced best from the 2026-06-26 result:
-# lr=0.005, batch_size=12.
+# Current default is a narrow Conformer-only tuning run:
+# previous broad tuning found the best meaningful Conformer result around
+# lr=0.00005 and batch_size=48, so this run searches that neighborhood only.
 # Use smoke_test=True only when checking that the script finishes end-to-end.
 
 VALIDATION_CONFIG = {
     "run": {
         "smoke_test": False,
-        "epochs": 50,
-        "folds": 3,
+        "epochs": 300,
+        "folds": 2,
         "smoke_epochs": 2,
         "smoke_folds": 2,
         "color_channel": 1,
@@ -119,11 +117,12 @@ VALIDATION_CONFIG = {
         "noise_source": "waterflow",  # "waterflow" or "whitenoise"
         "chunk_seconds": 1,
         "experiment_names": [
-            # Start tuning on the new 2025-06-18 dataset. Add older
-            # experiments here later to judge parameter robustness.
-            "2025.06.18_0.3_3",
+            # Keep the Conformer tuning conditions fixed and change only the
+            # experiment here when checking whether a dataset-specific effect
+            # explains the 2025-06-18 result.
+            # "2025.06.18_0.3_3",
             # "2025.07.09_0.3_1",
-            # "2025.06.11_0.3_2",
+            "2025.06.11_0.3_2",
         ],
         "max_freq_hz_list": [
             # "maxfreq=2kHz",
@@ -162,52 +161,24 @@ VALIDATION_CONFIG = {
         "onb_band_frac": 0.10,
     },
     "models": {
-        "active_model_keys": ["rf", "cnntf_v1", "alexnet"],
-        "default_model_params": {
-            "rf": {
-                "n_estimators": 500,
-                "max_depth": 8,
-                "subsample": 0.8,
-                "colsample_bynode": 0.6,
-            },
-        },
+        "active_model_keys": ["cnntf_v1"],
         "parameter_sets": {
             "type": "keras_grid",
-            "name_prefix": "cf",
-            "default_keras": {"early_stopping": True},
             # Tuning targets: these models receive each lr/batch_size pair.
             "model_keys": ["cnntf_v1"],
-            # Per-model parameters written into every generated parameter_set.
-            # Models not listed in model_keys keep these values fixed.
-            "models": {
-                "rf": {
-                    "n_estimators": 500,
-                    "max_depth": 8,
-                    "subsample": 0.8,
-                    "colsample_bynode": 0.6,
-                },
-                "cnntf_v1": {},
-                "alexnet": {"lr": 0.005, "batch_size": 12},
-            },
-            "lrs": [0.05, 0.01, 0.005, 0.001, 0.0005, 0.0001, 0.00005],
-            "batch_sizes": [12, 24, 32, 48, 64, 128],
+            "lrs": [0.0002, 0.0001, 0.00005, 0.00002],
+            "batch_sizes": [32, 48, 64],
         },
     },
     "ensemble": {
         "enabled": False,
-        # "simple", "fixed", "inner_holdout", or "val_fold_legacy"
-        "weight_strategy": "simple",
-        "fixed_weights": {"rf": 0.90, "cnntf_v1": 0.05, "alexnet": 0.05},
-        "inner_holdout_frac": 0.2,
-        "combine": "mean",  # "mean" or "min"
     },
     "features": {
         "pca_components": 100,
     },
     "output": {
         "save_date": datetime.now().strftime("%Y%m%d"),
-        "result_date_dir": datetime.now().strftime("%Y%m%d") + "_cf3m",
-        "run_name_suffix": "cf3m",
+        "result_date_dir": datetime.now().strftime("%Y%m%d") + "_cf_only_narrow",
         "save_fold_predictions": True,
         "save_tuning_summary": True,
     },
@@ -245,21 +216,27 @@ THRESHOLD_BY_EXPERIMENT = _cfg("thresholds", "by_experiment")
 REQUIRE_EXPERIMENT_THRESHOLD = _cfg("thresholds", "require_experiment_threshold")
 ONB_BAND_FRAC = _cfg("thresholds", "onb_band_frac")
 
-DEFAULT_MODEL_PARAMS = _cfg("models", "default_model_params")
 PARAMETER_SETS = expand_parameter_sets(_cfg("models", "parameter_sets"))
 ACTIVE_MODEL_KEYS = _cfg("models", "active_model_keys")
 
-ENSEMBLE_ENABLED = _cfg("ensemble", "enabled")
-WEIGHT_STRATEGY = _cfg("ensemble", "weight_strategy")
-FIXED_WEIGHTS = _cfg("ensemble", "fixed_weights")
-INNER_HOLDOUT_FRAC = _cfg("ensemble", "inner_holdout_frac")
-ENSEMBLE_COMBINE = _cfg("ensemble", "combine")
+ENSEMBLE_CONFIG = VALIDATION_CONFIG.get("ensemble", {})
+ENSEMBLE_ENABLED = ENSEMBLE_CONFIG.get("enabled", False)
+WEIGHT_STRATEGY = ENSEMBLE_CONFIG.get("weight_strategy", "simple")
+FIXED_WEIGHTS = ENSEMBLE_CONFIG.get(
+    "fixed_weights", {"rf": 0.90, "cnntf_v1": 0.05, "alexnet": 0.05}
+)
+INNER_HOLDOUT_FRAC = ENSEMBLE_CONFIG.get("inner_holdout_frac", 0.2)
+ENSEMBLE_COMBINE = ENSEMBLE_CONFIG.get("combine", "mean")
+RESULT_MODEL_GROUP = (
+    "ensemble" if ENSEMBLE_ENABLED
+    else "conformer" if ACTIVE_MODEL_KEYS == ["cnntf_v1"]
+    else "single_model"
+)
 
 PCA_COMPONENTS = _cfg("features", "pca_components")
 
 SAVE_DATE = _cfg("output", "save_date")
 RESULT_DATE_DIR = _cfg("output", "result_date_dir") or SAVE_DATE
-RUN_NAME_SUFFIX = _cfg("output", "run_name_suffix")
 SAVE_FOLD_PREDICTIONS = _cfg("output", "save_fold_predictions")
 SAVE_TUNING_SUMMARY = _cfg("output", "save_tuning_summary")
 RUN_INSTANCE_ID = os.environ.get("RUN_ID", datetime.now().strftime("%H%M%S"))
@@ -297,12 +274,10 @@ def format_param_value(value):
 # True runs every entry in PARAMETER_SETS. False stops after the first one.
 # Configure this in VALIDATION_CONFIG["run"]["loop_parameter_sets"].
 
-# RF is fixed while tuning the two Keras models.
-# Configure this in VALIDATION_CONFIG["models"]["default_model_params"]["rf"].
-
-# Keras hyperparameter grid.
+# Hyperparameter grid.
 # The "keras_grid" config expands to len(lrs) * len(batch_sizes) parameter sets.
-# RF keeps the default params unless an "rf" override is added manually.
+# Models listed in "model_keys" receive each grid value; other models keep the
+# values written in "models".
 # Configure this in VALIDATION_CONFIG["models"]["parameter_sets"].
 
 # ホワイトノイズ (=0) か水流動音 (=1) か (旧コード踏襲)
@@ -472,15 +447,14 @@ def run_config_digest(parameter_set, run_specs, model_tag):
     }, length=6)
 
 
-def run_dir_name(param_tag, model_tag, run_hash):
+def run_dir_name(param_tag, model_tag):
     parts = [
         f"e{EPOCH_NUM}",
         safe_tag(param_tag, max_len=24),
-        compact_weight_strategy_tag(),
         safe_tag(model_tag, max_len=12),
     ]
-    if RUN_NAME_SUFFIX:
-        parts.append(safe_tag(RUN_NAME_SUFFIX, max_len=16))
+    if ENSEMBLE_ENABLED:
+        parts.append(compact_weight_strategy_tag())
     return "_".join(parts)
 
 
@@ -523,7 +497,7 @@ def build_dataset_jobs():
                     "snr_value": snr_value_from_noise_dir(noise_dir_name),
                     "data_path": data_path,
                     "save_base_path": (
-                        experiment_root / "regression_result" / "npy" / "ensemble" / RESULT_DATE_DIR
+                        experiment_root / "regression_result" / "npy" / RESULT_MODEL_GROUP / RESULT_DATE_DIR
                     ),
                 }
                 if REQUIRE_EXPERIMENT_THRESHOLD and threshold is None:
@@ -563,7 +537,7 @@ def resolve_parameter_set(enabled_specs, parameter_set):
             for name, value in params.items():
                 resolved_spec[name] = value
         elif resolved_spec["kind"] == "sklearn":
-            params = dict(DEFAULT_MODEL_PARAMS.get(resolved_spec["key"], {}))
+            params = {}
             params.update(per_model.get(resolved_spec["key"], {}))
             if params:
                 resolved_spec["builder_params"] = params
@@ -620,8 +594,8 @@ def write_run_manifest(save_path, job, parameter_set, run_specs,
         "run_hash": run_hash,
         "run_dir": run_dir,
         "folder_naming": {
-            "scheme": "e{epochs}_{param}_{weight}_{models}_{hash}_{run_id}",
-            "reason": "Keep Windows paths short while avoiding collisions between reruns.",
+            "scheme": "e{epochs}_{param}_{models}[_{weight_when_ensemble_enabled}]",
+            "reason": "Keep Windows paths short while keeping parameter folders readable.",
             "details": "Full conditions are stored in this manifest and validation_results_*.txt.",
         },
         "dataset": {
@@ -657,6 +631,7 @@ def validation_config_snapshot():
         },
         "data": {
             "experiment_root": str(EXPERIMENT_ROOT),
+            "result_model_group": RESULT_MODEL_GROUP,
             "noise_source": NOISE_SOURCE_PREFIX,
             "chunk_seconds": CHUNK,
             "experiment_names": EXPERIMENT_DIR_NAMES,
@@ -672,7 +647,6 @@ def validation_config_snapshot():
         },
         "models": {
             "active_model_keys": ACTIVE_MODEL_KEYS,
-            "default_model_params": DEFAULT_MODEL_PARAMS,
             "parameter_sets": PARAMETER_SETS,
         },
         "ensemble": {
@@ -688,7 +662,6 @@ def validation_config_snapshot():
         "output": {
             "save_date": SAVE_DATE,
             "result_date_dir": RESULT_DATE_DIR,
-            "run_name_suffix": RUN_NAME_SUFFIX,
             "run_instance_id": RUN_INSTANCE_ID,
             "save_fold_predictions": SAVE_FOLD_PREDICTIONS,
             "save_tuning_summary": SAVE_TUNING_SUMMARY,
@@ -916,7 +889,7 @@ def main():
                 param_tag = parameter_set_tag(parameter_set, run_specs)
                 param_summary = model_param_summary(run_specs)
                 run_hash = run_config_digest(parameter_set, run_specs, model_tag)
-                run_dir = run_dir_name(param_tag, model_tag, run_hash)
+                run_dir = run_dir_name(param_tag, model_tag)
                 print(f"parameter_set={parameter_set.get('name', param_tag)} | model_params={param_summary}")
                 print(f"run_dir={run_dir}")
                 SAVE_PATH = os.path.join(

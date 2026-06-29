@@ -10,11 +10,10 @@ def build_keras_grid_parameter_sets(
     lrs,
     batch_sizes,
     model_keys,
-    name_prefix="k",
     default_keras=None,
     models=None,
 ):
-    default_keras = dict(default_keras or {"early_stopping": True})
+    default_keras = dict(default_keras or {})
     base_models = {}
     for model_key, params in (models or {}).items():
         if params is None:
@@ -37,13 +36,13 @@ def build_keras_grid_parameter_sets(
                 params.update({"lr": lr, "batch_size": batch_size})
                 set_models[model_key] = params
 
-            parameter_sets.append(
-                {
-                    "name": f"{name_prefix}_lr{_param_tag(lr)}_bs{batch_size}",
-                    "default_keras": dict(default_keras),
-                    "models": set_models,
-                }
-            )
+            parameter_set = {
+                "name": f"lr{_param_tag(lr)}_bs{batch_size}",
+                "models": set_models,
+            }
+            if default_keras:
+                parameter_set["default_keras"] = dict(default_keras)
+            parameter_sets.append(parameter_set)
 
     return parameter_sets
 
@@ -61,7 +60,6 @@ def expand_parameter_sets(parameter_sets_config):
             lrs=parameter_sets_config["lrs"],
             batch_sizes=parameter_sets_config["batch_sizes"],
             model_keys=parameter_sets_config["model_keys"],
-            name_prefix=parameter_sets_config.get("name_prefix", "k"),
             default_keras=parameter_sets_config.get("default_keras"),
             models=parameter_sets_config.get("models"),
         )
