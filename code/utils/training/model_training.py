@@ -51,7 +51,7 @@ class ModelTrainer:
     def __init__(self, random_seed=42):
         self.random_seed = random_seed
 
-    def make_pca(self, x_fit, x_other_list, n_components):
+    def make_pca(self, x_fit, x_other_list, n_components, return_pca=False):
         """sklearn 系モデル用に平坦化 + PCA。学習データのみで fit する。"""
         x_fit_flat = x_fit.reshape(x_fit.shape[0], -1)
         pca = PCA(n_components=min(n_components, x_fit_flat.shape[0], x_fit_flat.shape[1]),
@@ -63,6 +63,8 @@ class ModelTrainer:
                 others.append(None)
             else:
                 others.append(pca.transform(x_other.reshape(x_other.shape[0], -1)))
+        if return_pca:
+            return x_fit_pca, others, pca
         return x_fit_pca, others
 
     def train_one_model(self, spec, mm, x_fit, y_fit_scaled,

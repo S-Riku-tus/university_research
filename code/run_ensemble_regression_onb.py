@@ -76,6 +76,7 @@ from utils.training.model_training import ModelTrainer
 from utils.ensemble.ensemble_weighting import EnsembleWeighting
 from utils.plotting.regression_plots import RegressionPlotter
 from utils.config.parameter_sets import expand_parameter_sets
+from utils.explainability.training_integration import maybe_explain_trained_model
 
 
 def _env_bool(name, default=False):
@@ -96,8 +97,9 @@ def _env_int(name, default):
 #                              変数の指定
 #######################################################################
 # Validation controls: edit this block first.
-# Current default runs the three selected CNN+Transformer v2 GAP candidates
-# across 3 experiment days, 6 max-frequency settings, and 7 noise conditions.
+# Current default runs the selected CNN+Transformer v2 GAP parameter over the
+# full 3-experiment x 6-frequency x 7-noise grid. Explainability is integrated
+# below, but disabled by default because IG/Grad-CAM on every condition is slow.
 # The architecture is fixed in MODEL_SPECS. Use smoke_test=True only when
 # checking that the script finishes end-to-end.
 
@@ -105,7 +107,7 @@ VALIDATION_CONFIG = {
     "run": {
         "smoke_test": False,
         "epochs": 300,
-        "folds": 5,
+        "folds": 3,
         "smoke_epochs": 2,
         "smoke_folds": 2,
         "color_channel": 1,
@@ -161,27 +163,9 @@ VALIDATION_CONFIG = {
         "active_model_keys": ["cnntf_v2_gap"],
         "parameter_sets": [
             {
-                "name": "r2_best_lr0p001_bs12",
-                "models": {
-                    "cnntf_v2_gap": {"lr": 0.001, "batch_size": 12},
-                },
-                "default_keras": {
-                    "fit_verbose": 1,
-                },
-            },
-            {
-                "name": "balanced_lr0p0005_bs32",
+                "name": "lr0p0005_bs32",
                 "models": {
                     "cnntf_v2_gap": {"lr": 0.0005, "batch_size": 32},
-                },
-                "default_keras": {
-                    "fit_verbose": 1,
-                },
-            },
-            {
-                "name": "r2_onb_lr0p0005_bs12",
-                "models": {
-                    "cnntf_v2_gap": {"lr": 0.0005, "batch_size": 12},
                 },
                 "default_keras": {
                     "fit_verbose": 1,
@@ -197,10 +181,20 @@ VALIDATION_CONFIG = {
     },
     "output": {
         "save_date": datetime.now().strftime("%Y%m%d"),
-        "result_date_dir": datetime.now().strftime("%Y%m%d") + "_v2gap_5fold_3exp_6freq_7noise",
+        "result_date_dir": datetime.now().strftime("%Y%m%d") + "_v2gap_lr0p0005_bs32_full_grid",
         "save_fold_predictions": True,
         "save_tuning_summary": True,
         "resume_completed_runs": True,
+    },
+    "explainability": {
+        # Set True when you want explanations to be saved during training.
+        # For the full grid, start with target_folds=[1] and a small sample count.
+        "enabled": False,
+        "model_keys": ["cnntf_v2_gap"],
+        "target_folds": [1],
+        "max_samples_per_fold": 3,
+        "ig_steps": 32,
+        "methods": ["integrated_gradients", "grad_cam", "occlusion"],
     },
 }
 
@@ -263,6 +257,8 @@ SAVE_TUNING_SUMMARY = _cfg("output", "save_tuning_summary")
 RESUME_COMPLETED_RUNS = _cfg("output", "resume_completed_runs")
 RUN_INSTANCE_ID = os.environ.get("RUN_ID", datetime.now().strftime("%H%M%S"))
 FOLD_PREDICTIONS_DIR_NAME = "fold_pred"
+EXPLAINABILITY_CONFIG = VALIDATION_CONFIG.get("explainability", {})
+EXPLAINABILITY_ENABLED = EXPLAINABILITY_CONFIG.get("enabled", False)
 
 WEIGHT_STRATEGY_TAGS = {
     "simple": "simp",
@@ -728,6 +724,7 @@ def validation_config_snapshot():
             "save_tuning_summary": SAVE_TUNING_SUMMARY,
             "resume_completed_runs": RESUME_COMPLETED_RUNS,
         },
+        "explainability": EXPLAINABILITY_CONFIG,
     }
 
 
@@ -1060,9 +1057,14 @@ def main():
                         y_fit_scaled = scaler.fit_transform(y_fit.reshape(-1, 1))
 
                         # sklearn 系モデル用の PCA (学習データのみで fit)
+                        pca_model = None
                         if use_sklearn:
-                            x_fit_pca, (x_val_pca, x_inner_pca) = trainer.make_pca(
-                                x_fit, [x_val, x_inner], PCA_COMPONENTS)
+                            if EXPLAINABILITY_ENABLED:
+                                x_fit_pca, (x_val_pca, x_inner_pca), pca_model = trainer.make_pca(
+                                    x_fit, [x_val, x_inner], PCA_COMPONENTS, return_pca=True)
+                            else:
+                                x_fit_pca, (x_val_pca, x_inner_pca) = trainer.make_pca(
+                                    x_fit, [x_val, x_inner], PCA_COMPONENTS)
                         else:
                             x_fit_pca = x_val_pca = x_inner_pca = None
 
@@ -1107,6 +1109,12 @@ def main():
                             # 検証 fold への予測
                             val_preds[spec["key"]] = trainer.predict_one_model(
                                 spec, model, x_val, x_val_pca, scaler)
+
+                            maybe_explain_trained_model(
+                                spec, model, scaler, x_val, y_val,
+                                val_preds[spec["key"]], threshold, SAVE_PATH,
+                                fold, max_freq_name, EXPLAINABILITY_CONFIG,
+                                pca=pca_model)
 
                             # --- 重み用の誤差 (③ 戦略ごとにリークしない/する を切替) ---
                             if WEIGHT_STRATEGY == "inner_holdout":
@@ -1190,6 +1198,7 @@ def main():
                         fold += 1
                         del x_train, x_val, y_train, y_val
                         del x_fit, y_fit, x_inner, y_inner, y_fit_scaled
+                        del pca_model
                         del x_fit_pca, x_val_pca, x_inner_pca
                         del val_preds, preds_all, ensemble_pred
                         K.clear_session()
