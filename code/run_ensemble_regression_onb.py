@@ -96,10 +96,10 @@ def _env_int(name, default):
 #                              変数の指定
 #######################################################################
 # Validation controls: edit this block first.
-# Current default re-checks the three best CNN+Transformer v2 GAP candidates on
-# the 2025.06.18_0.3_3 dataset with 5-fold CV. The architecture is fixed in
-# MODEL_SPECS. Use smoke_test=True only when checking that the script finishes
-# end-to-end.
+# Current default runs the three selected CNN+Transformer v2 GAP candidates
+# across 3 experiment days, 6 max-frequency settings, and 7 noise conditions.
+# The architecture is fixed in MODEL_SPECS. Use smoke_test=True only when
+# checking that the script finishes end-to-end.
 
 VALIDATION_CONFIG = {
     "run": {
@@ -118,25 +118,25 @@ VALIDATION_CONFIG = {
         "chunk_seconds": 1,
         "experiment_names": [
             "2025.06.18_0.3_3",
-            # "2025.07.09_0.3_1",
-            # "2025.06.11_0.3_2",
+            "2025.07.09_0.3_1",
+            "2025.06.11_0.3_2",
         ],
         "max_freq_hz_list": [
-            # "maxfreq=2kHz",
-            # "maxfreq=3kHz",
-            # "maxfreq=5kHz",
-            # "maxfreq=10kHz",
-            # "maxfreq=15kHz",
+            "maxfreq=2kHz",
+            "maxfreq=3kHz",
+            "maxfreq=5kHz",
+            "maxfreq=10kHz",
+            "maxfreq=15kHz",
             "maxfreq=22kHz",
         ],
         "noise_dir_names": [
             "heatflux_no_noise",
-            # "heatflux_SNR=0",
-            # "heatflux_SNR=-4",
-            # "heatflux_SNR=-8",
-            # "heatflux_SNR=-12",
-            # "heatflux_SNR=-16",
-            # "heatflux_SNR=-20",
+            "heatflux_SNR=0",
+            "heatflux_SNR=-4",
+            "heatflux_SNR=-8",
+            "heatflux_SNR=-12",
+            "heatflux_SNR=-16",
+            "heatflux_SNR=-20",
         ],
         "data_source_dir_by_experiment": {
             "2025.06.11_0.3_2": "waterflow_20260629_1s",
@@ -197,7 +197,7 @@ VALIDATION_CONFIG = {
     },
     "output": {
         "save_date": datetime.now().strftime("%Y%m%d"),
-        "result_date_dir": datetime.now().strftime("%Y%m%d") + "_v2gap_5fold_candidates",
+        "result_date_dir": datetime.now().strftime("%Y%m%d") + "_v2gap_5fold_3exp_6freq_7noise",
         "save_fold_predictions": True,
         "save_tuning_summary": True,
         "resume_completed_runs": True,
