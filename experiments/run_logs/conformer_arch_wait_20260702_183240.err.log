@@ -1,0 +1,12 @@
+2026-07-02 18:32:44.498903: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2026-07-02 18:32:44.938093: W tensorflow/core/common_runtime/gpu/gpu_bfc_allocator.cc:42] Overriding orig_value setting because the TF_FORCE_GPU_ALLOW_GROWTH environment variable is set. Original config value was 0.
+2026-07-02 18:32:45.003256: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1532] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 21338 MB memory:  -> device: 0, name: NVIDIA GeForce RTX 4090, pci bus id: 0000:01:00.0, compute capability: 8.9
+2026-07-02 18:32:50.940408: I tensorflow/stream_executor/cuda/cuda_dnn.cc:384] Loaded cuDNN version 8201
+2026-07-02 18:32:52.673703: I tensorflow/stream_executor/cuda/cuda_blas.cc:1786] TensorFloat-32 will be used for the matrix multiplication. This will only be logged once.
+Traceback (most recent call last):
+  File "C:\Users\Casper4\Python\ueki\shibasaki\Œ¤‹†\code\run_ensemble_regression_onb.py", line 1226, in <module>
+    main()
+  File "C:\Users\Casper4\Python\ueki\shibasaki\Œ¤‹†\code\run_ensemble_regression_onb.py", line 1107, in main
+    with open(pred_csv, "w", newline="", encoding="utf-8") as pf:
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\Œ¤‹†\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\conformer\\20260702_conformer_arch\\heatflux_no_noise\\maxfreq=22kHz\\e300_t28_d128_ff512_k15_b3_conformer\\fold_predictions\\pred_f1_no_noise.csv'

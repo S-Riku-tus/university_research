@@ -96,16 +96,15 @@ def _env_int(name, default):
 #                              変数の指定
 #######################################################################
 # Validation controls: edit this block first.
-# Current default is a narrow Conformer-only tuning run:
-# previous broad tuning found the best meaningful Conformer result around
-# lr=0.00005 and batch_size=48, so this run searches that neighborhood only.
+# Current default tunes the AlexNet-front-end CNN+Transformer v2 GAP model on
+# the 2025.07.09_0.3_1 dataset. The architecture is fixed in MODEL_SPECS.
 # Use smoke_test=True only when checking that the script finishes end-to-end.
 
 VALIDATION_CONFIG = {
     "run": {
         "smoke_test": False,
         "epochs": 300,
-        "folds": 2,
+        "folds": 3,
         "smoke_epochs": 2,
         "smoke_folds": 2,
         "color_channel": 1,
@@ -117,12 +116,9 @@ VALIDATION_CONFIG = {
         "noise_source": "waterflow",  # "waterflow" or "whitenoise"
         "chunk_seconds": 1,
         "experiment_names": [
-            # Keep the Conformer tuning conditions fixed and change only the
-            # experiment here when checking whether a dataset-specific effect
-            # explains the 2025-06-18 result.
-            # "2025.06.18_0.3_3",
+            "2025.06.18_0.3_3",
             # "2025.07.09_0.3_1",
-            "2025.06.11_0.3_2",
+            # "2025.06.11_0.3_2",
         ],
         "max_freq_hz_list": [
             # "maxfreq=2kHz",
@@ -142,8 +138,8 @@ VALIDATION_CONFIG = {
             # "heatflux_SNR=-20",
         ],
         "data_source_dir_by_experiment": {
-            "2025.06.11_0.3_2": "waterflow_20251126_1s",
-            "2025.06.18_0.3_3": "waterflow_20260622_1s_1",
+            "2025.06.11_0.3_2": "waterflow_20260629_1s",
+            "2025.06.18_0.3_3": "waterflow_20260622_1s",
             "2025.07.09_0.3_1": "waterflow_20251219_1s",
         },
         "skip_missing_datasets": False,
@@ -161,13 +157,15 @@ VALIDATION_CONFIG = {
         "onb_band_frac": 0.10,
     },
     "models": {
-        "active_model_keys": ["cnntf_v1"],
+        "active_model_keys": ["cnntf_v2_gap"],
         "parameter_sets": {
             "type": "keras_grid",
-            # Tuning targets: these models receive each lr/batch_size pair.
-            "model_keys": ["cnntf_v1"],
-            "lrs": [0.0002, 0.0001, 0.00005, 0.00002],
-            "batch_sizes": [32, 48, 64],
+            "model_keys": ["cnntf_v2_gap"],
+            "lrs": [0.01, 0.005, 0.001, 0.0005, 0.0001, 0.00005],
+            "batch_sizes": [12, 24, 32, 48, 64],
+            "default_keras": {
+                "fit_verbose": 1,
+            },
         },
     },
     "ensemble": {
@@ -178,7 +176,7 @@ VALIDATION_CONFIG = {
     },
     "output": {
         "save_date": datetime.now().strftime("%Y%m%d"),
-        "result_date_dir": datetime.now().strftime("%Y%m%d") + "_cf_only_narrow",
+        "result_date_dir": datetime.now().strftime("%Y%m%d") + "_v2gap_lrbs_tune",
         "save_fold_predictions": True,
         "save_tuning_summary": True,
     },
@@ -223,13 +221,18 @@ ENSEMBLE_CONFIG = VALIDATION_CONFIG.get("ensemble", {})
 ENSEMBLE_ENABLED = ENSEMBLE_CONFIG.get("enabled", False)
 WEIGHT_STRATEGY = ENSEMBLE_CONFIG.get("weight_strategy", "simple")
 FIXED_WEIGHTS = ENSEMBLE_CONFIG.get(
-    "fixed_weights", {"rf": 0.90, "cnntf_v1": 0.05, "alexnet": 0.05}
+    "fixed_weights", {"rf": 0.90, "conformer": 0.05, "alexnet": 0.05}
 )
 INNER_HOLDOUT_FRAC = ENSEMBLE_CONFIG.get("inner_holdout_frac", 0.2)
 ENSEMBLE_COMBINE = ENSEMBLE_CONFIG.get("combine", "mean")
 RESULT_MODEL_GROUP = (
     "ensemble" if ENSEMBLE_ENABLED
-    else "conformer" if ACTIVE_MODEL_KEYS == ["cnntf_v1"]
+    else "rf" if ACTIVE_MODEL_KEYS == ["rf"]
+    else "cnntf_v1" if ACTIVE_MODEL_KEYS == ["cnntf_v1"]
+    else "cnntf_v2_gap" if ACTIVE_MODEL_KEYS == ["cnntf_v2_gap"]
+    else "conformer" if ACTIVE_MODEL_KEYS == ["conformer"]
+    else "cnntf_compare" if ACTIVE_MODEL_KEYS == ["cnntf_v1", "cnntf_v2_gap", "cnntf_v2_attn"]
+    else "cnntf_v2d256" if ACTIVE_MODEL_KEYS == ["cnntf_v2_attn"]
     else "single_model"
 )
 
@@ -246,6 +249,14 @@ WEIGHT_STRATEGY_TAGS = {
     "fixed": "fix",
     "inner_holdout": "ih",
     "val_fold_legacy": "vleg",
+}
+
+KERAS_TRAINING_PARAM_KEYS = {
+    "lr",
+    "batch_size",
+    "fit_verbose",
+    "min_batch_size",
+    "accept_partial_min_epochs",
 }
 
 
@@ -274,10 +285,9 @@ def format_param_value(value):
 # True runs every entry in PARAMETER_SETS. False stops after the first one.
 # Configure this in VALIDATION_CONFIG["run"]["loop_parameter_sets"].
 
-# Hyperparameter grid.
-# The "keras_grid" config expands to len(lrs) * len(batch_sizes) parameter sets.
-# Models listed in "model_keys" receive each grid value; other models keep the
-# values written in "models".
+# Hyperparameter sets.
+# Use an explicit list when only selected lr/batch_size pairs should run.
+# The optional "keras_grid" config expands to len(lrs) * len(batch_sizes).
 # Configure this in VALIDATION_CONFIG["models"]["parameter_sets"].
 
 # ホワイトノイズ (=0) か水流動音 (=1) か (旧コード踏襲)
@@ -320,7 +330,7 @@ def format_param_value(value):
 #    「まず RandomForest 単体で回帰が成立する状態を作り、その後 3 モデルを同条件で
 #    比較する」という段取りを、ここの 1 行だけで切り替えられるようにしている。
 #       RF 単体の動作確認 : ACTIVE_MODEL_KEYS = ["rf"]
-#       3 モデル同条件     : ACTIVE_MODEL_KEYS = ["rf", "cnntf_v1", "alexnet"]
+#       3 モデル同条件     : ACTIVE_MODEL_KEYS = ["rf", "conformer", "alexnet"]
 #    None にすると各 spec の "enabled" フラグに従う (従来動作)。
 # ===================================================================
 # Active model keys are derived from VALIDATION_CONFIG above.
@@ -335,16 +345,111 @@ MODEL_SPECS = [
     },
     {
         "key": "cnntf_v1",
+        "label": "CNN+Tf v1",
+        "kind": "keras",
+        "builder": lambda mm, **params: mm.cnn_transformer_v1(**params),
+        "builder_params": {
+            "num_time_patches": 8,
+            "num_transformer_blocks": 2,
+            "model_dim": 128,
+            "num_heads": 4,
+            "ff_dim": 256,
+            "dropout": 0.3,
+        },
+        "input_axes_assumption": ["frequency_bin", "time_frame", "channel"],
+        "actual_npy_axes": ["time_frame", "frequency_bin", "channel"],
+        "architecture": {
+            "front_end": "shared_patch_cnn",
+            "sequence_length": 8,
+            "sequence_token_meaning_with_current_npy": "frequency_band",
+            "encoder": "transformer_encoder",
+            "pooling": "AttentionPooling",
+        },
+        "note": (
+            "Historical v1 assumes (frequency, time, channel). With current "
+            "npy files saved as (time_frame, frequency_bin), its Transformer "
+            "tokens are frequency bands rather than time patches."
+        ),
+        "enabled": True,
+    },
+    {
+        "key": "cnntf_v2_gap",
+        "label": "CNN+Tf v2 GAP",
+        "kind": "keras",
+        "builder": lambda mm, **params: mm.cnn_transformer_v2(pooling="gap", **params),
+        "builder_params": {
+            "num_transformer_blocks": 4,
+            "head_size": 256,
+            "num_heads": 4,
+            "ff_dim": 2048,
+            "model_dim": 32,
+            "dropout": 0.2,
+        },
+        "input_axes_assumption": ["time_frame", "frequency_bin", "channel"],
+        "architecture": {
+            "front_end": "alexnet_like_cnn",
+            "sequence_length_after_cnn": 7,
+            "encoder": "transformer_encoder",
+            "pooling": "GlobalAveragePooling1D",
+        },
+        "enabled": True,
+    },
+    {
+        "key": "cnntf_v2_attn",
+        "label": "CNN+Tf v2 Attn",
+        "kind": "keras",
+        "builder": lambda mm, **params: mm.cnn_transformer_v2(pooling="attention", **params),
+        "builder_params": {
+            "num_transformer_blocks": 4,
+            "head_size": 256,
+            "num_heads": 4,
+            "ff_dim": 2048,
+            "model_dim": 32,
+            "dropout": 0.2,
+        },
+        "input_axes_assumption": ["time_frame", "frequency_bin", "channel"],
+        "architecture": {
+            "front_end": "alexnet_like_cnn",
+            "sequence_length_after_cnn": 7,
+            "encoder": "transformer_encoder",
+            "pooling": "AttentionPooling",
+        },
+        "enabled": True,
+    },
+    {
+        "key": "conformer",
         "label": "Conformer",
         "kind": "keras",
-        "builder": lambda mm: mm.cnn_transformer_v1(),
+        "builder": lambda mm, **params: mm.conformer(pooling="attention", **params),
+        "builder_params": {
+            "model_dim": 256,
+            "attention_key_dim": 64,
+            "num_heads": 4,
+            "ff_dim": 2048,
+            "num_conformer_blocks": 4,
+            "conv_kernel_size": 31,
+            "dropout": 0.2,
+        },
+        "input_axes_assumption": ["time_frame", "frequency_bin", "channel"],
+        "architecture": {
+            "front_end": "alexnet_like_cnn",
+            "sequence_length_after_cnn": 7,
+            "encoder": "conformer_block",
+            "model_dim": 256,
+            "attention_key_dim": 64,
+            "num_heads": 4,
+            "ff_dim": 2048,
+            "conv_kernel_size": 31,
+            "pooling": "AttentionPooling",
+        },
+        "note": "Canonical Conformer candidate: FFN, self-attention, convolution module, FFN.",
         "enabled": True,
     },
     {
         "key": "alexnet",
         "label": "AlexNet",
         "kind": "keras",
-        "builder": lambda mm: mm.alexnet(),
+        "builder": lambda mm, **params: mm.alexnet(**params),
         "enabled": True,
     },
 ]
@@ -534,8 +639,14 @@ def resolve_parameter_set(enabled_specs, parameter_set):
                     f"PARAMETER_SETS entry '{parameter_set.get('name', '<unnamed>')}' "
                     f"does not define {missing} for {resolved_spec['key']}."
             )
+            builder_params = dict(resolved_spec.get("builder_params", {}))
             for name, value in params.items():
-                resolved_spec[name] = value
+                if name in KERAS_TRAINING_PARAM_KEYS:
+                    resolved_spec[name] = value
+                else:
+                    builder_params[name] = value
+            if builder_params:
+                resolved_spec["builder_params"] = builder_params
         elif resolved_spec["kind"] == "sklearn":
             params = {}
             params.update(per_model.get(resolved_spec["key"], {}))
@@ -562,11 +673,21 @@ def model_param_summary(resolved_specs):
     summary = {}
     for spec in resolved_specs:
         if spec["kind"] == "keras":
-            summary[spec["key"]] = {
+            item = {
                 "lr": spec["lr"],
                 "batch_size": spec["batch_size"],
-                "early_stopping": spec.get("early_stopping", True),
             }
+            if spec.get("builder_params"):
+                item["builder_params"] = spec["builder_params"]
+            if spec.get("input_axes_assumption"):
+                item["input_axes_assumption"] = spec["input_axes_assumption"]
+            if spec.get("actual_npy_axes"):
+                item["actual_npy_axes"] = spec["actual_npy_axes"]
+            if spec.get("architecture"):
+                item["architecture"] = spec["architecture"]
+            if spec.get("note"):
+                item["note"] = spec["note"]
+            summary[spec["key"]] = item
         else:
             summary[spec["key"]] = {
                 "kind": spec["kind"],
@@ -743,7 +864,7 @@ def append_tuning_summary(summary_path, job, parameter_set, run_specs,
         "experiment_name", "data_source_dir", "max_freq_hz", "noise_dir_name",
         "snr_value", "threshold_available", "threshold",
         "parameter_set", "model_key", "model_label",
-        "lr", "batch_size", "early_stopping",
+        "lr", "batch_size",
         "requested_batch_size", "actual_batch_sizes", "min_actual_batch_size",
         "epochs_completed", "stopped_by_memory_error",
     ]
@@ -780,7 +901,6 @@ def append_tuning_summary(summary_path, job, parameter_set, run_specs,
                 spec.get("label", key),
                 spec.get("lr", ""),
                 spec.get("batch_size", ""),
-                spec.get("early_stopping", ""),
                 _join_unique(meta.get("requested_batch_size", [])),
                 _join_unique(actual_batch_sizes),
                 min_actual_batch_size,
@@ -820,8 +940,14 @@ def main():
     validate_validation_config(enabled_specs)
 
     model_keys = [s["key"] for s in enabled_specs]
-    if model_keys == ["rf", "cnntf_v1", "alexnet"]:
+    if model_keys == ["rf", "conformer", "alexnet"]:
         model_tag = "3m"
+    elif model_keys == ["conformer"]:
+        model_tag = "conformer"
+    elif model_keys == ["cnntf_v1", "cnntf_v2_gap", "cnntf_v2_attn"]:
+        model_tag = "v12"
+    elif model_keys == ["cnntf_v2_attn"]:
+        model_tag = "v2a"
     else:
         model_tag = "-".join(model_keys)
     if SMOKE_TEST:

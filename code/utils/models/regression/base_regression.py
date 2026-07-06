@@ -1,10 +1,11 @@
 from tensorflow.keras.models import Model
-from tensorflow.keras.layers import (GlobalAveragePooling2D, Conv2D, 
+from tensorflow.keras.layers import (GlobalAveragePooling2D, Conv2D, Conv1D,
+                                     DepthwiseConv1D,
                                      BatchNormalization, MaxPooling2D, Dropout, 
                                      Flatten, Dense, Activation, Input, Permute, Reshape, 
                                      Bidirectional, GRU, GlobalAveragePooling1D,
                                      MultiHeadAttention, LayerNormalization, Layer, Embedding,
-                                     add, multiply, dot, TimeDistributed, Softmax)
+                                     add, multiply, dot, TimeDistributed, Softmax, Lambda)
 from tensorflow.keras import backend as K
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.applications import ResNet50, MobileNetV2, VGG16, EfficientNetB0
@@ -35,6 +36,50 @@ def transformer_encoder(inputs, head_size, num_heads, ff_dim, dropout=0):
     ff_out = Dense(inputs.shape[-1])(ff_out)
     x = LayerNormalization(epsilon=1e-6)(ff_out + x)
     return x
+
+
+def conformer_block(inputs, attention_key_dim, num_heads, ff_dim,
+                    conv_kernel_size=31, dropout=0.1):
+    model_dim = int(inputs.shape[-1])
+    block_name = f'conformer_block_{K.get_uid("conformer_block")}'
+
+    def feed_forward_module(x, name_prefix):
+        y = LayerNormalization(epsilon=1e-6, name=f'{block_name}_{name_prefix}_ln')(x)
+        y = Dense(ff_dim, activation='swish', name=f'{block_name}_{name_prefix}_dense1')(y)
+        y = Dropout(dropout, name=f'{block_name}_{name_prefix}_dropout1')(y)
+        y = Dense(model_dim, name=f'{block_name}_{name_prefix}_dense2')(y)
+        y = Dropout(dropout, name=f'{block_name}_{name_prefix}_dropout2')(y)
+        return y
+
+    x = inputs + 0.5 * feed_forward_module(inputs, 'ffn1')
+
+    attn_in = LayerNormalization(epsilon=1e-6, name=f'{block_name}_mhsa_ln')(x)
+    attn = MultiHeadAttention(
+        key_dim=attention_key_dim, num_heads=num_heads, dropout=dropout,
+        name=f'{block_name}_mhsa'
+    )(attn_in, attn_in)
+    attn = Dropout(dropout, name=f'{block_name}_mhsa_dropout')(attn)
+    x = x + attn
+
+    conv = LayerNormalization(epsilon=1e-6, name=f'{block_name}_conv_ln')(x)
+    conv = Conv1D(2 * model_dim, kernel_size=1, padding='same',
+                  name=f'{block_name}_conv_pointwise_in')(conv)
+    conv = Lambda(
+        lambda t: t[..., :model_dim] * tf.nn.sigmoid(t[..., model_dim:]),
+        name=f'{block_name}_conv_glu'
+    )(conv)
+    conv = DepthwiseConv1D(conv_kernel_size, padding='same',
+                           name=f'{block_name}_conv_depthwise')(conv)
+    conv = BatchNormalization(name=f'{block_name}_conv_bn')(conv)
+    conv = Activation('swish', name=f'{block_name}_conv_swish')(conv)
+    conv = Conv1D(model_dim, kernel_size=1, padding='same',
+                  name=f'{block_name}_conv_pointwise_out')(conv)
+    conv = Dropout(dropout, name=f'{block_name}_conv_dropout')(conv)
+    x = x + conv
+
+    x = x + 0.5 * feed_forward_module(x, 'ffn2')
+    return LayerNormalization(epsilon=1e-6, name=f'{block_name}_ln')(x)
+
 
 class PositionalEmbedding(Layer):
     def __init__(self, sequence_length, output_dim, **kwargs):
@@ -248,16 +293,91 @@ class RegressionModelMaker:
             
             return model
 
+    def conformer(self, num_conformer_blocks=4, model_dim=256,
+                  attention_key_dim=64, num_heads=4, ff_dim=2048,
+                  conv_kernel_size=31, dropout=0.2, pooling="attention"):
+            """
+            Conformer regressor for spectrogram inputs.
+
+            The CNN front-end extracts local time-frequency features, then the
+            sequence is processed by Conformer blocks:
+            FFN -> self-attention -> convolution module -> FFN.
+            """
+            pooling = str(pooling).lower()
+            if pooling not in {"gap", "attention", "attn"}:
+                raise ValueError(
+                    "pooling must be 'gap' or 'attention' "
+                    f"(got pooling={pooling})."
+                )
+            if model_dim % num_heads != 0:
+                raise ValueError(
+                    "model_dim must be divisible by num_heads "
+                    f"(got model_dim={model_dim}, num_heads={num_heads})."
+                )
+
+            x_in = Input(shape=self.input_shape, name='spec_input')
+
+            x = Conv2D(96, (11, 11), strides=(4, 4), activation='relu',
+                       padding="same", name='frontend_conv1')(x_in)
+            x = BatchNormalization(name='frontend_bn1')(x)
+            x = MaxPooling2D(pool_size=(3, 3), strides=(2, 2),
+                             padding="same", name='frontend_pool1')(x)
+
+            x = Conv2D(256, (5, 5), strides=(1, 1), activation='relu',
+                       padding="same", name='frontend_conv2')(x)
+            x = BatchNormalization(name='frontend_bn2')(x)
+            x = MaxPooling2D(pool_size=(3, 3), strides=(2, 2),
+                             padding="same", name='frontend_pool2')(x)
+
+            x = Conv2D(384, (3, 3), strides=(1, 1), activation='relu',
+                       padding="same", name='frontend_conv3')(x)
+            x = Conv2D(384, (3, 3), strides=(1, 1), activation='relu',
+                       padding="same", name='frontend_conv4')(x)
+            x = Conv2D(256, (3, 3), strides=(1, 1), activation='relu',
+                       padding="same", name='frontend_conv5')(x)
+            x = MaxPooling2D(pool_size=(3, 3), strides=(2, 2),
+                             padding="same", name='frontend_pool3')(x)
+
+            sequence_length = int(x.shape[1])
+            feature_dim = int(x.shape[2]) * int(x.shape[3])
+            x = Reshape((sequence_length, feature_dim),
+                        name='conformer_sequence')(x)
+            x = TimeDistributed(Dense(model_dim, activation='relu'),
+                                name='conformer_projection')(x)
+            x = PositionalEmbedding(sequence_length=sequence_length,
+                                    output_dim=model_dim,
+                                    name='conformer_positional_embedding')(x)
+
+            for _ in range(num_conformer_blocks):
+                x = conformer_block(
+                    x,
+                    attention_key_dim=attention_key_dim,
+                    num_heads=num_heads,
+                    ff_dim=ff_dim,
+                    conv_kernel_size=conv_kernel_size,
+                    dropout=dropout,
+                )
+
+            if pooling == "gap":
+                x = GlobalAveragePooling1D(name='conformer_gap')(x)
+            else:
+                x = AttentionPooling(name='conformer_attention_pooling')(x)
+            output = Dense(1, activation='linear', name='output')(x)
+
+            return Model(inputs=x_in, outputs=output, name='conformer_regressor')
+
     def cnn_transformer_v1(self, num_time_patches=8, num_transformer_blocks=2,
                            model_dim=128, num_heads=4, ff_dim=256,
                            dropout=0.3):
             """
-            CNN + Transformer regressor that treats spectrogram width as time.
+            Current CNN + Transformer regressor.
 
             Input is expected to be (frequency, time, channel), for example
             (224, 224, 1). The time axis is split into patches. A shared CNN
             extracts one feature vector from each time patch, then Transformer
             blocks model the temporal sequence before regression.
+
+            Note: this is kept as a historical CNN+Transformer baseline.
             """
             freq_bins, time_bins, channels = self.input_shape
             if time_bins is None or time_bins % num_time_patches != 0:
@@ -314,12 +434,27 @@ class RegressionModelMaker:
 
             return Model(inputs=x_in, outputs=output,
                          name='cnn_transformer_v1_time_axis')
-    
-    def cnn_transformer_v2(self, num_transformer_blocks=4, 
-                            head_size=256, num_heads=4, ff_dim=2048):
+
+    def cnn_transformer_v2(self, num_transformer_blocks=4,
+                            head_size=256, num_heads=4, ff_dim=2048,
+                            pooling="gap", model_dim=32,
+                            attention_key_dim=None, dropout=0.2):
             """
             AlexNetをCNNベースとして利用し、Transformer Encoderに接続する回帰モデル。
             """
+            pooling = str(pooling).lower()
+            if pooling not in {"gap", "attention", "attn"}:
+                raise ValueError(
+                    "pooling must be 'gap' or 'attention' "
+                    f"(got pooling={pooling})."
+                )
+            if model_dim % num_heads != 0:
+                raise ValueError(
+                    "model_dim must be divisible by num_heads "
+                    f"(got model_dim={model_dim}, num_heads={num_heads})."
+                )
+            attention_key_dim = head_size if attention_key_dim is None else attention_key_dim
+
             x_in = Input(shape=self.input_shape, name='spec_input')
 
             # --- AlexNetベースの特徴抽出器 ---
@@ -341,22 +476,29 @@ class RegressionModelMaker:
             shape = x.shape
             x = Reshape((shape[1], shape[2] * shape[3]))(x)
 
-            model_dim = 32 # Transformerが扱うモデル次元
-            x = TimeDistributed(Dense(model_dim, activation='relu'))(x)
+            x = TimeDistributed(Dense(model_dim, activation='relu'),
+                                name='v2_projection')(x)
 
-            x = PositionalEmbedding(sequence_length=shape[1], output_dim=x.shape[-1])(x)
+            x = PositionalEmbedding(sequence_length=shape[1],
+                                    output_dim=x.shape[-1],
+                                    name='v2_positional_embedding')(x)
 
             # --- Transformer Encoder ブロック ---
             # Transformer Encoderを複数重ねる
             for _ in range(num_transformer_blocks):
-                x = transformer_encoder(x, head_size, num_heads, ff_dim, dropout=0.2)
+                x = transformer_encoder(x, attention_key_dim, num_heads,
+                                        ff_dim, dropout=dropout)
 
             # --- 時間平均 → 回帰線形出力 (seldnet_regressorと同じ) ---
-            x = GlobalAveragePooling1D()(x)
-            # x = AttentionPooling()(x)
+            if pooling == "gap":
+                x = GlobalAveragePooling1D(name='v2_global_average_pooling')(x)
+                model_name = 'cnn_transformer_v2_gap'
+            else:
+                x = AttentionPooling(name='v2_attention_pooling')(x)
+                model_name = 'cnn_transformer_v2_attention'
             output = Dense(1, activation='linear', name='output')(x)
 
-            return Model(inputs=x_in, outputs=output)
+            return Model(inputs=x_in, outputs=output, name=model_name)
 
     #### EfficientNet + Tfのアーキテクチャ
 
