@@ -96,15 +96,16 @@ def _env_int(name, default):
 #                              変数の指定
 #######################################################################
 # Validation controls: edit this block first.
-# Current default tunes the AlexNet-front-end CNN+Transformer v2 GAP model on
-# the 2025.07.09_0.3_1 dataset. The architecture is fixed in MODEL_SPECS.
-# Use smoke_test=True only when checking that the script finishes end-to-end.
+# Current default re-checks the three best CNN+Transformer v2 GAP candidates on
+# the 2025.06.18_0.3_3 dataset with 5-fold CV. The architecture is fixed in
+# MODEL_SPECS. Use smoke_test=True only when checking that the script finishes
+# end-to-end.
 
 VALIDATION_CONFIG = {
     "run": {
         "smoke_test": False,
         "epochs": 300,
-        "folds": 3,
+        "folds": 5,
         "smoke_epochs": 2,
         "smoke_folds": 2,
         "color_channel": 1,
@@ -158,15 +159,35 @@ VALIDATION_CONFIG = {
     },
     "models": {
         "active_model_keys": ["cnntf_v2_gap"],
-        "parameter_sets": {
-            "type": "keras_grid",
-            "model_keys": ["cnntf_v2_gap"],
-            "lrs": [0.01, 0.005, 0.001, 0.0005, 0.0001, 0.00005],
-            "batch_sizes": [12, 24, 32, 48, 64],
-            "default_keras": {
-                "fit_verbose": 1,
+        "parameter_sets": [
+            {
+                "name": "r2_best_lr0p001_bs12",
+                "models": {
+                    "cnntf_v2_gap": {"lr": 0.001, "batch_size": 12},
+                },
+                "default_keras": {
+                    "fit_verbose": 1,
+                },
             },
-        },
+            {
+                "name": "balanced_lr0p0005_bs32",
+                "models": {
+                    "cnntf_v2_gap": {"lr": 0.0005, "batch_size": 32},
+                },
+                "default_keras": {
+                    "fit_verbose": 1,
+                },
+            },
+            {
+                "name": "r2_onb_lr0p0005_bs12",
+                "models": {
+                    "cnntf_v2_gap": {"lr": 0.0005, "batch_size": 12},
+                },
+                "default_keras": {
+                    "fit_verbose": 1,
+                },
+            },
+        ],
     },
     "ensemble": {
         "enabled": False,
@@ -176,9 +197,10 @@ VALIDATION_CONFIG = {
     },
     "output": {
         "save_date": datetime.now().strftime("%Y%m%d"),
-        "result_date_dir": datetime.now().strftime("%Y%m%d") + "_v2gap_lrbs_tune",
+        "result_date_dir": datetime.now().strftime("%Y%m%d") + "_v2gap_5fold_candidates",
         "save_fold_predictions": True,
         "save_tuning_summary": True,
+        "resume_completed_runs": True,
     },
 }
 
@@ -221,18 +243,14 @@ ENSEMBLE_CONFIG = VALIDATION_CONFIG.get("ensemble", {})
 ENSEMBLE_ENABLED = ENSEMBLE_CONFIG.get("enabled", False)
 WEIGHT_STRATEGY = ENSEMBLE_CONFIG.get("weight_strategy", "simple")
 FIXED_WEIGHTS = ENSEMBLE_CONFIG.get(
-    "fixed_weights", {"rf": 0.90, "conformer": 0.05, "alexnet": 0.05}
+    "fixed_weights", {"rf": 0.90, "cnntf_v2_gap": 0.05, "alexnet": 0.05}
 )
 INNER_HOLDOUT_FRAC = ENSEMBLE_CONFIG.get("inner_holdout_frac", 0.2)
 ENSEMBLE_COMBINE = ENSEMBLE_CONFIG.get("combine", "mean")
 RESULT_MODEL_GROUP = (
     "ensemble" if ENSEMBLE_ENABLED
     else "rf" if ACTIVE_MODEL_KEYS == ["rf"]
-    else "cnntf_v1" if ACTIVE_MODEL_KEYS == ["cnntf_v1"]
     else "cnntf_v2_gap" if ACTIVE_MODEL_KEYS == ["cnntf_v2_gap"]
-    else "conformer" if ACTIVE_MODEL_KEYS == ["conformer"]
-    else "cnntf_compare" if ACTIVE_MODEL_KEYS == ["cnntf_v1", "cnntf_v2_gap", "cnntf_v2_attn"]
-    else "cnntf_v2d256" if ACTIVE_MODEL_KEYS == ["cnntf_v2_attn"]
     else "single_model"
 )
 
@@ -242,7 +260,9 @@ SAVE_DATE = _cfg("output", "save_date")
 RESULT_DATE_DIR = _cfg("output", "result_date_dir") or SAVE_DATE
 SAVE_FOLD_PREDICTIONS = _cfg("output", "save_fold_predictions")
 SAVE_TUNING_SUMMARY = _cfg("output", "save_tuning_summary")
+RESUME_COMPLETED_RUNS = _cfg("output", "resume_completed_runs")
 RUN_INSTANCE_ID = os.environ.get("RUN_ID", datetime.now().strftime("%H%M%S"))
+FOLD_PREDICTIONS_DIR_NAME = "fold_pred"
 
 WEIGHT_STRATEGY_TAGS = {
     "simple": "simp",
@@ -330,7 +350,7 @@ def format_param_value(value):
 #    「まず RandomForest 単体で回帰が成立する状態を作り、その後 3 モデルを同条件で
 #    比較する」という段取りを、ここの 1 行だけで切り替えられるようにしている。
 #       RF 単体の動作確認 : ACTIVE_MODEL_KEYS = ["rf"]
-#       3 モデル同条件     : ACTIVE_MODEL_KEYS = ["rf", "conformer", "alexnet"]
+#       3 モデル同条件     : ACTIVE_MODEL_KEYS = ["rf", "cnntf_v2_gap", "alexnet"]
 #    None にすると各 spec の "enabled" フラグに従う (従来動作)。
 # ===================================================================
 # Active model keys are derived from VALIDATION_CONFIG above.
@@ -341,35 +361,6 @@ MODEL_SPECS = [
         "label": "RandomForest",
         "kind": "sklearn",
         "builder": lambda mm, **params: mm.random_forest(**params),
-        "enabled": True,
-    },
-    {
-        "key": "cnntf_v1",
-        "label": "CNN+Tf v1",
-        "kind": "keras",
-        "builder": lambda mm, **params: mm.cnn_transformer_v1(**params),
-        "builder_params": {
-            "num_time_patches": 8,
-            "num_transformer_blocks": 2,
-            "model_dim": 128,
-            "num_heads": 4,
-            "ff_dim": 256,
-            "dropout": 0.3,
-        },
-        "input_axes_assumption": ["frequency_bin", "time_frame", "channel"],
-        "actual_npy_axes": ["time_frame", "frequency_bin", "channel"],
-        "architecture": {
-            "front_end": "shared_patch_cnn",
-            "sequence_length": 8,
-            "sequence_token_meaning_with_current_npy": "frequency_band",
-            "encoder": "transformer_encoder",
-            "pooling": "AttentionPooling",
-        },
-        "note": (
-            "Historical v1 assumes (frequency, time, channel). With current "
-            "npy files saved as (time_frame, frequency_bin), its Transformer "
-            "tokens are frequency bands rather than time patches."
-        ),
         "enabled": True,
     },
     {
@@ -392,57 +383,6 @@ MODEL_SPECS = [
             "encoder": "transformer_encoder",
             "pooling": "GlobalAveragePooling1D",
         },
-        "enabled": True,
-    },
-    {
-        "key": "cnntf_v2_attn",
-        "label": "CNN+Tf v2 Attn",
-        "kind": "keras",
-        "builder": lambda mm, **params: mm.cnn_transformer_v2(pooling="attention", **params),
-        "builder_params": {
-            "num_transformer_blocks": 4,
-            "head_size": 256,
-            "num_heads": 4,
-            "ff_dim": 2048,
-            "model_dim": 32,
-            "dropout": 0.2,
-        },
-        "input_axes_assumption": ["time_frame", "frequency_bin", "channel"],
-        "architecture": {
-            "front_end": "alexnet_like_cnn",
-            "sequence_length_after_cnn": 7,
-            "encoder": "transformer_encoder",
-            "pooling": "AttentionPooling",
-        },
-        "enabled": True,
-    },
-    {
-        "key": "conformer",
-        "label": "Conformer",
-        "kind": "keras",
-        "builder": lambda mm, **params: mm.conformer(pooling="attention", **params),
-        "builder_params": {
-            "model_dim": 256,
-            "attention_key_dim": 64,
-            "num_heads": 4,
-            "ff_dim": 2048,
-            "num_conformer_blocks": 4,
-            "conv_kernel_size": 31,
-            "dropout": 0.2,
-        },
-        "input_axes_assumption": ["time_frame", "frequency_bin", "channel"],
-        "architecture": {
-            "front_end": "alexnet_like_cnn",
-            "sequence_length_after_cnn": 7,
-            "encoder": "conformer_block",
-            "model_dim": 256,
-            "attention_key_dim": 64,
-            "num_heads": 4,
-            "ff_dim": 2048,
-            "conv_kernel_size": 31,
-            "pooling": "AttentionPooling",
-        },
-        "note": "Canonical Conformer candidate: FFN, self-attention, convolution module, FFN.",
         "enabled": True,
     },
     {
@@ -736,7 +676,7 @@ def write_run_manifest(save_path, job, parameter_set, run_specs,
         "validation_config": validation_config_snapshot(),
     }
     manifest_path = os.path.join(save_path, "run_manifest.json")
-    with open(manifest_path, "w", encoding="utf-8") as mf:
+    with _open_text(manifest_path, "w", encoding="utf-8") as mf:
         json.dump(manifest, mf, ensure_ascii=False, indent=2, default=json_default)
 
 
@@ -786,6 +726,7 @@ def validation_config_snapshot():
             "run_instance_id": RUN_INSTANCE_ID,
             "save_fold_predictions": SAVE_FOLD_PREDICTIONS,
             "save_tuning_summary": SAVE_TUNING_SUMMARY,
+            "resume_completed_runs": RESUME_COMPLETED_RUNS,
         },
     }
 
@@ -836,6 +777,31 @@ def set_global_seed(seed):
     tf.random.set_seed(seed)
 
 
+def _windows_long_path(path):
+    path = os.path.abspath(path)
+    if os.name == "nt" and not path.startswith("\\\\?\\"):
+        return "\\\\?\\" + path
+    return path
+
+
+def _makedirs(path):
+    try:
+        os.makedirs(path, exist_ok=True)
+    except OSError:
+        os.makedirs(_windows_long_path(path), exist_ok=True)
+
+
+def _path_exists(path):
+    return os.path.exists(path) or os.path.exists(_windows_long_path(path))
+
+
+def _open_text(path, mode, **kwargs):
+    try:
+        return open(path, mode, **kwargs)
+    except OSError:
+        return open(_windows_long_path(path), mode, **kwargs)
+
+
 def _csv_metric(value):
     try:
         value = float(value)
@@ -858,7 +824,7 @@ def append_tuning_summary(summary_path, job, parameter_set, run_specs,
     if not SAVE_TUNING_SUMMARY:
         return
 
-    os.makedirs(os.path.dirname(summary_path), exist_ok=True)
+    _makedirs(os.path.dirname(summary_path))
     header = [
         "created_at", "run_instance_id", "run_hash", "run_dir", "save_path",
         "experiment_name", "data_source_dir", "max_freq_hz", "noise_dir_name",
@@ -872,8 +838,8 @@ def append_tuning_summary(summary_path, job, parameter_set, run_specs,
         header.extend([f"{metric_name}_mean", f"{metric_name}_se"])
 
     spec_by_key = {spec["key"]: spec for spec in run_specs}
-    file_exists = os.path.exists(summary_path)
-    with open(summary_path, "a", newline="", encoding="utf-8") as sf:
+    file_exists = _path_exists(summary_path)
+    with _open_text(summary_path, "a", newline="", encoding="utf-8") as sf:
         writer = csv.writer(sf)
         if not file_exists:
             writer.writerow(header)
@@ -913,6 +879,30 @@ def append_tuning_summary(summary_path, job, parameter_set, run_specs,
             writer.writerow(row)
 
 
+def is_completed_run(summary_path, run_dir, save_path, snr_value):
+    """Return True only when the per-run metrics and tuning summary both exist."""
+    if not RESUME_COMPLETED_RUNS:
+        return False
+
+    metrics_path = os.path.join(save_path, f"metrics_summary_{snr_value}.csv")
+    if not _path_exists(metrics_path):
+        return False
+
+    if not SAVE_TUNING_SUMMARY:
+        return True
+    if not _path_exists(summary_path):
+        return False
+
+    try:
+        with _open_text(summary_path, "r", newline="", encoding="utf-8") as sf:
+            for row in csv.DictReader(sf):
+                if row.get("run_dir") == run_dir:
+                    return True
+    except (OSError, csv.Error):
+        return False
+    return False
+
+
 def main():
     set_global_seed(RANDOM_SEED)
     # 再利用ヘルパー (用途別の utils クラス) を用意する
@@ -940,16 +930,7 @@ def main():
     validate_validation_config(enabled_specs)
 
     model_keys = [s["key"] for s in enabled_specs]
-    if model_keys == ["rf", "conformer", "alexnet"]:
-        model_tag = "3m"
-    elif model_keys == ["conformer"]:
-        model_tag = "conformer"
-    elif model_keys == ["cnntf_v1", "cnntf_v2_gap", "cnntf_v2_attn"]:
-        model_tag = "v12"
-    elif model_keys == ["cnntf_v2_attn"]:
-        model_tag = "v2a"
-    else:
-        model_tag = "-".join(model_keys)
+    model_tag = "-".join(model_keys)
     if SMOKE_TEST:
         model_tag = "s_" + model_tag
 
@@ -1021,7 +1002,12 @@ def main():
                 SAVE_PATH = os.path.join(
                     base_save_path, noise_dir_name, max_freq_name,
                     run_dir)
-                os.makedirs(SAVE_PATH, exist_ok=True)
+                tuning_summary_path = os.path.join(base_save_path, "tuning_summary.csv")
+                if is_completed_run(tuning_summary_path, run_dir, SAVE_PATH, snr_value):
+                    print(f"[resume skip] completed run found: {run_dir}")
+                    continue
+
+                _makedirs(SAVE_PATH)
                 write_run_manifest(
                     SAVE_PATH, job, parameter_set, run_specs,
                     param_tag, model_tag, run_hash, run_dir)
@@ -1035,7 +1021,7 @@ def main():
                 weight_log = []
 
                 output_file = os.path.join(SAVE_PATH, f'validation_results_{snr_value}.txt')
-                with open(output_file, 'w', encoding='utf-8') as f:
+                with _open_text(output_file, 'w', encoding='utf-8') as f:
                     f.write("K-fold Cross-Validation Results\n")
                     f.write("validation_config:\n")
                     f.write(validation_config_text() + "\n")
@@ -1151,10 +1137,10 @@ def main():
                         if include_ensemble:
                             preds_all["ensemble"] = ensemble_pred
                         if SAVE_FOLD_PREDICTIONS:
-                            pred_dir = os.path.join(SAVE_PATH, "fold_predictions")
-                            os.makedirs(pred_dir, exist_ok=True)
+                            pred_dir = os.path.join(SAVE_PATH, FOLD_PREDICTIONS_DIR_NAME)
+                            _makedirs(pred_dir)
                             pred_csv = os.path.join(pred_dir, f"pred_f{fold}_{snr_value}.csv")
-                            with open(pred_csv, "w", newline="", encoding="utf-8") as pf:
+                            with _open_text(pred_csv, "w", newline="", encoding="utf-8") as pf:
                                 writer = csv.writer(pf)
                                 writer.writerow(["sample_index", "y_true"] + all_keys)
                                 for row_i, sample_idx in enumerate(val_index):
@@ -1227,7 +1213,7 @@ def main():
 
                 if include_ensemble:
                     weights_csv = os.path.join(SAVE_PATH, f"ensemble_weights_{snr_value}.csv")
-                    with open(weights_csv, "w", newline="", encoding="utf-8") as wf:
+                    with _open_text(weights_csv, "w", newline="", encoding="utf-8") as wf:
                         writer = csv.writer(wf)
                         writer.writerow(["fold"] + model_keys)
                         for fold_num, weights in weight_log:
@@ -1248,7 +1234,7 @@ def main():
 
                 # --- 指標 CSV (fold 平均をモデル別に保存。後で比較しやすくする) ---
                 csv_path = os.path.join(SAVE_PATH, f'metrics_summary_{snr_value}.csv')
-                with open(csv_path, 'w', encoding='utf-8') as cf:
+                with _open_text(csv_path, 'w', encoding='utf-8') as cf:
                     header = ["model"] + [f"{mk}_mean" for mk in summary_metrics] \
                                        + [f"{mk}_se" for mk in summary_metrics]
                     cf.write(",".join(header) + "\n")
@@ -1258,7 +1244,6 @@ def main():
                         cf.write(",".join([label_of[key]] + means + ses) + "\n")
                 print(f"指標 CSV を保存: {csv_path}")
 
-                tuning_summary_path = os.path.join(base_save_path, "tuning_summary.csv")
                 append_tuning_summary(
                     tuning_summary_path, job, parameter_set, run_specs,
                     store, train_meta, summary_metrics, metrics,
