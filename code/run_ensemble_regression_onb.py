@@ -97,11 +97,22 @@ def _env_int(name, default):
 #                              変数の指定
 #######################################################################
 # Validation controls: edit this block first.
-# Current default runs the selected CNN+Transformer v2 GAP parameter over the
-# full 3-experiment x 6-frequency x 7-noise grid. Explainability is integrated
-# below, but disabled by default because IG/Grad-CAM on every condition is slow.
-# The architecture is fixed in MODEL_SPECS. Use smoke_test=True only when
-# checking that the script finishes end-to-end.
+# Edit this block first when changing an experiment.
+#
+# Current default:
+# - data: 3 experiments x 6 max-frequency settings x 7 noise conditions
+# - models: RF + CNN/Transformer v2 GAP + AlexNet
+# - ensemble: controlled by VALIDATION_CONFIG["ensemble"] below
+# - explainability: integrated into training, but disabled for full-grid runs
+#
+# Ensemble modes are configured in VALIDATION_CONFIG["ensemble"]:
+# - "simple": equal-weight mean. No leakage, useful as a neutral baseline.
+# - "fixed": user-defined weights in fixed_weights. No leakage; recommended
+#   for final-report comparisons.
+# - "inner_holdout": uses a holdout split inside the training fold to choose
+#   weights. No validation-fold leakage, but slower and less stable.
+# - "val_fold_legacy": chooses weights from the validation fold. Reproduction
+#   only; do not use for final claims because it leaks evaluation labels.
 
 VALIDATION_CONFIG = {
     "run": {
@@ -160,12 +171,19 @@ VALIDATION_CONFIG = {
         "onb_band_frac": 0.10,
     },
     "models": {
-        "active_model_keys": ["cnntf_v2_gap"],
+        "active_model_keys": ["rf", "cnntf_v2_gap", "alexnet"],
         "parameter_sets": [
             {
-                "name": "lr0p0005_bs32",
+                "name": "rf_v2_alex",
                 "models": {
+                    "rf": {
+                        "n_estimators": 300,
+                        "max_depth": 8,
+                        "subsample": 0.8,
+                        "colsample_bynode": 0.6,
+                    },
                     "cnntf_v2_gap": {"lr": 0.0005, "batch_size": 32},
+                    "alexnet": {"lr": 0.005, "batch_size": 32},
                 },
                 "default_keras": {
                     "fit_verbose": 1,
@@ -174,14 +192,34 @@ VALIDATION_CONFIG = {
         ],
     },
     "ensemble": {
-        "enabled": False,
+        # How to combine model predictions.
+        #
+        # Recommended final-report setting:
+        #   enabled=True, weight_strategy="fixed", combine="mean"
+        #
+        # Other valid weight_strategy values:
+        #   "simple"          equal weights across active models
+        #   "inner_holdout"   choose weights using only training-fold holdout
+        #   "val_fold_legacy" reproduce old validation-fold weighting; leaks
+        #                     validation labels and should not support claims
+        "enabled": True,
+        "weight_strategy": "val_fold_legacy",
+        # Used only when weight_strategy == "fixed".
+        "fixed_weights": {
+            "rf": 0.90,
+            "cnntf_v2_gap": 0.05,
+            "alexnet": 0.05,
+        },
+        # "mean" is a weighted average. "min" keeps the minimum model prediction
+        # for each sample and is mainly a legacy/diagnostic option.
+        "combine": "mean",
     },
     "features": {
         "pca_components": 100,
     },
     "output": {
         "save_date": datetime.now().strftime("%Y%m%d"),
-        "result_date_dir": datetime.now().strftime("%Y%m%d") + "_v2gap_lr0p0005_bs32_full_grid",
+        "result_date_dir": datetime.now().strftime("%Y%m%d") + "_fixed_ensemble_full_grid",
         "save_fold_predictions": True,
         "save_tuning_summary": True,
         "resume_completed_runs": True,
@@ -190,7 +228,7 @@ VALIDATION_CONFIG = {
         # Set True when you want explanations to be saved during training.
         # For the full grid, start with target_folds=[1] and a small sample count.
         "enabled": False,
-        "model_keys": ["cnntf_v2_gap"],
+        "model_keys": ["rf", "cnntf_v2_gap", "alexnet"],
         "target_folds": [1],
         "max_samples_per_fold": 3,
         "ig_steps": 32,
@@ -283,51 +321,10 @@ def format_param_value(value):
         text = str(value)
     return text.replace("-", "m").replace(".", "p")
 
-# 実行確認用スイッチ。
-# True にすると epoch と fold を小さくして「最後まで通るか」だけを素早く確認する。
-# 本番の評価をするときは必ず False に戻す (出力先も _smoke が付いて本番結果と混ざらない)。
-# Configure this in VALIDATION_CONFIG["run"].
 
-# 閾値 (沸騰開始点 ONB の熱流束) は実験日ごとに異なる。
-# 未設定の実験日は、誤った ONB 評価を出さないよう実行前に止める。
-# Configure this in VALIDATION_CONFIG["thresholds"].
-
-# ONB 近傍 band の幅 (閾値に対する相対割合)。
-# |y - THRESHOLD| <= THRESHOLD * ONB_BAND_FRAC を ONB 近傍サンプルとして
-# 別途 RMSE/MAE を見る (計画 RQ で要求されている ONB 近傍誤差に対応)。
-# Configure this in VALIDATION_CONFIG["thresholds"]["onb_band_frac"].
-
-# パラメータをループさせて検証するかどうか (旧コード踏襲)
-# True runs every entry in PARAMETER_SETS. False stops after the first one.
-# Configure this in VALIDATION_CONFIG["run"]["loop_parameter_sets"].
-
-# Hyperparameter sets.
-# Use an explicit list when only selected lr/batch_size pairs should run.
-# The optional "keras_grid" config expands to len(lrs) * len(batch_sizes).
-# Configure this in VALIDATION_CONFIG["models"]["parameter_sets"].
-
-# ホワイトノイズ (=0) か水流動音 (=1) か (旧コード踏襲)
-# 現在の一括評価では waterflow_* フォルダ内に no_noise と SNR 条件がある前提。
-# Configure this in VALIDATION_CONFIG["data"]["noise_source"].
-# Default to the actual run date. Set the SAVE_DATE environment variable or
-# override this module variable when reproducing an older run.
-# Configure this in VALIDATION_CONFIG["output"]["save_date"].
-# 結果が増えても混ざらないように、保存先の最上位に日付フォルダを作る。
-# Configure this in VALIDATION_CONFIG["output"].
-
-# 周波数解析のパラメータ
-# Configure this in VALIDATION_CONFIG["data"]["chunk_seconds"].
-
-# 旧コードとの比較用に、いったん旧コードが見ていた 22kHz/no_noise だけを評価する。
-# 複数条件へ戻すときは、下の2リストに maxfreq/noise 条件を追加する。
-# Configure these in VALIDATION_CONFIG["data"].
-
-# 既知の npy 生成フォルダ。None の実験日は自動検出に任せる。
-# Configure this in VALIDATION_CONFIG["data"]["data_source_dir_by_experiment"].
-
-# True: 未生成の実験日/maxfreq/noise があっても一括実行を続ける。
-# False: 1つでも欠けていたら実行前に止める。84条件の検証では取りこぼし防止のため False 推奨。
-# Configure this in VALIDATION_CONFIG["data"]["skip_missing_datasets"].
+# Settings are defined in VALIDATION_CONFIG above.
+# The constants below are derived values used by the run loop; do not edit
+# them directly unless you are changing the script mechanics.
 
 
 # ===================================================================
@@ -391,26 +388,6 @@ MODEL_SPECS = [
 ]
 
 
-# ===================================================================
-# ③ アンサンブル重み戦略
-#    "simple"          : 単純平均 (重みなし)。最も安全で挙動が明快。
-#    "fixed"           : 固定重み。FIXED_WEIGHTS (key -> 重み) で指定。
-#    "inner_holdout"   : 学習 fold をさらに内部 holdout に分け、その内部検証
-#                        誤差から重みを決める。検証 fold を一切見ないので
-#                        リークなし。各モデルは内部学習データのみで学習する点に注意。
-#    "val_fold_legacy" : 旧コードと同じく検証 fold 誤差から重みを決める。
-#                        リークありなので新たな主張には使わない。旧結果の再現用。
-# ===================================================================
-# Ensemble settings are derived from VALIDATION_CONFIG above.
-
-# アンサンブルの統合方法 ("mean" ... 重み付き平均 | "min" ... 各サンプル最小値)
-# Derived from VALIDATION_CONFIG["ensemble"]["combine"].
-
-# PCA 次元 (sklearn 系モデル用)
-# Derived from VALIDATION_CONFIG["features"]["pca_components"].
-
-# 後から重み付け・ONB近傍評価をやり直せるように、foldごとの予測値を保存する。
-# Derived from VALIDATION_CONFIG["output"]["save_fold_predictions"].
 
 
 #### データフォルダの設定 ####
