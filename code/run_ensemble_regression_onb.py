@@ -47,9 +47,6 @@ import os
 import gc
 import time
 import csv
-import hashlib
-import json
-import random
 from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
@@ -61,7 +58,6 @@ os.environ.setdefault("TF_FORCE_GPU_ALLOW_GROWTH", "true")
 
 import matplotlib.pyplot as plt
 import numpy as np
-import tensorflow as tf
 
 from sklearn.model_selection import KFold, train_test_split
 from sklearn.preprocessing import MinMaxScaler
@@ -75,22 +71,26 @@ from utils.calculation.regression_detection_metrics import RegressionDetectionMe
 from utils.training.model_training import ModelTrainer
 from utils.ensemble.ensemble_weighting import EnsembleWeighting
 from utils.plotting.regression_plots import RegressionPlotter
-from utils.config.parameter_sets import expand_parameter_sets
+from utils.config.parameter_sets import (
+    expand_parameter_sets,
+    parameter_set_tag,
+    resolve_parameter_set,
+)
 from utils.explainability.training_integration import maybe_explain_trained_model
-
-
-def _env_bool(name, default=False):
-    raw = os.environ.get(name)
-    if raw is None:
-        return default
-    return raw.strip().lower() in {"1", "true", "yes", "on"}
-
-
-def _env_int(name, default):
-    raw = os.environ.get(name)
-    if raw is None or raw.strip() == "":
-        return default
-    return int(raw)
+from utils.experiment.dataset_jobs import build_dataset_jobs as make_dataset_jobs
+from utils.experiment.run_helpers import (
+    append_tuning_summary,
+    has_threshold,
+    is_completed_run,
+    makedirs as _makedirs,
+    model_param_summary,
+    open_text as _open_text,
+    run_config_digest,
+    run_dir_name,
+    safe_tag,
+    set_global_seed,
+    write_run_manifest,
+)
 
 
 #######################################################################
@@ -204,7 +204,7 @@ VALIDATION_CONFIG = {
         #   "val_fold_legacy" reproduce old validation-fold weighting; leaks
         #                     validation labels and should not support claims
         "enabled": True,
-        "weight_strategy": "val_fold_legacy",
+        "weight_strategy": "fixed",
         # Used only when weight_strategy == "fixed".
         "fixed_weights": {
             "rf": 0.90,
@@ -300,30 +300,6 @@ FOLD_PREDICTIONS_DIR_NAME = "fold_pred"
 EXPLAINABILITY_CONFIG = VALIDATION_CONFIG.get("explainability", {})
 EXPLAINABILITY_ENABLED = EXPLAINABILITY_CONFIG.get("enabled", False)
 
-WEIGHT_STRATEGY_TAGS = {
-    "simple": "simp",
-    "fixed": "fix",
-    "inner_holdout": "ih",
-    "val_fold_legacy": "vleg",
-}
-
-KERAS_TRAINING_PARAM_KEYS = {
-    "lr",
-    "batch_size",
-    "fit_verbose",
-    "min_batch_size",
-    "accept_partial_min_epochs",
-}
-
-
-def format_param_value(value):
-    if isinstance(value, float):
-        text = f"{value:.8f}".rstrip("0").rstrip(".")
-    else:
-        text = str(value)
-    return text.replace("-", "m").replace(".", "p")
-
-
 # Settings are defined in VALIDATION_CONFIG above.
 # The constants below are derived values used by the run loop; do not edit
 # them directly unless you are changing the script mechanics.
@@ -387,253 +363,22 @@ plt.rcParams['ytick.direction'] = 'in'
 #                                螳溯｡碁Κ
 #######################################################################
 
-def safe_tag(text, max_len=32):
-    safe = []
-    for ch in str(text):
-        if ch.isalnum() or ch in "-_.":
-            safe.append(ch)
-        else:
-            safe.append("_")
-    return "".join(safe).strip("_")[:max_len] or "params"
-
-
-def chunk_tag():
-    if isinstance(CHUNK, (int, float)):
-        return f"{CHUNK:g}s"
-    return f"{CHUNK}s"
-
-
-def snr_value_from_noise_dir(noise_dir_name):
-    if noise_dir_name == "heatflux_no_noise":
-        return "no_noise"
-    if "SNR=" in noise_dir_name:
-        return noise_dir_name.split("SNR=", 1)[1]
-    return safe_tag(noise_dir_name)
-
-
-def json_default(obj):
-    if isinstance(obj, Path):
-        return str(obj)
-    return repr(obj)
-
-
-def has_threshold(threshold):
-    if threshold is None:
-        return False
-    try:
-        return np.isfinite(float(threshold))
-    except (TypeError, ValueError):
-        return False
-
-
-def short_digest(payload, length=8):
-    text = json.dumps(payload, sort_keys=True, ensure_ascii=False, default=json_default)
-    return hashlib.sha1(text.encode("utf-8")).hexdigest()[:length]
-
-
-def compact_weight_strategy_tag():
-    return WEIGHT_STRATEGY_TAGS.get(WEIGHT_STRATEGY, safe_tag(WEIGHT_STRATEGY, max_len=8))
-
-
-def run_config_digest(parameter_set, run_specs, model_tag):
-    config = validation_config_snapshot()
-    config["output"] = {
-        "save_fold_predictions": SAVE_FOLD_PREDICTIONS,
-    }
-    return short_digest({
-        "validation_config": config,
-        "parameter_set": parameter_set,
-        "model_tag": model_tag,
-        "model_params": model_param_summary(run_specs),
-    }, length=6)
-
-
-def run_dir_name(param_tag, model_tag):
-    parts = [
-        f"e{EPOCH_NUM}",
-        safe_tag(param_tag, max_len=24),
-        safe_tag(model_tag, max_len=12),
-    ]
-    if ENSEMBLE_ENABLED:
-        parts.append(compact_weight_strategy_tag())
-    return "_".join(parts)
-
-
-def has_input_files(data_path):
-    extension = "*.npy" if COLOR_CHANNEL == 1 else "*.png"
-    return data_path.is_dir() and any(data_path.glob(extension))
-
-
-def find_data_source_dir(experiment_root, experiment_name):
-    npy_root = experiment_root / "data" / "npy"
-    configured = DATA_SOURCE_DIR_BY_EXPERIMENT.get(experiment_name)
-    if configured:
-        configured_path = npy_root / configured
-        if configured_path.is_dir():
-            return configured_path
-
-    candidates = sorted(npy_root.glob(f"{NOISE_SOURCE_PREFIX}_*_{chunk_tag()}"))
-    if not candidates:
-        return None
-    return candidates[-1]
-
-
 def build_dataset_jobs():
-    jobs = []
-    missing = []
-    for experiment_name in EXPERIMENT_DIR_NAMES:
-        experiment_root = EXPERIMENT_ROOT / experiment_name
-        source_dir = find_data_source_dir(experiment_root, experiment_name)
-        threshold = THRESHOLD_BY_EXPERIMENT.get(experiment_name)
-        for max_freq_name in MAX_FREQ_HZ_LIST:
-            for noise_dir_name in NOISE_DIR_NAMES:
-                data_path = None if source_dir is None else source_dir / max_freq_name / noise_dir_name
-                job = {
-                    "experiment_name": experiment_name,
-                    "experiment_root": experiment_root,
-                    "source_dir": source_dir,
-                    "threshold": threshold,
-                    "max_freq_hz": max_freq_name,
-                    "noise_dir_name": noise_dir_name,
-                    "snr_value": snr_value_from_noise_dir(noise_dir_name),
-                    "data_path": data_path,
-                    "save_base_path": (
-                        experiment_root / "regression_result" / "npy" / RESULT_MODEL_GROUP / RESULT_DATE_DIR
-                    ),
-                }
-                if REQUIRE_EXPERIMENT_THRESHOLD and threshold is None:
-                    missing.append({**job, "missing_reason": "threshold"})
-                elif data_path is not None and has_input_files(data_path):
-                    jobs.append(job)
-                else:
-                    missing.append({**job, "missing_reason": "data"})
-
-    print(f"dataset plan: existing={len(jobs)} / intended={len(EXPERIMENT_DIR_NAMES) * len(MAX_FREQ_HZ_LIST) * len(NOISE_DIR_NAMES)}")
-    if missing:
-        print("missing datasets:")
-        for job in missing:
-            missing_path = job["data_path"] if job["data_path"] is not None else job["experiment_root"] / "data" / "npy"
-            reason = job.get("missing_reason", "data")
-            print(f"  - {reason} | {job['experiment_name']} | {job['max_freq_hz']} | {job['noise_dir_name']} | {missing_path}")
-        if not SKIP_MISSING_DATASETS:
-            raise FileNotFoundError("Some intended datasets are missing. Set SKIP_MISSING_DATASETS=True to continue.")
-    return jobs
-
-
-def resolve_parameter_set(enabled_specs, parameter_set):
-    resolved = []
-    default_keras = parameter_set.get("default_keras", {})
-    per_model = parameter_set.get("models", {})
-    for spec in enabled_specs:
-        resolved_spec = dict(spec)
-        if resolved_spec["kind"] == "keras":
-            params = dict(default_keras)
-            params.update(per_model.get(resolved_spec["key"], {}))
-            missing = [name for name in ("lr", "batch_size") if name not in params]
-            if missing:
-                raise ValueError(
-                    f"PARAMETER_SETS entry '{parameter_set.get('name', '<unnamed>')}' "
-                    f"does not define {missing} for {resolved_spec['key']}."
-            )
-            builder_params = dict(resolved_spec.get("builder_params", {}))
-            for name, value in params.items():
-                if name in KERAS_TRAINING_PARAM_KEYS:
-                    resolved_spec[name] = value
-                else:
-                    builder_params[name] = value
-            if builder_params:
-                resolved_spec["builder_params"] = builder_params
-        elif resolved_spec["kind"] == "sklearn":
-            params = {}
-            params.update(per_model.get(resolved_spec["key"], {}))
-            if params:
-                resolved_spec["builder_params"] = params
-        resolved.append(resolved_spec)
-    return resolved
-
-
-def parameter_set_tag(parameter_set, resolved_specs):
-    if parameter_set.get("name"):
-        return safe_tag(parameter_set["name"])
-    parts = []
-    for spec in resolved_specs:
-        if spec["kind"] == "keras":
-            parts.append(
-                f"{spec['key']}_lr{format_param_value(spec['lr'])}"
-                f"_bs{format_param_value(spec['batch_size'])}"
-            )
-    return safe_tag("__".join(parts))
-
-
-def model_param_summary(resolved_specs):
-    summary = {}
-    for spec in resolved_specs:
-        if spec["kind"] == "keras":
-            item = {
-                "lr": spec["lr"],
-                "batch_size": spec["batch_size"],
-            }
-            if spec.get("builder_params"):
-                item["builder_params"] = spec["builder_params"]
-            if spec.get("input_axes_assumption"):
-                item["input_axes_assumption"] = spec["input_axes_assumption"]
-            if spec.get("actual_npy_axes"):
-                item["actual_npy_axes"] = spec["actual_npy_axes"]
-            if spec.get("architecture"):
-                item["architecture"] = spec["architecture"]
-            if spec.get("note"):
-                item["note"] = spec["note"]
-            summary[spec["key"]] = item
-        else:
-            summary[spec["key"]] = {
-                "kind": spec["kind"],
-                "params": spec.get("builder_params", {}),
-            }
-    return summary
-
-
-def serializable_run_specs(run_specs):
-    clean_specs = []
-    for spec in run_specs:
-        clean_specs.append({
-            key: value
-            for key, value in spec.items()
-            if key not in {"builder"}
-        })
-    return clean_specs
-
-
-def write_run_manifest(save_path, job, parameter_set, run_specs,
-                       param_tag, model_tag, run_hash, run_dir):
-    manifest = {
-        "created_at": datetime.now().isoformat(timespec="seconds"),
-        "run_instance_id": RUN_INSTANCE_ID,
-        "run_hash": run_hash,
-        "run_dir": run_dir,
-        "folder_naming": {
-            "scheme": "e{epochs}_{param}_{models}[_{weight_when_ensemble_enabled}]",
-            "reason": "Keep Windows paths short while keeping parameter folders readable.",
-            "details": "Full conditions are stored in this manifest and validation_results_*.txt.",
-        },
-        "dataset": {
-            "experiment_name": job["experiment_name"],
-            "source_dir": str(job["source_dir"]),
-            "data_path": str(job["data_path"]),
-            "max_freq_hz": job["max_freq_hz"],
-            "noise_dir_name": job["noise_dir_name"],
-            "snr_value": job["snr_value"],
-            "threshold": job["threshold"],
-        },
-        "parameter_set_name": parameter_set.get("name"),
-        "parameter_set_tag": param_tag,
-        "model_tag": model_tag,
-        "model_params": model_param_summary(run_specs),
-        "run_specs": serializable_run_specs(run_specs),
-        "validation_config": validation_config_snapshot(),
-    }
-    manifest_path = os.path.join(save_path, "run_manifest.json")
-    with _open_text(manifest_path, "w", encoding="utf-8") as mf:
-        json.dump(manifest, mf, ensure_ascii=False, indent=2, default=json_default)
+    return make_dataset_jobs(
+        experiment_root=EXPERIMENT_ROOT,
+        experiment_names=EXPERIMENT_DIR_NAMES,
+        max_freq_hz_list=MAX_FREQ_HZ_LIST,
+        noise_dir_names=NOISE_DIR_NAMES,
+        data_source_dir_by_experiment=DATA_SOURCE_DIR_BY_EXPERIMENT,
+        noise_source_prefix=NOISE_SOURCE_PREFIX,
+        chunk_seconds=CHUNK,
+        threshold_by_experiment=THRESHOLD_BY_EXPERIMENT,
+        result_model_group=RESULT_MODEL_GROUP,
+        result_date_dir=RESULT_DATE_DIR,
+        color_channel=COLOR_CHANNEL,
+        require_experiment_threshold=REQUIRE_EXPERIMENT_THRESHOLD,
+        skip_missing_datasets=SKIP_MISSING_DATASETS,
+    )
 
 
 def validation_config_snapshot():
@@ -726,140 +471,6 @@ def validate_validation_config(enabled_specs):
                 f"{missing_thresholds}. Add them to VALIDATION_CONFIG['thresholds']['by_experiment']."
             )
 
-
-def set_global_seed(seed):
-    """Keep KFold, sklearn, and Keras runs as reproducible as practical."""
-    random.seed(seed)
-    np.random.seed(seed)
-    tf.random.set_seed(seed)
-
-
-def _windows_long_path(path):
-    path = os.path.abspath(path)
-    if os.name == "nt" and not path.startswith("\\\\?\\"):
-        return "\\\\?\\" + path
-    return path
-
-
-def _makedirs(path):
-    try:
-        os.makedirs(path, exist_ok=True)
-    except OSError:
-        os.makedirs(_windows_long_path(path), exist_ok=True)
-
-
-def _path_exists(path):
-    return os.path.exists(path) or os.path.exists(_windows_long_path(path))
-
-
-def _open_text(path, mode, **kwargs):
-    try:
-        return open(path, mode, **kwargs)
-    except OSError:
-        return open(_windows_long_path(path), mode, **kwargs)
-
-
-def _csv_metric(value):
-    try:
-        value = float(value)
-    except (TypeError, ValueError):
-        return ""
-    if np.isnan(value):
-        return ""
-    return f"{value:.10g}"
-
-
-def _join_unique(values):
-    clean = [str(v) for v in values if v not in (None, "")]
-    return "|".join(dict.fromkeys(clean))
-
-
-def append_tuning_summary(summary_path, job, parameter_set, run_specs,
-                          store, train_meta, summary_metrics, metrics,
-                          param_tag, run_dir, run_hash, save_path,
-                          model_keys):
-    if not SAVE_TUNING_SUMMARY:
-        return
-
-    _makedirs(os.path.dirname(summary_path))
-    header = [
-        "created_at", "run_instance_id", "run_hash", "run_dir", "save_path",
-        "experiment_name", "data_source_dir", "max_freq_hz", "noise_dir_name",
-        "snr_value", "threshold_available", "threshold",
-        "parameter_set", "model_key", "model_label",
-        "lr", "batch_size",
-        "requested_batch_size", "actual_batch_sizes", "min_actual_batch_size",
-        "epochs_completed", "stopped_by_memory_error",
-    ]
-    for metric_name in summary_metrics:
-        header.extend([f"{metric_name}_mean", f"{metric_name}_se"])
-
-    spec_by_key = {spec["key"]: spec for spec in run_specs}
-    file_exists = _path_exists(summary_path)
-    with _open_text(summary_path, "a", newline="", encoding="utf-8") as sf:
-        writer = csv.writer(sf)
-        if not file_exists:
-            writer.writerow(header)
-        for key in model_keys:
-            spec = spec_by_key.get(key, {})
-            meta = train_meta.get(key, {})
-            actual_batch_sizes = meta.get("actual_batch_size", [])
-            min_actual_batch_size = min(actual_batch_sizes) if actual_batch_sizes else ""
-            stopped_flags = meta.get("stopped_by_memory_error", [])
-            row = [
-                datetime.now().isoformat(timespec="seconds"),
-                RUN_INSTANCE_ID,
-                run_hash,
-                run_dir,
-                save_path,
-                job["experiment_name"],
-                job["source_dir"],
-                job["max_freq_hz"],
-                job["noise_dir_name"],
-                job["snr_value"],
-                int(has_threshold(job["threshold"])),
-                job["threshold"] if has_threshold(job["threshold"]) else "",
-                parameter_set.get("name", param_tag),
-                key,
-                spec.get("label", key),
-                spec.get("lr", ""),
-                spec.get("batch_size", ""),
-                _join_unique(meta.get("requested_batch_size", [])),
-                _join_unique(actual_batch_sizes),
-                min_actual_batch_size,
-                _join_unique(meta.get("epochs_completed", [])),
-                int(any(bool(flag) for flag in stopped_flags)),
-            ]
-            for metric_name in summary_metrics:
-                mean, se = metrics.mean_se(store[key][metric_name])
-                row.extend([_csv_metric(mean), _csv_metric(se)])
-            writer.writerow(row)
-
-
-def is_completed_run(summary_path, run_dir, save_path, snr_value):
-    """Return True only when the per-run metrics and tuning summary both exist."""
-    if not RESUME_COMPLETED_RUNS:
-        return False
-
-    metrics_path = os.path.join(save_path, f"metrics_summary_{snr_value}.csv")
-    if not _path_exists(metrics_path):
-        return False
-
-    if not SAVE_TUNING_SUMMARY:
-        return True
-    if not _path_exists(summary_path):
-        return False
-
-    try:
-        with _open_text(summary_path, "r", newline="", encoding="utf-8") as sf:
-            for row in csv.DictReader(sf):
-                if row.get("run_dir") == run_dir:
-                    return True
-    except (OSError, csv.Error):
-        return False
-    return False
-
-
 def main():
     set_global_seed(RANDOM_SEED)
     # Shared helpers for metrics, training, weighting, and plots.
@@ -944,24 +555,31 @@ def main():
 
         for parameter_set in PARAMETER_SETS:
                 run_specs = resolve_parameter_set(enabled_specs, parameter_set)
-                param_tag = parameter_set_tag(parameter_set, run_specs)
+                param_tag = parameter_set_tag(parameter_set, run_specs, safe_tag)
                 param_summary = model_param_summary(run_specs)
-                run_hash = run_config_digest(parameter_set, run_specs, model_tag)
-                run_dir = run_dir_name(param_tag, model_tag)
+                run_hash = run_config_digest(
+                    validation_config_snapshot(), parameter_set, run_specs,
+                    model_tag, SAVE_FOLD_PREDICTIONS)
+                run_dir = run_dir_name(
+                    EPOCH_NUM, param_tag, model_tag,
+                    ENSEMBLE_ENABLED, WEIGHT_STRATEGY)
                 print(f"parameter_set={parameter_set.get('name', param_tag)} | model_params={param_summary}")
                 print(f"run_dir={run_dir}")
                 SAVE_PATH = os.path.join(
                     base_save_path, noise_dir_name, max_freq_name,
                     run_dir)
                 tuning_summary_path = os.path.join(base_save_path, "tuning_summary.csv")
-                if is_completed_run(tuning_summary_path, run_dir, SAVE_PATH, snr_value):
+                if is_completed_run(
+                    tuning_summary_path, run_dir, SAVE_PATH, snr_value,
+                    RESUME_COMPLETED_RUNS, SAVE_TUNING_SUMMARY):
                     print(f"[resume skip] completed run found: {run_dir}")
                     continue
 
                 _makedirs(SAVE_PATH)
                 write_run_manifest(
                     SAVE_PATH, job, parameter_set, run_specs,
-                    param_tag, model_tag, run_hash, run_dir)
+                    param_tag, model_tag, run_hash, run_dir,
+                    RUN_INSTANCE_ID, validation_config_snapshot())
 
                 kf = KFold(n_splits=DIVISIONS, shuffle=True, random_state=RANDOM_SEED)
 
@@ -1210,7 +828,8 @@ def main():
                 append_tuning_summary(
                     tuning_summary_path, job, parameter_set, run_specs,
                     store, train_meta, summary_metrics, metrics,
-                    param_tag, run_dir, run_hash, SAVE_PATH, all_keys)
+                    param_tag, run_dir, run_hash, SAVE_PATH, all_keys,
+                    SAVE_TUNING_SUMMARY, RUN_INSTANCE_ID)
                 print(f"tuning summary saved: {tuning_summary_path}")
 
                 if not FLG_ROOP:
