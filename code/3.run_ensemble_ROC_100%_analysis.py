@@ -347,7 +347,7 @@ def main():
                         regressionmodelmaker = RegressionModelMaker((224, 224, COLOR_CHANNEL))
                 
                         # alexnet_model = regressionmodelmaker.alexnet()
-                        resnet50_model = regressionmodelmaker.cnn_transformer_v1()
+                        resnet50_model = regressionmodelmaker.cnn_transformer_v2()
                         vgg16_model = regressionmodelmaker.cnn_transformer_v2()
                         rf_model = regressionmodelmaker.random_forest()
 

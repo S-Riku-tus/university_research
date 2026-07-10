@@ -1,0 +1,28 @@
+2026-07-02 19:09:12.867806: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2026-07-02 19:09:13.286373: W tensorflow/core/common_runtime/gpu/gpu_bfc_allocator.cc:42] Overriding orig_value setting because the TF_FORCE_GPU_ALLOW_GROWTH environment variable is set. Original config value was 0.
+2026-07-02 19:09:13.350957: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1532] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 21338 MB memory:  -> device: 0, name: NVIDIA GeForce RTX 4090, pci bus id: 0000:01:00.0, compute capability: 8.9
+2026-07-02 19:09:20.652213: I tensorflow/stream_executor/cuda/cuda_dnn.cc:384] Loaded cuDNN version 8201
+2026-07-02 19:09:22.427676: I tensorflow/stream_executor/cuda/cuda_blas.cc:1786] TensorFloat-32 will be used for the matrix multiplication. This will only be logged once.
+2026-07-02 19:13:43.114247: W tensorflow/core/kernels/conv_ops_gpu.cc:336] None of the algorithms provided by cuDNN frontend heuristics worked; trying fallback algorithms.  Conv: batch: 40
+in_depths: 384
+out_depths: 256
+in: 14
+in: 14
+data_format: 1
+filter: 3
+filter: 3
+filter: 384
+dilation: 1
+dilation: 1
+stride: 1
+stride: 1
+padding: 1
+padding: 1
+dtype: DT_FLOAT
+group_count: 1
+device_identifier: "NVIDIA GeForce RTX 4090 sm_8.9 with 25756696576B RAM and 128 cores"
+version: 1
+
+WARNING:tensorflow:Callback method `on_train_batch_end` is slow compared to the batch time (batch time: 0.0251s vs `on_train_batch_end` time: 0.0430s). Check your callbacks.
+WARNING:tensorflow:Callback method `on_train_batch_end` is slow compared to the batch time (batch time: 0.0300s vs `on_train_batch_end` time: 0.0389s). Check your callbacks.

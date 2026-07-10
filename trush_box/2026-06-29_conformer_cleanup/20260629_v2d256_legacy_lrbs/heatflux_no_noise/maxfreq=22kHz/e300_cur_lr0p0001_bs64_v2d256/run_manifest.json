@@ -1,0 +1,175 @@
+{
+  "created_at": "2026-06-29T16:34:46",
+  "run_instance_id": "163445",
+  "run_hash": "893dd3",
+  "run_dir": "e300_cur_lr0p0001_bs64_v2d256",
+  "folder_naming": {
+    "scheme": "e{epochs}_{param}_{models}[_{weight_when_ensemble_enabled}]",
+    "reason": "Keep Windows paths short while keeping parameter folders readable.",
+    "details": "Full conditions are stored in this manifest and validation_results_*.txt."
+  },
+  "dataset": {
+    "experiment_name": "2025.06.11_0.3_2",
+    "source_dir": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\data\\npy\\waterflow_20251126_1s",
+    "data_path": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\data\\npy\\waterflow_20251126_1s\\maxfreq=22kHz\\heatflux_no_noise",
+    "max_freq_hz": "maxfreq=22kHz",
+    "noise_dir_name": "heatflux_no_noise",
+    "snr_value": "no_noise",
+    "threshold": 266907.6965
+  },
+  "parameter_set_name": "cur_lr0p0001_bs64",
+  "parameter_set_tag": "cur_lr0p0001_bs64",
+  "model_tag": "v2d256",
+  "model_params": {
+    "cnntf_v2_dim256_attn": {
+      "lr": 0.0001,
+      "batch_size": 64,
+      "early_stopping": true,
+      "builder_params": {
+        "model_dim": 256,
+        "attention_key_dim": 64,
+        "num_heads": 4,
+        "ff_dim": 2048,
+        "num_transformer_blocks": 4
+      },
+      "input_axes_assumption": [
+        "time_frame",
+        "frequency_bin",
+        "channel"
+      ],
+      "architecture": {
+        "front_end": "alexnet_like",
+        "sequence_length_after_cnn": 7,
+        "model_dim": 256,
+        "attention_key_dim": 64,
+        "pooling": "AttentionPooling"
+      }
+    }
+  },
+  "run_specs": [
+    {
+      "key": "cnntf_v2_dim256_attn",
+      "label": "CNN+Tf v2 Dim256 Attn",
+      "kind": "keras",
+      "builder_params": {
+        "model_dim": 256,
+        "attention_key_dim": 64,
+        "num_heads": 4,
+        "ff_dim": 2048,
+        "num_transformer_blocks": 4
+      },
+      "input_axes_assumption": [
+        "time_frame",
+        "frequency_bin",
+        "channel"
+      ],
+      "architecture": {
+        "front_end": "alexnet_like",
+        "sequence_length_after_cnn": 7,
+        "model_dim": 256,
+        "attention_key_dim": 64,
+        "pooling": "AttentionPooling"
+      },
+      "note": "v2 front-end with legacy-like Transformer dimensions and AttentionPooling.",
+      "enabled": true,
+      "lr": 0.0001,
+      "batch_size": 64,
+      "early_stopping": true
+    }
+  ],
+  "validation_config": {
+    "run": {
+      "smoke_test": false,
+      "epochs": 300,
+      "folds": 3,
+      "color_channel": 1,
+      "random_seed": 42,
+      "loop_parameter_sets": true
+    },
+    "data": {
+      "experiment_root": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3",
+      "result_model_group": "cnntf_v2d256",
+      "noise_source": "waterflow",
+      "chunk_seconds": 1,
+      "experiment_names": [
+        "2025.06.11_0.3_2"
+      ],
+      "max_freq_hz_list": [
+        "maxfreq=22kHz"
+      ],
+      "noise_dir_names": [
+        "heatflux_no_noise"
+      ],
+      "data_source_dir_by_experiment": {
+        "2025.06.11_0.3_2": "waterflow_20251126_1s",
+        "2025.06.18_0.3_3": "waterflow_20260622_1s_1",
+        "2025.07.09_0.3_1": "waterflow_20251219_1s"
+      },
+      "skip_missing_datasets": false
+    },
+    "thresholds": {
+      "by_experiment": {
+        "2025.07.09_0.3_1": 275174.6640882674,
+        "2025.06.11_0.3_2": 266907.6965,
+        "2025.06.18_0.3_3": 271677.6816
+      },
+      "require_experiment_threshold": false,
+      "onb_band_frac": 0.1
+    },
+    "models": {
+      "active_model_keys": [
+        "cnntf_v2_dim256_attn"
+      ],
+      "parameter_sets": [
+        {
+          "name": "cur_lr0p0001_bs64",
+          "models": {
+            "cnntf_v2_dim256_attn": {
+              "lr": 0.0001,
+              "batch_size": 64
+            }
+          }
+        },
+        {
+          "name": "v1onb_lr0p0001_bs128",
+          "models": {
+            "cnntf_v2_dim256_attn": {
+              "lr": 0.0001,
+              "batch_size": 128
+            }
+          }
+        },
+        {
+          "name": "v1reg_lr0p01_bs24",
+          "models": {
+            "cnntf_v2_dim256_attn": {
+              "lr": 0.01,
+              "batch_size": 24
+            }
+          }
+        }
+      ]
+    },
+    "ensemble": {
+      "enabled": false,
+      "weight_strategy": "simple",
+      "fixed_weights": {
+        "rf": 0.9,
+        "cnntf_v1": 0.05,
+        "alexnet": 0.05
+      },
+      "inner_holdout_frac": 0.2,
+      "combine": "mean"
+    },
+    "features": {
+      "pca_components": 100
+    },
+    "output": {
+      "save_date": "20260629",
+      "result_date_dir": "20260629_v2d256_legacy_lrbs",
+      "run_instance_id": "163445",
+      "save_fold_predictions": true,
+      "save_tuning_summary": true
+    }
+  }
+}

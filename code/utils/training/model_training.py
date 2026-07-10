@@ -4,7 +4,7 @@ import numpy as np
 import tensorflow as tf
 from sklearn.decomposition import PCA
 from tensorflow.keras import backend as K
-from tensorflow.keras.callbacks import Callback, EarlyStopping
+from tensorflow.keras.callbacks import Callback
 from tensorflow.keras.optimizers import SGD
 
 
@@ -51,7 +51,7 @@ class ModelTrainer:
     def __init__(self, random_seed=42):
         self.random_seed = random_seed
 
-    def make_pca(self, x_fit, x_other_list, n_components):
+    def make_pca(self, x_fit, x_other_list, n_components, return_pca=False):
         """sklearn 系モデル用に平坦化 + PCA。学習データのみで fit する。"""
         x_fit_flat = x_fit.reshape(x_fit.shape[0], -1)
         pca = PCA(n_components=min(n_components, x_fit_flat.shape[0], x_fit_flat.shape[1]),
@@ -63,6 +63,8 @@ class ModelTrainer:
                 others.append(None)
             else:
                 others.append(pca.transform(x_other.reshape(x_other.shape[0], -1)))
+        if return_pca:
+            return x_fit_pca, others, pca
         return x_fit_pca, others
 
     def train_one_model(self, spec, mm, x_fit, y_fit_scaled,
@@ -73,10 +75,10 @@ class ModelTrainer:
                 raise ValueError(
                     f"Keras model '{spec.get('key', spec.get('label'))}' needs "
                     "resolved 'lr' and 'batch_size'. Check PARAMETER_SETS."
-                )
+            )
             lr = spec["lr"]
             requested_batch_size = int(spec["batch_size"])
-            use_early_stopping = bool(spec.get("early_stopping", True))
+            fit_verbose = int(spec.get("fit_verbose", 1))
             min_batch_size = int(spec.get("min_batch_size", 1))
             accept_partial_min_epochs = int(spec.get("accept_partial_min_epochs", 100))
             batch_size = requested_batch_size
@@ -90,29 +92,18 @@ class ModelTrainer:
                               loss='mean_squared_error')
                 lightweight_history = LightweightHistory()
                 callbacks = [lightweight_history]
-                if use_early_stopping:
-                    callbacks.append(
-                        EarlyStopping(
-                            monitor="loss",
-                            min_delta=float(spec.get("early_stopping_min_delta", 1e-4)),
-                            patience=int(spec.get("early_stopping_patience", 20)),
-                            restore_best_weights=False,
-                            verbose=1,
-                        )
-                    )
                 try:
                     history = model.fit(
                         x_fit, y_fit_scaled,
                         batch_size=batch_size,
                         epochs=epochs,
-                        verbose=1,
+                        verbose=fit_verbose,
                         callbacks=callbacks,
                     )
                     history.history = lightweight_history.history
                     history.params["requested_batch_size"] = requested_batch_size
                     history.params["actual_batch_size"] = batch_size
                     history.params["epochs_completed"] = lightweight_history.epochs_completed
-                    history.params["early_stopping"] = use_early_stopping
                     return model, history
                 except Exception as exc:
                     if not _is_memory_error(exc):
@@ -122,7 +113,6 @@ class ModelTrainer:
                         lightweight_history.params["requested_batch_size"] = requested_batch_size
                         lightweight_history.params["actual_batch_size"] = batch_size
                         lightweight_history.params["epochs_completed"] = lightweight_history.epochs_completed
-                        lightweight_history.params["early_stopping"] = use_early_stopping
                         lightweight_history.params["stopped_by_memory_error"] = True
                         print(
                             f"[OOM accepted] {spec.get('key', spec.get('label'))}: "

@@ -55,9 +55,9 @@ sample_number = 672
 # max_freq_hz = 5000
 # max_freq_hz = 2000
 MAX_FREQ_HZ = [2000, 3000, 5000, 10000, 15000, 22050]
-# MAX_FREQ_HZ = [3000]
+# MAX_FREQ_HZ = [2000, 15000]
 
-SAVE_DATE = 20260622
+SAVE_DATE = 20260629
 DATASET_VERSION = "exactq"
 CHUNK = 1
 
@@ -67,7 +67,7 @@ SAVE_SPECTROGRAM_PNG = True
 PNG_WITH_AXES = True
 
 # 音声ファイルが格納されたフォルダパス
-folder_path = r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2025.06.18_0.3_3\録音データ_熱流束"
+folder_path = r"C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2025.06.11_0.3_2\録音データ_熱流束"
 waterflow_path = r"C:\Users\Casper4\Python\ueki\shibasaki\研究\water_flow\water_flow_125.wav"
 experiment_root = os.path.dirname(folder_path)
 experiment_name = os.path.basename(experiment_root)

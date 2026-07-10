@@ -10,9 +10,8 @@ def _safe_stem(text, max_len=32):
         "RandomForest": "rf",
         "AlexNet": "alexnet",
         "Conformer": "conformer",
-        "CNN+Tf (AttnPool)": "cnntf_v1",
-        "CNN+Tf (GAP)": "cnntf_v2",
         "ROC-AUC (continuous)": "roc_auc_cont",
+        "AUC (binary legacy)": "auc_bin",
         "R2 Score": "r2",
     }
     text = aliases.get(text, str(text))
@@ -23,6 +22,22 @@ def _safe_stem(text, max_len=32):
         else:
             safe.append("_")
     return "".join(safe).strip("_")[:max_len] or "plot"
+
+
+def _windows_long_path(path):
+    path = os.path.abspath(path)
+    if os.name == "nt" and not path.startswith("\\\\?\\"):
+        return "\\\\?\\" + path
+    return path
+
+
+def _save_current_figure(path):
+    """Save the current Matplotlib figure, allowing long absolute paths on Windows."""
+    save_path = _windows_long_path(path)
+    out_dir = os.path.dirname(save_path)
+    if out_dir:
+        os.makedirs(out_dir, exist_ok=True)
+    plt.savefig(save_path)
 
 
 class RegressionPlotter:
@@ -45,10 +60,9 @@ class RegressionPlotter:
         plt.legend()
         plt.grid(True)
         out_dir = os.path.join(save_path, "loss")
-        os.makedirs(out_dir, exist_ok=True)
         label_stem = _safe_stem(label)
         snr_stem = _safe_stem(snr_value, max_len=16)
-        plt.savefig(os.path.join(out_dir, f'loss_{label_stem}_f{fold}_{snr_stem}.png'))
+        _save_current_figure(os.path.join(out_dir, f'loss_{label_stem}_f{fold}_{snr_stem}.png'))
         plt.close()
 
     def plot_bar(self, metric_name, labels, values, errors, epochs, save_path, snr_value):
@@ -58,8 +72,6 @@ class RegressionPlotter:
         display_label_aliases = {
             "RandomForest": "RandomForest",
             "Conformer": "Conformer",
-            "CNN+Tf (AttnPool)": "Conformer",
-            "CNN+Tf (GAP)": "CNN+Tf GAP",
         }
         display_labels = [display_label_aliases.get(label, label) for label in labels]
         plt.bar(display_labels, values, color=colors[:len(labels)],
@@ -90,11 +102,10 @@ class RegressionPlotter:
                 plt.text(i, 0.03, text, ha='center', va='bottom',
                          fontsize=25, color='black', rotation=90)
         out_dir = os.path.join(save_path, "bar")
-        os.makedirs(out_dir, exist_ok=True)
         safe = _safe_stem(metric_name)
         plt.tight_layout()
         snr_stem = _safe_stem(snr_value, max_len=16)
-        plt.savefig(os.path.join(out_dir, f'{safe}_ep{epochs}_{snr_stem}.png'))
+        _save_current_figure(os.path.join(out_dir, f'{safe}_ep{epochs}_{snr_stem}.png'))
         plt.close()
 
     def plot_regression_scatter(self, y_val, ensemble_pred, y_all, metrics_ens,
@@ -161,7 +172,6 @@ class RegressionPlotter:
         plt.tick_params(axis='both', labelsize=30)
 
         out_dir = os.path.join(save_path, "scatter")
-        os.makedirs(out_dir, exist_ok=True)
         snr_stem = _safe_stem(snr_value, max_len=16)
-        plt.savefig(os.path.join(out_dir, f'scatter_{snr_stem}_f{fold}.png'))
+        _save_current_figure(os.path.join(out_dir, f'scatter_{snr_stem}_f{fold}.png'))
         plt.close()

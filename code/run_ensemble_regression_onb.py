@@ -1,55 +1,52 @@
-"""
+﻿"""
 run_ensemble_regression_onb.py
 
-中心スクリプト 3.run_ensemble_ROC_100%_analysis.py の作り直し版。
-2026-06-12 の研究計画 (研究進捗報告/2026/612/今後の研究計画_2026-06-12.md) の
-Phase 0「評価軸とコードの整理」に対応する。
+荳ｭ蠢・せ繧ｯ繝ｪ繝励ヨ 3.run_ensemble_ROC_100%_analysis.py 縺ｮ菴懊ｊ逶ｴ縺礼沿縲・
+2026-06-12 縺ｮ遐皮ｩｶ險育判 (遐皮ｩｶ騾ｲ謐怜ｱ蜻・2026/612/莉雁ｾ後・遐皮ｩｶ險育判_2026-06-12.md) 縺ｮ
+Phase 0縲瑚ｩ穂ｾ｡霆ｸ縺ｨ繧ｳ繝ｼ繝峨・謨ｴ逅・阪↓蟇ｾ蠢懊☆繧九・
 
-旧スクリプトに対して、次の3点を直したうえで作り直している。
+譌ｧ繧ｹ繧ｯ繝ｪ繝励ヨ縺ｫ蟇ｾ縺励※縲∵ｬ｡縺ｮ3轤ｹ繧堤峩縺励◆縺・∴縺ｧ菴懊ｊ逶ｴ縺励※縺・ｋ縲・
 
-  ① モデル名の取り違えをなくす
-     旧コードは RandomForest の予測を alexnet_pred という変数に入れ、以降の
-     R2/AUC/グラフ/txt すべてに "AlexNet" というラベルで記録していた。
-     本スクリプトでは MODEL_SPECS というレジストリで各モデルを定義し、
-     ラベルが必ず実体のモデルに追従するようにした。モデルの差し替え・
-     有効/無効化は MODEL_SPECS を編集するだけで済む。
+  竭 繝｢繝・Ν蜷阪・蜿悶ｊ驕輔∴繧偵↑縺上☆
+     譌ｧ繧ｳ繝ｼ繝峨・ RandomForest 縺ｮ莠域ｸｬ繧・alexnet_pred 縺ｨ縺・≧螟画焚縺ｫ蜈･繧後∽ｻ･髯阪・
+     R2/AUC/繧ｰ繝ｩ繝・txt 縺吶∋縺ｦ縺ｫ "AlexNet" 縺ｨ縺・≧繝ｩ繝吶Ν縺ｧ險倬鹸縺励※縺・◆縲・
+     譛ｬ繧ｹ繧ｯ繝ｪ繝励ヨ縺ｧ縺ｯ MODEL_SPECS 縺ｨ縺・≧繝ｬ繧ｸ繧ｹ繝医Μ縺ｧ蜷・Δ繝・Ν繧貞ｮ夂ｾｩ縺励・
+     繝ｩ繝吶Ν縺悟ｿ・★螳滉ｽ薙・繝｢繝・Ν縺ｫ霑ｽ蠕薙☆繧九ｈ縺・↓縺励◆縲ゅΔ繝・Ν縺ｮ蟾ｮ縺玲崛縺医・
+     譛牙柑/辟｡蜉ｹ蛹悶・ MODEL_SPECS 繧堤ｷｨ髮・☆繧九□縺代〒貂医・縲・
 
-  ② AUC を「連続スコア版」と「二値化後の分類指標」に分ける
-     旧コードは予測を閾値で 0/1 化してから ROC を計算していたため、ROC が
-     2点しか持たず AUC が実質バランス精度になっていた。本スクリプトでは
-       - 連続スコア版 AUC: 予測熱流束をそのままスコアにした ROC-AUC / PR-AUC
-       - 二値化後の分類指標: Accuracy / Precision / Recall / F1
-     を分けて算出する。旧来の二値化 AUC も後方比較用に残してある。
+  竭｡ AUC 繧偵碁｣邯壹せ繧ｳ繧｢迚医阪→縲御ｺ悟､蛹門ｾ後・蛻・｡樊欠讓吶阪↓蛻・￠繧・
+     譌ｧ繧ｳ繝ｼ繝峨・莠域ｸｬ繧帝明蛟､縺ｧ 0/1 蛹悶＠縺ｦ縺九ｉ ROC 繧定ｨ育ｮ励＠縺ｦ縺・◆縺溘ａ縲ヽOC 縺・
+     2轤ｹ縺励°謖√◆縺・AUC 縺悟ｮ溯ｳｪ繝舌Λ繝ｳ繧ｹ邊ｾ蠎ｦ縺ｫ縺ｪ縺｣縺ｦ縺・◆縲よ悽繧ｹ繧ｯ繝ｪ繝励ヨ縺ｧ縺ｯ
+       - 騾｣邯壹せ繧ｳ繧｢迚・AUC: 莠域ｸｬ辭ｱ豬∵據繧偵◎縺ｮ縺ｾ縺ｾ繧ｹ繧ｳ繧｢縺ｫ縺励◆ ROC-AUC / PR-AUC
+       - 莠悟､蛹門ｾ後・蛻・｡樊欠讓・ Accuracy / Precision / Recall / F1
+     繧貞・縺代※邂怜・縺吶ｋ縲よ立譚･縺ｮ莠悟､蛹・AUC 繧ょｾ梧婿豈碑ｼ・畑縺ｫ谿九＠縺ｦ縺ゅｋ縲・
 
-  ③ アンサンブル重みの決め方を選択式にする (リーク対策)
-     旧コードは評価対象である検証 fold (y_val) の誤差から重みを決めており、
-     データリークになっていた。本スクリプトでは WEIGHT_STRATEGY で
-       - simple          : 単純平均 (重みなし)
-       - fixed           : 固定重み (FIXED_WEIGHTS で指定)
-       - inner_holdout   : 学習 fold 内 holdout の誤差から重み (リークなし)
-       - val_fold_legacy : 旧来どおり検証 fold 誤差から重み (リークあり/再現用)
-     を切り替えられる。
+  竭｢ 繧｢繝ｳ繧ｵ繝ｳ繝悶Ν驥阪∩縺ｮ豎ｺ繧∵婿繧帝∈謚槫ｼ上↓縺吶ｋ (繝ｪ繝ｼ繧ｯ蟇ｾ遲・
+     譌ｧ繧ｳ繝ｼ繝峨・隧穂ｾ｡蟇ｾ雎｡縺ｧ縺ゅｋ讀懆ｨｼ fold (y_val) 縺ｮ隱､蟾ｮ縺九ｉ驥阪∩繧呈ｱｺ繧√※縺翫ｊ縲・
+     繝・・繧ｿ繝ｪ繝ｼ繧ｯ縺ｫ縺ｪ縺｣縺ｦ縺・◆縲よ悽繧ｹ繧ｯ繝ｪ繝励ヨ縺ｧ縺ｯ WEIGHT_STRATEGY 縺ｧ
+       - simple          : 蜊倡ｴ泌ｹｳ蝮・(驥阪∩縺ｪ縺・
+       - fixed           : 蝗ｺ螳夐㍾縺ｿ (FIXED_WEIGHTS 縺ｧ謖・ｮ・
+       - inner_holdout   : 蟄ｦ鄙・fold 蜀・holdout 縺ｮ隱､蟾ｮ縺九ｉ驥阪∩ (繝ｪ繝ｼ繧ｯ縺ｪ縺・
+       - val_fold_legacy : 譌ｧ譚･縺ｩ縺翫ｊ讀懆ｨｼ fold 隱､蟾ｮ縺九ｉ驥阪∩ (繝ｪ繝ｼ繧ｯ縺ゅｊ/蜀咲樟逕ｨ)
+     繧貞・繧頑崛縺医ｉ繧後ｋ縲・
 
-  ④ データパスは別マシン運用のためそのまま (旧コードと同じハードコード)
+  竭｣ 繝・・繧ｿ繝代せ縺ｯ蛻･繝槭す繝ｳ驕狗畑縺ｮ縺溘ａ縺昴・縺ｾ縺ｾ (譌ｧ繧ｳ繝ｼ繝峨→蜷後§繝上・繝峨さ繝ｼ繝・
 
-旧スクリプト (code/3.run_ensemble_ROC_100%_analysis.py) は再現性のため残す。
+譌ｧ繧ｹ繧ｯ繝ｪ繝励ヨ (code/3.run_ensemble_ROC_100%_analysis.py) 縺ｯ蜀咲樟諤ｧ縺ｮ縺溘ａ谿九☆縲・
 
-再利用可能な処理 (指標計算・学習/予測・重み付け・作図) は、既存の utils 方針に
-合わせて用途別のクラスに分離してある。本ファイルにはこの実験固有の設定と
-main() のオーケストレーションだけを置く。
-    - 指標計算    : utils/calculation/regression_detection_metrics.py
-    - 学習/予測   : utils/training/model_training.py
-    - 重み付け    : utils/ensemble/ensemble_weighting.py
-    - 作図        : utils/plotting/regression_plots.py
+蜀榊茜逕ｨ蜿ｯ閭ｽ縺ｪ蜃ｦ逅・(謖・ｨ呵ｨ育ｮ励・蟄ｦ鄙・莠域ｸｬ繝ｻ驥阪∩莉倥￠繝ｻ菴懷峙) 縺ｯ縲∵里蟄倥・ utils 譁ｹ驥昴↓
+蜷医ｏ縺帙※逕ｨ騾泌挨縺ｮ繧ｯ繝ｩ繧ｹ縺ｫ蛻・屬縺励※縺ゅｋ縲よ悽繝輔ぃ繧､繝ｫ縺ｫ縺ｯ縺薙・螳滄ｨ灘崋譛峨・險ｭ螳壹→
+main() 縺ｮ繧ｪ繝ｼ繧ｱ繧ｹ繝医Ξ繝ｼ繧ｷ繝ｧ繝ｳ縺縺代ｒ鄂ｮ縺上・
+    - 謖・ｨ呵ｨ育ｮ・   : utils/calculation/regression_detection_metrics.py
+    - 蟄ｦ鄙・莠域ｸｬ   : utils/training/model_training.py
+    - 驥阪∩莉倥￠    : utils/ensemble/ensemble_weighting.py
+    - 菴懷峙        : utils/plotting/regression_plots.py
 """
 
 import os
 import gc
 import time
 import csv
-import hashlib
-import json
-import random
 from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
@@ -61,7 +58,6 @@ os.environ.setdefault("TF_FORCE_GPU_ALLOW_GROWTH", "true")
 
 import matplotlib.pyplot as plt
 import numpy as np
-import tensorflow as tf
 
 from sklearn.model_selection import KFold, train_test_split
 from sklearn.preprocessing import MinMaxScaler
@@ -75,38 +71,54 @@ from utils.calculation.regression_detection_metrics import RegressionDetectionMe
 from utils.training.model_training import ModelTrainer
 from utils.ensemble.ensemble_weighting import EnsembleWeighting
 from utils.plotting.regression_plots import RegressionPlotter
-from utils.config.parameter_sets import expand_parameter_sets
-
-
-def _env_bool(name, default=False):
-    raw = os.environ.get(name)
-    if raw is None:
-        return default
-    return raw.strip().lower() in {"1", "true", "yes", "on"}
-
-
-def _env_int(name, default):
-    raw = os.environ.get(name)
-    if raw is None or raw.strip() == "":
-        return default
-    return int(raw)
+from utils.config.parameter_sets import (
+    expand_parameter_sets,
+    parameter_set_tag,
+    resolve_parameter_set,
+)
+from utils.explainability.training_integration import maybe_explain_trained_model
+from utils.experiment.dataset_jobs import build_dataset_jobs as make_dataset_jobs
+from utils.experiment.run_helpers import (
+    append_tuning_summary,
+    has_threshold,
+    is_completed_run,
+    makedirs as _makedirs,
+    model_param_summary,
+    open_text as _open_text,
+    run_config_digest,
+    run_dir_name,
+    safe_tag,
+    set_global_seed,
+    write_run_manifest,
+)
 
 
 #######################################################################
-#                              変数の指定
+#                              螟画焚縺ｮ謖・ｮ・
 #######################################################################
 # Validation controls: edit this block first.
-# Current default is a 3-model run for Conformer tuning:
-# RF and AlexNet use fixed parameters inside each generated parameter_set.
-# Conformer is expanded over the LR/batch-size grid below.
-# AlexNet is fixed to the balanced best from the 2026-06-26 result:
-# lr=0.005, batch_size=12.
-# Use smoke_test=True only when checking that the script finishes end-to-end.
+# Edit this block first when changing an experiment.
+#
+# Current default:
+# - purpose: run the fixed 3-model ensemble
+# - data: 3 experiments x representative stress frequencies/noise conditions
+# - models: RF + CNN/Transformer v2 GAP + AlexNet
+# - ensemble: fixed-weight mean
+# - explainability: integrated into training, but disabled for full-grid runs
+#
+# Ensemble modes are configured in VALIDATION_CONFIG["ensemble"]:
+# - "simple": equal-weight mean. No leakage, useful as a neutral baseline.
+# - "fixed": user-defined weights in fixed_weights. No leakage; recommended
+#   for final-report comparisons.
+# - "inner_holdout": uses a holdout split inside the training fold to choose
+#   weights. No validation-fold leakage, but slower and less stable.
+# - "val_fold_legacy": chooses weights from the validation fold. Reproduction
+#   only; do not use for final claims because it leaks evaluation labels.
 
 VALIDATION_CONFIG = {
     "run": {
         "smoke_test": False,
-        "epochs": 50,
+        "epochs": 300,
         "folds": 3,
         "smoke_epochs": 2,
         "smoke_folds": 2,
@@ -119,11 +131,9 @@ VALIDATION_CONFIG = {
         "noise_source": "waterflow",  # "waterflow" or "whitenoise"
         "chunk_seconds": 1,
         "experiment_names": [
-            # Start tuning on the new 2025-06-18 dataset. Add older
-            # experiments here later to judge parameter robustness.
             "2025.06.18_0.3_3",
-            # "2025.07.09_0.3_1",
-            # "2025.06.11_0.3_2",
+            "2025.07.09_0.3_1",
+            "2025.06.11_0.3_2",
         ],
         "max_freq_hz_list": [
             # "maxfreq=2kHz",
@@ -135,16 +145,16 @@ VALIDATION_CONFIG = {
         ],
         "noise_dir_names": [
             "heatflux_no_noise",
-            # "heatflux_SNR=0",
-            # "heatflux_SNR=-4",
-            # "heatflux_SNR=-8",
-            # "heatflux_SNR=-12",
-            # "heatflux_SNR=-16",
-            # "heatflux_SNR=-20",
+            "heatflux_SNR=0",
+            "heatflux_SNR=-4",
+            "heatflux_SNR=-8",
+            "heatflux_SNR=-12",
+            "heatflux_SNR=-16",
+            "heatflux_SNR=-20",
         ],
         "data_source_dir_by_experiment": {
-            "2025.06.11_0.3_2": "waterflow_20251126_1s",
-            "2025.06.18_0.3_3": "waterflow_20260622_1s_1",
+            "2025.06.11_0.3_2": "waterflow_20260629_1s",
+            "2025.06.18_0.3_3": "waterflow_20260622_1s",
             "2025.07.09_0.3_1": "waterflow_20251219_1s",
         },
         "skip_missing_datasets": False,
@@ -162,54 +172,68 @@ VALIDATION_CONFIG = {
         "onb_band_frac": 0.10,
     },
     "models": {
-        "active_model_keys": ["rf", "cnntf_v1", "alexnet"],
-        "default_model_params": {
-            "rf": {
-                "n_estimators": 500,
-                "max_depth": 8,
-                "subsample": 0.8,
-                "colsample_bynode": 0.6,
-            },
-        },
-        "parameter_sets": {
-            "type": "keras_grid",
-            "name_prefix": "cf",
-            "default_keras": {"early_stopping": True},
-            # Tuning targets: these models receive each lr/batch_size pair.
-            "model_keys": ["cnntf_v1"],
-            # Per-model parameters written into every generated parameter_set.
-            # Models not listed in model_keys keep these values fixed.
-            "models": {
-                "rf": {
-                    "n_estimators": 500,
-                    "max_depth": 8,
-                    "subsample": 0.8,
-                    "colsample_bynode": 0.6,
+        "active_model_keys": ["rf", "cnntf_v2_gap", "alexnet"],
+        "parameter_sets": [
+            {
+                "name": "rf_v2gap_alex",
+                "models": {
+                    "rf": {
+                        "n_estimators": 300,
+                        "max_depth": 8,
+                        "subsample": 0.8,
+                        "colsample_bynode": 0.6,
+                    },
+                    "cnntf_v2_gap": {"lr": 0.0005, "batch_size": 32},
+                    "alexnet": {"lr": 0.005, "batch_size": 32},
                 },
-                "cnntf_v1": {},
-                "alexnet": {"lr": 0.005, "batch_size": 12},
+                "default_keras": {
+                    "fit_verbose": 1,
+                },
             },
-            "lrs": [0.05, 0.01, 0.005, 0.001, 0.0005, 0.0001, 0.00005],
-            "batch_sizes": [12, 24, 32, 48, 64, 128],
-        },
+        ],
     },
     "ensemble": {
-        "enabled": False,
-        # "simple", "fixed", "inner_holdout", or "val_fold_legacy"
-        "weight_strategy": "simple",
-        "fixed_weights": {"rf": 0.90, "cnntf_v1": 0.05, "alexnet": 0.05},
-        "inner_holdout_frac": 0.2,
-        "combine": "mean",  # "mean" or "min"
+        # How to combine model predictions.
+        #
+        # Recommended final-report setting:
+        #   enabled=True, weight_strategy="fixed", combine="mean"
+        #
+        # Other valid weight_strategy values:
+        #   "simple"          equal weights across active models
+        #   "inner_holdout"   choose weights using only training-fold holdout
+        #   "val_fold_legacy" reproduce old validation-fold weighting; leaks
+        #                     validation labels and should not support claims
+        "enabled": True,
+        "weight_strategy": "fixed",
+        # Used only when weight_strategy == "fixed".
+        "fixed_weights": {
+            "rf": 0.90,
+            "cnntf_v2_gap": 0.05,
+            "alexnet": 0.05,
+        },
+        # "mean" is a weighted average. "min" keeps the minimum model prediction
+        # for each sample and is mainly a legacy/diagnostic option.
+        "combine": "mean",
     },
     "features": {
         "pca_components": 100,
     },
     "output": {
         "save_date": datetime.now().strftime("%Y%m%d"),
-        "result_date_dir": datetime.now().strftime("%Y%m%d") + "_cf3m",
-        "run_name_suffix": "cf3m",
+        "result_date_dir": datetime.now().strftime("%Y%m%d") + "_fixed_ensemble",
         "save_fold_predictions": True,
         "save_tuning_summary": True,
+        "resume_completed_runs": True,
+    },
+    "explainability": {
+        # Set True when you want explanations to be saved during training.
+        # For the full grid, start with target_folds=[1] and a small sample count.
+        "enabled": False,
+        "model_keys": ["rf", "cnntf_v2_gap", "alexnet"],
+        "target_folds": [1],
+        "max_samples_per_fold": 3,
+        "ig_steps": 32,
+        "methods": ["integrated_gradients", "grad_cam", "occlusion"],
     },
 }
 
@@ -245,110 +269,46 @@ THRESHOLD_BY_EXPERIMENT = _cfg("thresholds", "by_experiment")
 REQUIRE_EXPERIMENT_THRESHOLD = _cfg("thresholds", "require_experiment_threshold")
 ONB_BAND_FRAC = _cfg("thresholds", "onb_band_frac")
 
-DEFAULT_MODEL_PARAMS = _cfg("models", "default_model_params")
 PARAMETER_SETS = expand_parameter_sets(_cfg("models", "parameter_sets"))
 ACTIVE_MODEL_KEYS = _cfg("models", "active_model_keys")
 
-ENSEMBLE_ENABLED = _cfg("ensemble", "enabled")
-WEIGHT_STRATEGY = _cfg("ensemble", "weight_strategy")
-FIXED_WEIGHTS = _cfg("ensemble", "fixed_weights")
-INNER_HOLDOUT_FRAC = _cfg("ensemble", "inner_holdout_frac")
-ENSEMBLE_COMBINE = _cfg("ensemble", "combine")
+ENSEMBLE_CONFIG = VALIDATION_CONFIG.get("ensemble", {})
+ENSEMBLE_ENABLED = ENSEMBLE_CONFIG.get("enabled", False)
+WEIGHT_STRATEGY = ENSEMBLE_CONFIG.get("weight_strategy", "simple")
+FIXED_WEIGHTS = ENSEMBLE_CONFIG.get(
+    "fixed_weights", {"rf": 0.90, "cnntf_v2_gap": 0.05, "alexnet": 0.05}
+)
+INNER_HOLDOUT_FRAC = ENSEMBLE_CONFIG.get("inner_holdout_frac", 0.2)
+ENSEMBLE_COMBINE = ENSEMBLE_CONFIG.get("combine", "mean")
+RESULT_MODEL_GROUP = (
+    "ensemble" if ENSEMBLE_ENABLED
+    else "rf" if ACTIVE_MODEL_KEYS == ["rf"]
+    else "cnntf_v2_gap" if ACTIVE_MODEL_KEYS == ["cnntf_v2_gap"]
+    else "alexnet" if ACTIVE_MODEL_KEYS == ["alexnet"]
+    else "single_model"
+)
 
 PCA_COMPONENTS = _cfg("features", "pca_components")
 
 SAVE_DATE = _cfg("output", "save_date")
 RESULT_DATE_DIR = _cfg("output", "result_date_dir") or SAVE_DATE
-RUN_NAME_SUFFIX = _cfg("output", "run_name_suffix")
 SAVE_FOLD_PREDICTIONS = _cfg("output", "save_fold_predictions")
 SAVE_TUNING_SUMMARY = _cfg("output", "save_tuning_summary")
+RESUME_COMPLETED_RUNS = _cfg("output", "resume_completed_runs")
 RUN_INSTANCE_ID = os.environ.get("RUN_ID", datetime.now().strftime("%H%M%S"))
+FOLD_PREDICTIONS_DIR_NAME = "fold_pred"
+EXPLAINABILITY_CONFIG = VALIDATION_CONFIG.get("explainability", {})
+EXPLAINABILITY_ENABLED = EXPLAINABILITY_CONFIG.get("enabled", False)
 
-WEIGHT_STRATEGY_TAGS = {
-    "simple": "simp",
-    "fixed": "fix",
-    "inner_holdout": "ih",
-    "val_fold_legacy": "vleg",
-}
-
-
-def format_param_value(value):
-    if isinstance(value, float):
-        text = f"{value:.8f}".rstrip("0").rstrip(".")
-    else:
-        text = str(value)
-    return text.replace("-", "m").replace(".", "p")
-
-# 実行確認用スイッチ。
-# True にすると epoch と fold を小さくして「最後まで通るか」だけを素早く確認する。
-# 本番の評価をするときは必ず False に戻す (出力先も _smoke が付いて本番結果と混ざらない)。
-# Configure this in VALIDATION_CONFIG["run"].
-
-# 閾値 (沸騰開始点 ONB の熱流束) は実験日ごとに異なる。
-# 未設定の実験日は、誤った ONB 評価を出さないよう実行前に止める。
-# Configure this in VALIDATION_CONFIG["thresholds"].
-
-# ONB 近傍 band の幅 (閾値に対する相対割合)。
-# |y - THRESHOLD| <= THRESHOLD * ONB_BAND_FRAC を ONB 近傍サンプルとして
-# 別途 RMSE/MAE を見る (計画 RQ で要求されている ONB 近傍誤差に対応)。
-# Configure this in VALIDATION_CONFIG["thresholds"]["onb_band_frac"].
-
-# パラメータをループさせて検証するかどうか (旧コード踏襲)
-# True runs every entry in PARAMETER_SETS. False stops after the first one.
-# Configure this in VALIDATION_CONFIG["run"]["loop_parameter_sets"].
-
-# RF is fixed while tuning the two Keras models.
-# Configure this in VALIDATION_CONFIG["models"]["default_model_params"]["rf"].
-
-# Keras hyperparameter grid.
-# The "keras_grid" config expands to len(lrs) * len(batch_sizes) parameter sets.
-# RF keeps the default params unless an "rf" override is added manually.
-# Configure this in VALIDATION_CONFIG["models"]["parameter_sets"].
-
-# ホワイトノイズ (=0) か水流動音 (=1) か (旧コード踏襲)
-# 現在の一括評価では waterflow_* フォルダ内に no_noise と SNR 条件がある前提。
-# Configure this in VALIDATION_CONFIG["data"]["noise_source"].
-# Default to the actual run date. Set the SAVE_DATE environment variable or
-# override this module variable when reproducing an older run.
-# Configure this in VALIDATION_CONFIG["output"]["save_date"].
-# 結果が増えても混ざらないように、保存先の最上位に日付フォルダを作る。
-# Configure this in VALIDATION_CONFIG["output"].
-
-# 周波数解析のパラメータ
-# Configure this in VALIDATION_CONFIG["data"]["chunk_seconds"].
-
-# 旧コードとの比較用に、いったん旧コードが見ていた 22kHz/no_noise だけを評価する。
-# 複数条件へ戻すときは、下の2リストに maxfreq/noise 条件を追加する。
-# Configure these in VALIDATION_CONFIG["data"].
-
-# 既知の npy 生成フォルダ。None の実験日は自動検出に任せる。
-# Configure this in VALIDATION_CONFIG["data"]["data_source_dir_by_experiment"].
-
-# True: 未生成の実験日/maxfreq/noise があっても一括実行を続ける。
-# False: 1つでも欠けていたら実行前に止める。84条件の検証では取りこぼし防止のため False 推奨。
-# Configure this in VALIDATION_CONFIG["data"]["skip_missing_datasets"].
+# Settings are defined in VALIDATION_CONFIG above.
+# The constants below are derived values used by the run loop; do not edit
+# them directly unless you are changing the script mechanics.
 
 
-# ===================================================================
-# ① モデルレジストリ
-#    各モデルを 1 つの辞書で定義する。label が必ず実体に追従するので、
-#    旧コードのような「RF の予測を alexnet と呼ぶ」取り違えが起きない。
-#    モデルの追加・差し替え・無効化は、このリストを編集するだけでよい。
-#
-#    kind:
-#       "keras"   ... 画像 (224,224,C) をそのまま入力する深層モデル
-#       "sklearn" ... 平坦化 + PCA した特徴量を入力する非深層モデル
-#                     (RandomForest / XGBRF など)
-#    builder: RegressionModelMaker のインスタンスを受け取りモデルを返す関数
-#
-#    どのモデルを実行するかは下の ACTIVE_MODEL_KEYS で選ぶ。研究計画 (2026-06-12) の
-#    「まず RandomForest 単体で回帰が成立する状態を作り、その後 3 モデルを同条件で
-#    比較する」という段取りを、ここの 1 行だけで切り替えられるようにしている。
-#       RF 単体の動作確認 : ACTIVE_MODEL_KEYS = ["rf"]
-#       3 モデル同条件     : ACTIVE_MODEL_KEYS = ["rf", "cnntf_v1", "alexnet"]
-#    None にすると各 spec の "enabled" フラグに従う (従来動作)。
-# ===================================================================
-# Active model keys are derived from VALIDATION_CONFIG above.
+# Model registry.
+# Keep this block because it maps model keys to the actual builder functions.
+# Fixed numeric parameters belong in VALIDATION_CONFIG["models"]["parameter_sets"].
+
 
 MODEL_SPECS = [
     {
@@ -356,293 +316,69 @@ MODEL_SPECS = [
         "label": "RandomForest",
         "kind": "sklearn",
         "builder": lambda mm, **params: mm.random_forest(**params),
-        "enabled": True,
     },
     {
-        "key": "cnntf_v1",
-        "label": "Conformer",
+        "key": "cnntf_v2_gap",
+        "label": "CNN+Tf v2 GAP",
         "kind": "keras",
-        "builder": lambda mm: mm.cnn_transformer_v1(),
-        "enabled": True,
+        "builder": lambda mm, **params: mm.cnn_transformer_v2(pooling="gap", **params),
+        "builder_params": {
+            "num_transformer_blocks": 4,
+            "head_size": 256,
+            "num_heads": 4,
+            "ff_dim": 2048,
+            "model_dim": 32,
+            "dropout": 0.2,
+        },
+        "input_axes_assumption": ["time_frame", "frequency_bin", "channel"],
+        "architecture": {
+            "front_end": "alexnet_like_cnn",
+            "sequence_length_after_cnn": 7,
+            "encoder": "transformer_encoder",
+            "pooling": "GlobalAveragePooling1D",
+        },
     },
     {
         "key": "alexnet",
         "label": "AlexNet",
         "kind": "keras",
-        "builder": lambda mm: mm.alexnet(),
-        "enabled": True,
+        "builder": lambda mm, **params: mm.alexnet(**params),
     },
 ]
 
 
-# ===================================================================
-# ③ アンサンブル重み戦略
-#    "simple"          : 単純平均 (重みなし)。最も安全で挙動が明快。
-#    "fixed"           : 固定重み。FIXED_WEIGHTS (key -> 重み) で指定。
-#    "inner_holdout"   : 学習 fold をさらに内部 holdout に分け、その内部検証
-#                        誤差から重みを決める。検証 fold を一切見ないので
-#                        リークなし。各モデルは内部学習データのみで学習する点に注意。
-#    "val_fold_legacy" : 旧コードと同じく検証 fold 誤差から重みを決める。
-#                        リークありなので新たな主張には使わない。旧結果の再現用。
-# ===================================================================
-# Ensemble settings are derived from VALIDATION_CONFIG above.
-
-# アンサンブルの統合方法 ("mean" ... 重み付き平均 | "min" ... 各サンプル最小値)
-# Derived from VALIDATION_CONFIG["ensemble"]["combine"].
-
-# PCA 次元 (sklearn 系モデル用)
-# Derived from VALIDATION_CONFIG["features"]["pca_components"].
-
-# 後から重み付け・ONB近傍評価をやり直せるように、foldごとの予測値を保存する。
-# Derived from VALIDATION_CONFIG["output"]["save_fold_predictions"].
 
 
-#### データフォルダの設定 ####
+#### 繝・・繧ｿ繝輔か繝ｫ繝縺ｮ險ｭ螳・####
 REPO_ROOT = Path(__file__).resolve().parents[1]
 EXPERIMENT_ROOT = REPO_ROOT.joinpath(*_cfg("data", "experiment_root_parts"))
 
-# matplotlib の設定
+# matplotlib 縺ｮ險ｭ螳・
 plt.rcParams['font.family'] = 'Times New Roman'
 plt.rcParams['xtick.direction'] = 'in'
 plt.rcParams['ytick.direction'] = 'in'
 
 
 #######################################################################
-#                                実行部
+#                                螳溯｡碁Κ
 #######################################################################
 
-def safe_tag(text, max_len=32):
-    safe = []
-    for ch in str(text):
-        if ch.isalnum() or ch in "-_.":
-            safe.append(ch)
-        else:
-            safe.append("_")
-    return "".join(safe).strip("_")[:max_len] or "params"
-
-
-def chunk_tag():
-    if isinstance(CHUNK, (int, float)):
-        return f"{CHUNK:g}s"
-    return f"{CHUNK}s"
-
-
-def snr_value_from_noise_dir(noise_dir_name):
-    if noise_dir_name == "heatflux_no_noise":
-        return "no_noise"
-    if "SNR=" in noise_dir_name:
-        return noise_dir_name.split("SNR=", 1)[1]
-    return safe_tag(noise_dir_name)
-
-
-def json_default(obj):
-    if isinstance(obj, Path):
-        return str(obj)
-    return repr(obj)
-
-
-def has_threshold(threshold):
-    if threshold is None:
-        return False
-    try:
-        return np.isfinite(float(threshold))
-    except (TypeError, ValueError):
-        return False
-
-
-def short_digest(payload, length=8):
-    text = json.dumps(payload, sort_keys=True, ensure_ascii=False, default=json_default)
-    return hashlib.sha1(text.encode("utf-8")).hexdigest()[:length]
-
-
-def compact_weight_strategy_tag():
-    return WEIGHT_STRATEGY_TAGS.get(WEIGHT_STRATEGY, safe_tag(WEIGHT_STRATEGY, max_len=8))
-
-
-def run_config_digest(parameter_set, run_specs, model_tag):
-    config = validation_config_snapshot()
-    config["output"] = {
-        "save_fold_predictions": SAVE_FOLD_PREDICTIONS,
-    }
-    return short_digest({
-        "validation_config": config,
-        "parameter_set": parameter_set,
-        "model_tag": model_tag,
-        "model_params": model_param_summary(run_specs),
-    }, length=6)
-
-
-def run_dir_name(param_tag, model_tag, run_hash):
-    parts = [
-        f"e{EPOCH_NUM}",
-        safe_tag(param_tag, max_len=24),
-        compact_weight_strategy_tag(),
-        safe_tag(model_tag, max_len=12),
-    ]
-    if RUN_NAME_SUFFIX:
-        parts.append(safe_tag(RUN_NAME_SUFFIX, max_len=16))
-    return "_".join(parts)
-
-
-def has_input_files(data_path):
-    extension = "*.npy" if COLOR_CHANNEL == 1 else "*.png"
-    return data_path.is_dir() and any(data_path.glob(extension))
-
-
-def find_data_source_dir(experiment_root, experiment_name):
-    npy_root = experiment_root / "data" / "npy"
-    configured = DATA_SOURCE_DIR_BY_EXPERIMENT.get(experiment_name)
-    if configured:
-        configured_path = npy_root / configured
-        if configured_path.is_dir():
-            return configured_path
-
-    candidates = sorted(npy_root.glob(f"{NOISE_SOURCE_PREFIX}_*_{chunk_tag()}"))
-    if not candidates:
-        return None
-    return candidates[-1]
-
-
 def build_dataset_jobs():
-    jobs = []
-    missing = []
-    for experiment_name in EXPERIMENT_DIR_NAMES:
-        experiment_root = EXPERIMENT_ROOT / experiment_name
-        source_dir = find_data_source_dir(experiment_root, experiment_name)
-        threshold = THRESHOLD_BY_EXPERIMENT.get(experiment_name)
-        for max_freq_name in MAX_FREQ_HZ_LIST:
-            for noise_dir_name in NOISE_DIR_NAMES:
-                data_path = None if source_dir is None else source_dir / max_freq_name / noise_dir_name
-                job = {
-                    "experiment_name": experiment_name,
-                    "experiment_root": experiment_root,
-                    "source_dir": source_dir,
-                    "threshold": threshold,
-                    "max_freq_hz": max_freq_name,
-                    "noise_dir_name": noise_dir_name,
-                    "snr_value": snr_value_from_noise_dir(noise_dir_name),
-                    "data_path": data_path,
-                    "save_base_path": (
-                        experiment_root / "regression_result" / "npy" / "ensemble" / RESULT_DATE_DIR
-                    ),
-                }
-                if REQUIRE_EXPERIMENT_THRESHOLD and threshold is None:
-                    missing.append({**job, "missing_reason": "threshold"})
-                elif data_path is not None and has_input_files(data_path):
-                    jobs.append(job)
-                else:
-                    missing.append({**job, "missing_reason": "data"})
-
-    print(f"dataset plan: existing={len(jobs)} / intended={len(EXPERIMENT_DIR_NAMES) * len(MAX_FREQ_HZ_LIST) * len(NOISE_DIR_NAMES)}")
-    if missing:
-        print("missing datasets:")
-        for job in missing:
-            missing_path = job["data_path"] if job["data_path"] is not None else job["experiment_root"] / "data" / "npy"
-            reason = job.get("missing_reason", "data")
-            print(f"  - {reason} | {job['experiment_name']} | {job['max_freq_hz']} | {job['noise_dir_name']} | {missing_path}")
-        if not SKIP_MISSING_DATASETS:
-            raise FileNotFoundError("Some intended datasets are missing. Set SKIP_MISSING_DATASETS=True to continue.")
-    return jobs
-
-
-def resolve_parameter_set(enabled_specs, parameter_set):
-    resolved = []
-    default_keras = parameter_set.get("default_keras", {})
-    per_model = parameter_set.get("models", {})
-    for spec in enabled_specs:
-        resolved_spec = dict(spec)
-        if resolved_spec["kind"] == "keras":
-            params = dict(default_keras)
-            params.update(per_model.get(resolved_spec["key"], {}))
-            missing = [name for name in ("lr", "batch_size") if name not in params]
-            if missing:
-                raise ValueError(
-                    f"PARAMETER_SETS entry '{parameter_set.get('name', '<unnamed>')}' "
-                    f"does not define {missing} for {resolved_spec['key']}."
-            )
-            for name, value in params.items():
-                resolved_spec[name] = value
-        elif resolved_spec["kind"] == "sklearn":
-            params = dict(DEFAULT_MODEL_PARAMS.get(resolved_spec["key"], {}))
-            params.update(per_model.get(resolved_spec["key"], {}))
-            if params:
-                resolved_spec["builder_params"] = params
-        resolved.append(resolved_spec)
-    return resolved
-
-
-def parameter_set_tag(parameter_set, resolved_specs):
-    if parameter_set.get("name"):
-        return safe_tag(parameter_set["name"])
-    parts = []
-    for spec in resolved_specs:
-        if spec["kind"] == "keras":
-            parts.append(
-                f"{spec['key']}_lr{format_param_value(spec['lr'])}"
-                f"_bs{format_param_value(spec['batch_size'])}"
-            )
-    return safe_tag("__".join(parts))
-
-
-def model_param_summary(resolved_specs):
-    summary = {}
-    for spec in resolved_specs:
-        if spec["kind"] == "keras":
-            summary[spec["key"]] = {
-                "lr": spec["lr"],
-                "batch_size": spec["batch_size"],
-                "early_stopping": spec.get("early_stopping", True),
-            }
-        else:
-            summary[spec["key"]] = {
-                "kind": spec["kind"],
-                "params": spec.get("builder_params", {}),
-            }
-    return summary
-
-
-def serializable_run_specs(run_specs):
-    clean_specs = []
-    for spec in run_specs:
-        clean_specs.append({
-            key: value
-            for key, value in spec.items()
-            if key not in {"builder"}
-        })
-    return clean_specs
-
-
-def write_run_manifest(save_path, job, parameter_set, run_specs,
-                       param_tag, model_tag, run_hash, run_dir):
-    manifest = {
-        "created_at": datetime.now().isoformat(timespec="seconds"),
-        "run_instance_id": RUN_INSTANCE_ID,
-        "run_hash": run_hash,
-        "run_dir": run_dir,
-        "folder_naming": {
-            "scheme": "e{epochs}_{param}_{weight}_{models}_{hash}_{run_id}",
-            "reason": "Keep Windows paths short while avoiding collisions between reruns.",
-            "details": "Full conditions are stored in this manifest and validation_results_*.txt.",
-        },
-        "dataset": {
-            "experiment_name": job["experiment_name"],
-            "source_dir": str(job["source_dir"]),
-            "data_path": str(job["data_path"]),
-            "max_freq_hz": job["max_freq_hz"],
-            "noise_dir_name": job["noise_dir_name"],
-            "snr_value": job["snr_value"],
-            "threshold": job["threshold"],
-        },
-        "parameter_set_name": parameter_set.get("name"),
-        "parameter_set_tag": param_tag,
-        "model_tag": model_tag,
-        "model_params": model_param_summary(run_specs),
-        "run_specs": serializable_run_specs(run_specs),
-        "validation_config": validation_config_snapshot(),
-    }
-    manifest_path = os.path.join(save_path, "run_manifest.json")
-    with open(manifest_path, "w", encoding="utf-8") as mf:
-        json.dump(manifest, mf, ensure_ascii=False, indent=2, default=json_default)
+    return make_dataset_jobs(
+        experiment_root=EXPERIMENT_ROOT,
+        experiment_names=EXPERIMENT_DIR_NAMES,
+        max_freq_hz_list=MAX_FREQ_HZ_LIST,
+        noise_dir_names=NOISE_DIR_NAMES,
+        data_source_dir_by_experiment=DATA_SOURCE_DIR_BY_EXPERIMENT,
+        noise_source_prefix=NOISE_SOURCE_PREFIX,
+        chunk_seconds=CHUNK,
+        threshold_by_experiment=THRESHOLD_BY_EXPERIMENT,
+        result_model_group=RESULT_MODEL_GROUP,
+        result_date_dir=RESULT_DATE_DIR,
+        color_channel=COLOR_CHANNEL,
+        require_experiment_threshold=REQUIRE_EXPERIMENT_THRESHOLD,
+        skip_missing_datasets=SKIP_MISSING_DATASETS,
+    )
 
 
 def validation_config_snapshot():
@@ -657,6 +393,7 @@ def validation_config_snapshot():
         },
         "data": {
             "experiment_root": str(EXPERIMENT_ROOT),
+            "result_model_group": RESULT_MODEL_GROUP,
             "noise_source": NOISE_SOURCE_PREFIX,
             "chunk_seconds": CHUNK,
             "experiment_names": EXPERIMENT_DIR_NAMES,
@@ -672,7 +409,6 @@ def validation_config_snapshot():
         },
         "models": {
             "active_model_keys": ACTIVE_MODEL_KEYS,
-            "default_model_params": DEFAULT_MODEL_PARAMS,
             "parameter_sets": PARAMETER_SETS,
         },
         "ensemble": {
@@ -688,11 +424,12 @@ def validation_config_snapshot():
         "output": {
             "save_date": SAVE_DATE,
             "result_date_dir": RESULT_DATE_DIR,
-            "run_name_suffix": RUN_NAME_SUFFIX,
             "run_instance_id": RUN_INSTANCE_ID,
             "save_fold_predictions": SAVE_FOLD_PREDICTIONS,
             "save_tuning_summary": SAVE_TUNING_SUMMARY,
+            "resume_completed_runs": RESUME_COMPLETED_RUNS,
         },
+        "explainability": EXPLAINABILITY_CONFIG,
     }
 
 
@@ -734,123 +471,29 @@ def validate_validation_config(enabled_specs):
                 f"{missing_thresholds}. Add them to VALIDATION_CONFIG['thresholds']['by_experiment']."
             )
 
-
-def set_global_seed(seed):
-    """Keep KFold, sklearn, and Keras runs as reproducible as practical."""
-    random.seed(seed)
-    np.random.seed(seed)
-    tf.random.set_seed(seed)
-
-
-def _csv_metric(value):
-    try:
-        value = float(value)
-    except (TypeError, ValueError):
-        return ""
-    if np.isnan(value):
-        return ""
-    return f"{value:.10g}"
-
-
-def _join_unique(values):
-    clean = [str(v) for v in values if v not in (None, "")]
-    return "|".join(dict.fromkeys(clean))
-
-
-def append_tuning_summary(summary_path, job, parameter_set, run_specs,
-                          store, train_meta, summary_metrics, metrics,
-                          param_tag, run_dir, run_hash, save_path,
-                          model_keys):
-    if not SAVE_TUNING_SUMMARY:
-        return
-
-    os.makedirs(os.path.dirname(summary_path), exist_ok=True)
-    header = [
-        "created_at", "run_instance_id", "run_hash", "run_dir", "save_path",
-        "experiment_name", "data_source_dir", "max_freq_hz", "noise_dir_name",
-        "snr_value", "threshold_available", "threshold",
-        "parameter_set", "model_key", "model_label",
-        "lr", "batch_size", "early_stopping",
-        "requested_batch_size", "actual_batch_sizes", "min_actual_batch_size",
-        "epochs_completed", "stopped_by_memory_error",
-    ]
-    for metric_name in summary_metrics:
-        header.extend([f"{metric_name}_mean", f"{metric_name}_se"])
-
-    spec_by_key = {spec["key"]: spec for spec in run_specs}
-    file_exists = os.path.exists(summary_path)
-    with open(summary_path, "a", newline="", encoding="utf-8") as sf:
-        writer = csv.writer(sf)
-        if not file_exists:
-            writer.writerow(header)
-        for key in model_keys:
-            spec = spec_by_key.get(key, {})
-            meta = train_meta.get(key, {})
-            actual_batch_sizes = meta.get("actual_batch_size", [])
-            min_actual_batch_size = min(actual_batch_sizes) if actual_batch_sizes else ""
-            stopped_flags = meta.get("stopped_by_memory_error", [])
-            row = [
-                datetime.now().isoformat(timespec="seconds"),
-                RUN_INSTANCE_ID,
-                run_hash,
-                run_dir,
-                save_path,
-                job["experiment_name"],
-                job["source_dir"],
-                job["max_freq_hz"],
-                job["noise_dir_name"],
-                job["snr_value"],
-                int(has_threshold(job["threshold"])),
-                job["threshold"] if has_threshold(job["threshold"]) else "",
-                parameter_set.get("name", param_tag),
-                key,
-                spec.get("label", key),
-                spec.get("lr", ""),
-                spec.get("batch_size", ""),
-                spec.get("early_stopping", ""),
-                _join_unique(meta.get("requested_batch_size", [])),
-                _join_unique(actual_batch_sizes),
-                min_actual_batch_size,
-                _join_unique(meta.get("epochs_completed", [])),
-                int(any(bool(flag) for flag in stopped_flags)),
-            ]
-            for metric_name in summary_metrics:
-                mean, se = metrics.mean_se(store[key][metric_name])
-                row.extend([_csv_metric(mean), _csv_metric(se)])
-            writer.writerow(row)
-
-
 def main():
     set_global_seed(RANDOM_SEED)
-    # 再利用ヘルパー (用途別の utils クラス) を用意する
+    # Shared helpers for metrics, training, weighting, and plots.
     metrics = RegressionDetectionMetrics()
     trainer = ModelTrainer(random_seed=RANDOM_SEED)
     weighting = EnsembleWeighting()
     plotter = RegressionPlotter()
 
-    # 実行するモデルを決める。ACTIVE_MODEL_KEYS が指定されていればそれを優先し、
-    # None のときだけ各 spec の "enabled" フラグに従う。
-    if ACTIVE_MODEL_KEYS is None:
-        enabled_specs = [s for s in MODEL_SPECS if s.get("enabled", True)]
-    else:
-        spec_by_key = {s["key"]: s for s in MODEL_SPECS}
-        unknown = [k for k in ACTIVE_MODEL_KEYS if k not in spec_by_key]
-        if unknown:
-            raise ValueError(f"ACTIVE_MODEL_KEYS に未定義の key があります: {unknown} "
-                             f"(定義済み: {list(spec_by_key)})")
-        enabled_specs = [spec_by_key[k] for k in ACTIVE_MODEL_KEYS]
+    # Resolve the model keys selected in VALIDATION_CONFIG.
+    spec_by_key = {s["key"]: s for s in MODEL_SPECS}
+    unknown = [k for k in ACTIVE_MODEL_KEYS if k not in spec_by_key]
+    if unknown:
+        raise ValueError(f"ACTIVE_MODEL_KEYS has unknown keys: {unknown} "
+                         f"(defined: {list(spec_by_key)})")
+    enabled_specs = [spec_by_key[k] for k in ACTIVE_MODEL_KEYS]
     if not enabled_specs:
-        raise ValueError("実行するモデルが 0 個です。ACTIVE_MODEL_KEYS を確認してください。")
+        raise ValueError("ACTIVE_MODEL_KEYS must select at least one model.")
 
-    # 出力先を混ぜないためのモデルセットのタグ。
-    # Windows のパス長制限に当たりやすいため、代表的な3モデル構成は短いタグにする。
+    # Keep output folder names short enough for Windows paths.
     validate_validation_config(enabled_specs)
 
     model_keys = [s["key"] for s in enabled_specs]
-    if model_keys == ["rf", "cnntf_v1", "alexnet"]:
-        model_tag = "3m"
-    else:
-        model_tag = "-".join(model_keys)
+    model_tag = "-".join(model_keys)
     if SMOKE_TEST:
         model_tag = "s_" + model_tag
 
@@ -865,18 +508,17 @@ def main():
 
     print("#" * 60)
     if SMOKE_TEST:
-        print("### SMOKE_TEST = True : 動作確認モードです ###")
-        print(f"###   epoch={EPOCH_NUM} / fold={DIVISIONS} に縮小しています。")
-        print("###   この結果は本番評価には使えません。本番では SMOKE_TEST = False に戻してください。")
+        print("### SMOKE_TEST = True ###")
+        print(f"###   epoch={EPOCH_NUM} / fold={DIVISIONS}")
+        print("###   Use only for quick checks; set SMOKE_TEST=False for real runs.")
     else:
-        print("### 本番モード (SMOKE_TEST = False) ###")
-    print(f"有効なモデル: {[s['label'] for s in enabled_specs]}  (model_tag={model_tag})")
-    print(f"重み戦略: {WEIGHT_STRATEGY} | 統合: {ENSEMBLE_COMBINE} | epoch={EPOCH_NUM} | fold={DIVISIONS}")
+        print("### FULL_RUN mode (SMOKE_TEST = False) ###")
+    print(f"active models: {[s['label'] for s in enabled_specs]}  (model_tag={model_tag})")
+    print(f"ensemble: {WEIGHT_STRATEGY} | combine: {ENSEMBLE_COMBINE} | epoch={EPOCH_NUM} | fold={DIVISIONS}")
     print("validation_config:")
     print(validation_config_text())
     if include_ensemble and WEIGHT_STRATEGY == "val_fold_legacy":
-        print("【警告】val_fold_legacy は検証 fold の正解から重みを決めるリークあり方式です。"
-              "旧結果の再現用にのみ使用してください。")
+        print("WARNING: val_fold_legacy uses validation-fold labels for weights; use only for reproduction.")
     print("#" * 60)
 
     dataset_jobs = build_dataset_jobs()
@@ -909,34 +551,46 @@ def main():
         else:
             x, y = data_loading.load_image_data(data_path)
         print(f"x shape: {x.shape} | y shape: {y.shape} | "
-              f"読み込み {time.time() - start_time:.2f} 秒")
+              f"load_time={time.time() - start_time:.2f}s")
 
         for parameter_set in PARAMETER_SETS:
                 run_specs = resolve_parameter_set(enabled_specs, parameter_set)
-                param_tag = parameter_set_tag(parameter_set, run_specs)
+                param_tag = parameter_set_tag(parameter_set, run_specs, safe_tag)
                 param_summary = model_param_summary(run_specs)
-                run_hash = run_config_digest(parameter_set, run_specs, model_tag)
-                run_dir = run_dir_name(param_tag, model_tag, run_hash)
+                run_hash = run_config_digest(
+                    validation_config_snapshot(), parameter_set, run_specs,
+                    model_tag, SAVE_FOLD_PREDICTIONS)
+                run_dir = run_dir_name(
+                    EPOCH_NUM, param_tag, model_tag,
+                    ENSEMBLE_ENABLED, WEIGHT_STRATEGY)
                 print(f"parameter_set={parameter_set.get('name', param_tag)} | model_params={param_summary}")
                 print(f"run_dir={run_dir}")
                 SAVE_PATH = os.path.join(
                     base_save_path, noise_dir_name, max_freq_name,
                     run_dir)
-                os.makedirs(SAVE_PATH, exist_ok=True)
+                tuning_summary_path = os.path.join(base_save_path, "tuning_summary.csv")
+                if is_completed_run(
+                    tuning_summary_path, run_dir, SAVE_PATH, snr_value,
+                    RESUME_COMPLETED_RUNS, SAVE_TUNING_SUMMARY):
+                    print(f"[resume skip] completed run found: {run_dir}")
+                    continue
+
+                _makedirs(SAVE_PATH)
                 write_run_manifest(
                     SAVE_PATH, job, parameter_set, run_specs,
-                    param_tag, model_tag, run_hash, run_dir)
+                    param_tag, model_tag, run_hash, run_dir,
+                    RUN_INSTANCE_ID, validation_config_snapshot())
 
                 kf = KFold(n_splits=DIVISIONS, shuffle=True, random_state=RANDOM_SEED)
 
-                # 指標の保存先 (key -> metric -> [fold ごとの値])
+                # 謖・ｨ吶・菫晏ｭ伜・ (key -> metric -> [fold 縺斐→縺ｮ蛟､])
                 store = {k: defaultdict(list) for k in all_keys}
                 train_meta = {k: defaultdict(list) for k in model_keys}
-                # 重みの記録 (fold ごと)
+                # 驥阪∩縺ｮ險倬鹸 (fold 縺斐→)
                 weight_log = []
 
                 output_file = os.path.join(SAVE_PATH, f'validation_results_{snr_value}.txt')
-                with open(output_file, 'w', encoding='utf-8') as f:
+                with _open_text(output_file, 'w', encoding='utf-8') as f:
                     f.write("K-fold Cross-Validation Results\n")
                     f.write("validation_config:\n")
                     f.write(validation_config_text() + "\n")
@@ -961,7 +615,7 @@ def main():
                         x_train, x_val = x[train_index], x[val_index]
                         y_train, y_val = y[train_index], y[val_index]
 
-                        # --- inner_holdout のときだけ学習 fold を内部分割 ---
+                        # --- inner_holdout 縺ｮ縺ｨ縺阪□縺大ｭｦ鄙・fold 繧貞・驛ｨ蛻・牡 ---
                         if WEIGHT_STRATEGY == "inner_holdout":
                             x_fit, x_inner, y_fit, y_inner = train_test_split(
                                 x_train, y_train, test_size=INNER_HOLDOUT_FRAC,
@@ -970,26 +624,31 @@ def main():
                             x_fit, y_fit = x_train, y_train
                             x_inner = y_inner = None
 
-                        # スケーラは学習に使うラベル (y_fit) のみで fit する
+                        # 繧ｹ繧ｱ繝ｼ繝ｩ縺ｯ蟄ｦ鄙偵↓菴ｿ縺・Λ繝吶Ν (y_fit) 縺ｮ縺ｿ縺ｧ fit 縺吶ｋ
                         scaler = MinMaxScaler()
                         y_fit_scaled = scaler.fit_transform(y_fit.reshape(-1, 1))
 
-                        # sklearn 系モデル用の PCA (学習データのみで fit)
+                        # sklearn 邉ｻ繝｢繝・Ν逕ｨ縺ｮ PCA (蟄ｦ鄙偵ョ繝ｼ繧ｿ縺ｮ縺ｿ縺ｧ fit)
+                        pca_model = None
                         if use_sklearn:
-                            x_fit_pca, (x_val_pca, x_inner_pca) = trainer.make_pca(
-                                x_fit, [x_val, x_inner], PCA_COMPONENTS)
+                            if EXPLAINABILITY_ENABLED:
+                                x_fit_pca, (x_val_pca, x_inner_pca), pca_model = trainer.make_pca(
+                                    x_fit, [x_val, x_inner], PCA_COMPONENTS, return_pca=True)
+                            else:
+                                x_fit_pca, (x_val_pca, x_inner_pca) = trainer.make_pca(
+                                    x_fit, [x_val, x_inner], PCA_COMPONENTS)
                         else:
                             x_fit_pca = x_val_pca = x_inner_pca = None
 
                         mm = RegressionModelMaker((224, 224, COLOR_CHANNEL))
 
-                        # --- 各モデルの学習と予測 ---
-                        val_preds = {}        # key -> 検証 fold への予測 (元スケール)
-                        errors_for_weight = {}  # key -> 重み用の誤差 (1 - R2)
+                        # --- 蜷・Δ繝・Ν縺ｮ蟄ｦ鄙偵→莠域ｸｬ ---
+                        val_preds = {}        # key -> 讀懆ｨｼ fold 縺ｸ縺ｮ莠域ｸｬ (蜈・せ繧ｱ繝ｼ繝ｫ)
+                        errors_for_weight = {}  # key -> 驥阪∩逕ｨ縺ｮ隱､蟾ｮ (1 - R2)
                         for spec in run_specs:
                             if spec["kind"] == "keras":
                                 print(f"  params for {spec['key']}: lr={spec['lr']}, batch_size={spec['batch_size']}")
-                            print(f"[{spec['label']}] Fold {fold}/{DIVISIONS} 学習開始")
+                            print(f"[{spec['label']}] Fold {fold}/{DIVISIONS} training start")
                             model, history = trainer.train_one_model(
                                 spec, mm, x_fit, y_fit_scaled, x_fit_pca,
                                 EPOCH_NUM)
@@ -1019,17 +678,23 @@ def main():
                             plotter.plot_loss_history(history, EPOCH_NUM, spec["label"],
                                                       fold, SAVE_PATH, snr_value)
 
-                            # 検証 fold への予測
+                            # 讀懆ｨｼ fold 縺ｸ縺ｮ莠域ｸｬ
                             val_preds[spec["key"]] = trainer.predict_one_model(
                                 spec, model, x_val, x_val_pca, scaler)
 
-                            # --- 重み用の誤差 (③ 戦略ごとにリークしない/する を切替) ---
+                            maybe_explain_trained_model(
+                                spec, model, scaler, x_val, y_val,
+                                val_preds[spec["key"]], threshold, SAVE_PATH,
+                                fold, max_freq_name, EXPLAINABILITY_CONFIG,
+                                pca=pca_model)
+
+                            # --- 驥阪∩逕ｨ縺ｮ隱､蟾ｮ (竭｢ 謌ｦ逡･縺斐→縺ｫ繝ｪ繝ｼ繧ｯ縺励↑縺・縺吶ｋ 繧貞・譖ｿ) ---
                             if WEIGHT_STRATEGY == "inner_holdout":
                                 inner_pred = trainer.predict_one_model(
                                     spec, model, x_inner, x_inner_pca, scaler)
                                 errors_for_weight[spec["key"]] = 1.0 - r2_score(y_inner, inner_pred)
                             elif WEIGHT_STRATEGY == "val_fold_legacy":
-                                # 旧来どおり検証 fold 誤差 (リークあり)
+                                # 譌ｧ譚･縺ｩ縺翫ｊ讀懆ｨｼ fold 隱､蟾ｮ (繝ｪ繝ｼ繧ｯ縺ゅｊ)
                                 errors_for_weight[spec["key"]] = 1.0 - r2_score(y_val, val_preds[spec["key"]])
 
                             del model
@@ -1037,7 +702,7 @@ def main():
                             K.clear_session()
                             gc.collect()
 
-                        # --- アンサンブル ---
+                        # --- 繧｢繝ｳ繧ｵ繝ｳ繝悶Ν ---
                         weights = {}
                         ensemble_pred = None
                         if include_ensemble:
@@ -1047,15 +712,15 @@ def main():
                             ensemble_pred = weighting.combine_predictions(
                                 val_preds, weights, ENSEMBLE_COMBINE)
 
-                        # --- 指標の算出 (② 3 種類に分離) ---
+                        # --- 謖・ｨ吶・邂怜・ (竭｡ 3 遞ｮ鬘槭↓蛻・屬) ---
                         preds_all = dict(val_preds)
                         if include_ensemble:
                             preds_all["ensemble"] = ensemble_pred
                         if SAVE_FOLD_PREDICTIONS:
-                            pred_dir = os.path.join(SAVE_PATH, "fold_predictions")
-                            os.makedirs(pred_dir, exist_ok=True)
+                            pred_dir = os.path.join(SAVE_PATH, FOLD_PREDICTIONS_DIR_NAME)
+                            _makedirs(pred_dir)
                             pred_csv = os.path.join(pred_dir, f"pred_f{fold}_{snr_value}.csv")
-                            with open(pred_csv, "w", newline="", encoding="utf-8") as pf:
+                            with _open_text(pred_csv, "w", newline="", encoding="utf-8") as pf:
                                 writer = csv.writer(pf)
                                 writer.writerow(["sample_index", "y_true"] + all_keys)
                                 for row_i, sample_idx in enumerate(val_index):
@@ -1072,7 +737,7 @@ def main():
                                 for mk, mv in d.items():
                                     store[key][mk].append(mv)
 
-                        # --- 作図 (アンサンブルの散布図) ---
+                        # --- 菴懷峙 (繧｢繝ｳ繧ｵ繝ｳ繝悶Ν縺ｮ謨｣蟶・峙) ---
                         if include_ensemble and has_threshold(threshold):
                             ens_fold_metrics = {mk: store["ensemble"][mk][-1]
                                                 for mk in store["ensemble"]}
@@ -1080,7 +745,7 @@ def main():
                                 y_val, ensemble_pred, y, ens_fold_metrics,
                                 threshold, SAVE_PATH, snr_value, fold)
 
-                        # --- fold 結果を txt に追記 ---
+                        # --- fold 邨先棡繧・txt 縺ｫ霑ｽ險・---
                         f.write(f"Recorded at: {datetime.now():%Y-%m-%d %H:%M:%S}\n")
                         f.write(f"Fold {fold} Results | weights={ {k: round(v,3) for k,v in weights.items()} }\n")
                         for key in all_keys:
@@ -1105,14 +770,15 @@ def main():
                         fold += 1
                         del x_train, x_val, y_train, y_val
                         del x_fit, y_fit, x_inner, y_inner, y_fit_scaled
+                        del pca_model
                         del x_fit_pca, x_val_pca, x_inner_pca
                         del val_preds, preds_all, ensemble_pred
                         K.clear_session()
                         gc.collect()
 
-                    # --- 平均結果 (mean ± SE) ---
+                    # --- 蟷ｳ蝮・ｵ先棡 (mean ﾂｱ SE) ---
                     f.write(f"\nRecorded at: {datetime.now():%Y-%m-%d %H:%M:%S}\n")
-                    f.write("Average Results (mean ± SE):\n")
+                    f.write("Average Results (mean ﾂｱ SE):\n")
                     summary_metrics = [
                         "r2", "rmse_all", "mae_all", "r2_high", "rmse_high", "mae_high",
                         "rmse_onb", "mae_onb",
@@ -1123,12 +789,12 @@ def main():
                         f.write(f"  [{label_of[key]}]\n")
                         for mk in summary_metrics:
                             mean, se = metrics.mean_se(store[key][mk])
-                            f.write(f"    {mk:14s}: {mean:.4f} ± {se:.4f}\n")
+                            f.write(f"    {mk:14s}: {mean:.4f} ﾂｱ {se:.4f}\n")
                     f.write("=" * 30 + "\n\n")
 
                 if include_ensemble:
                     weights_csv = os.path.join(SAVE_PATH, f"ensemble_weights_{snr_value}.csv")
-                    with open(weights_csv, "w", newline="", encoding="utf-8") as wf:
+                    with _open_text(weights_csv, "w", newline="", encoding="utf-8") as wf:
                         writer = csv.writer(wf)
                         writer.writerow(["fold"] + model_keys)
                         for fold_num, weights in weight_log:
@@ -1136,7 +802,7 @@ def main():
                                 [fold_num] + [f"{float(weights.get(key, 0.0)):.10g}" for key in model_keys]
                             )
 
-                # --- 棒グラフ (モデル別: R2 と旧コード互換の二値化後 AUC) ---
+                # --- 譽偵げ繝ｩ繝・(繝｢繝・Ν蛻･: R2 縺ｨ譌ｧ繧ｳ繝ｼ繝我ｺ呈鋤縺ｮ莠悟､蛹門ｾ・AUC) ---
                 labels = [label_of[k] for k in all_keys]
                 r2_means = [metrics.mean_se(store[k]["r2"])[0] for k in all_keys]
                 r2_ses = [metrics.mean_se(store[k]["r2"])[1] for k in all_keys]
@@ -1147,9 +813,9 @@ def main():
                     plotter.plot_bar("AUC (binary legacy)", labels, auc_bin_means, auc_bin_ses,
                                      EPOCH_NUM, SAVE_PATH, snr_value)
 
-                # --- 指標 CSV (fold 平均をモデル別に保存。後で比較しやすくする) ---
+                # --- 謖・ｨ・CSV (fold 蟷ｳ蝮・ｒ繝｢繝・Ν蛻･縺ｫ菫晏ｭ倥ょｾ後〒豈碑ｼ・＠繧・☆縺上☆繧・ ---
                 csv_path = os.path.join(SAVE_PATH, f'metrics_summary_{snr_value}.csv')
-                with open(csv_path, 'w', encoding='utf-8') as cf:
+                with _open_text(csv_path, 'w', encoding='utf-8') as cf:
                     header = ["model"] + [f"{mk}_mean" for mk in summary_metrics] \
                                        + [f"{mk}_se" for mk in summary_metrics]
                     cf.write(",".join(header) + "\n")
@@ -1157,13 +823,13 @@ def main():
                         means = [f"{metrics.mean_se(store[key][mk])[0]:.6f}" for mk in summary_metrics]
                         ses = [f"{metrics.mean_se(store[key][mk])[1]:.6f}" for mk in summary_metrics]
                         cf.write(",".join([label_of[key]] + means + ses) + "\n")
-                print(f"指標 CSV を保存: {csv_path}")
+                print(f"謖・ｨ・CSV 繧剃ｿ晏ｭ・ {csv_path}")
 
-                tuning_summary_path = os.path.join(base_save_path, "tuning_summary.csv")
                 append_tuning_summary(
                     tuning_summary_path, job, parameter_set, run_specs,
                     store, train_meta, summary_metrics, metrics,
-                    param_tag, run_dir, run_hash, SAVE_PATH, all_keys)
+                    param_tag, run_dir, run_hash, SAVE_PATH, all_keys,
+                    SAVE_TUNING_SUMMARY, RUN_INSTANCE_ID)
                 print(f"tuning summary saved: {tuning_summary_path}")
 
                 if not FLG_ROOP:

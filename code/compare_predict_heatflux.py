@@ -138,7 +138,7 @@ for fold_num in FOLD_NUMBERS:
 
     regression_model_maker = RegressionModelMaker((224, 224, 1))
     alexnet_model = regression_model_maker.alexnet()
-    resnet50_model = regression_model_maker.cnn_transformer_v1()
+    resnet50_model = regression_model_maker.cnn_transformer_v2()
     vgg16_model = regression_model_maker.cnn_transformer_v2()
 
     try:

@@ -1,0 +1,60 @@
+K-fold Cross-Validation Results
+validation_config:
+{'run': {'smoke_test': False,
+         'epochs': 300,
+         'folds': 3,
+         'color_channel': 1,
+         'random_seed': 42,
+         'loop_parameter_sets': True},
+ 'data': {'experiment_root': 'C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3',
+          'result_model_group': 'cnntf_v2d256',
+          'noise_source': 'waterflow',
+          'chunk_seconds': 1,
+          'experiment_names': ['2025.06.11_0.3_2'],
+          'max_freq_hz_list': ['maxfreq=22kHz'],
+          'noise_dir_names': ['heatflux_no_noise'],
+          'data_source_dir_by_experiment': {'2025.06.11_0.3_2': 'waterflow_20251126_1s',
+                                            '2025.06.18_0.3_3': 'waterflow_20260622_1s_1',
+                                            '2025.07.09_0.3_1': 'waterflow_20251219_1s'},
+          'skip_missing_datasets': False},
+ 'thresholds': {'by_experiment': {'2025.07.09_0.3_1': 275174.6640882674,
+                                  '2025.06.11_0.3_2': 266907.6965,
+                                  '2025.06.18_0.3_3': 271677.6816},
+                'require_experiment_threshold': False,
+                'onb_band_frac': 0.1},
+ 'models': {'active_model_keys': ['cnntf_v2_dim256_attn'],
+            'parameter_sets': [{'name': 'cur_lr0p0001_bs64',
+                                'models': {'cnntf_v2_dim256_attn': {'lr': 0.0001,
+                                                                    'batch_size': 64}}},
+                               {'name': 'v1onb_lr0p0001_bs128',
+                                'models': {'cnntf_v2_dim256_attn': {'lr': 0.0001,
+                                                                    'batch_size': 128}}},
+                               {'name': 'v1reg_lr0p01_bs24',
+                                'models': {'cnntf_v2_dim256_attn': {'lr': 0.01,
+                                                                    'batch_size': 24}}}]},
+ 'ensemble': {'enabled': False,
+              'weight_strategy': 'simple',
+              'fixed_weights': {'rf': 0.9, 'cnntf_v1': 0.05, 'alexnet': 0.05},
+              'inner_holdout_frac': 0.2,
+              'combine': 'mean'},
+ 'features': {'pca_components': 100},
+ 'output': {'save_date': '20260629',
+            'result_date_dir': '20260629_v2d256_legacy_lrbs',
+            'run_instance_id': '163445',
+            'save_fold_predictions': True,
+            'save_tuning_summary': True}}
+experiment=2025.06.11_0.3_2
+data_source=C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2025.06.11_0.3_2\data\npy\waterflow_20251126_1s
+data_path=C:\Users\Casper4\Python\ueki\shibasaki\研究\Pool_boiling\Subcooling_20_degrees\0.3\2025.06.11_0.3_2\data\npy\waterflow_20251126_1s\maxfreq=22kHz\heatflux_no_noise
+max_freq=maxfreq=22kHz
+noise_dir=heatflux_no_noise
+threshold=266907.6965
+result_date_dir=20260629_v2d256_legacy_lrbs
+models=['CNN+Tf v2 Dim256 Attn']
+parameter_set=cur_lr0p0001_bs64
+run_dir=e300_cur_lr0p0001_bs64_v2d256
+run_hash=893dd3
+run_instance_id=163445
+model_params={'cnntf_v2_dim256_attn': {'lr': 0.0001, 'batch_size': 64, 'early_stopping': True, 'builder_params': {'model_dim': 256, 'attention_key_dim': 64, 'num_heads': 4, 'ff_dim': 2048, 'num_transformer_blocks': 4}, 'input_axes_assumption': ['time_frame', 'frequency_bin', 'channel'], 'architecture': {'front_end': 'alexnet_like', 'sequence_length_after_cnn': 7, 'model_dim': 256, 'attention_key_dim': 64, 'pooling': 'AttentionPooling'}}}
+weight_strategy=simple, combine=mean
+==============================
