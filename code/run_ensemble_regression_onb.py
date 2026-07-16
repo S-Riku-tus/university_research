@@ -247,7 +247,6 @@ VALIDATION_CONFIG = {
             "max_freq_hz_list": ["maxfreq=22kHz"],
             "noise_dir_names": [
                 "heatflux_no_noise",
-                "heatflux_SNR=-16",
                 "heatflux_SNR=-20",
             ],
         },
