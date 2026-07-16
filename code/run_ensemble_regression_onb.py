@@ -76,7 +76,11 @@ from utils.config.parameter_sets import (
     parameter_set_tag,
     resolve_parameter_set,
 )
-from utils.explainability.training_integration import maybe_explain_trained_model
+from utils.explainability.training_integration import (
+    explainability_condition_selected,
+    explainability_outputs_complete,
+    maybe_explain_trained_model,
+)
 from utils.experiment.dataset_jobs import build_dataset_jobs as make_dataset_jobs
 from utils.experiment.run_helpers import (
     append_tuning_summary,
@@ -104,7 +108,7 @@ from utils.experiment.run_helpers import (
 # - data: 3 experiments x representative stress frequencies/noise conditions
 # - models: RF + CNN/Transformer v2 GAP + AlexNet
 # - ensemble: fixed-weight mean
-# - explainability: integrated into training, but disabled for full-grid runs
+# - explainability: model-specific methods on selected 22 kHz conditions only
 #
 # Ensemble modes are configured in VALIDATION_CONFIG["ensemble"]:
 # - "simple": equal-weight mean. No leakage, useful as a neutral baseline.
@@ -118,8 +122,8 @@ from utils.experiment.run_helpers import (
 VALIDATION_CONFIG = {
     "run": {
         "smoke_test": False,
-        "epochs": 300,
-        "folds": 3,
+        "epochs": 500,
+        "folds": 5,
         "smoke_epochs": 2,
         "smoke_folds": 2,
         "color_channel": 1,
@@ -137,7 +141,7 @@ VALIDATION_CONFIG = {
         ],
         "max_freq_hz_list": [
             # "maxfreq=2kHz",
-            # "maxfreq=3kHz",
+            "maxfreq=3kHz",
             # "maxfreq=5kHz",
             # "maxfreq=10kHz",
             # "maxfreq=15kHz",
@@ -145,11 +149,11 @@ VALIDATION_CONFIG = {
         ],
         "noise_dir_names": [
             "heatflux_no_noise",
-            "heatflux_SNR=0",
-            "heatflux_SNR=-4",
-            "heatflux_SNR=-8",
-            "heatflux_SNR=-12",
-            "heatflux_SNR=-16",
+            # "heatflux_SNR=0",
+            # "heatflux_SNR=-4",
+            # "heatflux_SNR=-8",
+            # "heatflux_SNR=-12",
+            # "heatflux_SNR=-16",
             "heatflux_SNR=-20",
         ],
         "data_source_dir_by_experiment": {
@@ -204,7 +208,7 @@ VALIDATION_CONFIG = {
         #   "val_fold_legacy" reproduce old validation-fold weighting; leaks
         #                     validation labels and should not support claims
         "enabled": True,
-        "weight_strategy": "fixed",
+        "weight_strategy": "val_fold_legacy",
         # Used only when weight_strategy == "fixed".
         "fixed_weights": {
             "rf": 0.90,
@@ -226,14 +230,79 @@ VALIDATION_CONFIG = {
         "resume_completed_runs": True,
     },
     "explainability": {
-        # Set True when you want explanations to be saved during training.
-        # For the full grid, start with target_folds=[1] and a small sample count.
-        "enabled": False,
+        # Explanations are extra validation analyses for the trained fold model.
+        # They are saved under each run folder:
+        #   <SAVE_PATH>/explainability/fold{n}/{model_key}/
+        #
+        # Explanations are deliberately restricted to representative conditions;
+        # generating them over the complete 3 x 6 x 7 grid is costly and weakens
+        # the distinction between model selection and explanation validation.
+        "enabled": True,
+        "condition_filter": {
+            "experiment_names": [
+                "2025.06.18_0.3_3",
+                "2025.07.09_0.3_1",
+                "2025.06.11_0.3_2",
+            ],
+            "max_freq_hz_list": ["maxfreq=22kHz"],
+            "noise_dir_names": [
+                "heatflux_no_noise",
+                "heatflux_SNR=-16",
+                "heatflux_SNR=-20",
+            ],
+        },
         "model_keys": ["rf", "cnntf_v2_gap", "alexnet"],
         "target_folds": [1],
-        "max_samples_per_fold": 3,
-        "ig_steps": 32,
-        "methods": ["integrated_gradients", "grad_cam", "occlusion"],
+        "max_samples_per_fold": 5,
+        "ig_steps": 64,
+        # Use methods that match each architecture.  RF TreeSHAP is retained in
+        # PCA space for model auditing; physical RF claims use grouped masks.
+        "methods_by_model": {
+            "rf": ["tree_shap_pca", "group_occlusion"],
+            "cnntf_v2_gap": ["integrated_gradients", "group_occlusion"],
+            "alexnet": [
+                "integrated_gradients",
+                "grad_cam",
+                "group_occlusion",
+            ],
+        },
+        "frequency_bands_hz": [
+            [0, 256],
+            [256, 512],
+            [512, 1000],
+            [1000, 2000],
+            [2000, 5000],
+            [5000, 10000],
+            [10000, 15000],
+            [15000, 22000],
+        ],
+        "time_groups": 4,
+        "time_extent_seconds": 1.0,
+        "onb_band_frac": 0.10,
+        "baseline_value": 0.0,
+        "curve_fractions": [0.0, 0.05, 0.10, 0.20, 0.30, 0.50, 1.0],
+        # Small non-negative perturbations test whether the primary IG maps are
+        # locally stable.  This is separate from noise-condition robustness.
+        "stability": {
+            "enabled": True,
+            "methods": ["integrated_gradients"],
+            "repeats": 2,
+            "noise_fraction": 0.01,
+            "clip_nonnegative": True,
+            "random_seed": 42,
+        },
+        # A lightweight Adebayo-style screening test.  Only the final trainable
+        # layer is randomized, so report it as a partial sanity check rather
+        # than a full cascading randomization test.
+        "sanity_check": {
+            "enabled": True,
+            "methods": ["integrated_gradients"],
+            "random_seed": 42,
+        },
+        "save_maps": True,
+        # Never silently repeat a completed 500-epoch run just because old XAI
+        # files are missing.  Set True only after intentionally choosing that cost.
+        "retrain_completed_runs_for_xai": False,
     },
 }
 
@@ -471,6 +540,101 @@ def validate_validation_config(enabled_specs):
                 f"{missing_thresholds}. Add them to VALIDATION_CONFIG['thresholds']['by_experiment']."
             )
 
+    if EXPLAINABILITY_ENABLED:
+        requested_models = set(EXPLAINABILITY_CONFIG.get("model_keys") or model_keys)
+        unknown_xai_models = requested_models - set(model_keys)
+        if unknown_xai_models:
+            raise ValueError(
+                "Explainability model_keys must be active models, got: "
+                f"{sorted(unknown_xai_models)}")
+
+        target_folds = EXPLAINABILITY_CONFIG.get("target_folds") or []
+        invalid_folds = [
+            int(fold) for fold in target_folds
+            if not 1 <= int(fold) <= int(DIVISIONS)
+        ]
+        if invalid_folds:
+            raise ValueError(
+                f"Explainability target_folds must be within 1..{DIVISIONS}: "
+                f"{invalid_folds}")
+        if int(EXPLAINABILITY_CONFIG.get("max_samples_per_fold", 0)) <= 0:
+            raise ValueError("Explainability max_samples_per_fold must be positive.")
+        if int(EXPLAINABILITY_CONFIG.get("ig_steps", 0)) <= 0:
+            raise ValueError("Explainability ig_steps must be positive.")
+
+        fractions = [
+            float(value)
+            for value in EXPLAINABILITY_CONFIG.get("curve_fractions", [])
+        ]
+        if fractions and (
+                fractions != sorted(set(fractions))
+                or fractions[0] != 0.0
+                or fractions[-1] != 1.0):
+            raise ValueError(
+                "Explainability curve_fractions must be unique, sorted, and "
+                "include endpoints 0.0 and 1.0.")
+
+        if not np.isclose(
+                float(EXPLAINABILITY_CONFIG.get("time_extent_seconds", CHUNK)),
+                float(CHUNK)):
+            raise ValueError(
+                "Explainability time_extent_seconds must match data chunk_seconds.")
+        if not np.isclose(
+                float(EXPLAINABILITY_CONFIG.get("onb_band_frac", ONB_BAND_FRAC)),
+                float(ONB_BAND_FRAC)):
+            raise ValueError(
+                "Explainability onb_band_frac must match thresholds.onb_band_frac.")
+
+        known_methods = {
+            "tree_shap_pca", "treeshap", "integrated_gradients",
+            "grad_cam", "group_occlusion", "occlusion",
+        }
+        methods_by_model = EXPLAINABILITY_CONFIG.get("methods_by_model") or {}
+        unknown_method_models = set(methods_by_model) - requested_models
+        if unknown_method_models:
+            raise ValueError(
+                "Explainability methods_by_model contains models that were not "
+                f"requested: {sorted(unknown_method_models)}")
+        missing_method_models = requested_models - set(methods_by_model)
+        if missing_method_models:
+            raise ValueError(
+                "Explainability methods_by_model must explicitly define every "
+                f"requested model: {sorted(missing_method_models)}")
+        unknown_methods = {
+            method
+            for methods_for_model in methods_by_model.values()
+            for method in methods_for_model
+            if method not in known_methods
+        }
+        if unknown_methods:
+            raise ValueError(
+                f"Unknown explainability methods: {sorted(unknown_methods)}")
+
+        condition_filter = EXPLAINABILITY_CONFIG.get("condition_filter") or {}
+        available_by_filter = {
+            "experiment_names": set(EXPERIMENT_DIR_NAMES),
+            "max_freq_hz_list": set(MAX_FREQ_HZ_LIST),
+            "noise_dir_names": set(NOISE_DIR_NAMES),
+        }
+        for filter_key, available in available_by_filter.items():
+            requested_values = set(condition_filter.get(filter_key) or [])
+            unknown_values = requested_values - available
+            if unknown_values:
+                raise ValueError(
+                    f"Explainability condition_filter.{filter_key} contains "
+                    f"unknown values: {sorted(unknown_values)}")
+
+        selected_experiments = set(
+            condition_filter.get("experiment_names") or EXPERIMENT_DIR_NAMES)
+        missing_xai_thresholds = [
+            name for name in selected_experiments
+            if THRESHOLD_BY_EXPERIMENT.get(name) is None
+        ]
+        if missing_xai_thresholds:
+            raise ValueError(
+                "Explainability requires ONB thresholds for every selected "
+                f"experiment: {sorted(missing_xai_thresholds)}")
+
 def main():
     set_global_seed(RANDOM_SEED)
     # Shared helpers for metrics, training, weighting, and plots.
@@ -515,6 +679,13 @@ def main():
         print("### FULL_RUN mode (SMOKE_TEST = False) ###")
     print(f"active models: {[s['label'] for s in enabled_specs]}  (model_tag={model_tag})")
     print(f"ensemble: {WEIGHT_STRATEGY} | combine: {ENSEMBLE_COMBINE} | epoch={EPOCH_NUM} | fold={DIVISIONS}")
+    print(
+        "explainability: "
+        f"{'enabled' if EXPLAINABILITY_ENABLED else 'disabled'} | "
+        f"target_folds={EXPLAINABILITY_CONFIG.get('target_folds')} | "
+        f"max_samples={EXPLAINABILITY_CONFIG.get('max_samples_per_fold')} | "
+        f"condition_filter={EXPLAINABILITY_CONFIG.get('condition_filter')}"
+    )
     print("validation_config:")
     print(validation_config_text())
     if include_ensemble and WEIGHT_STRATEGY == "val_fold_legacy":
@@ -535,6 +706,15 @@ def main():
         max_freq_name = job["max_freq_hz"]
         base_save_path = job["save_base_path"]
         threshold = job["threshold"]
+        xai_for_job = bool(
+            EXPLAINABILITY_ENABLED
+            and explainability_condition_selected(
+                EXPLAINABILITY_CONFIG,
+                job["experiment_name"],
+                max_freq_name,
+                noise_dir_name,
+            )
+        )
 
         print(
             f"\n{'='*40}\n"
@@ -543,6 +723,7 @@ def main():
         )
         print(f"data_path={data_path}")
         print(f"threshold={threshold}")
+        print(f"explainability_selected={xai_for_job}")
 
         start_time = time.time()
         data_loading = DataLoadingConversion()
@@ -569,11 +750,33 @@ def main():
                     base_save_path, noise_dir_name, max_freq_name,
                     run_dir)
                 tuning_summary_path = os.path.join(base_save_path, "tuning_summary.csv")
-                if is_completed_run(
+                append_tuning_summary_this_run = SAVE_TUNING_SUMMARY
+                completed_run = is_completed_run(
                     tuning_summary_path, run_dir, SAVE_PATH, snr_value,
-                    RESUME_COMPLETED_RUNS, SAVE_TUNING_SUMMARY):
-                    print(f"[resume skip] completed run found: {run_dir}")
-                    continue
+                    RESUME_COMPLETED_RUNS, SAVE_TUNING_SUMMARY)
+                if completed_run:
+                    xai_complete = explainability_outputs_complete(
+                        SAVE_PATH, EXPLAINABILITY_CONFIG, model_keys, DIVISIONS,
+                        experiment_name=job["experiment_name"],
+                        max_freq_name=max_freq_name,
+                        noise_dir_name=noise_dir_name)
+                    if xai_complete:
+                        print(f"[resume skip] completed run found: {run_dir}")
+                        continue
+                    if not EXPLAINABILITY_CONFIG.get(
+                            "retrain_completed_runs_for_xai", False):
+                        print(
+                            "[resume skip] metrics are complete but selected XAI "
+                            "outputs are missing. No retraining was started; set "
+                            "explainability.retrain_completed_runs_for_xai=True "
+                            "only if the extra training cost is intentional."
+                        )
+                        continue
+                    print(
+                        "[resume xai] metrics are complete, but explainability "
+                        "outputs are missing; explicit retraining is enabled."
+                    )
+                    append_tuning_summary_this_run = False
 
                 _makedirs(SAVE_PATH)
                 write_run_manifest(
@@ -631,7 +834,7 @@ def main():
                         # sklearn 邉ｻ繝｢繝・Ν逕ｨ縺ｮ PCA (蟄ｦ鄙偵ョ繝ｼ繧ｿ縺ｮ縺ｿ縺ｧ fit)
                         pca_model = None
                         if use_sklearn:
-                            if EXPLAINABILITY_ENABLED:
+                            if xai_for_job:
                                 x_fit_pca, (x_val_pca, x_inner_pca), pca_model = trainer.make_pca(
                                     x_fit, [x_val, x_inner], PCA_COMPONENTS, return_pca=True)
                             else:
@@ -686,7 +889,9 @@ def main():
                                 spec, model, scaler, x_val, y_val,
                                 val_preds[spec["key"]], threshold, SAVE_PATH,
                                 fold, max_freq_name, EXPLAINABILITY_CONFIG,
-                                pca=pca_model)
+                                pca=pca_model,
+                                experiment_name=job["experiment_name"],
+                                noise_dir_name=noise_dir_name)
 
                             # --- 驥阪∩逕ｨ縺ｮ隱､蟾ｮ (竭｢ 謌ｦ逡･縺斐→縺ｫ繝ｪ繝ｼ繧ｯ縺励↑縺・縺吶ｋ 繧貞・譖ｿ) ---
                             if WEIGHT_STRATEGY == "inner_holdout":
@@ -829,8 +1034,11 @@ def main():
                     tuning_summary_path, job, parameter_set, run_specs,
                     store, train_meta, summary_metrics, metrics,
                     param_tag, run_dir, run_hash, SAVE_PATH, all_keys,
-                    SAVE_TUNING_SUMMARY, RUN_INSTANCE_ID)
-                print(f"tuning summary saved: {tuning_summary_path}")
+                    append_tuning_summary_this_run, RUN_INSTANCE_ID)
+                if append_tuning_summary_this_run:
+                    print(f"tuning summary saved: {tuning_summary_path}")
+                else:
+                    print("tuning summary append skipped to avoid duplicate rows.")
 
                 if not FLG_ROOP:
                     break
