@@ -14,6 +14,7 @@ from utils.explainability.spectrogram_explainers import (
     normalize_magnitude,
     occlusion_importance,
     save_array_and_png,
+    save_input_spectrogram_png,
     save_signed_array_and_png,
     summarize_map_by_axis,
     windows_long_path,
@@ -42,6 +43,7 @@ SUMMARY_HEADER = [
     "top_frequency_bin",
     "top_frequency_hz",
     "top_time_frame",
+    "top_time_s",
 ]
 
 OCCLUSION_HEADER = [
@@ -342,14 +344,17 @@ def _group_mask_performance(predict_fn, x_val, y_val, base_pred, groups,
     return rows
 
 
-def _top_axis_bins(values, max_freq_hz):
+def _top_axis_bins(values, max_freq_hz, time_extent_seconds):
     arr = np.asarray(values, dtype=np.float32)
     freq_profile = arr.mean(axis=0)
     time_profile = arr.mean(axis=1)
     top_freq_bin = int(np.argmax(freq_profile))
     top_time_frame = int(np.argmax(time_profile))
     top_freq_hz = float(max_freq_hz * (top_freq_bin + 0.5) / len(freq_profile))
-    return top_freq_bin, top_freq_hz, top_time_frame
+    top_time_s = float(
+        time_extent_seconds * (top_time_frame + 0.5) / len(time_profile)
+    )
+    return top_freq_bin, top_freq_hz, top_time_frame, top_time_s
 
 
 def _write_attribution_outputs(
@@ -375,27 +380,41 @@ def _write_attribution_outputs(
         if signed
         else normalize_map(raw_values)
     )
+    baseline_value = _baseline_value(config)
+    baseline = np.full_like(sample, baseline_value, dtype=np.float32)
+    baseline_pred = float(np.ravel(predict_fn(baseline[None, ...]))[0])
+    output_delta = float(y_pred) - baseline_pred
+    time_extent_seconds = float(config.get("time_extent_seconds", 1.0))
+    plot_title = (
+        f"{model_key} {method} {sample_id}\n"
+        f"prediction - baseline = {output_delta:,.3g} heat-flux units"
+    )
     if config.get("save_maps", True):
         if signed:
             save_signed_array_and_png(
                 raw_values,
                 os.path.join(sample_dir, f"{method}_signed"),
-                f"{model_key} {method} signed {sample_id}",
+                plot_title + " (signed)",
                 unit=units,
+                max_freq_hz=max_freq_hz,
+                time_extent_seconds=time_extent_seconds,
             )
             save_array_and_png(
                 importance,
                 os.path.join(sample_dir, f"{method}_magnitude"),
-                f"{model_key} {method} magnitude {sample_id}",
+                plot_title + " (magnitude)",
+                max_freq_hz=max_freq_hz,
+                time_extent_seconds=time_extent_seconds,
             )
         else:
             save_array_and_png(
                 importance,
                 os.path.join(sample_dir, method),
-                f"{model_key} {method} {sample_id}",
+                plot_title,
+                max_freq_hz=max_freq_hz,
+                time_extent_seconds=time_extent_seconds,
             )
 
-    baseline_value = _baseline_value(config)
     if compute_curves:
         fractions = _curve_fractions(config)
         deletion_rows = deletion_curve(
@@ -431,7 +450,6 @@ def _write_attribution_outputs(
     freq_rows, time_rows = summarize_map_by_axis(importance, max_freq_hz)
     write_csv(os.path.join(sample_dir, f"{method}_frequency_profile.csv"),
               ["frequency_bin", "frequency_hz", "importance"], freq_rows)
-    time_extent_seconds = float(config.get("time_extent_seconds", 1.0))
     time_frame_count = max(1, len(time_rows))
     write_csv(
         os.path.join(sample_dir, f"{method}_time_profile.csv"),
@@ -470,9 +488,6 @@ def _write_attribution_outputs(
             ],
         )
 
-    baseline = np.full_like(sample, baseline_value, dtype=np.float32)
-    baseline_pred = float(np.ravel(predict_fn(baseline[None, ...]))[0])
-    output_delta = float(y_pred) - baseline_pred
     attribution_sum = float(np.sum(raw_values)) if signed else float("nan")
     completeness_error = (
         attribution_sum - output_delta if signed else float("nan"))
@@ -480,8 +495,8 @@ def _write_attribution_outputs(
         abs(completeness_error) / (abs(output_delta) + 1e-12)
         if signed else float("nan")
     )
-    top_freq_bin, top_freq_hz, top_time_frame = _top_axis_bins(
-        importance, max_freq_hz)
+    top_freq_bin, top_freq_hz, top_time_frame, top_time_s = _top_axis_bins(
+        importance, max_freq_hz, time_extent_seconds)
     return [
         sample_id,
         int(local_idx),
@@ -499,6 +514,7 @@ def _write_attribution_outputs(
         top_freq_bin,
         top_freq_hz,
         top_time_frame,
+        top_time_s,
     ]
 
 
@@ -779,6 +795,16 @@ def explain_keras_model(model_key, model, scaler, x_val, y_val, pred, threshold,
             "y_true": y_true,
             "y_pred": y_pred,
         })
+        if config.get("save_maps", True):
+            save_input_spectrogram_png(
+                sample,
+                os.path.join(sample_dir, "input_spectrogram.png"),
+                f"{model_key} input {sample_id}",
+                max_freq_hz=max_freq_hz,
+                time_extent_seconds=float(
+                    config.get("time_extent_seconds", 1.0)
+                ),
+            )
 
         if "integrated_gradients" in methods:
             ig, signed, units = _keras_attribution(
@@ -805,8 +831,13 @@ def explain_keras_model(model_key, model, scaler, x_val, y_val, pred, threshold,
                           ["status", "message"], [["failed", repr(exc)]])
 
         if "occlusion" in methods or "group_occlusion" in methods:
-            occ_rows, occ_map = occlusion_importance(
-                predict_fn, sample, groups, baseline_value=_baseline_value(config))
+            occ_rows, occ_map, signed_occ_map = occlusion_importance(
+                predict_fn,
+                sample,
+                groups,
+                baseline_value=_baseline_value(config),
+                return_signed_map=True,
+            )
             write_csv(
                 os.path.join(sample_dir, "group_occlusion.csv"),
                 [
@@ -815,6 +846,17 @@ def explain_keras_model(model_key, model, scaler, x_val, y_val, pred, threshold,
                 ],
                 occ_rows,
             )
+            if config.get("save_maps", True):
+                save_signed_array_and_png(
+                    signed_occ_map,
+                    os.path.join(sample_dir, "group_occlusion_signed"),
+                    f"{model_key} signed grouped occlusion\n{sample_id}",
+                    unit="heat_flux_change",
+                    max_freq_hz=max_freq_hz,
+                    time_extent_seconds=float(
+                        config.get("time_extent_seconds", 1.0)
+                    ),
+                )
             _append_group_rows(group_rows, sample_id, local_idx, y_true, y_pred, occ_rows)
             summary_rows.append(_write_attribution_outputs(
                 "group_occlusion", model_key, sample_id, local_idx,
@@ -898,10 +940,25 @@ def explain_sklearn_model(model_key, model, pca, scaler, x_val, y_val, pred, thr
         y_true = float(y_val[local_idx])
         y_pred = float(pred[local_idx])
         sample_rows.append([sample_id, int(local_idx), y_true, y_pred, abs(y_true - y_pred)])
+        if config.get("save_maps", True):
+            save_input_spectrogram_png(
+                sample,
+                os.path.join(sample_dir, "input_spectrogram.png"),
+                f"{model_key} input {sample_id}",
+                max_freq_hz=max_freq_hz,
+                time_extent_seconds=float(
+                    config.get("time_extent_seconds", 1.0)
+                ),
+            )
 
         if "group_occlusion" in methods or "occlusion" in methods:
-            occ_rows, occ_map = occlusion_importance(
-                predict_fn, sample, groups, baseline_value=_baseline_value(config))
+            occ_rows, occ_map, signed_occ_map = occlusion_importance(
+                predict_fn,
+                sample,
+                groups,
+                baseline_value=_baseline_value(config),
+                return_signed_map=True,
+            )
             write_csv(
                 os.path.join(sample_dir, "group_occlusion.csv"),
                 [
@@ -910,6 +967,17 @@ def explain_sklearn_model(model_key, model, pca, scaler, x_val, y_val, pred, thr
                 ],
                 occ_rows,
             )
+            if config.get("save_maps", True):
+                save_signed_array_and_png(
+                    signed_occ_map,
+                    os.path.join(sample_dir, "group_occlusion_signed"),
+                    f"{model_key} signed grouped occlusion\n{sample_id}",
+                    unit="heat_flux_change",
+                    max_freq_hz=max_freq_hz,
+                    time_extent_seconds=float(
+                        config.get("time_extent_seconds", 1.0)
+                    ),
+                )
             _append_group_rows(group_rows, sample_id, local_idx, y_true, y_pred, occ_rows)
             summary_rows.append(_write_attribution_outputs(
                 "group_occlusion", model_key, sample_id, local_idx,
@@ -1037,6 +1105,7 @@ def maybe_explain_trained_model(spec, model, scaler, x_val, y_val, pred, thresho
             ["stability", config.get("stability", "")],
             ["sanity_check", config.get("sanity_check", "")],
             ["save_maps", config.get("save_maps", True)],
+            ["plot_axis_order", "x=time_s,y=frequency_khz"],
         ],
     )
 

@@ -39,8 +39,11 @@ from utils.explainability.spectrogram_explainers import (
     integrated_gradients,
     make_axis_groups,
     normalize_map,
+    normalize_magnitude,
     occlusion_importance,
     save_array_and_png,
+    save_input_spectrogram_png,
+    save_signed_array_and_png,
     summarize_map_by_axis,
     windows_long_path,
     write_csv,
@@ -227,9 +230,31 @@ def explain_keras_model(model_key, model, scaler, x_val, y_val, pred, threshold,
         y_pred = float(pred[local_idx])
         sample_rows.append([sample_id, int(local_idx), y_true, y_pred, abs(y_true - y_pred)])
 
-        ig = normalize_map(integrated_gradients(model, sample, steps=ig_steps))
-        save_array_and_png(ig, os.path.join(sample_dir, "integrated_gradients"),
-                           f"{model_key} IG {sample_id}")
+        save_input_spectrogram_png(
+            sample,
+            os.path.join(sample_dir, "input_spectrogram.png"),
+            f"{model_key} input {sample_id}",
+            max_freq_hz=max_freq_hz,
+            time_extent_seconds=1.0,
+        )
+
+        ig_raw = integrated_gradients(model, sample, steps=ig_steps)
+        ig = normalize_magnitude(ig_raw)
+        save_signed_array_and_png(
+            ig_raw,
+            os.path.join(sample_dir, "integrated_gradients_signed"),
+            f"{model_key} IG signed {sample_id}",
+            unit="scaled model output",
+            max_freq_hz=max_freq_hz,
+            time_extent_seconds=1.0,
+        )
+        save_array_and_png(
+            ig,
+            os.path.join(sample_dir, "integrated_gradients_magnitude"),
+            f"{model_key} IG magnitude {sample_id}",
+            max_freq_hz=max_freq_hz,
+            time_extent_seconds=1.0,
+        )
         deletion_rows = deletion_curve(predict_fn, sample, ig)
         write_csv(
             os.path.join(sample_dir, "integrated_gradients_deletion_curve.csv"),
@@ -244,8 +269,13 @@ def explain_keras_model(model_key, model, scaler, x_val, y_val, pred, threshold,
 
         try:
             cam = normalize_map(grad_cam_regression(model, sample))
-            save_array_and_png(cam, os.path.join(sample_dir, "grad_cam"),
-                               f"{model_key} Grad-CAM {sample_id}")
+            save_array_and_png(
+                cam,
+                os.path.join(sample_dir, "grad_cam"),
+                f"{model_key} Grad-CAM {sample_id}",
+                max_freq_hz=max_freq_hz,
+                time_extent_seconds=1.0,
+            )
             deletion_rows = deletion_curve(predict_fn, sample, cam)
             write_csv(
                 os.path.join(sample_dir, "grad_cam_deletion_curve.csv"),
@@ -262,8 +292,13 @@ def explain_keras_model(model_key, model, scaler, x_val, y_val, pred, threshold,
             ["group", "axis", "low", "high", "base_pred", "masked_pred", "delta", "abs_delta"],
             occ_rows,
         )
-        save_array_and_png(normalize_map(occ_map), os.path.join(sample_dir, "group_occlusion_map"),
-                           f"{model_key} grouped occlusion {sample_id}")
+        save_array_and_png(
+            normalize_map(occ_map),
+            os.path.join(sample_dir, "group_occlusion_map"),
+            f"{model_key} grouped occlusion {sample_id}",
+            max_freq_hz=max_freq_hz,
+            time_extent_seconds=1.0,
+        )
 
     write_csv(
         os.path.join(out_dir, "explained_samples.csv"),
@@ -287,6 +322,14 @@ def explain_rf_model(model, pca, scaler, x_val, y_val, pred, threshold,
         y_pred = float(pred[local_idx])
         sample_rows.append([sample_id, int(local_idx), y_true, y_pred, abs(y_true - y_pred)])
 
+        save_input_spectrogram_png(
+            sample,
+            os.path.join(sample_dir, "input_spectrogram.png"),
+            f"rf input {sample_id}",
+            max_freq_hz=max_freq_hz,
+            time_extent_seconds=1.0,
+        )
+
         occ_rows, occ_map = occlusion_importance(predict_fn, sample, groups)
         write_csv(
             os.path.join(sample_dir, "group_occlusion.csv"),
@@ -294,8 +337,13 @@ def explain_rf_model(model, pca, scaler, x_val, y_val, pred, threshold,
             occ_rows,
         )
         occ_norm = normalize_map(occ_map)
-        save_array_and_png(occ_norm, os.path.join(sample_dir, "group_occlusion_map"),
-                           f"rf grouped occlusion {sample_id}")
+        save_array_and_png(
+            occ_norm,
+            os.path.join(sample_dir, "group_occlusion_map"),
+            f"rf grouped occlusion {sample_id}",
+            max_freq_hz=max_freq_hz,
+            time_extent_seconds=1.0,
+        )
         deletion_rows = deletion_curve(predict_fn, sample, occ_norm)
         write_csv(
             os.path.join(sample_dir, "occlusion_deletion_curve.csv"),

@@ -336,10 +336,13 @@ def save_spectrogram_chunks_with_snr(file_path, max_freq_hz, chunk_seconds, cont
             amplitude_cropped = amplitude[:, : max_k + 1]
             resized_amplitude = resize(amplitude_cropped, (224, 224))
 
-            time_axis = np.linspace(0, chunk_seconds, resized_amplitude.shape[1])
+            time_axis = np.linspace(0, chunk_seconds, resized_amplitude.shape[0])
             plt.figure(figsize=(6, 6))
             plt.imshow(
-                np.rot90(resized_amplitude, k=3),
+                # Internal arrays are (time, frequency).  Transpose only for
+                # conventional display: x=time, y=frequency.  rot90(k=3)
+                # also reversed the time direction while leaving .npy intact.
+                resized_amplitude.T,
                 cmap="jet",
                 aspect="auto",
                 origin="lower",

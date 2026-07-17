@@ -208,7 +208,7 @@ VALIDATION_CONFIG = {
         #   "val_fold_legacy" reproduce old validation-fold weighting; leaks
         #                     validation labels and should not support claims
         "enabled": True,
-        "weight_strategy": "val_fold_legacy",
+        "weight_strategy": "fixed",
         # Used only when weight_strategy == "fixed".
         "fixed_weights": {
             "rf": 0.90,

@@ -8,6 +8,14 @@ from tensorflow.keras.layers import Conv2D
 from tensorflow.keras.models import Model
 
 
+PLOT_FIGSIZE = (9, 8)
+PLOT_LABEL_FONTSIZE = 25
+PLOT_TICK_FONTSIZE = 20
+PLOT_TITLE_FONTSIZE = 20
+PLOT_COLORBAR_LABEL_FONTSIZE = 20
+PLOT_COLORBAR_TICK_FONTSIZE = 16
+
+
 def windows_long_path(path):
     path = os.path.abspath(path)
     if os.name == "nt" and not path.startswith("\\\\?\\"):
@@ -36,25 +44,146 @@ def normalize_magnitude(values, eps=1e-12):
     return arr / (np.max(arr) + eps)
 
 
+def _time_frequency_display(values):
+    """Return a conventional display matrix for an internal (time, frequency) map.
+
+    The model and all attribution calculations retain the repository's
+    ``(time_frame, frequency_bin)`` order.  Matplotlib interprets the first
+    matrix dimension as vertical, so plotting requires a transpose to show
+    time on x and frequency on y without changing the saved numeric array.
+    """
+    arr = np.asarray(values, dtype=np.float32)
+    if arr.ndim != 2:
+        raise ValueError(
+            f"time-frequency values must be 2-D, got shape {arr.shape}."
+        )
+    return arr.T
+
+
+def _apply_time_frequency_axes(ax, arr, max_freq_hz, time_extent_seconds):
+    if max_freq_hz is None:
+        ax.set_xlabel("Time frame", fontsize=PLOT_LABEL_FONTSIZE, labelpad=6)
+        ax.set_ylabel("Frequency bin", fontsize=PLOT_LABEL_FONTSIZE, labelpad=6)
+    else:
+        max_freq_hz = float(max_freq_hz)
+        time_extent_seconds = float(time_extent_seconds)
+        ax.set_xlabel("Time s", fontsize=PLOT_LABEL_FONTSIZE, labelpad=6)
+        ax.set_ylabel("Frequency kHz", fontsize=PLOT_LABEL_FONTSIZE, labelpad=6)
+        ax.set_xlim(0.0, time_extent_seconds)
+        ax.set_ylim(0.0, max_freq_hz / 1000.0)
+        ax.set_xticks([0.0, time_extent_seconds / 2.0, time_extent_seconds])
+        ax.set_xticklabels(
+            [f"{value:g}" for value in ax.get_xticks()],
+            fontsize=PLOT_TICK_FONTSIZE,
+        )
+
+        max_freq_khz = max_freq_hz / 1000.0
+        frequency_step_khz = 1 if max_freq_khz <= 10 else int(
+            np.ceil((max_freq_khz + 1) / 5)
+        )
+        frequency_ticks = np.arange(
+            0.0, max_freq_khz + 1e-9, frequency_step_khz
+        )
+        ax.set_yticks(frequency_ticks)
+        ax.set_yticklabels(
+            [f"{value:g}" for value in frequency_ticks],
+            fontsize=PLOT_TICK_FONTSIZE,
+        )
+
+    ax.tick_params(
+        axis="both",
+        which="both",
+        direction="in",
+        top=True,
+        right=True,
+        labelsize=PLOT_TICK_FONTSIZE,
+    )
+
+
+def _save_time_frequency_png(
+    values,
+    png_path,
+    title,
+    cmap,
+    colorbar_label,
+    max_freq_hz=None,
+    time_extent_seconds=1.0,
+    vmin=None,
+    vmax=None,
+):
+    arr = np.asarray(values, dtype=np.float32)
+    shown = _time_frequency_display(arr)
+    extent = None
+    if max_freq_hz is not None:
+        extent = [
+            0.0,
+            float(time_extent_seconds),
+            0.0,
+            float(max_freq_hz) / 1000.0,
+        ]
+
+    with plt.rc_context({"font.family": "Times New Roman"}):
+        fig, ax = plt.subplots(figsize=PLOT_FIGSIZE)
+        image = ax.imshow(
+            shown,
+            origin="lower",
+            aspect="auto",
+            cmap=cmap,
+            extent=extent,
+            vmin=vmin,
+            vmax=vmax,
+        )
+        _apply_time_frequency_axes(
+            ax, arr, max_freq_hz, time_extent_seconds
+        )
+        if title:
+            ax.set_title(title, fontsize=PLOT_TITLE_FONTSIZE, pad=10)
+        colorbar = fig.colorbar(image, ax=ax, pad=0.03)
+        colorbar.set_label(
+            colorbar_label,
+            fontsize=PLOT_COLORBAR_LABEL_FONTSIZE,
+            labelpad=10,
+        )
+        colorbar.ax.tick_params(
+            direction="in", labelsize=PLOT_COLORBAR_TICK_FONTSIZE
+        )
+        fig.tight_layout()
+        fig.savefig(
+            windows_long_path(png_path),
+            dpi=200,
+            bbox_inches="tight",
+            pad_inches=0.05,
+        )
+        plt.close(fig)
+
+
 def save_array_and_png(values, out_base, title="", cmap="magma",
-                       colorbar_label="normalized importance"):
+                       colorbar_label="normalized importance",
+                       max_freq_hz=None, time_extent_seconds=1.0):
+    """Save the internal (time, frequency) array and a conventional plot."""
     arr = np.asarray(values, dtype=np.float32)
     ensure_dir(os.path.dirname(out_base))
     np.save(windows_long_path(out_base + ".npy"), arr)
 
-    plt.figure(figsize=(7, 6))
-    plt.imshow(arr, origin="lower", aspect="auto", cmap=cmap)
-    plt.xlabel("Frequency bin")
-    plt.ylabel("Time frame")
-    if title:
-        plt.title(title)
-    plt.colorbar(label=colorbar_label)
-    plt.tight_layout()
-    plt.savefig(windows_long_path(out_base + ".png"), dpi=160)
-    plt.close()
+    _save_time_frequency_png(
+        arr,
+        out_base + ".png",
+        title,
+        cmap,
+        colorbar_label,
+        max_freq_hz=max_freq_hz,
+        time_extent_seconds=time_extent_seconds,
+    )
 
 
-def save_signed_array_and_png(values, out_base, title="", unit="model output"):
+def save_signed_array_and_png(
+    values,
+    out_base,
+    title="",
+    unit="model output",
+    max_freq_hz=None,
+    time_extent_seconds=1.0,
+):
     """Save a signed attribution map with a zero-centred colour scale."""
     arr = np.nan_to_num(np.asarray(values, dtype=np.float32))
     ensure_dir(os.path.dirname(out_base))
@@ -63,17 +192,40 @@ def save_signed_array_and_png(values, out_base, title="", unit="model output"):
     limit = float(np.max(np.abs(arr)))
     if not np.isfinite(limit) or limit <= 0:
         limit = 1.0
-    plt.figure(figsize=(7, 6))
-    plt.imshow(arr, origin="lower", aspect="auto", cmap="coolwarm",
-               vmin=-limit, vmax=limit)
-    plt.xlabel("Frequency bin")
-    plt.ylabel("Time frame")
-    if title:
-        plt.title(title)
-    plt.colorbar(label=f"signed attribution ({unit})")
-    plt.tight_layout()
-    plt.savefig(windows_long_path(out_base + ".png"), dpi=160)
-    plt.close()
+    _save_time_frequency_png(
+        arr,
+        out_base + ".png",
+        title,
+        "coolwarm",
+        f"signed attribution ({unit})",
+        max_freq_hz=max_freq_hz,
+        time_extent_seconds=time_extent_seconds,
+        vmin=-limit,
+        vmax=limit,
+    )
+
+
+def save_input_spectrogram_png(
+    sample,
+    png_path,
+    title="",
+    max_freq_hz=None,
+    time_extent_seconds=1.0,
+):
+    """Save the explained input beside its maps using the same physical axes."""
+    arr = np.asarray(sample, dtype=np.float32)
+    if arr.ndim == 3:
+        arr = arr[..., 0] if arr.shape[-1] == 1 else np.mean(arr, axis=-1)
+    ensure_dir(os.path.dirname(png_path))
+    _save_time_frequency_png(
+        arr,
+        png_path,
+        title,
+        "jet",
+        "spectrogram power (a.u.)",
+        max_freq_hz=max_freq_hz,
+        time_extent_seconds=time_extent_seconds,
+    )
 
 
 def write_csv(path, header, rows):
@@ -221,11 +373,18 @@ def make_axis_groups(height, width, max_freq_hz, frequency_bands_hz=None,
     return groups
 
 
-def occlusion_importance(predict_fn, sample, groups, baseline_value=0.0):
+def occlusion_importance(
+    predict_fn,
+    sample,
+    groups,
+    baseline_value=0.0,
+    return_signed_map=False,
+):
     x = np.asarray(sample, dtype=np.float32)
     base_pred = float(np.ravel(predict_fn(x[None, ...]))[0])
     rows = []
     score_map = np.zeros(x.shape[:2], dtype=np.float32)
+    signed_score_map = np.zeros(x.shape[:2], dtype=np.float32)
 
     for group in groups:
         masked = np.array(x, copy=True)
@@ -235,6 +394,7 @@ def occlusion_importance(predict_fn, sample, groups, baseline_value=0.0):
         delta = base_pred - pred
         abs_delta = abs(delta)
         score_map[mask] += abs_delta
+        signed_score_map[mask] += delta
         rows.append([
             group["group"],
             group["axis"],
@@ -248,6 +408,8 @@ def occlusion_importance(predict_fn, sample, groups, baseline_value=0.0):
             delta,
             abs_delta,
         ])
+    if return_signed_map:
+        return rows, score_map, signed_score_map
     return rows, score_map
 
 
