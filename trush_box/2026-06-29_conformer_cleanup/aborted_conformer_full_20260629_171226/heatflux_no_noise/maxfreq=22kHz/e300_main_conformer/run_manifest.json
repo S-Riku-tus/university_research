@@ -1,0 +1,169 @@
+{
+  "created_at": "2026-06-29T17:12:26",
+  "run_instance_id": "171226",
+  "run_hash": "b37e66",
+  "run_dir": "e300_main_conformer",
+  "folder_naming": {
+    "scheme": "e{epochs}_{param}_{models}[_{weight_when_ensemble_enabled}]",
+    "reason": "Keep Windows paths short while keeping parameter folders readable.",
+    "details": "Full conditions are stored in this manifest and validation_results_*.txt."
+  },
+  "dataset": {
+    "experiment_name": "2025.06.11_0.3_2",
+    "source_dir": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\data\\npy\\waterflow_20251126_1s",
+    "data_path": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\data\\npy\\waterflow_20251126_1s\\maxfreq=22kHz\\heatflux_no_noise",
+    "max_freq_hz": "maxfreq=22kHz",
+    "noise_dir_name": "heatflux_no_noise",
+    "snr_value": "no_noise",
+    "threshold": 266907.6965
+  },
+  "parameter_set_name": "main",
+  "parameter_set_tag": "main",
+  "model_tag": "conformer",
+  "model_params": {
+    "conformer": {
+      "lr": 0.0001,
+      "batch_size": 64,
+      "early_stopping": true,
+      "builder_params": {
+        "model_dim": 256,
+        "attention_key_dim": 64,
+        "num_heads": 4,
+        "ff_dim": 2048,
+        "num_conformer_blocks": 4,
+        "conv_kernel_size": 31,
+        "dropout": 0.2
+      },
+      "input_axes_assumption": [
+        "time_frame",
+        "frequency_bin",
+        "channel"
+      ],
+      "architecture": {
+        "front_end": "alexnet_like_cnn",
+        "sequence_length_after_cnn": 7,
+        "encoder": "conformer_block",
+        "model_dim": 256,
+        "attention_key_dim": 64,
+        "num_heads": 4,
+        "ff_dim": 2048,
+        "conv_kernel_size": 31,
+        "pooling": "AttentionPooling"
+      }
+    }
+  },
+  "run_specs": [
+    {
+      "key": "conformer",
+      "label": "Conformer",
+      "kind": "keras",
+      "builder_params": {
+        "model_dim": 256,
+        "attention_key_dim": 64,
+        "num_heads": 4,
+        "ff_dim": 2048,
+        "num_conformer_blocks": 4,
+        "conv_kernel_size": 31,
+        "dropout": 0.2
+      },
+      "input_axes_assumption": [
+        "time_frame",
+        "frequency_bin",
+        "channel"
+      ],
+      "architecture": {
+        "front_end": "alexnet_like_cnn",
+        "sequence_length_after_cnn": 7,
+        "encoder": "conformer_block",
+        "model_dim": 256,
+        "attention_key_dim": 64,
+        "num_heads": 4,
+        "ff_dim": 2048,
+        "conv_kernel_size": 31,
+        "pooling": "AttentionPooling"
+      },
+      "note": "Canonical Conformer candidate: FFN, self-attention, convolution module, FFN.",
+      "enabled": true,
+      "lr": 0.0001,
+      "batch_size": 64,
+      "early_stopping": true
+    }
+  ],
+  "validation_config": {
+    "run": {
+      "smoke_test": false,
+      "epochs": 300,
+      "folds": 3,
+      "color_channel": 1,
+      "random_seed": 42,
+      "loop_parameter_sets": true
+    },
+    "data": {
+      "experiment_root": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3",
+      "result_model_group": "conformer",
+      "noise_source": "waterflow",
+      "chunk_seconds": 1,
+      "experiment_names": [
+        "2025.06.11_0.3_2"
+      ],
+      "max_freq_hz_list": [
+        "maxfreq=22kHz"
+      ],
+      "noise_dir_names": [
+        "heatflux_no_noise"
+      ],
+      "data_source_dir_by_experiment": {
+        "2025.06.11_0.3_2": "waterflow_20251126_1s",
+        "2025.06.18_0.3_3": "waterflow_20260622_1s_1",
+        "2025.07.09_0.3_1": "waterflow_20251219_1s"
+      },
+      "skip_missing_datasets": false
+    },
+    "thresholds": {
+      "by_experiment": {
+        "2025.07.09_0.3_1": 275174.6640882674,
+        "2025.06.11_0.3_2": 266907.6965,
+        "2025.06.18_0.3_3": 271677.6816
+      },
+      "require_experiment_threshold": false,
+      "onb_band_frac": 0.1
+    },
+    "models": {
+      "active_model_keys": [
+        "conformer"
+      ],
+      "parameter_sets": [
+        {
+          "name": "main",
+          "models": {
+            "conformer": {
+              "lr": 0.0001,
+              "batch_size": 64
+            }
+          }
+        }
+      ]
+    },
+    "ensemble": {
+      "enabled": false,
+      "weight_strategy": "simple",
+      "fixed_weights": {
+        "rf": 0.9,
+        "conformer": 0.05,
+        "alexnet": 0.05
+      },
+      "inner_holdout_frac": 0.2,
+      "combine": "mean"
+    },
+    "features": {
+      "pca_components": 100
+    },
+    "output": {
+      "save_date": "20260629",
+      "result_date_dir": "20260629_conformer",
+      "run_instance_id": "171226",
+      "save_fold_predictions": true,
+      "save_tuning_summary": true
+    }
+  }
+}
