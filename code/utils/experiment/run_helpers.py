@@ -15,6 +15,7 @@ WEIGHT_STRATEGY_TAGS = {
     "fixed": "fix",
     "inner_holdout": "ih",
     "val_fold_legacy": "vleg",
+    "strategy_loop": "cmp",
 }
 
 
@@ -295,7 +296,9 @@ def append_tuning_summary(
             writer.writerow(row)
 
 
-def is_completed_run(summary_path, run_dir, save_path, snr_value, resume_completed_runs, save_tuning_summary):
+def is_completed_run(summary_path, run_dir, save_path, snr_value,
+                     resume_completed_runs, save_tuning_summary,
+                     run_hash=None):
     """Return True only when the per-run metrics and tuning summary both exist."""
     if not resume_completed_runs:
         return False
@@ -312,7 +315,9 @@ def is_completed_run(summary_path, run_dir, save_path, snr_value, resume_complet
     try:
         with open_text(summary_path, "r", newline="", encoding="utf-8") as sf:
             for row in csv.DictReader(sf):
-                if row.get("run_dir") == run_dir:
+                same_directory = row.get("run_dir") == run_dir
+                same_config = run_hash is None or row.get("run_hash") == run_hash
+                if same_directory and same_config:
                     return True
     except (OSError, csv.Error):
         return False

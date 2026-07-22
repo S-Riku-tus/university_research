@@ -70,6 +70,15 @@ from utils.dataloading.dataloading_and_conversion import DataLoadingConversion
 from utils.calculation.regression_detection_metrics import RegressionDetectionMetrics
 from utils.training.model_training import ModelTrainer
 from utils.ensemble.ensemble_weighting import EnsembleWeighting
+from utils.ensemble.strategy_comparison import (
+    aggregate_correction_rows,
+    compute_strategy_outputs,
+    correction_diagnostic_row,
+    metric_comparison_rows,
+    normalize_strategy_plan,
+    pairwise_diversity_rows,
+    strategy_plan_requires_inner_holdout,
+)
 from utils.plotting.regression_plots import RegressionPlotter
 from utils.config.parameter_sets import (
     expand_parameter_sets,
@@ -77,6 +86,7 @@ from utils.config.parameter_sets import (
     resolve_parameter_set,
 )
 from utils.explainability.training_integration import (
+    aggregate_group_mask_comparison,
     explainability_condition_selected,
     explainability_outputs_complete,
     maybe_explain_trained_model,
@@ -89,6 +99,7 @@ from utils.experiment.run_helpers import (
     makedirs as _makedirs,
     model_param_summary,
     open_text as _open_text,
+    path_exists as _path_exists,
     run_config_digest,
     run_dir_name,
     safe_tag,
@@ -104,10 +115,10 @@ from utils.experiment.run_helpers import (
 # Edit this block first when changing an experiment.
 #
 # Current default:
-# - purpose: run the fixed 3-model ensemble
+# - purpose: compare predeclared ensemble strategies from the same fold models
 # - data: 3 experiments x representative stress frequencies/noise conditions
 # - models: RF + CNN/Transformer v2 GAP + AlexNet
-# - ensemble: fixed-weight mean
+# - ensemble: simple and several fixed-weight sensitivity profiles
 # - explainability: model-specific methods on selected 22 kHz conditions only
 #
 # Ensemble modes are configured in VALIDATION_CONFIG["ensemble"]:
@@ -197,24 +208,97 @@ VALIDATION_CONFIG = {
         ],
     },
     "ensemble": {
-        # How to combine model predictions.
-        #
-        # Recommended final-report setting:
-        #   enabled=True, weight_strategy="fixed", combine="mean"
-        #
-        # Other valid weight_strategy values:
-        #   "simple"          equal weights across active models
-        #   "inner_holdout"   choose weights using only training-fold holdout
-        #   "val_fold_legacy" reproduce old validation-fold weighting; leaks
-        #                     validation labels and should not support claims
+        # Every enabled entry below is evaluated from the same outer-fold model
+        # predictions.  simple/fixed profiles therefore add almost no runtime.
+        # Report all predeclared profiles; do not select only the best row after
+        # looking at these validation results.
         "enabled": True,
+        "primary_strategy": "fixed_rf98_even",
+        "reference_model": "rf",
+        "allow_leaky_strategies": False,
+        "strategies": [
+            {
+                "name": "simple_equal",
+                "label": "Ensemble simple equal",
+                "strategy": "simple",
+            },
+            {
+                "name": "fixed_rf90_even",
+                "label": "Ensemble RF90 + 5 + 5",
+                "strategy": "fixed",
+                "fixed_weights": {
+                    "rf": 0.90,
+                    "cnntf_v2_gap": 0.05,
+                    "alexnet": 0.05,
+                },
+            },
+            {
+                "name": "fixed_rf95_even",
+                "label": "Ensemble RF95 + 2.5 + 2.5",
+                "strategy": "fixed",
+                "fixed_weights": {
+                    "rf": 0.95,
+                    "cnntf_v2_gap": 0.025,
+                    "alexnet": 0.025,
+                },
+            },
+            {
+                # This candidate was declared from the previous 7/13
+                # diagnostic and is the primary plot target for the new run.
+                "name": "fixed_rf98_even",
+                "label": "Ensemble RF98 + 1 + 1",
+                "strategy": "fixed",
+                "fixed_weights": {
+                    "rf": 0.98,
+                    "cnntf_v2_gap": 0.01,
+                    "alexnet": 0.01,
+                },
+            },
+            {
+                "name": "fixed_rf95_cnntf",
+                "label": "Ensemble RF95 + CNN-Tf5",
+                "strategy": "fixed",
+                "fixed_weights": {
+                    "rf": 0.95,
+                    "cnntf_v2_gap": 0.05,
+                    "alexnet": 0.00,
+                },
+            },
+            {
+                "name": "fixed_rf95_alex",
+                "label": "Ensemble RF95 + Alex5",
+                "strategy": "fixed",
+                "fixed_weights": {
+                    "rf": 0.95,
+                    "cnntf_v2_gap": 0.00,
+                    "alexnet": 0.05,
+                },
+            },
+            {
+                # Exploratory late-fusion rule declared from the 7/17 saved
+                # predictions. It targets missed ONB cases but may sacrifice
+                # whole-range R2, so it is never the primary regression claim.
+                "name": "prediction_max",
+                "label": "Ensemble prediction max",
+                "strategy": "max",
+            },
+            {
+                # Correct nested training is implemented, but enabling this
+                # approximately doubles model fitting time for each fold.
+                "name": "inner_holdout",
+                "label": "Ensemble inner holdout",
+                "strategy": "inner_holdout",
+                "enabled": False,
+            },
+        ],
+        # Backward-compatible single-strategy defaults.
         "weight_strategy": "fixed",
-        # Used only when weight_strategy == "fixed".
         "fixed_weights": {
             "rf": 0.90,
             "cnntf_v2_gap": 0.05,
             "alexnet": 0.05,
         },
+        "inner_holdout_frac": 0.20,
         # "mean" is a weighted average. "min" keeps the minimum model prediction
         # for each sample and is mainly a legacy/diagnostic option.
         "combine": "mean",
@@ -224,7 +308,7 @@ VALIDATION_CONFIG = {
     },
     "output": {
         "save_date": datetime.now().strftime("%Y%m%d"),
-        "result_date_dir": datetime.now().strftime("%Y%m%d") + "_fixed_ensemble",
+        "result_date_dir": datetime.now().strftime("%Y%m%d") + "_ensemble_strategy_comparison",
         "save_fold_predictions": True,
         "save_tuning_summary": True,
         "resume_completed_runs": True,
@@ -348,6 +432,26 @@ FIXED_WEIGHTS = ENSEMBLE_CONFIG.get(
 )
 INNER_HOLDOUT_FRAC = ENSEMBLE_CONFIG.get("inner_holdout_frac", 0.2)
 ENSEMBLE_COMBINE = ENSEMBLE_CONFIG.get("combine", "mean")
+ENSEMBLE_STRATEGY_PLAN = (
+    normalize_strategy_plan(ENSEMBLE_CONFIG, ACTIVE_MODEL_KEYS)
+    if ENSEMBLE_ENABLED else []
+)
+PRIMARY_ENSEMBLE_STRATEGY = ENSEMBLE_CONFIG.get(
+    "primary_strategy",
+    ENSEMBLE_STRATEGY_PLAN[0]["name"] if ENSEMBLE_STRATEGY_PLAN else None,
+)
+PRIMARY_ENSEMBLE_KEY = next(
+    (
+        item["result_key"]
+        for item in ENSEMBLE_STRATEGY_PLAN
+        if item["name"] == PRIMARY_ENSEMBLE_STRATEGY
+    ),
+    None,
+)
+ENSEMBLE_REFERENCE_MODEL = ENSEMBLE_CONFIG.get(
+    "reference_model",
+    ACTIVE_MODEL_KEYS[0] if ACTIVE_MODEL_KEYS else None,
+)
 RESULT_MODEL_GROUP = (
     "ensemble" if ENSEMBLE_ENABLED
     else "rf" if ACTIVE_MODEL_KEYS == ["rf"]
@@ -485,6 +589,12 @@ def validation_config_snapshot():
             "fixed_weights": FIXED_WEIGHTS,
             "inner_holdout_frac": INNER_HOLDOUT_FRAC,
             "combine": ENSEMBLE_COMBINE,
+            "primary_strategy": PRIMARY_ENSEMBLE_STRATEGY,
+            "reference_model": ENSEMBLE_REFERENCE_MODEL,
+            "strategies": ENSEMBLE_CONFIG.get("strategies", []),
+            "allow_leaky_strategies": ENSEMBLE_CONFIG.get(
+                "allow_leaky_strategies", False),
+            "resolved_strategy_plan": ENSEMBLE_STRATEGY_PLAN,
         },
         "features": {
             "pca_components": PCA_COMPONENTS,
@@ -510,11 +620,10 @@ def validate_validation_config(enabled_specs):
         raise ValueError("folds must be at least 2.")
     if not PARAMETER_SETS:
         raise ValueError("VALIDATION_CONFIG['models']['parameter_sets'] must not be empty.")
-    if WEIGHT_STRATEGY not in {"simple", "fixed", "inner_holdout", "val_fold_legacy"}:
-        raise ValueError(f"Unknown weight_strategy: {WEIGHT_STRATEGY}")
-    if ENSEMBLE_COMBINE not in {"mean", "min"}:
+    if ENSEMBLE_COMBINE not in {"mean", "min", "max"}:
         raise ValueError(f"Unknown ensemble combine method: {ENSEMBLE_COMBINE}")
-    if not 0 < float(INNER_HOLDOUT_FRAC) < 1:
+    if strategy_plan_requires_inner_holdout(ENSEMBLE_STRATEGY_PLAN) and not (
+            0 < float(INNER_HOLDOUT_FRAC) < 1):
         raise ValueError("inner_holdout_frac must be between 0 and 1.")
     if int(PCA_COMPONENTS) <= 0:
         raise ValueError("pca_components must be a positive integer.")
@@ -523,10 +632,19 @@ def validate_validation_config(enabled_specs):
     if len(model_keys) != len(set(model_keys)):
         raise ValueError(f"Duplicate active model keys: {model_keys}")
 
-    if WEIGHT_STRATEGY == "fixed":
-        missing_weights = [key for key in model_keys if key not in FIXED_WEIGHTS]
-        if missing_weights:
-            raise ValueError(f"FIXED_WEIGHTS does not define weights for: {missing_weights}")
+    if ENSEMBLE_ENABLED:
+        if len(model_keys) < 2:
+            raise ValueError("Ensemble comparison requires at least two active models.")
+        if PRIMARY_ENSEMBLE_KEY is None:
+            raise ValueError(
+                "ensemble.primary_strategy must name one enabled strategy; got "
+                f"{PRIMARY_ENSEMBLE_STRATEGY!r}."
+            )
+        if ENSEMBLE_REFERENCE_MODEL not in model_keys:
+            raise ValueError(
+                "ensemble.reference_model must be an active model; got "
+                f"{ENSEMBLE_REFERENCE_MODEL!r}."
+            )
 
     if REQUIRE_EXPERIMENT_THRESHOLD:
         missing_thresholds = [
@@ -661,13 +779,18 @@ def main():
         model_tag = "s_" + model_tag
 
     use_sklearn = any(s["kind"] == "sklearn" for s in enabled_specs)
-    include_ensemble = bool(ENSEMBLE_ENABLED and len(enabled_specs) >= 2)
+    include_ensemble = bool(
+        ENSEMBLE_ENABLED and len(enabled_specs) >= 2 and ENSEMBLE_STRATEGY_PLAN
+    )
     all_keys = [s["key"] for s in enabled_specs]
     if include_ensemble:
-        all_keys.append("ensemble")
+        all_keys.extend(item["result_key"] for item in ENSEMBLE_STRATEGY_PLAN)
     label_of = {s["key"]: s["label"] for s in enabled_specs}
     if include_ensemble:
-        label_of["ensemble"] = "Ensemble"
+        label_of.update({
+            item["result_key"]: item["label"]
+            for item in ENSEMBLE_STRATEGY_PLAN
+        })
 
     print("#" * 60)
     if SMOKE_TEST:
@@ -677,7 +800,11 @@ def main():
     else:
         print("### FULL_RUN mode (SMOKE_TEST = False) ###")
     print(f"active models: {[s['label'] for s in enabled_specs]}  (model_tag={model_tag})")
-    print(f"ensemble: {WEIGHT_STRATEGY} | combine: {ENSEMBLE_COMBINE} | epoch={EPOCH_NUM} | fold={DIVISIONS}")
+    print(
+        f"ensemble strategies: {[item['name'] for item in ENSEMBLE_STRATEGY_PLAN]} "
+        f"| primary={PRIMARY_ENSEMBLE_STRATEGY} | combine={ENSEMBLE_COMBINE} "
+        f"| epoch={EPOCH_NUM} | fold={DIVISIONS}"
+    )
     print(
         "explainability: "
         f"{'enabled' if EXPLAINABILITY_ENABLED else 'disabled'} | "
@@ -687,7 +814,9 @@ def main():
     )
     print("validation_config:")
     print(validation_config_text())
-    if include_ensemble and WEIGHT_STRATEGY == "val_fold_legacy":
+    if include_ensemble and any(
+            item["strategy"] == "val_fold_legacy"
+            for item in ENSEMBLE_STRATEGY_PLAN):
         print("WARNING: val_fold_legacy uses validation-fold labels for weights; use only for reproduction.")
     print("#" * 60)
 
@@ -740,9 +869,17 @@ def main():
                 run_hash = run_config_digest(
                     validation_config_snapshot(), parameter_set, run_specs,
                     model_tag, SAVE_FOLD_PREDICTIONS)
+                strategy_tag = (
+                    "strategy_loop" if len(ENSEMBLE_STRATEGY_PLAN) > 1
+                    else ENSEMBLE_STRATEGY_PLAN[0]["strategy"]
+                    if ENSEMBLE_STRATEGY_PLAN
+                    else "simple"
+                )
                 run_dir = run_dir_name(
                     EPOCH_NUM, param_tag, model_tag,
-                    ENSEMBLE_ENABLED, WEIGHT_STRATEGY)
+                    ENSEMBLE_ENABLED,
+                    strategy_tag,
+                )
                 print(f"parameter_set={parameter_set.get('name', param_tag)} | model_params={param_summary}")
                 print(f"run_dir={run_dir}")
                 SAVE_PATH = os.path.join(
@@ -752,7 +889,8 @@ def main():
                 append_tuning_summary_this_run = SAVE_TUNING_SUMMARY
                 completed_run = is_completed_run(
                     tuning_summary_path, run_dir, SAVE_PATH, snr_value,
-                    RESUME_COMPLETED_RUNS, SAVE_TUNING_SUMMARY)
+                    RESUME_COMPLETED_RUNS, SAVE_TUNING_SUMMARY,
+                    run_hash=run_hash)
                 if completed_run:
                     xai_complete = explainability_outputs_complete(
                         SAVE_PATH, EXPLAINABILITY_CONFIG, model_keys, DIVISIONS,
@@ -788,8 +926,10 @@ def main():
                 # 謖・ｨ吶・菫晏ｭ伜・ (key -> metric -> [fold 縺斐→縺ｮ蛟､])
                 store = {k: defaultdict(list) for k in all_keys}
                 train_meta = {k: defaultdict(list) for k in model_keys}
-                # 驥阪∩縺ｮ險倬鹸 (fold 縺斐→)
+                # Strategy weights and presentation-oriented diagnostics.
                 weight_log = []
+                correction_log = []
+                diversity_log = []
 
                 output_file = os.path.join(SAVE_PATH, f'validation_results_{snr_value}.txt')
                 with _open_text(output_file, 'w', encoding='utf-8') as f:
@@ -809,7 +949,12 @@ def main():
                     f.write(f"run_hash={run_hash}\n")
                     f.write(f"run_instance_id={RUN_INSTANCE_ID}\n")
                     f.write(f"model_params={param_summary}\n")
-                    f.write(f"weight_strategy={WEIGHT_STRATEGY}, combine={ENSEMBLE_COMBINE}\n")
+                    f.write(
+                        "ensemble_strategies="
+                        f"{[item['name'] for item in ENSEMBLE_STRATEGY_PLAN]}, "
+                        f"primary={PRIMARY_ENSEMBLE_STRATEGY}, "
+                        f"combine={ENSEMBLE_COMBINE}\n"
+                    )
                     f.write("=" * 30 + "\n")
 
                     fold = 1
@@ -817,42 +962,90 @@ def main():
                         x_train, x_val = x[train_index], x[val_index]
                         y_train, y_val = y[train_index], y[val_index]
 
-                        # --- inner_holdout 縺ｮ縺ｨ縺阪□縺大ｭｦ鄙・fold 繧貞・驛ｨ蛻・牡 ---
-                        if WEIGHT_STRATEGY == "inner_holdout":
-                            x_fit, x_inner, y_fit, y_inner = train_test_split(
-                                x_train, y_train, test_size=INNER_HOLDOUT_FRAC,
-                                random_state=RANDOM_SEED)
-                        else:
-                            x_fit, y_fit = x_train, y_train
-                            x_inner = y_inner = None
+                        # If enabled, inner-holdout weights are selected using
+                        # temporary sub-fold models.  The reported outer-fold
+                        # models are then retrained on all x_train, so every
+                        # strategy is evaluated from the same final predictions.
+                        inner_errors = {}
+                        x_inner_fit = x_inner = y_inner_fit = y_inner = None
+                        x_inner_fit_pca = x_inner_pca = None
+                        if strategy_plan_requires_inner_holdout(
+                                ENSEMBLE_STRATEGY_PLAN):
+                            x_inner_fit, x_inner, y_inner_fit, y_inner = train_test_split(
+                                x_train,
+                                y_train,
+                                test_size=INNER_HOLDOUT_FRAC,
+                                random_state=RANDOM_SEED + fold,
+                            )
+                            inner_scaler = MinMaxScaler()
+                            y_inner_fit_scaled = inner_scaler.fit_transform(
+                                y_inner_fit.reshape(-1, 1)
+                            )
+                            if use_sklearn:
+                                x_inner_fit_pca, (x_inner_pca,) = trainer.make_pca(
+                                    x_inner_fit, [x_inner], PCA_COMPONENTS
+                                )
+                            inner_mm = RegressionModelMaker(
+                                (224, 224, COLOR_CHANNEL)
+                            )
+                            for spec in run_specs:
+                                print(
+                                    f"[{spec['label']}] Fold {fold}/{DIVISIONS} "
+                                    "inner-holdout weight fit"
+                                )
+                                inner_spec = dict(spec)
+                                inner_spec["fit_verbose"] = 0
+                                inner_model, inner_history = trainer.train_one_model(
+                                    inner_spec,
+                                    inner_mm,
+                                    x_inner_fit,
+                                    y_inner_fit_scaled,
+                                    x_inner_fit_pca,
+                                    EPOCH_NUM,
+                                )
+                                inner_pred = trainer.predict_one_model(
+                                    inner_spec,
+                                    inner_model,
+                                    x_inner,
+                                    x_inner_pca,
+                                    inner_scaler,
+                                )
+                                inner_errors[spec["key"]] = 1.0 - r2_score(
+                                    y_inner, inner_pred
+                                )
+                                del inner_model, inner_history, inner_pred
+                                K.clear_session()
+                                gc.collect()
+                            del inner_scaler, y_inner_fit_scaled, inner_mm
 
-                        # 繧ｹ繧ｱ繝ｼ繝ｩ縺ｯ蟄ｦ鄙偵↓菴ｿ縺・Λ繝吶Ν (y_fit) 縺ｮ縺ｿ縺ｧ fit 縺吶ｋ
+                        # Final outer-fold model preprocessing uses all training
+                        # samples and never sees the outer validation labels.
                         scaler = MinMaxScaler()
-                        y_fit_scaled = scaler.fit_transform(y_fit.reshape(-1, 1))
+                        y_train_scaled = scaler.fit_transform(y_train.reshape(-1, 1))
 
                         # sklearn 邉ｻ繝｢繝・Ν逕ｨ縺ｮ PCA (蟄ｦ鄙偵ョ繝ｼ繧ｿ縺ｮ縺ｿ縺ｧ fit)
                         pca_model = None
                         if use_sklearn:
                             if xai_for_job:
-                                x_fit_pca, (x_val_pca, x_inner_pca), pca_model = trainer.make_pca(
-                                    x_fit, [x_val, x_inner], PCA_COMPONENTS, return_pca=True)
+                                x_train_pca, (x_val_pca,), pca_model = trainer.make_pca(
+                                    x_train, [x_val], PCA_COMPONENTS, return_pca=True)
                             else:
-                                x_fit_pca, (x_val_pca, x_inner_pca) = trainer.make_pca(
-                                    x_fit, [x_val, x_inner], PCA_COMPONENTS)
+                                x_train_pca, (x_val_pca,) = trainer.make_pca(
+                                    x_train, [x_val], PCA_COMPONENTS)
                         else:
-                            x_fit_pca = x_val_pca = x_inner_pca = None
+                            x_train_pca = x_val_pca = None
 
                         mm = RegressionModelMaker((224, 224, COLOR_CHANNEL))
 
                         # --- 蜷・Δ繝・Ν縺ｮ蟄ｦ鄙偵→莠域ｸｬ ---
                         val_preds = {}        # key -> 讀懆ｨｼ fold 縺ｸ縺ｮ莠域ｸｬ (蜈・せ繧ｱ繝ｼ繝ｫ)
-                        errors_for_weight = {}  # key -> 驥阪∩逕ｨ縺ｮ隱､蟾ｮ (1 - R2)
+                        legacy_errors = {}
                         for spec in run_specs:
                             if spec["kind"] == "keras":
                                 print(f"  params for {spec['key']}: lr={spec['lr']}, batch_size={spec['batch_size']}")
                             print(f"[{spec['label']}] Fold {fold}/{DIVISIONS} training start")
                             model, history = trainer.train_one_model(
-                                spec, mm, x_fit, y_fit_scaled, x_fit_pca,
+                                spec, mm, x_train, y_train_scaled, x_train_pca,
                                 EPOCH_NUM)
                             if history is not None:
                                 actual_batch_size = history.params.get("actual_batch_size")
@@ -892,34 +1085,54 @@ def main():
                                 experiment_name=job["experiment_name"],
                                 noise_dir_name=noise_dir_name)
 
-                            # --- 驥阪∩逕ｨ縺ｮ隱､蟾ｮ (竭｢ 謌ｦ逡･縺斐→縺ｫ繝ｪ繝ｼ繧ｯ縺励↑縺・縺吶ｋ 繧貞・譖ｿ) ---
-                            if WEIGHT_STRATEGY == "inner_holdout":
-                                inner_pred = trainer.predict_one_model(
-                                    spec, model, x_inner, x_inner_pca, scaler)
-                                errors_for_weight[spec["key"]] = 1.0 - r2_score(y_inner, inner_pred)
-                            elif WEIGHT_STRATEGY == "val_fold_legacy":
-                                # 譌ｧ譚･縺ｩ縺翫ｊ讀懆ｨｼ fold 隱､蟾ｮ (繝ｪ繝ｼ繧ｯ縺ゅｊ)
-                                errors_for_weight[spec["key"]] = 1.0 - r2_score(y_val, val_preds[spec["key"]])
+                            if any(
+                                    item["strategy"] == "val_fold_legacy"
+                                    for item in ENSEMBLE_STRATEGY_PLAN):
+                                # Reproduction only. This branch is unreachable
+                                # unless allow_leaky_strategies is explicit.
+                                legacy_errors[spec["key"]] = 1.0 - r2_score(
+                                    y_val, val_preds[spec["key"]]
+                                )
 
                             del model
                             del history
                             K.clear_session()
                             gc.collect()
 
-                        # --- 繧｢繝ｳ繧ｵ繝ｳ繝悶Ν ---
-                        weights = {}
-                        ensemble_pred = None
+                        # Evaluate every configured ensemble from the same
+                        # outer-fold predictions. No model is retrained between
+                        # simple/fixed strategy profiles.
+                        ensemble_outputs = {}
                         if include_ensemble:
-                            weights = weighting.compute_weights(
-                                WEIGHT_STRATEGY, run_specs, errors_for_weight, FIXED_WEIGHTS)
-                            weight_log.append((fold, dict(weights)))
-                            ensemble_pred = weighting.combine_predictions(
-                                val_preds, weights, ENSEMBLE_COMBINE)
+                            ensemble_outputs = compute_strategy_outputs(
+                                weighting,
+                                ENSEMBLE_STRATEGY_PLAN,
+                                run_specs,
+                                val_preds,
+                                ENSEMBLE_COMBINE,
+                                inner_errors=inner_errors,
+                                legacy_errors=legacy_errors,
+                            )
+                            for result_key, output in ensemble_outputs.items():
+                                item = output["strategy"]
+                                weight_log.append([
+                                    fold,
+                                    item["name"],
+                                    item["strategy"],
+                                    int(item["claim_safe"]),
+                                    *[
+                                        output["weights"].get(key, 0.0)
+                                        for key in model_keys
+                                    ],
+                                ])
 
                         # --- 謖・ｨ吶・邂怜・ (竭｡ 3 遞ｮ鬘槭↓蛻・屬) ---
                         preds_all = dict(val_preds)
                         if include_ensemble:
-                            preds_all["ensemble"] = ensemble_pred
+                            preds_all.update({
+                                result_key: output["prediction"]
+                                for result_key, output in ensemble_outputs.items()
+                            })
                         if SAVE_FOLD_PREDICTIONS:
                             pred_dir = os.path.join(SAVE_PATH, FOLD_PREDICTIONS_DIR_NAME)
                             _makedirs(pred_dir)
@@ -941,17 +1154,49 @@ def main():
                                 for mk, mv in d.items():
                                     store[key][mk].append(mv)
 
+                        if include_ensemble:
+                            for row in pairwise_diversity_rows(
+                                y_val,
+                                val_preds,
+                                threshold=threshold,
+                                onb_band_frac=ONB_BAND_FRAC,
+                            ):
+                                diversity_log.append([fold, *row])
+                            for result_key, output in ensemble_outputs.items():
+                                correction_log.append([
+                                    fold,
+                                    *correction_diagnostic_row(
+                                        output["strategy"],
+                                        y_val,
+                                        ENSEMBLE_REFERENCE_MODEL,
+                                        val_preds[ENSEMBLE_REFERENCE_MODEL],
+                                        output["prediction"],
+                                        threshold=threshold,
+                                        onb_band_frac=ONB_BAND_FRAC,
+                                    ),
+                                ])
+
                         # --- 菴懷峙 (繧｢繝ｳ繧ｵ繝ｳ繝悶Ν縺ｮ謨｣蟶・峙) ---
                         if include_ensemble and has_threshold(threshold):
-                            ens_fold_metrics = {mk: store["ensemble"][mk][-1]
-                                                for mk in store["ensemble"]}
+                            primary_pred = ensemble_outputs[
+                                PRIMARY_ENSEMBLE_KEY
+                            ]["prediction"]
+                            ens_fold_metrics = {
+                                mk: store[PRIMARY_ENSEMBLE_KEY][mk][-1]
+                                for mk in store[PRIMARY_ENSEMBLE_KEY]
+                            }
                             plotter.plot_regression_scatter(
-                                y_val, ensemble_pred, y, ens_fold_metrics,
+                                y_val, primary_pred, y, ens_fold_metrics,
                                 threshold, SAVE_PATH, snr_value, fold)
 
                         # --- fold 邨先棡繧・txt 縺ｫ霑ｽ險・---
                         f.write(f"Recorded at: {datetime.now():%Y-%m-%d %H:%M:%S}\n")
-                        f.write(f"Fold {fold} Results | weights={ {k: round(v,3) for k,v in weights.items()} }\n")
+                        f.write(f"Fold {fold} Results\n")
+                        for result_key, output in ensemble_outputs.items():
+                            f.write(
+                                f"  weights[{output['strategy']['name']}]="
+                                f"{ {k: round(v, 4) for k, v in output['weights'].items()} }\n"
+                            )
                         for key in all_keys:
                             m = {mk: store[key][mk][-1] for mk in store[key]}
                             f.write(
@@ -973,10 +1218,11 @@ def main():
 
                         fold += 1
                         del x_train, x_val, y_train, y_val
-                        del x_fit, y_fit, x_inner, y_inner, y_fit_scaled
+                        del x_inner_fit, x_inner, y_inner_fit, y_inner
                         del pca_model
-                        del x_fit_pca, x_val_pca, x_inner_pca
-                        del val_preds, preds_all, ensemble_pred
+                        del x_inner_fit_pca, x_inner_pca
+                        del x_train_pca, x_val_pca, y_train_scaled
+                        del val_preds, preds_all, ensemble_outputs
                         K.clear_session()
                         gc.collect()
 
@@ -996,22 +1242,40 @@ def main():
                             f.write(f"    {mk:14s}: {mean:.4f} ﾂｱ {se:.4f}\n")
                     f.write("=" * 30 + "\n\n")
 
+                if xai_for_job:
+                    aggregated_xai = aggregate_group_mask_comparison(
+                        SAVE_PATH,
+                        EXPLAINABILITY_CONFIG,
+                        model_keys,
+                        DIVISIONS,
+                    )
+                    print(
+                        "XAI model comparison: "
+                        f"{'saved' if aggregated_xai else 'no group-mask rows found'}"
+                    )
+
                 if include_ensemble:
                     weights_csv = os.path.join(SAVE_PATH, f"ensemble_weights_{snr_value}.csv")
                     with _open_text(weights_csv, "w", newline="", encoding="utf-8") as wf:
                         writer = csv.writer(wf)
-                        writer.writerow(["fold"] + model_keys)
-                        for fold_num, weights in weight_log:
-                            writer.writerow(
-                                [fold_num] + [f"{float(weights.get(key, 0.0)):.10g}" for key in model_keys]
-                            )
+                        writer.writerow([
+                            "fold", "strategy_name", "strategy_type", "claim_safe",
+                            *model_keys,
+                        ])
+                        writer.writerows(weight_log)
 
                 # --- 譽偵げ繝ｩ繝・(繝｢繝・Ν蛻･: R2 縺ｨ譌ｧ繧ｳ繝ｼ繝我ｺ呈鋤縺ｮ莠悟､蛹門ｾ・AUC) ---
-                labels = [label_of[k] for k in all_keys]
-                r2_means = [metrics.mean_se(store[k]["r2"])[0] for k in all_keys]
-                r2_ses = [metrics.mean_se(store[k]["r2"])[1] for k in all_keys]
-                auc_bin_means = [metrics.mean_se(store[k]["auc_binary"])[0] for k in all_keys]
-                auc_bin_ses = [metrics.mean_se(store[k]["auc_binary"])[1] for k in all_keys]
+                # Keep the conventional bar plot readable: individual models
+                # plus the predeclared primary ensemble only. All strategies
+                # are shown in the signed-delta comparison below.
+                plot_keys = list(model_keys)
+                if include_ensemble:
+                    plot_keys.append(PRIMARY_ENSEMBLE_KEY)
+                labels = [label_of[k] for k in plot_keys]
+                r2_means = [metrics.mean_se(store[k]["r2"])[0] for k in plot_keys]
+                r2_ses = [metrics.mean_se(store[k]["r2"])[1] for k in plot_keys]
+                auc_bin_means = [metrics.mean_se(store[k]["auc_binary"])[0] for k in plot_keys]
+                auc_bin_ses = [metrics.mean_se(store[k]["auc_binary"])[1] for k in plot_keys]
                 plotter.plot_bar("R2 Score", labels, r2_means, r2_ses, EPOCH_NUM, SAVE_PATH, snr_value)
                 if has_threshold(threshold):
                     plotter.plot_bar("AUC (binary legacy)", labels, auc_bin_means, auc_bin_ses,
@@ -1028,6 +1292,117 @@ def main():
                         ses = [f"{metrics.mean_se(store[key][mk])[1]:.6f}" for mk in summary_metrics]
                         cf.write(",".join([label_of[key]] + means + ses) + "\n")
                 print(f"謖・ｨ・CSV 繧剃ｿ晏ｭ・ {csv_path}")
+
+                if include_ensemble:
+                    comparison_header = [
+                        "strategy_name", "strategy_type", "claim_safe",
+                        "metric", "better_direction", "ensemble_mean",
+                        "ensemble_se", "best_single_model", "best_single_mean",
+                        "best_single_se", "improvement_vs_best_single",
+                        "ensemble_better_than_best_single",
+                        "paired_improvement_se", "folds_improved",
+                        "folds_total",
+                    ]
+                    comparison_rows = metric_comparison_rows(
+                        store,
+                        model_keys,
+                        ENSEMBLE_STRATEGY_PLAN,
+                        metrics.mean_se,
+                        summary_metrics,
+                    )
+                    comparison_path = os.path.join(
+                        SAVE_PATH, f"ensemble_strategy_comparison_{snr_value}.csv"
+                    )
+                    with _open_text(
+                            comparison_path, "w", newline="", encoding="utf-8") as cf:
+                        writer = csv.writer(cf)
+                        writer.writerow(comparison_header)
+                        writer.writerows(comparison_rows)
+                    plotter.plot_ensemble_strategy_improvements(
+                        comparison_rows, SAVE_PATH, snr_value
+                    )
+
+                    correction_path = os.path.join(
+                        SAVE_PATH, f"ensemble_correction_diagnostics_{snr_value}.csv"
+                    )
+                    with _open_text(
+                            correction_path, "w", newline="", encoding="utf-8") as cf:
+                        writer = csv.writer(cf)
+                        writer.writerow([
+                            "fold", "strategy_name", "strategy_type", "claim_safe",
+                            "reference_model", "n_samples", "n_better", "n_worse",
+                            "n_tied", "mean_abs_error_delta", "n_onb",
+                            "mean_onb_abs_error_delta", "reference_false_negatives",
+                            "ensemble_false_negatives", "false_negative_delta",
+                            "recovered_false_negatives", "new_false_negatives",
+                        ])
+                        writer.writerows(correction_log)
+
+                    correction_summary_rows = aggregate_correction_rows(
+                        correction_log
+                    )
+                    correction_summary_path = os.path.join(
+                        SAVE_PATH,
+                        f"ensemble_correction_summary_{snr_value}.csv",
+                    )
+                    with _open_text(
+                            correction_summary_path, "w", newline="",
+                            encoding="utf-8") as cf:
+                        writer = csv.writer(cf)
+                        writer.writerow([
+                            "strategy_name", "strategy_type", "claim_safe",
+                            "reference_model", "folds", "n_samples",
+                            "n_better", "n_worse", "n_tied",
+                            "fraction_better", "fraction_worse",
+                            "mean_abs_error_delta", "n_onb",
+                            "mean_onb_abs_error_delta",
+                            "reference_false_negatives",
+                            "ensemble_false_negatives", "false_negative_delta",
+                            "recovered_false_negatives", "new_false_negatives",
+                        ])
+                        writer.writerows(correction_summary_rows)
+
+                    diversity_path = os.path.join(
+                        SAVE_PATH, f"model_diversity_{snr_value}.csv"
+                    )
+                    with _open_text(
+                            diversity_path, "w", newline="", encoding="utf-8") as df:
+                        writer = csv.writer(df)
+                        writer.writerow([
+                            "fold", "model_left", "model_right", "n_samples",
+                            "prediction_pearson", "residual_pearson",
+                            "left_lower_abs_error", "right_lower_abs_error", "ties",
+                            "n_onb", "onb_residual_pearson",
+                        ])
+                        writer.writerows(diversity_log)
+
+                    presentation_summary_path = os.path.join(
+                        base_save_path, "ensemble_presentation_summary.csv"
+                    )
+                    presentation_exists = _path_exists(
+                        presentation_summary_path
+                    )
+                    with _open_text(
+                            presentation_summary_path, "a", newline="",
+                            encoding="utf-8") as pf:
+                        writer = csv.writer(pf)
+                        if not presentation_exists:
+                            writer.writerow([
+                                "run_instance_id", "run_hash", "run_dir",
+                                "experiment_name", "max_freq_hz", "noise_dir_name",
+                                *comparison_header,
+                            ])
+                        for row in comparison_rows:
+                            writer.writerow([
+                                RUN_INSTANCE_ID,
+                                run_hash,
+                                run_dir,
+                                job["experiment_name"],
+                                job["max_freq_hz"],
+                                job["noise_dir_name"],
+                                *row,
+                            ])
+                    print(f"ensemble comparison saved: {comparison_path}")
 
                 append_tuning_summary(
                     tuning_summary_path, job, parameter_set, run_specs,

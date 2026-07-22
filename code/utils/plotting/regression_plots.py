@@ -108,6 +108,92 @@ class RegressionPlotter:
         _save_current_figure(os.path.join(out_dir, f'{safe}_ep{epochs}_{snr_stem}.png'))
         plt.close()
 
+    def plot_ensemble_strategy_improvements(self, comparison_rows, save_path,
+                                            snr_value):
+        """Plot signed deltas against the best individual model.
+
+        Positive values always mean that the ensemble is better, including for
+        error metrics where a smaller raw value is preferable.
+        """
+        metrics = [
+            ("r2", "R²", "Δ R²"),
+            ("rmse_onb", "ONB RMSE", "Improvement in RMSE"),
+            ("recall", "Recall", "Δ Recall"),
+            ("f1", "F1", "Δ F1"),
+        ]
+        strategy_aliases = {
+            "simple_equal": "Equal",
+            "fixed_rf90_even": "RF90 / 5 / 5",
+            "fixed_rf95_even": "RF95 / 2.5 / 2.5",
+            "fixed_rf98_even": "RF98 / 1 / 1",
+            "fixed_rf95_cnntf": "RF95 / CNN-Tf5",
+            "fixed_rf95_alex": "RF95 / Alex5",
+            "prediction_max": "Prediction max",
+            "inner_holdout": "Inner holdout",
+        }
+        by_metric = {}
+        strategy_order = []
+        for row in comparison_rows:
+            strategy_name = str(row[0])
+            metric_name = str(row[3])
+            if strategy_name not in strategy_order:
+                strategy_order.append(strategy_name)
+            by_metric.setdefault(metric_name, {})[strategy_name] = float(row[10])
+
+        if not comparison_rows:
+            return
+        labels = [strategy_aliases.get(name, name) for name in strategy_order]
+        y_pos = np.arange(len(strategy_order))
+        fig, axes = plt.subplots(2, 2, figsize=(17, 13))
+        for ax, (metric_key, title, xlabel) in zip(axes.flat, metrics):
+            values = np.asarray([
+                by_metric.get(metric_key, {}).get(name, np.nan)
+                for name in strategy_order
+            ], dtype=float)
+            colors = [
+                "#2b6cb0" if np.isfinite(value) and value > 0 else "#c05640"
+                for value in values
+            ]
+            ax.barh(y_pos, np.nan_to_num(values, nan=0.0), color=colors, alpha=0.9)
+            ax.axvline(0.0, color="black", linewidth=1.2)
+            ax.set_yticks(y_pos, labels=labels, fontsize=15)
+            ax.invert_yaxis()
+            ax.set_title(title, fontsize=22, pad=10)
+            ax.set_xlabel(xlabel + " vs best single model", fontsize=17)
+            ax.tick_params(axis="x", labelsize=14)
+            ax.grid(axis="x", alpha=0.25)
+            finite = np.abs(values[np.isfinite(values)])
+            axis_scale = float(np.max(finite)) if finite.size else 0.0
+            text_offset = max(axis_scale * 0.025, 1e-6)
+            for index, value in enumerate(values):
+                if not np.isfinite(value):
+                    continue
+                fits_inside = abs(value) >= axis_scale * 0.15
+                if fits_inside:
+                    ha = "right" if value >= 0 else "left"
+                    x = value - text_offset if value >= 0 else value + text_offset
+                    text_color = "white"
+                else:
+                    ha = "left" if value >= 0 else "right"
+                    x = value + text_offset if value >= 0 else value - text_offset
+                    text_color = "black"
+                ax.text(x, index, f"{value:+.4g}", va="center", ha=ha,
+                        fontsize=13, color=text_color)
+
+        fig.suptitle(
+            "Ensemble improvement over the best individual model\n"
+            "Positive values indicate improvement",
+            fontsize=24,
+            y=0.99,
+        )
+        fig.tight_layout(rect=[0.0, 0.0, 1.0, 0.92])
+        out_dir = os.path.join(save_path, "bar")
+        snr_stem = _safe_stem(snr_value, max_len=16)
+        _save_current_figure(
+            os.path.join(out_dir, f"ensemble_improvement_{snr_stem}.png")
+        )
+        plt.close(fig)
+
     def plot_regression_scatter(self, y_val, ensemble_pred, y_all, metrics_ens,
                                 threshold, save_path, snr_value, fold):
         """アンサンブル予測の回帰散布図 + 閾値 + 100% 分類閾値線。"""

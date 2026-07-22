@@ -34,8 +34,12 @@ class EnsembleWeighting:
         weights = []
         for k in keys:
             err = errors_for_weight.get(k, np.nan)
-            if err is None or np.isinf(err) or np.isnan(err) or err <= 0:
+            if err is None or np.isinf(err) or np.isnan(err):
                 weights.append(1e-6)
+            elif err <= 0:
+                # A perfect or numerically-above-one R2 should receive the
+                # largest weight, not the smallest one.
+                weights.append(1.0 / 1e-6)
             else:
                 weights.append(1.0 / err)
         weights = np.array(weights, dtype=float)
@@ -51,5 +55,7 @@ class EnsembleWeighting:
         stacked = np.stack([preds_by_key[k] for k in keys], axis=0)  # (n_models, n_samples)
         if combine == "min":
             return np.min(stacked, axis=0)
+        if combine == "max":
+            return np.max(stacked, axis=0)
         w = np.array([weights[k] for k in keys], dtype=float).reshape(-1, 1)
         return np.sum(stacked * w, axis=0)

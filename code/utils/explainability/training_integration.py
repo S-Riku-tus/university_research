@@ -1,5 +1,7 @@
+import csv
 import os
 
+import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.metrics import f1_score, r2_score, recall_score
 
@@ -1006,6 +1008,242 @@ def explainability_condition_selected(config, experiment_name, max_freq_name,
         if allowed and actual not in set(allowed):
             return False
     return True
+
+
+def aggregate_group_mask_comparison(save_path, config, model_keys, fold_count):
+    """Collect model-wise physical mask effects into presentation-ready CSVs."""
+    if not config.get("enabled", False):
+        return False
+    target_folds = config.get("target_folds")
+    folds = (
+        [int(value) for value in target_folds]
+        if target_folds else list(range(1, int(fold_count) + 1))
+    )
+    collected = []
+    for fold in folds:
+        for model_key in model_keys:
+            path = os.path.join(
+                save_path,
+                "explainability",
+                f"fold{fold}",
+                model_key,
+                "group_mask_performance.csv",
+            )
+            if not _path_exists(path):
+                continue
+            with open(windows_long_path(path), "r", newline="", encoding="utf-8") as f:
+                rows = list(csv.DictReader(f))
+            for row in rows:
+                row["fold"] = fold
+                row["model_key"] = model_key
+                collected.append(row)
+
+    if not collected:
+        return False
+
+    rank_metrics = ["r2_drop", "rmse_onb_increase", "recall_drop"]
+    for fold in folds:
+        for model_key in model_keys:
+            for axis in ("frequency", "time"):
+                subset = [
+                    row for row in collected
+                    if int(row["fold"]) == fold
+                    and row["model_key"] == model_key
+                    and row["axis"] == axis
+                ]
+                for metric_name in rank_metrics:
+                    def score(row):
+                        try:
+                            value = float(row[metric_name])
+                        except (TypeError, ValueError):
+                            return float("-inf")
+                        return value if np.isfinite(value) else float("-inf")
+
+                    ordered = sorted(
+                        [row for row in subset if score(row) > float("-inf")],
+                        key=score,
+                        reverse=True,
+                    )
+                    for rank, row in enumerate(ordered, start=1):
+                        row[f"{metric_name}_rank"] = rank
+
+    original_header = list(collected[0].keys())
+    prefix = ["fold", "model_key"]
+    rank_headers = [f"{name}_rank" for name in rank_metrics]
+    value_headers = [
+        name for name in original_header
+        if name not in set(prefix + rank_headers)
+    ]
+    comparison_header = prefix + value_headers + rank_headers
+    comparison_rows = [
+        [row.get(name, "") for name in comparison_header]
+        for row in collected
+    ]
+    root = os.path.join(save_path, "explainability")
+    write_csv(
+        os.path.join(root, "model_group_mask_comparison.csv"),
+        comparison_header,
+        comparison_rows,
+    )
+
+    top_rows = []
+    for fold in folds:
+        for model_key in model_keys:
+            for axis in ("frequency", "time"):
+                subset = [
+                    row for row in collected
+                    if int(row["fold"]) == fold
+                    and row["model_key"] == model_key
+                    and row["axis"] == axis
+                ]
+                for metric_name in rank_metrics:
+                    ranked = [
+                        row for row in subset
+                        if row.get(f"{metric_name}_rank") == 1
+                    ]
+                    if not ranked:
+                        continue
+                    row = ranked[0]
+                    top_rows.append([
+                        fold,
+                        model_key,
+                        axis,
+                        metric_name,
+                        row.get("group", ""),
+                        row.get("low", ""),
+                        row.get("high", ""),
+                        row.get("unit", ""),
+                        row.get(metric_name, ""),
+                    ])
+    write_csv(
+        os.path.join(root, "top_groups_by_model.csv"),
+        [
+            "fold", "model_key", "axis", "ranking_metric", "group",
+            "low", "high", "unit", "metric_value",
+        ],
+        top_rows,
+    )
+    _plot_group_mask_comparisons(root, collected, model_keys, rank_metrics)
+    return True
+
+
+def _plot_group_mask_comparisons(root, rows, model_keys, metric_names):
+    """Save large-font cross-model masking figures for presentation use."""
+    model_aliases = {
+        "rf": "RF",
+        "cnntf_v2_gap": "CNN+Tf v2 GAP",
+        "alexnet": "AlexNet",
+    }
+    metric_labels = {
+        "r2_drop": "Decrease in R² after masking",
+        "rmse_onb_increase": "Increase in ONB RMSE after masking",
+        "recall_drop": "Decrease in Recall after masking",
+    }
+
+    for axis in ("frequency", "time"):
+        axis_rows = [row for row in rows if row.get("axis") == axis]
+        group_meta = {}
+        for row in axis_rows:
+            group_meta[row["group"]] = (
+                float(row["low"]),
+                float(row["high"]),
+                row.get("unit", ""),
+            )
+        groups = sorted(group_meta, key=lambda name: group_meta[name][0])
+        if not groups:
+            continue
+
+        group_labels = []
+        for group in groups:
+            low, high, unit = group_meta[group]
+            if axis == "frequency":
+                group_labels.append(f"{low:g}–{high:g}\n{unit}")
+            else:
+                group_labels.append(f"{low:g}–{high:g} {unit}")
+
+        for metric_name in metric_names:
+            matrix = np.full((len(model_keys), len(groups)), np.nan, dtype=float)
+            for model_index, model_key in enumerate(model_keys):
+                for group_index, group in enumerate(groups):
+                    values = []
+                    for row in axis_rows:
+                        if row.get("model_key") != model_key or row.get("group") != group:
+                            continue
+                        try:
+                            value = float(row[metric_name])
+                        except (KeyError, TypeError, ValueError):
+                            continue
+                        if np.isfinite(value):
+                            values.append(value)
+                    if values:
+                        matrix[model_index, group_index] = float(np.mean(values))
+
+            finite = np.abs(matrix[np.isfinite(matrix)])
+            if not finite.size:
+                continue
+            limit = max(float(np.max(finite)), 1e-12)
+            cmap = plt.get_cmap("coolwarm").copy()
+            cmap.set_bad("#e8e8e8")
+            figure_width = max(11.0, 1.35 * len(groups) + 4.0)
+            figure_height = max(5.5, 1.15 * len(model_keys) + 2.5)
+            with plt.rc_context({"font.family": "Times New Roman"}):
+                fig, ax = plt.subplots(figsize=(figure_width, figure_height))
+                image = ax.imshow(
+                    np.ma.masked_invalid(matrix),
+                    aspect="auto",
+                    cmap=cmap,
+                    vmin=-limit,
+                    vmax=limit,
+                )
+                ax.set_xticks(
+                    np.arange(len(groups)), labels=group_labels,
+                    fontsize=15, rotation=35, ha="right",
+                )
+                ax.set_yticks(
+                    np.arange(len(model_keys)),
+                    labels=[model_aliases.get(key, key) for key in model_keys],
+                    fontsize=17,
+                )
+                ax.set_xlabel(
+                    "Frequency band" if axis == "frequency" else "Time interval",
+                    fontsize=20,
+                )
+                ax.set_ylabel("Model", fontsize=20)
+                ax.set_title(
+                    f"{axis.capitalize()}-group masking: "
+                    f"{metric_labels[metric_name]}",
+                    fontsize=21,
+                    pad=12,
+                )
+                for row_index in range(matrix.shape[0]):
+                    for column_index in range(matrix.shape[1]):
+                        value = matrix[row_index, column_index]
+                        if not np.isfinite(value):
+                            continue
+                        color = "white" if abs(value) >= limit * 0.55 else "black"
+                        ax.text(
+                            column_index,
+                            row_index,
+                            f"{value:.3g}",
+                            ha="center",
+                            va="center",
+                            fontsize=13,
+                            color=color,
+                        )
+                colorbar = fig.colorbar(image, ax=ax, pad=0.025)
+                colorbar.set_label(metric_labels[metric_name], fontsize=17)
+                colorbar.ax.tick_params(labelsize=14, direction="in")
+                fig.tight_layout()
+                fig.savefig(
+                    windows_long_path(os.path.join(
+                        root,
+                        f"group_mask_comparison_{axis}_{metric_name}.png",
+                    )),
+                    dpi=200,
+                    bbox_inches="tight",
+                    pad_inches=0.05,
+                )
+                plt.close(fig)
 
 
 def explainability_outputs_complete(save_path, config, model_keys, fold_count,
