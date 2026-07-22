@@ -108,6 +108,7 @@ class RegressionPlotter:
         _save_current_figure(os.path.join(out_dir, f'{safe}_ep{epochs}_{snr_stem}.png'))
         plt.close()
 
+<<<<<<< HEAD
     def plot_ensemble_strategy_improvements(self, comparison_rows, save_path,
                                             snr_value):
         """Plot signed deltas against the best individual model.
@@ -194,6 +195,8 @@ class RegressionPlotter:
         )
         plt.close(fig)
 
+=======
+>>>>>>> 51979ea46b47fa367df94150a3b3739b1f36b65e
     def plot_regression_scatter(self, y_val, ensemble_pred, y_all, metrics_ens,
                                 threshold, save_path, snr_value, fold):
         """アンサンブル予測の回帰散布図 + 閾値 + 100% 分類閾値線。"""
