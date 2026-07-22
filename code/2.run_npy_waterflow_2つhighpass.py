@@ -34,8 +34,8 @@ gstop = 0.0001
 sample_number = 672
 MAX_FREQ_HZ = [2000, 3000, 5000, 10000, 15000, 22050]
 
-SAVE_DATE = 20260629
-DATASET_VERSION = "exactq"
+SAVE_DATE = 20260722
+DATASET_VERSION = "y_power"
 CHUNK = 1
 
 AUDIO_SAMPLES_USED = 2646000
@@ -50,7 +50,7 @@ EXPERIMENT_NAMES = [
     "2025.06.11_0.3_2",
 ]
 RECORDING_DIR_NAME = "録音データ_熱流束"
-waterflow_path = r"C:\Users\Casper4\Python\ueki\shibasaki\研究\water_flow\water_flow_125.wav"
+WATERFLOW_PATH = r"C:\Users\Casper4\Python\ueki\shibasaki\研究\water_flow\water_flow_125.wav"
 
 SNR_list = [None, 0, -4, -8, -12, -16, -20]
 
@@ -106,7 +106,7 @@ def build_experiment_context(experiment_name):
         "experiment_name": experiment_name,
         "experiment_root": experiment_root,
         "folder_path": recording_folder_path,
-        "waterflow_path": waterflow_path,
+        "waterflow_path": WATERFLOW_PATH,
         "heat_flux_csv_path": heat_flux_csv_path,
         "heat_flux_label_by_index": load_heat_flux_labels(heat_flux_csv_path),
         "base_npy_save_folder_path": base_npy_save_folder_path,
