@@ -133,8 +133,8 @@ from utils.experiment.run_helpers import (
 VALIDATION_CONFIG = {
     "run": {
         "smoke_test": False,
-        "epochs": 500,
-        "folds": 5,
+        "epochs": 300,
+        "folds": 3,
         "smoke_epochs": 2,
         "smoke_folds": 2,
         "color_channel": 1,
@@ -168,9 +168,9 @@ VALIDATION_CONFIG = {
             "heatflux_SNR=-20",
         ],
         "data_source_dir_by_experiment": {
-            "2025.06.11_0.3_2": "waterflow_20260629_1s",
-            "2025.06.18_0.3_3": "waterflow_20260622_1s",
-            "2025.07.09_0.3_1": "waterflow_20251219_1s",
+            "2025.06.11_0.3_2": "waterflow_20260722_1s_y_power",
+            "2025.06.18_0.3_3": "waterflow_20260722_1s_y_power",
+            "2025.07.09_0.3_1": "waterflow_20260722_1s_y_power",
         },
         "skip_missing_datasets": False,
     },
@@ -215,32 +215,12 @@ VALIDATION_CONFIG = {
         "enabled": True,
         "primary_strategy": "fixed_rf98_even",
         "reference_model": "rf",
-        "allow_leaky_strategies": False,
+        "allow_leaky_strategies": True,
         "strategies": [
             {
                 "name": "simple_equal",
                 "label": "Ensemble simple equal",
                 "strategy": "simple",
-            },
-            {
-                "name": "fixed_rf90_even",
-                "label": "Ensemble RF90 + 5 + 5",
-                "strategy": "fixed",
-                "fixed_weights": {
-                    "rf": 0.90,
-                    "cnntf_v2_gap": 0.05,
-                    "alexnet": 0.05,
-                },
-            },
-            {
-                "name": "fixed_rf95_even",
-                "label": "Ensemble RF95 + 2.5 + 2.5",
-                "strategy": "fixed",
-                "fixed_weights": {
-                    "rf": 0.95,
-                    "cnntf_v2_gap": 0.025,
-                    "alexnet": 0.025,
-                },
             },
             {
                 # This candidate was declared from the previous 7/13
@@ -252,26 +232,6 @@ VALIDATION_CONFIG = {
                     "rf": 0.98,
                     "cnntf_v2_gap": 0.01,
                     "alexnet": 0.01,
-                },
-            },
-            {
-                "name": "fixed_rf95_cnntf",
-                "label": "Ensemble RF95 + CNN-Tf5",
-                "strategy": "fixed",
-                "fixed_weights": {
-                    "rf": 0.95,
-                    "cnntf_v2_gap": 0.05,
-                    "alexnet": 0.00,
-                },
-            },
-            {
-                "name": "fixed_rf95_alex",
-                "label": "Ensemble RF95 + Alex5",
-                "strategy": "fixed",
-                "fixed_weights": {
-                    "rf": 0.95,
-                    "cnntf_v2_gap": 0.00,
-                    "alexnet": 0.05,
                 },
             },
             {
@@ -288,7 +248,13 @@ VALIDATION_CONFIG = {
                 "name": "inner_holdout",
                 "label": "Ensemble inner holdout",
                 "strategy": "inner_holdout",
-                "enabled": False,
+            },
+            {
+                # Reproduction-only diagnostic: this uses outer validation
+                # labels for weighting and is not claim-safe.
+                "name": "val_fold_legacy",
+                "label": "Ensemble validation-fold legacy",
+                "strategy": "val_fold_legacy",
             },
         ],
         # Backward-compatible single-strategy defaults.

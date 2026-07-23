@@ -1,12 +1,7 @@
-<<<<<<< HEAD
 import csv
 import os
 
 import matplotlib.pyplot as plt
-=======
-import os
-
->>>>>>> 51979ea46b47fa367df94150a3b3739b1f36b65e
 import numpy as np
 from sklearn.metrics import f1_score, r2_score, recall_score
 
@@ -1015,7 +1010,6 @@ def explainability_condition_selected(config, experiment_name, max_freq_name,
     return True
 
 
-<<<<<<< HEAD
 def aggregate_group_mask_comparison(save_path, config, model_keys, fold_count):
     """Collect model-wise physical mask effects into presentation-ready CSVs."""
     if not config.get("enabled", False):
@@ -1252,8 +1246,6 @@ def _plot_group_mask_comparisons(root, rows, model_keys, metric_names):
                 plt.close(fig)
 
 
-=======
->>>>>>> 51979ea46b47fa367df94150a3b3739b1f36b65e
 def explainability_outputs_complete(save_path, config, model_keys, fold_count,
                                     experiment_name=None, max_freq_name=None,
                                     noise_dir_name=None):
