@@ -1,5 +1,13 @@
 # 研究進捗索引
 
+## 2026-07-24 中間発表後の進捗監査・説明性出力・ノイズ逆転調査
+
+- 参照: [research_plan/2026-07-24_current_progress_and_priorities.md](research_plan/2026-07-24_current_progress_and_priorities.md), [research_plan/2026-07-24_explainability_output_guide.md](research_plan/2026-07-24_explainability_output_guide.md), [research_plan/2026-07-24_noise_accuracy_paradox_investigation.md](research_plan/2026-07-24_noise_accuracy_paradox_investigation.md), [../研究進捗報告/2026/724（中間発表）/スライド内容案_0724.md](../研究進捗報告/2026/724（中間発表）/スライド内容案_0724.md)
+- 今回の主題: 中間発表の年間計画、現行コード、7/23保存結果、説明性出力、`archive/`の旧前処理を突き合わせ、「実装完了」と「研究上の検証完了」を分けて現在地を再評価した。
+- 得られた結果: RF・3モデル統合・モデル別XAIの実行基盤は前倒しで整ったが、アンサンブルはRF単体を総合的に上回っていない。IGは局所安定性が高い一方、no noiseのCNN+Transformerでcompleteness不良があり、最終層ランダム化後もマップ形状相関が高く、物理解釈は未完了。
+- ノイズ調査: 現行処理では各元WAVのパワーに比例して水流音振幅を決め、正規化なしの線形powerを入力する。SNR -20では全モデルの最大影響帯が水流音主帯域の10–15 kHzへ移った。archive旧正常系には標本別0–1正規化があり、過去と現在の精度傾向が逆転した有力な差と考えられる。archiveの別世代コードには `y_power + scaled_noise` の不具合も確認した。
+- 次にやること: 大規模再学習より先に、総パワーのみ、スケーリング済み水流音のみ、固定絶対振幅ノイズ、log-power、元WAV group分割、chunk実現SNRをRFで診断する。その後、説明性sanity、ONB早期検知定義、3モデル・アンサンブルの再検証へ進む。
+
 ## 2026-06-26 各モデルの説明性手法の当たりづけ
 
 - 参照: [research_plan/2026-06-26_xai_method_selection.md](research_plan/2026-06-26_xai_method_selection.md), [../研究進捗報告/2026/626/研究進捗報告_2026-06-26.md](../研究進捗報告/2026/626/研究進捗報告_2026-06-26.md)

@@ -12,6 +12,9 @@ __pycache__/
 # Jupyter
 .ipynb_checkpoints/
 
+# Oversized legacy notebook (keep locally; GitHub blocks files over 100 MB)
+/archive/code/make_GIFimage.ipynb
+
 # Large generated data and model artifacts
 *.npy
 *.npz
