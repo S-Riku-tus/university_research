@@ -26,13 +26,13 @@ from utils.dataloading.waterflow_preprocessing import (
 SAVE_DATE = 20260817
 RANDOM_SEED = 42
 
-MAX_FREQ_HZ = [3000, 22050]
-CHUNK_SECONDS_LIST = [1]
+MAX_FREQ_HZ = [3000, 5000, 10000, 15000, 22050]
+CHUNK_SECONDS_LIST = [1, 0.5]
 REFERENCE_SNR_DB = [None, 0, -4, -8, -12, -16, -20]
 
 AUDIO_SAMPLES_USED = 2646000
 SAVE_NPY = True
-SAVE_SPECTROGRAM_PNG = False
+SAVE_SPECTROGRAM_PNG = True
 PNG_WITH_AXES = False
 
 # A real 500 Hz high-pass specification.  The previous 1e-5/1e-4 dB values
