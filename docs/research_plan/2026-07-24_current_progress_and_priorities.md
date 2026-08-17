@@ -141,6 +141,8 @@ ONB近傍・早期検知の正式定義
 | P0-5 | `source_wav_id` と `chunk_start` を保持し、group分割を設計 | 同一元WAVのchunkが学習・検証へ跨る問題を除く | GroupKFoldまたはleave-one-experiment-outの結果を通常KFoldと並べる |
 | P0-6 | 実現SNRをchunkごとに計測 | 60秒全体で指定したSNRと1秒chunkの実SNR差を把握 | requested/realized SNRの分布を保存する |
 
+2026-07-24追記: P0-1～P0-6を実行するコードと保存形式を実装した。実行条件と判定順は [P0ノイズ診断コードの実行手順](2026-07-24_p0_noise_diagnostic_runbook.md) にまとめた。現時点ではsynthetic testまでであり、実データによる完了条件は未達である。
+
 P0-2～P0-4の結果が出るまで、大規模な5-fold/500 epoch全条件実行は保留する。短いRF診断で原因を切り分けた方が、誤ったデータに計算時間を使う危険が小さい。
 
 ### P1: 評価設計と説明性を研究として成立させるタスク

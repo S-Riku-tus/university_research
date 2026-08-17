@@ -1,4 +1,6 @@
+import csv
 import os
+
 import numpy as np
 from tensorflow.keras.preprocessing.image import load_img, img_to_array
 
@@ -6,16 +8,36 @@ class DataLoadingConversion:
     def __init__(self):
         pass
 
-    def load_npy_data(self, folder_path):
-        x, y = [], []
+    def load_npy_data(
+        self,
+        folder_path,
+        return_metadata=False,
+    ):
+        x, y, metadata = [], [], []
         print("読み込みスタート")
-        for filename in os.listdir(folder_path):
+        manifest_by_filename = {}
+        manifest_path = os.path.join(folder_path, "chunk_manifest.csv")
+        if os.path.exists(manifest_path):
+            with open(manifest_path, newline="", encoding="utf-8-sig") as f:
+                manifest_by_filename = {
+                    row["sample_filename"]: row
+                    for row in csv.DictReader(f)
+                    if row.get("sample_filename")
+                }
+
+        for filename in sorted(os.listdir(folder_path)):
             if filename.endswith(".npy"):
                 # ファイル名から熱流束の値を取得する
                 heat_flux = float(filename.split('_')[0])
                 data = np.load(os.path.join(folder_path, filename))
                 x.append(data)
                 y.append(heat_flux)
+                metadata.append(
+                    {
+                        "sample_filename": filename,
+                        **manifest_by_filename.get(filename, {}),
+                    }
+                )
 
         x = np.array(x)
         y = np.array(y)
@@ -27,6 +49,8 @@ class DataLoadingConversion:
         if x.ndim == 3:
             x = x[..., None]
 
+        if return_metadata:
+            return x, y, metadata
         return x, y
     
     # def inverse_scale_y(y_scaled):

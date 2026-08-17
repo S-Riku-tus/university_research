@@ -1,0 +1,48 @@
+{
+  "purpose": "label-independent controlled noise curve",
+  "experiments": [
+    "2025.06.18_0.3_3",
+    "2025.07.09_0.3_1",
+    "2025.06.11_0.3_2"
+  ],
+  "source_wav_count": 49,
+  "global_reference_rms": 0.0004917367643650671,
+  "global_reference_definition": "median RMS of all 49 high-pass-filtered source WAVs",
+  "noise_power_definition": "each selected noise chunk is normalized to global_reference_rms**2 / 10**(reference_snr/10)",
+  "noise_offset_pairing": "the same five water-flow chunks are used for every source WAV, experiment, and SNR; only their prescribed level changes",
+  "snr_levels": [
+    null,
+    0,
+    -4,
+    -8,
+    -12,
+    -16,
+    -20
+  ],
+  "chunks_per_source": 5,
+  "feature_sets": [
+    "total_power_only",
+    "full_spectrogram_pca",
+    "old_style_magnitude_minmax_pca"
+  ],
+  "split_strategies": [
+    "kfold",
+    "group_kfold"
+  ],
+  "filter": {
+    "fp": 500,
+    "fs": 400,
+    "gpass": 1e-05,
+    "gstop": 0.0001,
+    "order": 6,
+    "effective_cutoff_hz": 169.55760900686167
+  },
+  "audio_loading": "scipy.io.wavfile + scipy.signal.resample_poly",
+  "outputs": [
+    "controlled_retrained_fold_metrics.csv",
+    "controlled_retrained_metrics_summary.csv",
+    "controlled_clean_transfer_fold_metrics.csv",
+    "controlled_clean_transfer_summary.csv",
+    "controlled_realized_snr.csv"
+  ]
+}

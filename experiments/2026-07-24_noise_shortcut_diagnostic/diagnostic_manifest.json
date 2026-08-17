@@ -1,0 +1,195 @@
+{
+  "created_at": "2026-08-17T15:59:04",
+  "script": "code\\run_noise_shortcut_diagnostics.py",
+  "status": "diagnostic_not_final_claim",
+  "config": {
+    "purpose": "P0 noise-amplitude shortcut and split-leakage diagnosis",
+    "experiment_root_parts": [
+      "Pool_boiling",
+      "Subcooling_20_degrees",
+      "0.3"
+    ],
+    "experiment_names": [
+      "2025.06.18_0.3_3",
+      "2025.07.09_0.3_1",
+      "2025.06.11_0.3_2"
+    ],
+    "max_freq_dir": "maxfreq=22kHz",
+    "dataset_variants": [
+      {
+        "variant": "relative_mixture",
+        "source_dir": "waterflow_20260724_1s_p0_relative_mixture",
+        "noise_dirs": [
+          "heatflux_no_noise",
+          "heatflux_SNR=-20"
+        ]
+      },
+      {
+        "variant": "relative_noise_only",
+        "source_dir": "waterflow_20260724_1s_p0_relative_noise_only",
+        "noise_dirs": [
+          "heatflux_SNR=-20"
+        ]
+      },
+      {
+        "variant": "fixed_mixture",
+        "source_dir": "waterflow_20260724_1s_p0_fixed_mixture",
+        "noise_dirs": [
+          "heatflux_no_noise",
+          "heatflux_SNR=-20"
+        ]
+      }
+    ],
+    "split_strategies": [
+      "kfold",
+      "group_kfold"
+    ],
+    "feature_sets": [
+      "total_power_only",
+      "full_spectrogram_pca",
+      "old_style_magnitude_minmax_pca"
+    ],
+    "folds": 3,
+    "random_seed": 42,
+    "pca_components": 100,
+    "rf_params": {
+      "n_estimators": 300,
+      "max_depth": 8,
+      "subsample": 0.8,
+      "colsample_bynode": 0.6
+    },
+    "result_dir": [
+      "experiments",
+      "2026-07-24_noise_shortcut_diagnostic"
+    ],
+    "feature_sets_used": [
+      "total_power_only",
+      "full_spectrogram_pca",
+      "old_style_magnitude_minmax_pca"
+    ]
+  },
+  "completed_jobs": [
+    {
+      "experiment_name": "2025.06.18_0.3_3",
+      "variant": "relative_mixture",
+      "noise_dir": "heatflux_no_noise",
+      "data_path": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\data\\npy\\waterflow_20260724_1s_p0_relative_mixture\\maxfreq=22kHz\\heatflux_no_noise",
+      "source_dir": "waterflow_20260724_1s_p0_relative_mixture"
+    },
+    {
+      "experiment_name": "2025.06.18_0.3_3",
+      "variant": "relative_mixture",
+      "noise_dir": "heatflux_SNR=-20",
+      "data_path": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\data\\npy\\waterflow_20260724_1s_p0_relative_mixture\\maxfreq=22kHz\\heatflux_SNR=-20",
+      "source_dir": "waterflow_20260724_1s_p0_relative_mixture"
+    },
+    {
+      "experiment_name": "2025.06.18_0.3_3",
+      "variant": "relative_noise_only",
+      "noise_dir": "heatflux_SNR=-20",
+      "data_path": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\data\\npy\\waterflow_20260724_1s_p0_relative_noise_only\\maxfreq=22kHz\\heatflux_SNR=-20",
+      "source_dir": "waterflow_20260724_1s_p0_relative_noise_only"
+    },
+    {
+      "experiment_name": "2025.06.18_0.3_3",
+      "variant": "fixed_mixture",
+      "noise_dir": "heatflux_no_noise",
+      "data_path": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\data\\npy\\waterflow_20260724_1s_p0_fixed_mixture\\maxfreq=22kHz\\heatflux_no_noise",
+      "source_dir": "waterflow_20260724_1s_p0_fixed_mixture"
+    },
+    {
+      "experiment_name": "2025.06.18_0.3_3",
+      "variant": "fixed_mixture",
+      "noise_dir": "heatflux_SNR=-20",
+      "data_path": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\data\\npy\\waterflow_20260724_1s_p0_fixed_mixture\\maxfreq=22kHz\\heatflux_SNR=-20",
+      "source_dir": "waterflow_20260724_1s_p0_fixed_mixture"
+    },
+    {
+      "experiment_name": "2025.07.09_0.3_1",
+      "variant": "relative_mixture",
+      "noise_dir": "heatflux_no_noise",
+      "data_path": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\data\\npy\\waterflow_20260724_1s_p0_relative_mixture\\maxfreq=22kHz\\heatflux_no_noise",
+      "source_dir": "waterflow_20260724_1s_p0_relative_mixture"
+    },
+    {
+      "experiment_name": "2025.07.09_0.3_1",
+      "variant": "relative_mixture",
+      "noise_dir": "heatflux_SNR=-20",
+      "data_path": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\data\\npy\\waterflow_20260724_1s_p0_relative_mixture\\maxfreq=22kHz\\heatflux_SNR=-20",
+      "source_dir": "waterflow_20260724_1s_p0_relative_mixture"
+    },
+    {
+      "experiment_name": "2025.07.09_0.3_1",
+      "variant": "relative_noise_only",
+      "noise_dir": "heatflux_SNR=-20",
+      "data_path": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\data\\npy\\waterflow_20260724_1s_p0_relative_noise_only\\maxfreq=22kHz\\heatflux_SNR=-20",
+      "source_dir": "waterflow_20260724_1s_p0_relative_noise_only"
+    },
+    {
+      "experiment_name": "2025.07.09_0.3_1",
+      "variant": "fixed_mixture",
+      "noise_dir": "heatflux_no_noise",
+      "data_path": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\data\\npy\\waterflow_20260724_1s_p0_fixed_mixture\\maxfreq=22kHz\\heatflux_no_noise",
+      "source_dir": "waterflow_20260724_1s_p0_fixed_mixture"
+    },
+    {
+      "experiment_name": "2025.07.09_0.3_1",
+      "variant": "fixed_mixture",
+      "noise_dir": "heatflux_SNR=-20",
+      "data_path": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\data\\npy\\waterflow_20260724_1s_p0_fixed_mixture\\maxfreq=22kHz\\heatflux_SNR=-20",
+      "source_dir": "waterflow_20260724_1s_p0_fixed_mixture"
+    },
+    {
+      "experiment_name": "2025.06.11_0.3_2",
+      "variant": "relative_mixture",
+      "noise_dir": "heatflux_no_noise",
+      "data_path": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\data\\npy\\waterflow_20260724_1s_p0_relative_mixture\\maxfreq=22kHz\\heatflux_no_noise",
+      "source_dir": "waterflow_20260724_1s_p0_relative_mixture"
+    },
+    {
+      "experiment_name": "2025.06.11_0.3_2",
+      "variant": "relative_mixture",
+      "noise_dir": "heatflux_SNR=-20",
+      "data_path": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\data\\npy\\waterflow_20260724_1s_p0_relative_mixture\\maxfreq=22kHz\\heatflux_SNR=-20",
+      "source_dir": "waterflow_20260724_1s_p0_relative_mixture"
+    },
+    {
+      "experiment_name": "2025.06.11_0.3_2",
+      "variant": "relative_noise_only",
+      "noise_dir": "heatflux_SNR=-20",
+      "data_path": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\data\\npy\\waterflow_20260724_1s_p0_relative_noise_only\\maxfreq=22kHz\\heatflux_SNR=-20",
+      "source_dir": "waterflow_20260724_1s_p0_relative_noise_only"
+    },
+    {
+      "experiment_name": "2025.06.11_0.3_2",
+      "variant": "fixed_mixture",
+      "noise_dir": "heatflux_no_noise",
+      "data_path": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\data\\npy\\waterflow_20260724_1s_p0_fixed_mixture\\maxfreq=22kHz\\heatflux_no_noise",
+      "source_dir": "waterflow_20260724_1s_p0_fixed_mixture"
+    },
+    {
+      "experiment_name": "2025.06.11_0.3_2",
+      "variant": "fixed_mixture",
+      "noise_dir": "heatflux_SNR=-20",
+      "data_path": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\data\\npy\\waterflow_20260724_1s_p0_fixed_mixture\\maxfreq=22kHz\\heatflux_SNR=-20",
+      "source_dir": "waterflow_20260724_1s_p0_fixed_mixture"
+    }
+  ],
+  "missing_jobs": [],
+  "outputs": [
+    "fold_metrics.csv",
+    "metrics_summary.csv",
+    "fold_predictions.csv",
+    "split_assignments.csv",
+    "input_power_summary.csv",
+    "realized_snr_summary.csv",
+    "leave_one_experiment_out_scalar.csv"
+  ],
+  "interpretation": {
+    "P0-2": "If total_power_only approaches full_spectrogram_pca, absolute input power is a dominant shortcut.",
+    "P0-3": "High performance for relative_noise_only means scaled water-flow amplitude predicts heat flux without boiling sound.",
+    "P0-4": "If the -20 dB gain disappears for fixed_mixture, per-source relative scaling was a primary cause.",
+    "P0-5": "A large KFold-to-GroupKFold drop indicates dependence on chunks from the same source WAV.",
+    "P0-6": "realized_snr_summary.csv reports chunk-level SNR rather than only the requested whole-WAV SNR."
+  }
+}

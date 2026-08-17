@@ -4,7 +4,7 @@
 
 ## トップレベル概要
 
-2026-05-21時点で確認した大まかな規模:
+2026-05-21時点で確認した大まかな規模。2026-08-17に下記の生成済み学習データを削除したため、現在値ではない。
 
 | 場所 | 役割 | ファイル数 | おおよその容量 |
 | --- | --- | ---: | ---: |
@@ -44,11 +44,31 @@
 
 ## 現在の中心候補
 
-### Pool_boiling / Subcooling_20_degrees / 0.3 / 2025.07.09_0.3_1
+### waterflow_20260817_1s_fixed_global_rms_paired（次回生成用）
 
-- 場所: `Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1`
-- 関連コード: `code/2.run_npy_waterflow_2つhighpass.py`, `code/3.run_ensemble_ROC_100%_analysis.py`
-- メモ: 直近の中心スクリプトで参照されている実験データ。`waterflow_20251219_1s` や `maxfreq=22kHz` などの生成条件が使われている。
+- 場所: `Pool_boiling/Subcooling_20_degrees/0.3/<実験>/data/npy/waterflow_20260817_1s_fixed_global_rms_paired`
+- 状態: 生成コード修正済み、データ本体は未生成。
+- 使用実験: `2025.06.18_0.3_3`, `2025.07.09_0.3_1`, `2025.06.11_0.3_2`
+- 前処理: 500 Hz高域通過（pass loss 1 dB、400 Hz stop attenuation 40 dB）、線形パワーSTFT、224×224、float32。
+- chunk: 1秒。
+- maxfreq: 3 kHz、22.05 kHz。
+- noise: `water_flow_125.wav`。全3実験で1つの固定基準RMSを共有し、選択したノイズchunkを目標パワーへ正規化する。
+- reference SNR: 無雑音、0、-4、-8、-12、-16、-20 dB。個々の信号に対する実現SNRではない。
+- paired design: 同一chunkでは信号間・reference SNR間で同じノイズ断片を使用する。
+- provenance: ファイル名と `chunk_manifest.csv` に元WAV ID、ノイズoffset、実現SNR、各パワーを保存する。
+- 生成スクリプト: `code/2.run_npy_waterflow_2つhighpass.py`。
+- 学習スクリプト: `code/run_ensemble_regression_onb.py`。元WAV ID単位のGroupKFoldを使用する。
+- 負対照: `waterflow_20260817_1s_fixed_global_rms_paired_noise_only_control` を各WAV 5 chunk、-20 dBで同時生成する。
+
+## 2026-08-17 旧生成学習データの削除
+
+- `Pool_boiling/**/data/npy`
+- `Pool_boiling/**/data/spectrogram`
+- `Pool_boiling/**/data/spectrogram_png`
+- `Pool_boiling/**/data/spectrum`
+- 対象: 4実験の11ディレクトリ、約2,074,864ファイル、約551.85 GiB。
+- 削除理由: 旧ノイズ生成条件、20250523加算バグ版、元WAV相対RMSによる振幅ショートカットを主結果から完全に除外するため。
+- 復元性: 完全削除。生WAV、実験CSV、解析結果、研究資料は削除していない。
 
 ### water_flow
 

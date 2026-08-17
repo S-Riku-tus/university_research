@@ -1,5 +1,11 @@
 # 研究進捗索引
 
+## 2026-07-24 P0ノイズ診断コード
+
+- 参照: [research_plan/2026-07-24_p0_noise_diagnostic_runbook.md](research_plan/2026-07-24_p0_noise_diagnostic_runbook.md)
+- 実装: 総パワー1変数、水流音のみ、固定振幅、source-WAV GroupKFold、chunk実現SNRを同じ診断経路へ追加した。
+- 現在地: コードとsynthetic testは完了。実データ生成・15条件のRF評価は未実行であり、ノイズ逆転の原因判定はこれから行う。
+
 ## 2026-07-24 中間発表後の進捗監査・説明性出力・ノイズ逆転調査
 
 - 参照: [research_plan/2026-07-24_current_progress_and_priorities.md](research_plan/2026-07-24_current_progress_and_priorities.md), [research_plan/2026-07-24_explainability_output_guide.md](research_plan/2026-07-24_explainability_output_guide.md), [research_plan/2026-07-24_noise_accuracy_paradox_investigation.md](research_plan/2026-07-24_noise_accuracy_paradox_investigation.md), [../研究進捗報告/2026/724（中間発表）/スライド内容案_0724.md](../研究進捗報告/2026/724（中間発表）/スライド内容案_0724.md)

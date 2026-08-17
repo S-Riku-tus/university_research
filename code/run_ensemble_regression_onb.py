@@ -59,7 +59,7 @@ os.environ.setdefault("TF_FORCE_GPU_ALLOW_GROWTH", "true")
 import matplotlib.pyplot as plt
 import numpy as np
 
-from sklearn.model_selection import KFold, train_test_split
+from sklearn.model_selection import GroupKFold, KFold, train_test_split
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import r2_score
 
@@ -160,17 +160,17 @@ VALIDATION_CONFIG = {
         ],
         "noise_dir_names": [
             "heatflux_no_noise",
-            # "heatflux_SNR=0",
-            # "heatflux_SNR=-4",
-            # "heatflux_SNR=-8",
-            # "heatflux_SNR=-12",
-            # "heatflux_SNR=-16",
-            "heatflux_SNR=-20",
+            "heatflux_reference_SNR=0",
+            "heatflux_reference_SNR=-4",
+            "heatflux_reference_SNR=-8",
+            "heatflux_reference_SNR=-12",
+            "heatflux_reference_SNR=-16",
+            "heatflux_reference_SNR=-20",
         ],
         "data_source_dir_by_experiment": {
-            "2025.06.11_0.3_2": "waterflow_20260722_1s_y_power",
-            "2025.06.18_0.3_3": "waterflow_20260722_1s_y_power",
-            "2025.07.09_0.3_1": "waterflow_20260722_1s_y_power",
+            "2025.06.11_0.3_2": "waterflow_20260817_1s_fixed_global_rms_paired",
+            "2025.06.18_0.3_3": "waterflow_20260817_1s_fixed_global_rms_paired",
+            "2025.07.09_0.3_1": "waterflow_20260817_1s_fixed_global_rms_paired",
         },
         "skip_missing_datasets": False,
     },
@@ -297,7 +297,7 @@ VALIDATION_CONFIG = {
             "max_freq_hz_list": ["maxfreq=22kHz"],
             "noise_dir_names": [
                 "heatflux_no_noise",
-                "heatflux_SNR=-20",
+                "heatflux_reference_SNR=-20",
             ],
         },
         "model_keys": ["rf", "cnntf_v2_gap", "alexnet"],
@@ -821,8 +821,26 @@ def main():
 
         start_time = time.time()
         data_loading = DataLoadingConversion()
+        sample_groups = None
         if COLOR_CHANNEL == 1:
-            x, y = data_loading.load_npy_data(data_path)
+            x, y, sample_metadata = data_loading.load_npy_data(
+                data_path, return_metadata=True
+            )
+            sample_groups = np.asarray(
+                [row.get("source_wav_id", "") for row in sample_metadata],
+                dtype=str,
+            )
+            if np.any(sample_groups == ""):
+                raise RuntimeError(
+                    "source_wav_id is missing. The corrected dataset requires "
+                    "chunk_manifest.csv so validation can use GroupKFold."
+                )
+            if len(np.unique(sample_groups)) < DIVISIONS:
+                raise ValueError(
+                    "GroupKFold requires at least "
+                    f"{DIVISIONS} source WAVs, got "
+                    f"{len(np.unique(sample_groups))}."
+                )
         else:
             x, y = data_loading.load_image_data(data_path)
         print(f"x shape: {x.shape} | y shape: {y.shape} | "
@@ -887,7 +905,18 @@ def main():
                     param_tag, model_tag, run_hash, run_dir,
                     RUN_INSTANCE_ID, validation_config_snapshot())
 
-                kf = KFold(n_splits=DIVISIONS, shuffle=True, random_state=RANDOM_SEED)
+                if sample_groups is None:
+                    kf = KFold(
+                        n_splits=DIVISIONS,
+                        shuffle=True,
+                        random_state=RANDOM_SEED,
+                    )
+                    split_indices = kf.split(x)
+                    split_description = "KFold(sample-level fallback)"
+                else:
+                    kf = GroupKFold(n_splits=DIVISIONS)
+                    split_indices = kf.split(x, y, groups=sample_groups)
+                    split_description = "GroupKFold(source_wav_id)"
 
                 # 謖・ｨ吶・菫晏ｭ伜・ (key -> metric -> [fold 縺斐→縺ｮ蛟､])
                 store = {k: defaultdict(list) for k in all_keys}
@@ -914,6 +943,7 @@ def main():
                     f.write(f"run_dir={run_dir}\n")
                     f.write(f"run_hash={run_hash}\n")
                     f.write(f"run_instance_id={RUN_INSTANCE_ID}\n")
+                    f.write(f"validation_split={split_description}\n")
                     f.write(f"model_params={param_summary}\n")
                     f.write(
                         "ensemble_strategies="
@@ -924,7 +954,7 @@ def main():
                     f.write("=" * 30 + "\n")
 
                     fold = 1
-                    for train_index, val_index in kf.split(x):
+                    for train_index, val_index in split_indices:
                         x_train, x_val = x[train_index], x[val_index]
                         y_train, y_val = y[train_index], y[val_index]
 
