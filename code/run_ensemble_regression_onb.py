@@ -168,9 +168,9 @@ VALIDATION_CONFIG = {
             "heatflux_reference_SNR=-20",
         ],
         "data_source_dir_by_experiment": {
-            "2025.06.11_0.3_2": "waterflow_20260817_1s_fixed_global_rms_paired",
-            "2025.06.18_0.3_3": "waterflow_20260817_1s_fixed_global_rms_paired",
-            "2025.07.09_0.3_1": "waterflow_20260817_1s_fixed_global_rms_paired",
+            "2025.06.11_0.3_2": "waterflow_20260817_1s",
+            "2025.06.18_0.3_3": "waterflow_20260817_1s",
+            "2025.07.09_0.3_1": "waterflow_20260817_1s",
         },
         "skip_missing_datasets": False,
     },

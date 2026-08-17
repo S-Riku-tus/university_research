@@ -126,7 +126,6 @@ def _experiment_context(experiment):
         recording_dir_name=RECORDING_DIR,
         waterflow_path=str(WATERFLOW_PATH),
         save_date=20260817,
-        dataset_version="controlled_global_fixed_chunk_rms",
         chunk_seconds=CHUNK_SECONDS,
         script_path=__file__,
     )

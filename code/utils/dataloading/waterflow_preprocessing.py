@@ -62,7 +62,6 @@ def build_experiment_context(
     recording_dir_name,
     waterflow_path,
     save_date,
-    dataset_version,
     chunk_seconds,
     script_path,
 ):
@@ -73,7 +72,7 @@ def build_experiment_context(
         f"実験結果{experiment_name}",
         f"heat_flux_{experiment_name}.csv",
     )
-    output_name = f"waterflow_{save_date}_{chunk_label(chunk_seconds)}s_{dataset_version}"
+    output_name = f"waterflow_{save_date}_{chunk_label(chunk_seconds)}s"
     base_npy_save_folder_path = os.path.join(
         experiment_root,
         "data",
@@ -97,7 +96,6 @@ def build_experiment_context(
         "base_npy_save_folder_path": base_npy_save_folder_path,
         "base_png_save_folder_path": base_png_save_folder_path,
         "save_date": save_date,
-        "dataset_version": dataset_version,
         "script_path": script_path,
     }
 
@@ -342,7 +340,6 @@ def write_preprocess_manifest(
         "heat_flux_csv_path": context["heat_flux_csv_path"],
         "label_source": "heat_flux_csv.q keyed by wav index",
         "save_date": context["save_date"],
-        "dataset_version": context["dataset_version"],
         "output_formats": {
             "npy": config["save_npy"],
             "spectrogram_png": config["save_spectrogram_png"],
@@ -392,7 +389,6 @@ def write_preprocess_manifest(
             "scaling_mode": config.get(
                 "noise_scaling_mode", "relative_source_rms"
             ),
-            "output_signal_mode": config.get("output_signal_mode", "mixture"),
             "fixed_reference_signal_rms": config.get(
                 "fixed_reference_signal_rms"
             ),
@@ -532,12 +528,6 @@ def save_spectrogram_chunks_with_snr(
     noise_scaling_mode = config.get(
         "noise_scaling_mode", "relative_source_rms"
     )
-    output_signal_mode = config.get("output_signal_mode", "mixture")
-    if output_signal_mode not in {"mixture", "noise_only"}:
-        raise ValueError(
-            "output_signal_mode must be 'mixture' or 'noise_only', got "
-            f"{output_signal_mode!r}."
-        )
     randomize_noise_offset = bool(
         config.get("randomize_noise_offset_per_chunk", False)
     )
@@ -563,10 +553,6 @@ def save_spectrogram_chunks_with_snr(
     )
 
     for snr in snr_db:
-        if snr is None and output_signal_mode == "noise_only":
-            # A zero-valued "no noise only" dataset is not a useful negative
-            # control and would create a misleading no-noise condition.
-            continue
         snr_label = (
             "no_noise"
             if snr is None
@@ -656,11 +642,7 @@ def save_spectrogram_chunks_with_snr(
                     scaling_mode=noise_scaling_mode,
                     fixed_reference_signal_rms=fixed_reference_signal_rms,
                 )
-                model_input_chunk = (
-                    scaled_noise_chunk
-                    if output_signal_mode == "noise_only"
-                    else signal_chunk + scaled_noise_chunk
-                )
+                model_input_chunk = signal_chunk + scaled_noise_chunk
                 raw_noise_chunk_power = float(np.mean(raw_noise_chunk**2))
                 scaled_noise_chunk_power = float(
                     np.mean(scaled_noise_chunk**2)
@@ -788,7 +770,6 @@ def save_spectrogram_chunks_with_snr(
                 "noise_seed_scope": noise_seed_scope,
                 "pair_noise_across_snr": pair_noise_across_snr,
                 "noise_scaling_mode": noise_scaling_mode,
-                "output_signal_mode": output_signal_mode,
                 "fixed_reference_signal_rms": (
                     "" if fixed_reference_signal_rms is None
                     else fixed_reference_signal_rms

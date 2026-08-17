@@ -29,7 +29,6 @@ class CorrectedWaterflowGenerationTest(unittest.TestCase):
                 "base_npy_save_folder_path": str(tmp_path / "npy"),
                 "base_png_save_folder_path": str(tmp_path / "png"),
                 "save_date": 20260817,
-                "dataset_version": "fixed_global_rms_paired",
                 "script_path": str(REPO_ROOT / "code" / "2.run_npy_waterflow_2つhighpass.py"),
             }
             config = {
@@ -43,7 +42,6 @@ class CorrectedWaterflowGenerationTest(unittest.TestCase):
                 "save_spectrogram_png": False,
                 "png_with_axes": False,
                 "noise_scaling_mode": "fixed_global_rms",
-                "output_signal_mode": "mixture",
                 "fixed_reference_signal_rms": 0.5,
                 "fixed_reference_provenance": "synthetic test scalar",
                 "randomize_noise_offset_per_chunk": True,
