@@ -1,3 +1,8 @@
+import hashlib
+import json
+from itertools import product
+
+
 def _param_tag(value):
     if isinstance(value, float):
         text = f"{value:.8f}".rstrip("0").rstrip(".")
@@ -17,6 +22,98 @@ KERAS_TRAINING_PARAM_KEYS = {
     "min_batch_size",
     "accept_partial_min_epochs",
 }
+
+
+MODEL_TAG_ALIASES = {
+    "rf": "rf",
+    "cnntf_v2_gap": "ctf",
+    "alexnet": "alex",
+}
+
+
+PARAMETER_TAG_ALIASES = {
+    "learning_rate": "lr",
+    "batch_size": "bs",
+    "n_estimators": "ne",
+    "max_depth": "md",
+    "subsample": "ss",
+    "colsample_bynode": "cs",
+}
+
+
+def _grid_values(model_key, parameter_name, values):
+    if not isinstance(values, (list, tuple)):
+        raise TypeError(
+            f"model_grids['{model_key}']['{parameter_name}'] must be a list or tuple."
+        )
+    if not values:
+        raise ValueError(
+            f"model_grids['{model_key}']['{parameter_name}'] must not be empty."
+        )
+    return list(values)
+
+
+def _independent_grid_tag(model_key, parameter_names, params):
+    """Build a readable, collision-resistant tag that stays short on Windows."""
+    payload = json.dumps(
+        {"model_key": model_key, "params": params},
+        sort_keys=True,
+        ensure_ascii=True,
+        default=repr,
+    )
+    digest = hashlib.sha1(payload.encode("utf-8")).hexdigest()[:5]
+    model_tag = MODEL_TAG_ALIASES.get(model_key, model_key[:4])
+    readable_parts = [model_tag]
+    for name in parameter_names[:2]:
+        alias = PARAMETER_TAG_ALIASES.get(name, name[:2])
+        readable_parts.append(f"{alias}{_param_tag(params[name])}")
+    # run_dir_name currently keeps 24 characters for this tag. Reserve the
+    # suffix for the digest so even long/custom parameter names remain unique.
+    readable = "_".join(readable_parts)[:18].rstrip("_")
+    return f"{readable}_{digest}"
+
+
+def build_independent_model_grid_parameter_sets(model_grids, default_keras=None):
+    """Expand one Cartesian grid per model without multiplying models together.
+
+    Each returned parameter set selects exactly one model. This prevents a
+    three-model joint grid from exploding combinatorially and makes every row
+    in the tuning summary attributable to one model's hyperparameters.
+    """
+    if not isinstance(model_grids, dict) or not model_grids:
+        raise ValueError("model_grids must be a non-empty dict.")
+
+    default_keras = dict(default_keras or {})
+    parameter_sets = []
+    seen_tags = set()
+    for model_key, grid in model_grids.items():
+        if not isinstance(grid, dict) or not grid:
+            raise ValueError(f"model_grids['{model_key}'] must be a non-empty dict.")
+        parameter_names = list(grid)
+        value_lists = [
+            _grid_values(model_key, name, grid[name])
+            for name in parameter_names
+        ]
+        for values in product(*value_lists):
+            params = dict(zip(parameter_names, values))
+            name = model_key + "__" + "__".join(
+                f"{key}={value}" for key, value in params.items()
+            )
+            tag = _independent_grid_tag(model_key, parameter_names, params)
+            if tag in seen_tags:
+                raise ValueError(f"Generated duplicate parameter-set tag: {tag}")
+            seen_tags.add(tag)
+            parameter_set = {
+                "name": name,
+                "tag": tag,
+                "active_model_keys": [model_key],
+                "models": {model_key: params},
+            }
+            if default_keras:
+                parameter_set["default_keras"] = dict(default_keras)
+            parameter_sets.append(parameter_set)
+
+    return parameter_sets
 
 
 def build_keras_grid_parameter_sets(
@@ -77,6 +174,12 @@ def expand_parameter_sets(parameter_sets_config):
             models=parameter_sets_config.get("models"),
         )
 
+    if config_type == "independent_model_grid":
+        return build_independent_model_grid_parameter_sets(
+            model_grids=parameter_sets_config["model_grids"],
+            default_keras=parameter_sets_config.get("default_keras"),
+        )
+
     raise ValueError(f"Unknown parameter_sets config type: {config_type}")
 
 
@@ -113,6 +216,8 @@ def resolve_parameter_set(enabled_specs, parameter_set):
 
 
 def parameter_set_tag(parameter_set, resolved_specs, safe_tag_func):
+    if parameter_set.get("tag"):
+        return safe_tag_func(parameter_set["tag"])
     if parameter_set.get("name"):
         return safe_tag_func(parameter_set["name"])
     parts = []

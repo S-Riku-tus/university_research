@@ -109,6 +109,12 @@ def serializable_run_specs(run_specs):
 
 def run_config_digest(validation_config, parameter_set, run_specs, model_tag, save_fold_predictions):
     config = dict(validation_config)
+    models_config = dict(config.get("models", {}))
+    # The current parameter set and fully resolved model parameters are hashed
+    # separately below. Excluding the complete candidate list means that adding
+    # a new grid value does not invalidate already completed, unchanged runs.
+    models_config.pop("parameter_sets", None)
+    config["models"] = models_config
     config["output"] = {
         "save_fold_predictions": save_fold_predictions,
     }
@@ -248,6 +254,8 @@ def append_tuning_summary(
         "snr_value", "threshold_available", "threshold",
         "parameter_set", "model_key", "model_label",
         "lr", "batch_size",
+        "n_estimators", "max_depth", "subsample", "colsample_bynode",
+        "builder_params_json",
         "requested_batch_size", "actual_batch_sizes", "min_actual_batch_size",
         "epochs_completed", "stopped_by_memory_error",
     ]
@@ -266,6 +274,7 @@ def append_tuning_summary(
             actual_batch_sizes = meta.get("actual_batch_size", [])
             min_actual_batch_size = min(actual_batch_sizes) if actual_batch_sizes else ""
             stopped_flags = meta.get("stopped_by_memory_error", [])
+            builder_params = spec.get("builder_params", {})
             row = [
                 datetime.now().isoformat(timespec="seconds"),
                 run_instance_id,
@@ -284,6 +293,16 @@ def append_tuning_summary(
                 spec.get("label", key),
                 spec.get("lr", ""),
                 spec.get("batch_size", ""),
+                builder_params.get("n_estimators", ""),
+                builder_params.get("max_depth", ""),
+                builder_params.get("subsample", ""),
+                builder_params.get("colsample_bynode", ""),
+                json.dumps(
+                    builder_params,
+                    sort_keys=True,
+                    ensure_ascii=False,
+                    default=json_default,
+                ),
                 join_unique(meta.get("requested_batch_size", [])),
                 join_unique(actual_batch_sizes),
                 min_actual_batch_size,

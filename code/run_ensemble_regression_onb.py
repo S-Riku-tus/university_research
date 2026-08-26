@@ -160,12 +160,12 @@ VALIDATION_CONFIG = {
         ],
         "noise_dir_names": [
             "heatflux_no_noise",
-            "heatflux_reference_SNR=0",
-            "heatflux_reference_SNR=-4",
-            "heatflux_reference_SNR=-8",
-            "heatflux_reference_SNR=-12",
-            "heatflux_reference_SNR=-16",
-            "heatflux_reference_SNR=-20",
+            # "heatflux_reference_SNR=0",
+            # "heatflux_reference_SNR=-4",
+            # "heatflux_reference_SNR=-8",
+            # "heatflux_reference_SNR=-12",
+            # "heatflux_reference_SNR=-16",
+            # "heatflux_reference_SNR=-20",
         ],
         "data_source_dir_by_experiment": {
             "2025.06.11_0.3_2": "waterflow_20260817_1s",
@@ -188,24 +188,33 @@ VALIDATION_CONFIG = {
     },
     "models": {
         "active_model_keys": ["rf", "cnntf_v2_gap", "alexnet"],
-        "parameter_sets": [
-            {
-                "name": "rf_v2gap_alex",
-                "models": {
-                    "rf": {
-                        "n_estimators": 300,
-                        "max_depth": 8,
-                        "subsample": 0.8,
-                        "colsample_bynode": 0.6,
-                    },
-                    "cnntf_v2_gap": {"lr": 0.0005, "batch_size": 32},
-                    "alexnet": {"lr": 0.005, "batch_size": 32},
+        # Tune one model at a time. Values inside each model are expanded as a
+        # Cartesian grid, but grids are not multiplied across the three models.
+        # To test another value, add it to the corresponding list below.
+        "parameter_sets": {
+            "type": "independent_model_grid",
+            "model_grids": {
+                "rf": {
+                    # XGBRFRegressor: tune model capacity first; keep sampling
+                    # ratios fixed during this first-stage search.
+                    "n_estimators": [100, 300, 500],
+                    "max_depth": [4, 8, 12],
+                    "subsample": [0.8],
+                    "colsample_bynode": [0.6],
                 },
-                "default_keras": {
-                    "fit_verbose": 1,
+                "cnntf_v2_gap": {
+                    "lr": [0.0001, 0.0005, 0.0001, 0.0005, 0.001],
+                    "batch_size": [16, 32, 64],
+                },
+                "alexnet": {
+                    "lr": [0.0001, 0.0005, 0.0001, 0.0005, 0.001],
+                    "batch_size": [16, 32, 64],
                 },
             },
-        ],
+            "default_keras": {
+                "fit_verbose": 1,
+            },
+        },
     },
     "ensemble": {
         # Every enabled entry below is evaluated from the same outer-fold model
@@ -598,6 +607,20 @@ def validate_validation_config(enabled_specs):
     if len(model_keys) != len(set(model_keys)):
         raise ValueError(f"Duplicate active model keys: {model_keys}")
 
+    allowed_model_keys = set(model_keys)
+    for parameter_set in PARAMETER_SETS:
+        selected_keys = parameter_set.get("active_model_keys", model_keys)
+        if not isinstance(selected_keys, (list, tuple)) or not selected_keys:
+            raise ValueError(
+                "Each parameter set's active_model_keys must be a non-empty list."
+            )
+        unknown_keys = set(selected_keys) - allowed_model_keys
+        if unknown_keys:
+            raise ValueError(
+                f"Parameter set {parameter_set.get('name', '<unnamed>')!r} selects "
+                f"models not present in models.active_model_keys: {sorted(unknown_keys)}"
+            )
+
     if ENSEMBLE_ENABLED:
         if len(model_keys) < 2:
             raise ValueError("Ensemble comparison requires at least two active models.")
@@ -701,14 +724,18 @@ def validate_validation_config(enabled_specs):
         }
         for filter_key, available in available_by_filter.items():
             requested_values = set(condition_filter.get(filter_key) or [])
-            unknown_values = requested_values - available
-            if unknown_values:
+            selected_values = requested_values & available if requested_values else available
+            if not selected_values:
                 raise ValueError(
-                    f"Explainability condition_filter.{filter_key} contains "
-                    f"unknown values: {sorted(unknown_values)}")
+                    f"Explainability condition_filter.{filter_key} does not match "
+                    f"any configured data value. requested={sorted(requested_values)}, "
+                    f"available={sorted(available)}")
 
-        selected_experiments = set(
-            condition_filter.get("experiment_names") or EXPERIMENT_DIR_NAMES)
+        requested_experiments = set(condition_filter.get("experiment_names") or [])
+        selected_experiments = (
+            requested_experiments & set(EXPERIMENT_DIR_NAMES)
+            if requested_experiments else set(EXPERIMENT_DIR_NAMES)
+        )
         missing_xai_thresholds = [
             name for name in selected_experiments
             if THRESHOLD_BY_EXPERIMENT.get(name) is None
@@ -739,24 +766,12 @@ def main():
     # Keep output folder names short enough for Windows paths.
     validate_validation_config(enabled_specs)
 
-    model_keys = [s["key"] for s in enabled_specs]
-    model_tag = "-".join(model_keys)
-    if SMOKE_TEST:
-        model_tag = "s_" + model_tag
-
-    use_sklearn = any(s["kind"] == "sklearn" for s in enabled_specs)
-    include_ensemble = bool(
-        ENSEMBLE_ENABLED and len(enabled_specs) >= 2 and ENSEMBLE_STRATEGY_PLAN
+    configured_model_keys = [s["key"] for s in enabled_specs]
+    configured_model_tag = "-".join(configured_model_keys)
+    independent_tuning = all(
+        len(parameter_set.get("active_model_keys", configured_model_keys)) == 1
+        for parameter_set in PARAMETER_SETS
     )
-    all_keys = [s["key"] for s in enabled_specs]
-    if include_ensemble:
-        all_keys.extend(item["result_key"] for item in ENSEMBLE_STRATEGY_PLAN)
-    label_of = {s["key"]: s["label"] for s in enabled_specs}
-    if include_ensemble:
-        label_of.update({
-            item["result_key"]: item["label"]
-            for item in ENSEMBLE_STRATEGY_PLAN
-        })
 
     print("#" * 60)
     if SMOKE_TEST:
@@ -765,12 +780,23 @@ def main():
         print("###   Use only for quick checks; set SMOKE_TEST=False for real runs.")
     else:
         print("### FULL_RUN mode (SMOKE_TEST = False) ###")
-    print(f"active models: {[s['label'] for s in enabled_specs]}  (model_tag={model_tag})")
     print(
-        f"ensemble strategies: {[item['name'] for item in ENSEMBLE_STRATEGY_PLAN]} "
-        f"| primary={PRIMARY_ENSEMBLE_STRATEGY} | combine={ENSEMBLE_COMBINE} "
-        f"| epoch={EPOCH_NUM} | fold={DIVISIONS}"
+        f"configured models: {[s['label'] for s in enabled_specs]}  "
+        f"(model_tag={configured_model_tag})"
     )
+    print(f"expanded parameter sets: {len(PARAMETER_SETS)}")
+    if independent_tuning:
+        print(
+            "execution mode: independent single-model tuning; "
+            "ensemble strategies are skipped for these parameter sets "
+            f"| epoch={EPOCH_NUM} | fold={DIVISIONS}"
+        )
+    else:
+        print(
+            f"ensemble strategies: {[item['name'] for item in ENSEMBLE_STRATEGY_PLAN]} "
+            f"| primary={PRIMARY_ENSEMBLE_STRATEGY} | combine={ENSEMBLE_COMBINE} "
+            f"| epoch={EPOCH_NUM} | fold={DIVISIONS}"
+        )
     print(
         "explainability: "
         f"{'enabled' if EXPLAINABILITY_ENABLED else 'disabled'} | "
@@ -780,7 +806,7 @@ def main():
     )
     print("validation_config:")
     print(validation_config_text())
-    if include_ensemble and any(
+    if not independent_tuning and ENSEMBLE_ENABLED and any(
             item["strategy"] == "val_fold_legacy"
             for item in ENSEMBLE_STRATEGY_PLAN):
         print("WARNING: val_fold_legacy uses validation-fold labels for weights; use only for reproduction.")
@@ -847,7 +873,33 @@ def main():
               f"load_time={time.time() - start_time:.2f}s")
 
         for parameter_set in PARAMETER_SETS:
-                run_specs = resolve_parameter_set(enabled_specs, parameter_set)
+                parameter_model_keys = parameter_set.get(
+                    "active_model_keys", configured_model_keys
+                )
+                parameter_specs = [spec_by_key[key] for key in parameter_model_keys]
+                run_specs = resolve_parameter_set(parameter_specs, parameter_set)
+                model_keys = [spec["key"] for spec in run_specs]
+                model_tag = "-".join(model_keys)
+                if SMOKE_TEST:
+                    model_tag = "s_" + model_tag
+                use_sklearn = any(spec["kind"] == "sklearn" for spec in run_specs)
+                include_ensemble = bool(
+                    ENSEMBLE_ENABLED
+                    and len(run_specs) >= 2
+                    and ENSEMBLE_STRATEGY_PLAN
+                    and ENSEMBLE_REFERENCE_MODEL in model_keys
+                )
+                all_keys = list(model_keys)
+                if include_ensemble:
+                    all_keys.extend(
+                        item["result_key"] for item in ENSEMBLE_STRATEGY_PLAN
+                    )
+                label_of = {spec["key"]: spec["label"] for spec in run_specs}
+                if include_ensemble:
+                    label_of.update({
+                        item["result_key"]: item["label"]
+                        for item in ENSEMBLE_STRATEGY_PLAN
+                    })
                 param_tag = parameter_set_tag(parameter_set, run_specs, safe_tag)
                 param_summary = model_param_summary(run_specs)
                 run_hash = run_config_digest(
@@ -861,7 +913,7 @@ def main():
                 )
                 run_dir = run_dir_name(
                     EPOCH_NUM, param_tag, model_tag,
-                    ENSEMBLE_ENABLED,
+                    include_ensemble,
                     strategy_tag,
                 )
                 print(f"parameter_set={parameter_set.get('name', param_tag)} | model_params={param_summary}")
@@ -945,12 +997,15 @@ def main():
                     f.write(f"run_instance_id={RUN_INSTANCE_ID}\n")
                     f.write(f"validation_split={split_description}\n")
                     f.write(f"model_params={param_summary}\n")
-                    f.write(
-                        "ensemble_strategies="
-                        f"{[item['name'] for item in ENSEMBLE_STRATEGY_PLAN]}, "
-                        f"primary={PRIMARY_ENSEMBLE_STRATEGY}, "
-                        f"combine={ENSEMBLE_COMBINE}\n"
-                    )
+                    if include_ensemble:
+                        f.write(
+                            "ensemble_strategies="
+                            f"{[item['name'] for item in ENSEMBLE_STRATEGY_PLAN]}, "
+                            f"primary={PRIMARY_ENSEMBLE_STRATEGY}, "
+                            f"combine={ENSEMBLE_COMBINE}\n"
+                        )
+                    else:
+                        f.write("ensemble_strategies=[] (single-model tuning run)\n")
                     f.write("=" * 30 + "\n")
 
                     fold = 1
@@ -965,7 +1020,7 @@ def main():
                         inner_errors = {}
                         x_inner_fit = x_inner = y_inner_fit = y_inner = None
                         x_inner_fit_pca = x_inner_pca = None
-                        if strategy_plan_requires_inner_holdout(
+                        if include_ensemble and strategy_plan_requires_inner_holdout(
                                 ENSEMBLE_STRATEGY_PLAN):
                             x_inner_fit, x_inner, y_inner_fit, y_inner = train_test_split(
                                 x_train,
@@ -1081,7 +1136,7 @@ def main():
                                 experiment_name=job["experiment_name"],
                                 noise_dir_name=noise_dir_name)
 
-                            if any(
+                            if include_ensemble and any(
                                     item["strategy"] == "val_fold_legacy"
                                     for item in ENSEMBLE_STRATEGY_PLAN):
                                 # Reproduction only. This branch is unreachable
