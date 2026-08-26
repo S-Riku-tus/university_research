@@ -199,8 +199,8 @@ VALIDATION_CONFIG = {
                     # ratios fixed during this first-stage search.
                     "n_estimators": [100, 300, 500],
                     "max_depth": [4, 8, 12],
-                    "subsample": [0.8],
-                    "colsample_bynode": [0.6],
+                    "subsample": [0.6, 0.8, 1.0],
+                    "colsample_bynode": [0.6, 0.8, 1.0],
                 },
                 "cnntf_v2_gap": {
                     "lr": [0.0001, 0.0005, 0.0001, 0.0005, 0.001],
