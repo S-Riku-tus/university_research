@@ -1010,6 +1010,33 @@ def explainability_condition_selected(config, experiment_name, max_freq_name,
     return True
 
 
+def resolve_explainability_scope(
+    config,
+    experiment_names,
+    max_freq_hz_list,
+    noise_dir_names,
+    model_keys,
+    fold_count,
+):
+    """Derive the XAI execution scope from the parent validation settings.
+
+    The run configuration should have one source of truth for datasets, models,
+    and folds.  The resolved fields are retained in manifests and per-model XAI
+    configuration CSV files so a completed run remains auditable.
+    """
+    resolved = dict(config or {})
+    enabled = bool(resolved.get("enabled", False))
+    resolved["condition_filter"] = {
+        "experiment_names": list(experiment_names),
+        "max_freq_hz_list": list(max_freq_hz_list),
+        "noise_dir_names": list(noise_dir_names),
+    }
+    resolved["model_keys"] = list(model_keys)
+    resolved["target_folds"] = list(range(1, int(fold_count) + 1))
+    resolved["save_maps"] = enabled
+    return resolved
+
+
 def aggregate_group_mask_comparison(save_path, config, model_keys, fold_count):
     """Collect model-wise physical mask effects into presentation-ready CSVs."""
     if not config.get("enabled", False):

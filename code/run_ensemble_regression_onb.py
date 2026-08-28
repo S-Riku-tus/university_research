@@ -77,6 +77,7 @@ from utils.explainability.training_integration import (
     explainability_condition_selected,
     explainability_outputs_complete,
     maybe_explain_trained_model,
+    resolve_explainability_scope,
 )
 from utils.experiment.dataset_jobs import build_dataset_jobs as make_dataset_jobs
 from utils.experiment.run_helpers import (
@@ -223,24 +224,9 @@ VALIDATION_CONFIG = {
         # They are saved under each run folder:
         #   <SAVE_PATH>/explainability/fold{n}/{model_key}/
         #
-        # Explanations are deliberately restricted to representative conditions;
-        # generating them over the complete 3 x 6 x 7 grid is costly and weakens
-        # the distinction between model selection and explanation validation.
+        # Dataset conditions, model keys, folds, and map saving are inherited
+        # from data/models/run/enabled so they have a single source of truth.
         "enabled": True,
-        "condition_filter": {
-            "experiment_names": [
-                "2025.06.18_0.3_3",
-                "2025.07.09_0.3_1",
-                "2025.06.11_0.3_2",
-            ],
-            "max_freq_hz_list": ["maxfreq=22kHz"],
-            "noise_dir_names": [
-                "heatflux_no_noise",
-                "heatflux_reference_SNR=-20",
-            ],
-        },
-        "model_keys": ["rf", "cnntf_v2_gap", "alexnet"],
-        "target_folds": [1],
         "max_samples_per_fold": 5,
         "ig_steps": 64,
         # Use methods that match each architecture.  RF TreeSHAP is retained in
@@ -293,8 +279,7 @@ VALIDATION_CONFIG = {
             "methods": ["integrated_gradients"],
             "random_seed": 42,
         },
-        "save_maps": True,
-        # Never silently repeat a completed 500-epoch run just because old XAI
+        # Never silently repeat a completed training run just because old XAI
         # files are missing.  Set True only after intentionally choosing that cost.
         "retrain_completed_runs_for_xai": False,
     },
@@ -358,7 +343,14 @@ SAVE_TUNING_SUMMARY = _cfg("output", "save_tuning_summary")
 RESUME_COMPLETED_RUNS = _cfg("output", "resume_completed_runs")
 RUN_INSTANCE_ID = os.environ.get("RUN_ID", datetime.now().strftime("%H%M%S"))
 FOLD_PREDICTIONS_DIR_NAME = "fold_pred"
-EXPLAINABILITY_CONFIG = VALIDATION_CONFIG.get("explainability", {})
+EXPLAINABILITY_CONFIG = resolve_explainability_scope(
+    VALIDATION_CONFIG.get("explainability", {}),
+    experiment_names=EXPERIMENT_DIR_NAMES,
+    max_freq_hz_list=MAX_FREQ_HZ_LIST,
+    noise_dir_names=NOISE_DIR_NAMES,
+    model_keys=ACTIVE_MODEL_KEYS,
+    fold_count=DIVISIONS,
+)
 EXPLAINABILITY_ENABLED = EXPLAINABILITY_CONFIG.get("enabled", False)
 
 # Settings are defined in VALIDATION_CONFIG above.
@@ -581,11 +573,12 @@ def validate_validation_config(enabled_specs):
             "grad_cam", "group_occlusion", "occlusion",
         }
         methods_by_model = EXPLAINABILITY_CONFIG.get("methods_by_model") or {}
-        unknown_method_models = set(methods_by_model) - requested_models
+        known_model_keys = {spec["key"] for spec in MODEL_SPECS}
+        unknown_method_models = set(methods_by_model) - known_model_keys
         if unknown_method_models:
             raise ValueError(
-                "Explainability methods_by_model contains models that were not "
-                f"requested: {sorted(unknown_method_models)}")
+                "Explainability methods_by_model contains unknown models: "
+                f"{sorted(unknown_method_models)}")
         missing_method_models = requested_models - set(methods_by_model)
         if missing_method_models:
             raise ValueError(
