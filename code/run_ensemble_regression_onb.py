@@ -246,8 +246,14 @@ VALIDATION_CONFIG = {
         # Use methods that match each architecture.  RF TreeSHAP is retained in
         # PCA space for model auditing; physical RF claims use grouped masks.
         "methods_by_model": {
-            "rf": ["tree_shap_pca", "group_occlusion"],
-            "cnntf_v2_gap": ["integrated_gradients", "group_occlusion"],
+            "rf": [
+                "tree_shap_pca",
+                "group_occlusion"
+            ],
+            "cnntf_v2_gap": [
+                "integrated_gradients",
+                "group_occlusion"
+            ],
             "alexnet": [
                 "integrated_gradients",
                 "grad_cam",
