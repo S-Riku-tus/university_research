@@ -132,7 +132,6 @@ VALIDATION_CONFIG = {
             # "2025.06.11_0.3_2",
         ],
         "max_freq_hz_list": [
-            "maxfreq=2kHz",
             "maxfreq=3kHz",
             "maxfreq=5kHz",
             "maxfreq=10kHz",
