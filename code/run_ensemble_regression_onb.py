@@ -147,15 +147,15 @@ VALIDATION_CONFIG = {
         "chunk_seconds": 1,
         "experiment_names": [
             "2025.06.18_0.3_3",
-            "2025.07.09_0.3_1",
-            "2025.06.11_0.3_2",
+            # "2025.07.09_0.3_1",
+            # "2025.06.11_0.3_2",
         ],
         "max_freq_hz_list": [
-            # "maxfreq=2kHz",
+            "maxfreq=2kHz",
             "maxfreq=3kHz",
-            # "maxfreq=5kHz",
-            # "maxfreq=10kHz",
-            # "maxfreq=15kHz",
+            "maxfreq=5kHz",
+            "maxfreq=10kHz",
+            "maxfreq=15kHz",
             "maxfreq=22kHz",
         ],
         "noise_dir_names": [
@@ -197,18 +197,18 @@ VALIDATION_CONFIG = {
                 "rf": {
                     # XGBRFRegressor: tune model capacity first; keep sampling
                     # ratios fixed during this first-stage search.
-                    "n_estimators": [100, 300, 500],
-                    "max_depth": [4, 8, 12],
-                    "subsample": [0.6, 0.8, 1.0],
-                    "colsample_bynode": [0.6, 0.8, 1.0],
+                    "n_estimators": [300],
+                    "max_depth": [4],
+                    "subsample": [0.6],
+                    "colsample_bynode": [0.6],
                 },
                 "cnntf_v2_gap": {
-                    "lr": [0.0001, 0.0005, 0.0001, 0.0005, 0.001],
-                    "batch_size": [16, 32, 64],
+                    "lr": [0.001],
+                    "batch_size": [16],
                 },
                 "alexnet": {
-                    "lr": [0.0001, 0.0005, 0.0001, 0.0005, 0.001],
-                    "batch_size": [16, 32, 64],
+                    "lr": [0.001],
+                    "batch_size": [16],
                 },
             },
             "default_keras": {
