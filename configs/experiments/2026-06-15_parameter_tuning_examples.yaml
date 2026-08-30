@@ -4,8 +4,7 @@ current_mode:
   active_model_keys: [rf, cnntf_v1, alexnet]
   fixed_rf_params: {n_estimators: 300, max_depth: 8, subsample: 0.8, colsample_bynode: 0.6}
   total_patterns: 1
-  weight_strategy: fixed
-  fixed_weights: {rf: 0.90, cnntf_v1: 0.05, alexnet: 0.05}
+  weight_strategy: simple
 
 keras_grid:
   batch_size: [12, 24, 32, 48, 64, 128]
@@ -18,9 +17,8 @@ recommended_confirmation_after_tuning:
     rf: {n_estimators: 300, max_depth: 8, subsample: 0.8, colsample_bynode: 0.6}
     cnntf_v1: {lr: 0.01, batch_size: 24}
     alexnet: {lr: 0.005, batch_size: 32}
-  weight_strategy: fixed
-  fixed_weights: {rf: 0.90, cnntf_v1: 0.05, alexnet: 0.05}
-  note: RF is still the strongest regressor; this condition checks an RF-dominant 3-model ensemble without rerunning the full grid.
+  weight_strategy: simple
+  note: This condition checks the three-model equal-weight ensemble without rerunning the full grid.
 
 manual_parameter_set_example:
   name: cnntf_lr0p001_alex_lr0p005_rf_md8

@@ -8,15 +8,6 @@ ENSEMBLE_STRATEGY_CATALOG = {
         "label": "Ensemble simple equal",
         "strategy": "simple",
     },
-    "fixed_rf98_even": {
-        "label": "Ensemble RF98 + 1 + 1",
-        "strategy": "fixed",
-        "fixed_weights": {
-            "rf": 0.98,
-            "cnntf_v2_gap": 0.01,
-            "alexnet": 0.01,
-        },
-    },
     "prediction_max": {
         "label": "Ensemble prediction max",
         "strategy": "max",

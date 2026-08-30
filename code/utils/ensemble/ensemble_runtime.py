@@ -42,11 +42,14 @@ class EnsembleManager:
         self.configured_model_keys = list(configured_model_keys)
         self.random_seed = int(random_seed)
         self.resolved_config = resolve_ensemble_selection(self.selection_config)
+        if (
+            self.configured_model_keys
+            and self.resolved_config["reference_model"]
+            not in self.configured_model_keys
+        ):
+            self.resolved_config["reference_model"] = self.configured_model_keys[0]
         self.strategy_plan = (
-            normalize_strategy_plan(
-                self.resolved_config,
-                self.configured_model_keys,
-            )
+            normalize_strategy_plan(self.resolved_config)
             if self.resolved_config["enabled"] else []
         )
         self.primary_strategy_name = self.resolved_config.get("primary_strategy")
@@ -88,7 +91,7 @@ class EnsembleManager:
             return
         model_keys = [spec["key"] for spec in enabled_specs]
         if len(model_keys) < 2:
-            raise ValueError("Ensemble comparison requires at least two active models.")
+            return
         if self.primary_result_key is None:
             raise ValueError(
                 "ensemble.primary_strategy_name must name one enabled strategy; got "

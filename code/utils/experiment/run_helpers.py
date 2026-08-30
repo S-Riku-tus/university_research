@@ -12,7 +12,6 @@ import tensorflow as tf
 
 WEIGHT_STRATEGY_TAGS = {
     "simple": "simp",
-    "fixed": "fix",
     "inner_holdout": "ih",
     "val_fold_legacy": "vleg",
     "strategy_loop": "cmp",

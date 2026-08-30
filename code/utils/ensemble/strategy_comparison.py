@@ -5,7 +5,7 @@ import numpy as np
 
 
 VALID_STRATEGIES = {
-    "simple", "fixed", "max", "inner_holdout", "val_fold_legacy",
+    "simple", "max", "inner_holdout", "val_fold_legacy",
 }
 HIGHER_IS_BETTER = {
     "r2", "r2_high", "auc_binary", "roc_auc_cont", "pr_auc_cont",
@@ -21,20 +21,18 @@ def _safe_name(value):
     return text[:40] or "ensemble"
 
 
-def normalize_strategy_plan(config, model_keys):
+def normalize_strategy_plan(config):
     """Normalize configured ensemble strategies without touching model training.
 
     Disabled entries are retained in the configuration file for discoverability
     but are not returned.  Validation-fold weighting is rejected unless it is
     explicitly unlocked as a reproduction-only diagnostic.
     """
-    model_keys = list(model_keys)
     configured = config.get("strategies")
     if not configured:
         configured = [{
             "name": config.get("weight_strategy", "simple"),
             "strategy": config.get("weight_strategy", "simple"),
-            "fixed_weights": config.get("fixed_weights", {}),
         }]
 
     allow_leaky = bool(config.get("allow_leaky_strategies", False))
@@ -64,28 +62,11 @@ def normalize_strategy_plan(config, model_keys):
         if name in names or result_key in result_keys:
             raise ValueError(f"Duplicate ensemble strategy name: {name}")
 
-        fixed_weights = dict(
-            raw.get("fixed_weights", raw.get("weights", config.get("fixed_weights", {})))
-        )
-        if strategy == "fixed":
-            missing = [key for key in model_keys if key not in fixed_weights]
-            if missing:
-                raise ValueError(
-                    f"Fixed strategy {name!r} is missing model weights: {missing}."
-                )
-            values = np.asarray([fixed_weights[key] for key in model_keys], dtype=float)
-            if not np.all(np.isfinite(values)) or np.any(values < 0) or values.sum() <= 0:
-                raise ValueError(
-                    f"Fixed strategy {name!r} needs finite non-negative weights "
-                    "with a positive sum."
-                )
-
         item = {
             "name": name,
             "result_key": result_key,
             "label": str(raw.get("label") or f"Ensemble {name}"),
             "strategy": strategy,
-            "fixed_weights": fixed_weights,
             "claim_safe": strategy != "val_fold_legacy",
         }
         plan.append(item)
@@ -126,7 +107,6 @@ def compute_strategy_outputs(
             weight_strategy,
             run_specs,
             errors,
-            item["fixed_weights"],
         )
         combine_method = "max" if strategy == "max" else combine
         prediction = weighting.combine_predictions(

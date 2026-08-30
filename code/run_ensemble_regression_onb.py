@@ -167,12 +167,13 @@ VALIDATION_CONFIG = {
         "onb_band_frac": 0.10,
     },
     "models": {
-        "active_model_keys": ["rf", "cnntf_v2_gap", "alexnet"],
-        # Tune one model at a time. Values inside each model are expanded as a
-        # Cartesian grid, but grids are not multiplied across the three models.
-        # To test another value, add it to the corresponding list below.
+        # "active_model_keys": ["rf", "cnntf_v2_gap", "alexnet"],
+        "active_model_keys": ["cnntf_v2_gap", "alexnet"],
+        # Only active_model_keys are executed. Inactive grids may remain below
+        # as reusable settings and are ignored. Singleton lists mean one fixed
+        # run; multiple values expand a Cartesian tuning grid over active models.
         "parameter_sets": {
-            "type": "independent_model_grid",
+            "type": "active_model_grid",
             "model_grids": {
                 "rf": {
                     # XGBRFRegressor: tune model capacity first; keep sampling
@@ -201,12 +202,11 @@ VALIDATION_CONFIG = {
         # holdout fraction, and combination mechanics live in utils/ensemble/.
         "enabled_strategy_names": [
             "simple_equal",
-            "fixed_rf98_even",
             "prediction_max",
             "inner_holdout",
             "val_fold_legacy",
         ],
-        "primary_strategy_name": "fixed_rf98_even",
+        "primary_strategy_name": "val_fold_legacy",
     },
     "features": {
         "pca_components": 100,
@@ -316,15 +316,18 @@ THRESHOLD_BY_EXPERIMENT = _cfg("thresholds", "by_experiment")
 REQUIRE_EXPERIMENT_THRESHOLD = _cfg("thresholds", "require_experiment_threshold")
 ONB_BAND_FRAC = _cfg("thresholds", "onb_band_frac")
 
-PARAMETER_SETS = expand_parameter_sets(_cfg("models", "parameter_sets"))
 ACTIVE_MODEL_KEYS = _cfg("models", "active_model_keys")
+PARAMETER_SETS = expand_parameter_sets(
+    _cfg("models", "parameter_sets"),
+    active_model_keys=ACTIVE_MODEL_KEYS,
+)
 
 ENSEMBLE_MANAGER = EnsembleManager(
     VALIDATION_CONFIG.get("ensemble", {}),
     ACTIVE_MODEL_KEYS,
     random_seed=RANDOM_SEED,
 )
-ENSEMBLE_ENABLED = ENSEMBLE_MANAGER.enabled
+ENSEMBLE_ENABLED = ENSEMBLE_MANAGER.enabled and len(ACTIVE_MODEL_KEYS) >= 2
 RESULT_MODEL_GROUP = (
     "ensemble" if ENSEMBLE_ENABLED
     else "rf" if ACTIVE_MODEL_KEYS == ["rf"]
@@ -495,19 +498,12 @@ def validate_validation_config(enabled_specs):
     if len(model_keys) != len(set(model_keys)):
         raise ValueError(f"Duplicate active model keys: {model_keys}")
 
-    allowed_model_keys = set(model_keys)
     for parameter_set in PARAMETER_SETS:
-        selected_keys = parameter_set.get("active_model_keys", model_keys)
-        if not isinstance(selected_keys, (list, tuple)) or not selected_keys:
-            raise ValueError(
-                "Each parameter set's active_model_keys must be a non-empty list."
-            )
-        unknown_keys = set(selected_keys) - allowed_model_keys
-        if unknown_keys:
-            raise ValueError(
-                f"Parameter set {parameter_set.get('name', '<unnamed>')!r} selects "
-                f"models not present in models.active_model_keys: {sorted(unknown_keys)}"
-            )
+        if not isinstance(parameter_set, dict):
+            raise TypeError("Each expanded parameter set must be a dict.")
+        # This also verifies that every active Keras model has lr/batch_size.
+        # Parameters belonging to inactive models are intentionally ignored.
+        resolve_parameter_set(enabled_specs, parameter_set)
 
     ENSEMBLE_MANAGER.validate(enabled_specs)
 
@@ -644,10 +640,7 @@ def main():
 
     configured_model_keys = [s["key"] for s in enabled_specs]
     configured_model_tag = "-".join(configured_model_keys)
-    independent_tuning = all(
-        len(parameter_set.get("active_model_keys", configured_model_keys)) == 1
-        for parameter_set in PARAMETER_SETS
-    )
+    single_model_run = len(configured_model_keys) == 1
 
     print("#" * 60)
     if SMOKE_TEST:
@@ -660,11 +653,15 @@ def main():
         f"configured models: {[s['label'] for s in enabled_specs]}  "
         f"(model_tag={configured_model_tag})"
     )
-    print(f"expanded parameter sets: {len(PARAMETER_SETS)}")
-    if independent_tuning:
+    parameter_mode = (
+        "fixed parameters (one expanded set)"
+        if len(PARAMETER_SETS) == 1
+        else f"grid tuning ({len(PARAMETER_SETS)} expanded sets)"
+    )
+    print(f"parameter mode: {parameter_mode}")
+    if single_model_run:
         print(
-            "execution mode: independent single-model tuning; "
-            "ensemble strategies are skipped for these parameter sets "
+            "execution mode: single active model; ensemble strategies are skipped "
             f"| epoch={EPOCH_NUM} | fold={DIVISIONS}"
         )
     else:
@@ -681,7 +678,7 @@ def main():
     )
     print("validation_config:")
     print(validation_config_text())
-    if not independent_tuning and ENSEMBLE_MANAGER.has_leaky_strategy:
+    if not single_model_run and ENSEMBLE_MANAGER.has_leaky_strategy:
         print("WARNING: val_fold_legacy uses validation-fold labels for weights; use only for reproduction.")
     print("#" * 60)
 
@@ -746,11 +743,7 @@ def main():
               f"load_time={time.time() - start_time:.2f}s")
 
         for parameter_set in PARAMETER_SETS:
-                parameter_model_keys = parameter_set.get(
-                    "active_model_keys", configured_model_keys
-                )
-                parameter_specs = [spec_by_key[key] for key in parameter_model_keys]
-                run_specs = resolve_parameter_set(parameter_specs, parameter_set)
+                run_specs = resolve_parameter_set(enabled_specs, parameter_set)
                 model_keys = [spec["key"] for spec in run_specs]
                 model_tag = "-".join(model_keys)
                 if SMOKE_TEST:
@@ -947,7 +940,7 @@ def main():
 
                         # Evaluate every configured ensemble from the same
                         # outer-fold predictions. No model is retrained between
-                        # simple/fixed strategy profiles.
+                        # ensemble strategy profiles.
                         ensemble_outputs = ensemble_run.combine_predictions(
                             val_preds,
                             inner_errors,

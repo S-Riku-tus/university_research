@@ -41,7 +41,7 @@ ensemble:
   compare_methods:
     - "simple_average"
     - "weighted_average"
-  weight_source: "Do not use the same evaluation fold directly if possible; use an inner validation split or a fixed rule."
+  weight_source: "Do not use the same evaluation fold directly; use an inner validation split."
   hypothesis: >
     Ensemble prediction should reduce model-specific instability and improve
     ONB-neighborhood detection robustness compared with the best single model.

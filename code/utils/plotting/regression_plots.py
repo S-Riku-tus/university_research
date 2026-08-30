@@ -123,11 +123,6 @@ class RegressionPlotter:
         ]
         strategy_aliases = {
             "simple_equal": "Equal",
-            "fixed_rf90_even": "RF90 / 5 / 5",
-            "fixed_rf95_even": "RF95 / 2.5 / 2.5",
-            "fixed_rf98_even": "RF98 / 1 / 1",
-            "fixed_rf95_cnntf": "RF95 / CNN-Tf5",
-            "fixed_rf95_alex": "RF95 / Alex5",
             "prediction_max": "Prediction max",
             "inner_holdout": "Inner holdout",
         }

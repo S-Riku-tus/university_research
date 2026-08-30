@@ -14,20 +14,21 @@
   上記中心スクリプトの作り直し版（2026-06-12 計画 Phase 0 対応）。次の3点を修正済み：
   ①モデルをレジストリ(`MODEL_SPECS`)で定義しラベルが実体に追従（RFをAlexNetと誤記しない）、
   ②AUCを「連続スコア版(ROC/PR-AUC)」と「二値化後の分類指標」に分離、
-  ③アンサンブル重みを `WEIGHT_STRATEGY` で選択式（simple/fixed/inner_holdout=リークなし/val_fold_legacy=旧リークあり）。
+  ③アンサンブル方式を `enabled_strategy_names` で選択式
+  （simple_equal/prediction_max/inner_holdout/val_fold_legacy=旧リークあり）。
   データパスは別マシン運用のため旧版と同じハードコードのまま。
   再利用可能な処理（指標計算・学習/予測・重み付け・作図）は下記 utils に分離済みで、
   本ファイルにはこの実験固有の設定と `main()` のオーケストレーションだけを置く。
-  実行モデルは `ACTIVE_MODEL_KEYS` の1行で切替（RF単体検証 `["rf"]` ⇄ 3モデル
-  `["rf","cnntf_v1","alexnet"]`）。`SMOKE_TEST=True` で epoch/fold を縮小し
+  実行モデルは `ACTIVE_MODEL_KEYS` の1行で切替（RF単体検証 `["rf"]` ⇄ 複数モデル）。
+  `parameter_sets.type=active_model_grid` では、この有効モデルだけを毎回まとめて学習する。
+  非有効モデルのグリッド設定は無視され、全候補リストが1要素なら固定条件の1実行、
+  複数要素なら有効モデル間の直積グリッドとしてチューニングする。`SMOKE_TEST=True` で epoch/fold を縮小し
   「最後まで通るか」だけを高速確認できる（出力先に `smoke_` が付き本番結果と混ざらない）。
   出力先 `SAVE_PATH` 末尾にモデルセットのタグが付くので、RF単体と3モデルの結果は別フォルダに残る。
   foldごとの `y_true`、各モデル予測、アンサンブル予測は `fold_predictions/` にCSV保存し、
   アンサンブル重みは `ensemble_weights_*.csv` に保存する。
-  学習率とバッチサイズは `MODEL_SPECS` ではなく `PARAMETER_SETS` で管理し、モデル別に
-  `cnntf_v1` と `alexnet` の値を変えられる。現在はRF単体探索で良かったRFパラメータを
-  `RF_FIXED_PARAMS` として固定し、`KERAS_BATCH_SIZE_GRID` と `KERAS_LEARNING_RATE_GRID`
-  から `cnntf_v1` と `alexnet` の42条件を自動生成する。
+  学習率、バッチサイズ、RF固有パラメータは `MODEL_SPECS` ではなく
+  `VALIDATION_CONFIG["models"]["parameter_sets"]` でモデル別に管理する。
 
 - `code/compare_predict_heatflux.py`  
   学習済みモデルを使って、指定したサンプルの熱流束予測を比較する推論・確認用スクリプト。
@@ -56,7 +57,7 @@
   1モデルの学習・予測と PCA 前処理（`ModelTrainer`）。MODEL_SPECS の kind（keras/sklearn）に応じて入力形態を切り替える。
 
 - `code/utils/ensemble/ensemble_weighting.py`  
-  アンサンブルの重み決定と予測統合（`EnsembleWeighting`）。simple/fixed/inner_holdout/val_fold_legacy の各戦略に対応。
+  アンサンブルの重み決定と予測統合（`EnsembleWeighting`）。simple/inner_holdout/val_fold_legacy の各戦略に対応。
 
 - `code/utils/plotting/regression_plots.py`  
   回帰・アンサンブル評価まわりの作図（`RegressionPlotter`）。損失曲線・指標棒グラフ・予測散布図（100%分類閾値線つき）。
