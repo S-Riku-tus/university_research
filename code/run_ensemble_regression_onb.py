@@ -185,22 +185,10 @@ VALIDATION_CONFIG = {
                 "cnntf_v2_gap": {
                     "lr": [0.001],
                     "batch_size": [16],
-                    "variant": ["balanced_axis_log"],
-                    "num_transformer_blocks": [2],
-                    "num_heads": [4],
-                    "ff_dim": [256],
-                    "model_dim": [64],
-                    "attention_key_dim": [16],
-                    "dropout": [0.1],
-                    "tokenization": ["time_axis"],
-                    "input_transform": ["log_power"],
-                    "log_scale": [1e-12],
                 },
                 "alexnet": {
                     "lr": [0.001],
                     "batch_size": [16],
-                    "variant": ["legacy_log"],
-                    "log_scale": [1e-12],
                 },
             },
             "default_keras": {
@@ -373,7 +361,8 @@ EXPLAINABILITY_ENABLED = EXPLAINABILITY_CONFIG.get("enabled", False)
 
 # Model registry.
 # Keep this block because it maps model keys to the actual builder functions.
-# Fixed numeric parameters belong in VALIDATION_CONFIG["models"]["parameter_sets"].
+# Architecture values are fixed in each builder. This configuration tunes only
+# training values such as learning rate and batch size.
 
 
 MODEL_SPECS = [
@@ -387,11 +376,18 @@ MODEL_SPECS = [
         "key": "cnntf_v2_gap",
         "label": "CNN+Tf v2 GAP",
         "kind": "keras",
-        "builder": lambda mm, **params: mm.cnn_transformer_v2(pooling="gap", **params),
+        "builder": lambda mm, **params: mm.cnn_transformer_v2(**params),
         "input_axes_assumption": ["time_frame", "frequency_bin", "channel"],
         "architecture": {
             "front_end": "alexnet_like_cnn",
+            "input_transform": "log1p(power / 1e-12)",
             "sequence_length_after_cnn": 7,
+            "model_dim": 64,
+            "num_heads": 4,
+            "attention_key_dim_per_head": 16,
+            "ff_dim": 256,
+            "num_transformer_blocks": 2,
+            "dropout": 0.1,
             "encoder": "transformer_encoder",
             "pooling": "GlobalAveragePooling1D",
         },
@@ -401,6 +397,10 @@ MODEL_SPECS = [
         "label": "AlexNet",
         "kind": "keras",
         "builder": lambda mm, **params: mm.alexnet(**params),
+        "architecture": {
+            "input_transform": "log1p(power / 1e-12)",
+            "regression_head": "Flatten-Dense4096-Dense4096",
+        },
     },
 ]
 

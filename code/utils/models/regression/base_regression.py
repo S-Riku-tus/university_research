@@ -4,8 +4,7 @@ from tensorflow.keras.layers import (GlobalAveragePooling2D, Conv2D,
                                      Flatten, Dense, Activation, Input, Permute, Reshape, 
                                      Bidirectional, GRU, GlobalAveragePooling1D,
                                      MultiHeadAttention, LayerNormalization, Layer, Embedding,
-                                     TimeDistributed, Softmax)
-from tensorflow.keras import backend as K
+                                     TimeDistributed)
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.applications import ResNet50, MobileNetV2, VGG16, EfficientNetB0
 from tensorflow.keras.regularizers import l2
@@ -52,23 +51,6 @@ class PositionalEmbedding(Layer):
         embedded_positions = self.position_embeddings(positions)
         return inputs + embedded_positions
 
-class AttentionPooling(Layer):
-    def __init__(self, **kwargs):
-        super(AttentionPooling, self).__init__(**kwargs)
-
-    def build(self, input_shape):
-        self.W = self.add_weight(name='att_weight', shape=(input_shape[-1], 1),
-                                 initializer='uniform', trainable=True)
-        super(AttentionPooling, self).build(input_shape)
-
-    def call(self, x):
-        e = Activation('tanh')(K.dot(x, self.W))
-        # a = Activation('softmax', axis=1)(e)
-        a = Softmax(axis=1)(e)
-        output = x * a
-        return tf.reduce_sum(output, axis=1)
-
-
 class LogPowerCompression(Layer):
     """Compress raw non-negative spectrogram power without per-sample scaling."""
 
@@ -97,43 +79,14 @@ class RegressionModelMaker:
         self.input_shape = input_shape  # インスタンス変数を定義(ここで指定した変数は、class内ならどこからでもアクセス可能)
         pass
 
-    def alexnet(self, variant="legacy", log_scale=1e-12):
-        variant = str(variant).lower()
-        valid_variants = {
-            "legacy", "legacy_log", "compact_flatten", "compact_flatten_log",
-            "gap", "gap_log"
-        }
-        if variant not in valid_variants:
-            raise ValueError(
-                f"Unknown AlexNet variant {variant!r}; expected {sorted(valid_variants)}."
-            )
+    def alexnet(self):
+        """Selected AlexNet: log-power input and the legacy regression head.
 
-        # Keep the historical implementation byte-for-byte equivalent for
-        # reproducible baseline comparisons.
-        if variant == "legacy":
-            model = Sequential(name="alexnet_legacy")
-            model.add(Conv2D(96, (11, 11), strides=(4, 4), activation='relu', input_shape=self.input_shape, padding="valid"))
-            model.add(BatchNormalization())
-            model.add(MaxPooling2D(pool_size=(3, 3), strides=(2, 2), padding="valid"))
-            model.add(Conv2D(256, (5, 5), strides=(1, 1), activation='relu', padding="same"))
-            model.add(BatchNormalization())
-            model.add(MaxPooling2D(pool_size=(3, 3), strides=(2, 2), padding="valid"))
-            model.add(Conv2D(384, (3, 3), strides=(1, 1), activation='relu', padding="same"))
-            model.add(Conv2D(384, (3, 3), strides=(1, 1), activation='relu', padding="same"))
-            model.add(Conv2D(256, (3, 3), strides=(1, 1), activation='relu', padding="same"))
-            model.add(MaxPooling2D(pool_size=(3, 3), strides=(2, 2), padding="valid"))
-            model.add(Flatten())
-            model.add(Dense(4096, activation='relu'))
-            model.add(Dropout(0.5))
-            model.add(Dense(4096, activation='relu'))
-            model.add(Dropout(0.2))
-            model.add(Dense(1, activation='linear'))
-            return model
-
+        The discarded architecture variants and their comparison results are
+        documented in experiments/2026-08-30_log_power_architecture_study.md.
+        """
         x_in = Input(shape=self.input_shape, name="spec_input")
-        x = x_in
-        if variant in {"legacy_log", "compact_flatten_log", "gap_log"}:
-            x = LogPowerCompression(scale=log_scale, name="log_power")(x)
+        x = LogPowerCompression(scale=1e-12, name="log_power")(x_in)
 
         x = Conv2D(96, (11, 11), strides=(4, 4), activation='relu',
                    padding="valid", name="alex_conv1")(x)
@@ -154,24 +107,13 @@ class RegressionModelMaker:
         x = MaxPooling2D(pool_size=(3, 3), strides=(2, 2),
                          padding="valid", name="alex_pool3")(x)
 
-        if variant == "legacy_log":
-            x = Flatten(name="alex_flatten")(x)
-            x = Dense(4096, activation="relu", name="alex_dense1")(x)
-            x = Dropout(0.5, name="alex_dropout1")(x)
-            x = Dense(4096, activation="relu", name="alex_dense2")(x)
-            x = Dropout(0.2, name="alex_dropout2")(x)
-        elif variant in {"compact_flatten", "compact_flatten_log"}:
-            x = Flatten(name="alex_flatten")(x)
-            x = Dense(512, activation="relu", name="alex_dense1")(x)
-            x = Dropout(0.4, name="alex_dropout1")(x)
-            x = Dense(128, activation="relu", name="alex_dense2")(x)
-            x = Dropout(0.2, name="alex_dropout2")(x)
-        else:
-            x = GlobalAveragePooling2D(name="alex_gap")(x)
-            x = Dense(256, activation="relu", name="alex_dense1")(x)
-            x = Dropout(0.2, name="alex_dropout1")(x)
+        x = Flatten(name="alex_flatten")(x)
+        x = Dense(4096, activation="relu", name="alex_dense1")(x)
+        x = Dropout(0.5, name="alex_dropout1")(x)
+        x = Dense(4096, activation="relu", name="alex_dense2")(x)
+        x = Dropout(0.2, name="alex_dropout2")(x)
         output = Dense(1, activation="linear", name="output")(x)
-        return Model(x_in, output, name=f"alexnet_{variant}")
+        return Model(x_in, output, name="alexnet_legacy_log")
 
     def vgg16(self):
         model = Sequential()
@@ -323,110 +265,22 @@ class RegressionModelMaker:
             
             return model
 
-    def cnn_transformer_v2(self, num_transformer_blocks=4,
-                            head_size=256, num_heads=4, ff_dim=2048,
-                            pooling="gap", model_dim=32,
-                            attention_key_dim=None, dropout=0.2,
-                            variant="legacy", tokenization="time_axis",
-                            input_transform="none", log_scale=1e-12):
-            """
-            AlexNetをCNNベースとして利用し、Transformer Encoderに接続する回帰モデル。
-            """
-            variant = str(variant).lower()
-            profiles = {
-                "legacy": {},
-                "legacy_log": {
-                    "input_transform": "log_power",
-                },
-                "balanced_axis": {
-                    "num_transformer_blocks": 2,
-                    "num_heads": 4,
-                    "ff_dim": 256,
-                    "model_dim": 64,
-                    "attention_key_dim": 16,
-                    "dropout": 0.1,
-                    "tokenization": "time_axis",
-                    "input_transform": "none",
-                },
-                "balanced_axis_log": {
-                    "num_transformer_blocks": 2,
-                    "num_heads": 4,
-                    "ff_dim": 256,
-                    "model_dim": 64,
-                    "attention_key_dim": 16,
-                    "dropout": 0.1,
-                    "tokenization": "time_axis",
-                    "input_transform": "log_power",
-                },
-                "balanced_spatial": {
-                    "num_transformer_blocks": 2,
-                    "num_heads": 4,
-                    "ff_dim": 256,
-                    "model_dim": 64,
-                    "attention_key_dim": 16,
-                    "dropout": 0.1,
-                    "tokenization": "spatial",
-                    "input_transform": "none",
-                },
-                "balanced_spatial_log": {
-                    "num_transformer_blocks": 2,
-                    "num_heads": 4,
-                    "ff_dim": 256,
-                    "model_dim": 64,
-                    "attention_key_dim": 16,
-                    "dropout": 0.1,
-                    "tokenization": "spatial",
-                    "input_transform": "log_power",
-                },
-            }
-            if variant not in profiles:
-                raise ValueError(
-                    f"Unknown CNN+Transformer variant {variant!r}; "
-                    f"expected {sorted(profiles)}."
-                )
-            profile = profiles[variant]
-            num_transformer_blocks = profile.get(
-                "num_transformer_blocks", num_transformer_blocks
-            )
-            num_heads = profile.get("num_heads", num_heads)
-            ff_dim = profile.get("ff_dim", ff_dim)
-            model_dim = profile.get("model_dim", model_dim)
-            attention_key_dim = profile.get(
-                "attention_key_dim", attention_key_dim
-            )
-            dropout = profile.get("dropout", dropout)
-            tokenization = profile.get("tokenization", tokenization)
-            input_transform = profile.get("input_transform", input_transform)
+    def cnn_transformer_v2(self):
+            """Selected CNN+Transformer: balanced time-axis tokens with log power.
 
-            pooling = str(pooling).lower()
-            if pooling not in {"gap", "attention", "attn"}:
-                raise ValueError(
-                    "pooling must be 'gap' or 'attention' "
-                    f"(got pooling={pooling})."
-                )
-            if model_dim % num_heads != 0:
-                raise ValueError(
-                    "model_dim must be divisible by num_heads "
-                    f"(got model_dim={model_dim}, num_heads={num_heads})."
-                )
-            tokenization = str(tokenization).lower()
-            if tokenization not in {"time_axis", "spatial"}:
-                raise ValueError(
-                    "tokenization must be 'time_axis' or 'spatial' "
-                    f"(got tokenization={tokenization!r})."
-                )
-            input_transform = str(input_transform).lower()
-            if input_transform not in {"none", "log_power"}:
-                raise ValueError(
-                    "input_transform must be 'none' or 'log_power' "
-                    f"(got input_transform={input_transform!r})."
-                )
-            attention_key_dim = head_size if attention_key_dim is None else attention_key_dim
+            Architecture search results and the reason for fixing these values
+            are documented in
+            experiments/2026-08-30_log_power_architecture_study.md.
+            """
+            num_transformer_blocks = 2
+            num_heads = 4
+            ff_dim = 256
+            model_dim = 64
+            attention_key_dim = 16
+            dropout = 0.1
 
             x_in = Input(shape=self.input_shape, name='spec_input')
-            x = x_in
-            if input_transform == "log_power":
-                x = LogPowerCompression(scale=log_scale, name="log_power")(x)
+            x = LogPowerCompression(scale=1e-12, name="log_power")(x_in)
 
             # --- AlexNetベースの特徴抽出器 ---
             # 元のalexnetのConv層とPooling層をFunctional APIで記述
@@ -445,16 +299,10 @@ class RegressionModelMaker:
 
             # --- 2D->3D tokenization ---
             shape = x.shape
-            if tokenization == "spatial":
-                x = Reshape(
-                    (shape[1] * shape[2], shape[3]),
-                    name="v2_spatial_tokens",
-                )(x)
-            else:
-                x = Reshape(
-                    (shape[1], shape[2] * shape[3]),
-                    name="v2_time_axis_tokens",
-                )(x)
+            x = Reshape(
+                (shape[1], shape[2] * shape[3]),
+                name="v2_time_axis_tokens",
+            )(x)
 
             x = TimeDistributed(Dense(model_dim, activation='relu'),
                                 name='v2_projection')(x)
@@ -470,18 +318,13 @@ class RegressionModelMaker:
                                         ff_dim, dropout=dropout)
 
             # --- 時間平均 → 回帰線形出力 (seldnet_regressorと同じ) ---
-            if pooling == "gap":
-                x = GlobalAveragePooling1D(name='v2_global_average_pooling')(x)
-                model_name = 'cnn_transformer_v2_gap'
-            else:
-                x = AttentionPooling(name='v2_attention_pooling')(x)
-                model_name = 'cnn_transformer_v2_attention'
+            x = GlobalAveragePooling1D(name='v2_global_average_pooling')(x)
             output = Dense(1, activation='linear', name='output')(x)
 
             return Model(
                 inputs=x_in,
                 outputs=output,
-                name=f"{model_name}_{variant}",
+                name="cnn_transformer_v2_gap_balanced_axis_log",
             )
 
     #### EfficientNet + Tfのアーキテクチャ

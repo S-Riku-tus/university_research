@@ -43,9 +43,10 @@
 
 - `code/utils/models/regression/base_regression.py`  
   AlexNet系、CNN+Transformer、RandomForest系などの回帰モデル定義。
-  生power入力を絶対強度差を残して圧縮する `LogPowerCompression` と、
-  AlexNet/CNN+Transformerの構造比較用 `variant` を含む。現行ONB設定では
-  AlexNet=`legacy_log`、CNN+Transformer=`balanced_axis_log` を使用する。
+  生power入力を絶対強度差を残して圧縮する `LogPowerCompression` を含む。
+  構造比較後、AlexNetは`legacy_log`相当、CNN+Transformerは
+  `balanced_axis_log`相当の構造に固定しており、実行時の`variant`選択はない。
+  比較経緯は`experiments/2026-08-30_log_power_architecture_study.md`を参照する。
 
 - `code/utils/models/regression/swin_transformer.py`  
   Swin Transformer系の回帰モデル。

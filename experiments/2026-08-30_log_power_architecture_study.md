@@ -162,7 +162,14 @@ GAP化や全結合小型化だけでは改善しなかった。改善の中心�
 
 ### 省計算案
 
-AlexNet `gap_log`はR²=0.9349で、`legacy_log`より少し低いがパラメータ数を約92%削減できる。将来、精度より実行時間・保存サイズを優先する場合の代替候補として残す。
+AlexNet `gap_log`はR²=0.9349で、`legacy_log`より少し低い一方、パラメータ数を約92%削減できた。ただし今回の方針は精度優先であるため不採用とし、この結果は選定記録として本レポートにだけ残す。
+
+### 運用コードへの固定（2026-08-31）
+
+上記比較を根拠として、通常の学習コードから構造比較用`variant`分岐を削除した。
+AlexNetは`legacy_log`相当、CNN+Transformerは`balanced_axis_log`相当だけを
+各builder内に固定し、`parameter_sets`には学習率とbatch sizeだけを残した。
+不採用構造の定義は実行コードから削除したが、候補、比較値、採否理由は本レポートに保存する。
 
 ## 10. 論文上の結論候補
 
@@ -186,4 +193,3 @@ AlexNet `gap_log`はR²=0.9349で、`legacy_log`より少し低いがパラメ�
 - 3実験10 kHz確認: `20260830_architecture_log_confirmation_10khz`
 - 07.09 spatial確認: `20260830_architecture_0709_spatial_check`
 - 10 kHz従来構造の完全対比較: `20260830_architecture_paired_legacy_10khz`
-
