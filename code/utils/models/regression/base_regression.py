@@ -67,6 +67,24 @@ class AttentionPooling(Layer):
         a = Softmax(axis=1)(e)
         output = x * a
         return tf.reduce_sum(output, axis=1)
+
+
+class LogPowerCompression(Layer):
+    """Compress raw non-negative spectrogram power without per-sample scaling."""
+
+    def __init__(self, scale=1e-12, **kwargs):
+        super().__init__(**kwargs)
+        self.scale = float(scale)
+        if self.scale <= 0:
+            raise ValueError("LogPowerCompression scale must be positive.")
+
+    def call(self, inputs):
+        return tf.math.log1p(tf.maximum(inputs, 0.0) / self.scale)
+
+    def get_config(self):
+        config = super().get_config()
+        config.update({"scale": self.scale})
+        return config
     
 #######################################################################
 
@@ -79,25 +97,81 @@ class RegressionModelMaker:
         self.input_shape = input_shape  # インスタンス変数を定義(ここで指定した変数は、class内ならどこからでもアクセス可能)
         pass
 
-    def alexnet(self):
-        model = Sequential()
-        model.add(Conv2D(96, (11, 11), strides=(4, 4), activation='relu', input_shape=self.input_shape, padding="valid"))
-        model.add(BatchNormalization())
-        model.add(MaxPooling2D(pool_size=(3, 3), strides=(2, 2), padding="valid"))
-        model.add(Conv2D(256, (5, 5), strides=(1, 1), activation='relu', padding="same"))
-        model.add(BatchNormalization())
-        model.add(MaxPooling2D(pool_size=(3, 3), strides=(2, 2), padding="valid"))
-        model.add(Conv2D(384, (3, 3), strides=(1, 1), activation='relu', padding="same"))
-        model.add(Conv2D(384, (3, 3), strides=(1, 1), activation='relu', padding="same"))
-        model.add(Conv2D(256, (3, 3), strides=(1, 1), activation='relu', padding="same"))
-        model.add(MaxPooling2D(pool_size=(3, 3), strides=(2, 2), padding="valid"))
-        model.add(Flatten())
-        model.add(Dense(4096, activation='relu'))
-        model.add(Dropout(0.5))
-        model.add(Dense(4096, activation='relu'))
-        model.add(Dropout(0.2))
-        model.add(Dense(1, activation='linear'))  # 回帰のための線形活性化関数
-        return model
+    def alexnet(self, variant="legacy", log_scale=1e-12):
+        variant = str(variant).lower()
+        valid_variants = {
+            "legacy", "legacy_log", "compact_flatten", "compact_flatten_log",
+            "gap", "gap_log"
+        }
+        if variant not in valid_variants:
+            raise ValueError(
+                f"Unknown AlexNet variant {variant!r}; expected {sorted(valid_variants)}."
+            )
+
+        # Keep the historical implementation byte-for-byte equivalent for
+        # reproducible baseline comparisons.
+        if variant == "legacy":
+            model = Sequential(name="alexnet_legacy")
+            model.add(Conv2D(96, (11, 11), strides=(4, 4), activation='relu', input_shape=self.input_shape, padding="valid"))
+            model.add(BatchNormalization())
+            model.add(MaxPooling2D(pool_size=(3, 3), strides=(2, 2), padding="valid"))
+            model.add(Conv2D(256, (5, 5), strides=(1, 1), activation='relu', padding="same"))
+            model.add(BatchNormalization())
+            model.add(MaxPooling2D(pool_size=(3, 3), strides=(2, 2), padding="valid"))
+            model.add(Conv2D(384, (3, 3), strides=(1, 1), activation='relu', padding="same"))
+            model.add(Conv2D(384, (3, 3), strides=(1, 1), activation='relu', padding="same"))
+            model.add(Conv2D(256, (3, 3), strides=(1, 1), activation='relu', padding="same"))
+            model.add(MaxPooling2D(pool_size=(3, 3), strides=(2, 2), padding="valid"))
+            model.add(Flatten())
+            model.add(Dense(4096, activation='relu'))
+            model.add(Dropout(0.5))
+            model.add(Dense(4096, activation='relu'))
+            model.add(Dropout(0.2))
+            model.add(Dense(1, activation='linear'))
+            return model
+
+        x_in = Input(shape=self.input_shape, name="spec_input")
+        x = x_in
+        if variant in {"legacy_log", "compact_flatten_log", "gap_log"}:
+            x = LogPowerCompression(scale=log_scale, name="log_power")(x)
+
+        x = Conv2D(96, (11, 11), strides=(4, 4), activation='relu',
+                   padding="valid", name="alex_conv1")(x)
+        x = BatchNormalization(name="alex_bn1")(x)
+        x = MaxPooling2D(pool_size=(3, 3), strides=(2, 2),
+                         padding="valid", name="alex_pool1")(x)
+        x = Conv2D(256, (5, 5), activation='relu', padding="same",
+                   name="alex_conv2")(x)
+        x = BatchNormalization(name="alex_bn2")(x)
+        x = MaxPooling2D(pool_size=(3, 3), strides=(2, 2),
+                         padding="valid", name="alex_pool2")(x)
+        x = Conv2D(384, (3, 3), activation='relu', padding="same",
+                   name="alex_conv3")(x)
+        x = Conv2D(384, (3, 3), activation='relu', padding="same",
+                   name="alex_conv4")(x)
+        x = Conv2D(256, (3, 3), activation='relu', padding="same",
+                   name="alex_conv5")(x)
+        x = MaxPooling2D(pool_size=(3, 3), strides=(2, 2),
+                         padding="valid", name="alex_pool3")(x)
+
+        if variant == "legacy_log":
+            x = Flatten(name="alex_flatten")(x)
+            x = Dense(4096, activation="relu", name="alex_dense1")(x)
+            x = Dropout(0.5, name="alex_dropout1")(x)
+            x = Dense(4096, activation="relu", name="alex_dense2")(x)
+            x = Dropout(0.2, name="alex_dropout2")(x)
+        elif variant in {"compact_flatten", "compact_flatten_log"}:
+            x = Flatten(name="alex_flatten")(x)
+            x = Dense(512, activation="relu", name="alex_dense1")(x)
+            x = Dropout(0.4, name="alex_dropout1")(x)
+            x = Dense(128, activation="relu", name="alex_dense2")(x)
+            x = Dropout(0.2, name="alex_dropout2")(x)
+        else:
+            x = GlobalAveragePooling2D(name="alex_gap")(x)
+            x = Dense(256, activation="relu", name="alex_dense1")(x)
+            x = Dropout(0.2, name="alex_dropout1")(x)
+        output = Dense(1, activation="linear", name="output")(x)
+        return Model(x_in, output, name=f"alexnet_{variant}")
 
     def vgg16(self):
         model = Sequential()
@@ -252,10 +326,78 @@ class RegressionModelMaker:
     def cnn_transformer_v2(self, num_transformer_blocks=4,
                             head_size=256, num_heads=4, ff_dim=2048,
                             pooling="gap", model_dim=32,
-                            attention_key_dim=None, dropout=0.2):
+                            attention_key_dim=None, dropout=0.2,
+                            variant="legacy", tokenization="time_axis",
+                            input_transform="none", log_scale=1e-12):
             """
             AlexNetをCNNベースとして利用し、Transformer Encoderに接続する回帰モデル。
             """
+            variant = str(variant).lower()
+            profiles = {
+                "legacy": {},
+                "legacy_log": {
+                    "input_transform": "log_power",
+                },
+                "balanced_axis": {
+                    "num_transformer_blocks": 2,
+                    "num_heads": 4,
+                    "ff_dim": 256,
+                    "model_dim": 64,
+                    "attention_key_dim": 16,
+                    "dropout": 0.1,
+                    "tokenization": "time_axis",
+                    "input_transform": "none",
+                },
+                "balanced_axis_log": {
+                    "num_transformer_blocks": 2,
+                    "num_heads": 4,
+                    "ff_dim": 256,
+                    "model_dim": 64,
+                    "attention_key_dim": 16,
+                    "dropout": 0.1,
+                    "tokenization": "time_axis",
+                    "input_transform": "log_power",
+                },
+                "balanced_spatial": {
+                    "num_transformer_blocks": 2,
+                    "num_heads": 4,
+                    "ff_dim": 256,
+                    "model_dim": 64,
+                    "attention_key_dim": 16,
+                    "dropout": 0.1,
+                    "tokenization": "spatial",
+                    "input_transform": "none",
+                },
+                "balanced_spatial_log": {
+                    "num_transformer_blocks": 2,
+                    "num_heads": 4,
+                    "ff_dim": 256,
+                    "model_dim": 64,
+                    "attention_key_dim": 16,
+                    "dropout": 0.1,
+                    "tokenization": "spatial",
+                    "input_transform": "log_power",
+                },
+            }
+            if variant not in profiles:
+                raise ValueError(
+                    f"Unknown CNN+Transformer variant {variant!r}; "
+                    f"expected {sorted(profiles)}."
+                )
+            profile = profiles[variant]
+            num_transformer_blocks = profile.get(
+                "num_transformer_blocks", num_transformer_blocks
+            )
+            num_heads = profile.get("num_heads", num_heads)
+            ff_dim = profile.get("ff_dim", ff_dim)
+            model_dim = profile.get("model_dim", model_dim)
+            attention_key_dim = profile.get(
+                "attention_key_dim", attention_key_dim
+            )
+            dropout = profile.get("dropout", dropout)
+            tokenization = profile.get("tokenization", tokenization)
+            input_transform = profile.get("input_transform", input_transform)
+
             pooling = str(pooling).lower()
             if pooling not in {"gap", "attention", "attn"}:
                 raise ValueError(
@@ -267,13 +409,28 @@ class RegressionModelMaker:
                     "model_dim must be divisible by num_heads "
                     f"(got model_dim={model_dim}, num_heads={num_heads})."
                 )
+            tokenization = str(tokenization).lower()
+            if tokenization not in {"time_axis", "spatial"}:
+                raise ValueError(
+                    "tokenization must be 'time_axis' or 'spatial' "
+                    f"(got tokenization={tokenization!r})."
+                )
+            input_transform = str(input_transform).lower()
+            if input_transform not in {"none", "log_power"}:
+                raise ValueError(
+                    "input_transform must be 'none' or 'log_power' "
+                    f"(got input_transform={input_transform!r})."
+                )
             attention_key_dim = head_size if attention_key_dim is None else attention_key_dim
 
             x_in = Input(shape=self.input_shape, name='spec_input')
+            x = x_in
+            if input_transform == "log_power":
+                x = LogPowerCompression(scale=log_scale, name="log_power")(x)
 
             # --- AlexNetベースの特徴抽出器 ---
             # 元のalexnetのConv層とPooling層をFunctional APIで記述
-            x = Conv2D(96, (11, 11), strides=(4, 4), activation='relu', padding="same")(x_in)
+            x = Conv2D(96, (11, 11), strides=(4, 4), activation='relu', padding="same")(x)
             x = BatchNormalization()(x)
             x = MaxPooling2D(pool_size=(3, 3), strides=(2, 2), padding="same")(x)
             
@@ -286,14 +443,23 @@ class RegressionModelMaker:
             x = Conv2D(256, (3, 3), strides=(1, 1), activation='relu', padding="same")(x)
             x = MaxPooling2D(pool_size=(3, 3), strides=(2, 2), padding="same")(x)
 
-            # --- 2D->3D reshape (seldnet_regressorと同じ) ---
+            # --- 2D->3D tokenization ---
             shape = x.shape
-            x = Reshape((shape[1], shape[2] * shape[3]))(x)
+            if tokenization == "spatial":
+                x = Reshape(
+                    (shape[1] * shape[2], shape[3]),
+                    name="v2_spatial_tokens",
+                )(x)
+            else:
+                x = Reshape(
+                    (shape[1], shape[2] * shape[3]),
+                    name="v2_time_axis_tokens",
+                )(x)
 
             x = TimeDistributed(Dense(model_dim, activation='relu'),
                                 name='v2_projection')(x)
 
-            x = PositionalEmbedding(sequence_length=shape[1],
+            x = PositionalEmbedding(sequence_length=x.shape[1],
                                     output_dim=x.shape[-1],
                                     name='v2_positional_embedding')(x)
 
@@ -312,7 +478,11 @@ class RegressionModelMaker:
                 model_name = 'cnn_transformer_v2_attention'
             output = Dense(1, activation='linear', name='output')(x)
 
-            return Model(inputs=x_in, outputs=output, name=model_name)
+            return Model(
+                inputs=x_in,
+                outputs=output,
+                name=f"{model_name}_{variant}",
+            )
 
     #### EfficientNet + Tfのアーキテクチャ
 

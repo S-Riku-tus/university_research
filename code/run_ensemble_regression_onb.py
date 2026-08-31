@@ -114,7 +114,7 @@ from utils.experiment.run_helpers import (
 VALIDATION_CONFIG = {
     "run": {
         "smoke_test": False,
-        "epochs": 300,
+        "epochs": 200,
         "folds": 3,
         "smoke_epochs": 2,
         "smoke_folds": 2,
@@ -167,7 +167,6 @@ VALIDATION_CONFIG = {
         "onb_band_frac": 0.10,
     },
     "models": {
-        # "active_model_keys": ["rf", "cnntf_v2_gap", "alexnet"],
         "active_model_keys": ["cnntf_v2_gap", "alexnet"],
         # Only active_model_keys are executed. Inactive grids may remain below
         # as reusable settings and are ignored. Singleton lists mean one fixed
@@ -186,10 +185,22 @@ VALIDATION_CONFIG = {
                 "cnntf_v2_gap": {
                     "lr": [0.001],
                     "batch_size": [16],
+                    "variant": ["balanced_axis_log"],
+                    "num_transformer_blocks": [2],
+                    "num_heads": [4],
+                    "ff_dim": [256],
+                    "model_dim": [64],
+                    "attention_key_dim": [16],
+                    "dropout": [0.1],
+                    "tokenization": ["time_axis"],
+                    "input_transform": ["log_power"],
+                    "log_scale": [1e-12],
                 },
                 "alexnet": {
                     "lr": [0.001],
                     "batch_size": [16],
+                    "variant": ["legacy_log"],
+                    "log_scale": [1e-12],
                 },
             },
             "default_keras": {
@@ -213,7 +224,7 @@ VALIDATION_CONFIG = {
     },
     "output": {
         "save_date": datetime.now().strftime("%Y%m%d"),
-        "result_date_dir": datetime.now().strftime("%Y%m%d") + "_ensemble_strategy_comparison",
+        "result_date_dir": datetime.now().strftime("%Y%m%d") + "_selected_log_architecture",
         "save_fold_predictions": True,
         "save_tuning_summary": True,
         "resume_completed_runs": True,
@@ -377,14 +388,6 @@ MODEL_SPECS = [
         "label": "CNN+Tf v2 GAP",
         "kind": "keras",
         "builder": lambda mm, **params: mm.cnn_transformer_v2(pooling="gap", **params),
-        "builder_params": {
-            "num_transformer_blocks": 4,
-            "head_size": 256,
-            "num_heads": 4,
-            "ff_dim": 2048,
-            "model_dim": 32,
-            "dropout": 0.2,
-        },
         "input_axes_assumption": ["time_frame", "frequency_bin", "channel"],
         "architecture": {
             "front_end": "alexnet_like_cnn",
@@ -883,6 +886,9 @@ def main():
                         # --- 蜷・Δ繝・Ν縺ｮ蟄ｦ鄙偵→莠域ｸｬ ---
                         val_preds = {}        # key -> 讀懆ｨｼ fold 縺ｸ縺ｮ莠域ｸｬ (蜈・せ繧ｱ繝ｼ繝ｫ)
                         for spec in run_specs:
+                            # Reset before every model so architecture comparisons
+                            # do not depend on parameter-set or model execution order.
+                            set_global_seed(RANDOM_SEED + fold)
                             if spec["kind"] == "keras":
                                 print(f"  params for {spec['key']}: lr={spec['lr']}, batch_size={spec['batch_size']}")
                             print(f"[{spec['label']}] Fold {fold}/{DIVISIONS} training start")
