@@ -114,7 +114,7 @@ from utils.experiment.run_helpers import (
 VALIDATION_CONFIG = {
     "run": {
         "smoke_test": False,
-        "epochs": 200,
+        "epochs": 300,
         "folds": 3,
         "smoke_epochs": 2,
         "smoke_folds": 2,
@@ -127,9 +127,9 @@ VALIDATION_CONFIG = {
         "noise_source": "waterflow",  # "waterflow" or "whitenoise"
         "chunk_seconds": 1,
         "experiment_names": [
+            "2025.06.11_0.3_2",
             "2025.06.18_0.3_3",
-            # "2025.07.09_0.3_1",
-            # "2025.06.11_0.3_2",
+            "2025.07.09_0.3_1",
         ],
         "max_freq_hz_list": [
             "maxfreq=3kHz",
@@ -140,12 +140,12 @@ VALIDATION_CONFIG = {
         ],
         "noise_dir_names": [
             "heatflux_no_noise",
-            # "heatflux_reference_SNR=0",
-            # "heatflux_reference_SNR=-4",
-            # "heatflux_reference_SNR=-8",
-            # "heatflux_reference_SNR=-12",
-            # "heatflux_reference_SNR=-16",
-            # "heatflux_reference_SNR=-20",
+            "heatflux_reference_SNR=0",
+            "heatflux_reference_SNR=-4",
+            "heatflux_reference_SNR=-8",
+            "heatflux_reference_SNR=-12",
+            "heatflux_reference_SNR=-16",
+            "heatflux_reference_SNR=-20",
         ],
         "data_source_dir_by_experiment": {
             "2025.06.11_0.3_2": "waterflow_20260817_1s",
@@ -167,7 +167,7 @@ VALIDATION_CONFIG = {
         "onb_band_frac": 0.10,
     },
     "models": {
-        "active_model_keys": ["cnntf_v2_gap", "alexnet"],
+        "active_model_keys": ["rf", "cnntf_v2_gap", "alexnet"],
         # Only active_model_keys are executed. Inactive grids may remain below
         # as reusable settings and are ignored. Singleton lists mean one fixed
         # run; multiple values expand a Cartesian tuning grid over active models.
