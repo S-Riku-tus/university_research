@@ -1,0 +1,85 @@
+schema_version: 1
+dataset_name: waterflow_20260817_1s
+status: generated_and_structure_validated
+generated_on: 2026-08-17
+validated_on: 2026-09-03
+
+purpose: >-
+  水流音ノイズ下の熱流束回帰とONB検知を、熱流束ラベルに依存しない
+  固定ノイズ基準と元WAV単位分割で評価するための学習データ。
+
+source:
+  experiment_root: Pool_boiling/Subcooling_20_degrees/0.3
+  experiments:
+    - name: 2025.06.11_0.3_2
+      source_wav_groups: 18
+      chunks_per_condition: 1080
+      npy_files: 37800
+      global_reference_manifest_sha256: d0930973db25358b09b963dea5f6b4fa44a8b422eeacfc288a64a64f2840a378
+    - name: 2025.06.18_0.3_3
+      source_wav_groups: 18
+      chunks_per_condition: 1080
+      npy_files: 37800
+      global_reference_manifest_sha256: 4af54b580a22fcbeccab9cff591bb7331fba4c60079e2a8ee3d1d789267108d5
+    - name: 2025.07.09_0.3_1
+      source_wav_groups: 13
+      chunks_per_condition: 780
+      npy_files: 27300
+      global_reference_manifest_sha256: 2868d2c18c3fbf2c37a8d4703ba7562019087e2857f0b7c2234bd692e384a463
+  total_source_wav_groups: 49
+  total_npy_files: 102900
+
+generation:
+  script: code/2.run_npy_waterflow_2つhighpass.py
+  chunk_seconds: 1
+  sample_rate_hz: 44100
+  chunks_per_source_wav: 60
+  highpass_filter:
+    pass_hz: 500
+    stop_hz: 400
+    pass_loss_db: 1
+    stop_attenuation_db: 40
+  stft:
+    representation: linear_power
+    output_shape: [224, 224]
+    dtype: float32
+  max_frequency_hz: [3000, 5000, 10000, 15000, 22050]
+  noise_conditions:
+    - no_noise
+    - reference_SNR=0
+    - reference_SNR=-4
+    - reference_SNR=-8
+    - reference_SNR=-12
+    - reference_SNR=-16
+    - reference_SNR=-20
+
+noise_design:
+  source: water_flow/water_flow_125.wav
+  scaling_mode: fixed_global_rms
+  fixed_reference_signal_rms: 0.0004822199855309985
+  reference_definition: median_filtered_rms_across_49_source_wavs
+  calibrated_spl: false
+  label_or_individual_source_used_for_noise_level: false
+  random_seed: 42
+  randomize_noise_offset_per_chunk: true
+  pair_same_noise_chunk_across_snr: true
+  realized_snr_saved_per_chunk: true
+
+validation:
+  expected_frequency_directories_per_experiment: 5
+  expected_conditions_per_experiment: 35
+  condition_manifest: chunk_manifest.csv
+  checked_condition_count: 105
+  npy_count_matches_manifest_rows_for_all_conditions: true
+  audit_snapshot: experiments/2026-08-17_waterflow_dataset_snapshot
+
+storage:
+  tracked_in_git: false
+  local_path_pattern: >-
+    Pool_boiling/Subcooling_20_degrees/0.3/<experiment>/data/npy/waterflow_20260817_1s
+  reason: large_generated_dataset
+
+exclusions:
+  - dataset: waterflow_20250523_1s
+    use_for_main_results: false
+    reason: legacy_y_power_plus_scaled_noise_bug

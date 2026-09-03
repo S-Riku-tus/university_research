@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "source_artifacts_are_git_ignored": true,
+  "source_summaries": [
+    {
+      "result_root": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260902_selected_log_architecture",
+      "tuning_summary_sha256": "22d1ce1ea9e6611e6f2a6204fbf83ce50a2a23e901f570ef84efdc8639cbf6cb",
+      "source_rows": 245
+    },
+    {
+      "result_root": "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260902_selected_log_architecture",
+      "tuning_summary_sha256": "8c072e44e1e2ee6d07dd5d03448939d5116a24f2149377f8b5373d656e41031b",
+      "source_rows": 147
+    }
+  ],
+  "deduplicated_metric_rows": 392,
+  "completed_condition_count": 56,
+  "single_model_keys": [
+    "rf",
+    "cnntf_v2_gap",
+    "alexnet"
+  ],
+  "safe_ensemble_keys": [
+    "ensemble__simple_equal",
+    "ensemble__prediction_max",
+    "ensemble__inner_holdout"
+  ],
+  "legacy_not_claim_safe": "ensemble__val_fold_legacy",
+  "xai_source_file_count": 56,
+  "generated_files": [
+    "completion.csv",
+    "metrics_by_condition.csv",
+    "metrics_by_snr.csv",
+    "ensemble_comparison.csv",
+    "xai_top_frequency_group_by_condition.csv",
+    "xai_top_frequency_group_counts.csv"
+  ]
+}

@@ -54,3 +54,15 @@
 - 各モデルに対する説明性評価で、物理的に説明できる寄与を示せるか。
 - CNN, CNN+Transformer, RandomForest, アンサンブルを、どの評価軸で公平に比較するか。
 - 実験条件数やONB近傍の刻み幅をどの程度確保すべきか。
+
+## 2026-09-03時点の現在位置
+
+- 現行データは `waterflow_20260817_1s`。固定global RMS、SNR間paired noise、元WAV IDを保存した105条件の生成と件数整合性確認が完了した。
+- 旧 `waterflow_20250523_1s` は `y_power + scaled_noise` バグを含むため主結果から除外する。
+- 生powerをそのまま深層モデルへ入れる構成から、絶対強度差を残したlog-power入力へ変更し、06.11と06.18でCNN+TransformerとAlexNetの性能が改善した。
+- 2026-09-02のONB実行は56/105条件まで完了。06.18ではCNN+Transformerが35/35条件で単体最高R2だったが、安全な平均・重み付きアンサンブルの上積みは小さい。07.09ではアンサンブルが単体最高R2を平均的に下回った。
+- prediction-maxは完了した56/56条件で単体最高R2モデルよりRecallを改善した一方、R2を低下させた。回帰性能向上ではなく、見逃し低減を優先する検知統合候補として固定FPR・固定Precision・検知遅れで再評価する。
+- `val_fold_legacy`は外側検証foldの正解値を重み決定に使うため主張不可。過去結果の再現比較専用とする。
+- 現行のSNR別学習は各SNRで再学習しており、未知ノイズへの一般化試験ではない。clean学習から各ノイズ条件へのtransfer評価が残っている。
+
+最新の数値と実行条件は `experiments/2026-09-02_selected_log_architecture/`、データ条件は `configs/datasets/waterflow_20260817_1s.yaml`を参照する。

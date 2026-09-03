@@ -1,0 +1,99 @@
+schema_version: 1
+run_name: 20260902_selected_log_architecture
+status: interrupted_partial_run
+source_script: code/run_ensemble_regression_onb.py
+dataset_config: configs/datasets/waterflow_20260817_1s.yaml
+run_manifest_hash: 8aa701
+
+intended_grid:
+  experiments:
+    - 2025.06.18_0.3_3
+    - 2025.07.09_0.3_1
+    - 2025.06.11_0.3_2
+  max_frequency_hz: [3000, 5000, 10000, 15000, 22000]
+  snr_values: [no_noise, 0, -4, -8, -12, -16, -20]
+  intended_condition_count: 105
+
+completion:
+  completed_condition_count: 56
+  completion_fraction: 0.5333333333
+  by_experiment:
+    2025.06.18_0.3_3:
+      completed: 35
+      intended: 35
+      frequencies_hz: [3000, 5000, 10000, 15000, 22000]
+    2025.07.09_0.3_1:
+      completed: 21
+      intended: 35
+      frequencies_hz: [3000, 5000, 10000]
+    2025.06.11_0.3_2:
+      completed: 0
+      intended: 35
+      frequencies_hz: []
+
+training:
+  epochs: 300
+  folds: 3
+  split: GroupKFold_by_source_wav_id
+  random_seed: 42
+  color_channels: 1
+  input_array: linear_stft_power
+  deep_model_input_transform: log1p(max(power, 0) / 1.0e-12)
+
+models:
+  rf:
+    implementation: XGBRFRegressor
+    n_estimators: 300
+    max_depth: 4
+    subsample: 0.6
+    colsample_bynode: 0.6
+  cnntf_v2_gap:
+    learning_rate: 0.001
+    batch_size: 16
+    model_dim: 64
+    attention_heads: 4
+    key_dim_per_head: 16
+    transformer_blocks: 2
+    ff_dim: 256
+    pooling: GlobalAveragePooling1D
+  alexnet:
+    learning_rate: 0.001
+    batch_size: 16
+    regression_head: Flatten-Dense4096-Dense4096
+
+ensemble:
+  strategies:
+    simple_equal:
+      claim_safe: true
+    prediction_max:
+      claim_safe: true
+    inner_holdout:
+      claim_safe: true
+      holdout_fraction: 0.2
+    val_fold_legacy:
+      claim_safe: false
+      reason: outer_validation_labels_are_used_to_set_weights
+  configured_primary_strategy: val_fold_legacy
+  main_result_policy: >-
+    val_fold_legacyは再現比較専用とし、研究上の主張には使用しない。
+    回帰の安全な比較はinner_holdout、見逃し低減候補はprediction_maxとして分けて評価する。
+
+onb:
+  threshold_by_experiment:
+    2025.06.11_0.3_2: 266907.6965
+    2025.06.18_0.3_3: 271677.6816
+    2025.07.09_0.3_1: 275174.6640882674
+  near_onb_band_fraction: 0.10
+
+explainability:
+  enabled: true
+  completed_condition_count: 56
+  samples_per_fold: 5
+  integrated_gradients_steps: 64
+  common_comparison: grouped_frequency_and_time_mask
+
+interpretation_limits:
+  - 各SNRで個別に学習・同じSNRで評価しており、clean学習モデルの未知ノイズ耐性ではない。
+  - 周波数上限条件は同じ元音声から派生しており、独立な反復実験ではない。
+  - ONB近傍標本が一つの元WAV群に集中するため、fold平均SEを独立な不確かさとして扱わない。
+  - prediction_maxのRecall向上は高めの予測を選ぶ構造の影響を含み、固定FPR等で再評価が必要。

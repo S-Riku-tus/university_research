@@ -27,3 +27,15 @@
 - `RMSE`: 予測誤差の大きさ。大きな外れ値に敏感。
 - `MAE`: 平均的な予測誤差。RMSEより外れ値の影響が小さい。
 - `100%分類閾値`: ある熱流束以上で全サンプルが沸騰側に分類されるかを見るための指標。
+
+## 2026-09-02 selected log architecture ONB実行
+
+- 目的: 修正済み水流音データと選定済みlog-powerモデルを用い、3モデルと複数アンサンブルのSNR別性能を比較する。
+- 使用データ: `waterflow_20260817_1s`。
+- モデル: RF、CNN+Transformer v2 GAP、AlexNet。
+- 学習条件: 300 epoch、元WAV単位3-fold GroupKFold、seed 42。
+- 完了範囲: 06.18の35/35条件、07.09の21/35条件。06.11は未実行。合計56/105条件。
+- 主な結果: 06.18ではCNN+Transformerが35/35条件で単体最高R2。inner-holdoutのR2上積みは平均+0.0009。07.09では同統合が平均-0.0254。prediction-maxは全56条件でRecallを改善したがR2を低下させた。
+- 解釈: 回帰ではCNN+Transformerを主候補とし、アンサンブルの普遍的優位は主張しない。prediction-maxは見逃し低減用の別目的の候補として扱う。
+- 注意: `val_fold_legacy`は検証foldの正解を利用するため主結果にしない。SNR別再学習結果を未知ノイズ頑健性とは呼ばない。
+- 関連ファイル: `experiments/2026-09-02_selected_log_architecture/`。

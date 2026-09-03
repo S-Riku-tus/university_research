@@ -44,20 +44,31 @@
 
 ## 現在の中心候補
 
-### waterflow_20260817_1s（次回生成用）
+### waterflow_20260817_1s（現行データ）
 
 - 場所: `Pool_boiling/Subcooling_20_degrees/0.3/<実験>/data/npy/waterflow_20260817_1s`
-- 状態: 生成コード修正済み、データ本体は未生成。
+- 状態: 2026-08-17に生成済み。2026-09-03に全105条件の構造整合性を確認済み。
 - 使用実験: `2025.06.18_0.3_3`, `2025.07.09_0.3_1`, `2025.06.11_0.3_2`
 - 前処理: 500 Hz高域通過（pass loss 1 dB、400 Hz stop attenuation 40 dB）、線形パワーSTFT、224×224、float32。
 - chunk: 1秒。
-- maxfreq: 3 kHz、22.05 kHz。
+- maxfreq: 3、5、10、15、22.05 kHz。
 - noise: `water_flow_125.wav`。全3実験で1つの固定基準RMSを共有し、選択したノイズchunkを目標パワーへ正規化する。
 - reference SNR: 無雑音、0、-4、-8、-12、-16、-20 dB。個々の信号に対する実現SNRではない。
 - paired design: 同一chunkでは信号間・reference SNR間で同じノイズ断片を使用する。
 - provenance: ファイル名と `chunk_manifest.csv` に元WAV ID、ノイズoffset、実現SNR、各パワーを保存する。
 - 生成スクリプト: `code/2.run_npy_waterflow_2つhighpass.py`。
 - 学習スクリプト: `code/run_ensemble_regression_onb.py`。元WAV ID単位のGroupKFoldを使用する。
+- 生成件数: 06.11が37,800、06.18が37,800、07.09が27,300、合計102,900 `.npy`。
+- 整合性: 3実験 × 5周波数 × 7ノイズ条件の全105条件で、`.npy`数と`chunk_manifest.csv`の行数が一致。06.11/06.18は各条件1,080、07.09は各条件780サンプル。
+- Git管理用設定: `configs/datasets/waterflow_20260817_1s.yaml`。
+- Git管理用監査結果: `experiments/2026-08-17_waterflow_dataset_snapshot/`。条件別実現SNR、paired-noise検査、manifest SHA-256を保存。
+- データ本体: 容量が大きく再生成可能なためGit対象外。
+
+### waterflow_20250523_1s（主結果から除外）
+
+- 状態: アーカイブ扱い。今後の学習・主結果には使用しない。
+- 除外理由: 20250523アーカイブ版の生成処理に `y_power + scaled_noise` の誤加算があったため。
+- 方針: 過去経緯の説明以外では比較表へ混在させない。
 
 ## 2026-08-17 旧生成学習データの削除
 

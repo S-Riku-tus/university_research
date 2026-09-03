@@ -36,6 +36,12 @@
 - `code/check_gpu.py`  
   TensorFlowからGPUが見えているか確認する小さな確認用スクリプト。
 
+- `code/export_ensemble_result_snapshot.py`
+  Git対象外の `regression_result` にある `tuning_summary.csv` と説明性CSVから、条件別指標、SNR別集計、単体最高モデルとの差、完了範囲、最大寄与周波数帯を抽出する。軽量な結果スナップショットを `experiments/` に保存し、元集計のSHA-256も記録する。学習や元結果は変更しない。
+
+- `code/export_waterflow_dataset_snapshot.py`
+  Git対象外の現行水流音データについて、全条件のファイル数、manifest行数、実現SNR、ノイズpower式、SNR間のseed・offset対応、元WAV RMSを監査し、軽量CSVとSHA-256を `experiments/` に保存する。データ本体は変更しない。
+
 ## 共通処理
 
 - `code/utils/dataloading/dataloading_and_conversion.py`  

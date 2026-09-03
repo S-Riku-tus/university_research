@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "large_dataset_is_git_ignored": true,
+  "source_manifests": [
+    {
+      "dataset_root": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/data/npy/waterflow_20260817_1s",
+      "global_reference_manifest_sha256": "d0930973db25358b09b963dea5f6b4fa44a8b422eeacfc288a64a64f2840a378"
+    },
+    {
+      "dataset_root": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/data/npy/waterflow_20260817_1s",
+      "global_reference_manifest_sha256": "4af54b580a22fcbeccab9cff591bb7331fba4c60079e2a8ee3d1d789267108d5"
+    },
+    {
+      "dataset_root": "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/data/npy/waterflow_20260817_1s",
+      "global_reference_manifest_sha256": "2868d2c18c3fbf2c37a8d4703ba7562019087e2857f0b7c2234bd692e384a463"
+    }
+  ],
+  "semantic_global_manifests_match": true,
+  "fixed_reference_signal_rms": 0.0004822199855309985,
+  "source_wav_count": 49,
+  "condition_count": 105,
+  "manifest_row_count": 102900,
+  "npy_file_count": 102900,
+  "all_npy_counts_match_manifests": true,
+  "all_paired_noise_checks_pass": true,
+  "generated_files": [
+    "condition_audit.csv",
+    "paired_noise_audit.csv",
+    "source_wav_filtered_rms.csv"
+  ]
+}

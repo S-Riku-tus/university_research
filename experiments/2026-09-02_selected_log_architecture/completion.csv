@@ -1,0 +1,3 @@
+experiment_name,completed_condition_count,completed_frequency_count,completed_frequencies,completed_snr_count,completed_snrs
+2025.06.18_0.3_3,35,5,maxfreq=10kHz;maxfreq=15kHz;maxfreq=22kHz;maxfreq=3kHz;maxfreq=5kHz,7,-12;-16;-20;-4;-8;0;no_noise
+2025.07.09_0.3_1,21,3,maxfreq=10kHz;maxfreq=3kHz;maxfreq=5kHz,7,-12;-16;-20;-4;-8;0;no_noise

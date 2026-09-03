@@ -1,0 +1,16 @@
+experiment_name,max_frequency,sample_keys,condition_count,all_sample_keys_present_in_7_conditions,all_sample_keys_present_in_6_noisy_conditions,signal_power_matches_across_conditions,heat_flux_matches_across_conditions,noise_seed_matches_across_snr,noise_offset_samples_matches_across_snr,raw_noise_chunk_power_matches_across_snr
+2025.06.11_0.3_2,maxfreq=10kHz,1080,7,True,True,True,True,True,True,True
+2025.06.11_0.3_2,maxfreq=15kHz,1080,7,True,True,True,True,True,True,True
+2025.06.11_0.3_2,maxfreq=22kHz,1080,7,True,True,True,True,True,True,True
+2025.06.11_0.3_2,maxfreq=3kHz,1080,7,True,True,True,True,True,True,True
+2025.06.11_0.3_2,maxfreq=5kHz,1080,7,True,True,True,True,True,True,True
+2025.06.18_0.3_3,maxfreq=10kHz,1080,7,True,True,True,True,True,True,True
+2025.06.18_0.3_3,maxfreq=15kHz,1080,7,True,True,True,True,True,True,True
+2025.06.18_0.3_3,maxfreq=22kHz,1080,7,True,True,True,True,True,True,True
+2025.06.18_0.3_3,maxfreq=3kHz,1080,7,True,True,True,True,True,True,True
+2025.06.18_0.3_3,maxfreq=5kHz,1080,7,True,True,True,True,True,True,True
+2025.07.09_0.3_1,maxfreq=10kHz,780,7,True,True,True,True,True,True,True
+2025.07.09_0.3_1,maxfreq=15kHz,780,7,True,True,True,True,True,True,True
+2025.07.09_0.3_1,maxfreq=22kHz,780,7,True,True,True,True,True,True,True
+2025.07.09_0.3_1,maxfreq=3kHz,780,7,True,True,True,True,True,True,True
+2025.07.09_0.3_1,maxfreq=5kHz,780,7,True,True,True,True,True,True,True

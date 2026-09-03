@@ -19,7 +19,15 @@
 
 ## Codexに読ませる入口
 
-Codexに研究を手伝わせるときは、まず `AGENTS.md` と `docs/research_context.md` を読ませます。週次進捗報告を作るときは、`docs/weekly_report_guide.md` と `templates/weekly_progress_SOAP.md` を使います。過去報告を参照するときは、重いPDFやPPTXを直接すべて読ませる前に、`docs/progress_index.md` を更新してから使います。
+Codexに研究を手伝わせるときは、まず `AGENTS.md` と `docs/research_context.md` を読ませます。週次進捗報告を作るときは、`docs/progress/weekly_report_guide.md` と `templates/weekly_progress_SOAP.md` を使います。過去報告を参照するときは、重いPDFやPPTXを直接すべて読ませる前に、`docs/progress_index.md` を更新してから使います。
+
+## 現在の主結果
+
+- [2026-09-02 selected log architecture](experiments/2026-09-02_selected_log_architecture/README.md): 修正済み水流音データを用いた単体モデル・アンサンブル・ONB検知・説明性の最新スナップショット。実行は56/105条件で中断している。
+- [waterflow_20260817_1s](configs/datasets/waterflow_20260817_1s.yaml): 現行学習データの生成条件、件数、整合性確認、旧バグデータの除外方針。条件別監査値は[データ監査スナップショット](experiments/2026-08-17_waterflow_dataset_snapshot/README.md)に保存。
+- [log-powerモデル構造選定](experiments/2026-08-30_log_power_architecture_study.md): CNN+TransformerとAlexNetにlog-power入力を採用した根拠。
+
+`Pool_boiling/` 以下のデータ・重み・詳細画像は容量上Git対象外です。研究上必要な設定と数値は `configs/` と `experiments/` に軽量スナップショットとして保存します。
 
 ## 管理用の地図
 
