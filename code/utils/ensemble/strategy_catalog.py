@@ -28,6 +28,9 @@ ENSEMBLE_STRATEGY_CATALOG = {
 ENSEMBLE_RUNTIME_DEFAULTS = {
     "reference_model": "rf",
     "inner_holdout_frac": 0.20,
+    # Model weights target the same source-WAV unit used by the primary
+    # evaluation.  Median is robust to isolated impulsive chunks.
+    "inner_holdout_aggregation": "median",
     "combine": "mean",
 }
 

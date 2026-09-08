@@ -1,11 +1,12 @@
 import csv
 import gc
+import math
 import os
 from copy import deepcopy
 
 import numpy as np
 from sklearn.metrics import r2_score
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import GroupShuffleSplit
 from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras import backend as K
 
@@ -32,6 +33,54 @@ COMPARISON_HEADER = [
     "ensemble_better_than_best_single", "paired_improvement_se",
     "folds_improved", "folds_total",
 ]
+
+
+def _aggregate_predictions_by_group(y_true, prediction, groups, aggregation):
+    """Give each source WAV one target/prediction for inner weight fitting."""
+    y_true = np.asarray(y_true, dtype=float).ravel()
+    prediction = np.asarray(prediction, dtype=float).ravel()
+    groups = np.asarray(groups).ravel()
+    if not (len(y_true) == len(prediction) == len(groups)):
+        raise ValueError("y_true, prediction, and groups must have equal lengths.")
+    reducer = np.mean if aggregation == "mean" else np.median
+    grouped_y = []
+    grouped_prediction = []
+    for group in np.unique(groups):
+        mask = groups == group
+        group_y = y_true[mask]
+        tolerance = max(1e-6, float(np.max(np.abs(group_y))) * 1e-9)
+        if not np.allclose(group_y, group_y[0], rtol=0.0, atol=tolerance):
+            raise ValueError(f"Source WAV group {group!r} has multiple targets.")
+        grouped_y.append(float(group_y[0]))
+        grouped_prediction.append(float(reducer(prediction[mask])))
+    return np.asarray(grouped_y), np.asarray(grouped_prediction)
+
+
+def _group_disjoint_holdout_indices(y_true, groups, fraction, random_state):
+    """Split inner-fit/holdout indices without sharing a source WAV."""
+    y_true = np.asarray(y_true, dtype=float).ravel()
+    groups = np.asarray(groups).ravel()
+    if len(groups) != len(y_true):
+        raise ValueError("groups and y_true must have the same length.")
+    unique_groups = np.unique(groups)
+    if len(unique_groups) < 3:
+        raise ValueError("inner_holdout requires at least three source WAV groups.")
+    holdout_group_count = min(
+        len(unique_groups) - 1,
+        max(2, int(math.ceil(len(unique_groups) * float(fraction)))),
+    )
+    splitter = GroupShuffleSplit(
+        n_splits=1,
+        test_size=holdout_group_count,
+        random_state=int(random_state),
+    )
+    fit_index, holdout_index = next(
+        splitter.split(np.zeros(len(y_true)), y_true, groups=groups)
+    )
+    overlap = set(groups[fit_index]) & set(groups[holdout_index])
+    if overlap:
+        raise RuntimeError(f"Inner source-WAV leakage detected: {sorted(overlap)}")
+    return fit_index, holdout_index
 
 
 class EnsembleManager:
@@ -79,6 +128,10 @@ class EnsembleManager:
         return float(self.resolved_config["inner_holdout_frac"])
 
     @property
+    def inner_holdout_aggregation(self):
+        return str(self.resolved_config["inner_holdout_aggregation"])
+
+    @property
     def has_leaky_strategy(self):
         return any(not item["claim_safe"] for item in self.strategy_plan)
 
@@ -107,6 +160,10 @@ class EnsembleManager:
         if strategy_plan_requires_inner_holdout(self.strategy_plan) and not (
                 0 < self.inner_holdout_frac < 1):
             raise ValueError("Ensemble inner_holdout_frac must be between 0 and 1.")
+        if self.inner_holdout_aggregation not in {"mean", "median"}:
+            raise ValueError(
+                "Ensemble inner_holdout_aggregation must be 'mean' or 'median'."
+            )
 
     def snapshot(self):
         return {
@@ -188,6 +245,7 @@ class EnsembleRun:
         trainer,
         x_train,
         y_train,
+        groups,
         pca_components,
         input_shape,
         epochs,
@@ -198,12 +256,21 @@ class EnsembleRun:
         if not strategy_plan_requires_inner_holdout(self.strategy_plan):
             return {}
 
-        x_inner_fit, x_inner, y_inner_fit, y_inner = train_test_split(
-            x_train,
+        if groups is None:
+            raise ValueError(
+                "inner_holdout requires source_wav_id groups; sample-level "
+                "weight fitting would leak the same WAV across partitions."
+            )
+        groups = np.asarray(groups).ravel()
+        inner_fit_index, inner_index = _group_disjoint_holdout_indices(
             y_train,
-            test_size=self.manager.inner_holdout_frac,
+            groups,
+            fraction=self.manager.inner_holdout_frac,
             random_state=self.manager.random_seed + int(fold),
         )
+        inner_groups = groups[inner_index]
+        x_inner_fit, x_inner = x_train[inner_fit_index], x_train[inner_index]
+        y_inner_fit, y_inner = y_train[inner_fit_index], y_train[inner_index]
         inner_scaler = MinMaxScaler()
         y_inner_fit_scaled = inner_scaler.fit_transform(
             y_inner_fit.reshape(-1, 1)
@@ -242,7 +309,15 @@ class EnsembleRun:
                 x_inner_pca,
                 inner_scaler,
             )
-            errors[spec["key"]] = 1.0 - r2_score(y_inner, inner_pred)
+            grouped_y, grouped_prediction = _aggregate_predictions_by_group(
+                y_inner,
+                inner_pred,
+                inner_groups,
+                aggregation=self.manager.inner_holdout_aggregation,
+            )
+            errors[spec["key"]] = 1.0 - r2_score(
+                grouped_y, grouped_prediction
+            )
             del inner_model, inner_history, inner_pred
             K.clear_session()
             gc.collect()

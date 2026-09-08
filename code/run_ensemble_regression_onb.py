@@ -43,7 +43,6 @@ main() 縺ｮ繧ｪ繝ｼ繧ｱ繧ｹ繝医Ξ繝ｼ繧ｷ繝ｧ繝ｳ縺縺�
 import os
 import gc
 import time
-import csv
 from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
@@ -64,6 +63,11 @@ from tensorflow.keras import backend as K
 from utils.models.regression.base_regression import RegressionModelMaker
 from utils.dataloading.dataloading_and_conversion import DataLoadingConversion
 from utils.calculation.regression_detection_metrics import RegressionDetectionMetrics
+from utils.calculation.wav_event_metrics import (
+    build_fold_prediction_rows,
+    save_wav_event_evaluation,
+    write_fold_prediction_csv,
+)
 from utils.training.model_training import ModelTrainer
 from utils.ensemble.ensemble_runtime import EnsembleManager
 from utils.plotting.regression_plots import RegressionPlotter
@@ -80,6 +84,10 @@ from utils.explainability.training_integration import (
     resolve_explainability_scope,
 )
 from utils.experiment.dataset_jobs import build_dataset_jobs as make_dataset_jobs
+from utils.experiment.onb_thresholds import (
+    onb_threshold_by_experiment,
+    onb_threshold_provenance_by_experiment,
+)
 from utils.experiment.run_helpers import (
     append_tuning_summary,
     has_threshold,
@@ -114,7 +122,7 @@ from utils.experiment.run_helpers import (
 VALIDATION_CONFIG = {
     "run": {
         "smoke_test": False,
-        "epochs": 300,
+        "epochs": 200,
         "folds": 3,
         "smoke_epochs": 2,
         "smoke_folds": 2,
@@ -129,7 +137,7 @@ VALIDATION_CONFIG = {
         "experiment_names": [
             "2025.06.11_0.3_2",
             "2025.06.18_0.3_3",
-            "2025.07.09_0.3_1",
+            # "2025.07.09_0.3_1",
         ],
         "max_freq_hz_list": [
             "maxfreq=3kHz",
@@ -155,15 +163,11 @@ VALIDATION_CONFIG = {
         "skip_missing_datasets": False,
     },
     "thresholds": {
-        "by_experiment": {
-            "2025.07.09_0.3_1": 275174.6640882674,
-            "2025.06.11_0.3_2": 266907.6965,
-            "2025.06.18_0.3_3": 271677.6816,
-        },
-        # False lets parameter tuning run before the ONB threshold is fixed.
-        # Threshold-dependent metrics become NaN until the experiment threshold
-        # is added above. Set True again when making ONB claims.
-        "require_experiment_threshold": False,
+        # Threshold values and their experiment-file evidence are maintained
+        # together so a preceding heat-flux level cannot be used silently.
+        "by_experiment": onb_threshold_by_experiment(),
+        "provenance_by_experiment": onb_threshold_provenance_by_experiment(),
+        "require_experiment_threshold": True,
         "onb_band_frac": 0.10,
     },
     "models": {
@@ -203,9 +207,9 @@ VALIDATION_CONFIG = {
             "simple_equal",
             "prediction_max",
             "inner_holdout",
-            "val_fold_legacy",
         ],
-        "primary_strategy_name": "val_fold_legacy",
+        # This strategy never uses outer-validation labels to choose weights.
+        "primary_strategy_name": "simple_equal",
     },
     "features": {
         "pca_components": 100,
@@ -216,6 +220,21 @@ VALIDATION_CONFIG = {
         "save_fold_predictions": True,
         "save_tuning_summary": True,
         "resume_completed_runs": True,
+    },
+    "evaluation": {
+        # Chunk metrics remain available for instantaneous behavior.  The
+        # primary operating-condition evaluation pools every outer-fold
+        # prediction and then gives each source WAV one prediction.
+        "wav_level_enabled": True,
+        "wav_aggregations": ["mean", "median", "p90"],
+        "primary_wav_aggregation": "median",
+        # Report both the raw first crossing and a two-consecutive-WAV rule.
+        # The latter distinguishes an isolated false alarm from a persistent
+        # transition along the measured heat-flux operating points.
+        "onb_transition_persistence_wavs": [1, 2],
+        # Predicted threshold-crossing runs are descriptive until synchronized
+        # bubble-event ground truth is added.
+        "predicted_event_summary_enabled": True,
     },
     "explainability": {
         # Explanations are extra validation analyses for the trained fold model.
@@ -257,6 +276,9 @@ VALIDATION_CONFIG = {
         "time_groups": 4,
         "time_extent_seconds": 1.0,
         "onb_band_frac": 0.10,
+        # Physical mask-effect claims use the same unit as the main result.
+        "performance_evaluation_unit": "source_wav",
+        "performance_wav_aggregation": "median",
         "baseline_value": 0.0,
         "curve_fractions": [0.0, 0.05, 0.10, 0.20, 0.30, 0.50, 1.0],
         # Small non-negative perturbations test whether the primary IG maps are
@@ -312,6 +334,9 @@ DATA_SOURCE_DIR_BY_EXPERIMENT = _cfg("data", "data_source_dir_by_experiment")
 SKIP_MISSING_DATASETS = _cfg("data", "skip_missing_datasets")
 
 THRESHOLD_BY_EXPERIMENT = _cfg("thresholds", "by_experiment")
+THRESHOLD_PROVENANCE_BY_EXPERIMENT = _cfg(
+    "thresholds", "provenance_by_experiment"
+)
 REQUIRE_EXPERIMENT_THRESHOLD = _cfg("thresholds", "require_experiment_threshold")
 ONB_BAND_FRAC = _cfg("thresholds", "onb_band_frac")
 
@@ -344,6 +369,15 @@ SAVE_TUNING_SUMMARY = _cfg("output", "save_tuning_summary")
 RESUME_COMPLETED_RUNS = _cfg("output", "resume_completed_runs")
 RUN_INSTANCE_ID = os.environ.get("RUN_ID", datetime.now().strftime("%H%M%S"))
 FOLD_PREDICTIONS_DIR_NAME = "fold_pred"
+WAV_LEVEL_EVALUATION_ENABLED = _cfg("evaluation", "wav_level_enabled")
+WAV_AGGREGATIONS = tuple(_cfg("evaluation", "wav_aggregations"))
+PRIMARY_WAV_AGGREGATION = _cfg("evaluation", "primary_wav_aggregation")
+ONB_TRANSITION_PERSISTENCE_WAVS = tuple(
+    _cfg("evaluation", "onb_transition_persistence_wavs")
+)
+PREDICTED_EVENT_SUMMARY_ENABLED = _cfg(
+    "evaluation", "predicted_event_summary_enabled"
+)
 EXPLAINABILITY_CONFIG = resolve_explainability_scope(
     VALIDATION_CONFIG.get("explainability", {}),
     experiment_names=EXPERIMENT_DIR_NAMES,
@@ -462,6 +496,7 @@ def validation_config_snapshot():
         },
         "thresholds": {
             "by_experiment": THRESHOLD_BY_EXPERIMENT,
+            "provenance_by_experiment": THRESHOLD_PROVENANCE_BY_EXPERIMENT,
             "require_experiment_threshold": REQUIRE_EXPERIMENT_THRESHOLD,
             "onb_band_frac": ONB_BAND_FRAC,
         },
@@ -481,6 +516,14 @@ def validation_config_snapshot():
             "save_tuning_summary": SAVE_TUNING_SUMMARY,
             "resume_completed_runs": RESUME_COMPLETED_RUNS,
         },
+        "evaluation": {
+            "wav_level_enabled": WAV_LEVEL_EVALUATION_ENABLED,
+            "wav_aggregations": WAV_AGGREGATIONS,
+            "primary_wav_aggregation": PRIMARY_WAV_AGGREGATION,
+            "onb_transition_persistence_wavs": ONB_TRANSITION_PERSISTENCE_WAVS,
+            "predicted_event_summary_enabled": PREDICTED_EVENT_SUMMARY_ENABLED,
+            "event_ground_truth_status": "not_annotated",
+        },
         "explainability": EXPLAINABILITY_CONFIG,
     }
 
@@ -496,6 +539,11 @@ def validate_validation_config(enabled_specs):
         raise ValueError("VALIDATION_CONFIG['models']['parameter_sets'] must not be empty.")
     if int(PCA_COMPONENTS) <= 0:
         raise ValueError("pca_components must be a positive integer.")
+    if WAV_LEVEL_EVALUATION_ENABLED and COLOR_CHANNEL != 1:
+        raise ValueError(
+            "WAV-level evaluation currently requires NPY input metadata "
+            "(run.color_channel=1)."
+        )
 
     model_keys = [spec["key"] for spec in enabled_specs]
     if len(model_keys) != len(set(model_keys)):
@@ -509,6 +557,52 @@ def validate_validation_config(enabled_specs):
         resolve_parameter_set(enabled_specs, parameter_set)
 
     ENSEMBLE_MANAGER.validate(enabled_specs)
+
+    allowed_wav_aggregations = {"mean", "median", "p90", "p95"}
+    unknown_wav_aggregations = set(WAV_AGGREGATIONS) - allowed_wav_aggregations
+    if unknown_wav_aggregations:
+        raise ValueError(
+            "Unknown evaluation.wav_aggregations: "
+            f"{sorted(unknown_wav_aggregations)}"
+        )
+    if WAV_LEVEL_EVALUATION_ENABLED and not WAV_AGGREGATIONS:
+        raise ValueError("evaluation.wav_aggregations must not be empty.")
+    if PRIMARY_WAV_AGGREGATION not in WAV_AGGREGATIONS:
+        raise ValueError(
+            "evaluation.primary_wav_aggregation must be included in "
+            "evaluation.wav_aggregations."
+        )
+    if (
+        not ONB_TRANSITION_PERSISTENCE_WAVS
+        or any(int(value) <= 0 for value in ONB_TRANSITION_PERSISTENCE_WAVS)
+    ):
+        raise ValueError(
+            "evaluation.onb_transition_persistence_wavs must contain "
+            "positive integers."
+        )
+
+    if EXPLAINABILITY_CONFIG.get("enabled", False):
+        xai_evaluation_unit = str(
+            EXPLAINABILITY_CONFIG.get("performance_evaluation_unit", "chunk")
+        ).lower()
+        xai_wav_aggregation = str(
+            EXPLAINABILITY_CONFIG.get("performance_wav_aggregation", "median")
+        ).lower()
+        if xai_evaluation_unit not in {"source_wav", "chunk"}:
+            raise ValueError(
+                "explainability.performance_evaluation_unit must be "
+                "'source_wav' or 'chunk'."
+            )
+        if xai_wav_aggregation not in {"mean", "median"}:
+            raise ValueError(
+                "explainability.performance_wav_aggregation must be "
+                "'mean' or 'median'."
+            )
+        if xai_evaluation_unit == "source_wav" and COLOR_CHANNEL != 1:
+            raise ValueError(
+                "source-WAV XAI performance evaluation requires NPY metadata "
+                "(run.color_channel=1)."
+            )
 
     if REQUIRE_EXPERIMENT_THRESHOLD:
         missing_thresholds = [
@@ -721,6 +815,7 @@ def main():
         start_time = time.time()
         data_loading = DataLoadingConversion()
         sample_groups = None
+        sample_metadata = None
         if COLOR_CHANNEL == 1:
             x, y, sample_metadata = data_loading.load_npy_data(
                 data_path, return_metadata=True
@@ -758,6 +853,16 @@ def main():
                 all_keys.extend(ensemble_run.result_keys)
                 label_of = {spec["key"]: spec["label"] for spec in run_specs}
                 label_of.update(ensemble_run.labels)
+                claim_safe_by_model = {key: True for key in model_keys}
+                claim_note_by_model = {key: "outer_GroupKFold_OOF" for key in model_keys}
+                for strategy in ensemble_run.strategy_plan:
+                    result_key = strategy["result_key"]
+                    claim_safe_by_model[result_key] = bool(strategy["claim_safe"])
+                    claim_note_by_model[result_key] = (
+                        "outer_validation_labels_used_for_weights"
+                        if not strategy["claim_safe"]
+                        else "no_outer_validation_labels_used_for_weights"
+                    )
                 param_tag = parameter_set_tag(parameter_set, run_specs, safe_tag)
                 param_summary = model_param_summary(run_specs)
                 run_hash = run_config_digest(
@@ -825,6 +930,8 @@ def main():
                 # 謖・ｨ吶・菫晏ｭ伜・ (key -> metric -> [fold 縺斐→縺ｮ蛟､])
                 store = {k: defaultdict(list) for k in all_keys}
                 train_meta = {k: defaultdict(list) for k in model_keys}
+                oof_prediction_rows = []
+                wav_evaluation = None
 
                 output_file = os.path.join(SAVE_PATH, f'validation_results_{snr_value}.txt')
                 with _open_text(output_file, 'w', encoding='utf-8') as f:
@@ -857,6 +964,10 @@ def main():
                             trainer=trainer,
                             x_train=x_train,
                             y_train=y_train,
+                            groups=(
+                                sample_groups[train_index]
+                                if sample_groups is not None else None
+                            ),
                             pca_components=PCA_COMPONENTS,
                             input_shape=(224, 224, COLOR_CHANNEL),
                             epochs=EPOCH_NUM,
@@ -931,7 +1042,11 @@ def main():
                                 fold, max_freq_name, EXPLAINABILITY_CONFIG,
                                 pca=pca_model,
                                 experiment_name=job["experiment_name"],
-                                noise_dir_name=noise_dir_name)
+                                noise_dir_name=noise_dir_name,
+                                source_wav_groups=(
+                                    sample_groups[val_index]
+                                    if sample_groups is not None else None
+                                ))
 
                             ensemble_run.record_validation_error(
                                 spec["key"],
@@ -958,18 +1073,23 @@ def main():
                             val_preds,
                             ensemble_outputs,
                         )
+                        fold_prediction_rows = build_fold_prediction_rows(
+                            val_indices=val_index,
+                            y_true=y_val,
+                            predictions=preds_all,
+                            sample_metadata=sample_metadata,
+                            fold=fold,
+                        )
+                        oof_prediction_rows.extend(fold_prediction_rows)
                         if SAVE_FOLD_PREDICTIONS:
                             pred_dir = os.path.join(SAVE_PATH, FOLD_PREDICTIONS_DIR_NAME)
                             _makedirs(pred_dir)
                             pred_csv = os.path.join(pred_dir, f"pred_f{fold}_{snr_value}.csv")
-                            with _open_text(pred_csv, "w", newline="", encoding="utf-8") as pf:
-                                writer = csv.writer(pf)
-                                writer.writerow(["sample_index", "y_true"] + all_keys)
-                                for row_i, sample_idx in enumerate(val_index):
-                                    writer.writerow(
-                                        [int(sample_idx), f"{float(y_val[row_i]):.10g}"]
-                                        + [f"{float(preds_all[key][row_i]):.10g}" for key in all_keys]
-                                    )
+                            write_fold_prediction_csv(
+                                pred_csv,
+                                fold_prediction_rows,
+                                all_keys,
+                            )
                         for key in all_keys:
                             pred = preds_all[key]
                             reg = metrics.regression_metrics(y_val, pred, threshold, ONB_BAND_FRAC)
@@ -1029,8 +1149,60 @@ def main():
                         del pca_model
                         del x_train_pca, x_val_pca, y_train_scaled
                         del val_preds, preds_all, ensemble_outputs
+                        del fold_prediction_rows
                         K.clear_session()
                         gc.collect()
+
+                    if WAV_LEVEL_EVALUATION_ENABLED:
+                        wav_evaluation = save_wav_event_evaluation(
+                            save_path=SAVE_PATH,
+                            snr_value=snr_value,
+                            chunk_rows=oof_prediction_rows,
+                            model_keys=all_keys,
+                            threshold=threshold,
+                            band_frac=ONB_BAND_FRAC,
+                            aggregations=WAV_AGGREGATIONS,
+                            primary_aggregation=PRIMARY_WAV_AGGREGATION,
+                            save_predicted_event_summary=(
+                                PREDICTED_EVENT_SUMMARY_ENABLED
+                            ),
+                            onb_transition_persistence_wavs=(
+                                ONB_TRANSITION_PERSISTENCE_WAVS
+                            ),
+                            claim_safe_by_model=claim_safe_by_model,
+                            claim_note_by_model=claim_note_by_model,
+                            threshold_provenance=(
+                                THRESHOLD_PROVENANCE_BY_EXPERIMENT.get(
+                                    job["experiment_name"]
+                                )
+                            ),
+                        )
+                        f.write("\nPooled OOF WAV-level Results:\n")
+                        f.write(
+                            "  unit=source_wav_id | "
+                            f"n_wavs={len(wav_evaluation['wav_rows'])} | "
+                            f"primary_aggregation={PRIMARY_WAV_AGGREGATION}\n"
+                        )
+                        for row in wav_evaluation["metric_rows"]:
+                            if row["aggregation"] != PRIMARY_WAV_AGGREGATION:
+                                continue
+                            f.write(
+                                f"  [{label_of[row['model_key']]}] "
+                                f"R2={row.get('r2', float('nan')):.4f} "
+                                f"RMSE={row.get('rmse_all', float('nan')):.1f} "
+                                f"MAE={row.get('mae_all', float('nan')):.1f} | "
+                                f"Acc={row.get('accuracy', float('nan')):.4f} "
+                                f"Rec={row.get('recall', float('nan')):.4f} "
+                                f"F1={row.get('f1', float('nan')):.4f}\n"
+                            )
+                        f.write(
+                            "  Event CSV contains predicted threshold crossings "
+                            "only; no event precision/recall is claimed.\n"
+                        )
+                        f.write(
+                            "  ONB transition CSV reports heat-flux/operating-point "
+                            "offsets; seconds require synchronized annotations.\n"
+                        )
 
                     # --- 蟷ｳ蝮・ｵ先棡 (mean ﾂｱ SE) ---
                     f.write(f"\nRecorded at: {datetime.now():%Y-%m-%d %H:%M:%S}\n")

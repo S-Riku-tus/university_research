@@ -68,6 +68,8 @@ OCCLUSION_HEADER = [
 ]
 
 GROUP_MASK_PERFORMANCE_HEADER = [
+    "evaluation_unit",
+    "aggregation",
     "group",
     "axis",
     "low",
@@ -75,7 +77,9 @@ GROUP_MASK_PERFORMANCE_HEADER = [
     "unit",
     "low_index",
     "high_index",
+    "n_chunks",
     "n_samples",
+    "n_source_wavs",
     "n_onb_samples",
     "base_r2",
     "masked_r2",
@@ -314,22 +318,86 @@ def _regression_metrics(y_true, prediction, threshold, onb_band_frac):
     return metrics
 
 
+def _aggregate_metric_inputs(y_true, prediction, source_wav_groups,
+                             aggregation="median"):
+    """Return one target/prediction per source WAV for XAI performance tests."""
+    y_true = np.asarray(y_true, dtype=float).ravel()
+    prediction = np.asarray(prediction, dtype=float).ravel()
+    source_wav_groups = np.asarray(source_wav_groups).ravel()
+    if not (len(y_true) == len(prediction) == len(source_wav_groups)):
+        raise ValueError(
+            "y_true, prediction, and source_wav_groups must have equal lengths."
+        )
+    if aggregation not in {"mean", "median"}:
+        raise ValueError("XAI WAV aggregation must be 'mean' or 'median'.")
+    reducer = np.mean if aggregation == "mean" else np.median
+    grouped_y = []
+    grouped_prediction = []
+    for group_id in np.unique(source_wav_groups):
+        mask = source_wav_groups == group_id
+        group_y = y_true[mask]
+        tolerance = max(1e-6, float(np.max(np.abs(group_y))) * 1e-9)
+        if not np.allclose(group_y, group_y[0], rtol=0.0, atol=tolerance):
+            raise ValueError(f"Source WAV {group_id!r} has multiple targets.")
+        grouped_y.append(float(group_y[0]))
+        grouped_prediction.append(float(reducer(prediction[mask])))
+    return np.asarray(grouped_y), np.asarray(grouped_prediction)
+
+
 def _group_mask_performance(predict_fn, x_val, y_val, base_pred, groups,
-                            threshold, config):
+                            threshold, config, source_wav_groups=None):
+    evaluation_unit = str(
+        config.get("performance_evaluation_unit", "chunk")
+    ).lower()
+    wav_aggregation = str(
+        config.get("performance_wav_aggregation", "median")
+    ).lower()
+    if evaluation_unit == "source_wav":
+        if source_wav_groups is None:
+            raise ValueError(
+                "source_wav_groups are required for source-WAV XAI evaluation."
+            )
+        metric_y, metric_base_pred = _aggregate_metric_inputs(
+            y_val, base_pred, source_wav_groups, wav_aggregation
+        )
+        unit_label = "source_wav"
+        aggregation_label = wav_aggregation
+        n_source_wavs = len(metric_y)
+    elif evaluation_unit == "chunk":
+        metric_y = np.asarray(y_val, dtype=float).ravel()
+        metric_base_pred = np.asarray(base_pred, dtype=float).ravel()
+        unit_label = "chunk"
+        aggregation_label = "none"
+        n_source_wavs = ""
+    else:
+        raise ValueError(
+            "performance_evaluation_unit must be 'source_wav' or 'chunk'."
+        )
+
     base = _regression_metrics(
-        y_val, base_pred, threshold, config.get("onb_band_frac", 0.10))
+        metric_y, metric_base_pred, threshold,
+        config.get("onb_band_frac", 0.10))
     rows = []
     baseline_value = _baseline_value(config)
     for group in groups:
         masked = np.array(x_val, copy=True)
         masked[:, group["mask"], :] = baseline_value
         masked_pred = np.asarray(predict_fn(masked), dtype=float)
+        if evaluation_unit == "source_wav":
+            _, metric_masked_pred = _aggregate_metric_inputs(
+                y_val, masked_pred, source_wav_groups, wav_aggregation
+            )
+        else:
+            metric_masked_pred = masked_pred
         current = _regression_metrics(
-            y_val, masked_pred, threshold, config.get("onb_band_frac", 0.10))
+            metric_y, metric_masked_pred, threshold,
+            config.get("onb_band_frac", 0.10))
         rows.append([
+            unit_label, aggregation_label,
             group["group"], group["axis"], group["low"], group["high"],
             group.get("unit", ""), group.get("low_index", ""),
-            group.get("high_index", ""), len(y_val), base["n_onb"],
+            group.get("high_index", ""), len(y_val), len(metric_y),
+            n_source_wavs, base["n_onb"],
             base["r2"], current["r2"], base["r2"] - current["r2"],
             base["rmse_all"], current["rmse_all"],
             current["rmse_all"] - base["rmse_all"],
@@ -761,7 +829,7 @@ def _top_layer_sanity_rows(model, scaler, sample_records, base_attributions,
 
 
 def explain_keras_model(model_key, model, scaler, x_val, y_val, pred, threshold,
-                        out_dir, max_freq_hz, config):
+                        out_dir, max_freq_hz, config, source_wav_groups=None):
     methods = _methods_for_model(config, model_key)
     max_samples = int(config.get("max_samples_per_fold", 5))
     groups = _axis_groups(x_val, max_freq_hz, config)
@@ -776,7 +844,8 @@ def explain_keras_model(model_key, model, scaler, x_val, y_val, pred, threshold,
 
     if "group_occlusion" in methods or "occlusion" in methods:
         performance_rows = _group_mask_performance(
-            predict_fn, x_val, y_val, pred, groups, threshold, config)
+            predict_fn, x_val, y_val, pred, groups, threshold, config,
+            source_wav_groups=source_wav_groups)
         write_csv(
             os.path.join(out_dir, "group_mask_performance.csv"),
             GROUP_MASK_PERFORMANCE_HEADER,
@@ -900,7 +969,7 @@ def explain_keras_model(model_key, model, scaler, x_val, y_val, pred, threshold,
 
 
 def explain_sklearn_model(model_key, model, pca, scaler, x_val, y_val, pred, threshold,
-                          out_dir, max_freq_hz, config):
+                          out_dir, max_freq_hz, config, source_wav_groups=None):
     if pca is None:
         _write_status(out_dir, "skipped", "PCA object was not retained for this run.")
         return
@@ -924,7 +993,8 @@ def explain_sklearn_model(model_key, model, pca, scaler, x_val, y_val, pred, thr
 
     if "group_occlusion" in methods or "occlusion" in methods:
         performance_rows = _group_mask_performance(
-            predict_fn, x_val, y_val, pred, groups, threshold, config)
+            predict_fn, x_val, y_val, pred, groups, threshold, config,
+            source_wav_groups=source_wav_groups)
         write_csv(
             os.path.join(out_dir, "group_mask_performance.csv"),
             GROUP_MASK_PERFORMANCE_HEADER,
@@ -1329,7 +1399,8 @@ def explainability_outputs_complete(save_path, config, model_keys, fold_count,
 
 def maybe_explain_trained_model(spec, model, scaler, x_val, y_val, pred, threshold,
                                 save_path, fold, max_freq_name, config, pca=None,
-                                experiment_name=None, noise_dir_name=None):
+                                experiment_name=None, noise_dir_name=None,
+                                source_wav_groups=None):
     if not config.get("enabled", False):
         return
 
@@ -1367,6 +1438,10 @@ def maybe_explain_trained_model(spec, model, scaler, x_val, y_val, pred, thresho
             ["frequency_bands_hz", config.get("frequency_bands_hz", "")],
             ["curve_fractions", config.get("curve_fractions", "")],
             ["onb_band_frac", config.get("onb_band_frac", "")],
+            ["performance_evaluation_unit",
+             config.get("performance_evaluation_unit", "chunk")],
+            ["performance_wav_aggregation",
+             config.get("performance_wav_aggregation", "median")],
             ["stability", config.get("stability", "")],
             ["sanity_check", config.get("sanity_check", "")],
             ["save_maps", config.get("save_maps", True)],
@@ -1376,9 +1451,11 @@ def maybe_explain_trained_model(spec, model, scaler, x_val, y_val, pred, thresho
 
     if spec["kind"] == "keras":
         explain_keras_model(model_key, model, scaler, x_val, y_val, pred, threshold,
-                            out_dir, max_freq_hz, config)
+                            out_dir, max_freq_hz, config,
+                            source_wav_groups=source_wav_groups)
     elif spec["kind"] == "sklearn":
         explain_sklearn_model(model_key, model, pca, scaler, x_val, y_val, pred,
-                              threshold, out_dir, max_freq_hz, config)
+                              threshold, out_dir, max_freq_hz, config,
+                              source_wav_groups=source_wav_groups)
     else:
         _write_status(out_dir, "skipped", f"Unknown model kind: {spec['kind']}")

@@ -25,10 +25,17 @@
   複数要素なら有効モデル間の直積グリッドとしてチューニングする。`SMOKE_TEST=True` で epoch/fold を縮小し
   「最後まで通るか」だけを高速確認できる（出力先に `smoke_` が付き本番結果と混ざらない）。
   出力先 `SAVE_PATH` 末尾にモデルセットのタグが付くので、RF単体と3モデルの結果は別フォルダに残る。
-  foldごとの `y_true`、各モデル予測、アンサンブル予測は `fold_predictions/` にCSV保存し、
+  foldごとの `y_true`、元WAV・chunk時刻、各モデル予測、アンサンブル予測は `fold_pred/` にCSV保存し、
   アンサンブル重みは `ensemble_weights_*.csv` に保存する。
+  全fold終了後はOOF予測を元WAV単位に集約し、pooled WAV指標と熱流束系列上の
+  ONB遷移誤差を `wav_eval/` に保存する。主集約はmedian。1秒chunk指標も診断用に残す。
   学習率、バッチサイズ、RF固有パラメータは `MODEL_SPECS` ではなく
   `VALIDATION_CONFIG["models"]["parameter_sets"]` でモデル別に管理する。
+
+- `code/run_wav_event_evaluation.py`
+  保存済みのouter-fold予測を再学習せずに読み、元WAV単位のOOF評価とONB遷移評価を追加する。
+  `--run-dir` で1条件、`--results-root` で配下の全条件を処理する。既定では監査済みの
+  現行ONB閾値を使い、旧manifestの閾値を再現する場合だけ `--use-saved-threshold` を指定する。
 
 - `code/compare_predict_heatflux.py`  
   学習済みモデルを使って、指定したサンプルの熱流束予測を比較する推論・確認用スクリプト。
@@ -62,6 +69,14 @@
 
 - `code/utils/calculation/regression_detection_metrics.py`  
   熱流束回帰と ONB 検知の評価指標（`RegressionDetectionMetrics`）。回帰指標／連続スコアAUC（ROC・PR）／二値化後の分類指標を分けて算出する。`run_ensemble_regression_onb.py` 用。
+
+- `code/utils/calculation/wav_event_metrics.py`
+  outer-fold予測へ元WAV・chunk時刻情報を付け、WAV単位のmean/median/percentile集約、
+  pooled OOF指標、WAV内の予測しきい値交差、実験の熱流束系列上のONB遷移誤差を保存する。
+  同期イベント正解がないため、秒単位の検知遅れや気泡イベント精度は算出しない。
+
+- `code/utils/experiment/onb_thresholds.py`
+  3実験日のONB閾値を、実験結果ファイルの出典とともに一元管理する。
 
 - `code/utils/training/model_training.py`  
   1モデルの学習・予測と PCA 前処理（`ModelTrainer`）。MODEL_SPECS の kind（keras/sklearn）に応じて入力形態を切り替える。
