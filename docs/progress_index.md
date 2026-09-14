@@ -1,5 +1,12 @@
 # 研究進捗索引
 
+## 2026-09-14 ノイズ曲線追加・今週の発表方針
+
+- 参照: [実行方針と一般化評価の設計案](research_plan/2026-09-14_execution_policy_and_generalization_design.md)、[グラフ見本](../experiments/2026-09-14_noise_trend_graphs/README.md)。
+- これまでのデータ・モデル・評価基盤の5段階を完了済みとして扱う。今週は06.11/06.18の2実験日×5周波数×7ノイズ＝70条件で、ノイズ別精度と説明性出力を示す。
+- ONB本体へR²・連続ROC-AUC・二値化後AUCのノイズ曲線を追加。chunkとWAVの両方を保存し、コメントを日本語化した。
+- 一般化評価はconfigで実験日分割と学習ノイズを選ぶ設計案のみ。実装開始は本人の確認後。本学習は本人が起動する。
+
 ## 2026-09-14 現在地と次の作業の監査
 
 - 参照: [research_plan/2026-09-14_current_state_and_next_steps.md](research_plan/2026-09-14_current_state_and_next_steps.md)、[結果スナップショット](../experiments/2026-09-14_status_audit/README.md)。

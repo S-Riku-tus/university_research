@@ -49,6 +49,12 @@ class RegressionPlotter:
     matplotlib の rcParams (フォント等) は呼び出し側で設定する想定。
     """
 
+    def plot_noise_trends(self, run_paths, output_dir, **kwargs):
+        """保存済みの各ノイズ条件を読み、性能の折れ線グラフを更新する。"""
+        from utils.plotting.noise_trend_plots import plot_noise_trends_from_runs
+
+        return plot_noise_trends_from_runs(run_paths, output_dir, **kwargs)
+
     def plot_loss_history(self, history, epochs, label, fold, save_path, snr_value):
         if history is None:
             return

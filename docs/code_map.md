@@ -29,6 +29,9 @@
   アンサンブル重みは `ensemble_weights_*.csv` に保存する。
   全fold終了後はOOF予測を元WAV単位に集約し、pooled WAV指標と熱流束系列上の
   ONB遷移誤差を `wav_eval/` に保存する。主集約はmedian。1秒chunk指標も診断用に残す。
+  各ノイズ条件の完了時と再開時に、実験日・周波数・パラメータ設定別の
+  R²/AUCノイズ曲線を `noise_trends/` へ保存する。設定は
+  `VALIDATION_CONFIG["output"]["noise_trend_plots"]`。chunkとWAVの両方を作図する。
   学習率、バッチサイズ、RF固有パラメータは `MODEL_SPECS` ではなく
   `VALIDATION_CONFIG["models"]["parameter_sets"]` でモデル別に管理する。
 
@@ -86,6 +89,11 @@
 
 - `code/utils/plotting/regression_plots.py`  
   回帰・アンサンブル評価まわりの作図（`RegressionPlotter`）。損失曲線・指標棒グラフ・予測散布図（100%分類閾値線つき）。
+
+- `code/utils/plotting/noise_trend_plots.py`
+  保存CSVからノイズ強度別のモデル比較曲線を作る。主方式または方式別に単体3モデル＋アンサンブルを表示し、
+  chunkのfold平均±SEとWAVのpooled OOF集約値を分けてPNG・PDF・数値CSVに保存する。
+  `RegressionPlotter.plot_noise_trends()`から呼び出す。作図のための学習は行わない。
 
 ## 実験・過去コード
 

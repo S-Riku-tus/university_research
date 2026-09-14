@@ -1,43 +1,15 @@
 ﻿"""
-run_ensemble_regression_onb.py
+音響スペクトログラムから熱流束を回帰し、ONB判定と説明性を評価する実行コード。
 
-荳ｭ蠢・せ繧ｯ繝ｪ繝励ヨ 3.run_ensemble_ROC_100%_analysis.py 縺ｮ菴懊ｊ逶ｴ縺礼沿縲・
-2026-06-12 縺ｮ遐皮ｩｶ險育判 (遐皮ｩｶ騾ｲ謐怜ｱ蜻・2026/612/莉雁ｾ後・遐皮ｩｶ險育判_2026-06-12.md) 縺ｮ
-Phase 0縲瑚ｩ穂ｾ｡霆ｸ縺ｨ繧ｳ繝ｼ繝峨・謨ｴ逅・阪↓蟇ｾ蠢懊☆繧九・
+実験条件はVALIDATION_CONFIGで指定する。主な処理は以下のとおり。
+1. 元WAVを分離した交差検証で、RF・CNN＋Transformer・AlexNetを学習する。
+2. 同じ検証予測から、各単体モデルと指定したアンサンブル方式を評価する。
+3. chunk単位のfold平均と、元WAV単位の全OOF集約評価を両方保存する。
+4. R²、連続予測のROC-AUC、二値化後AUCを区別して記録する。
+5. ONB遷移、説明性、予測散布図、モデル比較図を保存する。
 
-譌ｧ繧ｹ繧ｯ繝ｪ繝励ヨ縺ｫ蟇ｾ縺励※縲∵ｬ｡縺ｮ3轤ｹ繧堤峩縺励◆縺・∴縺ｧ菴懊ｊ逶ｴ縺励※縺・ｋ縲・
-
-  竭 繝｢繝・Ν蜷阪・蜿悶ｊ驕輔∴繧偵↑縺上☆
-     譌ｧ繧ｳ繝ｼ繝峨・ RandomForest 縺ｮ莠域ｸｬ繧・alexnet_pred 縺ｨ縺・≧螟画焚縺ｫ蜈･繧後∽ｻ･髯阪・
-     R2/AUC/繧ｰ繝ｩ繝・txt 縺吶∋縺ｦ縺ｫ "AlexNet" 縺ｨ縺・≧繝ｩ繝吶Ν縺ｧ險倬鹸縺励※縺・◆縲・
-     譛ｬ繧ｹ繧ｯ繝ｪ繝励ヨ縺ｧ縺ｯ MODEL_SPECS 縺ｨ縺・≧繝ｬ繧ｸ繧ｹ繝医Μ縺ｧ蜷・Δ繝・Ν繧貞ｮ夂ｾｩ縺励・
-     繝ｩ繝吶Ν縺悟ｿ・★螳滉ｽ薙・繝｢繝・Ν縺ｫ霑ｽ蠕薙☆繧九ｈ縺・↓縺励◆縲ゅΔ繝・Ν縺ｮ蟾ｮ縺玲崛縺医・
-     譛牙柑/辟｡蜉ｹ蛹悶・ MODEL_SPECS 繧堤ｷｨ髮・☆繧九□縺代〒貂医・縲・
-
-  竭｡ AUC 繧偵碁｣邯壹せ繧ｳ繧｢迚医阪→縲御ｺ悟､蛹門ｾ後・蛻・｡樊欠讓吶阪↓蛻・￠繧・
-     譌ｧ繧ｳ繝ｼ繝峨・莠域ｸｬ繧帝明蛟､縺ｧ 0/1 蛹悶＠縺ｦ縺九ｉ ROC 繧定ｨ育ｮ励＠縺ｦ縺・◆縺溘ａ縲ヽOC 縺・
-     2轤ｹ縺励°謖√◆縺・AUC 縺悟ｮ溯ｳｪ繝舌Λ繝ｳ繧ｹ邊ｾ蠎ｦ縺ｫ縺ｪ縺｣縺ｦ縺・◆縲よ悽繧ｹ繧ｯ繝ｪ繝励ヨ縺ｧ縺ｯ
-       - 騾｣邯壹せ繧ｳ繧｢迚・AUC: 莠域ｸｬ辭ｱ豬∵據繧偵◎縺ｮ縺ｾ縺ｾ繧ｹ繧ｳ繧｢縺ｫ縺励◆ ROC-AUC / PR-AUC
-       - 莠悟､蛹門ｾ後・蛻・｡樊欠讓・ Accuracy / Precision / Recall / F1
-     繧貞・縺代※邂怜・縺吶ｋ縲よ立譚･縺ｮ莠悟､蛹・AUC 繧ょｾ梧婿豈碑ｼ・畑縺ｫ谿九＠縺ｦ縺ゅｋ縲・
-
-  竭｢ 繧｢繝ｳ繧ｵ繝ｳ繝悶Ν驥阪∩縺ｮ豎ｺ繧∵婿繧帝∈謚槫ｼ上↓縺吶ｋ (繝ｪ繝ｼ繧ｯ蟇ｾ遲・
-     譌ｧ繧ｳ繝ｼ繝峨・隧穂ｾ｡蟇ｾ雎｡縺ｧ縺ゅｋ讀懆ｨｼ fold (y_val) 縺ｮ隱､蟾ｮ縺九ｉ驥阪∩繧呈ｱｺ繧√※縺翫ｊ縲・
-     Ensemble methods are selected by catalog name in VALIDATION_CONFIG.
-     Their weights, leakage rules, and execution mechanics live in utils/ensemble/.
-     繧貞・繧頑崛縺医ｉ繧後ｋ縲・
-
-  竭｣ 繝・・繧ｿ繝代せ縺ｯ蛻･繝槭す繝ｳ驕狗畑縺ｮ縺溘ａ縺昴・縺ｾ縺ｾ (譌ｧ繧ｳ繝ｼ繝峨→蜷後§繝上・繝峨さ繝ｼ繝・
-
-譌ｧ繧ｹ繧ｯ繝ｪ繝励ヨ (code/3.run_ensemble_ROC_100%_analysis.py) 縺ｯ蜀咲樟諤ｧ縺ｮ縺溘ａ谿九☆縲・
-
-蜀榊茜逕ｨ蜿ｯ閭ｽ縺ｪ蜃ｦ逅・(謖・ｨ呵ｨ育ｮ励・蟄ｦ鄙・莠域ｸｬ繝ｻ驥阪∩莉倥￠繝ｻ菴懷峙) 縺ｯ縲∵里蟄倥・ utils 譁ｹ驥昴↓
-蜷医ｏ縺帙※逕ｨ騾泌挨縺ｮ繧ｯ繝ｩ繧ｹ縺ｫ蛻・屬縺励※縺ゅｋ縲よ悽繝輔ぃ繧､繝ｫ縺ｫ縺ｯ縺薙・螳滄ｨ灘崋譛峨・險ｭ螳壹→
-main() 縺ｮ繧ｪ繝ｼ繧ｱ繧ｹ繝医Ξ繝ｼ繧ｷ繝ｧ繝ｳ縺縺代ｒ鄂ｮ縺上・
-    - 謖・ｨ呵ｨ育ｮ・   : utils/calculation/regression_detection_metrics.py
-    - 蟄ｦ鄙・莠域ｸｬ   : utils/training/model_training.py
-    - 驥阪∩莉倥￠    : utils/ensemble/ensemble_weighting.py
-    - 菴懷峙        : utils/plotting/regression_plots.py
+学習・評価・統合・作図はutils配下の共通処理を呼び出す。
+旧実行コードは再現用に保持し、通常の実験には本ファイルを使う。
 """
 
 import os
@@ -48,8 +20,8 @@ from datetime import datetime
 from pathlib import Path
 from pprint import pformat
 
-# Avoid grabbing most of the GPU memory before the first model fit. This also
-# makes OOM recovery by smaller batch sizes more reliable on Windows/TensorFlow.
+# 学習前のGPUメモリ一括確保を避け、必要な分だけ順次確保する。
+# Windowsでメモリ不足が起きた際、バッチサイズを下げた再試行を可能にする。
 os.environ.setdefault("TF_FORCE_GPU_ALLOW_GROWTH", "true")
 
 import matplotlib.pyplot as plt
@@ -104,20 +76,20 @@ from utils.experiment.run_helpers import (
 
 
 #######################################################################
-#                              螟画焚縺ｮ謖・ｮ・
+#                         実験条件の設定
 #######################################################################
-# Validation controls: edit this block first.
-# Edit this block first when changing an experiment.
+# 実験条件を変更するときは、まずVALIDATION_CONFIGを編集する。
+# 学習・評価・説明性・作図の設定をここにまとめる。
 #
-# Current default:
-# - purpose: compare predeclared ensemble strategies from the same fold models
-# - data: 3 experiments x representative stress frequencies/noise conditions
-# - models: RF + CNN/Transformer v2 GAP + AlexNet
-# - ensemble: strategies selected by their reusable catalog names
-# - explainability: model-specific methods on selected 22 kHz conditions only
+# 現在の設定の読み方:
+# ・目的: 同じ検証予測から単体モデルと各アンサンブル方式を比較する。
+# ・データ: experiment_namesで有効にした実験日と周波数・ノイズ条件を使う。
+# ・モデル: RF、CNN＋Transformer、AlexNet。
+# ・統合方式: ensembleに列挙した方式を実行し、主方式を別途指定する。
+# ・説明性: 有効なデータ条件・モデル・foldについて指定手法を実行する。
 #
-# VALIDATION_CONFIG["ensemble"] only selects strategy names and a primary
-# strategy. Reusable definitions and mechanics live in utils/ensemble/.
+# ensembleには方式名と主方式を指定する。
+# 重みの計算や予測の統合処理はutils/ensemble/で管理する。
 
 VALIDATION_CONFIG = {
     "run": {
@@ -132,7 +104,7 @@ VALIDATION_CONFIG = {
     },
     "data": {
         "experiment_root_parts": ["Pool_boiling", "Subcooling_20_degrees", "0.3"],
-        "noise_source": "waterflow",  # "waterflow" or "whitenoise"
+        "noise_source": "waterflow",  # 水流音はwaterflow、白色雑音はwhitenoise
         "chunk_seconds": 1,
         "experiment_names": [
             "2025.06.11_0.3_2",
@@ -163,8 +135,8 @@ VALIDATION_CONFIG = {
         "skip_missing_datasets": False,
     },
     "thresholds": {
-        # Threshold values and their experiment-file evidence are maintained
-        # together so a preceding heat-flux level cannot be used silently.
+        # ONBと確認された最初の測定点の熱流束と、その出典を一元管理する。
+        # ONB直前の測定点を誤って閾値に使わないようにする。
         "by_experiment": onb_threshold_by_experiment(),
         "provenance_by_experiment": onb_threshold_provenance_by_experiment(),
         "require_experiment_threshold": True,
@@ -172,15 +144,15 @@ VALIDATION_CONFIG = {
     },
     "models": {
         "active_model_keys": ["rf", "cnntf_v2_gap", "alexnet"],
-        # Only active_model_keys are executed. Inactive grids may remain below
-        # as reusable settings and are ignored. Singleton lists mean one fixed
-        # run; multiple values expand a Cartesian tuning grid over active models.
+        # active_model_keysに指定したモデルだけを学習する。
+        # 各候補リストが1要素なら固定条件、複数要素なら組み合わせを比較する。
+        # 無効なモデルの候補設定は実行に影響しない。
         "parameter_sets": {
             "type": "active_model_grid",
             "model_grids": {
                 "rf": {
-                    # XGBRFRegressor: tune model capacity first; keep sampling
-                    # ratios fixed during this first-stage search.
+                    # RFの木の数・深さを設定する。
+                    # サンプルと特徴の抽出率もここで指定する。
                     "n_estimators": [300],
                     "max_depth": [4],
                     "subsample": [0.6],
@@ -201,14 +173,14 @@ VALIDATION_CONFIG = {
         },
     },
     "ensemble": {
-        # Select reusable strategies by name. Labels, weights, leakage rules,
-        # holdout fraction, and combination mechanics live in utils/ensemble/.
+        # 実行する統合方式を名前で選択する。
+        # 重み付け、内部検証の分割率、情報混在の制約は共通処理側で管理する。
         "enabled_strategy_names": [
             "simple_equal",
             "prediction_max",
             "inner_holdout",
         ],
-        # This strategy never uses outer-validation labels to choose weights.
+        # 主方式は外側検証の正解値を使わない単純平均とする。
         "primary_strategy_name": "simple_equal",
     },
     "features": {
@@ -220,34 +192,47 @@ VALIDATION_CONFIG = {
         "save_fold_predictions": True,
         "save_tuning_summary": True,
         "resume_completed_runs": True,
+        "noise_trend_plots": {
+            # 各ノイズ条件の完了時と再開時に、保存指標から折れ線グラフを更新する。
+            "enabled": True,
+            # primaryは主方式のみ。allなら各方式につき単体3モデル＋統合の図を作る。
+            # ["simple_equal", "inner_holdout"]のように方式を指定することもできる。
+            "ensemble_strategy_names": "all",
+            # R²、連続予測によるROC-AUC、卒論互換の二値化後AUCを別図で保存する。
+            "metrics": ["r2", "roc_auc_cont", "auc_binary"],
+            # chunkはfold平均±標準誤差、wavは全OOFの元録音集約値を表示する。
+            "evaluation_units": ["chunk", "wav"],
+            # WAVの集約方法にはevaluationのprimary_wav_aggregationを使用する。
+            "formats": ["png", "pdf"],
+        },
     },
     "evaluation": {
-        # Chunk metrics remain available for instantaneous behavior.  The
-        # primary operating-condition evaluation pools every outer-fold
-        # prediction and then gives each source WAV one prediction.
+        # 同じ学習・検証予測から、chunk単位と元WAV単位の両方を評価する。
+        # chunk指標はfoldごとに計算し、その平均と標準誤差を保存する。
+        # WAV指標は全foldの学習外予測を集め、元録音ごとに集約して計算する。
         "wav_level_enabled": True,
         "wav_aggregations": ["mean", "median", "p90"],
         "primary_wav_aggregation": "median",
-        # Report both the raw first crossing and a two-consecutive-WAV rule.
-        # The latter distinguishes an isolated false alarm from a persistent
-        # transition along the measured heat-flux operating points.
+        # 最初の陽性点と、2 WAV連続で陽性になる区間の開始点を併記する。
+        # 単発の誤警報と持続的な遷移を、熱流束の測定点順に確認する。
+        # この測定点差は秒単位の検知遅れではない。
         "onb_transition_persistence_wavs": [1, 2],
-        # Predicted threshold-crossing runs are descriptive until synchronized
-        # bubble-event ground truth is added.
+        # WAV内のしきい値交差も診断用に保存する。
+        # 同期したイベント正解がないため、気泡イベントの検出精度とは区別する。
         "predicted_event_summary_enabled": True,
     },
     "explainability": {
-        # Explanations are extra validation analyses for the trained fold model.
-        # They are saved under each run folder:
-        #   <SAVE_PATH>/explainability/fold{n}/{model_key}/
+        # 学習済みの各foldモデルについて、検証データ上の説明性を追加評価する。
+        # 各実行フォルダ内の次の場所に保存する。
+        # 保存先: <SAVE_PATH>/explainability/fold{n}/{model_key}/
         #
-        # Dataset conditions, model keys, folds, and map saving are inherited
-        # from data/models/run/enabled so they have a single source of truth.
+        # 対象データ、モデル、foldはdata/models/runの設定から引き継ぐ。
+        # 説明性だけ別の対象条件へずれないようにする。
         "enabled": True,
         "max_samples_per_fold": 5,
         "ig_steps": 64,
-        # Use methods that match each architecture.  RF TreeSHAP is retained in
-        # PCA space for model auditing; physical RF claims use grouped masks.
+        # モデル構造に適した説明手法を指定する。
+        # RFのTreeSHAPはPCA成分の監査用、物理帯域の比較にはマスクを使う。
         "methods_by_model": {
             "rf": [
                 "tree_shap_pca",
@@ -276,13 +261,13 @@ VALIDATION_CONFIG = {
         "time_groups": 4,
         "time_extent_seconds": 1.0,
         "onb_band_frac": 0.10,
-        # Physical mask-effect claims use the same unit as the main result.
+        # マスク後の性能も、主評価と同じ元WAV中央値の単位で比較する。
         "performance_evaluation_unit": "source_wav",
         "performance_wav_aggregation": "median",
         "baseline_value": 0.0,
         "curve_fractions": [0.0, 0.05, 0.10, 0.20, 0.30, 0.50, 1.0],
-        # Small non-negative perturbations test whether the primary IG maps are
-        # locally stable.  This is separate from noise-condition robustness.
+        # 入力への小さな非負摂動でIG画像の局所的な安定性を調べる。
+        # ノイズ条件を変えたときの予測性能評価とは別の診断である。
         "stability": {
             "enabled": True,
             "methods": ["integrated_gradients"],
@@ -291,16 +276,16 @@ VALIDATION_CONFIG = {
             "clip_nonnegative": True,
             "random_seed": 42,
         },
-        # A lightweight Adebayo-style screening test.  Only the final trainable
-        # layer is randomized, so report it as a partial sanity check rather
-        # than a full cascading randomization test.
+        # 最終学習層だけをランダム化する簡易的な妥当性確認。
+        # 全層を順次ランダム化する検証ではないため、部分的な診断として扱う。
+        # 対象となる説明手法と乱数seedを以下で指定する。
         "sanity_check": {
             "enabled": True,
             "methods": ["integrated_gradients"],
             "random_seed": 42,
         },
-        # Never silently repeat a completed training run just because old XAI
-        # files are missing.  Set True only after intentionally choosing that cost.
+        # 説明性の出力不足だけを理由に、完了した学習を自動で繰り返さない。
+        # 説明性のために再学習したい場合だけTrueに変更する。
         "retrain_completed_runs_for_xai": False,
     },
 }
@@ -367,6 +352,7 @@ RESULT_DATE_DIR = _cfg("output", "result_date_dir") or SAVE_DATE
 SAVE_FOLD_PREDICTIONS = _cfg("output", "save_fold_predictions")
 SAVE_TUNING_SUMMARY = _cfg("output", "save_tuning_summary")
 RESUME_COMPLETED_RUNS = _cfg("output", "resume_completed_runs")
+NOISE_TREND_CONFIG = _cfg("output", "noise_trend_plots")
 RUN_INSTANCE_ID = os.environ.get("RUN_ID", datetime.now().strftime("%H%M%S"))
 FOLD_PREDICTIONS_DIR_NAME = "fold_pred"
 WAV_LEVEL_EVALUATION_ENABLED = _cfg("evaluation", "wav_level_enabled")
@@ -388,15 +374,15 @@ EXPLAINABILITY_CONFIG = resolve_explainability_scope(
 )
 EXPLAINABILITY_ENABLED = EXPLAINABILITY_CONFIG.get("enabled", False)
 
-# Settings are defined in VALIDATION_CONFIG above.
-# The constants below are derived values used by the run loop; do not edit
-# them directly unless you are changing the script mechanics.
+# ここから下の定数はVALIDATION_CONFIGから算出する。
+# 通常の実験条件変更では、上の設定欄を編集する。
+# 実行処理そのものを変更するとき以外は、導出値を直接変更しない。
 
 
-# Model registry.
-# Keep this block because it maps model keys to the actual builder functions.
-# Architecture values are fixed in each builder. This configuration tunes only
-# training values such as learning rate and batch size.
+# モデル名と、実際に呼び出すモデル構築関数の対応表。
+# 学習モデルと表示ラベルを一致させるために使用する。
+# モデル構造は各構築関数内に固定している。
+# 学習率とバッチサイズなどは上のparameter_setsで指定する。
 
 
 MODEL_SPECS = [
@@ -441,18 +427,18 @@ MODEL_SPECS = [
 
 
 
-#### 繝・・繧ｿ繝輔か繝ｫ繝縺ｮ險ｭ螳・####
+# データフォルダの設定
 REPO_ROOT = Path(__file__).resolve().parents[1]
 EXPERIMENT_ROOT = REPO_ROOT.joinpath(*_cfg("data", "experiment_root_parts"))
 
-# matplotlib 縺ｮ險ｭ螳・
+# グラフ全体の表示書式
 plt.rcParams['font.family'] = 'Times New Roman'
 plt.rcParams['xtick.direction'] = 'in'
 plt.rcParams['ytick.direction'] = 'in'
 
 
 #######################################################################
-#                                螳溯｡碁Κ
+#                            実行処理
 #######################################################################
 
 def build_dataset_jobs():
@@ -515,6 +501,7 @@ def validation_config_snapshot():
             "save_fold_predictions": SAVE_FOLD_PREDICTIONS,
             "save_tuning_summary": SAVE_TUNING_SUMMARY,
             "resume_completed_runs": RESUME_COMPLETED_RUNS,
+            "noise_trend_plots": dict(NOISE_TREND_CONFIG),
         },
         "evaluation": {
             "wav_level_enabled": WAV_LEVEL_EVALUATION_ENABLED,
@@ -530,6 +517,34 @@ def validation_config_snapshot():
 
 def validation_config_text():
     return pformat(validation_config_snapshot(), sort_dicts=False)
+
+
+def update_noise_trend_plots(plotter, job, run_dir, run_hash, model_keys):
+    """同じ実験日・周波数・学習設定のノイズ別指標を読み、比較図を更新する。"""
+    if not NOISE_TREND_CONFIG.get("enabled", False):
+        return []
+    run_paths = [
+        Path(job["save_base_path"]) / noise_dir / job["max_freq_hz"] / run_dir
+        for noise_dir in NOISE_DIR_NAMES
+    ]
+    output_dir = (
+        Path(job["save_base_path"]) / "noise_trends" / job["max_freq_hz"] / run_dir
+    )
+    artifacts = plotter.plot_noise_trends(
+        run_paths,
+        output_dir,
+        noise_order=NOISE_DIR_NAMES,
+        model_keys=model_keys,
+        ensemble_strategy_names=NOISE_TREND_CONFIG["ensemble_strategy_names"],
+        metrics=NOISE_TREND_CONFIG["metrics"],
+        evaluation_units=NOISE_TREND_CONFIG["evaluation_units"],
+        wav_aggregation=PRIMARY_WAV_AGGREGATION,
+        expected_run_hash=run_hash,
+        formats=NOISE_TREND_CONFIG["formats"],
+    )
+    if artifacts:
+        print(f"ノイズ強度別の比較図を更新: {output_dir}（{len(artifacts)}図）")
+    return artifacts
 
 
 def validate_validation_config(enabled_specs):
@@ -552,8 +567,8 @@ def validate_validation_config(enabled_specs):
     for parameter_set in PARAMETER_SETS:
         if not isinstance(parameter_set, dict):
             raise TypeError("Each expanded parameter set must be a dict.")
-        # This also verifies that every active Keras model has lr/batch_size.
-        # Parameters belonging to inactive models are intentionally ignored.
+    # 有効な深層モデルすべてに学習率とバッチサイズが設定されているか確認する。
+    # 無効なモデルにだけ属するパラメータは無視する。
         resolve_parameter_set(enabled_specs, parameter_set)
 
     ENSEMBLE_MANAGER.validate(enabled_specs)
@@ -717,12 +732,12 @@ def validate_validation_config(enabled_specs):
 
 def main():
     set_global_seed(RANDOM_SEED)
-    # Shared helpers for metrics, training, weighting, and plots.
+    # 指標計算、学習、統合、作図の共通処理を用意する。
     metrics = RegressionDetectionMetrics()
     trainer = ModelTrainer(random_seed=RANDOM_SEED)
     plotter = RegressionPlotter()
 
-    # Resolve the model keys selected in VALIDATION_CONFIG.
+    # 設定欄で指定したモデルの定義を取得する。
     spec_by_key = {s["key"]: s for s in MODEL_SPECS}
     unknown = [k for k in ACTIVE_MODEL_KEYS if k not in spec_by_key]
     if unknown:
@@ -732,7 +747,7 @@ def main():
     if not enabled_specs:
         raise ValueError("ACTIVE_MODEL_KEYS must select at least one model.")
 
-    # Keep output folder names short enough for Windows paths.
+    # Windowsのパス長制限を考慮し、結果フォルダ名を短くする。
     validate_validation_config(enabled_specs)
 
     configured_model_keys = [s["key"] for s in enabled_specs]
@@ -885,6 +900,8 @@ def main():
                     RESUME_COMPLETED_RUNS, SAVE_TUNING_SUMMARY,
                     run_hash=run_hash)
                 if completed_run:
+                    # 再開時も保存済み指標から図を作れるため、作図だけの再学習は不要。
+                    update_noise_trend_plots(plotter, job, run_dir, run_hash, model_keys)
                     xai_complete = explainability_outputs_complete(
                         SAVE_PATH, EXPLAINABILITY_CONFIG, model_keys, DIVISIONS,
                         experiment_name=job["experiment_name"],
@@ -927,7 +944,7 @@ def main():
                     split_indices = kf.split(x, y, groups=sample_groups)
                     split_description = "GroupKFold(source_wav_id)"
 
-                # 謖・ｨ吶・菫晏ｭ伜・ (key -> metric -> [fold 縺斐→縺ｮ蛟､])
+                # 指標の保存先: モデル名 → 指標名 → foldごとの値のリスト。
                 store = {k: defaultdict(list) for k in all_keys}
                 train_meta = {k: defaultdict(list) for k in model_keys}
                 oof_prediction_rows = []
@@ -975,12 +992,12 @@ def main():
                             total_folds=DIVISIONS,
                         )
 
-                        # Final outer-fold model preprocessing uses all training
-                        # samples and never sees the outer validation labels.
+                        # 外側foldの最終学習には、学習側の全標本を使用する。
+                        # 前処理の学習には、外側検証のデータ・正解値を使わない。
                         scaler = MinMaxScaler()
                         y_train_scaled = scaler.fit_transform(y_train.reshape(-1, 1))
 
-                        # sklearn 邉ｻ繝｢繝・Ν逕ｨ縺ｮ PCA (蟄ｦ鄙偵ョ繝ｼ繧ｿ縺ｮ縺ｿ縺ｧ fit)
+                        # RF用のPCAを学習データだけで適合させる。
                         pca_model = None
                         if use_sklearn:
                             if xai_for_job:
@@ -994,11 +1011,11 @@ def main():
 
                         mm = RegressionModelMaker((224, 224, COLOR_CHANNEL))
 
-                        # --- 蜷・Δ繝・Ν縺ｮ蟄ｦ鄙偵→莠域ｸｬ ---
-                        val_preds = {}        # key -> 讀懆ｨｼ fold 縺ｸ縺ｮ莠域ｸｬ (蜈・せ繧ｱ繝ｼ繝ｫ)
+                        # 各モデルの学習と予測
+                        val_preds = {}  # モデル名 → 検証foldの予測熱流束（元の単位）
                         for spec in run_specs:
-                            # Reset before every model so architecture comparisons
-                            # do not depend on parameter-set or model execution order.
+                            # モデルごとにseedを再設定し、実行順による初期値差を抑える。
+                            # fold番号を加えることで、fold間では異なるseedを使用する。
                             set_global_seed(RANDOM_SEED + fold)
                             if spec["kind"] == "keras":
                                 print(f"  params for {spec['key']}: lr={spec['lr']}, batch_size={spec['batch_size']}")
@@ -1032,7 +1049,7 @@ def main():
                             plotter.plot_loss_history(history, EPOCH_NUM, spec["label"],
                                                       fold, SAVE_PATH, snr_value)
 
-                            # 讀懆ｨｼ fold 縺ｸ縺ｮ莠域ｸｬ
+                            # 検証foldに対する予測
                             val_preds[spec["key"]] = trainer.predict_one_model(
                                 spec, model, x_val, x_val_pca, scaler)
 
@@ -1059,16 +1076,16 @@ def main():
                             K.clear_session()
                             gc.collect()
 
-                        # Evaluate every configured ensemble from the same
-                        # outer-fold predictions. No model is retrained between
-                        # ensemble strategy profiles.
+                        # 同じ外側foldの予測から、指定された全統合方式を評価する。
+                        # 統合方式を切り替えるたびに単体モデルを再学習する必要はない。
+                        # 内部holdout用の学習は、重み決定のため別途実施済み。
                         ensemble_outputs = ensemble_run.combine_predictions(
                             val_preds,
                             inner_errors,
                             fold,
                         )
 
-                        # --- 謖・ｨ吶・邂怜・ (竭｡ 3 遞ｮ鬘槭↓蛻・屬) ---
+                        # 回帰・連続スコア検知・二値判定の3種類の指標を計算する。
                         preds_all = ensemble_run.merge_predictions(
                             val_preds,
                             ensemble_outputs,
@@ -1108,7 +1125,7 @@ def main():
                             ONB_BAND_FRAC,
                         )
 
-                        # --- 菴懷峙 (繧｢繝ｳ繧ｵ繝ｳ繝悶Ν縺ｮ謨｣蟶・峙) ---
+                        # 主アンサンブルの予測と真値を散布図にする。
                         if include_ensemble and has_threshold(threshold):
                             primary_pred = ensemble_outputs[
                                 ensemble_run.primary_result_key
@@ -1121,7 +1138,7 @@ def main():
                                 y_val, primary_pred, y, ens_fold_metrics,
                                 threshold, SAVE_PATH, snr_value, fold)
 
-                        # --- fold 邨先棡繧・txt 縺ｫ霑ｽ險・---
+                        # foldごとの指標と重みをテキストへ追記する。
                         f.write(f"Recorded at: {datetime.now():%Y-%m-%d %H:%M:%S}\n")
                         f.write(f"Fold {fold} Results\n")
                         ensemble_run.write_fold_weights(f, ensemble_outputs)
@@ -1204,9 +1221,9 @@ def main():
                             "offsets; seconds require synchronized annotations.\n"
                         )
 
-                    # --- 蟷ｳ蝮・ｵ先棡 (mean ﾂｱ SE) ---
+                    # chunk指標をfold間で平均し、標準誤差も記録する。
                     f.write(f"\nRecorded at: {datetime.now():%Y-%m-%d %H:%M:%S}\n")
-                    f.write("Average Results (mean ﾂｱ SE):\n")
+                    f.write("Average Results (mean ± SE):\n")
                     summary_metrics = [
                         "r2", "rmse_all", "mae_all", "r2_high", "rmse_high", "mae_high",
                         "rmse_onb", "mae_onb",
@@ -1217,7 +1234,7 @@ def main():
                         f.write(f"  [{label_of[key]}]\n")
                         for mk in summary_metrics:
                             mean, se = metrics.mean_se(store[key][mk])
-                            f.write(f"    {mk:14s}: {mean:.4f} ﾂｱ {se:.4f}\n")
+                            f.write(f"    {mk:14s}: {mean:.4f} ± {se:.4f}\n")
                     f.write("=" * 30 + "\n\n")
 
                 if xai_for_job:
@@ -1232,10 +1249,10 @@ def main():
                         f"{'saved' if aggregated_xai else 'no group-mask rows found'}"
                     )
 
-                # --- 譽偵げ繝ｩ繝・(繝｢繝・Ν蛻･: R2 縺ｨ譌ｧ繧ｳ繝ｼ繝我ｺ呈鋤縺ｮ莠悟､蛹門ｾ・AUC) ---
-                # Keep the conventional bar plot readable: individual models
-                # plus the predeclared primary ensemble only. All strategies
-                # are shown in the signed-delta comparison below.
+                # 単体モデルと主アンサンブルの指標を棒グラフにする。
+                # 各図を読みやすくするため、主アンサンブルだけを単体モデルに加える。
+                # その他の統合方式は、別の改善量比較グラフにまとめる。
+                # ノイズ別の折れ線グラフも、既定ではこの主方式を使用する。
                 plot_keys = list(model_keys)
                 if include_ensemble:
                     plot_keys.append(ensemble_run.primary_result_key)
@@ -1249,7 +1266,7 @@ def main():
                     plotter.plot_bar("AUC (binary legacy)", labels, auc_bin_means, auc_bin_ses,
                                      EPOCH_NUM, SAVE_PATH, snr_value)
 
-                # --- 謖・ｨ・CSV (fold 蟷ｳ蝮・ｒ繝｢繝・Ν蛻･縺ｫ菫晏ｭ倥ょｾ後〒豈碑ｼ・＠繧・☆縺上☆繧・ ---
+                # chunk指標のfold平均と標準誤差をモデル別CSVに保存する。
                 csv_path = os.path.join(SAVE_PATH, f'metrics_summary_{snr_value}.csv')
                 with _open_text(csv_path, 'w', encoding='utf-8') as cf:
                     header = ["model"] + [f"{mk}_mean" for mk in summary_metrics] \
@@ -1259,7 +1276,7 @@ def main():
                         means = [f"{metrics.mean_se(store[key][mk])[0]:.6f}" for mk in summary_metrics]
                         ses = [f"{metrics.mean_se(store[key][mk])[1]:.6f}" for mk in summary_metrics]
                         cf.write(",".join([label_of[key]] + means + ses) + "\n")
-                print(f"謖・ｨ・CSV 繧剃ｿ晏ｭ・ {csv_path}")
+                print(f"指標CSVを保存: {csv_path}")
 
                 ensemble_run.save_reports(
                     save_path=SAVE_PATH,
@@ -1284,6 +1301,9 @@ def main():
                     print(f"tuning summary saved: {tuning_summary_path}")
                 else:
                     print("tuning summary append skipped to avoid duplicate rows.")
+
+                # 各条件の指標保存後、完了済みのノイズ条件を含めた曲線を更新する。
+                update_noise_trend_plots(plotter, job, run_dir, run_hash, model_keys)
 
                 if not FLG_ROOP:
                     break

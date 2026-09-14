@@ -1,0 +1,74 @@
+{
+  "source_run_manifests": [
+    "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\ensemble\\20260903_selected_log_architecture\\heatflux_no_noise\\maxfreq=22kHz\\e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\run_manifest.json",
+    "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\ensemble\\20260903_selected_log_architecture\\heatflux_reference_SNR=-12\\maxfreq=22kHz\\e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\run_manifest.json",
+    "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\ensemble\\20260903_selected_log_architecture\\heatflux_reference_SNR=-16\\maxfreq=22kHz\\e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\run_manifest.json",
+    "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\ensemble\\20260903_selected_log_architecture\\heatflux_reference_SNR=-20\\maxfreq=22kHz\\e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\run_manifest.json",
+    "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\ensemble\\20260903_selected_log_architecture\\heatflux_reference_SNR=-4\\maxfreq=22kHz\\e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\run_manifest.json",
+    "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\ensemble\\20260903_selected_log_architecture\\heatflux_reference_SNR=-8\\maxfreq=22kHz\\e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\run_manifest.json",
+    "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\ensemble\\20260903_selected_log_architecture\\heatflux_reference_SNR=0\\maxfreq=22kHz\\e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\run_manifest.json"
+  ],
+  "purpose": "Saved 2026-09-03 results used only for graph format verification; no retraining. Chunk and postprocessed WAV results use their respective saved thresholds.",
+  "artifacts": [
+    {
+      "strategy": "simple_equal",
+      "unit": "chunk",
+      "metric": "r2",
+      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\experiments\\2026-09-14_noise_trend_graphs\\preview_20260903_0618_22khz\\simple_equal\\chunk_fold_mean_r2.csv",
+      "figures": [
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\experiments\\2026-09-14_noise_trend_graphs\\preview_20260903_0618_22khz\\simple_equal\\chunk_fold_mean_r2.png",
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\experiments\\2026-09-14_noise_trend_graphs\\preview_20260903_0618_22khz\\simple_equal\\chunk_fold_mean_r2.pdf"
+      ]
+    },
+    {
+      "strategy": "simple_equal",
+      "unit": "chunk",
+      "metric": "roc_auc_cont",
+      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\experiments\\2026-09-14_noise_trend_graphs\\preview_20260903_0618_22khz\\simple_equal\\chunk_fold_mean_roc_auc_cont.csv",
+      "figures": [
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\experiments\\2026-09-14_noise_trend_graphs\\preview_20260903_0618_22khz\\simple_equal\\chunk_fold_mean_roc_auc_cont.png",
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\experiments\\2026-09-14_noise_trend_graphs\\preview_20260903_0618_22khz\\simple_equal\\chunk_fold_mean_roc_auc_cont.pdf"
+      ]
+    },
+    {
+      "strategy": "simple_equal",
+      "unit": "chunk",
+      "metric": "auc_binary",
+      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\experiments\\2026-09-14_noise_trend_graphs\\preview_20260903_0618_22khz\\simple_equal\\chunk_fold_mean_auc_binary.csv",
+      "figures": [
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\experiments\\2026-09-14_noise_trend_graphs\\preview_20260903_0618_22khz\\simple_equal\\chunk_fold_mean_auc_binary.png",
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\experiments\\2026-09-14_noise_trend_graphs\\preview_20260903_0618_22khz\\simple_equal\\chunk_fold_mean_auc_binary.pdf"
+      ]
+    },
+    {
+      "strategy": "simple_equal",
+      "unit": "wav",
+      "metric": "r2",
+      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\experiments\\2026-09-14_noise_trend_graphs\\preview_20260903_0618_22khz\\simple_equal\\wav_median_r2.csv",
+      "figures": [
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\experiments\\2026-09-14_noise_trend_graphs\\preview_20260903_0618_22khz\\simple_equal\\wav_median_r2.png",
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\experiments\\2026-09-14_noise_trend_graphs\\preview_20260903_0618_22khz\\simple_equal\\wav_median_r2.pdf"
+      ]
+    },
+    {
+      "strategy": "simple_equal",
+      "unit": "wav",
+      "metric": "roc_auc_cont",
+      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\experiments\\2026-09-14_noise_trend_graphs\\preview_20260903_0618_22khz\\simple_equal\\wav_median_roc_auc_cont.csv",
+      "figures": [
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\experiments\\2026-09-14_noise_trend_graphs\\preview_20260903_0618_22khz\\simple_equal\\wav_median_roc_auc_cont.png",
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\experiments\\2026-09-14_noise_trend_graphs\\preview_20260903_0618_22khz\\simple_equal\\wav_median_roc_auc_cont.pdf"
+      ]
+    },
+    {
+      "strategy": "simple_equal",
+      "unit": "wav",
+      "metric": "auc_binary",
+      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\experiments\\2026-09-14_noise_trend_graphs\\preview_20260903_0618_22khz\\simple_equal\\wav_median_auc_binary.csv",
+      "figures": [
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\experiments\\2026-09-14_noise_trend_graphs\\preview_20260903_0618_22khz\\simple_equal\\wav_median_auc_binary.png",
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\experiments\\2026-09-14_noise_trend_graphs\\preview_20260903_0618_22khz\\simple_equal\\wav_median_auc_binary.pdf"
+      ]
+    }
+  ]
+}
