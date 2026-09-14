@@ -1,5 +1,13 @@
 # 研究進捗索引
 
+## 2026-09-14 現在地と次の作業の監査
+
+- 参照: [research_plan/2026-09-14_current_state_and_next_steps.md](research_plan/2026-09-14_current_state_and_next_steps.md)、[結果スナップショット](../experiments/2026-09-14_status_audit/README.md)。
+- 9/2の56条件より新しい9/3の105条件と9/8の3条件を確認。元WAV・修正ONB閾値による評価は出力済み。
+- 最新の無雑音22 kHzではCNN＋Transformerが3日とも単体最高R²。06.11/06.18は全方式がONBを1測定点遅れて判定し、全域R²とONB捕捉は別課題。
+- IG診断90件でcompleteness相対誤差が0.05を超え、物理的解釈前の数値整合性確認が必要。旧inner holdoutは主張用から除外し、修正後方式と分ける。
+- 次の推奨: 最新結果の固定、ONB失敗例と近傍データ設計、XAI整合性、別日・未知ノイズ評価、帯域再学習、その後の統合方法の最終比較。
+
 ## 2026-07-24 P0ノイズ診断コード
 
 - 参照: [research_plan/2026-07-24_p0_noise_diagnostic_runbook.md](research_plan/2026-07-24_p0_noise_diagnostic_runbook.md)

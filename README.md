@@ -23,7 +23,8 @@ Codexに研究を手伝わせるときは、まず `AGENTS.md` と `docs/researc
 
 ## 現在の主結果
 
-- [2026-09-02 selected log architecture](experiments/2026-09-02_selected_log_architecture/README.md): 修正済み水流音データを用いた単体モデル・アンサンブル・ONB検知・説明性の最新スナップショット。実行は56/105条件で中断している。
+- [2026-09-14 現在地と次の作業](docs/research_plan/2026-09-14_current_state_and_next_steps.md): 9/3実行105条件と9/8再実行3条件を確認した最新の状況整理。[数値スナップショット](experiments/2026-09-14_status_audit/README.md)には元WAV単位の評価と最新XAI診断を保存。
+- [2026-09-02 selected log architecture](experiments/2026-09-02_selected_log_architecture/README.md): 56/105条件で中断した過去のスナップショット。旧ONB閾値・旧inner holdoutの解釈は、上記9/14整理の監査結果を参照する。
 - [waterflow_20260817_1s](configs/datasets/waterflow_20260817_1s.yaml): 現行学習データの生成条件、件数、整合性確認、旧バグデータの除外方針。条件別監査値は[データ監査スナップショット](experiments/2026-08-17_waterflow_dataset_snapshot/README.md)に保存。
 - [log-powerモデル構造選定](experiments/2026-08-30_log_power_architecture_study.md): CNN+TransformerとAlexNetにlog-power入力を採用した根拠。
 
