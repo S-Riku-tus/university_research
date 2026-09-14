@@ -108,23 +108,23 @@ VALIDATION_CONFIG = {
         "chunk_seconds": 1,
         "experiment_names": [
             "2025.06.11_0.3_2",
-            "2025.06.18_0.3_3",
+            # "2025.06.18_0.3_3",
             # "2025.07.09_0.3_1",
         ],
         "max_freq_hz_list": [
             "maxfreq=3kHz",
-            "maxfreq=5kHz",
-            "maxfreq=10kHz",
-            "maxfreq=15kHz",
+            # "maxfreq=5kHz",
+            # "maxfreq=10kHz",
+            # "maxfreq=15kHz",
             "maxfreq=22kHz",
         ],
         "noise_dir_names": [
             "heatflux_no_noise",
             "heatflux_reference_SNR=0",
-            "heatflux_reference_SNR=-4",
-            "heatflux_reference_SNR=-8",
-            "heatflux_reference_SNR=-12",
-            "heatflux_reference_SNR=-16",
+            # "heatflux_reference_SNR=-4",
+            # "heatflux_reference_SNR=-8",
+            # "heatflux_reference_SNR=-12",
+            # "heatflux_reference_SNR=-16",
             "heatflux_reference_SNR=-20",
         ],
         "data_source_dir_by_experiment": {
@@ -173,15 +173,14 @@ VALIDATION_CONFIG = {
         },
     },
     "ensemble": {
-        # 実行する統合方式を名前で選択する。
-        # 重み付け、内部検証の分割率、情報混在の制約は共通処理側で管理する。
+        # 実行するアンサンブル方式
         "enabled_strategy_names": [
             "simple_equal",
             "prediction_max",
             "inner_holdout",
         ],
-        # 主方式は外側検証の正解値を使わない単純平均とする。
-        "primary_strategy_name": "simple_equal",
+        # 主方式
+        "primary_strategy_name": "inner_holdout",
     },
     "features": {
         "pca_components": 100,
