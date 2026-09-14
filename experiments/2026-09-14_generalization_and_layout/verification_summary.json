@@ -1,0 +1,11 @@
+{
+  "unit_tests_passed": 34,
+  "real_metadata_conditions": 70,
+  "resumed_saved_conditions": 6,
+  "saved_result_training_calls": 0,
+  "saved_result_array_load_calls": 0,
+  "graphs": 36,
+  "migrated_metric_csvs_unchanged": 30,
+  "onb_explanatory_comments_japanese": true,
+  "disabled_configuration_entries_kept_as_identifiers": 7
+}

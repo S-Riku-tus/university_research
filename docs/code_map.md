@@ -30,8 +30,11 @@
   全fold終了後はOOF予測を元WAV単位に集約し、pooled WAV指標と熱流束系列上の
   ONB遷移誤差を `wav_eval/` に保存する。主集約はmedian。1秒chunk指標も診断用に残す。
   各ノイズ条件の完了時と再開時に、実験日・周波数・パラメータ設定別の
-  R²/AUCノイズ曲線を `noise_trends/` へ保存する。設定は
+  R²/AUCノイズ曲線を `<実行日>/<周波数>/noise_trends/` へ保存する。各条件の結果は
+  `<実行日>/<周波数>/<ノイズ>/<run>/`。設定は
   `VALIDATION_CONFIG["output"]["noise_trend_plots"]`。chunkとWAVの両方を作図する。
+  `VALIDATION_CONFIG["learning_policy"]` で日内／別日分割、同一ノイズ学習／無雑音のみ学習を選ぶ。
+  詳細は [保存階層と一般化評価](research_plan/2026-09-14_result_layout_and_generalization.md)。
   学習率、バッチサイズ、RF固有パラメータは `MODEL_SPECS` ではなく
   `VALIDATION_CONFIG["models"]["parameter_sets"]` でモデル別に管理する。
 
@@ -80,6 +83,15 @@
 
 - `code/utils/experiment/onb_thresholds.py`
   3実験日のONB閾値を、実験結果ファイルの出典とともに一元管理する。
+
+- `code/utils/experiment/learning_policy.py`
+  学習・評価の条件を組み立て、実験日と元WAVを分離する。ノイズ間のchunk・時刻・ラベル対応を検査する。
+
+- `code/utils/experiment/learning_runner.py`
+  4方針に共通する学習・予測・両評価・説明性・保存処理。clean_onlyでは学習済みモデルと前処理をノイズ間で共有する。
+
+- `code/utils/experiment/result_paths.py` / `code/reorganize_onb_results.py`
+  新しい保存階層と旧階層参照、指定実行日の結果移行。移行時に評価CSVのhash一致を検査する。
 
 - `code/utils/training/model_training.py`  
   1モデルの学習・予測と PCA 前処理（`ModelTrainer`）。MODEL_SPECS の kind（keras/sklearn）に応じて入力形態を切り替える。

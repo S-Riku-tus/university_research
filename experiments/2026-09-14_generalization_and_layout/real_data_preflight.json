@@ -1,0 +1,43 @@
+{
+  "training_started": false,
+  "n_conditions": 70,
+  "policies": [
+    {
+      "split_mode": "within_day",
+      "training_noise": "matched",
+      "training_families": 70,
+      "outer_fits_per_model": 210,
+      "evaluation_conditions": 70,
+      "evaluation_splits": 210
+    },
+    {
+      "split_mode": "within_day",
+      "training_noise": "clean_only",
+      "training_families": 10,
+      "outer_fits_per_model": 30,
+      "evaluation_conditions": 70,
+      "evaluation_splits": 210
+    },
+    {
+      "split_mode": "leave_one_day_out",
+      "training_noise": "matched",
+      "training_families": 70,
+      "outer_fits_per_model": 70,
+      "evaluation_conditions": 70,
+      "evaluation_splits": 70
+    },
+    {
+      "split_mode": "leave_one_day_out",
+      "training_noise": "clean_only",
+      "training_families": 10,
+      "outer_fits_per_model": 10,
+      "evaluation_conditions": 70,
+      "evaluation_splits": 70
+    }
+  ],
+  "source_wavs_per_day": {
+    "2025.06.11_0.3_2": 18,
+    "2025.06.18_0.3_3": 18
+  },
+  "noise_alignment": "all source WAVs, chunk indices, time intervals and heat-flux labels match"
+}

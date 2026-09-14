@@ -582,6 +582,7 @@ def save_wav_event_evaluation(
     claim_safe_by_model=None,
     claim_note_by_model=None,
     threshold_provenance=None,
+    learning_context=None,
 ):
     """Persist enriched OOF chunks, WAV metrics, and predicted-event summaries."""
     aggregations = tuple(aggregations)
@@ -622,6 +623,9 @@ def save_wav_event_evaluation(
         claim_safe_by_model=claim_safe_by_model,
         claim_note_by_model=claim_note_by_model,
     )
+    if learning_context and learning_context.get("split_mode") == "leave_one_day_out":
+        for row in transition_rows:
+            row["prediction_scope"] = "held_out_experiment_day"
 
     chunk_path = os.path.join(
         evaluation_dir, f"oof_chunk_predictions_{snr_value}.csv"
@@ -739,6 +743,11 @@ def save_wav_event_evaluation(
     manifest_path = os.path.join(
         evaluation_dir, f"evaluation_manifest_{snr_value}.json"
     )
+    if learning_context:
+        manifest["learning_context"] = dict(learning_context)
+        manifest["generalization_scope"] = learning_context["generalization_scope"]
+        if learning_context["split_mode"] == "leave_one_day_out":
+            manifest["fold_handling"] = "one held-out experiment day; uncertainty across days is not estimated here"
     with _open_text(manifest_path, "w", encoding="utf-8") as output:
         json.dump(manifest, output, ensure_ascii=False, indent=2)
 

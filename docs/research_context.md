@@ -57,7 +57,9 @@
 
 ## 2026-09-14時点の現在位置
 
-- 追加の方針確認: データ生成修正・元WAV分離・log-power改善・chunk/WAV両評価までの5段階は完了済みの前提とする。今週は06.11/06.18の全70条件でノイズ別精度と説明性を示す。未知日・clean学習→noisy評価は[設計案](research_plan/2026-09-14_execution_policy_and_generalization_design.md)までとし、本人の確認後に実装する。
+- 最新の追加対応: 本人の承認により、保存階層を「実行日／周波数／ノイズ」に変更し、within_day/leave_one_day_outとmatched/clean_onlyの4方針を実装した。試行済み6条件を移行し、36図を再作成。現在のconfigは本人の試行用6条件を維持している。全70条件での一般化評価の本学習は未実行。詳細は[保存階層と一般化評価](research_plan/2026-09-14_result_layout_and_generalization.md)。
+
+- 当初の方針確認: データ生成修正・元WAV分離・log-power改善・chunk/WAV両評価までの5段階は完了済みの前提とする。今週の発表対象は06.11/06.18の全70条件。一般化評価は設計確認後に上記の実装へ進んだ。
 - 最新の整理は[現在地と次の作業](research_plan/2026-09-14_current_state_and_next_steps.md)。9/2の56条件に加え、9/3開始の全105条件と9/8開始の無雑音22 kHz・3条件の結果を確認した。
 - 9/8に元WAV median・pooled OOF評価、ONB閾値修正、元WAV非重複inner holdoutを導入済み。105条件へ後処理を適用し、3条件では修正設定による学習・XAI出力まで完了。
 - 最新3条件ではCNN＋Transformerが全日で単体最高R²。ただし06.11/06.18は全方式が最初のONB WAVを見逃し、1測定点遅れて判定する。秒単位の検知遅れは同期正解がなく未評価。

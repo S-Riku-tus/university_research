@@ -3,6 +3,7 @@ import hashlib
 import json
 import os
 import random
+from copy import deepcopy
 from datetime import datetime
 from pathlib import Path
 
@@ -108,6 +109,9 @@ def serializable_run_specs(run_specs):
 
 def run_config_digest(validation_config, parameter_set, run_specs, model_tag, save_fold_predictions):
     config = dict(validation_config)
+    # 既定方式は従来と同じ意味なので、既存の完了結果のhashを維持する。
+    if config.get("learning_policy") == {"split_mode": "within_day", "training_noise": "matched"}:
+        config.pop("learning_policy")
     models_config = dict(config.get("models", {}))
     # The current parameter set and fully resolved model parameters are hashed
     # separately below. Excluding the complete candidate list means that adding
@@ -134,6 +138,20 @@ def run_dir_name(epoch_num, param_tag, model_tag, ensemble_enabled, weight_strat
     if ensemble_enabled:
         parts.append(compact_weight_strategy_tag(weight_strategy))
     return "_".join(parts)
+
+
+def saved_run_matches_execution(manifest, validation_config, parameter_set, run_specs, model_tag, save_fold_predictions):
+    """主方式の表示選択だけが変わった場合、既に全方式を評価した結果を再利用する。"""
+    config = deepcopy(validation_config)
+    saved_ensemble = manifest.get("validation_config", {}).get("ensemble", {})
+    ensemble = config.get("ensemble", {})
+    # 学習や重み決定に使わない主方式の選択だけを、保存時の値で照合する。
+    if "primary_strategy" in saved_ensemble:
+        ensemble["primary_strategy"] = saved_ensemble["primary_strategy"]
+    if "primary_strategy_name" in saved_ensemble.get("selection", {}):
+        ensemble.setdefault("selection", {})["primary_strategy_name"] = saved_ensemble["selection"]["primary_strategy_name"]
+    candidate = run_config_digest(config, parameter_set, run_specs, model_tag, save_fold_predictions)
+    return candidate in {manifest.get("run_hash"), manifest.get("execution_config_hash")}
 
 
 def write_run_manifest(
@@ -174,6 +192,14 @@ def write_run_manifest(
         "run_specs": serializable_run_specs(run_specs),
         "validation_config": validation_config,
     }
+    if job.get("learning_context"):
+        manifest["execution_schema_version"] = 2
+        # 表示上の主方式だけを変更して既存の結果IDを継承した場合も、設定との対応を残す。
+        manifest["execution_config_hash"] = run_config_digest(
+            validation_config, parameter_set, run_specs, model_tag,
+            validation_config["output"]["save_fold_predictions"])
+        manifest["learning_context"] = job["learning_context"]
+        manifest["folder_naming"]["result_hierarchy"] = "date/frequency/noise/run"
     manifest_path = os.path.join(save_path, "run_manifest.json")
     with open_text(manifest_path, "w", encoding="utf-8") as mf:
         json.dump(manifest, mf, ensure_ascii=False, indent=2, default=json_default)
@@ -317,12 +343,29 @@ def append_tuning_summary(
 def is_completed_run(summary_path, run_dir, save_path, snr_value,
                      resume_completed_runs, save_tuning_summary,
                      run_hash=None):
-    """Return True only when the per-run metrics and tuning summary both exist."""
+    """当該条件のmanifest・指標・完了記録を確認し、別条件の結果を誤用しない。"""
     if not resume_completed_runs:
         return False
 
     metrics_path = os.path.join(save_path, f"metrics_summary_{snr_value}.csv")
     if not path_exists(metrics_path):
+        return False
+
+    try:
+        with open_text(os.path.join(save_path, "run_manifest.json"), "r", encoding="utf-8") as source:
+            manifest = json.load(source)
+        if manifest.get("run_dir") != run_dir:
+            return False
+        if run_hash is not None and manifest.get("run_hash") != run_hash:
+            return False
+        if str(manifest["dataset"]["snr_value"]) != str(snr_value):
+            return False
+        if manifest.get("execution_schema_version", 1) >= 2:
+            with open_text(os.path.join(save_path, "completed.json"), "r", encoding="utf-8") as source:
+                completion = json.load(source)
+            if completion.get("run_hash") != manifest.get("run_hash"):
+                return False
+    except (OSError, ValueError, KeyError):
         return False
 
     if not save_tuning_summary:
@@ -335,7 +378,9 @@ def is_completed_run(summary_path, run_dir, save_path, snr_value,
             for row in csv.DictReader(sf):
                 same_directory = row.get("run_dir") == run_dir
                 same_config = run_hash is None or row.get("run_hash") == run_hash
-                if same_directory and same_config:
+                same_dataset = all(str(row.get(key)) == str(manifest["dataset"].get(key))
+                                   for key in ("experiment_name", "max_freq_hz", "noise_dir_name"))
+                if same_directory and same_config and same_dataset:
                     return True
     except (OSError, csv.Error):
         return False

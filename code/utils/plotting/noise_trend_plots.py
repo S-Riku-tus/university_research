@@ -97,14 +97,27 @@ def collect_noise_trend_rows(run_paths, *, noise_order, model_keys,
         if not manifest_path.is_file():
             continue
         manifest = _json(manifest_path)
+        completion = {}
+        if manifest.get("execution_schema_version", 1) >= 2:
+            completed_path = directory / "completed.json"
+            if not completed_path.is_file():
+                continue
+            completion = _json(completed_path)
+            if completion.get("run_hash") != manifest.get("run_hash"):
+                continue
         if expected_run_hash is not None and manifest.get("run_hash") != expected_run_hash:
             continue
         dataset = manifest["dataset"]
         noise = _noise_value(dataset["snr_value"])
         if noise not in noise_values:
             continue
+        context = manifest.get("learning_context", {})
+        policy = manifest["validation_config"].get("learning_policy", {
+            "split_mode": "within_day", "training_noise": "matched"})
         signature = (dataset["experiment_name"], dataset["max_freq_hz"],
-                     manifest.get("run_hash"), manifest["run_dir"])
+                     manifest.get("run_hash"), manifest["run_dir"],
+                     json.dumps(policy, sort_keys=True), tuple(context.get("training_experiments", [])),
+                     tuple(completion.get("fit_ids", [])) if policy["training_noise"] == "clean_only" else ())
         if reference is None:
             reference = (signature, manifest)
         elif signature != reference[0]:
@@ -116,6 +129,9 @@ def collect_noise_trend_rows(run_paths, *, noise_order, model_keys,
         return []
 
     manifest = reference[1]
+    policy = manifest["validation_config"].get("learning_policy", {
+        "split_mode": "within_day", "training_noise": "matched"})
+    held_out_day = policy["split_mode"] == "leave_one_day_out"
     ensemble = manifest["validation_config"].get("ensemble", {})
     plans = ensemble.get("resolved_strategy_plan", [])
     available = {plan["name"]: plan for plan in plans}
@@ -171,18 +187,20 @@ def collect_noise_trend_rows(run_paths, *, noise_order, model_keys,
                         data = cached.get(noise, {})
                         record = data.get(unit, {}).get(labels[key] if unit == "chunk" else key, {})
                         value = _number(record.get(f"{metric}_mean" if unit == "chunk" else metric))
-                        se = _number(record.get(f"{metric}_se")) if unit == "chunk" else float("nan")
+                        se = _number(record.get(f"{metric}_se")) if unit == "chunk" and not held_out_day else float("nan")
                         rows.append({
                             "experiment": manifest["dataset"]["experiment_name"],
                             "maxfreq": manifest["dataset"]["max_freq_hz"],
                             "run_hash": manifest.get("run_hash", ""),
+                            "split_mode": policy["split_mode"],
+                            "training_noise": policy["training_noise"],
                             "strategy": strategy or "single_models",
                             "evaluation_unit": unit,
-                            "aggregation": "fold_mean" if unit == "chunk" else wav_aggregation,
+                            "aggregation": ("held_out_day" if held_out_day else "fold_mean") if unit == "chunk" else wav_aggregation,
                             "metric": metric, "model_key": key,
                             "model_label": MODEL_LABELS.get(key, "Ensemble" if key.startswith("ensemble__") else labels[key]),
                             "noise": noise, "value": value, "standard_error": se,
-                            "error_bar_definition": "fold_standard_error" if unit == "chunk" else "not_estimated",
+                            "error_bar_definition": "fold_standard_error" if unit == "chunk" and not held_out_day else "not_estimated",
                             "threshold": data.get(f"{unit}_threshold", ""),
                             "n_wavs": record.get("n_wavs", "") if unit == "wav" else "",
                             "claim_safe": record.get("claim_safe", "") if unit == "wav" else "",
@@ -237,8 +255,11 @@ def plot_noise_trends_from_runs(run_paths, output_dir, *, formats=("png", "pdf")
                 ax.set_xlabel("Noise level (reference SNR [dB])")
                 ax.set_ylabel(METRIC_LABELS[metric])
                 unit_label = "Chunk: fold mean ± SE" if unit == "chunk" else f"WAV: pooled OOF {group[0]['aggregation']}"
+                if group[0]["split_mode"] == "leave_one_day_out":
+                    unit_label = "Chunk: held-out day" if unit == "chunk" else f"WAV: held-out day {group[0]['aggregation']}"
                 ensemble_label = STRATEGY_LABELS.get(strategy, strategy)
-                ax.set_title(f"{group[0]['experiment']} | {group[0]['maxfreq']}\n{unit_label} | {ensemble_label}", fontsize=10)
+                policy_label = "clean train" if group[0]["training_noise"] == "clean_only" else "matched-noise train"
+                ax.set_title(f"{group[0]['experiment']} | {group[0]['maxfreq']} | {policy_label}\n{unit_label} | {ensemble_label}", fontsize=10)
                 # 負のR²や誤差棒も含め、自動スケールで全点を表示する。
                 ax.margins(x=0.08, y=0.12)
                 ax.tick_params(direction="in")

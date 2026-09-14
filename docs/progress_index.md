@@ -1,5 +1,11 @@
 # 研究進捗索引
 
+## 2026-09-14 保存階層の変更・一般化評価の実装
+
+- 保存先を周波数／ノイズの順へ変更し、6条件を移行。比較図36図を再作成した。
+- configから実験日分割と学習ノイズを選択する4方針を実装し、実データ70条件のmetadataで分割を検証。本学習は未起動。
+- 参照: [実装・運用・結果の説明](research_plan/2026-09-14_result_layout_and_generalization.md)、[検証記録](../experiments/2026-09-14_generalization_and_layout/README.md)。
+
 ## 2026-09-14 ノイズ曲線追加・今週の発表方針
 
 - 参照: [実行方針と一般化評価の設計案](research_plan/2026-09-14_execution_policy_and_generalization_design.md)、[グラフ見本](../experiments/2026-09-14_noise_trend_graphs/README.md)。

@@ -12,6 +12,7 @@ class DataLoadingConversion:
         self,
         folder_path,
         return_metadata=False,
+        sample_indices=None,
     ):
         x, y, metadata = [], [], []
         print("読み込みスタート")
@@ -25,7 +26,11 @@ class DataLoadingConversion:
                     if row.get("sample_filename")
                 }
 
-        for filename in sorted(os.listdir(folder_path)):
+        filenames = sorted(name for name in os.listdir(folder_path) if name.endswith(".npy"))
+        if sample_indices is not None:
+            # clean学習モデルを複数ノイズに適用する際、評価foldの配列だけを読む。
+            filenames = [filenames[int(index)] for index in sample_indices]
+        for filename in filenames:
             if filename.endswith(".npy"):
                 # ファイル名から熱流束の値を取得する
                 heat_flux = float(filename.split('_')[0])

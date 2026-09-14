@@ -172,6 +172,7 @@ def process_run(
         claim_safe_by_model=claim_safe,
         claim_note_by_model=claim_notes,
         threshold_provenance=threshold_provenance,
+        learning_context=manifest.get("learning_context"),
     )
     evaluation_manifest_path = Path(result["manifest_path"])
     evaluation_manifest = _open_json(evaluation_manifest_path)
