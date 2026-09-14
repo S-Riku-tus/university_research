@@ -84,7 +84,7 @@ VALIDATION_CONFIG = {
             # "2025.07.09_0.3_1",
         ],
         "max_freq_hz_list": [
-            "maxfreq=3kHz",
+            # "maxfreq=3kHz",
             # "maxfreq=5kHz",
             # "maxfreq=10kHz",
             # "maxfreq=15kHz",
@@ -93,10 +93,10 @@ VALIDATION_CONFIG = {
         "noise_dir_names": [
             "heatflux_no_noise",
             "heatflux_reference_SNR=0",
-            # "heatflux_reference_SNR=-4",
-            # "heatflux_reference_SNR=-8",
-            # "heatflux_reference_SNR=-12",
-            # "heatflux_reference_SNR=-16",
+            "heatflux_reference_SNR=-4",
+            "heatflux_reference_SNR=-8",
+            "heatflux_reference_SNR=-12",
+            "heatflux_reference_SNR=-16",
             "heatflux_reference_SNR=-20",
         ],
         "data_source_dir_by_experiment": {
