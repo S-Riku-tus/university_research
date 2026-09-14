@@ -31,6 +31,7 @@ from utils.experiment.onb_thresholds import (
     onb_threshold_by_experiment,
     onb_threshold_provenance_by_experiment,
 )
+from utils.ensemble.strategy_catalog import is_supported_result_key
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -153,6 +154,7 @@ def process_run(
         snr_value,
         cache[cache_key],
     )
+    model_keys = [key for key in model_keys if is_supported_result_key(key)]
     claim_safe, claim_notes = _claim_status_from_manifest(manifest, model_keys)
     result = save_wav_event_evaluation(
         save_path=run_dir,

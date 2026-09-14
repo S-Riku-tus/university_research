@@ -129,7 +129,6 @@ class RegressionPlotter:
         ]
         strategy_aliases = {
             "simple_equal": "Equal",
-            "prediction_max": "Prediction max",
             "inner_holdout": "Inner holdout",
         }
         by_metric = {}

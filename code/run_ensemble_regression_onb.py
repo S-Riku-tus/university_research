@@ -158,7 +158,6 @@ VALIDATION_CONFIG = {
         # 実行するアンサンブル方式
         "enabled_strategy_names": [
             "simple_equal",
-            "prediction_max",
             "inner_holdout",
         ],
         # 主方式

@@ -8,10 +8,6 @@ ENSEMBLE_STRATEGY_CATALOG = {
         "label": "Ensemble simple equal",
         "strategy": "simple",
     },
-    "prediction_max": {
-        "label": "Ensemble prediction max",
-        "strategy": "max",
-    },
     "inner_holdout": {
         "label": "Ensemble inner holdout",
         "strategy": "inner_holdout",
@@ -37,6 +33,13 @@ ENSEMBLE_RUNTIME_DEFAULTS = {
 
 def available_ensemble_strategy_names():
     return list(ENSEMBLE_STRATEGY_CATALOG)
+
+
+def is_supported_result_key(model_key):
+    """Keep single models and supported ensembles when reading historical results."""
+    prefix = "ensemble__"
+    return (not model_key.startswith(prefix)
+            or model_key[len(prefix):] in ENSEMBLE_STRATEGY_CATALOG)
 
 
 def resolve_ensemble_selection(selection_config):

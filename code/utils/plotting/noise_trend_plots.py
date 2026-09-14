@@ -9,6 +9,8 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 
+from utils.ensemble.strategy_catalog import available_ensemble_strategy_names
+
 
 METRIC_LABELS = {
     "r2": "R² score",
@@ -22,7 +24,6 @@ MODEL_LABELS = {
 }
 STRATEGY_LABELS = {
     "simple_equal": "equal mean",
-    "prediction_max": "prediction max",
     "inner_holdout": "inner holdout",
     "val_fold_legacy": "validation-fold legacy",
 }
@@ -134,9 +135,11 @@ def collect_noise_trend_rows(run_paths, *, noise_order, model_keys,
     held_out_day = policy["split_mode"] == "leave_one_day_out"
     ensemble = manifest["validation_config"].get("ensemble", {})
     plans = ensemble.get("resolved_strategy_plan", [])
-    available = {plan["name"]: plan for plan in plans}
+    supported = set(available_ensemble_strategy_names())
+    available = {plan["name"]: plan for plan in plans if plan["name"] in supported}
     if ensemble_strategy_names == "primary":
-        selected = [ensemble.get("primary_strategy")]
+        primary = ensemble.get("primary_strategy")
+        selected = [primary] if primary in available else list(available)[:1]
     elif ensemble_strategy_names == "all":
         selected = list(available)
     elif isinstance(ensemble_strategy_names, (list, tuple)):

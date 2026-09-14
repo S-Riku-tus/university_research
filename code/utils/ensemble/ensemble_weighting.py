@@ -19,6 +19,8 @@ class EnsembleWeighting:
         keys = [s["key"] for s in enabled_specs]
         n = len(keys)
 
+        if strategy not in {"simple", "inner_holdout", "val_fold_legacy"}:
+            raise ValueError(f"Unknown ensemble weight strategy: {strategy}")
         if strategy == "simple":
             return {k: 1.0 / n for k in keys}
 
@@ -43,11 +45,11 @@ class EnsembleWeighting:
 
     def combine_predictions(self, preds_by_key, weights, combine):
         """preds_by_key: key -> 1D 予測配列。weights: key -> 重み。"""
+        if combine not in {"mean", "min"}:
+            raise ValueError(f"Unknown ensemble combine method: {combine}")
         keys = list(preds_by_key.keys())
         stacked = np.stack([preds_by_key[k] for k in keys], axis=0)  # (n_models, n_samples)
         if combine == "min":
             return np.min(stacked, axis=0)
-        if combine == "max":
-            return np.max(stacked, axis=0)
         w = np.array([weights[k] for k in keys], dtype=float).reshape(-1, 1)
         return np.sum(stacked * w, axis=0)

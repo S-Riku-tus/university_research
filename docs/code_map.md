@@ -15,7 +15,7 @@
   ①モデルをレジストリ(`MODEL_SPECS`)で定義しラベルが実体に追従（RFをAlexNetと誤記しない）、
   ②AUCを「連続スコア版(ROC/PR-AUC)」と「二値化後の分類指標」に分離、
   ③アンサンブル方式を `enabled_strategy_names` で選択式
-  （simple_equal/prediction_max/inner_holdout/val_fold_legacy=旧リークあり）。
+  （simple_equal/inner_holdout/val_fold_legacy=旧リークあり）。
   データパスは別マシン運用のため旧版と同じハードコードのまま。
   再利用可能な処理（指標計算・学習/予測・重み付け・作図）は下記 utils に分離済みで、
   本ファイルにはこの実験固有の設定と `main()` のオーケストレーションだけを置く。

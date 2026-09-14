@@ -5,7 +5,7 @@ import numpy as np
 
 
 VALID_STRATEGIES = {
-    "simple", "max", "inner_holdout", "val_fold_legacy",
+    "simple", "inner_holdout", "val_fold_legacy",
 }
 HIGHER_IS_BETTER = {
     "r2", "r2_high", "auc_binary", "roc_auc_cont", "pr_auc_cont",
@@ -102,15 +102,13 @@ def compute_strategy_outputs(
             errors = legacy_errors
         else:
             errors = {}
-        weight_strategy = "simple" if strategy == "max" else strategy
         weights = weighting.compute_weights(
-            weight_strategy,
+            strategy,
             run_specs,
             errors,
         )
-        combine_method = "max" if strategy == "max" else combine
         prediction = weighting.combine_predictions(
-            val_preds, weights, combine_method
+            val_preds, weights, combine
         )
         outputs[item["result_key"]] = {
             "strategy": item,

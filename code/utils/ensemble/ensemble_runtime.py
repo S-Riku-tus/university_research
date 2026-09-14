@@ -155,7 +155,7 @@ class EnsembleManager:
                 "The ensemble catalog reference model must be active; got "
                 f"{self.reference_model!r}."
             )
-        if self.combine not in {"mean", "min", "max"}:
+        if self.combine not in {"mean", "min"}:
             raise ValueError(f"Unknown ensemble combine method: {self.combine}")
         if strategy_plan_requires_inner_holdout(self.strategy_plan) and not (
                 0 < self.inner_holdout_frac < 1):

@@ -22,11 +22,12 @@ from pathlib import Path
 
 import pandas as pd
 
+from utils.ensemble.strategy_catalog import is_supported_result_key
+
 
 SINGLE_MODEL_KEYS = ("rf", "cnntf_v2_gap", "alexnet")
 SAFE_ENSEMBLE_KEYS = (
     "ensemble__simple_equal",
-    "ensemble__prediction_max",
     "ensemble__inner_holdout",
 )
 LEGACY_ENSEMBLE_KEY = "ensemble__val_fold_legacy"
@@ -130,6 +131,7 @@ def load_summaries(result_roots: list[Path]) -> tuple[pd.DataFrame, list[dict]]:
         )
 
     data = pd.concat(frames, ignore_index=True)
+    data = data[data["model_key"].map(is_supported_result_key)].copy()
     condition_keys = ["experiment_name", "max_freq_hz", "snr_value", "model_key"]
     data = data.drop_duplicates(condition_keys, keep="last").copy()
     data["claim_safe"] = data["model_key"].map(claim_safe)
