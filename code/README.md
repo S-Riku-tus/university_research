@@ -1,33 +1,17 @@
 # code フォルダの見方
 
-このフォルダは、研究で実際に使ってきた解析コードをそのまま残している場所です。使い慣れたファイル名は維持しつつ、役割を把握しやすくするためにこのREADMEを置いています。
+## 現在の主経路
 
-## まず見るファイル
+- [run_ensemble_regression_onb.py](run_ensemble_regression_onb.py): 現行の主実行。設定は冒頭の `VALIDATION_CONFIG`。3モデル、統合、chunk/WAV評価、説明性、一般化方針を指定する。
+- [2.run_npy_waterflow_2つhighpass.py](2.run_npy_waterflow_2つhighpass.py): 音声から現行STFT powerデータを生成する。
+- [run_wav_event_evaluation.py](run_wav_event_evaluation.py): 保存予測からWAV/ONB遷移を後処理する。
+- [utils/](utils/): データ読込、モデル、学習、指標、統合、XAI、作図の共通処理。
+- [check_gpu.py](check_gpu.py): GPU認識の確認。
 
-- `3.run_ensemble_ROC_100%_analysis.py`  
-  現在の中心。`.npy` データを読み込み、回帰モデルとアンサンブルを評価する。
+学習を起動する前に[研究の現在地](../docs/research_status.md)と設定・保存済み結果を照合する。設定済みと実行完了は分ける。通常の主経路はモデル重みを永続保存しないため、過去モデルの推論・XAI再計算を案内するときは実際の重みの有無を確認する。
 
-- `2.run_npy_waterflow_2つhighpass.py`  
-  音声から水流音ノイズ付きSTFT特徴量を作成し、`.npy` として保存する。
+## 過去コード
 
-- `compare_predict_heatflux.py`  
-  学習済みモデルを使って、指定サンプルの予測値を比較する。
+[3.run_ensemble_ROC_100%_analysis.py](3.run_ensemble_ROC_100%_analysis.py)は旧版・再現用。現在の主実行ではない。`regression_analysis/`、`6-class classification/`、`dBdata/`、`trush_box/`にも過去の比較・試行がある。`compare_predict_heatflux.py`は保存済みモデル用の過去の推論処理で、現行runの結果CSVと同じ入力経路とは限らない。
 
-- `utils/`  
-  データ読み込み、モデル定義、評価計算などの共通処理。
-
-## フォルダの役割
-
-- `utils/`: 今後も使う共通処理。
-- `regression_analysis/`: 過去の個別回帰実験。
-- `6-class classification/`: 6クラス分類の過去実験。
-- `dBdata/`: dB変換や分類実験。
-- `various_feature_values/`: STFT, SWT, spectrumなど特徴量作成の試行。
-- `trush_box/`: 古い試行コードや退避コード。すぐに消さず、必要なものを拾う。
-
-## 今後の方針
-
-- 新しい実験条件は、コード内に直書きするだけでなく `configs/` にも残す。
-- 結果を出したら、`experiments/` に `run_summary.md` を作る。
-- どのコードが何をするか迷ったら、`docs/code_map.md` を更新する。
-- 古いコードを移動・削除する前に、必要な処理が中心コードか `utils/` に残っているか確認する。
+詳細は[コード地図](../docs/code_map.md)。条件の記録は[configs](../configs/README.md)、結果と解釈は[experiments](../experiments/README.md)へ残す。YAMLの条件記録は現在の実行コードへ自動適用されない。

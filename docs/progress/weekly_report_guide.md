@@ -19,12 +19,14 @@
 
 ## Codexで下書きを作る手順
 
-1. `docs/research_context.md` を読む。
+1. `docs/research_status.md` で最新希望・締切・完了状況を確認し、`docs/research_context.md` を読む。
 2. `docs/progress_index.md` の直近2件を読む。
 3. `git status --short` と最近更新されたファイルを確認する。
 4. 必要に応じて中心コードや直近報告書の本文を読む。
 5. `templates/weekly_progress_SOAP.md` の形式で下書きを作る。
 6. 最後に、研究上の問いと次週の行動が対応しているか確認する。
+
+結果の引用時は、収録日と解析日、run、データ版、分割、評価単位を確認する。過去の「未着手」を今週の未完了事項として繰り返さず、実装・出力・解釈の進捗を分けて書く。
 
 ## 下書きで優先する内容
 

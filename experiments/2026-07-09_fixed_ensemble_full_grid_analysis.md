@@ -1,5 +1,7 @@
 # 2026-07-09 fixed ensemble full-grid result analysis
 
+> **履歴・適用範囲（2026-09-15追記）**: この文書は当時の条件・判断の記録です。本文の「現在」「次にやること」は作成時点を指します。最新の設定・完了範囲・優先順位は[研究の現在地](../docs/research_status.md)、更新関係は[文書案内](../docs/document_index.md)を参照してください。
+
 ## Result location
 
 Completed result directory:

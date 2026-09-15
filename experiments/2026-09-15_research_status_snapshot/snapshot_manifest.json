@@ -1,0 +1,1912 @@
+{
+  "collected_at_utc": "2026-09-15T00:52:09.068142+00:00",
+  "sources": {
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_no_noise/maxfreq=10kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10964,
+      "sha256": "6e45a1954ca595050251eaacd92b87ad24e82b1b543e6669b18c8012fc7c2379"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_no_noise/maxfreq=15kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10964,
+      "sha256": "6c9269418f34f896522b96fc1a058c68a802b2b2c708e6b02407f833f69446d0"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_no_noise/maxfreq=22kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10964,
+      "sha256": "4342cfb1695f2cc84a7aa05779abb88d38afcf2068c6e7c552aa34fc4940a15d"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_no_noise/maxfreq=3kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10962,
+      "sha256": "738399e7a5fcf945db1e94d0a05d3ca03ecb69fb9b091f2f19fe6a79610ad3f5"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_no_noise/maxfreq=5kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10962,
+      "sha256": "db870b181353810360f42fb655460abe986d8538d0e4d426cb0d8b2e30b6bc45"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-12/maxfreq=10kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10977,
+      "sha256": "3dd43f028de93e7d9b8680c8237d4d9298b73a39f11347917491b4b26b9374da"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-12/maxfreq=15kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10977,
+      "sha256": "b3bf9a055d3bcf1d348cf12776051f16b98e110c4cf3fe029db082fee9bf750a"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-12/maxfreq=22kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10977,
+      "sha256": "d2025d75129042515f595fc8411cecec9e929e84be634c7f008b8da35960b59b"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-12/maxfreq=3kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10975,
+      "sha256": "6366cad077356a99751788f49f5ff857c351a638e552a1b765428487fa3e4624"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-12/maxfreq=5kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10975,
+      "sha256": "f138fcaac2bc379427ba96ea786a6244172a9e9b3232b04709583b75bbc15571"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-16/maxfreq=10kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10977,
+      "sha256": "02e889d2a434a3e2283dd49896ded959cff8b96eaf5cf53ab7a4ca35b151f0d8"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-16/maxfreq=15kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10977,
+      "sha256": "c35c6fbef407a5ef0cc3e06a5104deeba77ce8551d5bfe856af690a5a837c229"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-16/maxfreq=22kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10977,
+      "sha256": "5004d27ead8f2921d249efeac113d197040093a4f0f1344c507a0917c204b774"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-16/maxfreq=3kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10975,
+      "sha256": "91f47a69b2ff5a65ebacdc6b7963e7424d13fca3daef00676054de22b7accf2d"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-16/maxfreq=5kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10975,
+      "sha256": "6b2588017ac6f120529afa6d9047b94807010b845534da2882fba83e9fcf7daf"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-20/maxfreq=10kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10977,
+      "sha256": "76a2a5145f577fe353d58b87136cb971d6551ac87290f730594542aed10e8401"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-20/maxfreq=15kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10977,
+      "sha256": "ea0337c2a8c3bf772e6536e5979c809e3845f3f92ec6ba134512cdfcfe3d3b48"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-20/maxfreq=22kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10977,
+      "sha256": "418f8c33c840d31e2fe5a3ac4aa5b3519f8ebe04f33aa809a5101ea954159530"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-20/maxfreq=3kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10975,
+      "sha256": "d1e7547c68b0c7f87f2ac87010a24f96cbd53a049d4cfe22ad15f93b73cb5f2e"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-20/maxfreq=5kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10975,
+      "sha256": "bab8fb9bfc97f0bd9472ab1645e20daa110ffdf30158da1f4be28cbcbee6f1b7"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-4/maxfreq=10kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10974,
+      "sha256": "a724989bc784204cb85e02fa637b5fd00c2c8bf4671b45ae2bff172f5b261d08"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-4/maxfreq=15kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10974,
+      "sha256": "89a1803ddee223187c88450219fee1d47e6b060c44f3aec7dc0605eca82962f2"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-4/maxfreq=22kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10974,
+      "sha256": "b2c081b3e9b5334bec1f3b043a23f7e69967ba3a48478efb532c626590e4060d"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-4/maxfreq=3kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10972,
+      "sha256": "bbab204dd5de114577e0283dbf913a5b27967f25d9a856b1cb2be055e6e5d6de"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-4/maxfreq=5kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10972,
+      "sha256": "70ef8d9c594cccdd24bad8bbbf45a69a4a2843c4c596d3eeb64075fce5cd2436"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-8/maxfreq=10kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10974,
+      "sha256": "28965559f1590642fb0ab181ea18561bb2c8f2c04fd6dc22d275415955308638"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-8/maxfreq=15kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10974,
+      "sha256": "7d609f29f4e72441ee2a47605adca1473d076db62996cc345331407aca4916f0"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-8/maxfreq=22kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10974,
+      "sha256": "c0ce74147d61736b07f7eabf94ec1c0c21b38fb103aad77b08a05f15481f5783"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-8/maxfreq=3kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10972,
+      "sha256": "c22c43d0ea7634b088958c67acade36a7522c8c7be0174ab4121b66c8d1b33ce"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-8/maxfreq=5kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10972,
+      "sha256": "7f5580a991378aa3ebc11165d1f8928a4e4292e3cf61bf391623bdfb263a8344"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=0/maxfreq=10kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10971,
+      "sha256": "703faf53e9cc632a981f5a3b6bd8abd6aaf45d0e6f5812e4158cecd1114ea050"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=0/maxfreq=15kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10971,
+      "sha256": "0639ddd08de9fc73df1ddd13fd16b9e9e1e7d344d6685d8717cb3118c275d31c"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=0/maxfreq=22kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10971,
+      "sha256": "579569cc3df345af3a0eb07efc2846fd3e9912018895cbe7413af83a530b797f"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=0/maxfreq=3kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10969,
+      "sha256": "33963dbbd3a6f215f303af3fbb6ab05537470321172e959c5527917e396eda71"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=0/maxfreq=5kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10969,
+      "sha256": "494964660f19b77c54b27239810b7c5dcf59354ac676c5df6c0412576881c831"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260908_selected_log_architecture/heatflux_no_noise/maxfreq=22kHz/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 11396,
+      "sha256": "705250aeafb93c7f76c260891e68fc0dec55a972b6d0003558fcf8641bfaebb3"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 11843,
+      "sha256": "962b756d0d671a68bf21e77250d1d49f6e19d5bfe179f3d64284058673f40514"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/wav_eval/wav_metrics_no_noise.csv": {
+      "bytes": 5011,
+      "sha256": "6866d9816a8990dc50f324ffbfcb535982f7859fe355fddbcbccf79e8953929b"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/wav_eval/evaluation_manifest_no_noise.json": {
+      "bytes": 2003,
+      "sha256": "9928b11cf9aac2cce504832c86f2cc74f25fa982c3979a6c0994df81d2c505d5"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/wav_eval/wav_predictions_no_noise.csv": {
+      "bytes": 12706,
+      "sha256": "9265cc12d189f3afd41d3d125ea83e0b49647b2f4390b322c8b02af779fa2acf"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/wav_eval/onb_transition_summary_no_noise.csv": {
+      "bytes": 12024,
+      "sha256": "70182df808f6d09e906bb91776824241e28bdb05d08be62a2fd365ec4dd8e674"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/alexnet/explainability_summary.csv": {
+      "bytes": 4177,
+      "sha256": "21cdae4b0b66d75b51604173080833acab90950a241dd8c66823a6b4e2fb9d96"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/alexnet/group_mask_performance.csv": {
+      "bytes": 4878,
+      "sha256": "e660facd03066f9dade980bb7dbb0bd17ce39a5987818f61d2c28e9567bbe71e"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/alexnet/top_layer_randomization_sanity.csv": {
+      "bytes": 803,
+      "sha256": "dc61134cf306ebbb51c95ce92a3e7df7889a48e23d7d66e009be3961a0ab6d55"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/alexnet/input_stability.csv": {
+      "bytes": 1201,
+      "sha256": "7be38fffe691f35604a7cc43a9f8a0f39c41a837a838c9870adc0d410d1830d6"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/cnntf_v2_gap/explainability_summary.csv": {
+      "bytes": 2889,
+      "sha256": "8bfb89a6bf5f20aecbc97ba501e39f5142ececf399d1c3fe214dc2a04f83887f"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/cnntf_v2_gap/group_mask_performance.csv": {
+      "bytes": 4637,
+      "sha256": "6d785ba58378effb8fcf4284bf7f353d601593786e269b44a9fa0add9cadc0af"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/cnntf_v2_gap/top_layer_randomization_sanity.csv": {
+      "bytes": 785,
+      "sha256": "c899ee1ee8abbbfc342e4fcd30620b7430aea425fa23848a3efa053fc36aac1f"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/cnntf_v2_gap/input_stability.csv": {
+      "bytes": 1198,
+      "sha256": "047d7d9a1fce614d5f936a4b3d3ab0e40f6b8506ce88483b8f4800296a78ab70"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/rf/explainability_summary.csv": {
+      "bytes": 1331,
+      "sha256": "dbe1b7217fb787f93009e8ca8163afe31913e0a9084d422a22e575824d84d1b1"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/rf/group_mask_performance.csv": {
+      "bytes": 4453,
+      "sha256": "1d731ff16ad1c9491ce841d7fb30fc8c0de2ffa77c1e128485e6003543794c71"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/rf/treeshap_pca_summary.csv": {
+      "bytes": 757,
+      "sha256": "cd75af426ac90e1af41b81de3f90f103b520e33299efb03444151e84880a43f7"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/alexnet/explainability_summary.csv": {
+      "bytes": 4061,
+      "sha256": "1403a3a68802ff653b5a1bf3ef4af4ed9faf822097f3ee4f5e23386be01c3793"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/alexnet/group_mask_performance.csv": {
+      "bytes": 4010,
+      "sha256": "a9e49d8b55e941c2ade002beb36f31e6b2633c112f633cbbb07ce577747fe400"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/alexnet/top_layer_randomization_sanity.csv": {
+      "bytes": 797,
+      "sha256": "45658a9a508e3115296f4a64c97d27dc47bee0ec8852b478e00ba5ccc5f541ef"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/alexnet/input_stability.csv": {
+      "bytes": 1201,
+      "sha256": "fd654f0cd5c345ea278ad5e8e7192bf03465a2bcbf4e30661b783aa3b035640e"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/cnntf_v2_gap/explainability_summary.csv": {
+      "bytes": 2820,
+      "sha256": "1b7eaeded5d4855a380c16639bfd287a3a104830a8e50421eaaae4c9114d6315"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/cnntf_v2_gap/group_mask_performance.csv": {
+      "bytes": 4124,
+      "sha256": "ba38c6220f4956fbb8aa94003e96eb7c84c761e3b4734cb83afc57141c1a111c"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/cnntf_v2_gap/top_layer_randomization_sanity.csv": {
+      "bytes": 791,
+      "sha256": "0ba01b43e687d82593ce93e1dcc7456163c454e0d4b1031c239190890b4bfcc6"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/cnntf_v2_gap/input_stability.csv": {
+      "bytes": 1196,
+      "sha256": "48ff2188ac59a2128a1cf3c4d9b9d38be6fc49edba4890d35fcdd9adc0f04b70"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/rf/explainability_summary.csv": {
+      "bytes": 1325,
+      "sha256": "9a9e7b1af50bf8c22f3b89baad022ae62fb43cc8b7b0e5f83da52eeb722e2eb5"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/rf/group_mask_performance.csv": {
+      "bytes": 3724,
+      "sha256": "ef27c8bb6519cb14b2ec1391e5ecbacd0fead694a1a860ad10b98dc08e344e3d"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/rf/treeshap_pca_summary.csv": {
+      "bytes": 752,
+      "sha256": "954e9365169eb4ce994417f3432bc62a085b0667153a8d0b3f3dab984e329ccd"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/alexnet/explainability_summary.csv": {
+      "bytes": 4117,
+      "sha256": "a7f7152c0d30716d2fc087890621df5909a5f2b796c9e0f7cde7a44f0480ef9c"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/alexnet/group_mask_performance.csv": {
+      "bytes": 3909,
+      "sha256": "960a13f91989bc9f1c0e9b3e568c7b9c58d1ee24f692d10600e84da8b66c936e"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/alexnet/top_layer_randomization_sanity.csv": {
+      "bytes": 791,
+      "sha256": "1fbde372c75fac64f3eeda6d85886751e94a6aa4df673b1e0fb8a652348a148f"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/alexnet/input_stability.csv": {
+      "bytes": 1201,
+      "sha256": "647024b7e984ecb37645aa6b97edb140bd99d0550ae308127b0a5588c27eb9a9"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/cnntf_v2_gap/explainability_summary.csv": {
+      "bytes": 2882,
+      "sha256": "3146ca483482d8111420024e8c59e2c89494601623c8c3562d9e3bf5a3294b9b"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/cnntf_v2_gap/group_mask_performance.csv": {
+      "bytes": 3927,
+      "sha256": "152d2e9ded9e887aed9e5fb2fb8975cfb59046caa8250c9585e06fddc8b0a9c8"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/cnntf_v2_gap/top_layer_randomization_sanity.csv": {
+      "bytes": 798,
+      "sha256": "6c8d6c664e2a4a9fb371af1a561f1b36872fcad4c189800d3f76c442e40f547b"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/cnntf_v2_gap/input_stability.csv": {
+      "bytes": 1199,
+      "sha256": "49c85745d1973ed9a2aa48265f1c711e65f1e8aadcaa41112bf8502ce529a58b"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/rf/explainability_summary.csv": {
+      "bytes": 1340,
+      "sha256": "1aacd51a7b7eea8ac8cf90e36e8ad3df8c64e116a8144cc1ec887c1c17536f7c"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/rf/group_mask_performance.csv": {
+      "bytes": 3582,
+      "sha256": "a4063e45fbd87f8d259d538b69db449a1316301b9f7ddd00cb18200f16ca81b9"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/rf/treeshap_pca_summary.csv": {
+      "bytes": 757,
+      "sha256": "a6b8ebab72b9d4f85eaccb98e6b40cce5ecdc4eccd71bf11c8da2edfa1b3bf28"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 11856,
+      "sha256": "c3115aa2cd08c5f489365862272a8b3c728c5733c2c21d2c1f04978294b3a558"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/wav_eval/wav_metrics_-20.csv": {
+      "bytes": 5687,
+      "sha256": "cc340dfb04f772507d9d3fb0c8136c0fb2a68cd972fa13106cd4ef6a59e35b45"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/wav_eval/evaluation_manifest_-20.json": {
+      "bytes": 2003,
+      "sha256": "9928b11cf9aac2cce504832c86f2cc74f25fa982c3979a6c0994df81d2c505d5"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/wav_eval/wav_predictions_-20.csv": {
+      "bytes": 12748,
+      "sha256": "6b23cb9dfd9ba1dffe780dcd874c358abcb9c4d63f6709e1492a46beebfaf538"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/wav_eval/onb_transition_summary_-20.csv": {
+      "bytes": 12776,
+      "sha256": "e8f665f813d910b319fdea69ed2b65681949f5e2db469ba0e49cc0eb880b7bf9"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/alexnet/explainability_summary.csv": {
+      "bytes": 4156,
+      "sha256": "586f2b6fb3715d971a4356aff30fd498382879aabd94ca509eafe885091859fe"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/alexnet/group_mask_performance.csv": {
+      "bytes": 4894,
+      "sha256": "d339a300e05f94befa96f5a521edf968bc75420ab4221c763b5e2b27dd8967bf"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/alexnet/top_layer_randomization_sanity.csv": {
+      "bytes": 801,
+      "sha256": "eb7fcef0a4479d5c515a547d9a31a6c398236a60d33a9eb606ed07199bb616f1"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/alexnet/input_stability.csv": {
+      "bytes": 1204,
+      "sha256": "72c1714c11f070877e5ea5dd97d52f92e4c3db38107437d554782403c5f72167"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/cnntf_v2_gap/explainability_summary.csv": {
+      "bytes": 2846,
+      "sha256": "a93ae057d6e8a518dbb7acf631c0ab906d36fad383d998b17029224d4d0b470b"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/cnntf_v2_gap/group_mask_performance.csv": {
+      "bytes": 4835,
+      "sha256": "9c2774441f7c1d0df624c128d133007c6715830e49db655d3273d39ecbf304ad"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/cnntf_v2_gap/top_layer_randomization_sanity.csv": {
+      "bytes": 799,
+      "sha256": "ff88f80d7a8e748973ff5ff7a7a9bad7cdf2d8870c4ef42d454dbb45b8b46c3a"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/cnntf_v2_gap/input_stability.csv": {
+      "bytes": 1205,
+      "sha256": "e5d7e23a2558e40ba161e96ceda6b598a7c334f7e49f9ca1a7a6dfd57eaa3afb"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/rf/explainability_summary.csv": {
+      "bytes": 1345,
+      "sha256": "0a4a391e0e95c7c3e2aa9d2941faf24e7163624b169c91fa3085f77ccaab1c67"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/rf/group_mask_performance.csv": {
+      "bytes": 4495,
+      "sha256": "34e461bd1efa76705ae30b3f01aafc29d93e387e41377cc7ffbc7ec18d3bcdb3"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/rf/treeshap_pca_summary.csv": {
+      "bytes": 755,
+      "sha256": "43bfaa8065bab958cff2e9fe3919f49b028832b19679ea0f4a91a0e86c59fa10"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/alexnet/explainability_summary.csv": {
+      "bytes": 4187,
+      "sha256": "05daefd0ee65d06896596a057d418fe94c7c559137b3561e95f03b825f25d364"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/alexnet/group_mask_performance.csv": {
+      "bytes": 4083,
+      "sha256": "1e3aacfe4f95763bc6fbe22792c762ddeced9255f3487c467f50efb6fd6beafa"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/alexnet/top_layer_randomization_sanity.csv": {
+      "bytes": 802,
+      "sha256": "e59095833d34f66b88e01cb42c401ff0109128c8460e7f62b21e3ea479b92811"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/alexnet/input_stability.csv": {
+      "bytes": 1203,
+      "sha256": "b832b7a9c4498bb3bbec6d34c767ef56ea715c8af06de733f747510b3a7aaf44"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/cnntf_v2_gap/explainability_summary.csv": {
+      "bytes": 2828,
+      "sha256": "afd62fca799fddaca2bf9c77f9cd8b4f2116682ccd385d735f3f8ddcb0569cd3"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/cnntf_v2_gap/group_mask_performance.csv": {
+      "bytes": 3929,
+      "sha256": "b4aa4fe97f44a79a1839d367af41a1edf4cb0b7a26415fb064ae15d3d6aca59d"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/cnntf_v2_gap/top_layer_randomization_sanity.csv": {
+      "bytes": 791,
+      "sha256": "036a604abd1c4223141d0ca6ed07b8728992e221b069b3bee6d17bc0f9168875"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/cnntf_v2_gap/input_stability.csv": {
+      "bytes": 1200,
+      "sha256": "f77ea522fb65e4481e6350c2120e184203b50ea1e50b28c3369a8334278be4a1"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/rf/explainability_summary.csv": {
+      "bytes": 1336,
+      "sha256": "df356b44a0173ca6abb419d37d3e667db1fe3376b2f098df5b5275ada8c64d1a"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/rf/group_mask_performance.csv": {
+      "bytes": 3744,
+      "sha256": "55657bd6ac9ced9c8c256355a0f09c643e297099972767bdcf7fde28c765b24a"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/rf/treeshap_pca_summary.csv": {
+      "bytes": 754,
+      "sha256": "17bbce9b7f75b3e83d91b8b7076f8a4ef54ca021e53df1c8b43ba7f90f156ada"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/alexnet/explainability_summary.csv": {
+      "bytes": 4084,
+      "sha256": "89b57ba3c94c5376956677f7745bd339dbf0620dd33318e73770ba7852f90c37"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/alexnet/group_mask_performance.csv": {
+      "bytes": 3768,
+      "sha256": "3ec3c82dc8264b507a6ee898d9836dd97f531fb3750c19e0bd6417d640a666e3"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/alexnet/top_layer_randomization_sanity.csv": {
+      "bytes": 794,
+      "sha256": "fdfb088c3fdb785fc5a588bd6ef6cc7e8bfc51dc04d3d26a10c0823d2e5dbc0d"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/alexnet/input_stability.csv": {
+      "bytes": 1204,
+      "sha256": "f205e68686450c87c74718239d650b16e5c98365f0d50f2b9847a9663ba535e5"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/cnntf_v2_gap/explainability_summary.csv": {
+      "bytes": 2835,
+      "sha256": "252cdabbf0eb9b06a083fcf2cb004bf405254d07168c5f6eeea187b038a6592f"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/cnntf_v2_gap/group_mask_performance.csv": {
+      "bytes": 3896,
+      "sha256": "591279548ae0b687976b1f4f5d9bfab83822193e87fac26554e80c44b172df71"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/cnntf_v2_gap/top_layer_randomization_sanity.csv": {
+      "bytes": 793,
+      "sha256": "3aae30e536ffa910dfbcef51309a678e5ca24c6702416d8eae454e2506ed83f5"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/cnntf_v2_gap/input_stability.csv": {
+      "bytes": 1200,
+      "sha256": "fe9d52c1c9cf5eba67ecd5e86135d822dbeea1ba8b9ff4171e065088c2013999"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/rf/explainability_summary.csv": {
+      "bytes": 1347,
+      "sha256": "0d074d56a4a6fc82d690d323c67f5e852a92d8dc385b55853668da1ccef3ec28"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/rf/group_mask_performance.csv": {
+      "bytes": 3741,
+      "sha256": "2987dede475ce5b4cfc51b887859b3f5b6cb29b43b2ed07d61174af0fff6effa"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/rf/treeshap_pca_summary.csv": {
+      "bytes": 758,
+      "sha256": "4a12241210f69f3c45cc73d4cc942adfc06a4785fd993c0e9bb128973af9e2ae"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 11850,
+      "sha256": "6e0d73d626cff8160edeffe3a26809bab06c110dcf886d0118382a1cca2ee3b7"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/wav_eval/wav_metrics_0.csv": {
+      "bytes": 5108,
+      "sha256": "fbf81ce23cdbf50b4e79425e5b4467f579f067b866205e8e45540113cf463384"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/wav_eval/evaluation_manifest_0.json": {
+      "bytes": 2003,
+      "sha256": "9928b11cf9aac2cce504832c86f2cc74f25fa982c3979a6c0994df81d2c505d5"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/wav_eval/wav_predictions_0.csv": {
+      "bytes": 12800,
+      "sha256": "a3de7289e67b36d5cbc044348338feabd687c13f7e8e8f7ef9917e351eed85d8"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/wav_eval/onb_transition_summary_0.csv": {
+      "bytes": 12160,
+      "sha256": "93c340b9d1943e1fb0640f4c0d4a9f64d11be56a60bdd3e26cb44bcf54e6065c"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/alexnet/explainability_summary.csv": {
+      "bytes": 4273,
+      "sha256": "c7b3b4080f88be3ad08078a1fc8d205239f0234b8d37c0a4bae52656982f7642"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/alexnet/group_mask_performance.csv": {
+      "bytes": 4844,
+      "sha256": "6f976f1182fd3e43c788be41a66925e4629c16c66a224ca828795e472eac5b44"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/alexnet/top_layer_randomization_sanity.csv": {
+      "bytes": 808,
+      "sha256": "4ebfc012f03b89cdd4f24a501f2f90d4ef2a42ec59694770d50353ff38da09f4"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/alexnet/input_stability.csv": {
+      "bytes": 1199,
+      "sha256": "517fdd47136731fb88bbdc861af6959cfebdd27f90525a8ac2baab9d70a1aa9d"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/cnntf_v2_gap/explainability_summary.csv": {
+      "bytes": 2902,
+      "sha256": "62370a73df370d09c2dcd07554c6e2c677d01b67d07708cb6c69db820bd7ad9e"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/cnntf_v2_gap/group_mask_performance.csv": {
+      "bytes": 4777,
+      "sha256": "815f08f39017c771025a4db4105b0ad8dbc350a086496cc02d7d2a1157918687"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/cnntf_v2_gap/top_layer_randomization_sanity.csv": {
+      "bytes": 793,
+      "sha256": "d7593fa9c93b84be59d00d6ff0b18f59bc41c50fbd140e2de6cad7307b9deaa0"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/cnntf_v2_gap/input_stability.csv": {
+      "bytes": 1199,
+      "sha256": "d43e147a948612f99b585ee342d91875716fb85bb522194ce6b8c2a41334d5da"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/rf/explainability_summary.csv": {
+      "bytes": 1360,
+      "sha256": "4bb720cc29732900f4cee62ceda2e908262da9bb5af821f732a4986bfc56e5b8"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/rf/group_mask_performance.csv": {
+      "bytes": 4175,
+      "sha256": "e167e6eef864041cdd646a18c3815b5267d5fbb0af2e4f4eead99264ad327621"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/rf/treeshap_pca_summary.csv": {
+      "bytes": 759,
+      "sha256": "630bd9c44423a4ece8f49428d4062f29519425de695166dd44d8b3932266aa6f"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/alexnet/explainability_summary.csv": {
+      "bytes": 4074,
+      "sha256": "00f1662ec336d3a8f72210ac4283a00ad01890c2fc47b2167539135c079422bb"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/alexnet/group_mask_performance.csv": {
+      "bytes": 4024,
+      "sha256": "c9cdf2aa6d7864b1e4e40212093e59156106c84887a57984a2c74dee3d2f1a5f"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/alexnet/top_layer_randomization_sanity.csv": {
+      "bytes": 794,
+      "sha256": "5b8c590369bca02c5448b1f7160d14727845aab0cd6d4559f017d3978ec1c6f4"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/alexnet/input_stability.csv": {
+      "bytes": 1206,
+      "sha256": "2e9473ef2fc8be9a1f7daa5601b12c8af8d4ac30ee04b787f4dc56c5663ab736"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/cnntf_v2_gap/explainability_summary.csv": {
+      "bytes": 2840,
+      "sha256": "b753c923254ff38e58d587aeac2ccfd7763e30ae146844d7f762f4009a104cf3"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/cnntf_v2_gap/group_mask_performance.csv": {
+      "bytes": 3863,
+      "sha256": "bd713445ac87f045ab714c8a3312419a5f363d19553b7b0b926b888cae482642"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/cnntf_v2_gap/top_layer_randomization_sanity.csv": {
+      "bytes": 789,
+      "sha256": "771a3b6004513eba225a62608b504a60f1233d9a49d11dc38000be11566152b1"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/cnntf_v2_gap/input_stability.csv": {
+      "bytes": 1201,
+      "sha256": "5cefd64108e21f405ed0ff6a42130bee9289d4f48905162a198972c149a5fcce"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/rf/explainability_summary.csv": {
+      "bytes": 1346,
+      "sha256": "9cece20b5ae8ca3573ae65ee7ce50b1ab690842527453406894fe8be85cc0cae"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/rf/group_mask_performance.csv": {
+      "bytes": 3763,
+      "sha256": "59e22e90ec9a80be8c7cfbdafd4b6c2c71cadf7a98c031b028bb5bf6faa31c8a"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/rf/treeshap_pca_summary.csv": {
+      "bytes": 758,
+      "sha256": "fe5484f2946cfef7ef369d9937e6e99264eaedbafb04d93a53a41c255287b796"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/alexnet/explainability_summary.csv": {
+      "bytes": 4100,
+      "sha256": "9911ed072fd2924add884937c77524138392c457408b5df74978fb181610c5ec"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/alexnet/group_mask_performance.csv": {
+      "bytes": 3832,
+      "sha256": "12ed256ae3b5efef3e646b8e412aef0891b4d3ef2ff54752935a061e8051e2af"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/alexnet/top_layer_randomization_sanity.csv": {
+      "bytes": 795,
+      "sha256": "199f6fccebeb733adee27a8c2cf6a0a835a58b3feeb6087b75bc29ebc4187e36"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/alexnet/input_stability.csv": {
+      "bytes": 1203,
+      "sha256": "20e420eaf8a91109a0588bf3dd4191dd1444d4bac78a77dc6a548c8085f78ca4"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/cnntf_v2_gap/explainability_summary.csv": {
+      "bytes": 2813,
+      "sha256": "cea804f7e5153a5b2a46d0c0f3b884c063110a96b4188082776154859de8d78a"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/cnntf_v2_gap/group_mask_performance.csv": {
+      "bytes": 3940,
+      "sha256": "4c2c5d708a54194ab6bfe7c16105a0f876919f1dd802450641917fdfd9991dce"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/cnntf_v2_gap/top_layer_randomization_sanity.csv": {
+      "bytes": 780,
+      "sha256": "c970b93936a80b77dd25568a007c70aab1541573710c0a3f9b761f7dddfbf65d"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/cnntf_v2_gap/input_stability.csv": {
+      "bytes": 1198,
+      "sha256": "b549dbbeefa88dc4697175ce5fe3f2dba000db26a17ef35b964c14f1ea33b159"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/rf/explainability_summary.csv": {
+      "bytes": 1337,
+      "sha256": "8902b0fda556c1fe9a5af8b532c8e7d31575e8b84df20dccd282b5cc0ec62fd6"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/rf/group_mask_performance.csv": {
+      "bytes": 3681,
+      "sha256": "ae35bf41ac15621d5f08e993012b1db073fb1faa7dcf44c1ef64c258a64e969b"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=22kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/rf/treeshap_pca_summary.csv": {
+      "bytes": 751,
+      "sha256": "5e7371a94d9f34138e7061977fabe0823b053b70fd5f22bfaa10dba300c9ccee"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 11841,
+      "sha256": "35834aab23a2f5782743b4f2cf81599bbaf6d026c4dc127dd14966e5a9e3066a"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/wav_eval/wav_metrics_no_noise.csv": {
+      "bytes": 5463,
+      "sha256": "d8df0c8589e78756963e108f496093aa46b3e08a0bf7a6053ede51efa81ea67c"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/wav_eval/evaluation_manifest_no_noise.json": {
+      "bytes": 2003,
+      "sha256": "9928b11cf9aac2cce504832c86f2cc74f25fa982c3979a6c0994df81d2c505d5"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/wav_eval/wav_predictions_no_noise.csv": {
+      "bytes": 12683,
+      "sha256": "c548c0569103d11e91404d17f8c08e07c1515d81d45a7c77bfd9fbaef16e23e5"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/wav_eval/onb_transition_summary_no_noise.csv": {
+      "bytes": 12637,
+      "sha256": "5514a21b59c855ea85b4b406deca0f319e5f1e08ddc64df84ef68ff3bac08ed6"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/alexnet/explainability_summary.csv": {
+      "bytes": 4296,
+      "sha256": "1007263ce798e6a6e2079a9d966e357f951ed04ca68fc3a1a359acbe0e36c099"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/alexnet/group_mask_performance.csv": {
+      "bytes": 3710,
+      "sha256": "b7cae9aa91949543236145db984bf8ac1f00f68b850ed2c9c298b0627f89da73"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/alexnet/top_layer_randomization_sanity.csv": {
+      "bytes": 805,
+      "sha256": "6ca88e709bb16625a89c781bb92f52603d761f0ad7095c1e5cd2fd74432fdaef"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/alexnet/input_stability.csv": {
+      "bytes": 1205,
+      "sha256": "e84f66569cff834a3c26a5301ca8126382856a884d19471e3bac6910c0f59249"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/cnntf_v2_gap/explainability_summary.csv": {
+      "bytes": 2892,
+      "sha256": "196fa8af1255b4aeb9de163e78ce34660d26301b562a1b4eda77af499ccccb6d"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/cnntf_v2_gap/group_mask_performance.csv": {
+      "bytes": 3775,
+      "sha256": "ca8034a50a10c1bad1d5665dfb65a95ff801d95e3e916a17f2578242390c3a30"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/cnntf_v2_gap/top_layer_randomization_sanity.csv": {
+      "bytes": 801,
+      "sha256": "da6cca05f021c04acd319b618698345538ea24363d5ea45cf59446e9e2affedf"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/cnntf_v2_gap/input_stability.csv": {
+      "bytes": 1204,
+      "sha256": "458b976153c08e30c73e229d4e15a783f40199b086f54d7ee4d8cf15371a6850"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/rf/explainability_summary.csv": {
+      "bytes": 1365,
+      "sha256": "31e6eab5baf4b479597f4d3096cee71fecaec1acfa2909637760850a3ea75cdc"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/rf/group_mask_performance.csv": {
+      "bytes": 3460,
+      "sha256": "61ae1d213c6d6183e2232879aac395fcacc313d83886c29bb80cbf62e220d93f"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/rf/treeshap_pca_summary.csv": {
+      "bytes": 760,
+      "sha256": "e2326cbcf61e696726697f52477ccbdb6e4544578707540a04b7f79d3167573c"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/alexnet/explainability_summary.csv": {
+      "bytes": 4065,
+      "sha256": "25da26adc203642dc5c1b73106e375a02e23f9fd63f8b2cf548398e865c6cf1b"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/alexnet/group_mask_performance.csv": {
+      "bytes": 3097,
+      "sha256": "9ed310b1d28b491712025b73b0e172a6f771b67493272363182927f5aa1d88ef"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/alexnet/top_layer_randomization_sanity.csv": {
+      "bytes": 797,
+      "sha256": "04eb948d08ce787d850cfef2332a942dfe2475f56e48ba29b6a8d9c5aa6b76ab"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/alexnet/input_stability.csv": {
+      "bytes": 1203,
+      "sha256": "f27ca610e79ed46d6e7b8a1b3023e04ee920e728fa6ec4d415f2f0aaa9b21970"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/cnntf_v2_gap/explainability_summary.csv": {
+      "bytes": 2828,
+      "sha256": "0ad196d79c7da1f95e0e770e635b90ba0632ca340736cee972a9010bd509b009"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/cnntf_v2_gap/group_mask_performance.csv": {
+      "bytes": 2986,
+      "sha256": "bfc29444ebe5788c17cb44a9b3b806a2124dc6de532ee7caf49eba6b4b829990"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/cnntf_v2_gap/top_layer_randomization_sanity.csv": {
+      "bytes": 795,
+      "sha256": "c995ea3b0355e2b4d1ea6cafbfbe7ab4702d7bda61d12e6bdbf7cc2c0959519c"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/cnntf_v2_gap/input_stability.csv": {
+      "bytes": 1206,
+      "sha256": "9f2227198fc2806deb8dbc8effa7687f771a185bdaa7edbf538d901727125aa2"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/rf/explainability_summary.csv": {
+      "bytes": 1334,
+      "sha256": "2006c6763cdad99a271103b0c930026fe6143b55f4ddef051a4ed25f5409df01"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/rf/group_mask_performance.csv": {
+      "bytes": 2950,
+      "sha256": "5dbc6d0be9b5a3cf8c529533bbbcd9014e655e4840676b6e7817b6677c489def"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/rf/treeshap_pca_summary.csv": {
+      "bytes": 761,
+      "sha256": "0c27a8856c2a8f0ab0d6afb4d5f60e12aa55934c40b4b555d533350f83341529"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/alexnet/explainability_summary.csv": {
+      "bytes": 4125,
+      "sha256": "426b8475c9c0f1793bbcf8f815549cc079862fbd517fd94ca05aae504a73f23f"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/alexnet/group_mask_performance.csv": {
+      "bytes": 2917,
+      "sha256": "b87b41448276335f51f6f79d6d2dbff5a9c35b2ae58bda62fdcf944b99e9084c"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/alexnet/top_layer_randomization_sanity.csv": {
+      "bytes": 795,
+      "sha256": "12c88bf3897edbe7349253cd16bbbe0bdf728979bd86fe357dcc1efe677eccad"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/alexnet/input_stability.csv": {
+      "bytes": 1203,
+      "sha256": "3f1685e2b9ebeb0e87fedbacca922be4724d3b837b26c3ba0eb63765a685f2db"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/cnntf_v2_gap/explainability_summary.csv": {
+      "bytes": 2795,
+      "sha256": "970ec17cbdb53445b794653f4f0ad93f5747382a3028e5db48efe5202091860b"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/cnntf_v2_gap/group_mask_performance.csv": {
+      "bytes": 2993,
+      "sha256": "2becddd602f4ff4c236a6c3a14512983cb34c4cfb32739c2b68c0d17b856c731"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/cnntf_v2_gap/top_layer_randomization_sanity.csv": {
+      "bytes": 798,
+      "sha256": "99a96a1bbb40089ed00582612c2ae7424df65dd17f5069f2d33a1bd11a08a576"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/cnntf_v2_gap/input_stability.csv": {
+      "bytes": 1204,
+      "sha256": "faa5190a571de5d8dc6e436588fac0fe39d4913c4c96539a08860d0d316541b9"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/rf/explainability_summary.csv": {
+      "bytes": 1355,
+      "sha256": "a15b39e19f96f9e71ac6ac303faedad494cfbcc6ae3af9a4af476983af5aa4fc"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/rf/group_mask_performance.csv": {
+      "bytes": 2837,
+      "sha256": "0e0e7471fc01c2841405bf5efec2f47600dd62a63725430fa46fda41d781fde9"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/rf/treeshap_pca_summary.csv": {
+      "bytes": 759,
+      "sha256": "d2377b1b9c725d19bb0ccd2c91fa02382c5174cd910b3005717b3b0902b2fa91"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 11854,
+      "sha256": "010f26c5eec13b94cd82093905d63b19ca0ff545435ecdb77128ce8cd1f71e82"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/wav_eval/wav_metrics_-20.csv": {
+      "bytes": 5225,
+      "sha256": "05a12b767dbcdf585262c69958b4db1b64ac8386c2a9ad1a63ffb4b4d4efe25c"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/wav_eval/evaluation_manifest_-20.json": {
+      "bytes": 2003,
+      "sha256": "9928b11cf9aac2cce504832c86f2cc74f25fa982c3979a6c0994df81d2c505d5"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/wav_eval/wav_predictions_-20.csv": {
+      "bytes": 12709,
+      "sha256": "57be5769eedd7a13627cd2a4aac3d12d00da154b4e946f75161b2b6fe8125fe3"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/wav_eval/onb_transition_summary_-20.csv": {
+      "bytes": 12264,
+      "sha256": "e3e46676124ffadba97433779c3a933feb0195e58b34ccc3e3e4b96b157e2953"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/alexnet/explainability_summary.csv": {
+      "bytes": 4336,
+      "sha256": "0fc585f15c1efdee944b709738994c0263475b2235d1daea892d2e1ed019c7c9"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/alexnet/group_mask_performance.csv": {
+      "bytes": 3771,
+      "sha256": "d8e0a936ec64f5649814e954e79789116a1e96653ef70bef318360243b1d5276"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/alexnet/top_layer_randomization_sanity.csv": {
+      "bytes": 800,
+      "sha256": "ed87457f3f3fd45ecd2f97d6d39996f77139e7064970bd234f63a0232fd4faf8"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/alexnet/input_stability.csv": {
+      "bytes": 1207,
+      "sha256": "1c6c245676a77d619cef9c391e402505791c9e5ede69eb1590a9a89fc8c5b16b"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/cnntf_v2_gap/explainability_summary.csv": {
+      "bytes": 2855,
+      "sha256": "87f82bddff00b9755dbc087f9d77b0b319c71bdd14c140568cf7afb1f1584153"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/cnntf_v2_gap/group_mask_performance.csv": {
+      "bytes": 3458,
+      "sha256": "1a23f5d78e8e779c8b8e29008e75e5d7409b556af4b648c27a0b01c2d5e75a4c"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/cnntf_v2_gap/top_layer_randomization_sanity.csv": {
+      "bytes": 792,
+      "sha256": "bcd6cba80901cc3aeddff9ca0d78520b292eb6f99d0e08ed384ee73c81057a24"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/cnntf_v2_gap/input_stability.csv": {
+      "bytes": 1209,
+      "sha256": "4fa8e89aa4b5242ed933d95140a5b99dfe2805dd341d80e7d6e831a14bac47dd"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/rf/explainability_summary.csv": {
+      "bytes": 1331,
+      "sha256": "32d3b257b9759f701df5df9efc26aeb1af3f622b148cdd531b1da294f1176c68"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/rf/group_mask_performance.csv": {
+      "bytes": 3449,
+      "sha256": "d3eb687db9e6967a357a567b08921aadb040de297d5ad14a87e6cf1ff9837f1e"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/rf/treeshap_pca_summary.csv": {
+      "bytes": 761,
+      "sha256": "fcb0a25bc101cb8b70d968ec21996380ec0f065f1ca24e7b7c5b7424fbea5168"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/alexnet/explainability_summary.csv": {
+      "bytes": 4220,
+      "sha256": "e75bc8e4fe96715c94df13f973576b7b0a2a0cd69581b2ff68ea5923aa2cccfe"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/alexnet/group_mask_performance.csv": {
+      "bytes": 3067,
+      "sha256": "aab4dd9b353b7dd7a50215aec0fb70e34502daf7c2fd70683fb02200a5e405d3"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/alexnet/top_layer_randomization_sanity.csv": {
+      "bytes": 794,
+      "sha256": "3b900470f112e34b02121d2d1cf973e87205030c77b738dc1e45aa26a6bbd6c6"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/alexnet/input_stability.csv": {
+      "bytes": 1210,
+      "sha256": "c8a63a8a7dc459a6073b8871749b0ce60ce68d07fedfe4fe3145d1cfb21eed50"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/cnntf_v2_gap/explainability_summary.csv": {
+      "bytes": 2853,
+      "sha256": "a0fef42a2972a13610a92843fcc16f4b22196335885d6f6723c16628eb21ca08"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/cnntf_v2_gap/group_mask_performance.csv": {
+      "bytes": 3057,
+      "sha256": "a748835fbaabf1f3827b208d446d65454cef4383ee3f60a03d5a7e4fd8ed8ce7"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/cnntf_v2_gap/top_layer_randomization_sanity.csv": {
+      "bytes": 795,
+      "sha256": "9f255e3be3748099f2596b9ef76cf3862934c47bf340605b9df44ac1f6d648e7"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/cnntf_v2_gap/input_stability.csv": {
+      "bytes": 1210,
+      "sha256": "6bd1c3e89acf93cc9027b779f1fb9d9c224f750a19155524eaa9e9845ef05c3d"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/rf/explainability_summary.csv": {
+      "bytes": 1313,
+      "sha256": "701bf4822a74f6343069b8e6e701d0c4c627ef5d8f98d8e57ed90bad39b3a0e5"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/rf/group_mask_performance.csv": {
+      "bytes": 2891,
+      "sha256": "c9765f4e9ba447a2b27db3a6ef71eb4900458185b8db90df2207e9a500a795ff"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/rf/treeshap_pca_summary.csv": {
+      "bytes": 755,
+      "sha256": "873b0ed805fdca218bf436c7d48fec6abb08578c47a74e3a7ac4d6bd616a0e58"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/alexnet/explainability_summary.csv": {
+      "bytes": 4236,
+      "sha256": "ce7c14f76b9d7cd62028dd08b332606f76699af65faa97ac9d9edf4a1ad7810f"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/alexnet/group_mask_performance.csv": {
+      "bytes": 2912,
+      "sha256": "ab19695ba278772593fbfb990cccb83cda46779314704c756eefb587730a2e7d"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/alexnet/top_layer_randomization_sanity.csv": {
+      "bytes": 795,
+      "sha256": "65dbf508256551ecba6a9f3af5c97704e68ef0383424e7f1064fad180e64898c"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/alexnet/input_stability.csv": {
+      "bytes": 1209,
+      "sha256": "9b4a17fa286fb3abf104ce2ab10e5f7ab2cffae1987597fb29b3abb6a6bad515"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/cnntf_v2_gap/explainability_summary.csv": {
+      "bytes": 2835,
+      "sha256": "436d8a47a33dc3561212a664e2ffcdcbb97787f12137c338926e6889d4942740"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/cnntf_v2_gap/group_mask_performance.csv": {
+      "bytes": 2921,
+      "sha256": "71eac2087b2f29a2b623e7c54b5c976d96913ee082cfd501be19920e49a2e574"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/cnntf_v2_gap/top_layer_randomization_sanity.csv": {
+      "bytes": 791,
+      "sha256": "70ea0b2de6f554f791bbe6dc00fc1713730a0f5ce2a6b79d893d1b8472333b3c"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/cnntf_v2_gap/input_stability.csv": {
+      "bytes": 1206,
+      "sha256": "e92803dcf221b77b3460f4fed5c20a31c2642a0349d657ce4bc4ec742c3c2588"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/rf/explainability_summary.csv": {
+      "bytes": 1324,
+      "sha256": "e191d75499052f5417238f810a883b9b65764a97eed7f49665e539c632bdad21"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/rf/group_mask_performance.csv": {
+      "bytes": 2860,
+      "sha256": "a85126a92fd76e2b495fda4ba52afaa90a754a30fb06f259fac9a25eba0a5e58"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=-20/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/rf/treeshap_pca_summary.csv": {
+      "bytes": 763,
+      "sha256": "33446a9115d9a44aed62e2e02ce8975ac7b847a87d99516aaf53c4b4b22ea87c"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 11848,
+      "sha256": "d877cec545c436734b62fa3d4155ce5700323bb313ae8fc435a7e16a9558a750"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/wav_eval/wav_metrics_0.csv": {
+      "bytes": 5362,
+      "sha256": "cd38cc63c1d715c8dcec27a6ba95e962aefdc953d13da734d3d1c54327c23a28"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/wav_eval/evaluation_manifest_0.json": {
+      "bytes": 2003,
+      "sha256": "9928b11cf9aac2cce504832c86f2cc74f25fa982c3979a6c0994df81d2c505d5"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/wav_eval/wav_predictions_0.csv": {
+      "bytes": 12685,
+      "sha256": "26828d33c3b40998e6fb68da02353c0c9d831bb8ed04b283c49b8b6bd887e868"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/wav_eval/onb_transition_summary_0.csv": {
+      "bytes": 12468,
+      "sha256": "3c0c12115c398918babee9f1f0dba8a74166ce35a608c3523b5678cc1da52c3a"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/alexnet/explainability_summary.csv": {
+      "bytes": 4301,
+      "sha256": "8d7d198458b2bcd44746f5a5ce05a0d5a22b783ab420a5e26347f75e07044dc8"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/alexnet/group_mask_performance.csv": {
+      "bytes": 3739,
+      "sha256": "551a77641c446f5f71205b41c1ee792fa3755744248255949940d2ff240453fd"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/alexnet/top_layer_randomization_sanity.csv": {
+      "bytes": 800,
+      "sha256": "737aaede8e780ba7675649c831d9bfd55f96a318b21863f0eef45c22186ba4b3"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/alexnet/input_stability.csv": {
+      "bytes": 1207,
+      "sha256": "a605fd5470325ca76a374ee37045ffd3de78da017c053790fd84969bf6ce3c7d"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/cnntf_v2_gap/explainability_summary.csv": {
+      "bytes": 2846,
+      "sha256": "d14347dfc27f7d5c24b7de8dc7a1e609d556bbcf6f4c1debfe37fbb643d684fc"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/cnntf_v2_gap/group_mask_performance.csv": {
+      "bytes": 3791,
+      "sha256": "8c8f2d8b20deb15b9fee33a154de00740ad5b6d3e58c0989f378721f675da1ae"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/cnntf_v2_gap/top_layer_randomization_sanity.csv": {
+      "bytes": 789,
+      "sha256": "c73fa4a8383d79ae7cc6fa69e5fc1f8d24a98a2c3477a84695c309581a11997d"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/cnntf_v2_gap/input_stability.csv": {
+      "bytes": 1202,
+      "sha256": "514e890d85fc8d08e9c110819901d67b69c6a12efe81013e6f32a5deec83ece5"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/rf/explainability_summary.csv": {
+      "bytes": 1361,
+      "sha256": "f4aabba8ee7d65bad14781d61eb5e6835abf6790c24f1c9c3e67b467f4c454ab"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/rf/group_mask_performance.csv": {
+      "bytes": 3455,
+      "sha256": "1ae71972f3f8bd1b2b1812b9498fc18cc175d0ab7e8dcf450ecf67ae8c9a0d17"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold1/rf/treeshap_pca_summary.csv": {
+      "bytes": 762,
+      "sha256": "3bd36190824e31a0e55349bbffe9adc407c5866326003d94b8eebd97872f29bc"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/alexnet/explainability_summary.csv": {
+      "bytes": 4123,
+      "sha256": "dd76cb0289b862f60f0b94f0bf2659e0dcdcd8ba7435b504c8a6625ea3a28066"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/alexnet/group_mask_performance.csv": {
+      "bytes": 3112,
+      "sha256": "e12cb419a85741b7efda4a6f889856dc21b3cae34d5b512a80ab29b43d8c21c4"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/alexnet/top_layer_randomization_sanity.csv": {
+      "bytes": 795,
+      "sha256": "2d9d186531f3c06c24624a479882f9a816b9c401c6d85741f51b5820fc5b4ca5"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/alexnet/input_stability.csv": {
+      "bytes": 1203,
+      "sha256": "c77b420aaf57ac72fd5cd0a2a2027970addf41503ee7fd2c3078707fc649a496"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/cnntf_v2_gap/explainability_summary.csv": {
+      "bytes": 2866,
+      "sha256": "9f7c59dd02b8a0f88f247a9ce76736ebdad83ee6b9f80a170256068002871712"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/cnntf_v2_gap/group_mask_performance.csv": {
+      "bytes": 3007,
+      "sha256": "d55964a2c07ee08ae7c74752624f9a546a5048eb6e6be7daf93599831a853a26"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/cnntf_v2_gap/top_layer_randomization_sanity.csv": {
+      "bytes": 800,
+      "sha256": "592bf33346970da51eba77e704b4e82ad9239f2fa81d27e0a4dd079ec3e9ab4b"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/cnntf_v2_gap/input_stability.csv": {
+      "bytes": 1205,
+      "sha256": "8e8ddc0cafe224d2f81b25bee4dc02d2825718d8e0070359b12bd107311c6768"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/rf/explainability_summary.csv": {
+      "bytes": 1327,
+      "sha256": "eba074eae571d4a5a95fe4f8dfb5de1ba140eaf74a242c87c96593a78226f7e9"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/rf/group_mask_performance.csv": {
+      "bytes": 2882,
+      "sha256": "306eb68bfc3cc28ac4ecd3f08fa8173a099ce70d932a2ba4d9705710a620bb13"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold2/rf/treeshap_pca_summary.csv": {
+      "bytes": 755,
+      "sha256": "f34ff7513a957f9088e3d4da7dfe34e2265c9fd50713318b6ca285ddff52be8d"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/alexnet/explainability_summary.csv": {
+      "bytes": 4099,
+      "sha256": "fe595a215ddaf4145cca4376b9b2b7489b6fa9a982bd9e43da3273e60849f59c"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/alexnet/group_mask_performance.csv": {
+      "bytes": 2914,
+      "sha256": "9eb8a39c294ebdbf9b154159f823c9fcb7dcc328237e4d87a5431f2ed577a024"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/alexnet/top_layer_randomization_sanity.csv": {
+      "bytes": 796,
+      "sha256": "50d6d8efe7c4ac6ea8b1e5657b6fbb1acd057070d1c1d0ce6aab6f3cf27edb82"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/alexnet/input_stability.csv": {
+      "bytes": 1199,
+      "sha256": "63d4b30b355f4b6e04e087a6f516b17973183b4f2e5158a76bc5f49d40f365f7"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/cnntf_v2_gap/explainability_summary.csv": {
+      "bytes": 2829,
+      "sha256": "33a2b12cdc830596a567d82718bbe814153289bd2fa5abf346068577a56d496e"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/cnntf_v2_gap/group_mask_performance.csv": {
+      "bytes": 3018,
+      "sha256": "4bfd2f5563f9f5ba2643e3b237666032f37aa1923ffeeb3008fcc34669a477a0"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/cnntf_v2_gap/top_layer_randomization_sanity.csv": {
+      "bytes": 787,
+      "sha256": "76c532649fceda48232c0c9f21b9eed849b88145d15cb3bc67070b81398e9265"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/cnntf_v2_gap/input_stability.csv": {
+      "bytes": 1205,
+      "sha256": "bbb7e27ad639f92333365bb5e016d5dc0a4d619f2abb2074b9ad5f59abb1ab15"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/rf/explainability_summary.csv": {
+      "bytes": 1354,
+      "sha256": "86e2e28bc522a89d2ff35f53ca4a0d87917d1da7076560017a8b596a9d2f646f"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/rf/group_mask_performance.csv": {
+      "bytes": 2879,
+      "sha256": "bf78a8ea69363292a7e962a03a2099b648c582213eb18b0416fbe2a36f8fdf67"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260914_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/explainability/fold3/rf/treeshap_pca_summary.csv": {
+      "bytes": 752,
+      "sha256": "a28503b6d8e4c4b2955744d8f9194b7392fb5e3c8499d1e228b271ac48e1fff8"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260915_selected_log_architecture/maxfreq=22kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 12782,
+      "sha256": "c7c205dd1891fd317a5d1aefa0449cc3334d96744617cfc67f2afb9a88d91fe6"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260901_selected_log_architecture/heatflux_no_noise/maxfreq=22kHz/e500_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10392,
+      "sha256": "d9f346a5788f89a88a685519bb9ffd1a81ac31ce3393223699910b6ade5ee13f"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260901_selected_log_architecture/heatflux_no_noise/maxfreq=3kHz/e500_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10390,
+      "sha256": "462c82d1e0598bfc37901d19281ff4c44f6e5e1c0b1e29394ed440b4f0c2d23a"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260901_selected_log_architecture/heatflux_reference_SNR=-20/maxfreq=22kHz/e500_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10405,
+      "sha256": "2bd24584f4a465b78cf2112e423072ddcd9a272519040259102fed35a6ec9627"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260901_selected_log_architecture/heatflux_reference_SNR=-20/maxfreq=3kHz/e500_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10403,
+      "sha256": "681235a02871b3aea91d5d44767ea6161b715b12e5ec0bebed389c092df3de94"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260901_selected_log_architecture/heatflux_reference_SNR=0/maxfreq=22kHz/e500_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10399,
+      "sha256": "24be4265ea157bf0599e56d8a0107de656de2969973ff23b2a3337ba0070aa0c"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260901_selected_log_architecture/heatflux_reference_SNR=0/maxfreq=3kHz/e500_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10397,
+      "sha256": "e5a142129736d59ceed7111cb96ca78e9a085e1ed5ee4a692b92f10e216d634a"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260902_selected_log_architecture/heatflux_no_noise/maxfreq=10kHz/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10964,
+      "sha256": "ca3a6460930f28c87f980817939c98ffc8e907a2428974607544cb580bb0786c"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260902_selected_log_architecture/heatflux_no_noise/maxfreq=15kHz/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10964,
+      "sha256": "8ef27d590a27938f6e4757b09d02ea3bccb3aa2278314d367a04345de780950f"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260902_selected_log_architecture/heatflux_no_noise/maxfreq=22kHz/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10964,
+      "sha256": "0c3ac17056808d20a1ace766b2b8f27bdbbf63c463c2ef3250218f9cd81c25be"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260902_selected_log_architecture/heatflux_no_noise/maxfreq=3kHz/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10962,
+      "sha256": "b3be5ee22fae5b7c2175dda3480069df1c84323fdb5b31d2b5dd662f55c6c944"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260902_selected_log_architecture/heatflux_no_noise/maxfreq=5kHz/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10962,
+      "sha256": "efed56c8e64f79bab14d5f629f290d03bff2ddeb31e35b2a0754a07589777132"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260902_selected_log_architecture/heatflux_reference_SNR=-12/maxfreq=10kHz/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10977,
+      "sha256": "d4d61ed7746772ce1c2c81913d41e00687283464739c12440f990e9d4bbeac87"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260902_selected_log_architecture/heatflux_reference_SNR=-12/maxfreq=15kHz/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10977,
+      "sha256": "7b1d01341bef387449f294657d895f2a1fd99dfb9b6860f48b89fe8be58792b0"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260902_selected_log_architecture/heatflux_reference_SNR=-12/maxfreq=22kHz/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10977,
+      "sha256": "6aaa0144daa4c0f7db74d1988af0af1a189a70544737f68566444ddf31e70925"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260902_selected_log_architecture/heatflux_reference_SNR=-12/maxfreq=3kHz/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10975,
+      "sha256": "8b94355d3e92bfe49091a0d996688591f16e96556cdbb6cbda078a7b3282f0fe"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260902_selected_log_architecture/heatflux_reference_SNR=-12/maxfreq=5kHz/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10975,
+      "sha256": "6066bab8bf4236ad8a81531ece24c463319847320ea3400bcd38266128e5ff11"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260902_selected_log_architecture/heatflux_reference_SNR=-16/maxfreq=10kHz/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10977,
+      "sha256": "66384743e0457ced668f714e41fc7b462b4756ed066d0d2c323c7e8e45645d2d"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260902_selected_log_architecture/heatflux_reference_SNR=-16/maxfreq=15kHz/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10977,
+      "sha256": "0501f932f0fdfb30468775332328e4075648a33d0c087a166f1fc6b923886fe8"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260902_selected_log_architecture/heatflux_reference_SNR=-16/maxfreq=22kHz/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10977,
+      "sha256": "d11db6b9e9e203dca71f995985a7b13e15b598da06d68a82981be407a4f2bdd7"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260902_selected_log_architecture/heatflux_reference_SNR=-16/maxfreq=3kHz/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10975,
+      "sha256": "6e06b8e3ab65e08f3f3036dc9e2d8a930bfca5c8c8c79e1ed3a0a3c9dccbedb2"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260902_selected_log_architecture/heatflux_reference_SNR=-16/maxfreq=5kHz/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10975,
+      "sha256": "b8201ae461244887364a86e57c1bfbb0413d8d1d39490633c9a6dca62204d591"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260902_selected_log_architecture/heatflux_reference_SNR=-20/maxfreq=10kHz/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10977,
+      "sha256": "6d0790d52d528c6a092327099d0b7b0f669f657b364976b1ba53c4bca791fd7a"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260902_selected_log_architecture/heatflux_reference_SNR=-20/maxfreq=15kHz/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10977,
+      "sha256": "7e75ce7421c4bff1fba04b54b65360a135965a79edd91ae612c44a62743abcdd"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260902_selected_log_architecture/heatflux_reference_SNR=-20/maxfreq=22kHz/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10977,
+      "sha256": "d2e24f1fbba47bb79e30e9aa2ad0a93b7dffacce958e1d37efe194d515723809"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260902_selected_log_architecture/heatflux_reference_SNR=-20/maxfreq=3kHz/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10975,
+      "sha256": "1218564deaa1561ac29b34fb10e4c068e1982a1f46dc2f3201ba6c6c9ee38411"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260902_selected_log_architecture/heatflux_reference_SNR=-20/maxfreq=5kHz/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10975,
+      "sha256": "7cb522be22c75d2bb4a1235767874f7de368b0959d8da02d5914650d90fed895"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260902_selected_log_architecture/heatflux_reference_SNR=-4/maxfreq=10kHz/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10974,
+      "sha256": "a60fc5e328b2d5281f0c3881c93de8dce36039fadd234682f8474f720e4fa5ed"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260902_selected_log_architecture/heatflux_reference_SNR=-4/maxfreq=15kHz/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10974,
+      "sha256": "0f790596cda4d658ab6d52d4ca2969308997313b62bc3657483048e5365c45a4"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260902_selected_log_architecture/heatflux_reference_SNR=-4/maxfreq=22kHz/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10974,
+      "sha256": "35ddf439ad2617cced48c93a5ea6cd3445f77a5e43c9b3989446b762b9f1a051"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260902_selected_log_architecture/heatflux_reference_SNR=-4/maxfreq=3kHz/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10972,
+      "sha256": "0fd071758d91fbaca7f1212c6a9934f18d4ab9b1c6cd6aba46dc7b75cfa81d0d"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260902_selected_log_architecture/heatflux_reference_SNR=-4/maxfreq=5kHz/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10972,
+      "sha256": "db9fb942a798bb6d3283879e4fc92b19cb2a215bfdacb174aec160f8c4831bf1"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260902_selected_log_architecture/heatflux_reference_SNR=-8/maxfreq=10kHz/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10974,
+      "sha256": "e23fb1b68efa62a5d953ae25afbf726144b733e804650d2c1c58ce44385ede6c"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260902_selected_log_architecture/heatflux_reference_SNR=-8/maxfreq=15kHz/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10974,
+      "sha256": "87fc544a55440965544dc345983fb2114f1f9c85da85e70fc2e10533be324c71"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260902_selected_log_architecture/heatflux_reference_SNR=-8/maxfreq=22kHz/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10974,
+      "sha256": "b21eba3a865afe74fbf533c7586ec5147d32efe83c9e66541defa83c8a0de81d"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260902_selected_log_architecture/heatflux_reference_SNR=-8/maxfreq=3kHz/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10972,
+      "sha256": "d4fe0bad4eee062b04fb1c79da06b3fe84eb3c49015ee4c33fff2fbcf3b82524"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260902_selected_log_architecture/heatflux_reference_SNR=-8/maxfreq=5kHz/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10972,
+      "sha256": "80497c423fd02079578f36ea74376e00c5994a91d6cb80d80e9c78910863d307"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260902_selected_log_architecture/heatflux_reference_SNR=0/maxfreq=10kHz/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10971,
+      "sha256": "e0d414e86934edb4dd029d59668bf6b65b8647c6d4bfe878e06f2b4c2b6b95e8"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260902_selected_log_architecture/heatflux_reference_SNR=0/maxfreq=15kHz/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10971,
+      "sha256": "d266f9c64ffd2ab8748dfcf0282c7b630253a53a3ef9166ad7a63b5d741eea80"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260902_selected_log_architecture/heatflux_reference_SNR=0/maxfreq=22kHz/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10971,
+      "sha256": "0e2aba1264bae8354ff6505b4206f0bf73b708ebade9e5251282be9c15a02b5b"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260902_selected_log_architecture/heatflux_reference_SNR=0/maxfreq=3kHz/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10969,
+      "sha256": "c22ed4dfbae932e700dbf20d7e4c572f09765ca49e00b9a70db6869be2b4fc3e"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260902_selected_log_architecture/heatflux_reference_SNR=0/maxfreq=5kHz/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10969,
+      "sha256": "43ec9da56c7c1cdce58d625354aa1fcc803f639a2cacbf3e8311b5c2daf1a865"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_no_noise/maxfreq=10kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10964,
+      "sha256": "43747f0d16286ff85c5be628893bda05c36d2ceafba98361afe11c3a53695793"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_no_noise/maxfreq=15kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10964,
+      "sha256": "98c687b3d4eceef306bff79f143cd5867c59aca17070a0306b8157fd07d5023e"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_no_noise/maxfreq=22kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10964,
+      "sha256": "d87cc92c4f32e907c0df4d79bdf25c2a879b88b09375c444078959aca75e5d57"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_no_noise/maxfreq=3kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10962,
+      "sha256": "059ed38c35caa83752fe35c4c385c2c0d6a6382671903eebdb9112cac75a52ce"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_no_noise/maxfreq=5kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10962,
+      "sha256": "cec37436b90e5f3e21c8a5b2f787085624ec90e0390c1f9f41ce5062319b18d7"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-12/maxfreq=10kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10977,
+      "sha256": "0ba854e1de5118179dd8454bad2d679c51f593792402bf03ed081d47d346c008"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-12/maxfreq=15kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10977,
+      "sha256": "ba36194341412b1cf972c10c4e621e75ab66f380dd5003f301cfa89eeba60153"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-12/maxfreq=22kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10977,
+      "sha256": "2f41b4ee1497160e2a563bdb835be25ed0b1f4b65ac57f2241be79e7272d0c21"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-12/maxfreq=3kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10975,
+      "sha256": "be9ec61b8a4b5e4c2cb592055661b14858738dd0ea609cd3c3704bbf07be61d2"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-12/maxfreq=5kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10975,
+      "sha256": "445fdfd41b01b33e5d1c1e0a2244105c7a60b4c3c335fc24fd5f9efe1e2d350e"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-16/maxfreq=10kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10977,
+      "sha256": "e6da7dd09d1a3148b5f39f841a9fbe35a0d7cee03305653a31711a2311ab7785"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-16/maxfreq=15kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10977,
+      "sha256": "977aa950cd64e929e79a9a51350889126bebf55406dd6d9df346e90970b67c92"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-16/maxfreq=22kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10977,
+      "sha256": "ab3fa3185fd5504eee6d582be7d12ed5c5de53ff1614d58631675d221ef4d556"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-16/maxfreq=3kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10975,
+      "sha256": "879a45c529a118aae7435e8126a62b3b6ca45987e484bfa9bb81678c28ad5fd4"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-16/maxfreq=5kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10975,
+      "sha256": "490cacaef96614f61892c3dcc60d826a60204779aa94c987bb61677fffaaef06"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-20/maxfreq=10kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10977,
+      "sha256": "3f3af801caeec6bb088eaf3a0865c18fc9dc75c62e14a6c659aaa78c61565284"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-20/maxfreq=15kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10977,
+      "sha256": "666b8e9ac26df62bd3b3c901b9b6368f5ab8341ff7c11a6dd0bc5f66704cd634"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-20/maxfreq=22kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10977,
+      "sha256": "e5c4fc2e54a2451d5766c178cb9ea6166f31a1e7083ee0c0b8facc69a9bd6652"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-20/maxfreq=3kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10975,
+      "sha256": "d73ceae305b9fecc05782c0a0832ba06848ee51736f5dbaccff45beea0a086e8"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-20/maxfreq=5kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10975,
+      "sha256": "4ef6dd90249a072b2c5baf2ec7478120b9230fea67095e70eb59f3a38360447d"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-4/maxfreq=10kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10974,
+      "sha256": "39448419a190743d9c148c13b708632111163242c28d3fcf85f6418a256b236e"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-4/maxfreq=15kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10974,
+      "sha256": "9dfec26eba54b92ba2c7efcb57245b1b5a4213963c47fbed23fbf7ecadc0e17e"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-4/maxfreq=22kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10974,
+      "sha256": "a77368d61aea638ff6174d4238720b22a1b60946c26be1fcd9e42ffd91cd8774"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-4/maxfreq=3kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10972,
+      "sha256": "5f865872a65ea1782bb461dcd5077911bac0251427c82a317efab7333a61776e"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-4/maxfreq=5kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10972,
+      "sha256": "1627ddd196722f5af4601c679a879024219d1c9b42f71e9829feb5ae20b40bd1"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-8/maxfreq=10kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10974,
+      "sha256": "27fda95141ff0b0f71fbb2f192e3e3634928baa41403e0dcf63d3d1b6d93a435"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-8/maxfreq=15kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10974,
+      "sha256": "f596c89f40759a715163521c3c9f5188f42a02d1a5bdb88bdd475c3f1f277262"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-8/maxfreq=22kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10974,
+      "sha256": "7e4b17f7f933daebf8a111bd71770ab397f8bc665c03db25afb0bf2311a1b399"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-8/maxfreq=3kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10972,
+      "sha256": "0df95be634020ec765f8700a0c720924d22e57703354ca0a615e0e9449546dde"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-8/maxfreq=5kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10972,
+      "sha256": "d66571b4273f2a696200ea82a77229ae6f83ae97aa12525a52cf5af97c00c85f"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=0/maxfreq=10kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10971,
+      "sha256": "e53a86501ff310720daf27b343288eee482a7cb85cfb4705bd6d70435b693ef1"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=0/maxfreq=15kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10971,
+      "sha256": "3766920abe6261a32eebd391165976d4dee8374c0cb5787694ca0c533ac1c0ad"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=0/maxfreq=22kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10971,
+      "sha256": "1b7025af493202187e0f14c738decd894892cc30480dc69ba8b2f50c98bd4a2f"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=0/maxfreq=3kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10969,
+      "sha256": "086be7e7eba51fbad82a9c471e8a5f25b045a3e090658e1664b2980b5ccab9a7"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=0/maxfreq=5kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10969,
+      "sha256": "8e9f750937c4bdbb6dd4e78cae83769c00975e718bd36efb83e9a59d4fcf7a14"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260908_selected_log_architecture/heatflux_no_noise/maxfreq=22kHz/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 11397,
+      "sha256": "2b4b76eb6465d6634f2308236d3e24d933a9f416c8cd9057fbab5dfd7f10c9a0"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260902_selected_log_architecture/heatflux_no_noise/maxfreq=10kHz/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10970,
+      "sha256": "88e1c26238effd9242877d783ae3f4437ae928e2465ff07f77b7e73c5c9fce7e"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260902_selected_log_architecture/heatflux_no_noise/maxfreq=15kHz/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10970,
+      "sha256": "6fad9d4fc7127c8f93aa97163c859303489d5d35394e5c6fe5dd9e87db15fae9"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260902_selected_log_architecture/heatflux_no_noise/maxfreq=3kHz/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10968,
+      "sha256": "2d0adb45f86bc87cc0790afc40a016932afd681d3813ef291f21228add739a62"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260902_selected_log_architecture/heatflux_no_noise/maxfreq=5kHz/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10968,
+      "sha256": "a90c4bedadf4b4e83f59ce610a61d656249bfe83828aeb50d6fb59d5af514f32"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260902_selected_log_architecture/heatflux_reference_SNR=-12/maxfreq=10kHz/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10983,
+      "sha256": "5aea5f9cf5beba0a3ad796dab4fa52bbb906feec09c03583fed84060edeb386d"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260902_selected_log_architecture/heatflux_reference_SNR=-12/maxfreq=3kHz/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10981,
+      "sha256": "9cf67a8d9291b9a3fa3cbfd398d74370a56fd208881a07b46a35b7103f7f65cd"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260902_selected_log_architecture/heatflux_reference_SNR=-12/maxfreq=5kHz/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10981,
+      "sha256": "f84b5515631e761d8709bcb004ebe207d5781553c1097d9aa9785e050b6f6fb9"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260902_selected_log_architecture/heatflux_reference_SNR=-16/maxfreq=10kHz/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10983,
+      "sha256": "545f058de1aa0afba091d1b88c24671d2aba915be65bfc2f59c1411c01a91097"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260902_selected_log_architecture/heatflux_reference_SNR=-16/maxfreq=3kHz/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10981,
+      "sha256": "a9e7fb6e3b099380bea56015a3f9d267e8897468cd62f45f8453c52bb2606470"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260902_selected_log_architecture/heatflux_reference_SNR=-16/maxfreq=5kHz/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10981,
+      "sha256": "f329967bb542a57f1b573d2097bee33a0ffe24a9000fc9c94ca16222089e0c1d"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260902_selected_log_architecture/heatflux_reference_SNR=-20/maxfreq=10kHz/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10983,
+      "sha256": "e988934f7c463643f2910b8fd7d31973f7c66d8c5e621b4425a086ea428af1c2"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260902_selected_log_architecture/heatflux_reference_SNR=-20/maxfreq=3kHz/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10981,
+      "sha256": "637ccf8b8434a43f7889cff64f806138a9e0ebee014fce87ec599c3738fc07c5"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260902_selected_log_architecture/heatflux_reference_SNR=-20/maxfreq=5kHz/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10981,
+      "sha256": "ffbeb682b12a058d2d4fc4e339b70879a1406b3316e398db2181f5daaf3de79b"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260902_selected_log_architecture/heatflux_reference_SNR=-4/maxfreq=10kHz/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10980,
+      "sha256": "c4e1ad4fc5e04dac33d5b8f52c0654dc8c948e9b72a373dd6a74c69864b44c9e"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260902_selected_log_architecture/heatflux_reference_SNR=-4/maxfreq=3kHz/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10978,
+      "sha256": "f0707becce2c071b9bd308f93c154e9811a1635b8777e5b8d6020484f0601bb3"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260902_selected_log_architecture/heatflux_reference_SNR=-4/maxfreq=5kHz/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10978,
+      "sha256": "9739b5a4b22262cc80013b9d6ec3eb8e3e19aad22b1ad2df5a69f404af726409"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260902_selected_log_architecture/heatflux_reference_SNR=-8/maxfreq=10kHz/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10980,
+      "sha256": "3c315f37c7e9634d84918e3e3231e5eb1d539075eedf261a3c81c8b3b67a890b"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260902_selected_log_architecture/heatflux_reference_SNR=-8/maxfreq=3kHz/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10978,
+      "sha256": "90fa894c75249f324d9060fcef2f9b11d831ac60a4766c845a5058df323e2a67"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260902_selected_log_architecture/heatflux_reference_SNR=-8/maxfreq=5kHz/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10978,
+      "sha256": "921d8d99f95cee4a9d611f2f95112d238e047402ba30042b9fe76dae17b36301"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260902_selected_log_architecture/heatflux_reference_SNR=0/maxfreq=10kHz/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10977,
+      "sha256": "1aaac8dc79474d0e5152940e91c29c318febb10d9d647629b0d8812d1b9b6ee4"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260902_selected_log_architecture/heatflux_reference_SNR=0/maxfreq=3kHz/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10975,
+      "sha256": "8573d5f4df7e6da9db1b88227a45796502bc0afbaf6893595384b7535c12f3ce"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260902_selected_log_architecture/heatflux_reference_SNR=0/maxfreq=5kHz/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10975,
+      "sha256": "523784b845b8f150ffe777106a2d4da565041ee059b5821a25cd8403811364f6"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_no_noise/maxfreq=10kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10970,
+      "sha256": "2dd0516550ab414a70ae227c4a17c5f4524407c33bfdbf13d556e0fc135392a9"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_no_noise/maxfreq=15kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10970,
+      "sha256": "cb291edc2e80144d8959d9a4c9ab37e9a7a50882c0048ff202d6227db9fce687"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_no_noise/maxfreq=22kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10970,
+      "sha256": "97155fc3c12b39382526fa870ac41b8e0859155ea35d2b93a058387b9efd7974"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_no_noise/maxfreq=3kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10968,
+      "sha256": "a43f97ef014c2933f124b4136901b008e50b94965b51bd9a36e571639487a9c8"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_no_noise/maxfreq=5kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10968,
+      "sha256": "992f66536b929fec59da341374339a1d7a59315a6b8f343c954c62f937e7fcc5"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-12/maxfreq=10kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10983,
+      "sha256": "266065dc72e8d0e8fcc303d19880aa58c239db16b7f4d9d7075db97c584fd402"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-12/maxfreq=15kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10983,
+      "sha256": "f837bd7e49249ff54dd8dacdb7198435b087b35b935e5b8f6966f2d0b8e3e4b6"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-12/maxfreq=22kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10983,
+      "sha256": "5a26e39da0ce78800109d95cc9eaba8fc83effbe45d36a6ea45bf1a1f13d0fbf"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-12/maxfreq=3kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10981,
+      "sha256": "04ca9c2b09e684a8c4c2e941dd6f1aa37a27d888af5e9ec3ad86dbb7ca32866f"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-12/maxfreq=5kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10981,
+      "sha256": "596258fa81d57afc944a74dc8104bd5359ea07b9bf0b95157a0e002718fab84e"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-16/maxfreq=10kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10983,
+      "sha256": "4e6acd7e67fcf2f3ddabdb16b55f9fa1bea36850813077d365ccdf30b5abaa39"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-16/maxfreq=15kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10983,
+      "sha256": "476528ea283929e7682380bf97e187bdf4bd6cca6c5abce33a53711b6d725f08"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-16/maxfreq=22kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10983,
+      "sha256": "54b1565a3a56c0550cbfc06ece3e4b4052578963b7c6d2dfa661f32037032d25"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-16/maxfreq=3kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10981,
+      "sha256": "56d634032a24645e43eea39612d332ca6de0c39cb1e6008f0dea640634dcf0fc"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-16/maxfreq=5kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10981,
+      "sha256": "393ade1acaa61358a9c6b1d1389649e756e27a4a77942e7de1e318bcf54ace23"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-20/maxfreq=10kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10983,
+      "sha256": "8104a53943eaff8858d7581482b78431dac490670c9ecc89532a868dc1bbb079"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-20/maxfreq=15kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10983,
+      "sha256": "7f1e0d07cdf32a00d92e583b85065a2e44fffa6b6dfe563dc7e73e135a9a04b8"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-20/maxfreq=22kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10983,
+      "sha256": "58167f70821de9aa5b290e55c58a0edd3e96249f0b7b13c4c9d495ab37d08e38"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-20/maxfreq=3kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10981,
+      "sha256": "6570f6fde34d2e0a530aa4be8a9198b588b9ee09488e86abe9f879e2fbf54746"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-20/maxfreq=5kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10981,
+      "sha256": "fd402eddeb88a5d167b602c4bac651ea072b5e28aeca901eca17722b3c32bf90"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-4/maxfreq=10kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10980,
+      "sha256": "749dcd75906add87fa7dfc29c3f07b99bb80aee63f5fb5d088fb3e90061eb190"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-4/maxfreq=15kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10980,
+      "sha256": "f69446864e60d783bbf194de02ed6097265bfa34ccd9756b495fab3eebed7db2"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-4/maxfreq=22kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10980,
+      "sha256": "7aacdc97c437d22511685b282f4d14be4b565e65d417abc2eb9526c23f8d4f56"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-4/maxfreq=3kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10978,
+      "sha256": "16123d346ca2a5e61388598b28d4b90e57f600de87198d1829949ca2762b9ddd"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-4/maxfreq=5kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10978,
+      "sha256": "abb1cdd8d847311c267a7e6befe9b2d0f1c0048f2976da670e69566504f2cb3f"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-8/maxfreq=10kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10980,
+      "sha256": "200f444f09ac2ab44033323afa644bf1fc9e39aaa1230ad1f1d3338389acf248"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-8/maxfreq=15kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10980,
+      "sha256": "ac6be7150b1ef7f9fcccb2809fb4ef1ddaffe39f7699971f09a41e7837aef913"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-8/maxfreq=22kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10980,
+      "sha256": "2470538c60c700d8f1f700582b3a6a095b8709f121da3e21a48dc59b9afef91a"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-8/maxfreq=3kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10978,
+      "sha256": "3b5c65cb0ff5144c92f147d5191a0c0d692801e086a9dcd3136115da8ac7fc70"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=-8/maxfreq=5kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10978,
+      "sha256": "087d7f7d5fb85f8463b6934242130955b1b8fc5c020239dc5e20c20c506785b9"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=0/maxfreq=10kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10977,
+      "sha256": "66dcbe6940566e3336624f125fd0650bd424264f27c0d00b5e80e5f4a215ee33"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=0/maxfreq=15kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10977,
+      "sha256": "941bbf5cf12225442792548a7060683d6ff472a35fdfec5566aedf1b71aaca9a"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=0/maxfreq=22kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10977,
+      "sha256": "d0c2d2a78158d31de3a6eb88ee6d2a5c0395ba9877935212c1a6619973727562"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=0/maxfreq=3kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10975,
+      "sha256": "9c1ee0637e619fcbe1422008814643db5028c813400a6726b9c51383f560d493"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260903_selected_log_architecture/heatflux_reference_SNR=0/maxfreq=5kHz/e200_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 10975,
+      "sha256": "1b276e26bada47c5a1062ac0ef8381beef1257561566ab4d9a2fe2be4832950f"
+    },
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260908_selected_log_architecture/heatflux_no_noise/maxfreq=22kHz/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json": {
+      "bytes": 11404,
+      "sha256": "09717d5ed3e89ce69ad60f22d99b288a00318d86dc05e83dc8a79245539eb868"
+    }
+  },
+  "row_counts": {
+    "run_inventory.csv": 178,
+    "wav_median_metrics.csv": 36,
+    "onb_transitions_median.csv": 72,
+    "xai_output_inventory.csv": 54,
+    "ig_diagnostics.csv": 180,
+    "group_mask_performance.csv": 567,
+    "randomization_sanity.csv": 180,
+    "input_stability.csv": 360,
+    "treeshap_summary.csv": 90
+  },
+  "verification": [
+    {
+      "run": "20260914_selected_log_architecture",
+      "experiment": "2025.06.11_0.3_2",
+      "maxfreq": "maxfreq=22kHz",
+      "snr": "no_noise",
+      "model": "rf",
+      "r2_rmse_recall_match": true
+    },
+    {
+      "run": "20260914_selected_log_architecture",
+      "experiment": "2025.06.11_0.3_2",
+      "maxfreq": "maxfreq=22kHz",
+      "snr": "no_noise",
+      "model": "cnntf_v2_gap",
+      "r2_rmse_recall_match": true
+    },
+    {
+      "run": "20260914_selected_log_architecture",
+      "experiment": "2025.06.11_0.3_2",
+      "maxfreq": "maxfreq=22kHz",
+      "snr": "no_noise",
+      "model": "alexnet",
+      "r2_rmse_recall_match": true
+    },
+    {
+      "run": "20260914_selected_log_architecture",
+      "experiment": "2025.06.11_0.3_2",
+      "maxfreq": "maxfreq=22kHz",
+      "snr": "no_noise",
+      "model": "ensemble__simple_equal",
+      "r2_rmse_recall_match": true
+    },
+    {
+      "run": "20260914_selected_log_architecture",
+      "experiment": "2025.06.11_0.3_2",
+      "maxfreq": "maxfreq=22kHz",
+      "snr": "no_noise",
+      "model": "ensemble__prediction_max",
+      "r2_rmse_recall_match": true
+    },
+    {
+      "run": "20260914_selected_log_architecture",
+      "experiment": "2025.06.11_0.3_2",
+      "maxfreq": "maxfreq=22kHz",
+      "snr": "no_noise",
+      "model": "ensemble__inner_holdout",
+      "r2_rmse_recall_match": true
+    },
+    {
+      "run": "20260914_selected_log_architecture",
+      "experiment": "2025.06.11_0.3_2",
+      "maxfreq": "maxfreq=22kHz",
+      "snr": "-20",
+      "model": "rf",
+      "r2_rmse_recall_match": true
+    },
+    {
+      "run": "20260914_selected_log_architecture",
+      "experiment": "2025.06.11_0.3_2",
+      "maxfreq": "maxfreq=22kHz",
+      "snr": "-20",
+      "model": "cnntf_v2_gap",
+      "r2_rmse_recall_match": true
+    },
+    {
+      "run": "20260914_selected_log_architecture",
+      "experiment": "2025.06.11_0.3_2",
+      "maxfreq": "maxfreq=22kHz",
+      "snr": "-20",
+      "model": "alexnet",
+      "r2_rmse_recall_match": true
+    },
+    {
+      "run": "20260914_selected_log_architecture",
+      "experiment": "2025.06.11_0.3_2",
+      "maxfreq": "maxfreq=22kHz",
+      "snr": "-20",
+      "model": "ensemble__simple_equal",
+      "r2_rmse_recall_match": true
+    },
+    {
+      "run": "20260914_selected_log_architecture",
+      "experiment": "2025.06.11_0.3_2",
+      "maxfreq": "maxfreq=22kHz",
+      "snr": "-20",
+      "model": "ensemble__prediction_max",
+      "r2_rmse_recall_match": true
+    },
+    {
+      "run": "20260914_selected_log_architecture",
+      "experiment": "2025.06.11_0.3_2",
+      "maxfreq": "maxfreq=22kHz",
+      "snr": "-20",
+      "model": "ensemble__inner_holdout",
+      "r2_rmse_recall_match": true
+    },
+    {
+      "run": "20260914_selected_log_architecture",
+      "experiment": "2025.06.11_0.3_2",
+      "maxfreq": "maxfreq=22kHz",
+      "snr": "0",
+      "model": "rf",
+      "r2_rmse_recall_match": true
+    },
+    {
+      "run": "20260914_selected_log_architecture",
+      "experiment": "2025.06.11_0.3_2",
+      "maxfreq": "maxfreq=22kHz",
+      "snr": "0",
+      "model": "cnntf_v2_gap",
+      "r2_rmse_recall_match": true
+    },
+    {
+      "run": "20260914_selected_log_architecture",
+      "experiment": "2025.06.11_0.3_2",
+      "maxfreq": "maxfreq=22kHz",
+      "snr": "0",
+      "model": "alexnet",
+      "r2_rmse_recall_match": true
+    },
+    {
+      "run": "20260914_selected_log_architecture",
+      "experiment": "2025.06.11_0.3_2",
+      "maxfreq": "maxfreq=22kHz",
+      "snr": "0",
+      "model": "ensemble__simple_equal",
+      "r2_rmse_recall_match": true
+    },
+    {
+      "run": "20260914_selected_log_architecture",
+      "experiment": "2025.06.11_0.3_2",
+      "maxfreq": "maxfreq=22kHz",
+      "snr": "0",
+      "model": "ensemble__prediction_max",
+      "r2_rmse_recall_match": true
+    },
+    {
+      "run": "20260914_selected_log_architecture",
+      "experiment": "2025.06.11_0.3_2",
+      "maxfreq": "maxfreq=22kHz",
+      "snr": "0",
+      "model": "ensemble__inner_holdout",
+      "r2_rmse_recall_match": true
+    },
+    {
+      "run": "20260914_selected_log_architecture",
+      "experiment": "2025.06.11_0.3_2",
+      "maxfreq": "maxfreq=3kHz",
+      "snr": "no_noise",
+      "model": "rf",
+      "r2_rmse_recall_match": true
+    },
+    {
+      "run": "20260914_selected_log_architecture",
+      "experiment": "2025.06.11_0.3_2",
+      "maxfreq": "maxfreq=3kHz",
+      "snr": "no_noise",
+      "model": "cnntf_v2_gap",
+      "r2_rmse_recall_match": true
+    },
+    {
+      "run": "20260914_selected_log_architecture",
+      "experiment": "2025.06.11_0.3_2",
+      "maxfreq": "maxfreq=3kHz",
+      "snr": "no_noise",
+      "model": "alexnet",
+      "r2_rmse_recall_match": true
+    },
+    {
+      "run": "20260914_selected_log_architecture",
+      "experiment": "2025.06.11_0.3_2",
+      "maxfreq": "maxfreq=3kHz",
+      "snr": "no_noise",
+      "model": "ensemble__simple_equal",
+      "r2_rmse_recall_match": true
+    },
+    {
+      "run": "20260914_selected_log_architecture",
+      "experiment": "2025.06.11_0.3_2",
+      "maxfreq": "maxfreq=3kHz",
+      "snr": "no_noise",
+      "model": "ensemble__prediction_max",
+      "r2_rmse_recall_match": true
+    },
+    {
+      "run": "20260914_selected_log_architecture",
+      "experiment": "2025.06.11_0.3_2",
+      "maxfreq": "maxfreq=3kHz",
+      "snr": "no_noise",
+      "model": "ensemble__inner_holdout",
+      "r2_rmse_recall_match": true
+    },
+    {
+      "run": "20260914_selected_log_architecture",
+      "experiment": "2025.06.11_0.3_2",
+      "maxfreq": "maxfreq=3kHz",
+      "snr": "-20",
+      "model": "rf",
+      "r2_rmse_recall_match": true
+    },
+    {
+      "run": "20260914_selected_log_architecture",
+      "experiment": "2025.06.11_0.3_2",
+      "maxfreq": "maxfreq=3kHz",
+      "snr": "-20",
+      "model": "cnntf_v2_gap",
+      "r2_rmse_recall_match": true
+    },
+    {
+      "run": "20260914_selected_log_architecture",
+      "experiment": "2025.06.11_0.3_2",
+      "maxfreq": "maxfreq=3kHz",
+      "snr": "-20",
+      "model": "alexnet",
+      "r2_rmse_recall_match": true
+    },
+    {
+      "run": "20260914_selected_log_architecture",
+      "experiment": "2025.06.11_0.3_2",
+      "maxfreq": "maxfreq=3kHz",
+      "snr": "-20",
+      "model": "ensemble__simple_equal",
+      "r2_rmse_recall_match": true
+    },
+    {
+      "run": "20260914_selected_log_architecture",
+      "experiment": "2025.06.11_0.3_2",
+      "maxfreq": "maxfreq=3kHz",
+      "snr": "-20",
+      "model": "ensemble__prediction_max",
+      "r2_rmse_recall_match": true
+    },
+    {
+      "run": "20260914_selected_log_architecture",
+      "experiment": "2025.06.11_0.3_2",
+      "maxfreq": "maxfreq=3kHz",
+      "snr": "-20",
+      "model": "ensemble__inner_holdout",
+      "r2_rmse_recall_match": true
+    },
+    {
+      "run": "20260914_selected_log_architecture",
+      "experiment": "2025.06.11_0.3_2",
+      "maxfreq": "maxfreq=3kHz",
+      "snr": "0",
+      "model": "rf",
+      "r2_rmse_recall_match": true
+    },
+    {
+      "run": "20260914_selected_log_architecture",
+      "experiment": "2025.06.11_0.3_2",
+      "maxfreq": "maxfreq=3kHz",
+      "snr": "0",
+      "model": "cnntf_v2_gap",
+      "r2_rmse_recall_match": true
+    },
+    {
+      "run": "20260914_selected_log_architecture",
+      "experiment": "2025.06.11_0.3_2",
+      "maxfreq": "maxfreq=3kHz",
+      "snr": "0",
+      "model": "alexnet",
+      "r2_rmse_recall_match": true
+    },
+    {
+      "run": "20260914_selected_log_architecture",
+      "experiment": "2025.06.11_0.3_2",
+      "maxfreq": "maxfreq=3kHz",
+      "snr": "0",
+      "model": "ensemble__simple_equal",
+      "r2_rmse_recall_match": true
+    },
+    {
+      "run": "20260914_selected_log_architecture",
+      "experiment": "2025.06.11_0.3_2",
+      "maxfreq": "maxfreq=3kHz",
+      "snr": "0",
+      "model": "ensemble__prediction_max",
+      "r2_rmse_recall_match": true
+    },
+    {
+      "run": "20260914_selected_log_architecture",
+      "experiment": "2025.06.11_0.3_2",
+      "maxfreq": "maxfreq=3kHz",
+      "snr": "0",
+      "model": "ensemble__inner_holdout",
+      "r2_rmse_recall_match": true
+    }
+  ],
+  "scope": "September 14 six-run numeric evidence; September run inventory at collection time. No training.",
+  "caveats": [
+    "Retired prediction_max values are retained as historical evidence and marked current_strategy=False.",
+    "File presence does not establish scientific validity. Incomplete runs may later finish.",
+    "XAI mask metrics use WAV medians within folds; they are not pooled OOF R2."
+  ]
+}

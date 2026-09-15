@@ -1,5 +1,7 @@
 # 2026-07-06 explainability implementation
 
+> **履歴・適用範囲（2026-09-15追記）**: この文書は当時の条件・判断の記録です。本文の「現在」「次にやること」は作成時点を指します。最新の設定・完了範囲・優先順位は[研究の現在地](../docs/research_status.md)、更新関係は[文書案内](../docs/document_index.md)を参照してください。
+
 ## Purpose
 
 Add a first runnable explainability pipeline for the current heat-flux
@@ -55,4 +57,3 @@ The smoke run completed and produced 185 files under:
 
 The smoke metrics are not meaningful because the Keras models train for only
 one epoch. The check is only for code-path and file-output verification.
-

@@ -1,0 +1,19 @@
+{
+  "review_date": "2026-09-15",
+  "scan_finished_local": "2026-09-15T09:46:13.374073",
+  "files": 903734,
+  "bytes": 261888717600,
+  "filesystem_errors": 0,
+  "excluded": [
+    ".git internals",
+    "symlink traversal"
+  ],
+  "md_catalog_count": 91,
+  "office_extracted_count": 106,
+  "pdf_catalog_count": 92,
+  "empty_top_directories": [
+    ".agents",
+    ".codex"
+  ],
+  "code_head_at_review_start": "901750836cd0c1309416d1115b330143936945a2"
+}

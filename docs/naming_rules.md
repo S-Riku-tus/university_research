@@ -38,7 +38,7 @@ experiments/2026-05-21_rf_cnntransformer_22khz/metrics.csv
 
 ## 既存名の扱い
 
-- `code/3.run_ensemble_ROC_100%_analysis.py` のような慣れている中心コードは、急に改名しない。
+- `code/3.run_ensemble_ROC_100%_analysis.py` のような旧コードは急に改名せず、旧版と明記する。現行の主実行は `code/run_ensemble_regression_onb.py`。
 - 古いコードは、移動する前に `docs/code_map.md` に役割を書く。
 - `trush_box` はすぐに変えなくてよい。将来的に整理するときは `legacy/` に寄せる。
 

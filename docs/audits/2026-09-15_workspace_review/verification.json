@@ -1,0 +1,34 @@
+{
+  "local_links_checked": 408,
+  "missing_local_links": [],
+  "markdown_files_checked": 89,
+  "snapshot_source_hashes_checked": 400,
+  "changed_snapshot_sources": [],
+  "snapshot_row_counts": {
+    "run_inventory.csv": 178,
+    "wav_median_metrics.csv": 36,
+    "onb_transitions_median.csv": 72,
+    "xai_output_inventory.csv": 54,
+    "ig_diagnostics.csv": 180,
+    "group_mask_performance.csv": 567,
+    "randomization_sanity.csv": 180,
+    "input_stability.csv": 360,
+    "treeshap_summary.csv": 90
+  },
+  "numeric_recomputations": 36,
+  "collector_syntax": "passed",
+  "training_started_by_review": false,
+  "legacy_pages_annotated": 62,
+  "figure_hashes_checked": 3,
+  "stable_numeric_exports_reproduced": 8,
+  "existing_snapshot_overwrite_refused": true,
+  "verified_at_local": "2026-09-15T10:18:13.675390",
+  "historical_bodies_preserved_after_banner_removal": 61,
+  "historical_body_link_correction": [
+    "docs/research_plan/2026-08-17_noise_accuracy_reversal_investigation.md"
+  ],
+  "git_diff_check": "passed",
+  "existing_model_code_and_binary_artifacts_changed": false,
+  "yaml_parse": "passed",
+  "working_tree_changed_files": 112
+}

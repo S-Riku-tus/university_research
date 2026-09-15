@@ -1,48 +1,34 @@
 # 研究ワークスペース
 
-このディレクトリは、沸騰実験の音響データ解析、機械学習モデルによる熱流束推定、沸騰開始点検知、研究進捗報告資料をまとめた研究用ワークスペースです。
+音響スペクトログラムから熱流束を予測し、プール沸騰のONB（核沸騰開始）近傍を検知する研究。予測精度、ノイズ下の安定性、判断根拠の物理的妥当性を調べます。
 
-## 研究の中心
+## まず読むページ
 
-現在の主題は、実験音から作成したスペクトログラムを入力として、熱流束を回帰予測し、予測値をもとに沸騰開始点を検知できるかを検証することです。学部研究では、スペクトログラムとCNN回帰による沸騰検知の基本的成立性を確認しました。修士研究では、沸騰開始点近傍で見られる特徴を、入力表現やモデルがどのように捉えるかを解析し、ノイズ下や条件変化下でも物理的に妥当な根拠に基づいて早期検知できるかを検証します。
+| 知りたいこと | 入口 |
+|---|---|
+| **今どこまで終わり、次に何をするか** | **[研究の現在地](docs/research_status.md)** |
+| 年間計画・目指す成果 | [2026年度研究計画](docs/research_plan/2026_annual_plan.md) |
+| 9月18日の進捗発表準備 | [説明性の出力・解釈・まとめ](docs/research_plan/2026-09-18_xai_progress_brief.md) |
+| 研究目的と用語 | [研究コンテキスト](docs/research_context.md) |
+| 過去の判断・古い資料の扱い | [文書案内](docs/document_index.md)、[進捗履歴](docs/progress_index.md) |
+| 最新の確認済み数値 | [結果スナップショット一覧](experiments/README.md) |
 
-## 主なディレクトリ
+9月15日に、文書・コード・保存結果の更新差を整理しました。今週は説明性の出力と解釈を優先し、ONB近傍の検知設計・新実験・同時計測は金曜の発表後に進めます。日々変わる設定・完了状況は「研究の現在地」で管理します。
 
-- `code/`: 解析・前処理・機械学習・評価に使うコード。
-- `Pool_boiling/`: プール沸騰実験に関係するデータや結果。
-- `water_flow/`: 水流音など、ノイズ付与に使う音源。
-- `研究進捗報告/`: 週次進捗、発表資料、論文輪講、学会資料、卒論・修論関連資料。
-- `docs/`: Codexや自分が研究文脈を素早く把握するための要約・索引・運用メモ。
-- `configs/`: 新しい実験やデータセット条件を残すための設定テンプレート。
-- `experiments/`: 実験結果の要約、評価指標、図、考察を残す場所。
-- `templates/`: 週次報告など、繰り返し作成する文書のテンプレート。
+## 配置
 
-## Codexに読ませる入口
+- `code/`: 実行コードと共通処理。現在の主実行は [run_ensemble_regression_onb.py](code/run_ensemble_regression_onb.py)。
+- `Pool_boiling/`: 生データ、生成特徴、モデル結果。大量データはGit対象外。
+- `water_flow/`: ノイズ音源。
+- `研究進捗報告/`: 週次報告・発表・論文輪講・卒論等の原資料。
+- `docs/`: 目的、現在地、年間計画、索引、運用メモ。
+- `experiments/`: 日付付きの結果・解釈・軽量な根拠スナップショット。
+- `configs/`: データ仕様と実験条件の記録。現行コードが自動でYAMLを読むという意味ではありません。
+- `templates/`: 文書テンプレート。
+- `archive/`、`trush_box/`: 過去コード・退避物。現在の主経路とは区別。
 
-Codexに研究を手伝わせるときは、まず `AGENTS.md` と `docs/research_context.md` を読ませます。週次進捗報告を作るときは、`docs/progress/weekly_report_guide.md` と `templates/weekly_progress_SOAP.md` を使います。過去報告を参照するときは、重いPDFやPPTXを直接すべて読ませる前に、`docs/progress_index.md` を更新してから使います。
+## 運用の地図
 
-## 現在の主結果
+[コード地図](docs/code_map.md) / [データ索引](docs/data_inventory.md) / [管理方針](docs/repository_management.md) / [今回の確認範囲と変更理由](docs/audits/2026-09-15_workspace_review/README.md)
 
-- [2026-09-14 現在地と次の作業](docs/research_plan/2026-09-14_current_state_and_next_steps.md): 9/3実行105条件と9/8再実行3条件を確認した最新の状況整理。[数値スナップショット](experiments/2026-09-14_status_audit/README.md)には元WAV単位の評価と最新XAI診断を保存。
-- [2026-09-02 selected log architecture](experiments/2026-09-02_selected_log_architecture/README.md): 56/105条件で中断した過去のスナップショット。旧ONB閾値・旧inner holdoutの解釈は、上記9/14整理の監査結果を参照する。
-- [waterflow_20260817_1s](configs/datasets/waterflow_20260817_1s.yaml): 現行学習データの生成条件、件数、整合性確認、旧バグデータの除外方針。条件別監査値は[データ監査スナップショット](experiments/2026-08-17_waterflow_dataset_snapshot/README.md)に保存。
-- [log-powerモデル構造選定](experiments/2026-08-30_log_power_architecture_study.md): CNN+TransformerとAlexNetにlog-power入力を採用した根拠。
-
-`Pool_boiling/` 以下のデータ・重み・詳細画像は容量上Git対象外です。研究上必要な設定と数値は `configs/` と `experiments/` に軽量スナップショットとして保存します。
-
-## 管理用の地図
-
-- `docs/repository_management.md`: このリポジトリ全体の管理方針。
-- `docs/code_map.md`: `code/` のどこに何があるかの地図。
-- `docs/data_inventory.md`: 巨大データの場所・意味・規模の索引。
-- `docs/naming_rules.md`: 新しく作るファイル名・フォルダ名のゆるいルール。
-- `configs/README.md`: 実験条件を設定ファイルとして残すための入口。
-- `experiments/README.md`: 実験結果の要約を残すための入口。
-
-## よく使う作業
-
-- 週次進捗報告の下書き作成。
-- 実験結果の整理と次の計画作成。
-- モデル構成、評価指標、結果図の説明文作成。
-- 学会・中間発表・論文輪講のストーリー整理。
-- コードの処理内容、問題点、改善方針の確認。
+Codexは最初に [AGENTS.md](AGENTS.md) と現在地を読み、作業に必要な根拠へ進みます。過去の「次にやること」を、そのまま現在の未完了作業として再実行しない運用にします。

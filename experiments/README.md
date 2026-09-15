@@ -1,30 +1,49 @@
-# experiments
+# 実験結果・実装記録の入口
 
-実験結果の「要約」を置く場所です。巨大な生成データや全画像をここに入れる必要はありません。各実験について、条件、結果、解釈、関連ファイルだけを残します。
+更新日: 2026-09-15。現在の研究状態は[研究の現在地](../docs/research_status.md)。ここには、その判断の根拠となる**日付付きの結果・検証記録**を置く。
 
-## 使い方
+## 直近の結果と使い分け
 
-新しい実験を行ったら、次のようなフォルダを作る。
+| 記録 | 範囲・用途 |
+|---|---|
+| [9/15研究整理スナップショット](2026-09-15_research_status_snapshot/README.md) | 9/14の完了6条件の性能・XAI、9月178 manifestsの出力状態。金曜発表準備の根拠 |
+| [9/14状況監査](2026-09-14_status_audit/README.md) | 9/3の105条件・9/8の3条件のWAV指標、ONB遷移、XAI |
+| [9/14一般化・保存階層の検証](2026-09-14_generalization_and_layout/README.md) | 実装・小規模試験・metadata検査。未知日での本性能の証拠とは別 |
+| [9/14最大予測値方式の削除](2026-09-14_remove_prediction_max/README.md) | 現行コードの方式整理と、過去表記の棚卸し |
+| [9/14ノイズ曲線見本](2026-09-14_noise_trend_graphs/README.md) | 作図の確認。元は9/3保存結果 |
+| [9/8 WAV/ONB評価の実装](2026-09-08_wav_onb_transition_evaluation_implementation.md) | 閾値・元WAV分離inner holdout・WAV/遷移評価の変更 |
+| [9/2の56条件](2026-09-02_selected_log_architecture/README.md) | 旧中断スナップショット。最新の完了範囲ではない。旧innerの安全性解釈は更新済み |
+| [8/30 log-power構造比較](2026-08-30_log_power_architecture_study.md) | 現行深層モデル構造を採用した根拠。当時の指標単位を保持 |
+| [現行データ監査](2026-08-17_waterflow_dataset_snapshot/README.md) | 105条件の件数・実現SNR・paired noise・生成仕様 |
+| [7〜8月ノイズ診断](2026-07-24_noise_shortcut_diagnostic/README.md) | データ生成修正の根拠。最終3モデルの一般化結果ではない |
+
+## 過去の流れ
+
+- 6月: RF・3モデル・旧重み付け評価、学習条件調整。
+- 6月末〜7月上旬: CNN＋Transformer/Conformerの構造・時間軸・pooling・lr/batch比較。
+- 7月: 固定統合、ノイズ/周波数別解析、XAI導入、中間発表準備。
+- 8月: ノイズ生成の診断と修正、現行データ監査、log-power構造選定。
+- 9月: 全条件出力、元WAVとONB評価の修正、一般化実装、説明性の再確認。
+
+全件の所在は[既存文書一覧CSV](../docs/audits/2026-09-15_workspace_review/document_catalog.csv)。古いデータ・分割・指標の結果は、その当時の証拠として保持し、現行結果の比較表へそのまま混在させない。
+
+## 新しい結果を保存する
+
+[実験サマリーテンプレート](_template/run_summary.md)をコピーして、次を残す。
 
 ```text
 experiments/YYYY-MM-DD_short-name/
-  config.yaml
-  run_summary.md
+  README.md
+  run_config.yaml
   metrics.csv
-  figures/
+  snapshot_manifest.json
 ```
 
-実際の巨大データや重みは `Pool_boiling/` 側に置いたままでよいです。ここには、研究報告や修論で使うための地図を残します。
 
-## 主要な結果
+- 収録日と解析日、コード版、データ版、条件、実際の完了範囲を記す。
+- 主指標の評価単位、学習/評価分割、重み決定の範囲、ONB正解の出典を記す。
+- 数値・元run相対パス・SHA-256を残す。元予測を用いた検算があれば記録する。
+- `claim_safe`は保存された分割/重み監査のフラグであり、未知日への一般化やモデル選択の妥当性を保証する値ではない。
+- 本文を新しいrunの値へ差し替えず、別スナップショットを作って訂正・更新先をリンクする。
 
-- [`2026-09-02_selected_log_architecture/`](2026-09-02_selected_log_architecture/README.md): 現行データ・選定済みlog-power構造による最新ONB実行。56/105条件まで完了。
-- [`2026-08-17_waterflow_dataset_snapshot/`](2026-08-17_waterflow_dataset_snapshot/README.md): 現行データ105条件の件数、実現SNR、paired-noise、元WAV RMSの監査記録。
-- [`2026-08-30_log_power_architecture_study.md`](2026-08-30_log_power_architecture_study.md): 現行CNN+Transformer・AlexNet構造の選定根拠。
-- [`2026-07-24_noise_shortcut_diagnostic/`](2026-07-24_noise_shortcut_diagnostic/README.md): ノイズと精度の逆転現象の診断記録。
-
-## 保存するものと保存しないもの
-
-Gitには、実行条件、完了範囲、主要指標、比較表、解釈上の制約、元結果を識別するハッシュを保存する。モデル重み、全画像、巨大なfold予測、再生成可能な中間ファイルは保存しない。
-
-重要な実行結果が `Pool_boiling/**/regression_result/` に出た場合は、`code/export_ensemble_result_snapshot.py`のような抽出処理を使い、専用ディレクトリへ固定スナップショットを作る。実行日だけで内容が変わる「最新結果」ファイルにはせず、一度報告・判断に使った数値を後から再確認できる形にする。
+大量の全画像・配列・重みは`Pool_boiling/`に置き、ここには判断を追える軽量な根拠を残す。`export_ensemble_result_snapshot.py`は主に旧chunk集計用なので、WAV主評価と混同せず、抽出器の対象と主張可否の判定範囲を確認する。

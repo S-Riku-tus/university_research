@@ -1,132 +1,52 @@
 # コード地図
 
-このファイルは、`code/` のどこに何があるかを短く整理するための地図です。コードを移動せず、まずここで意味を明確にする。
+更新日: 2026-09-15。現在の設定・完了runは[研究の現在地](research_status.md)。通常の主実行は[run_ensemble_regression_onb.py](../code/run_ensemble_regression_onb.py)。
 
-## 中心スクリプト
+## 主経路と入出力
 
-- `code/2.run_npy_waterflow_2つhighpass.py`  
-  音声データにハイパスフィルタや水流音ノイズ付与を行い、STFT特徴を `.npy` として保存する前処理スクリプト。
+| 段階 | 主なコード | 入出力・役割 |
+|---|---|---|
+| 前処理 | [水流音STFT生成](../code/2.run_npy_waterflow_2つhighpass.py)、[waterflow_preprocessing.py](../code/utils/dataloading/waterflow_preprocessing.py) | 元WAV→固定基準ノイズ・STFT power→224×224 NPY、manifest |
+| 読込 | [dataloading_and_conversion.py](../code/utils/dataloading/dataloading_and_conversion.py) | 時間×周波数×channelのx、熱流束y、元WAV/chunk情報 |
+| 条件・分割 | [dataset_jobs.py](../code/utils/experiment/dataset_jobs.py)、[learning_policy.py](../code/utils/experiment/learning_policy.py) | 実験日/ノイズ方針、元WAV分離、ノイズ間の対応検査 |
+| 学習・評価実行 | [learning_runner.py](../code/utils/experiment/learning_runner.py) | 4方針の学習・予測・XAI・指標・保存をまとめる |
+| モデル | [base_regression.py](../code/utils/models/regression/base_regression.py) | RF=XGBRF、log-power AlexNet、log-power CNN＋Transformer |
+| 学習器 | [model_training.py](../code/utils/training/model_training.py) | 学習側PCA、Keras/RF学習、元スケールへの予測復元 |
+| 統合 | [strategy_catalog.py](../code/utils/ensemble/strategy_catalog.py)、[ensemble_runtime.py](../code/utils/ensemble/ensemble_runtime.py)、[ensemble_weighting.py](../code/utils/ensemble/ensemble_weighting.py) | 選択式の統合、元WAV非重複inner holdout、WAV medianでの重み用誤差 |
+| 回帰・二値指標 | [regression_detection_metrics.py](../code/utils/calculation/regression_detection_metrics.py) | R²/RMSE/MAE、連続ROC/PR-AUC、二値分類指標 |
+| WAV・遷移指標 | [wav_event_metrics.py](../code/utils/calculation/wav_event_metrics.py) | OOFをWAVに集約、測定点順ONB遷移、予測交差診断 |
+| ONB閾値 | [onb_thresholds.py](../code/utils/experiment/onb_thresholds.py) | 3日分の正確な閾値と原資料の出典 |
+| 説明性 | [training_integration.py](../code/utils/explainability/training_integration.py)、[spectrogram_explainers.py](../code/utils/explainability/spectrogram_explainers.py) | TreeSHAP/IG/Grad-CAM/マスク、整合性・安定性・最終層ランダム化 |
+| 作図 | [regression_plots.py](../code/utils/plotting/regression_plots.py)、[noise_trend_plots.py](../code/utils/plotting/noise_trend_plots.py) | 損失・散布図・比較図・ノイズ別曲線 |
+| 保存 | [result_paths.py](../code/utils/experiment/result_paths.py)、[run_helpers.py](../code/utils/experiment/run_helpers.py) | 実行日/周波数/ノイズ/run、manifest、hash、再開判定 |
 
-- `code/3.run_ensemble_ROC_100%_analysis.py`  
-  `.npy` データを読み込み、RandomForest系、CNN+Transformer系モデルを学習・評価し、R2, AUC, RMSE, MAE, 100%分類閾値などを出す中心スクリプト（旧版・再現用に保持）。
+## 設定の正本
 
-- `code/run_ensemble_regression_onb.py`  
-  上記中心スクリプトの作り直し版（2026-06-12 計画 Phase 0 対応）。次の3点を修正済み：
-  ①モデルをレジストリ(`MODEL_SPECS`)で定義しラベルが実体に追従（RFをAlexNetと誤記しない）、
-  ②AUCを「連続スコア版(ROC/PR-AUC)」と「二値化後の分類指標」に分離、
-  ③アンサンブル方式を `enabled_strategy_names` で選択式
-  （simple_equal/inner_holdout/val_fold_legacy=旧リークあり）。
-  データパスは別マシン運用のため旧版と同じハードコードのまま。
-  再利用可能な処理（指標計算・学習/予測・重み付け・作図）は下記 utils に分離済みで、
-  本ファイルにはこの実験固有の設定と `main()` のオーケストレーションだけを置く。
-  実行モデルは `ACTIVE_MODEL_KEYS` の1行で切替（RF単体検証 `["rf"]` ⇄ 複数モデル）。
-  `parameter_sets.type=active_model_grid` では、この有効モデルだけを毎回まとめて学習する。
-  非有効モデルのグリッド設定は無視され、全候補リストが1要素なら固定条件の1実行、
-  複数要素なら有効モデル間の直積グリッドとしてチューニングする。`SMOKE_TEST=True` で epoch/fold を縮小し
-  「最後まで通るか」だけを高速確認できる（出力先に `smoke_` が付き本番結果と混ざらない）。
-  出力先 `SAVE_PATH` 末尾にモデルセットのタグが付くので、RF単体と3モデルの結果は別フォルダに残る。
-  foldごとの `y_true`、元WAV・chunk時刻、各モデル予測、アンサンブル予測は `fold_pred/` にCSV保存し、
-  アンサンブル重みは `ensemble_weights_*.csv` に保存する。
-  全fold終了後はOOF予測を元WAV単位に集約し、pooled WAV指標と熱流束系列上の
-  ONB遷移誤差を `wav_eval/` に保存する。主集約はmedian。1秒chunk指標も診断用に残す。
-  各ノイズ条件の完了時と再開時に、実験日・周波数・パラメータ設定別の
-  R²/AUCノイズ曲線を `<実行日>/<周波数>/noise_trends/` へ保存する。各条件の結果は
-  `<実行日>/<周波数>/<ノイズ>/<run>/`。設定は
-  `VALIDATION_CONFIG["output"]["noise_trend_plots"]`。chunkとWAVの両方を作図する。
-  `VALIDATION_CONFIG["learning_policy"]` で日内／別日分割、同一ノイズ学習／無雑音のみ学習を選ぶ。
-  詳細は [保存階層と一般化評価](research_plan/2026-09-14_result_layout_and_generalization.md)。
-  学習率、バッチサイズ、RF固有パラメータは `MODEL_SPECS` ではなく
-  `VALIDATION_CONFIG["models"]["parameter_sets"]` でモデル別に管理する。
+主実行の`VALIDATION_CONFIG`にデータ、学習条件、モデル別parameter grid、統合、評価、XAI、保存方針を指定する。`configs/`のYAMLは条件記録で、現在は自動読込しない。
 
-- `code/run_wav_event_evaluation.py`
-  保存済みのouter-fold予測を再学習せずに読み、元WAV単位のOOF評価とONB遷移評価を追加する。
-  `--run-dir` で1条件、`--results-root` で配下の全条件を処理する。既定では監査済みの
-  現行ONB閾値を使い、旧manifestの閾値を再現する場合だけ `--use-saved-threshold` を指定する。
+現行の有効3モデルは`rf / cnntf_v2_gap / alexnet`。統合は`simple_equal / inner_holdout`。`prediction_max`は削除済み。`val_fold_legacy`は再現・診断用で主張不可。詳細な構造の採用根拠は[8/30比較](../experiments/2026-08-30_log_power_architecture_study.md)。
 
-- `code/compare_predict_heatflux.py`  
-  学習済みモデルを使って、指定したサンプルの熱流束予測を比較する推論・確認用スクリプト。
+`within_day / leave_one_day_out`と`matched / clean_only`を組み合わせる。clean_onlyは同じモデル・PCA・scaler・重みをノイズ間で共有する。一般化評価の[実装・制約](research_plan/2026-09-14_result_layout_and_generalization.md)も確認する。
 
-- `code/check_gpu.py`  
-  TensorFlowからGPUが見えているか確認する小さな確認用スクリプト。
+通常の学習は要求epochまで行い、validation lossによるearly stoppingは現行主経路にない。OOM時にbatchを減らす再試行や、一定epoch以上の途中学習を受け入れる処理があるため、`tuning_summary.csv`等の実際のepoch/batchも確認する。要求300という名前だけで全モデルが必ず300完走したと断定しない。
 
-- `code/export_ensemble_result_snapshot.py`
-  Git対象外の `regression_result` にある `tuning_summary.csv` と説明性CSVから、条件別指標、SNR別集計、単体最高モデルとの差、完了範囲、最大寄与周波数帯を抽出する。軽量な結果スナップショットを `experiments/` に保存し、元集計のSHA-256も記録する。学習や元結果は変更しない。
+## 保存されるもの
 
-- `code/export_waterflow_dataset_snapshot.py`
-  Git対象外の現行水流音データについて、全条件のファイル数、manifest行数、実現SNR、ノイズpower式、SNR間のseed・offset対応、元WAV RMSを監査し、軽量CSVとSHA-256を `experiments/` に保存する。データ本体は変更しない。
+各runは`fold_pred/`のchunk予測、`wav_eval/`のpooled WAV指標・ONB遷移、`explainability/`、損失/散布図/指標、manifestを持つ。新実行経路は`split_manifest.json`と完了時の`completed.json`も保存する。
 
-## 共通処理
+通常runはモデル本体を永続保存しない。保存済み予測からの後処理と、モデルを必要とするIG再計算・新マスク推論は区別する。clean_onlyの一部ノイズだけ未完了の場合は、同じ学習モデルを揃えるため関連ノイズ一式を再計算する仕様。
 
-- `code/utils/dataloading/dataloading_and_conversion.py`  
-  `.npy` や画像を読み込み、入力 `x` と熱流束ラベル `y` を作る。
+## 後処理・監査
 
-- `code/utils/models/regression/base_regression.py`  
-  AlexNet系、CNN+Transformer、RandomForest系などの回帰モデル定義。
-  生power入力を絶対強度差を残して圧縮する `LogPowerCompression` を含む。
-  構造比較後、AlexNetは`legacy_log`相当、CNN+Transformerは
-  `balanced_axis_log`相当の構造に固定しており、実行時の`variant`選択はない。
-  比較経緯は`experiments/2026-08-30_log_power_architecture_study.md`を参照する。
+- [run_wav_event_evaluation.py](../code/run_wav_event_evaluation.py): 保存予測をWAV/ONB評価へ集約。旧重み学習の情報混在は後処理では取り除けない。
+- [export_ensemble_result_snapshot.py](../code/export_ensemble_result_snapshot.py): 主に旧chunk集計とXAIから軽量記録を抽出。WAV主評価や安全性の監査範囲を確認して使う。
+- [export_waterflow_dataset_snapshot.py](../code/export_waterflow_dataset_snapshot.py): 現行データの件数・manifest・ノイズ条件を監査。
+- [今回の数値採取スクリプト](../experiments/2026-09-15_research_status_snapshot/collect_snapshot.py): 9/14の保存結果の検算・固定と9月のrun一覧。
+- [reorganize_onb_results.py](../code/reorganize_onb_results.py): 指定runの保存階層移行。読取だけの確認と`--apply`による移動を区別する。
+- [run_controlled_noise_curve_diagnostics.py](../code/run_controlled_noise_curve_diagnostics.py): 固定ノイズの診断。過去資料の別診断スクリプト名は現在存在しないものもある。
 
-- `code/utils/models/regression/swin_transformer.py`  
-  Swin Transformer系の回帰モデル。
+## 過去コード・資料処理
 
-- `code/utils/calculation/calc_r2_auc.py`  
-  R2やAUC計算の補助（旧スクリプト用）。
+`3.run_ensemble_ROC_100%_analysis.py`、`3.run_ensemble_100percent_classification.py`は旧実行。`regression_analysis/`、`6-class classification/`、`dBdata/`は個別回帰/分類の過去比較。`various_feature_values/`はSTFT/SWT/spectrumの試行。`code/trush_box/`と`archive/`は過去実装を保持する。
 
-- `code/utils/calculation/regression_detection_metrics.py`  
-  熱流束回帰と ONB 検知の評価指標（`RegressionDetectionMetrics`）。回帰指標／連続スコアAUC（ROC・PR）／二値化後の分類指標を分けて算出する。`run_ensemble_regression_onb.py` 用。
-
-- `code/utils/calculation/wav_event_metrics.py`
-  outer-fold予測へ元WAV・chunk時刻情報を付け、WAV単位のmean/median/percentile集約、
-  pooled OOF指標、WAV内の予測しきい値交差、実験の熱流束系列上のONB遷移誤差を保存する。
-  同期イベント正解がないため、秒単位の検知遅れや気泡イベント精度は算出しない。
-
-- `code/utils/experiment/onb_thresholds.py`
-  3実験日のONB閾値を、実験結果ファイルの出典とともに一元管理する。
-
-- `code/utils/experiment/learning_policy.py`
-  学習・評価の条件を組み立て、実験日と元WAVを分離する。ノイズ間のchunk・時刻・ラベル対応を検査する。
-
-- `code/utils/experiment/learning_runner.py`
-  4方針に共通する学習・予測・両評価・説明性・保存処理。clean_onlyでは学習済みモデルと前処理をノイズ間で共有する。
-
-- `code/utils/experiment/result_paths.py` / `code/reorganize_onb_results.py`
-  新しい保存階層と旧階層参照、指定実行日の結果移行。移行時に評価CSVのhash一致を検査する。
-
-- `code/utils/training/model_training.py`  
-  1モデルの学習・予測と PCA 前処理（`ModelTrainer`）。MODEL_SPECS の kind（keras/sklearn）に応じて入力形態を切り替える。
-
-- `code/utils/ensemble/ensemble_weighting.py`  
-  アンサンブルの重み決定と予測統合（`EnsembleWeighting`）。simple/inner_holdout/val_fold_legacy の各戦略に対応。
-
-- `code/utils/plotting/regression_plots.py`  
-  回帰・アンサンブル評価まわりの作図（`RegressionPlotter`）。損失曲線・指標棒グラフ・予測散布図（100%分類閾値線つき）。
-
-- `code/utils/plotting/noise_trend_plots.py`
-  保存CSVからノイズ強度別のモデル比較曲線を作る。主方式または方式別に単体3モデル＋アンサンブルを表示し、
-  chunkのfold平均±SEとWAVのpooled OOF集約値を分けてPNG・PDF・数値CSVに保存する。
-  `RegressionPlotter.plot_noise_trends()`から呼び出す。作図のための学習は行わない。
-
-## 実験・過去コード
-
-- `code/regression_analysis/`  
-  AlexNet, VGG16, ResNet50などの個別回帰実験。
-
-- `code/6-class classification/`  
-  6クラス分類用の過去実験コード。
-
-- `code/dBdata/`  
-  dB化データや4クラス分類関係のコード。
-
-- `code/various_feature_values/`  
-  STFT, SWT, spectrumなど、特徴量作成・可視化の試行。
-
-- `code/trush_box/`  
-  古い試行コードや一時的に退避したコード。すぐには消さず、必要なものを見つけたら中心スクリプトや共通処理へ移す。
-
-## 今後の整理方針
-
-1. 新しい処理は、できるだけ `code/utils/` に共通関数として置く。
-2. 実行用スクリプトは `code/` 直下に置いてもよいが、設定は `configs/` に逃がす。
-3. 古いスクリプトを消す前に、役割をこのファイルに書く。
-4. 同じ処理が複数ファイルにある場合は、よく使うものから共通化する。
+熱流束計算・名前対応は`0.run_auto_heatflux_analysis*.ipynb`、`1.run_rename_files.ipynb`等。過去Notebookを再実行する前に対象パスと名前変更の影響を確認する。研究資料内にも過去Notebook・スクリプトがあり、主実行と混同しない。

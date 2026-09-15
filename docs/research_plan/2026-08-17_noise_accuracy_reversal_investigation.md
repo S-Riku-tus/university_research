@@ -1,5 +1,7 @@
 # ノイズ増加で精度が上がる現象の調査結論
 
+> **履歴・適用範囲（2026-09-15追記）**: この文書は当時の条件・判断の記録です。本文の「現在」「次にやること」は作成時点を指します。最新の設定・完了範囲・優先順位は[研究の現在地](../research_status.md)、更新関係は[文書案内](../document_index.md)を参照してください。
+
 作成日: 2026-08-17  
 対象: 水流音ノイズを加えた熱流束回帰・ONB検知
 
@@ -131,7 +133,7 @@ RFでは実験によって改善・不変・悪化が混在する。深層モデ
 
 ### 現行20260722データ
 
-[前処理マニフェスト](../../Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/data/npy/waterflow_20260722_1s_y_power/maxfreq=22kHz/preprocess_manifest.json)とGitの2026-07-22版を確認した。
+当時は前処理マニフェストとGitの2026-07-22版を確認した。旧マニフェストのパスは `Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/data/npy/waterflow_20260722_1s_y_power/maxfreq=22kHz/preprocess_manifest.json`。2026-09-15の再確認では現存しないため、現在開ける参照とは区別する。生成データの整理経緯は[データ索引](../data_inventory.md)を参照する。
 
 - 波形加算は `y + scaled_noise` で正しい。
 - STFTは正規化なしの線形パワー `amplitude**2`。

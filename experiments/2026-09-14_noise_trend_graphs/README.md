@@ -1,5 +1,7 @@
 # ノイズ強度別のモデル比較グラフ
 
+> **履歴・適用範囲（2026-09-15追記）**: この文書は当時の条件・判断の記録です。本文の「現在」「次にやること」は作成時点を指します。最新の設定・完了範囲・優先順位は[研究の現在地](../../docs/research_status.md)、更新関係は[文書案内](../../docs/document_index.md)を参照してください。
+
 卒業研究の図に合わせ、横軸をノイズ強度、縦軸をR²またはAUCとし、RF・CNN＋Transformer・AlexNet・主アンサンブルの4本の曲線を保存する機能を追加した。
 
 実装は `code/utils/plotting/noise_trend_plots.py`。既存の `RegressionPlotter` から呼び出し、ONB本体では各条件の完了時と再開時に更新する。設定、保存先、今週の70条件の方針は[実行方針メモ](../../docs/research_plan/2026-09-14_execution_policy_and_generalization_design.md)を参照する。

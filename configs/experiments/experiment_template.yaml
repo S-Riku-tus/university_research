@@ -1,52 +1,58 @@
-# Experiment config template
+# 実験条件の記録テンプレート。現行コードはこのYAMLを自動読込しない。
+schema_version: 2
 name: "YYYY-MM-DD_experiment_name"
-created_at: "YYYY-MM-DD"
+analysis_date: null
 purpose: ""
+status: planned  # planned / implemented / running / completed / analyzed
 
-dataset:
-  config: "../datasets/dataset_template.yaml"
-  data_path: ""
-  color_channel: 1
+provenance:
+  code_commit: ""
+  script: code/run_ensemble_regression_onb.py
+  run_manifest: ""
+  source_recording_dates: []
+  dataset_config: configs/datasets/waterflow_20260817_1s.yaml
 
-training:
-  script: "code/3.run_ensemble_ROC_100%_analysis.py"
-  epochs: null
-  batch_size: null
-  learning_rate: null
-  k_folds: 5
-  random_seed: 42
-
-models:
-  - name: "RandomForest"
-    enabled: true
-  - name: "CNN+Transformer v1"
-    enabled: true
-  - name: "CNN+Transformer v2"
-    enabled: true
+conditions:
+  experiment_names: []
+  max_frequency_hz: []
+  evaluation_noise: []
+  reference_snr_definition: fixed_global_rms
+  split_mode: within_day
+  training_noise: matched
+  outer_group: experiment_and_source_wav
+  folds: null
+  random_seeds: []
+  models: [rf, cnntf_v2_gap, alexnet]
+  model_parameters: {}
+  requested_epochs: null
+  actual_training_metadata: ""
+  pca_fit_scope: training_only
+  target_scaler_fit_scope: training_only
 
 ensemble:
-  method: "weighted_average"
-  weight_source: "1 - r2"
+  enabled_strategy_names: [simple_equal, inner_holdout]
+  primary_strategy_name: inner_holdout
+  weight_fit_scope: source_wav_disjoint_inner_holdout
 
-threshold:
-  heatflux_threshold: null
-  unit: "W/m2"
-  source: ""
+evaluation:
+  primary_unit: source_wav
+  primary_aggregation: median
+  pooling: pooled_out_of_fold
+  primary_metrics: [r2, rmse_all, mae_all]
+  detection_metrics: [recall, precision, f1, roc_auc_cont, pr_auc_cont]
+  onb_threshold_source: code/utils/experiment/onb_thresholds.py
+  onb_band_frac: 0.10  # 暫定。近傍の実WAV数も記録する。
+  transition_unit: operating_point_and_heat_flux
+  synchronized_time_ground_truth: false
+
+explainability:
+  enabled: true
+  config_source: "run_manifest.json"
+  diagnostic_summary: ""
 
 outputs:
-  result_dir: ""
-  save_figures: true
-  save_weights: false
-
-metrics:
-  - r2
-  - r2_high
-  - auc
-  - accuracy
-  - precision
-  - recall
-  - f1
-  - rmse
-  - mae
-
-notes: ""
+  planned_conditions: null
+  completed_conditions: null
+  result_directory: ""
+  snapshot_directory: ""
+  limitations: ""

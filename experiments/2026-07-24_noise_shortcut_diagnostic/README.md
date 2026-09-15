@@ -1,5 +1,7 @@
 # Noise / accuracy reversal diagnostic
 
+> **履歴・適用範囲（2026-09-15追記）**: この文書は当時の条件・判断の記録です。本文の「現在」「次にやること」は作成時点を指します。最新の設定・完了範囲・優先順位は[研究の現在地](../../docs/research_status.md)、更新関係は[文書案内](../../docs/document_index.md)を参照してください。
+
 ## Outcome
 
 The current inverse noise/accuracy result is dominated by a label-dependent amplitude shortcut.
@@ -50,4 +52,3 @@ python -X utf8 tests/test_noise_shortcut_diagnostics.py
 - `controlled_retrained_metrics_summary.csv`: separately retrained control
 - `controlled_clean_transfer_summary.csv`: clean-trained robustness control
 - `fold_predictions.csv` and `split_assignments.csv`: sample-level audit trail
-

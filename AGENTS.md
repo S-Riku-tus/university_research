@@ -2,6 +2,13 @@
 
 このリポジトリでは、研究資料と解析コードの両方を扱う。作業時は、既存ファイルを大きく移動せず、まず `docs/` に要約・索引・運用メモを追加して、AIが読みやすい入口を整える。
 
+## 作業開始時の入口（2026-09-15整理）
+
+- 最初に `docs/research_status.md` を読み、本人の最新方針・締切・完了事項・次の作業を確認する。
+- 年間計画は `docs/research_plan/2026_annual_plan.md`、文書の更新先と履歴の扱いは `docs/document_index.md`。
+- 本人の最新指示を、古い計画やAIの提案より優先する。設定済み・実装済み・結果出力済み・研究上の検証済みを分ける。
+- 結果を確認したら `experiments/` に日付付き根拠を残し、現在地を更新する。過去の「次にやること」を未完了と決めつけて再実行しない。
+
 ## 研究テーマ
 
 音響データからプール沸騰の状態を推定する。中心タスクは、音声から作成したスペクトログラムを使って熱流束を回帰予測し、閾値を用いて沸騰開始点を検知すること。単なる分類精度だけでなく、モデルが沸騰現象に関係する時間・周波数特徴をどのように見ているか、物理的に妥当な説明ができるかを重視する。
@@ -12,7 +19,8 @@
 - `docs/code_map.md`: コード配置と主要スクリプトの地図。
 - `docs/data_inventory.md`: 巨大データと生成データの索引。
 - `docs/naming_rules.md`: 新規ファイル名・実験名のゆるい命名ルール。
-- `code/3.run_ensemble_ROC_100%_analysis.py`: 現在の中心的な回帰・アンサンブル・評価スクリプト。
+- `code/run_ensemble_regression_onb.py`: 現行の回帰・アンサンブル・WAV/ONB評価・説明性・一般化評価の主実行。設定は `VALIDATION_CONFIG`。
+- `code/3.run_ensemble_ROC_100%_analysis.py`: 旧版・過去結果の再現用。
 - `code/utils/models/regression/base_regression.py`: AlexNet系、CNN+Transformer、RandomForest系などの回帰モデル定義。
 - `code/utils/dataloading/dataloading_and_conversion.py`: `.npy` や画像から入力 `x` と熱流束ラベル `y` を作る処理。
 - `code/2.run_npy_waterflow_2つhighpass.py`: 音声からSTFT特徴を作り、水流音ノイズ条件別の `.npy` を保存する処理。
@@ -31,7 +39,7 @@
 
 ## 週次報告を作るとき
 
-1. `docs/research_context.md` で研究の全体像を確認する。
+1. `docs/research_status.md` で最新方針を確認し、`docs/research_context.md` で研究の全体像を確認する。
 2. `docs/progress_index.md` で直近の報告内容を確認する。
 3. `git status --short` や最近更新されたファイルから今週の作業候補を拾う。
 4. 必要に応じて直近の `.docx` 報告書やコード差分を読む。

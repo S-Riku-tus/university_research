@@ -1,56 +1,49 @@
-# Experiment Result Folder Naming
+# 結果の保存階層と識別
 
-`code/run_ensemble_regression_onb.py` の結果フォルダは、Windows のパス長制限と再実行時の衝突を避けるため、短い実行名を使う。
+更新日: 2026-09-15。実装の正本は [result_paths.py](../code/utils/experiment/result_paths.py) と [run_helpers.py](../code/utils/experiment/run_helpers.py)。
 
-## 基本方針
-
-- フォルダ名には最低限の識別子だけを入れる。
-- 詳細な条件は各結果フォルダ直下の `run_manifest.json` と `validation_results_*.txt` に保存する。
-- 同じ条件を同じ日に再実行しても上書きしにくいよう、実行開始時刻ベースの `run_instance_id` を入れる。
-- 条件が変わったことを見分けやすいよう、設定内容から作った短い `run_hash` も入れる。
-
-## フォルダ名の形
+## 現行の保存階層
 
 ```text
-e{epochs}_{parameter_set}_{weight_strategy}_{models}_{run_hash}_{run_instance_id}
+Pool_boiling/Subcooling_20_degrees/0.3/<収録実験日>/
+  regression_result/npy/ensemble/<解析実行日>_selected_log_architecture[__方針]/
+    <周波数上限>/
+      <ノイズ条件>/<run>/
+        run_manifest.json
+        split_manifest.json
+        completed.json
+        fold_pred/
+        wav_eval/
+        explainability/
+      noise_trends/<run>/<統合方式>/
+    tuning_summary.csv
+    ensemble_presentation_summary.csv
 ```
 
-例:
+解析日と収録日を区別する。一般化方針の末尾は`__wd_clean / __lodo_matched / __lodo_clean`。日内matchedは従来のまま。
+
+旧runにはノイズ/周波数の順の階層や、完了印・分割manifestのない世代がある。[9/14の移行記録](research_plan/2026-09-14_result_layout_and_generalization.md)を参照し、古い階層を欠落と即断しない。
+
+## run名と実行条件
+
+現行の短いrun名は概ね次の形になる。
 
 ```text
-e10_legacy_vleg_3m_a1b2c3_153012
+e{epochs}_{短縮parameter_tag}_{短縮model_tag}[_{weight_tag}]
+e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp
 ```
 
-意味:
+**現在のフォルダ名には、run_instance_idや完全なrun_hashが必ず入るわけではない。** 完全な条件と区別は`run_manifest.json`の`created_at / run_instance_id / run_hash / execution_config_hash / validation_config / learning_context`で確認する。同じ名前だから同じ学習内容とは限らない。
 
-- `e10`: epoch 数
-- `legacy`: parameter set 名
-- `vleg`: `val_fold_legacy`
-- `3m`: `rf`, `cnntf_v1`, `alexnet` の3モデル
-- `a1b2c3`: 実行設定から作った短い hash
-- `153012`: 実行開始時刻由来の ID
+主実行は`RUN_ID`環境変数から実行IDを指定できるが、それだけで出力フォルダが別になるとは限らない。旧文書の`RUN_NAME_SUFFIX`は現行主経路では使っていない。別の比較runを残すときは、出力系列・設定の識別と再開判定を確認する。
 
-## 詳細確認
+## 完了・再開・比較
 
-短いフォルダ名だけでは、学習率、バッチサイズ、RandomForest パラメータ、データソースなどは読めない。これらは次を見る。
+- 新形式は完了時に`completed.json`を保存。manifestだけでは開始したことしか分からない。
+- 旧形式は集計・条件別指標・manifest等で判定する。実装上の判定は`is_completed_run`を参照。
+- 主方式の表示変更のみなら、保存済みの全方式から再利用できる場合がある。
+- clean_onlyの部分再開はモデル重みが保存されていないため、対応する学習とノイズ一式を再計算する仕様。
+- 別runの欠測を以前の数値で埋めない。比較表に実行日・hash・評価方針を付ける。
+- `metrics_summary_*.csv`はchunkのfold集計、`wav_eval/wav_metrics_*.csv`はWAV評価。指標名だけで混同しない。
 
-- `run_manifest.json`: 機械的に読みやすい完全な実行条件
-- `validation_results_*.txt`: 人が読みやすい実行条件と fold ごとの結果
-- `metrics_summary_*.csv`: モデル別の平均指標
-- `ensemble_weights_*.csv`: fold ごとのアンサンブル重み
-
-## 任意の名前を付けたい場合
-
-環境変数 `RUN_NAME_SUFFIX` を使うと、フォルダ名の末尾に短いメモを追加できる。
-
-```powershell
-$env:RUN_NAME_SUFFIX = "note1"
-python code/run_ensemble_regression_onb.py
-```
-
-完全に同じ `run_instance_id` を使いたい場合だけ、環境変数 `RUN_ID` を指定する。
-
-```powershell
-$env:RUN_ID = "manual001"
-python code/run_ensemble_regression_onb.py
-```
+実行ごとの判断材料は[experiments](../experiments/README.md)に固定し、現在の状態は[研究の現在地](research_status.md)で更新する。

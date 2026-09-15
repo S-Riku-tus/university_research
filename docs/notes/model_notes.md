@@ -1,34 +1,17 @@
-# モデル整理メモ
+# モデル・説明性の参照メモ
 
-## 現在の中心
+更新日: 2026-09-15。成績と採用判断は[現在地](../research_status.md)、構造の詳細は[コード地図](../code_map.md)に集約する。
 
-現在は、スペクトログラムまたは `.npy` 特徴量を入力として、熱流束を1つの連続値として出力する回帰モデルが中心です。その後、熱流束の閾値を使って沸騰/非沸騰に変換し、分類性能も評価します。
+| 現行キー | 実体 | 説明性 |
+|---|---|---|
+| `rf` | XGBRFRegressor、flatten→PCA（学習側でfit） | PCA空間TreeSHAP、帯域/時間マスク |
+| `cnntf_v2_gap` | log-power、CNN、時間tokenのTransformer、GAP | IG、帯域/時間マスク |
+| `alexnet` | log-power、AlexNet系CNN、大きい全結合ヘッド | IG、Grad-CAM、帯域/時間マスク |
 
-## モデル候補
+「Conformer」「v1/v2」「AttnPool」は過去資料の世代名を含む。現行のキーと構造を[モデル定義](../../code/utils/models/regression/base_regression.py)で確認する。VGG16・ResNet50・WaveNet・SELDnet等は、存在するコード/過去候補と現在の有効モデルを区別する。
 
-- AlexNet系: CNNによる画像特徴抽出。Grad-CAMなどで説明しやすい。
-- VGG16/ResNet50系: CNN比較用。画像認識系の代表モデルとして使いやすい。
-- CNN+Transformer v1/v2: CNNで抽出した特徴を系列として扱い、Attentionで関係性を見る。
-- RandomForest/XGBRF: 深層学習以外の比較対象。PCAなどで特徴量を圧縮して使う。
-- Conformer: CNNとAttentionを組み合わせた音響系モデル候補。
-- SELDnet/WaveNet: 音響時系列処理の候補。ただし研究目的との対応を明確にする必要がある。
+現行の統合は`simple_equal`と`inner_holdout`。`val_fold_legacy`は外側正解を使う診断・再現用で主張不可。`prediction_max`は9/14最終変更で削除済み。[方式カタログ](../../code/utils/ensemble/strategy_catalog.py)が実装上の正本。
 
-## 説明可能性の候補
+`inner_holdout`も世代を区別する。9/8より前のchunkランダム分割は元WAV混在があり、旧結果では主張用から除外される。現行の元WAV非重複holdoutはnested stackingではない。
 
-- Grad-CAM: CNN系で、どの画像領域が予測に効いたかを見る。
-- Attention map: Transformer系で、どの系列要素を重視したかを見る。ただし説明として十分かは慎重に扱う。
-- RISE: 入力にランダムマスクをかけ、出力変化から重要領域を見るブラックボックス型の説明手法。
-- 時間方向シャッフル: 時間方向の情報を使っているかを確認するためのアブレーションとして使える。
-
-## 注意点
-
-- モデル名と実体がずれないようにする。例えば、RandomForestの予測を `alexnet_pred` に入れるような状態は結果解釈で混乱を生む。
-- 評価指標は、回帰としての性能と、閾値分類としての性能を分けて見る。
-- 高熱流束領域だけのR2は、サンプル数や分散の小ささで不安定になるため、RMSE/MAEも併記する。
-
-## アンサンブル評価の注意点
-
-- アンサンブルは、単体モデルより平均性能が高いかだけでなく、fold間・SNR間のばらつきやONB近傍の見逃しを減らすかで評価する。
-- 重み付き平均を使う場合、評価foldの誤差から重みを決めると楽観的な評価になる可能性がある。重み決定用の内部検証、学習fold内CV、または固定ルールとの比較を検討する。
-- AUCは、二値化後の予測だけでなく、予測熱流束の連続値をスコアとして計算する版も併記した方がよい。
-- アンサンブルで性能が上がった場合も、Grad-CAM、RISE、Integrated Gradients、Attention Rollout、時間・周波数マスクで、根拠がONB近傍の沸騰音特徴に対応しているかを確認する。
+説明性画像の生成と、その数値整合・物理的妥当性は別に確認する。TreeSHAPをPCAから元画素へ単純に戻して物理寄与と呼ばない。IG/マスクの最新の解釈は[発表準備メモ](../research_plan/2026-09-18_xai_progress_brief.md)へ。
