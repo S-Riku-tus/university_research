@@ -80,15 +80,15 @@ VALIDATION_CONFIG = {
         "chunk_seconds": 1,
         "experiment_names": [
             "2025.06.11_0.3_2",
-            # "2025.06.18_0.3_3",
-            # "2025.07.09_0.3_1",
+            "2025.06.18_0.3_3",
+            "2025.07.09_0.3_1",
         ],
         "max_freq_hz_list": [
             "maxfreq=3kHz",
-            # "maxfreq=5kHz",
-            # "maxfreq=10kHz",
-            # "maxfreq=15kHz",
-            # "maxfreq=22kHz",
+            "maxfreq=5kHz",
+            "maxfreq=10kHz",
+            "maxfreq=15kHz",
+            "maxfreq=22kHz",
         ],
         "noise_dir_names": [
             "heatflux_no_noise",
