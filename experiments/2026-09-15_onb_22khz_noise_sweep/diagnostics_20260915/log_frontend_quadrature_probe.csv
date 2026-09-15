@@ -1,0 +1,4 @@
+﻿snr,positive_input_power_median,input_power_to_log_scale_ratio,scalar_log_exact_delta,scalar_log_trapezoid_64,scalar_log_relative_error,log_change_fraction_at_first_alpha,scope
+no_noise,2.709811486312219e-09,2709.811486312219,7.905003310493728,25.868656331978215,2.272440923286915,0.47679860587191764,scalar_front_end_only; not a trained-model completeness test
+0,3.466536391272257e-09,3466.536391272257,8.15119964709347,31.788716281510407,2.8998819385862458,0.4919916307847845,scalar_front_end_only; not a trained-model completeness test
+-20,2.7769782917630437e-08,27769.782917630437,10.231739772832148,221.68375881114562,20.666281955271376,0.5937526585205903,scalar_front_end_only; not a trained-model completeness test

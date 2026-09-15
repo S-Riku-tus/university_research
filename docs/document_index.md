@@ -10,6 +10,7 @@
 | 年間計画・理想と現実的な成果 | [2026年度計画](research_plan/2026_annual_plan.md) | 締切・実験可能期間・研究判断が変わったとき |
 | 長期の研究目的・用語 | [研究コンテキスト](research_context.md) | 目的・定義が変わったとき。毎runの成績は置かない |
 | 金曜の説明性発表 | [9/18準備メモ](research_plan/2026-09-18_xai_progress_brief.md) | 発表準備中の原稿。発表後は履歴 |
+| 最新7ノイズの結果を説明する | [9/15・22 kHz解析](../experiments/2026-09-15_onb_22khz_noise_sweep/analysis.md)、[SOAP下書き](progress/2026-09-18_weekly_progress_draft.md) | 元runと図表へ戻れる解析、提出前の報告案 |
 | 数値・コード変更・解釈の根拠 | [experiments](../experiments/README.md) | 日付付きで固定。訂正理由と後継を追記する |
 | 方針の変遷 | [進捗索引](progress_index.md) | 日付順に要点と根拠リンクを追記 |
 | 実行・保存先 | [コード地図](code_map.md)、[結果の保存名](experiment_result_naming.md) | 現行コードと照合して更新 |

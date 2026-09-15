@@ -1,0 +1,1324 @@
+﻿snr,fold,model,key,value
+no_noise,1,rf,model_key,rf
+no_noise,1,rf,fold,1
+no_noise,1,rf,experiment_name,2025.06.11_0.3_2
+no_noise,1,rf,noise_dir_name,heatflux_no_noise
+no_noise,1,rf,max_freq_name,maxfreq=22kHz
+no_noise,1,rf,max_freq_hz,22000.0
+no_noise,1,rf,methods,group_occlusion|tree_shap_pca
+no_noise,1,rf,max_samples_per_fold,5
+no_noise,1,rf,ig_steps,64
+no_noise,1,rf,baseline_value,0.0
+no_noise,1,rf,time_groups,4
+no_noise,1,rf,time_extent_seconds,1.0
+no_noise,1,rf,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+no_noise,1,rf,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+no_noise,1,rf,onb_band_frac,0.1
+no_noise,1,rf,performance_evaluation_unit,source_wav
+no_noise,1,rf,performance_wav_aggregation,median
+no_noise,1,rf,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+no_noise,1,rf,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+no_noise,1,rf,save_maps,True
+no_noise,1,rf,plot_axis_order,"x=time_s,y=frequency_khz"
+no_noise,1,cnntf_v2_gap,model_key,cnntf_v2_gap
+no_noise,1,cnntf_v2_gap,fold,1
+no_noise,1,cnntf_v2_gap,experiment_name,2025.06.11_0.3_2
+no_noise,1,cnntf_v2_gap,noise_dir_name,heatflux_no_noise
+no_noise,1,cnntf_v2_gap,max_freq_name,maxfreq=22kHz
+no_noise,1,cnntf_v2_gap,max_freq_hz,22000.0
+no_noise,1,cnntf_v2_gap,methods,group_occlusion|integrated_gradients
+no_noise,1,cnntf_v2_gap,max_samples_per_fold,5
+no_noise,1,cnntf_v2_gap,ig_steps,64
+no_noise,1,cnntf_v2_gap,baseline_value,0.0
+no_noise,1,cnntf_v2_gap,time_groups,4
+no_noise,1,cnntf_v2_gap,time_extent_seconds,1.0
+no_noise,1,cnntf_v2_gap,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+no_noise,1,cnntf_v2_gap,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+no_noise,1,cnntf_v2_gap,onb_band_frac,0.1
+no_noise,1,cnntf_v2_gap,performance_evaluation_unit,source_wav
+no_noise,1,cnntf_v2_gap,performance_wav_aggregation,median
+no_noise,1,cnntf_v2_gap,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+no_noise,1,cnntf_v2_gap,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+no_noise,1,cnntf_v2_gap,save_maps,True
+no_noise,1,cnntf_v2_gap,plot_axis_order,"x=time_s,y=frequency_khz"
+no_noise,1,alexnet,model_key,alexnet
+no_noise,1,alexnet,fold,1
+no_noise,1,alexnet,experiment_name,2025.06.11_0.3_2
+no_noise,1,alexnet,noise_dir_name,heatflux_no_noise
+no_noise,1,alexnet,max_freq_name,maxfreq=22kHz
+no_noise,1,alexnet,max_freq_hz,22000.0
+no_noise,1,alexnet,methods,grad_cam|group_occlusion|integrated_gradients
+no_noise,1,alexnet,max_samples_per_fold,5
+no_noise,1,alexnet,ig_steps,64
+no_noise,1,alexnet,baseline_value,0.0
+no_noise,1,alexnet,time_groups,4
+no_noise,1,alexnet,time_extent_seconds,1.0
+no_noise,1,alexnet,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+no_noise,1,alexnet,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+no_noise,1,alexnet,onb_band_frac,0.1
+no_noise,1,alexnet,performance_evaluation_unit,source_wav
+no_noise,1,alexnet,performance_wav_aggregation,median
+no_noise,1,alexnet,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+no_noise,1,alexnet,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+no_noise,1,alexnet,save_maps,True
+no_noise,1,alexnet,plot_axis_order,"x=time_s,y=frequency_khz"
+no_noise,2,rf,model_key,rf
+no_noise,2,rf,fold,2
+no_noise,2,rf,experiment_name,2025.06.11_0.3_2
+no_noise,2,rf,noise_dir_name,heatflux_no_noise
+no_noise,2,rf,max_freq_name,maxfreq=22kHz
+no_noise,2,rf,max_freq_hz,22000.0
+no_noise,2,rf,methods,group_occlusion|tree_shap_pca
+no_noise,2,rf,max_samples_per_fold,5
+no_noise,2,rf,ig_steps,64
+no_noise,2,rf,baseline_value,0.0
+no_noise,2,rf,time_groups,4
+no_noise,2,rf,time_extent_seconds,1.0
+no_noise,2,rf,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+no_noise,2,rf,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+no_noise,2,rf,onb_band_frac,0.1
+no_noise,2,rf,performance_evaluation_unit,source_wav
+no_noise,2,rf,performance_wav_aggregation,median
+no_noise,2,rf,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+no_noise,2,rf,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+no_noise,2,rf,save_maps,True
+no_noise,2,rf,plot_axis_order,"x=time_s,y=frequency_khz"
+no_noise,2,cnntf_v2_gap,model_key,cnntf_v2_gap
+no_noise,2,cnntf_v2_gap,fold,2
+no_noise,2,cnntf_v2_gap,experiment_name,2025.06.11_0.3_2
+no_noise,2,cnntf_v2_gap,noise_dir_name,heatflux_no_noise
+no_noise,2,cnntf_v2_gap,max_freq_name,maxfreq=22kHz
+no_noise,2,cnntf_v2_gap,max_freq_hz,22000.0
+no_noise,2,cnntf_v2_gap,methods,group_occlusion|integrated_gradients
+no_noise,2,cnntf_v2_gap,max_samples_per_fold,5
+no_noise,2,cnntf_v2_gap,ig_steps,64
+no_noise,2,cnntf_v2_gap,baseline_value,0.0
+no_noise,2,cnntf_v2_gap,time_groups,4
+no_noise,2,cnntf_v2_gap,time_extent_seconds,1.0
+no_noise,2,cnntf_v2_gap,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+no_noise,2,cnntf_v2_gap,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+no_noise,2,cnntf_v2_gap,onb_band_frac,0.1
+no_noise,2,cnntf_v2_gap,performance_evaluation_unit,source_wav
+no_noise,2,cnntf_v2_gap,performance_wav_aggregation,median
+no_noise,2,cnntf_v2_gap,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+no_noise,2,cnntf_v2_gap,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+no_noise,2,cnntf_v2_gap,save_maps,True
+no_noise,2,cnntf_v2_gap,plot_axis_order,"x=time_s,y=frequency_khz"
+no_noise,2,alexnet,model_key,alexnet
+no_noise,2,alexnet,fold,2
+no_noise,2,alexnet,experiment_name,2025.06.11_0.3_2
+no_noise,2,alexnet,noise_dir_name,heatflux_no_noise
+no_noise,2,alexnet,max_freq_name,maxfreq=22kHz
+no_noise,2,alexnet,max_freq_hz,22000.0
+no_noise,2,alexnet,methods,grad_cam|group_occlusion|integrated_gradients
+no_noise,2,alexnet,max_samples_per_fold,5
+no_noise,2,alexnet,ig_steps,64
+no_noise,2,alexnet,baseline_value,0.0
+no_noise,2,alexnet,time_groups,4
+no_noise,2,alexnet,time_extent_seconds,1.0
+no_noise,2,alexnet,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+no_noise,2,alexnet,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+no_noise,2,alexnet,onb_band_frac,0.1
+no_noise,2,alexnet,performance_evaluation_unit,source_wav
+no_noise,2,alexnet,performance_wav_aggregation,median
+no_noise,2,alexnet,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+no_noise,2,alexnet,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+no_noise,2,alexnet,save_maps,True
+no_noise,2,alexnet,plot_axis_order,"x=time_s,y=frequency_khz"
+no_noise,3,rf,model_key,rf
+no_noise,3,rf,fold,3
+no_noise,3,rf,experiment_name,2025.06.11_0.3_2
+no_noise,3,rf,noise_dir_name,heatflux_no_noise
+no_noise,3,rf,max_freq_name,maxfreq=22kHz
+no_noise,3,rf,max_freq_hz,22000.0
+no_noise,3,rf,methods,group_occlusion|tree_shap_pca
+no_noise,3,rf,max_samples_per_fold,5
+no_noise,3,rf,ig_steps,64
+no_noise,3,rf,baseline_value,0.0
+no_noise,3,rf,time_groups,4
+no_noise,3,rf,time_extent_seconds,1.0
+no_noise,3,rf,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+no_noise,3,rf,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+no_noise,3,rf,onb_band_frac,0.1
+no_noise,3,rf,performance_evaluation_unit,source_wav
+no_noise,3,rf,performance_wav_aggregation,median
+no_noise,3,rf,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+no_noise,3,rf,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+no_noise,3,rf,save_maps,True
+no_noise,3,rf,plot_axis_order,"x=time_s,y=frequency_khz"
+no_noise,3,cnntf_v2_gap,model_key,cnntf_v2_gap
+no_noise,3,cnntf_v2_gap,fold,3
+no_noise,3,cnntf_v2_gap,experiment_name,2025.06.11_0.3_2
+no_noise,3,cnntf_v2_gap,noise_dir_name,heatflux_no_noise
+no_noise,3,cnntf_v2_gap,max_freq_name,maxfreq=22kHz
+no_noise,3,cnntf_v2_gap,max_freq_hz,22000.0
+no_noise,3,cnntf_v2_gap,methods,group_occlusion|integrated_gradients
+no_noise,3,cnntf_v2_gap,max_samples_per_fold,5
+no_noise,3,cnntf_v2_gap,ig_steps,64
+no_noise,3,cnntf_v2_gap,baseline_value,0.0
+no_noise,3,cnntf_v2_gap,time_groups,4
+no_noise,3,cnntf_v2_gap,time_extent_seconds,1.0
+no_noise,3,cnntf_v2_gap,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+no_noise,3,cnntf_v2_gap,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+no_noise,3,cnntf_v2_gap,onb_band_frac,0.1
+no_noise,3,cnntf_v2_gap,performance_evaluation_unit,source_wav
+no_noise,3,cnntf_v2_gap,performance_wav_aggregation,median
+no_noise,3,cnntf_v2_gap,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+no_noise,3,cnntf_v2_gap,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+no_noise,3,cnntf_v2_gap,save_maps,True
+no_noise,3,cnntf_v2_gap,plot_axis_order,"x=time_s,y=frequency_khz"
+no_noise,3,alexnet,model_key,alexnet
+no_noise,3,alexnet,fold,3
+no_noise,3,alexnet,experiment_name,2025.06.11_0.3_2
+no_noise,3,alexnet,noise_dir_name,heatflux_no_noise
+no_noise,3,alexnet,max_freq_name,maxfreq=22kHz
+no_noise,3,alexnet,max_freq_hz,22000.0
+no_noise,3,alexnet,methods,grad_cam|group_occlusion|integrated_gradients
+no_noise,3,alexnet,max_samples_per_fold,5
+no_noise,3,alexnet,ig_steps,64
+no_noise,3,alexnet,baseline_value,0.0
+no_noise,3,alexnet,time_groups,4
+no_noise,3,alexnet,time_extent_seconds,1.0
+no_noise,3,alexnet,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+no_noise,3,alexnet,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+no_noise,3,alexnet,onb_band_frac,0.1
+no_noise,3,alexnet,performance_evaluation_unit,source_wav
+no_noise,3,alexnet,performance_wav_aggregation,median
+no_noise,3,alexnet,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+no_noise,3,alexnet,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+no_noise,3,alexnet,save_maps,True
+no_noise,3,alexnet,plot_axis_order,"x=time_s,y=frequency_khz"
+0,1,rf,model_key,rf
+0,1,rf,fold,1
+0,1,rf,experiment_name,2025.06.11_0.3_2
+0,1,rf,noise_dir_name,heatflux_reference_SNR=0
+0,1,rf,max_freq_name,maxfreq=22kHz
+0,1,rf,max_freq_hz,22000.0
+0,1,rf,methods,group_occlusion|tree_shap_pca
+0,1,rf,max_samples_per_fold,5
+0,1,rf,ig_steps,64
+0,1,rf,baseline_value,0.0
+0,1,rf,time_groups,4
+0,1,rf,time_extent_seconds,1.0
+0,1,rf,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+0,1,rf,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+0,1,rf,onb_band_frac,0.1
+0,1,rf,performance_evaluation_unit,source_wav
+0,1,rf,performance_wav_aggregation,median
+0,1,rf,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+0,1,rf,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+0,1,rf,save_maps,True
+0,1,rf,plot_axis_order,"x=time_s,y=frequency_khz"
+0,1,cnntf_v2_gap,model_key,cnntf_v2_gap
+0,1,cnntf_v2_gap,fold,1
+0,1,cnntf_v2_gap,experiment_name,2025.06.11_0.3_2
+0,1,cnntf_v2_gap,noise_dir_name,heatflux_reference_SNR=0
+0,1,cnntf_v2_gap,max_freq_name,maxfreq=22kHz
+0,1,cnntf_v2_gap,max_freq_hz,22000.0
+0,1,cnntf_v2_gap,methods,group_occlusion|integrated_gradients
+0,1,cnntf_v2_gap,max_samples_per_fold,5
+0,1,cnntf_v2_gap,ig_steps,64
+0,1,cnntf_v2_gap,baseline_value,0.0
+0,1,cnntf_v2_gap,time_groups,4
+0,1,cnntf_v2_gap,time_extent_seconds,1.0
+0,1,cnntf_v2_gap,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+0,1,cnntf_v2_gap,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+0,1,cnntf_v2_gap,onb_band_frac,0.1
+0,1,cnntf_v2_gap,performance_evaluation_unit,source_wav
+0,1,cnntf_v2_gap,performance_wav_aggregation,median
+0,1,cnntf_v2_gap,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+0,1,cnntf_v2_gap,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+0,1,cnntf_v2_gap,save_maps,True
+0,1,cnntf_v2_gap,plot_axis_order,"x=time_s,y=frequency_khz"
+0,1,alexnet,model_key,alexnet
+0,1,alexnet,fold,1
+0,1,alexnet,experiment_name,2025.06.11_0.3_2
+0,1,alexnet,noise_dir_name,heatflux_reference_SNR=0
+0,1,alexnet,max_freq_name,maxfreq=22kHz
+0,1,alexnet,max_freq_hz,22000.0
+0,1,alexnet,methods,grad_cam|group_occlusion|integrated_gradients
+0,1,alexnet,max_samples_per_fold,5
+0,1,alexnet,ig_steps,64
+0,1,alexnet,baseline_value,0.0
+0,1,alexnet,time_groups,4
+0,1,alexnet,time_extent_seconds,1.0
+0,1,alexnet,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+0,1,alexnet,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+0,1,alexnet,onb_band_frac,0.1
+0,1,alexnet,performance_evaluation_unit,source_wav
+0,1,alexnet,performance_wav_aggregation,median
+0,1,alexnet,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+0,1,alexnet,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+0,1,alexnet,save_maps,True
+0,1,alexnet,plot_axis_order,"x=time_s,y=frequency_khz"
+0,2,rf,model_key,rf
+0,2,rf,fold,2
+0,2,rf,experiment_name,2025.06.11_0.3_2
+0,2,rf,noise_dir_name,heatflux_reference_SNR=0
+0,2,rf,max_freq_name,maxfreq=22kHz
+0,2,rf,max_freq_hz,22000.0
+0,2,rf,methods,group_occlusion|tree_shap_pca
+0,2,rf,max_samples_per_fold,5
+0,2,rf,ig_steps,64
+0,2,rf,baseline_value,0.0
+0,2,rf,time_groups,4
+0,2,rf,time_extent_seconds,1.0
+0,2,rf,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+0,2,rf,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+0,2,rf,onb_band_frac,0.1
+0,2,rf,performance_evaluation_unit,source_wav
+0,2,rf,performance_wav_aggregation,median
+0,2,rf,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+0,2,rf,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+0,2,rf,save_maps,True
+0,2,rf,plot_axis_order,"x=time_s,y=frequency_khz"
+0,2,cnntf_v2_gap,model_key,cnntf_v2_gap
+0,2,cnntf_v2_gap,fold,2
+0,2,cnntf_v2_gap,experiment_name,2025.06.11_0.3_2
+0,2,cnntf_v2_gap,noise_dir_name,heatflux_reference_SNR=0
+0,2,cnntf_v2_gap,max_freq_name,maxfreq=22kHz
+0,2,cnntf_v2_gap,max_freq_hz,22000.0
+0,2,cnntf_v2_gap,methods,group_occlusion|integrated_gradients
+0,2,cnntf_v2_gap,max_samples_per_fold,5
+0,2,cnntf_v2_gap,ig_steps,64
+0,2,cnntf_v2_gap,baseline_value,0.0
+0,2,cnntf_v2_gap,time_groups,4
+0,2,cnntf_v2_gap,time_extent_seconds,1.0
+0,2,cnntf_v2_gap,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+0,2,cnntf_v2_gap,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+0,2,cnntf_v2_gap,onb_band_frac,0.1
+0,2,cnntf_v2_gap,performance_evaluation_unit,source_wav
+0,2,cnntf_v2_gap,performance_wav_aggregation,median
+0,2,cnntf_v2_gap,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+0,2,cnntf_v2_gap,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+0,2,cnntf_v2_gap,save_maps,True
+0,2,cnntf_v2_gap,plot_axis_order,"x=time_s,y=frequency_khz"
+0,2,alexnet,model_key,alexnet
+0,2,alexnet,fold,2
+0,2,alexnet,experiment_name,2025.06.11_0.3_2
+0,2,alexnet,noise_dir_name,heatflux_reference_SNR=0
+0,2,alexnet,max_freq_name,maxfreq=22kHz
+0,2,alexnet,max_freq_hz,22000.0
+0,2,alexnet,methods,grad_cam|group_occlusion|integrated_gradients
+0,2,alexnet,max_samples_per_fold,5
+0,2,alexnet,ig_steps,64
+0,2,alexnet,baseline_value,0.0
+0,2,alexnet,time_groups,4
+0,2,alexnet,time_extent_seconds,1.0
+0,2,alexnet,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+0,2,alexnet,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+0,2,alexnet,onb_band_frac,0.1
+0,2,alexnet,performance_evaluation_unit,source_wav
+0,2,alexnet,performance_wav_aggregation,median
+0,2,alexnet,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+0,2,alexnet,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+0,2,alexnet,save_maps,True
+0,2,alexnet,plot_axis_order,"x=time_s,y=frequency_khz"
+0,3,rf,model_key,rf
+0,3,rf,fold,3
+0,3,rf,experiment_name,2025.06.11_0.3_2
+0,3,rf,noise_dir_name,heatflux_reference_SNR=0
+0,3,rf,max_freq_name,maxfreq=22kHz
+0,3,rf,max_freq_hz,22000.0
+0,3,rf,methods,group_occlusion|tree_shap_pca
+0,3,rf,max_samples_per_fold,5
+0,3,rf,ig_steps,64
+0,3,rf,baseline_value,0.0
+0,3,rf,time_groups,4
+0,3,rf,time_extent_seconds,1.0
+0,3,rf,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+0,3,rf,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+0,3,rf,onb_band_frac,0.1
+0,3,rf,performance_evaluation_unit,source_wav
+0,3,rf,performance_wav_aggregation,median
+0,3,rf,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+0,3,rf,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+0,3,rf,save_maps,True
+0,3,rf,plot_axis_order,"x=time_s,y=frequency_khz"
+0,3,cnntf_v2_gap,model_key,cnntf_v2_gap
+0,3,cnntf_v2_gap,fold,3
+0,3,cnntf_v2_gap,experiment_name,2025.06.11_0.3_2
+0,3,cnntf_v2_gap,noise_dir_name,heatflux_reference_SNR=0
+0,3,cnntf_v2_gap,max_freq_name,maxfreq=22kHz
+0,3,cnntf_v2_gap,max_freq_hz,22000.0
+0,3,cnntf_v2_gap,methods,group_occlusion|integrated_gradients
+0,3,cnntf_v2_gap,max_samples_per_fold,5
+0,3,cnntf_v2_gap,ig_steps,64
+0,3,cnntf_v2_gap,baseline_value,0.0
+0,3,cnntf_v2_gap,time_groups,4
+0,3,cnntf_v2_gap,time_extent_seconds,1.0
+0,3,cnntf_v2_gap,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+0,3,cnntf_v2_gap,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+0,3,cnntf_v2_gap,onb_band_frac,0.1
+0,3,cnntf_v2_gap,performance_evaluation_unit,source_wav
+0,3,cnntf_v2_gap,performance_wav_aggregation,median
+0,3,cnntf_v2_gap,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+0,3,cnntf_v2_gap,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+0,3,cnntf_v2_gap,save_maps,True
+0,3,cnntf_v2_gap,plot_axis_order,"x=time_s,y=frequency_khz"
+0,3,alexnet,model_key,alexnet
+0,3,alexnet,fold,3
+0,3,alexnet,experiment_name,2025.06.11_0.3_2
+0,3,alexnet,noise_dir_name,heatflux_reference_SNR=0
+0,3,alexnet,max_freq_name,maxfreq=22kHz
+0,3,alexnet,max_freq_hz,22000.0
+0,3,alexnet,methods,grad_cam|group_occlusion|integrated_gradients
+0,3,alexnet,max_samples_per_fold,5
+0,3,alexnet,ig_steps,64
+0,3,alexnet,baseline_value,0.0
+0,3,alexnet,time_groups,4
+0,3,alexnet,time_extent_seconds,1.0
+0,3,alexnet,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+0,3,alexnet,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+0,3,alexnet,onb_band_frac,0.1
+0,3,alexnet,performance_evaluation_unit,source_wav
+0,3,alexnet,performance_wav_aggregation,median
+0,3,alexnet,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+0,3,alexnet,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+0,3,alexnet,save_maps,True
+0,3,alexnet,plot_axis_order,"x=time_s,y=frequency_khz"
+-4,1,rf,model_key,rf
+-4,1,rf,fold,1
+-4,1,rf,experiment_name,2025.06.11_0.3_2
+-4,1,rf,noise_dir_name,heatflux_reference_SNR=-4
+-4,1,rf,max_freq_name,maxfreq=22kHz
+-4,1,rf,max_freq_hz,22000.0
+-4,1,rf,methods,group_occlusion|tree_shap_pca
+-4,1,rf,max_samples_per_fold,5
+-4,1,rf,ig_steps,64
+-4,1,rf,baseline_value,0.0
+-4,1,rf,time_groups,4
+-4,1,rf,time_extent_seconds,1.0
+-4,1,rf,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+-4,1,rf,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+-4,1,rf,onb_band_frac,0.1
+-4,1,rf,performance_evaluation_unit,source_wav
+-4,1,rf,performance_wav_aggregation,median
+-4,1,rf,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+-4,1,rf,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+-4,1,rf,save_maps,True
+-4,1,rf,plot_axis_order,"x=time_s,y=frequency_khz"
+-4,1,cnntf_v2_gap,model_key,cnntf_v2_gap
+-4,1,cnntf_v2_gap,fold,1
+-4,1,cnntf_v2_gap,experiment_name,2025.06.11_0.3_2
+-4,1,cnntf_v2_gap,noise_dir_name,heatflux_reference_SNR=-4
+-4,1,cnntf_v2_gap,max_freq_name,maxfreq=22kHz
+-4,1,cnntf_v2_gap,max_freq_hz,22000.0
+-4,1,cnntf_v2_gap,methods,group_occlusion|integrated_gradients
+-4,1,cnntf_v2_gap,max_samples_per_fold,5
+-4,1,cnntf_v2_gap,ig_steps,64
+-4,1,cnntf_v2_gap,baseline_value,0.0
+-4,1,cnntf_v2_gap,time_groups,4
+-4,1,cnntf_v2_gap,time_extent_seconds,1.0
+-4,1,cnntf_v2_gap,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+-4,1,cnntf_v2_gap,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+-4,1,cnntf_v2_gap,onb_band_frac,0.1
+-4,1,cnntf_v2_gap,performance_evaluation_unit,source_wav
+-4,1,cnntf_v2_gap,performance_wav_aggregation,median
+-4,1,cnntf_v2_gap,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+-4,1,cnntf_v2_gap,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+-4,1,cnntf_v2_gap,save_maps,True
+-4,1,cnntf_v2_gap,plot_axis_order,"x=time_s,y=frequency_khz"
+-4,1,alexnet,model_key,alexnet
+-4,1,alexnet,fold,1
+-4,1,alexnet,experiment_name,2025.06.11_0.3_2
+-4,1,alexnet,noise_dir_name,heatflux_reference_SNR=-4
+-4,1,alexnet,max_freq_name,maxfreq=22kHz
+-4,1,alexnet,max_freq_hz,22000.0
+-4,1,alexnet,methods,grad_cam|group_occlusion|integrated_gradients
+-4,1,alexnet,max_samples_per_fold,5
+-4,1,alexnet,ig_steps,64
+-4,1,alexnet,baseline_value,0.0
+-4,1,alexnet,time_groups,4
+-4,1,alexnet,time_extent_seconds,1.0
+-4,1,alexnet,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+-4,1,alexnet,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+-4,1,alexnet,onb_band_frac,0.1
+-4,1,alexnet,performance_evaluation_unit,source_wav
+-4,1,alexnet,performance_wav_aggregation,median
+-4,1,alexnet,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+-4,1,alexnet,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+-4,1,alexnet,save_maps,True
+-4,1,alexnet,plot_axis_order,"x=time_s,y=frequency_khz"
+-4,2,rf,model_key,rf
+-4,2,rf,fold,2
+-4,2,rf,experiment_name,2025.06.11_0.3_2
+-4,2,rf,noise_dir_name,heatflux_reference_SNR=-4
+-4,2,rf,max_freq_name,maxfreq=22kHz
+-4,2,rf,max_freq_hz,22000.0
+-4,2,rf,methods,group_occlusion|tree_shap_pca
+-4,2,rf,max_samples_per_fold,5
+-4,2,rf,ig_steps,64
+-4,2,rf,baseline_value,0.0
+-4,2,rf,time_groups,4
+-4,2,rf,time_extent_seconds,1.0
+-4,2,rf,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+-4,2,rf,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+-4,2,rf,onb_band_frac,0.1
+-4,2,rf,performance_evaluation_unit,source_wav
+-4,2,rf,performance_wav_aggregation,median
+-4,2,rf,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+-4,2,rf,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+-4,2,rf,save_maps,True
+-4,2,rf,plot_axis_order,"x=time_s,y=frequency_khz"
+-4,2,cnntf_v2_gap,model_key,cnntf_v2_gap
+-4,2,cnntf_v2_gap,fold,2
+-4,2,cnntf_v2_gap,experiment_name,2025.06.11_0.3_2
+-4,2,cnntf_v2_gap,noise_dir_name,heatflux_reference_SNR=-4
+-4,2,cnntf_v2_gap,max_freq_name,maxfreq=22kHz
+-4,2,cnntf_v2_gap,max_freq_hz,22000.0
+-4,2,cnntf_v2_gap,methods,group_occlusion|integrated_gradients
+-4,2,cnntf_v2_gap,max_samples_per_fold,5
+-4,2,cnntf_v2_gap,ig_steps,64
+-4,2,cnntf_v2_gap,baseline_value,0.0
+-4,2,cnntf_v2_gap,time_groups,4
+-4,2,cnntf_v2_gap,time_extent_seconds,1.0
+-4,2,cnntf_v2_gap,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+-4,2,cnntf_v2_gap,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+-4,2,cnntf_v2_gap,onb_band_frac,0.1
+-4,2,cnntf_v2_gap,performance_evaluation_unit,source_wav
+-4,2,cnntf_v2_gap,performance_wav_aggregation,median
+-4,2,cnntf_v2_gap,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+-4,2,cnntf_v2_gap,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+-4,2,cnntf_v2_gap,save_maps,True
+-4,2,cnntf_v2_gap,plot_axis_order,"x=time_s,y=frequency_khz"
+-4,2,alexnet,model_key,alexnet
+-4,2,alexnet,fold,2
+-4,2,alexnet,experiment_name,2025.06.11_0.3_2
+-4,2,alexnet,noise_dir_name,heatflux_reference_SNR=-4
+-4,2,alexnet,max_freq_name,maxfreq=22kHz
+-4,2,alexnet,max_freq_hz,22000.0
+-4,2,alexnet,methods,grad_cam|group_occlusion|integrated_gradients
+-4,2,alexnet,max_samples_per_fold,5
+-4,2,alexnet,ig_steps,64
+-4,2,alexnet,baseline_value,0.0
+-4,2,alexnet,time_groups,4
+-4,2,alexnet,time_extent_seconds,1.0
+-4,2,alexnet,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+-4,2,alexnet,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+-4,2,alexnet,onb_band_frac,0.1
+-4,2,alexnet,performance_evaluation_unit,source_wav
+-4,2,alexnet,performance_wav_aggregation,median
+-4,2,alexnet,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+-4,2,alexnet,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+-4,2,alexnet,save_maps,True
+-4,2,alexnet,plot_axis_order,"x=time_s,y=frequency_khz"
+-4,3,rf,model_key,rf
+-4,3,rf,fold,3
+-4,3,rf,experiment_name,2025.06.11_0.3_2
+-4,3,rf,noise_dir_name,heatflux_reference_SNR=-4
+-4,3,rf,max_freq_name,maxfreq=22kHz
+-4,3,rf,max_freq_hz,22000.0
+-4,3,rf,methods,group_occlusion|tree_shap_pca
+-4,3,rf,max_samples_per_fold,5
+-4,3,rf,ig_steps,64
+-4,3,rf,baseline_value,0.0
+-4,3,rf,time_groups,4
+-4,3,rf,time_extent_seconds,1.0
+-4,3,rf,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+-4,3,rf,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+-4,3,rf,onb_band_frac,0.1
+-4,3,rf,performance_evaluation_unit,source_wav
+-4,3,rf,performance_wav_aggregation,median
+-4,3,rf,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+-4,3,rf,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+-4,3,rf,save_maps,True
+-4,3,rf,plot_axis_order,"x=time_s,y=frequency_khz"
+-4,3,cnntf_v2_gap,model_key,cnntf_v2_gap
+-4,3,cnntf_v2_gap,fold,3
+-4,3,cnntf_v2_gap,experiment_name,2025.06.11_0.3_2
+-4,3,cnntf_v2_gap,noise_dir_name,heatflux_reference_SNR=-4
+-4,3,cnntf_v2_gap,max_freq_name,maxfreq=22kHz
+-4,3,cnntf_v2_gap,max_freq_hz,22000.0
+-4,3,cnntf_v2_gap,methods,group_occlusion|integrated_gradients
+-4,3,cnntf_v2_gap,max_samples_per_fold,5
+-4,3,cnntf_v2_gap,ig_steps,64
+-4,3,cnntf_v2_gap,baseline_value,0.0
+-4,3,cnntf_v2_gap,time_groups,4
+-4,3,cnntf_v2_gap,time_extent_seconds,1.0
+-4,3,cnntf_v2_gap,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+-4,3,cnntf_v2_gap,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+-4,3,cnntf_v2_gap,onb_band_frac,0.1
+-4,3,cnntf_v2_gap,performance_evaluation_unit,source_wav
+-4,3,cnntf_v2_gap,performance_wav_aggregation,median
+-4,3,cnntf_v2_gap,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+-4,3,cnntf_v2_gap,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+-4,3,cnntf_v2_gap,save_maps,True
+-4,3,cnntf_v2_gap,plot_axis_order,"x=time_s,y=frequency_khz"
+-4,3,alexnet,model_key,alexnet
+-4,3,alexnet,fold,3
+-4,3,alexnet,experiment_name,2025.06.11_0.3_2
+-4,3,alexnet,noise_dir_name,heatflux_reference_SNR=-4
+-4,3,alexnet,max_freq_name,maxfreq=22kHz
+-4,3,alexnet,max_freq_hz,22000.0
+-4,3,alexnet,methods,grad_cam|group_occlusion|integrated_gradients
+-4,3,alexnet,max_samples_per_fold,5
+-4,3,alexnet,ig_steps,64
+-4,3,alexnet,baseline_value,0.0
+-4,3,alexnet,time_groups,4
+-4,3,alexnet,time_extent_seconds,1.0
+-4,3,alexnet,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+-4,3,alexnet,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+-4,3,alexnet,onb_band_frac,0.1
+-4,3,alexnet,performance_evaluation_unit,source_wav
+-4,3,alexnet,performance_wav_aggregation,median
+-4,3,alexnet,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+-4,3,alexnet,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+-4,3,alexnet,save_maps,True
+-4,3,alexnet,plot_axis_order,"x=time_s,y=frequency_khz"
+-8,1,rf,model_key,rf
+-8,1,rf,fold,1
+-8,1,rf,experiment_name,2025.06.11_0.3_2
+-8,1,rf,noise_dir_name,heatflux_reference_SNR=-8
+-8,1,rf,max_freq_name,maxfreq=22kHz
+-8,1,rf,max_freq_hz,22000.0
+-8,1,rf,methods,group_occlusion|tree_shap_pca
+-8,1,rf,max_samples_per_fold,5
+-8,1,rf,ig_steps,64
+-8,1,rf,baseline_value,0.0
+-8,1,rf,time_groups,4
+-8,1,rf,time_extent_seconds,1.0
+-8,1,rf,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+-8,1,rf,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+-8,1,rf,onb_band_frac,0.1
+-8,1,rf,performance_evaluation_unit,source_wav
+-8,1,rf,performance_wav_aggregation,median
+-8,1,rf,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+-8,1,rf,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+-8,1,rf,save_maps,True
+-8,1,rf,plot_axis_order,"x=time_s,y=frequency_khz"
+-8,1,cnntf_v2_gap,model_key,cnntf_v2_gap
+-8,1,cnntf_v2_gap,fold,1
+-8,1,cnntf_v2_gap,experiment_name,2025.06.11_0.3_2
+-8,1,cnntf_v2_gap,noise_dir_name,heatflux_reference_SNR=-8
+-8,1,cnntf_v2_gap,max_freq_name,maxfreq=22kHz
+-8,1,cnntf_v2_gap,max_freq_hz,22000.0
+-8,1,cnntf_v2_gap,methods,group_occlusion|integrated_gradients
+-8,1,cnntf_v2_gap,max_samples_per_fold,5
+-8,1,cnntf_v2_gap,ig_steps,64
+-8,1,cnntf_v2_gap,baseline_value,0.0
+-8,1,cnntf_v2_gap,time_groups,4
+-8,1,cnntf_v2_gap,time_extent_seconds,1.0
+-8,1,cnntf_v2_gap,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+-8,1,cnntf_v2_gap,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+-8,1,cnntf_v2_gap,onb_band_frac,0.1
+-8,1,cnntf_v2_gap,performance_evaluation_unit,source_wav
+-8,1,cnntf_v2_gap,performance_wav_aggregation,median
+-8,1,cnntf_v2_gap,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+-8,1,cnntf_v2_gap,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+-8,1,cnntf_v2_gap,save_maps,True
+-8,1,cnntf_v2_gap,plot_axis_order,"x=time_s,y=frequency_khz"
+-8,1,alexnet,model_key,alexnet
+-8,1,alexnet,fold,1
+-8,1,alexnet,experiment_name,2025.06.11_0.3_2
+-8,1,alexnet,noise_dir_name,heatflux_reference_SNR=-8
+-8,1,alexnet,max_freq_name,maxfreq=22kHz
+-8,1,alexnet,max_freq_hz,22000.0
+-8,1,alexnet,methods,grad_cam|group_occlusion|integrated_gradients
+-8,1,alexnet,max_samples_per_fold,5
+-8,1,alexnet,ig_steps,64
+-8,1,alexnet,baseline_value,0.0
+-8,1,alexnet,time_groups,4
+-8,1,alexnet,time_extent_seconds,1.0
+-8,1,alexnet,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+-8,1,alexnet,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+-8,1,alexnet,onb_band_frac,0.1
+-8,1,alexnet,performance_evaluation_unit,source_wav
+-8,1,alexnet,performance_wav_aggregation,median
+-8,1,alexnet,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+-8,1,alexnet,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+-8,1,alexnet,save_maps,True
+-8,1,alexnet,plot_axis_order,"x=time_s,y=frequency_khz"
+-8,2,rf,model_key,rf
+-8,2,rf,fold,2
+-8,2,rf,experiment_name,2025.06.11_0.3_2
+-8,2,rf,noise_dir_name,heatflux_reference_SNR=-8
+-8,2,rf,max_freq_name,maxfreq=22kHz
+-8,2,rf,max_freq_hz,22000.0
+-8,2,rf,methods,group_occlusion|tree_shap_pca
+-8,2,rf,max_samples_per_fold,5
+-8,2,rf,ig_steps,64
+-8,2,rf,baseline_value,0.0
+-8,2,rf,time_groups,4
+-8,2,rf,time_extent_seconds,1.0
+-8,2,rf,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+-8,2,rf,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+-8,2,rf,onb_band_frac,0.1
+-8,2,rf,performance_evaluation_unit,source_wav
+-8,2,rf,performance_wav_aggregation,median
+-8,2,rf,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+-8,2,rf,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+-8,2,rf,save_maps,True
+-8,2,rf,plot_axis_order,"x=time_s,y=frequency_khz"
+-8,2,cnntf_v2_gap,model_key,cnntf_v2_gap
+-8,2,cnntf_v2_gap,fold,2
+-8,2,cnntf_v2_gap,experiment_name,2025.06.11_0.3_2
+-8,2,cnntf_v2_gap,noise_dir_name,heatflux_reference_SNR=-8
+-8,2,cnntf_v2_gap,max_freq_name,maxfreq=22kHz
+-8,2,cnntf_v2_gap,max_freq_hz,22000.0
+-8,2,cnntf_v2_gap,methods,group_occlusion|integrated_gradients
+-8,2,cnntf_v2_gap,max_samples_per_fold,5
+-8,2,cnntf_v2_gap,ig_steps,64
+-8,2,cnntf_v2_gap,baseline_value,0.0
+-8,2,cnntf_v2_gap,time_groups,4
+-8,2,cnntf_v2_gap,time_extent_seconds,1.0
+-8,2,cnntf_v2_gap,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+-8,2,cnntf_v2_gap,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+-8,2,cnntf_v2_gap,onb_band_frac,0.1
+-8,2,cnntf_v2_gap,performance_evaluation_unit,source_wav
+-8,2,cnntf_v2_gap,performance_wav_aggregation,median
+-8,2,cnntf_v2_gap,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+-8,2,cnntf_v2_gap,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+-8,2,cnntf_v2_gap,save_maps,True
+-8,2,cnntf_v2_gap,plot_axis_order,"x=time_s,y=frequency_khz"
+-8,2,alexnet,model_key,alexnet
+-8,2,alexnet,fold,2
+-8,2,alexnet,experiment_name,2025.06.11_0.3_2
+-8,2,alexnet,noise_dir_name,heatflux_reference_SNR=-8
+-8,2,alexnet,max_freq_name,maxfreq=22kHz
+-8,2,alexnet,max_freq_hz,22000.0
+-8,2,alexnet,methods,grad_cam|group_occlusion|integrated_gradients
+-8,2,alexnet,max_samples_per_fold,5
+-8,2,alexnet,ig_steps,64
+-8,2,alexnet,baseline_value,0.0
+-8,2,alexnet,time_groups,4
+-8,2,alexnet,time_extent_seconds,1.0
+-8,2,alexnet,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+-8,2,alexnet,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+-8,2,alexnet,onb_band_frac,0.1
+-8,2,alexnet,performance_evaluation_unit,source_wav
+-8,2,alexnet,performance_wav_aggregation,median
+-8,2,alexnet,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+-8,2,alexnet,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+-8,2,alexnet,save_maps,True
+-8,2,alexnet,plot_axis_order,"x=time_s,y=frequency_khz"
+-8,3,rf,model_key,rf
+-8,3,rf,fold,3
+-8,3,rf,experiment_name,2025.06.11_0.3_2
+-8,3,rf,noise_dir_name,heatflux_reference_SNR=-8
+-8,3,rf,max_freq_name,maxfreq=22kHz
+-8,3,rf,max_freq_hz,22000.0
+-8,3,rf,methods,group_occlusion|tree_shap_pca
+-8,3,rf,max_samples_per_fold,5
+-8,3,rf,ig_steps,64
+-8,3,rf,baseline_value,0.0
+-8,3,rf,time_groups,4
+-8,3,rf,time_extent_seconds,1.0
+-8,3,rf,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+-8,3,rf,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+-8,3,rf,onb_band_frac,0.1
+-8,3,rf,performance_evaluation_unit,source_wav
+-8,3,rf,performance_wav_aggregation,median
+-8,3,rf,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+-8,3,rf,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+-8,3,rf,save_maps,True
+-8,3,rf,plot_axis_order,"x=time_s,y=frequency_khz"
+-8,3,cnntf_v2_gap,model_key,cnntf_v2_gap
+-8,3,cnntf_v2_gap,fold,3
+-8,3,cnntf_v2_gap,experiment_name,2025.06.11_0.3_2
+-8,3,cnntf_v2_gap,noise_dir_name,heatflux_reference_SNR=-8
+-8,3,cnntf_v2_gap,max_freq_name,maxfreq=22kHz
+-8,3,cnntf_v2_gap,max_freq_hz,22000.0
+-8,3,cnntf_v2_gap,methods,group_occlusion|integrated_gradients
+-8,3,cnntf_v2_gap,max_samples_per_fold,5
+-8,3,cnntf_v2_gap,ig_steps,64
+-8,3,cnntf_v2_gap,baseline_value,0.0
+-8,3,cnntf_v2_gap,time_groups,4
+-8,3,cnntf_v2_gap,time_extent_seconds,1.0
+-8,3,cnntf_v2_gap,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+-8,3,cnntf_v2_gap,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+-8,3,cnntf_v2_gap,onb_band_frac,0.1
+-8,3,cnntf_v2_gap,performance_evaluation_unit,source_wav
+-8,3,cnntf_v2_gap,performance_wav_aggregation,median
+-8,3,cnntf_v2_gap,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+-8,3,cnntf_v2_gap,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+-8,3,cnntf_v2_gap,save_maps,True
+-8,3,cnntf_v2_gap,plot_axis_order,"x=time_s,y=frequency_khz"
+-8,3,alexnet,model_key,alexnet
+-8,3,alexnet,fold,3
+-8,3,alexnet,experiment_name,2025.06.11_0.3_2
+-8,3,alexnet,noise_dir_name,heatflux_reference_SNR=-8
+-8,3,alexnet,max_freq_name,maxfreq=22kHz
+-8,3,alexnet,max_freq_hz,22000.0
+-8,3,alexnet,methods,grad_cam|group_occlusion|integrated_gradients
+-8,3,alexnet,max_samples_per_fold,5
+-8,3,alexnet,ig_steps,64
+-8,3,alexnet,baseline_value,0.0
+-8,3,alexnet,time_groups,4
+-8,3,alexnet,time_extent_seconds,1.0
+-8,3,alexnet,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+-8,3,alexnet,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+-8,3,alexnet,onb_band_frac,0.1
+-8,3,alexnet,performance_evaluation_unit,source_wav
+-8,3,alexnet,performance_wav_aggregation,median
+-8,3,alexnet,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+-8,3,alexnet,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+-8,3,alexnet,save_maps,True
+-8,3,alexnet,plot_axis_order,"x=time_s,y=frequency_khz"
+-12,1,rf,model_key,rf
+-12,1,rf,fold,1
+-12,1,rf,experiment_name,2025.06.11_0.3_2
+-12,1,rf,noise_dir_name,heatflux_reference_SNR=-12
+-12,1,rf,max_freq_name,maxfreq=22kHz
+-12,1,rf,max_freq_hz,22000.0
+-12,1,rf,methods,group_occlusion|tree_shap_pca
+-12,1,rf,max_samples_per_fold,5
+-12,1,rf,ig_steps,64
+-12,1,rf,baseline_value,0.0
+-12,1,rf,time_groups,4
+-12,1,rf,time_extent_seconds,1.0
+-12,1,rf,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+-12,1,rf,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+-12,1,rf,onb_band_frac,0.1
+-12,1,rf,performance_evaluation_unit,source_wav
+-12,1,rf,performance_wav_aggregation,median
+-12,1,rf,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+-12,1,rf,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+-12,1,rf,save_maps,True
+-12,1,rf,plot_axis_order,"x=time_s,y=frequency_khz"
+-12,1,cnntf_v2_gap,model_key,cnntf_v2_gap
+-12,1,cnntf_v2_gap,fold,1
+-12,1,cnntf_v2_gap,experiment_name,2025.06.11_0.3_2
+-12,1,cnntf_v2_gap,noise_dir_name,heatflux_reference_SNR=-12
+-12,1,cnntf_v2_gap,max_freq_name,maxfreq=22kHz
+-12,1,cnntf_v2_gap,max_freq_hz,22000.0
+-12,1,cnntf_v2_gap,methods,group_occlusion|integrated_gradients
+-12,1,cnntf_v2_gap,max_samples_per_fold,5
+-12,1,cnntf_v2_gap,ig_steps,64
+-12,1,cnntf_v2_gap,baseline_value,0.0
+-12,1,cnntf_v2_gap,time_groups,4
+-12,1,cnntf_v2_gap,time_extent_seconds,1.0
+-12,1,cnntf_v2_gap,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+-12,1,cnntf_v2_gap,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+-12,1,cnntf_v2_gap,onb_band_frac,0.1
+-12,1,cnntf_v2_gap,performance_evaluation_unit,source_wav
+-12,1,cnntf_v2_gap,performance_wav_aggregation,median
+-12,1,cnntf_v2_gap,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+-12,1,cnntf_v2_gap,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+-12,1,cnntf_v2_gap,save_maps,True
+-12,1,cnntf_v2_gap,plot_axis_order,"x=time_s,y=frequency_khz"
+-12,1,alexnet,model_key,alexnet
+-12,1,alexnet,fold,1
+-12,1,alexnet,experiment_name,2025.06.11_0.3_2
+-12,1,alexnet,noise_dir_name,heatflux_reference_SNR=-12
+-12,1,alexnet,max_freq_name,maxfreq=22kHz
+-12,1,alexnet,max_freq_hz,22000.0
+-12,1,alexnet,methods,grad_cam|group_occlusion|integrated_gradients
+-12,1,alexnet,max_samples_per_fold,5
+-12,1,alexnet,ig_steps,64
+-12,1,alexnet,baseline_value,0.0
+-12,1,alexnet,time_groups,4
+-12,1,alexnet,time_extent_seconds,1.0
+-12,1,alexnet,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+-12,1,alexnet,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+-12,1,alexnet,onb_band_frac,0.1
+-12,1,alexnet,performance_evaluation_unit,source_wav
+-12,1,alexnet,performance_wav_aggregation,median
+-12,1,alexnet,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+-12,1,alexnet,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+-12,1,alexnet,save_maps,True
+-12,1,alexnet,plot_axis_order,"x=time_s,y=frequency_khz"
+-12,2,rf,model_key,rf
+-12,2,rf,fold,2
+-12,2,rf,experiment_name,2025.06.11_0.3_2
+-12,2,rf,noise_dir_name,heatflux_reference_SNR=-12
+-12,2,rf,max_freq_name,maxfreq=22kHz
+-12,2,rf,max_freq_hz,22000.0
+-12,2,rf,methods,group_occlusion|tree_shap_pca
+-12,2,rf,max_samples_per_fold,5
+-12,2,rf,ig_steps,64
+-12,2,rf,baseline_value,0.0
+-12,2,rf,time_groups,4
+-12,2,rf,time_extent_seconds,1.0
+-12,2,rf,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+-12,2,rf,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+-12,2,rf,onb_band_frac,0.1
+-12,2,rf,performance_evaluation_unit,source_wav
+-12,2,rf,performance_wav_aggregation,median
+-12,2,rf,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+-12,2,rf,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+-12,2,rf,save_maps,True
+-12,2,rf,plot_axis_order,"x=time_s,y=frequency_khz"
+-12,2,cnntf_v2_gap,model_key,cnntf_v2_gap
+-12,2,cnntf_v2_gap,fold,2
+-12,2,cnntf_v2_gap,experiment_name,2025.06.11_0.3_2
+-12,2,cnntf_v2_gap,noise_dir_name,heatflux_reference_SNR=-12
+-12,2,cnntf_v2_gap,max_freq_name,maxfreq=22kHz
+-12,2,cnntf_v2_gap,max_freq_hz,22000.0
+-12,2,cnntf_v2_gap,methods,group_occlusion|integrated_gradients
+-12,2,cnntf_v2_gap,max_samples_per_fold,5
+-12,2,cnntf_v2_gap,ig_steps,64
+-12,2,cnntf_v2_gap,baseline_value,0.0
+-12,2,cnntf_v2_gap,time_groups,4
+-12,2,cnntf_v2_gap,time_extent_seconds,1.0
+-12,2,cnntf_v2_gap,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+-12,2,cnntf_v2_gap,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+-12,2,cnntf_v2_gap,onb_band_frac,0.1
+-12,2,cnntf_v2_gap,performance_evaluation_unit,source_wav
+-12,2,cnntf_v2_gap,performance_wav_aggregation,median
+-12,2,cnntf_v2_gap,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+-12,2,cnntf_v2_gap,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+-12,2,cnntf_v2_gap,save_maps,True
+-12,2,cnntf_v2_gap,plot_axis_order,"x=time_s,y=frequency_khz"
+-12,2,alexnet,model_key,alexnet
+-12,2,alexnet,fold,2
+-12,2,alexnet,experiment_name,2025.06.11_0.3_2
+-12,2,alexnet,noise_dir_name,heatflux_reference_SNR=-12
+-12,2,alexnet,max_freq_name,maxfreq=22kHz
+-12,2,alexnet,max_freq_hz,22000.0
+-12,2,alexnet,methods,grad_cam|group_occlusion|integrated_gradients
+-12,2,alexnet,max_samples_per_fold,5
+-12,2,alexnet,ig_steps,64
+-12,2,alexnet,baseline_value,0.0
+-12,2,alexnet,time_groups,4
+-12,2,alexnet,time_extent_seconds,1.0
+-12,2,alexnet,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+-12,2,alexnet,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+-12,2,alexnet,onb_band_frac,0.1
+-12,2,alexnet,performance_evaluation_unit,source_wav
+-12,2,alexnet,performance_wav_aggregation,median
+-12,2,alexnet,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+-12,2,alexnet,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+-12,2,alexnet,save_maps,True
+-12,2,alexnet,plot_axis_order,"x=time_s,y=frequency_khz"
+-12,3,rf,model_key,rf
+-12,3,rf,fold,3
+-12,3,rf,experiment_name,2025.06.11_0.3_2
+-12,3,rf,noise_dir_name,heatflux_reference_SNR=-12
+-12,3,rf,max_freq_name,maxfreq=22kHz
+-12,3,rf,max_freq_hz,22000.0
+-12,3,rf,methods,group_occlusion|tree_shap_pca
+-12,3,rf,max_samples_per_fold,5
+-12,3,rf,ig_steps,64
+-12,3,rf,baseline_value,0.0
+-12,3,rf,time_groups,4
+-12,3,rf,time_extent_seconds,1.0
+-12,3,rf,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+-12,3,rf,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+-12,3,rf,onb_band_frac,0.1
+-12,3,rf,performance_evaluation_unit,source_wav
+-12,3,rf,performance_wav_aggregation,median
+-12,3,rf,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+-12,3,rf,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+-12,3,rf,save_maps,True
+-12,3,rf,plot_axis_order,"x=time_s,y=frequency_khz"
+-12,3,cnntf_v2_gap,model_key,cnntf_v2_gap
+-12,3,cnntf_v2_gap,fold,3
+-12,3,cnntf_v2_gap,experiment_name,2025.06.11_0.3_2
+-12,3,cnntf_v2_gap,noise_dir_name,heatflux_reference_SNR=-12
+-12,3,cnntf_v2_gap,max_freq_name,maxfreq=22kHz
+-12,3,cnntf_v2_gap,max_freq_hz,22000.0
+-12,3,cnntf_v2_gap,methods,group_occlusion|integrated_gradients
+-12,3,cnntf_v2_gap,max_samples_per_fold,5
+-12,3,cnntf_v2_gap,ig_steps,64
+-12,3,cnntf_v2_gap,baseline_value,0.0
+-12,3,cnntf_v2_gap,time_groups,4
+-12,3,cnntf_v2_gap,time_extent_seconds,1.0
+-12,3,cnntf_v2_gap,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+-12,3,cnntf_v2_gap,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+-12,3,cnntf_v2_gap,onb_band_frac,0.1
+-12,3,cnntf_v2_gap,performance_evaluation_unit,source_wav
+-12,3,cnntf_v2_gap,performance_wav_aggregation,median
+-12,3,cnntf_v2_gap,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+-12,3,cnntf_v2_gap,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+-12,3,cnntf_v2_gap,save_maps,True
+-12,3,cnntf_v2_gap,plot_axis_order,"x=time_s,y=frequency_khz"
+-12,3,alexnet,model_key,alexnet
+-12,3,alexnet,fold,3
+-12,3,alexnet,experiment_name,2025.06.11_0.3_2
+-12,3,alexnet,noise_dir_name,heatflux_reference_SNR=-12
+-12,3,alexnet,max_freq_name,maxfreq=22kHz
+-12,3,alexnet,max_freq_hz,22000.0
+-12,3,alexnet,methods,grad_cam|group_occlusion|integrated_gradients
+-12,3,alexnet,max_samples_per_fold,5
+-12,3,alexnet,ig_steps,64
+-12,3,alexnet,baseline_value,0.0
+-12,3,alexnet,time_groups,4
+-12,3,alexnet,time_extent_seconds,1.0
+-12,3,alexnet,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+-12,3,alexnet,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+-12,3,alexnet,onb_band_frac,0.1
+-12,3,alexnet,performance_evaluation_unit,source_wav
+-12,3,alexnet,performance_wav_aggregation,median
+-12,3,alexnet,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+-12,3,alexnet,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+-12,3,alexnet,save_maps,True
+-12,3,alexnet,plot_axis_order,"x=time_s,y=frequency_khz"
+-16,1,rf,model_key,rf
+-16,1,rf,fold,1
+-16,1,rf,experiment_name,2025.06.11_0.3_2
+-16,1,rf,noise_dir_name,heatflux_reference_SNR=-16
+-16,1,rf,max_freq_name,maxfreq=22kHz
+-16,1,rf,max_freq_hz,22000.0
+-16,1,rf,methods,group_occlusion|tree_shap_pca
+-16,1,rf,max_samples_per_fold,5
+-16,1,rf,ig_steps,64
+-16,1,rf,baseline_value,0.0
+-16,1,rf,time_groups,4
+-16,1,rf,time_extent_seconds,1.0
+-16,1,rf,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+-16,1,rf,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+-16,1,rf,onb_band_frac,0.1
+-16,1,rf,performance_evaluation_unit,source_wav
+-16,1,rf,performance_wav_aggregation,median
+-16,1,rf,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+-16,1,rf,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+-16,1,rf,save_maps,True
+-16,1,rf,plot_axis_order,"x=time_s,y=frequency_khz"
+-16,1,cnntf_v2_gap,model_key,cnntf_v2_gap
+-16,1,cnntf_v2_gap,fold,1
+-16,1,cnntf_v2_gap,experiment_name,2025.06.11_0.3_2
+-16,1,cnntf_v2_gap,noise_dir_name,heatflux_reference_SNR=-16
+-16,1,cnntf_v2_gap,max_freq_name,maxfreq=22kHz
+-16,1,cnntf_v2_gap,max_freq_hz,22000.0
+-16,1,cnntf_v2_gap,methods,group_occlusion|integrated_gradients
+-16,1,cnntf_v2_gap,max_samples_per_fold,5
+-16,1,cnntf_v2_gap,ig_steps,64
+-16,1,cnntf_v2_gap,baseline_value,0.0
+-16,1,cnntf_v2_gap,time_groups,4
+-16,1,cnntf_v2_gap,time_extent_seconds,1.0
+-16,1,cnntf_v2_gap,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+-16,1,cnntf_v2_gap,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+-16,1,cnntf_v2_gap,onb_band_frac,0.1
+-16,1,cnntf_v2_gap,performance_evaluation_unit,source_wav
+-16,1,cnntf_v2_gap,performance_wav_aggregation,median
+-16,1,cnntf_v2_gap,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+-16,1,cnntf_v2_gap,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+-16,1,cnntf_v2_gap,save_maps,True
+-16,1,cnntf_v2_gap,plot_axis_order,"x=time_s,y=frequency_khz"
+-16,1,alexnet,model_key,alexnet
+-16,1,alexnet,fold,1
+-16,1,alexnet,experiment_name,2025.06.11_0.3_2
+-16,1,alexnet,noise_dir_name,heatflux_reference_SNR=-16
+-16,1,alexnet,max_freq_name,maxfreq=22kHz
+-16,1,alexnet,max_freq_hz,22000.0
+-16,1,alexnet,methods,grad_cam|group_occlusion|integrated_gradients
+-16,1,alexnet,max_samples_per_fold,5
+-16,1,alexnet,ig_steps,64
+-16,1,alexnet,baseline_value,0.0
+-16,1,alexnet,time_groups,4
+-16,1,alexnet,time_extent_seconds,1.0
+-16,1,alexnet,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+-16,1,alexnet,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+-16,1,alexnet,onb_band_frac,0.1
+-16,1,alexnet,performance_evaluation_unit,source_wav
+-16,1,alexnet,performance_wav_aggregation,median
+-16,1,alexnet,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+-16,1,alexnet,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+-16,1,alexnet,save_maps,True
+-16,1,alexnet,plot_axis_order,"x=time_s,y=frequency_khz"
+-16,2,rf,model_key,rf
+-16,2,rf,fold,2
+-16,2,rf,experiment_name,2025.06.11_0.3_2
+-16,2,rf,noise_dir_name,heatflux_reference_SNR=-16
+-16,2,rf,max_freq_name,maxfreq=22kHz
+-16,2,rf,max_freq_hz,22000.0
+-16,2,rf,methods,group_occlusion|tree_shap_pca
+-16,2,rf,max_samples_per_fold,5
+-16,2,rf,ig_steps,64
+-16,2,rf,baseline_value,0.0
+-16,2,rf,time_groups,4
+-16,2,rf,time_extent_seconds,1.0
+-16,2,rf,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+-16,2,rf,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+-16,2,rf,onb_band_frac,0.1
+-16,2,rf,performance_evaluation_unit,source_wav
+-16,2,rf,performance_wav_aggregation,median
+-16,2,rf,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+-16,2,rf,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+-16,2,rf,save_maps,True
+-16,2,rf,plot_axis_order,"x=time_s,y=frequency_khz"
+-16,2,cnntf_v2_gap,model_key,cnntf_v2_gap
+-16,2,cnntf_v2_gap,fold,2
+-16,2,cnntf_v2_gap,experiment_name,2025.06.11_0.3_2
+-16,2,cnntf_v2_gap,noise_dir_name,heatflux_reference_SNR=-16
+-16,2,cnntf_v2_gap,max_freq_name,maxfreq=22kHz
+-16,2,cnntf_v2_gap,max_freq_hz,22000.0
+-16,2,cnntf_v2_gap,methods,group_occlusion|integrated_gradients
+-16,2,cnntf_v2_gap,max_samples_per_fold,5
+-16,2,cnntf_v2_gap,ig_steps,64
+-16,2,cnntf_v2_gap,baseline_value,0.0
+-16,2,cnntf_v2_gap,time_groups,4
+-16,2,cnntf_v2_gap,time_extent_seconds,1.0
+-16,2,cnntf_v2_gap,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+-16,2,cnntf_v2_gap,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+-16,2,cnntf_v2_gap,onb_band_frac,0.1
+-16,2,cnntf_v2_gap,performance_evaluation_unit,source_wav
+-16,2,cnntf_v2_gap,performance_wav_aggregation,median
+-16,2,cnntf_v2_gap,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+-16,2,cnntf_v2_gap,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+-16,2,cnntf_v2_gap,save_maps,True
+-16,2,cnntf_v2_gap,plot_axis_order,"x=time_s,y=frequency_khz"
+-16,2,alexnet,model_key,alexnet
+-16,2,alexnet,fold,2
+-16,2,alexnet,experiment_name,2025.06.11_0.3_2
+-16,2,alexnet,noise_dir_name,heatflux_reference_SNR=-16
+-16,2,alexnet,max_freq_name,maxfreq=22kHz
+-16,2,alexnet,max_freq_hz,22000.0
+-16,2,alexnet,methods,grad_cam|group_occlusion|integrated_gradients
+-16,2,alexnet,max_samples_per_fold,5
+-16,2,alexnet,ig_steps,64
+-16,2,alexnet,baseline_value,0.0
+-16,2,alexnet,time_groups,4
+-16,2,alexnet,time_extent_seconds,1.0
+-16,2,alexnet,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+-16,2,alexnet,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+-16,2,alexnet,onb_band_frac,0.1
+-16,2,alexnet,performance_evaluation_unit,source_wav
+-16,2,alexnet,performance_wav_aggregation,median
+-16,2,alexnet,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+-16,2,alexnet,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+-16,2,alexnet,save_maps,True
+-16,2,alexnet,plot_axis_order,"x=time_s,y=frequency_khz"
+-16,3,rf,model_key,rf
+-16,3,rf,fold,3
+-16,3,rf,experiment_name,2025.06.11_0.3_2
+-16,3,rf,noise_dir_name,heatflux_reference_SNR=-16
+-16,3,rf,max_freq_name,maxfreq=22kHz
+-16,3,rf,max_freq_hz,22000.0
+-16,3,rf,methods,group_occlusion|tree_shap_pca
+-16,3,rf,max_samples_per_fold,5
+-16,3,rf,ig_steps,64
+-16,3,rf,baseline_value,0.0
+-16,3,rf,time_groups,4
+-16,3,rf,time_extent_seconds,1.0
+-16,3,rf,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+-16,3,rf,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+-16,3,rf,onb_band_frac,0.1
+-16,3,rf,performance_evaluation_unit,source_wav
+-16,3,rf,performance_wav_aggregation,median
+-16,3,rf,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+-16,3,rf,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+-16,3,rf,save_maps,True
+-16,3,rf,plot_axis_order,"x=time_s,y=frequency_khz"
+-16,3,cnntf_v2_gap,model_key,cnntf_v2_gap
+-16,3,cnntf_v2_gap,fold,3
+-16,3,cnntf_v2_gap,experiment_name,2025.06.11_0.3_2
+-16,3,cnntf_v2_gap,noise_dir_name,heatflux_reference_SNR=-16
+-16,3,cnntf_v2_gap,max_freq_name,maxfreq=22kHz
+-16,3,cnntf_v2_gap,max_freq_hz,22000.0
+-16,3,cnntf_v2_gap,methods,group_occlusion|integrated_gradients
+-16,3,cnntf_v2_gap,max_samples_per_fold,5
+-16,3,cnntf_v2_gap,ig_steps,64
+-16,3,cnntf_v2_gap,baseline_value,0.0
+-16,3,cnntf_v2_gap,time_groups,4
+-16,3,cnntf_v2_gap,time_extent_seconds,1.0
+-16,3,cnntf_v2_gap,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+-16,3,cnntf_v2_gap,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+-16,3,cnntf_v2_gap,onb_band_frac,0.1
+-16,3,cnntf_v2_gap,performance_evaluation_unit,source_wav
+-16,3,cnntf_v2_gap,performance_wav_aggregation,median
+-16,3,cnntf_v2_gap,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+-16,3,cnntf_v2_gap,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+-16,3,cnntf_v2_gap,save_maps,True
+-16,3,cnntf_v2_gap,plot_axis_order,"x=time_s,y=frequency_khz"
+-16,3,alexnet,model_key,alexnet
+-16,3,alexnet,fold,3
+-16,3,alexnet,experiment_name,2025.06.11_0.3_2
+-16,3,alexnet,noise_dir_name,heatflux_reference_SNR=-16
+-16,3,alexnet,max_freq_name,maxfreq=22kHz
+-16,3,alexnet,max_freq_hz,22000.0
+-16,3,alexnet,methods,grad_cam|group_occlusion|integrated_gradients
+-16,3,alexnet,max_samples_per_fold,5
+-16,3,alexnet,ig_steps,64
+-16,3,alexnet,baseline_value,0.0
+-16,3,alexnet,time_groups,4
+-16,3,alexnet,time_extent_seconds,1.0
+-16,3,alexnet,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+-16,3,alexnet,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+-16,3,alexnet,onb_band_frac,0.1
+-16,3,alexnet,performance_evaluation_unit,source_wav
+-16,3,alexnet,performance_wav_aggregation,median
+-16,3,alexnet,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+-16,3,alexnet,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+-16,3,alexnet,save_maps,True
+-16,3,alexnet,plot_axis_order,"x=time_s,y=frequency_khz"
+-20,1,rf,model_key,rf
+-20,1,rf,fold,1
+-20,1,rf,experiment_name,2025.06.11_0.3_2
+-20,1,rf,noise_dir_name,heatflux_reference_SNR=-20
+-20,1,rf,max_freq_name,maxfreq=22kHz
+-20,1,rf,max_freq_hz,22000.0
+-20,1,rf,methods,group_occlusion|tree_shap_pca
+-20,1,rf,max_samples_per_fold,5
+-20,1,rf,ig_steps,64
+-20,1,rf,baseline_value,0.0
+-20,1,rf,time_groups,4
+-20,1,rf,time_extent_seconds,1.0
+-20,1,rf,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+-20,1,rf,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+-20,1,rf,onb_band_frac,0.1
+-20,1,rf,performance_evaluation_unit,source_wav
+-20,1,rf,performance_wav_aggregation,median
+-20,1,rf,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+-20,1,rf,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+-20,1,rf,save_maps,True
+-20,1,rf,plot_axis_order,"x=time_s,y=frequency_khz"
+-20,1,cnntf_v2_gap,model_key,cnntf_v2_gap
+-20,1,cnntf_v2_gap,fold,1
+-20,1,cnntf_v2_gap,experiment_name,2025.06.11_0.3_2
+-20,1,cnntf_v2_gap,noise_dir_name,heatflux_reference_SNR=-20
+-20,1,cnntf_v2_gap,max_freq_name,maxfreq=22kHz
+-20,1,cnntf_v2_gap,max_freq_hz,22000.0
+-20,1,cnntf_v2_gap,methods,group_occlusion|integrated_gradients
+-20,1,cnntf_v2_gap,max_samples_per_fold,5
+-20,1,cnntf_v2_gap,ig_steps,64
+-20,1,cnntf_v2_gap,baseline_value,0.0
+-20,1,cnntf_v2_gap,time_groups,4
+-20,1,cnntf_v2_gap,time_extent_seconds,1.0
+-20,1,cnntf_v2_gap,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+-20,1,cnntf_v2_gap,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+-20,1,cnntf_v2_gap,onb_band_frac,0.1
+-20,1,cnntf_v2_gap,performance_evaluation_unit,source_wav
+-20,1,cnntf_v2_gap,performance_wav_aggregation,median
+-20,1,cnntf_v2_gap,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+-20,1,cnntf_v2_gap,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+-20,1,cnntf_v2_gap,save_maps,True
+-20,1,cnntf_v2_gap,plot_axis_order,"x=time_s,y=frequency_khz"
+-20,1,alexnet,model_key,alexnet
+-20,1,alexnet,fold,1
+-20,1,alexnet,experiment_name,2025.06.11_0.3_2
+-20,1,alexnet,noise_dir_name,heatflux_reference_SNR=-20
+-20,1,alexnet,max_freq_name,maxfreq=22kHz
+-20,1,alexnet,max_freq_hz,22000.0
+-20,1,alexnet,methods,grad_cam|group_occlusion|integrated_gradients
+-20,1,alexnet,max_samples_per_fold,5
+-20,1,alexnet,ig_steps,64
+-20,1,alexnet,baseline_value,0.0
+-20,1,alexnet,time_groups,4
+-20,1,alexnet,time_extent_seconds,1.0
+-20,1,alexnet,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+-20,1,alexnet,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+-20,1,alexnet,onb_band_frac,0.1
+-20,1,alexnet,performance_evaluation_unit,source_wav
+-20,1,alexnet,performance_wav_aggregation,median
+-20,1,alexnet,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+-20,1,alexnet,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+-20,1,alexnet,save_maps,True
+-20,1,alexnet,plot_axis_order,"x=time_s,y=frequency_khz"
+-20,2,rf,model_key,rf
+-20,2,rf,fold,2
+-20,2,rf,experiment_name,2025.06.11_0.3_2
+-20,2,rf,noise_dir_name,heatflux_reference_SNR=-20
+-20,2,rf,max_freq_name,maxfreq=22kHz
+-20,2,rf,max_freq_hz,22000.0
+-20,2,rf,methods,group_occlusion|tree_shap_pca
+-20,2,rf,max_samples_per_fold,5
+-20,2,rf,ig_steps,64
+-20,2,rf,baseline_value,0.0
+-20,2,rf,time_groups,4
+-20,2,rf,time_extent_seconds,1.0
+-20,2,rf,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+-20,2,rf,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+-20,2,rf,onb_band_frac,0.1
+-20,2,rf,performance_evaluation_unit,source_wav
+-20,2,rf,performance_wav_aggregation,median
+-20,2,rf,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+-20,2,rf,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+-20,2,rf,save_maps,True
+-20,2,rf,plot_axis_order,"x=time_s,y=frequency_khz"
+-20,2,cnntf_v2_gap,model_key,cnntf_v2_gap
+-20,2,cnntf_v2_gap,fold,2
+-20,2,cnntf_v2_gap,experiment_name,2025.06.11_0.3_2
+-20,2,cnntf_v2_gap,noise_dir_name,heatflux_reference_SNR=-20
+-20,2,cnntf_v2_gap,max_freq_name,maxfreq=22kHz
+-20,2,cnntf_v2_gap,max_freq_hz,22000.0
+-20,2,cnntf_v2_gap,methods,group_occlusion|integrated_gradients
+-20,2,cnntf_v2_gap,max_samples_per_fold,5
+-20,2,cnntf_v2_gap,ig_steps,64
+-20,2,cnntf_v2_gap,baseline_value,0.0
+-20,2,cnntf_v2_gap,time_groups,4
+-20,2,cnntf_v2_gap,time_extent_seconds,1.0
+-20,2,cnntf_v2_gap,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+-20,2,cnntf_v2_gap,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+-20,2,cnntf_v2_gap,onb_band_frac,0.1
+-20,2,cnntf_v2_gap,performance_evaluation_unit,source_wav
+-20,2,cnntf_v2_gap,performance_wav_aggregation,median
+-20,2,cnntf_v2_gap,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+-20,2,cnntf_v2_gap,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+-20,2,cnntf_v2_gap,save_maps,True
+-20,2,cnntf_v2_gap,plot_axis_order,"x=time_s,y=frequency_khz"
+-20,2,alexnet,model_key,alexnet
+-20,2,alexnet,fold,2
+-20,2,alexnet,experiment_name,2025.06.11_0.3_2
+-20,2,alexnet,noise_dir_name,heatflux_reference_SNR=-20
+-20,2,alexnet,max_freq_name,maxfreq=22kHz
+-20,2,alexnet,max_freq_hz,22000.0
+-20,2,alexnet,methods,grad_cam|group_occlusion|integrated_gradients
+-20,2,alexnet,max_samples_per_fold,5
+-20,2,alexnet,ig_steps,64
+-20,2,alexnet,baseline_value,0.0
+-20,2,alexnet,time_groups,4
+-20,2,alexnet,time_extent_seconds,1.0
+-20,2,alexnet,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+-20,2,alexnet,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+-20,2,alexnet,onb_band_frac,0.1
+-20,2,alexnet,performance_evaluation_unit,source_wav
+-20,2,alexnet,performance_wav_aggregation,median
+-20,2,alexnet,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+-20,2,alexnet,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+-20,2,alexnet,save_maps,True
+-20,2,alexnet,plot_axis_order,"x=time_s,y=frequency_khz"
+-20,3,rf,model_key,rf
+-20,3,rf,fold,3
+-20,3,rf,experiment_name,2025.06.11_0.3_2
+-20,3,rf,noise_dir_name,heatflux_reference_SNR=-20
+-20,3,rf,max_freq_name,maxfreq=22kHz
+-20,3,rf,max_freq_hz,22000.0
+-20,3,rf,methods,group_occlusion|tree_shap_pca
+-20,3,rf,max_samples_per_fold,5
+-20,3,rf,ig_steps,64
+-20,3,rf,baseline_value,0.0
+-20,3,rf,time_groups,4
+-20,3,rf,time_extent_seconds,1.0
+-20,3,rf,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+-20,3,rf,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+-20,3,rf,onb_band_frac,0.1
+-20,3,rf,performance_evaluation_unit,source_wav
+-20,3,rf,performance_wav_aggregation,median
+-20,3,rf,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+-20,3,rf,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+-20,3,rf,save_maps,True
+-20,3,rf,plot_axis_order,"x=time_s,y=frequency_khz"
+-20,3,cnntf_v2_gap,model_key,cnntf_v2_gap
+-20,3,cnntf_v2_gap,fold,3
+-20,3,cnntf_v2_gap,experiment_name,2025.06.11_0.3_2
+-20,3,cnntf_v2_gap,noise_dir_name,heatflux_reference_SNR=-20
+-20,3,cnntf_v2_gap,max_freq_name,maxfreq=22kHz
+-20,3,cnntf_v2_gap,max_freq_hz,22000.0
+-20,3,cnntf_v2_gap,methods,group_occlusion|integrated_gradients
+-20,3,cnntf_v2_gap,max_samples_per_fold,5
+-20,3,cnntf_v2_gap,ig_steps,64
+-20,3,cnntf_v2_gap,baseline_value,0.0
+-20,3,cnntf_v2_gap,time_groups,4
+-20,3,cnntf_v2_gap,time_extent_seconds,1.0
+-20,3,cnntf_v2_gap,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+-20,3,cnntf_v2_gap,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+-20,3,cnntf_v2_gap,onb_band_frac,0.1
+-20,3,cnntf_v2_gap,performance_evaluation_unit,source_wav
+-20,3,cnntf_v2_gap,performance_wav_aggregation,median
+-20,3,cnntf_v2_gap,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+-20,3,cnntf_v2_gap,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+-20,3,cnntf_v2_gap,save_maps,True
+-20,3,cnntf_v2_gap,plot_axis_order,"x=time_s,y=frequency_khz"
+-20,3,alexnet,model_key,alexnet
+-20,3,alexnet,fold,3
+-20,3,alexnet,experiment_name,2025.06.11_0.3_2
+-20,3,alexnet,noise_dir_name,heatflux_reference_SNR=-20
+-20,3,alexnet,max_freq_name,maxfreq=22kHz
+-20,3,alexnet,max_freq_hz,22000.0
+-20,3,alexnet,methods,grad_cam|group_occlusion|integrated_gradients
+-20,3,alexnet,max_samples_per_fold,5
+-20,3,alexnet,ig_steps,64
+-20,3,alexnet,baseline_value,0.0
+-20,3,alexnet,time_groups,4
+-20,3,alexnet,time_extent_seconds,1.0
+-20,3,alexnet,frequency_bands_hz,"[[0, 256], [256, 512], [512, 1000], [1000, 2000], [2000, 5000], [5000, 10000], [10000, 15000], [15000, 22000]]"
+-20,3,alexnet,curve_fractions,"[0.0, 0.05, 0.1, 0.2, 0.3, 0.5, 1.0]"
+-20,3,alexnet,onb_band_frac,0.1
+-20,3,alexnet,performance_evaluation_unit,source_wav
+-20,3,alexnet,performance_wav_aggregation,median
+-20,3,alexnet,stability,"{'enabled': True, 'methods': ['integrated_gradients'], 'repeats': 2, 'noise_fraction': 0.01, 'clip_nonnegative': True, 'random_seed': 42}"
+-20,3,alexnet,sanity_check,"{'enabled': True, 'methods': ['integrated_gradients'], 'random_seed': 42}"
+-20,3,alexnet,save_maps,True
+-20,3,alexnet,plot_axis_order,"x=time_s,y=frequency_khz"

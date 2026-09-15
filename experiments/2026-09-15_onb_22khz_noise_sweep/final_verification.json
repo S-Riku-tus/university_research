@@ -1,0 +1,47 @@
+{
+  "verified_at": "2026-09-15T12:34:58.367870+09:00",
+  "local_links_checked": 141,
+  "original_result_hashes_rechecked": 672,
+  "mutable_shared_source": [
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260915_selected_log_architecture/tuning_summary.csv"
+  ],
+  "csv_files_reproduced_byte_identically": [
+    "chunk_metrics.csv",
+    "ensemble_weights.csv",
+    "explainability_config.csv",
+    "explainability_summary.csv",
+    "explained_samples.csv",
+    "group_mask_performance.csv",
+    "ig_diagnostics.csv",
+    "input_stability.csv",
+    "mask_aggregates.csv",
+    "model_comparison.csv",
+    "onb_transitions.csv",
+    "residual_correlations.csv",
+    "run_inventory.csv",
+    "sample_correspondence.csv",
+    "split_audit.csv",
+    "top_layer_randomization_sanity.csv",
+    "top_mask_bands.csv",
+    "training_summary.csv",
+    "treeshap_pca_summary.csv",
+    "treeshap_status.csv",
+    "wav_median_metrics.csv",
+    "wav_predictions.csv",
+    "xai_output_inventory.csv"
+  ],
+  "overwrite_refused": true,
+  "python_syntax": "pass",
+  "numeric_checks": 35,
+  "additional_checks": {
+    "mask_baselines_checked": 63,
+    "signed_map_sums_checked": 210
+  },
+  "figure_label_review": "IG label shortened to prevent clipping; all 23 numeric CSVs reproduced unchanged",
+  "git_diff_check": "pass",
+  "existing_model_script_change": "User changed active frequency from 22 kHz to 3 kHz; analysis did not edit it.",
+  "analysis_script_sha256": {
+    "analyze_results.py": "acbb5c12972381b3b04f1bffa5918cdc2d47a38584142682b2758c0cbb5aa06b",
+    "supplement_diagnostics.py": "b279e54beb575f8d10c81df65856e205de93cd9d042dc62419c6da08fc215d31"
+  }
+}

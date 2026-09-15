@@ -6,7 +6,8 @@
 
 | 記録 | 範囲・用途 |
 |---|---|
-| [9/15研究整理スナップショット](2026-09-15_research_status_snapshot/README.md) | 9/14の完了6条件の性能・XAI、9月178 manifestsの出力状態。金曜発表準備の根拠 |
+| [9/15・22 kHz全7ノイズ解析](2026-09-15_onb_22khz_noise_sweep/analysis.md) | **最新の主結果**。35組の性能検算、ONB見逃し、帯域マスク、IG210例の不整合、図表と発表原稿 |
+| [9/15研究整理スナップショット](2026-09-15_research_status_snapshot/README.md) | 9/14の完了6条件の性能・XAI、9月178 manifestsの当時の状態。過去runの比較用 |
 | [9/14状況監査](2026-09-14_status_audit/README.md) | 9/3の105条件・9/8の3条件のWAV指標、ONB遷移、XAI |
 | [9/14一般化・保存階層の検証](2026-09-14_generalization_and_layout/README.md) | 実装・小規模試験・metadata検査。未知日での本性能の証拠とは別 |
 | [9/14最大予測値方式の削除](2026-09-14_remove_prediction_max/README.md) | 現行コードの方式整理と、過去表記の棚卸し |

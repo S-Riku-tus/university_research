@@ -84,11 +84,11 @@ VALIDATION_CONFIG = {
             # "2025.07.09_0.3_1",
         ],
         "max_freq_hz_list": [
-            # "maxfreq=3kHz",
+            "maxfreq=3kHz",
             # "maxfreq=5kHz",
             # "maxfreq=10kHz",
             # "maxfreq=15kHz",
-            "maxfreq=22kHz",
+            # "maxfreq=22kHz",
         ],
         "noise_dir_names": [
             "heatflux_no_noise",
