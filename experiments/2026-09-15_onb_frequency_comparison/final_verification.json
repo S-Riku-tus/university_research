@@ -1,0 +1,25 @@
+{
+  "3": {
+    "original_immutable_result_files_rechecked": 672
+  },
+  "22": {
+    "original_immutable_result_files_rechecked": 672
+  },
+  "attachment": {
+    "path": "C:\\Users\\Casper4\\.codex\\attachments\\cc64933a-45ea-4c1b-a4c2-be3adffbf259\\pasted-text.txt",
+    "sha256": "1370c9f4dc8c391b6f39d7c64c8798937198088871f09b1c9a951d06a78d2e6e",
+    "use": "Context and hypotheses only; numerical claims checked against local result files, code and thesis PDF."
+  },
+  "completed_at": "2026-09-15T15:08:46.422617+09:00",
+  "scope": "Completed 2025.06.11 3/22 kHz runs only. User excluded ongoing runs.",
+  "training_or_current_run_modified": false,
+  "local_document_links_checked": 94,
+  "broken_links": [],
+  "scientific_figures_visually_reviewed": [
+    "thesis_current_comparison",
+    "thesis_chunk_comparison",
+    "band_signal_noise",
+    "frequency_mask_comparison",
+    "thesis_pdf_page26"
+  ]
+}

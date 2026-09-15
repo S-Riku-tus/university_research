@@ -1,0 +1,28 @@
+{
+  "original_document_count": 322,
+  "updated_original_markdown": 40,
+  "preserved_binary_originals": 219,
+  "binary_original_count": 219,
+  "all_binary_originals_unchanged": true,
+  "new_current_guides": [
+    "docs/analysis_workflow.md",
+    "docs/original_document_guide.md"
+  ],
+  "final_catalog_hashes_match": true,
+  "historical_note_documents": 22,
+  "historical_bodies_preserved": true,
+  "summary_numeric_checks": 16,
+  "summary_numeric_checks_passed": true,
+  "checked_markdown_files": 106,
+  "checked_local_link_targets": 646,
+  "missing_local_link_targets": [],
+  "excluded_mathematical_notation": [
+    {
+      "document": "研究進捗報告/2026/605（論文輪講）/スライド構成案_改訂版.md",
+      "notation": "λ∈[0,1](実験は1)"
+    }
+  ],
+  "scope": "Local file existence only; external URLs and anchor validity are not tested. Historical reference artifacts are retained.",
+  "model_training_started": false,
+  "excluded_active_run_inspected": false
+}

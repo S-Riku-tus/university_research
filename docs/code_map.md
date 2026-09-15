@@ -41,9 +41,12 @@
 - [run_wav_event_evaluation.py](../code/run_wav_event_evaluation.py): 保存予測をWAV/ONB評価へ集約。旧重み学習の情報混在は後処理では取り除けない。
 - [export_ensemble_result_snapshot.py](../code/export_ensemble_result_snapshot.py): 主に旧chunk集計とXAIから軽量記録を抽出。WAV主評価や安全性の監査範囲を確認して使う。
 - [export_waterflow_dataset_snapshot.py](../code/export_waterflow_dataset_snapshot.py): 現行データの件数・manifest・ノイズ条件を監査。
-- [今回の数値採取スクリプト](../experiments/2026-09-15_research_status_snapshot/collect_snapshot.py): 9/14の保存結果の検算・固定と9月のrun一覧。
+- [9/14結果の数値採取スクリプト](../experiments/2026-09-15_research_status_snapshot/collect_snapshot.py): 9/14の保存結果の検算・固定と9月のrun一覧。
 - [reorganize_onb_results.py](../code/reorganize_onb_results.py): 指定runの保存階層移行。読取だけの確認と`--apply`による移動を区別する。
 - [run_controlled_noise_curve_diagnostics.py](../code/run_controlled_noise_curve_diagnostics.py): 固定ノイズの診断。過去資料の別診断スクリプト名は現在存在しないものもある。
+
+- [9/15・2帯域解析スクリプト](../experiments/2026-09-15_onb_frequency_comparison/analysis.md): 完了runの抽出、WAV/chunk指標の検算、卒論比較、54区間の帯域SNR。学習なしの後処理。
+- [解析の進め方](analysis_workflow.md): 代表条件を選ぶ問いと、性能・ノイズ・XAIの因果検証を分ける手順。
 
 ## 過去コード・資料処理
 

@@ -1,0 +1,13 @@
+﻿maxfreq_khz,model,method,metric,n,median,min,max
+3,alexnet,grad_cam,deletion_area_between_curve,105,1147306.6348632812,319130.48359375005,2651622.45625
+3,alexnet,grad_cam,insertion_area_between_curve,105,1014624.0615234376,309965.55078125,2413673.88671875
+3,alexnet,integrated_gradients,deletion_area_between_curve,105,2130801.125,879162.3257812499,6109999.334375
+3,alexnet,integrated_gradients,insertion_area_between_curve,105,1857208.49375,686358.671875,4842821.5265625
+3,cnntf_v2_gap,integrated_gradients,deletion_area_between_curve,105,125283.11796874995,-106057.49375000002,305573.734375
+3,cnntf_v2_gap,integrated_gradients,insertion_area_between_curve,105,104232.9471740723,-136118.5,356263.126171875
+22,alexnet,grad_cam,deletion_area_between_curve,105,1091213.997167969,124256.33828124998,3968856.8625
+22,alexnet,grad_cam,insertion_area_between_curve,105,949576.061328125,249059.5390625,2728939.0359375
+22,alexnet,integrated_gradients,deletion_area_between_curve,105,2016174.117578125,668855.83515625,6641193.87734375
+22,alexnet,integrated_gradients,insertion_area_between_curve,105,1684235.883203125,616191.70546875,5637180.298437499
+22,cnntf_v2_gap,integrated_gradients,deletion_area_between_curve,105,26968.299218749977,-137262.36992187498,228572.0956054688
+22,cnntf_v2_gap,integrated_gradients,insertion_area_between_curve,105,40207.814843750006,-175993.05410156248,233495.6724609375

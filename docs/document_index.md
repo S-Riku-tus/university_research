@@ -10,7 +10,11 @@
 | 年間計画・理想と現実的な成果 | [2026年度計画](research_plan/2026_annual_plan.md) | 締切・実験可能期間・研究判断が変わったとき |
 | 長期の研究目的・用語 | [研究コンテキスト](research_context.md) | 目的・定義が変わったとき。毎runの成績は置かない |
 | 金曜の説明性発表 | [9/18準備メモ](research_plan/2026-09-18_xai_progress_brief.md) | 発表準備中の原稿。発表後は履歴 |
-| 最新7ノイズの結果を説明する | [9/15・22 kHz解析](../experiments/2026-09-15_onb_22khz_noise_sweep/analysis.md)、[SOAP下書き](progress/2026-09-18_weekly_progress_draft.md) | 元runと図表へ戻れる解析、提出前の報告案 |
+| 最新2帯域の結果を説明する | [9/15・3/22 kHz比較](../experiments/2026-09-15_onb_frequency_comparison/analysis.md)、[本人の修論仮説](research_plan/2026-09-15_master_thesis_hypothesis.md) | 卒論比較・帯域SNR・XAIの役割と原因分析。本人の理想は仮説として別記 |
+| 今週の報告を作る | [2帯域のSOAP下書き](progress/2026-09-18_weekly_progress_draft.md) | 本人の仮説・最新比較・原因候補を統合した未提出の草稿 |
+| 追加結果を解析する | [解析手順](analysis_workflow.md) | 対象固定→性能→原因候補→XAI→次の比較の判定基準 |
+| 原資料の位置づけを確認する | [原資料と現在方針の対応](original_document_guide.md) | 学部からの連続性、旧計画・説明手法・原本の扱い |
+| 22 kHz単独解析時点を確認する | [9/15・22 kHz解析](../experiments/2026-09-15_onb_22khz_noise_sweep/analysis.md) | 先行結果は保持。発表草稿は現行2帯域へ更新 |
 | 数値・コード変更・解釈の根拠 | [experiments](../experiments/README.md) | 日付付きで固定。訂正理由と後継を追記する |
 | 方針の変遷 | [進捗索引](progress_index.md) | 日付順に要点と根拠リンクを追記 |
 | 実行・保存先 | [コード地図](code_map.md)、[結果の保存名](experiment_result_naming.md) | 現行コードと照合して更新 |
@@ -35,14 +39,14 @@
 | 6〜7月のConformer/v1/v2/AttnPool比較 | 当時の構造・データの比較。現行構造の根拠は[8/30構造比較](../experiments/2026-08-30_log_power_architecture_study.md) |
 | 7/24の「P0診断は未実行」 | [8/17診断結論](research_plan/2026-08-17_noise_accuracy_reversal_investigation.md)で更新済み |
 | 7月以前の高ノイズ高精度・通常KFold結果 | 生成仕様/元WAV混在の影響を区別。現行頑健性の主結果へ流用しない |
-| 8/28・8/30のRF最強、全モデル2–5 kHz、深層立て直し案 | 当時の診断・提案。log-power採用後の[9/8結果](../experiments/2026-09-14_status_audit/README.md)と[9/14結果](../experiments/2026-09-15_research_status_snapshot/README.md)が現在の判断材料 |
+| 8/28・8/30のRF最強、全モデル2–5 kHz、深層立て直し案 | 当時の診断・提案。[9/15・2帯域比較](../experiments/2026-09-15_onb_frequency_comparison/analysis.md)が最新の判断材料。モデル順位・利用帯域は当時と異なる |
 | 9/2の56/105条件と「安全なinner holdout」 | 中断時の記録。9/3の105条件が別にある。旧innerの元WAV混在は[9/8監査](../experiments/2026-09-08_wav_onb_transition_evaluation_implementation.md)で判明 |
 | 9/14午前の「一般化は未実装」 | 同日の[実装記録](research_plan/2026-09-14_result_layout_and_generalization.md)で更新。性能検証の本実行とは区別 |
-| 9/14の「現在6条件」「3方式」 | 当日の試行記録。現行は7条件・2方式。最大予測値方式は[削除記録](../experiments/2026-09-14_remove_prediction_max/README.md)を参照 |
-| 9/8の「06.11/06.18は全方式ONBを見逃す」 | 当該runの結果。9/14の一部条件で変化。[最新完了結果](../experiments/2026-09-15_research_status_snapshot/README.md)を参照 |
+| 9/14の「現在6条件」「3方式」 | 当日の試行記録。最新解析は2帯域×7条件・2方式。最大予測値方式は[削除記録](../experiments/2026-09-14_remove_prediction_max/README.md)を参照 |
+| 9/8の「06.11/06.18は全方式ONBを見逃す」 | 当該runの結果。9/14の一部条件で変化。[9/15・2帯域比較](../experiments/2026-09-15_onb_frequency_comparison/analysis.md)を参照 |
 | 5月時点の容量、High_speed_compareの案内 | 現在値は[9/15全体棚卸し](audits/2026-09-15_workspace_review/README.md)。削除経緯は[6/22記録](storage_cleanup_2026-06-22.md) |
 
-既存91 Markdownの全件索引は[document_catalog.csv](audits/2026-09-15_workspace_review/document_catalog.csv)。そのほかの原資料は[Office索引](audits/2026-09-15_workspace_review/office_catalog.csv)、[PDF索引](audits/2026-09-15_workspace_review/pdf_catalog.csv)。これらは今回の整理前の棚卸しで、新規文書の自動追随一覧ではない。
+最新の全件索引・抽出範囲・修正理由は[文書整合性監査](audits/2026-09-15_document_consistency/README.md)。過去の棚卸し時点の91 Markdown索引は[document_catalog.csv](audits/2026-09-15_workspace_review/document_catalog.csv)。そのほかの原資料は[Office索引](audits/2026-09-15_workspace_review/office_catalog.csv)、[PDF索引](audits/2026-09-15_workspace_review/pdf_catalog.csv)。これらは同日先行監査の固定記録で、新規文書の自動追随一覧ではない。
 
 ## 古い情報を消すか
 
@@ -61,6 +65,7 @@
 2. `research_status.md`の完了事項・課題・次の一手を更新する。
 3. `progress_index.md`に、結果や判断がどう変わったかを短く追記する。
 4. 長期計画が変わる場合だけ年間計画を更新し、本人指定/提案を区別する。
-5. 新しい判断と衝突する旧ページに後継リンクを付ける。本文の過去数値は置き換えない。
+5. 新しい判断と衝突する旧ページに、更新された判断と後継を記す。本文の過去数値は置き換えない。
+6. 発表準備中ならSOAPと発表メモも更新する。旧草稿は監査記録へ保持し、現行草稿に二つの異なる次工程を併記しない。
 
 過去スレッドを参照できない環境でも引き継げるよう、会話で決めたことのうち研究に必要な結論・日付・根拠をここへ残す。全会話ログがこのディレクトリに揃っているとは断定しない。

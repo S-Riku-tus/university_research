@@ -1,5 +1,7 @@
 # 06.11・22 kHz・全7ノイズ条件：結果と解析の入口
 
+> **9/15追加比較後の更新先**: 22 kHz単独7条件の入口。3 kHzとの比較・本人の研究仮説・帯域差の原因分析は後続に追加済み。 最新の[比較解析](../2026-09-15_onb_frequency_comparison/analysis.md)、[本人の研究仮説](../../docs/research_plan/2026-09-15_master_thesis_hypothesis.md)、[解析手順](../../docs/analysis_workflow.md)を参照する。以下の本文は当時の記録として保持する。
+
 **2026-09-15更新: 7/7条件が完了し、性能・ONB・説明性を解析した。** 最新の結論・図表・検算は[結果解析](analysis.md)、発表に使う文章は[9/18発表準備](../../docs/research_plan/2026-09-18_xai_progress_brief.md)と[SOAP下書き](../../docs/progress/2026-09-18_weekly_progress_draft.md)を読む。
 
 以下は実行途中に合意した対象・解析方針の履歴。10:24時点の2/7という状態は、その後7/7に更新済み。

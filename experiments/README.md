@@ -6,7 +6,8 @@
 
 | 記録 | 範囲・用途 |
 |---|---|
-| [9/15・22 kHz全7ノイズ解析](2026-09-15_onb_22khz_noise_sweep/analysis.md) | **最新の主結果**。35組の性能検算、ONB見逃し、帯域マスク、IG210例の不整合、図表と発表原稿 |
+| [9/15・3/22 kHz比較](2026-09-15_onb_frequency_comparison/analysis.md) | **最新の比較解析**。卒論の実図・数表、劣化抑制、ONB、XAI420例、54区間の帯域SNR、216配列再構成、金曜の論点 |
+| [9/15・22 kHz全7ノイズ解析](2026-09-15_onb_22khz_noise_sweep/analysis.md) | 先行する22 kHz単独解析。35組の性能検算、ONB見逃し、帯域マスク、IG210例の不整合、図表と発表原稿 |
 | [9/15研究整理スナップショット](2026-09-15_research_status_snapshot/README.md) | 9/14の完了6条件の性能・XAI、9月178 manifestsの当時の状態。過去runの比較用 |
 | [9/14状況監査](2026-09-14_status_audit/README.md) | 9/3の105条件・9/8の3条件のWAV指標、ONB遷移、XAI |
 | [9/14一般化・保存階層の検証](2026-09-14_generalization_and_layout/README.md) | 実装・小規模試験・metadata検査。未知日での本性能の証拠とは別 |
@@ -48,3 +49,5 @@ experiments/YYYY-MM-DD_short-name/
 - 本文を新しいrunの値へ差し替えず、別スナップショットを作って訂正・更新先をリンクする。
 
 大量の全画像・配列・重みは`Pool_boiling/`に置き、ここには判断を追える軽量な根拠を残す。`export_ensemble_result_snapshot.py`は主に旧chunk集計用なので、WAV主評価と混同せず、抽出器の対象と主張可否の判定範囲を確認する。
+
+文書の更新判断・原資料との対応は[文書整合性監査](../docs/audits/2026-09-15_document_consistency/README.md)、追加結果を読む順序は[解析手順](../docs/analysis_workflow.md)を参照する。文書監査は新しい学習結果ではない。

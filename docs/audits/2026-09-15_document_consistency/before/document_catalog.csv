@@ -1,0 +1,323 @@
+﻿path,format,role,bytes,sha256,status,text_characters,pages_or_xml_parts,title
+AGENTS.md,.md,current_or_index,6448,b5f01b850611b79fdf12dd07e68b23db254b77f9e436a53a9a9854bb44e48ee3,extracted,2905,0,# Codex向け研究コンテキスト
+README.md,.md,current_or_index,2572,7c3c01e5aff3a568a3abec3fa8fa52de12dd567f7e63847f522871cb2d969b8c,extracted,1352,0,# 研究ワークスペース
+code/README.md,.md,current_or_index,1691,83b083f99a232a9b233210f5f568107d47a18f05a7d5da22ccc25071a4157150,extracted,993,0,# code フォルダの見方
+code/trush_box/README.md,.md,current_or_index,716,759c7b036a65ae3b2e3d4d3500df3a5ec27e3551d7bf1c9645418d6378109e43,extracted,314,0,# trush_box の扱い
+configs/README.md,.md,current_or_index,1723,078379326e4dde768710e811d31468f909e0e5b480a701ec95c874371ecff593,extracted,845,0,# configs
+docs/audits/2026-09-15_workspace_review/README.md,.md,current_or_index,6208,08e5ea3f5f234534dec338bf8ebde06d4a7dbff20625bc8e526552393fcfdb72,extracted,2978,0,# 研究ワークスペースの整理・更新記録
+docs/code_map.md,.md,current_or_index,6390,c43b484d56356d805a096d152b46fdc8950f90c9b6320f335e813f74517812db,extracted,4326,0,# コード地図
+docs/data_inventory.md,.md,current_or_index,5472,6761213d8b0b18ee0f78d560297389e38d1021c47125ab4ca13d6f3a1aca2e16,extracted,3187,0,# データ索引
+docs/document_index.md,.md,current_or_index,7236,3409579bbe3d8f1239499b4dc370726267a3d51fff3328e6256389edef4a2875,extracted,3820,0,# 文書案内と更新ルール
+docs/experiment_result_naming.md,.md,current_or_index,2862,c26065f798dc17c6fb12921dbda5eaf0497cfefb5162e5e0544811e734692d3d,extracted,1740,0,# 結果の保存階層と識別
+docs/naming_rules.md,.md,current_or_index,1790,0e88e1782683af97f9f33f32ad8700a33b24548de7c74e9503642aba06e68292,extracted,1090,0,# ファイル名・フォルダ名のゆるいルール
+docs/notes/data_notes.md,.md,current_or_index,1457,5583b2a34b026d3cb003db503ca9b7e3b4fc999a2e588ddebdb05336ca40416b,extracted,737,0,# データの読み方
+docs/notes/experiment_log.md,.md,current_or_index,1286,b9b8e537aac8e43a48f029587fe438fbdb0b5a93864d78a0687c300a1d8e9990,extracted,712,0,# 実験・解析ログの入口
+docs/notes/model_notes.md,.md,current_or_index,1674,8d0d005dca024d31f8eab1ee482e58896e4f61b6e0707a99e687e3f4dfc53389,extracted,956,0,# モデル・説明性の参照メモ
+docs/progress/2026-05-21_weekly_progress.md,.md,historical,7836,61b20ef3a53c54b079631ffd8e482548a9af18d26c1f1a299cdc16affc5707f0,extracted,3156,0,# 植木研・研究進捗報告
+docs/progress/2026-09-18_weekly_progress_draft.md,.md,current_or_index,4596,cf1fbc0bd06e5a74a9414de5d9b6dc212dd250f02266e88b615d92d368e3b0e3,extracted,1929,0,# 植木研・研究進捗報告（発表前の下書き）
+docs/progress/weekly_report_guide.md,.md,current_or_index,2383,5f07402b4eac7b800716389bca5fd66fbd2c986d32d036f51ad9bdbb30e6a78d,extracted,1015,0,# 週次研究進捗報告ガイド
+docs/progress_index.md,.md,current_or_index,17529,e9709d348875d9683b61071500b6781e9b30b4ae5f34918407d0b864c27342c2,extracted,8866,0,# 研究進捗索引
+docs/repository_management.md,.md,current_or_index,3193,3114bec4814cbca42c57d3b091115bb0063f45c209d479c8e3894bfcc0517a1f,extracted,1507,0,# リポジトリ管理方針
+docs/research_context.md,.md,current_or_index,5217,e1015eac72aa3fcc146f48518f1f7262b1d00dba811c2157f5786d2c5dc92cbb,extracted,2382,0,# 研究コンテキスト
+docs/research_plan/2026-05-22_after_presentation.md,.md,historical,22547,0574aa6707c000f7a86be52e27945c0eec714923bc0aeec357c12451ca5cbdc6,extracted,8760,0,# 2026-05-22 発表後の研究計画整理
+docs/research_plan/2026-05-22_after_presentation_concise.md,.md,historical,8062,6e005a384afb27f71f02b5b5414b758548bf103c0d2a9d84062b4b637846145d,extracted,3073,0,# 2026-05-22 発表後の研究計画整理 簡潔版
+docs/research_plan/2026-05-29_review.md,.md,historical,9800,083f9ea681724ad36935c680b370aa0b9c1b13d964734fee8c3f8225da3d604a,extracted,4271,0,# 2026-05-29 研究計画メモのレビュー
+docs/research_plan/2026-06-14_decisions.md,.md,historical,4806,1a70fc9744a016857a64ebd71cc20c96acb3830e36867b601c1ed1b726ef5cb8,extracted,2375,0,# 2026-06-14 方針決定メモ
+docs/research_plan/2026-06-15_current_state_and_next_steps.md,.md,historical,3877,5a8e2665ac4451b79fecceb1101c3cd093b552c1cccfb4c01a6b78ab725ae864,extracted,1903,0,# 2026-06-15 現在状態と次工程の整理
+docs/research_plan/2026-06-15_parameter_tuning.md,.md,historical,2641,58d4d4850d6bd60915896bf1ce35c094af71d8845911ca8ac93c659a933e2d10,extracted,1511,0,# 2026-06-15 モデル別パラメータチューニング方針
+docs/research_plan/2026-06-19_after_presentation.md,.md,historical,6032,5029e7c086cc8860417c517aa03af737bfb186ece060a78102120c3457828b5d,extracted,2624,0,# 2026-06-19 発表後の研究方針
+docs/research_plan/2026-06-26_xai_method_and_metric_selection.md,.md,historical,18075,71bdb7d7021daf98bdb739e360a76aa6d30c64b4f72f282f950cc593ab3121f1,extracted,10333,0,# 2026-06-26 説明性手法・評価指標の選定（3モデル確定版＋選定理由）
+docs/research_plan/2026-06-26_xai_method_selection.md,.md,historical,6284,4f3b2282def6dee855f7fec05a63f8bd9d259f565bb83cd52195e85b276803de,extracted,2885,0,# 2026-06-26 各モデルに対する説明性手法の選定（当たりづけ）
+docs/research_plan/2026-07-16_model_specific_xai_selection_and_implementation.md,.md,historical,20489,a4895aec5b04283d26170559373d19b69b08923e692d98dce92040335f619926,extracted,10813,0,# 2026-07-16 モデル別説明性手法の再調査と実装方針
+docs/research_plan/2026-07-24_current_progress_and_priorities.md,.md,historical,18304,8f17ece208ca2e08c0ad67d25f755c098276dfacaaa9669d72599f3c2df92c26,extracted,8494,0,# 2026-07-24 現在の研究進捗・年間計画との差分・優先順位
+docs/research_plan/2026-07-24_explainability_output_guide.md,.md,historical,19911,7e9828ddadf2397f43cec1159411b38bf6259acd51a415cbf0f3d048d27fa1df,extracted,10802,0,# 説明性出力の読み方・確認順序・2026-07-24時点の診断
+docs/research_plan/2026-07-24_noise_accuracy_paradox_investigation.md,.md,historical,21095,67e2b7139f1710a03c11e7e353a29c3b9346b9dc5ebdaec1cc2014fd74d39a87,extracted,10430,0,# ノイズが増えると精度が上がる現象の調査
+docs/research_plan/2026-07-24_p0_noise_diagnostic_runbook.md,.md,historical,8106,14a1e5912f26cbbb5977020cba4c7e8e92bc7359e3bbacbee157057696dda6da,extracted,4528,0,# P0ノイズ診断コードの実行手順
+docs/research_plan/2026-08-17_noise_accuracy_reversal_investigation.md,.md,historical,16041,0ca556f4cbb58842a18904fc2404dd22350a54aedb44bfc1f203c101ed089af3,extracted,8374,0,# ノイズ増加で精度が上がる現象の調査結論
+docs/research_plan/2026-08-28_research_landing_xai_ensemble_assessment.md,.md,historical,36347,8f3f216c320ac7c78d16cafb6887a03364adcb77bc7f9b0a9a87f7e9252df431,extracted,18463,0,# 研究の着地点・説明性・アンサンブル総合診断
+docs/research_plan/2026-08-30_treeshap_guided_gradcam_ensemble_recovery_assessment.md,.md,historical,40227,da8f84c808724a61dcc3a2be583bcbfc2d1037a61f5b68f5acea2a70edc2fea2,extracted,20855,0,# RF説明性・Guided Grad-CAM・アンサンブル再設計の総合評価
+docs/research_plan/2026-09-14_current_state_and_next_steps.md,.md,historical,27178,85a8964bc272ce037039c87744df071805ffe58eb073f8324c23d1a4ab1050fe,extracted,12703,0,# 研究の現在地と次に進める作業
+docs/research_plan/2026-09-14_execution_policy_and_generalization_design.md,.md,historical,9936,90bce3777c97b28c9b7020667503cd131353bb10c0db8e53c310d8d1c7bdcdf1,extracted,4876,0,# 今週の実行方針と一般化評価の実装案
+docs/research_plan/2026-09-14_result_layout_and_generalization.md,.md,historical,9797,3069e174ef2cc6d988d10d73bedd82df8619555733d880a6db69b6a5042e24b5,extracted,4792,0,# 保存階層の変更と一般化評価の実装
+docs/research_plan/2026-09-15_master_thesis_hypothesis.md,.md,current_or_index,4449,d35d24d1beac07df659c6f6ee7883d3221acfb2fa1e18b5e5070585012d699d7,extracted,1723,0,# 本人が目指す修士研究の結論と、その確かめ方
+docs/research_plan/2026-09-18_xai_progress_brief.md,.md,current_or_index,9975,b457db883ce65977149470daddea2059d73a9474f564c6e376812a7916423a86,extracted,5112,0,# 9月18日進捗発表：説明性の出力・解釈・まとめ
+docs/research_plan/2026_annual_plan.md,.md,current_or_index,7843,efc4b27585ea885883015286db3bf80bc6eba35dc8720b2ac992e78fb7e37c16,extracted,3210,0,# 2026年度の研究目標と年間計画
+docs/research_status.md,.md,current_or_index,11353,82d46f5cf9c60ed9b6c0dadc16646e494fa1176decd55177ab04db08e9439e0b,extracted,5503,0,# 研究の現在地と次にすること
+docs/storage_cleanup_2026-06-22.md,.md,current_or_index,3400,521cc194ffdd177f24a0c0cc4a30725f80e4c832b69d358dfa1ae4c43e5d5082,extracted,3106,0,# 2026-06-22 storage cleanup
+experiments/2026-06-15_alexnet_ensemble_smoke.md,.md,historical,2963,fad8813100a736f5dd0a7d948a426139da8a65d67696bb6209997d2b3865355d,extracted,2053,0,# 2026-06-15 AlexNet差し替え後の3モデルスモーク確認
+experiments/2026-06-15_rf_3models_baseline.md,.md,historical,4593,9f23128adb9b7aea8f78d67c0f4200cd52f6134364dcb3e98835aa2dfbe346ca,extracted,2898,0,# 2026-06-15 RF・3モデル基準実験
+experiments/2026-06-16_parameter_tuning_summary.md,.md,historical,4013,0d30cd8ebaff23431de2bcdf2dd660a9643f1db9d97576b1f229e9f0e1b6d033,extracted,3817,0,# 2026-06-16 parameter tuning summary
+experiments/2026-06-17_legacy_val_fold_analysis.md,.md,historical,3861,f15ffb2f247174bcc50692b9ef5367fd70a5fe2e4b27c4b7982ef566c2458a11,extracted,3665,0,# 2026-06-17 legacy val-fold comparison analysis
+experiments/2026-06-29_cnn_transformer_axis_compare.md,.md,historical,2654,01b02dd7713a7b1b4692a1ba95a76cfd693c627143102110233aa8549b4645a3,extracted,1430,0,# 2026-06-29 CNN+Transformer 軸比較メモ
+experiments/2026-06-29_cnn_transformer_timefix_compare.md,.md,historical,2939,d994aa10b479eed4af0a5de10cf7902dc37a80808ec3932a69ef5d16ce67dee4,extracted,2743,0,# 2026-06-29 CNN+Transformer Time-Axis Fix Compare
+experiments/2026-06-29_conformer_cleanup.md,.md,historical,2052,5d8dd16880afbbd661b1d887a3fe56768f39318c59770c15b82e5bd7fb562363,extracted,1856,0,# 2026-06-29 Conformer Cleanup
+experiments/2026-06-29_conformer_full_evaluation.md,.md,historical,4392,58189a847032e40d92f4ac1ede2c7690058584051208077517805e703eb3d01c,extracted,4196,0,# 2026-06-29 Canonical Conformer Full Evaluation
+experiments/2026-06-29_v2_pooling_legacy_compare.md,.md,historical,2116,e4c5e74ccbd33ca28f651795578a61b4f1e7cd8b069b8b5ca59a97edd78f7073,extracted,1342,0,# 2026-06-29 v2 Pooling / Legacy 比較メモ
+experiments/2026-06-29_v2d256_confirm.md,.md,historical,2196,952c4f2a4cdec34479676de8d4b5f63bf30115ebf523d31886b340c275eee920,extracted,2000,0,# 2026-06-29 CNN+Transformer v2 Dim256 Confirmation
+experiments/2026-06-29_v2d256_v1_lrbs_compare.md,.md,historical,2653,e7c831996cf939d5755fd13a77425cfd969937e201b91125af56e88cbe1b55d6,extracted,2457,0,# 2026-06-29 v2 Dim256 With Old v1 LR/Batch Settings
+experiments/2026-07-02_conformer_20260701_full_result_analysis.md,.md,historical,7301,db5980f438a69a253de727bb97fa752b44377574545b648365c96e904852f090,extracted,7105,0,# 2026-07-02 Analysis of 20260701 Conformer Full Run
+experiments/2026-07-02_conformer_architecture_loop.md,.md,historical,3304,2d8e8c84030873bfcd5285e604cca90e97e9761ed85a4822d21c0335579b9d63,extracted,3108,0,# Conformer architecture loop on 22kHz/no_noise
+experiments/2026-07-02_v1_frequency_token_hypothesis.md,.md,historical,4029,6ebc90097392de3cfe89fb167ce2a14d5fa7fdbfd06481329a733f8c735c8ef9,extracted,3831,0,# 2026-07-02 v1 Frequency-Token Hypothesis
+experiments/2026-07-02_v1_lrbs_tuning.md,.md,historical,1452,a1b621693249bd72f05b39add4394d4e25603656e18550061902b6d1a75b9b83,extracted,1256,0,# 2026-07-02 CNN+Transformer v1 lr/batch tuning
+experiments/2026-07-02_v1_no_early_stopping_repro.md,.md,historical,1728,cc32ff917e128977c1481d1aaf7308f2da45cae51f4c12f6bf18edcdf0c3fbee,extracted,1532,0,# 2026-07-02 CNN+Transformer v1 No Early-Stopping Reproduction
+experiments/2026-07-02_v1_v2_rf_control_analysis.md,.md,historical,3571,af2cedbb61e72ca0c886c17b0b423d8561fa1db2eb320970df560a62c422bd5f,extracted,3375,0,# 2026-07-02 v1/v2 and RF control analysis
+experiments/2026-07-06_explainability_implementation.md,.md,historical,2003,e9256aaf940b2fd37ad0510e0dfa065a82a6227967a4e00c6aa15280a2c335b9,extracted,1807,0,# 2026-07-06 explainability implementation
+experiments/2026-07-06_fixed_ensemble_full_grid.md,.md,historical,1425,4a6973c81cf40fd9f09acd6869245fc3a0514f11b1eb2315b401c1e8412967f8,extracted,1229,0,# 2026-07-06 fixed three-model ensemble full grid
+experiments/2026-07-06_model_cleanup_after_v2gap_recovery.md,.md,historical,1803,6eb96a77d892ce9d0c833704d6107c2a08dbacf0bc554d8ccf54b3088a69bfd9,extracted,1607,0,# 2026-07-06 model cleanup after v2 GAP recovery
+experiments/2026-07-06_v2gap_5fold_candidates.md,.md,historical,1558,dd0d3d04ff7d8e4a53ef6559573846ed386b20ed8959b9144b28486b01346b7f,extracted,1362,0,# 2026-07-06 v2 GAP 5-fold candidate check
+experiments/2026-07-06_v2gap_fixed_param_full_grid_with_xai_hook.md,.md,historical,2337,0e4b6a90968f7567a7d6cdeffa21d7515e1e13ae08d187a0709659ce55e1c9b2,extracted,2141,0,# 2026-07-06 v2 GAP fixed-parameter full grid with explainability hook
+experiments/2026-07-06_v2gap_full_condition_grid.md,.md,historical,1547,eb5dfd6301d583c37daa13fb94b0e9c6c8b7b5d09562eaa8fd407a4a7b8a92ac,extracted,1351,0,# 2026-07-06 v2 GAP full condition grid
+experiments/2026-07-06_v2gap_lrbs_tuning.md,.md,historical,1968,f4af710601c949a707be5fd2c4d94340685c47761d54bbbeacf2a1724c1cab56,extracted,1772,0,# 2026-07-06 CNN+Transformer v2 GAP lr/batch tuning
+experiments/2026-07-06_v2gap_parameter_confirmation_before_full_grid.md,.md,historical,1592,8b12d1a71a349ae07fbafa0e19e0b68080ea90cc572bb43257c556664227df35,extracted,1396,0,# 2026-07-06 v2 GAP parameter confirmation before full grid
+experiments/2026-07-06_v2gap_resume_completed_runs.md,.md,historical,1609,4beb955e435ac67490bbac290e3ee8d619870b4327a42be4666362eb3b4436a3,extracted,1413,0,# 2026-07-06 v2 GAP tuning resume note
+experiments/2026-07-09_alexnet_reanalysis_and_stress_tune_plan.md,.md,historical,2635,3925d5b908431c8938d1a178dfcd1f7e3f0a73c3ecdeada9f2987cf30f598fa4,extracted,2439,0,# 2026-07-09 AlexNet reanalysis and stress-tune plan
+experiments/2026-07-09_fixed_ensemble_full_grid_analysis.md,.md,historical,3352,58bbb2c87d56cd1997e26861d73b958c87f2693b3bb7d7ddf212b00c4671d731,extracted,3156,0,# 2026-07-09 fixed ensemble full-grid result analysis
+experiments/2026-07-09_noise_frequency_effect_analysis.md,.md,historical,2841,59f80d13414168771d1174f919786ff1c19b27dfc3225772b0ab6e0f93c9bfec,extracted,2645,0,# 2026-07-09 noise and max-frequency effect analysis
+experiments/2026-07-10_alexnet_22khz_noise_tuning_analysis.md,.md,historical,2884,d1bfcdcfb5a5ef61ecb0a3303d7a2c83e613a538b22624bd981cdee500fe70f5,extracted,2688,0,# 2026-07-10 AlexNet 22kHz noise tuning analysis
+experiments/2026-07-15_20260713_fixed_ensemble_22khz_analysis.md,.md,historical,7941,26e248478e7f49b530e7f5d206e1836acc11a18d375b12658f454c4367568840,extracted,6933,0,# 2026-07-13 fixed ensemble 22kHz result analysis
+experiments/2026-07-20_interim_presentation_ensemble_xai_run_plan.md,.md,historical,7808,586abc0f42012c59c364bf30e5a6a4107ca9743b222f0a7fb3753bfaa97136ea,extracted,3612,0,# 中間発表向け ONB・アンサンブル・XAI 実行計画
+experiments/2026-07-24_noise_shortcut_diagnostic/README.md,.md,historical,3222,268965a97efbab70b499a5f82e89eadc692ae68b8952d691b07e2c8138af6469,extracted,2994,0,# Noise / accuracy reversal diagnostic
+experiments/2026-08-17_waterflow_dataset_snapshot/README.md,.md,historical,3366,509c5b8009dcd6bd36e8a66e7e74c6e91fb591d5282189e74a167bb6b95c2714,extracted,2045,0,# waterflow_20260817_1s データ監査
+experiments/2026-08-30_log_power_architecture_study.md,.md,historical,10365,7805db77b2a448f523e3b4d511c70ded5af73e7d87c1aee751f1aa75f78322e2,extracted,6875,0,# 生パワースペクトログラム向けモデル構造改善実験
+experiments/2026-09-02_selected_log_architecture/README.md,.md,historical,5665,602f4832a996dd2c3d4471e4fecfd3faa13e775cdf5659351516ce70c86d9c26,extracted,3124,0,# 2026-09-02 selected log architecture
+experiments/2026-09-08_wav_onb_transition_evaluation_implementation.md,.md,historical,4783,91691a6508187573138494f02c9520927db69e7eca69dae90cfd721335756dbc,extracted,2429,0,# 元WAV・ONB遷移単位評価の実装記録（2026-09-08）
+experiments/2026-09-14_generalization_and_layout/README.md,.md,historical,1826,a4e350bfb32335a136b369e78c5822293152a22c3ddf53df2c071b1a3c510858,extracted,975,0,# 保存階層・一般化評価の検証記録
+experiments/2026-09-14_noise_trend_graphs/README.md,.md,historical,2787,28aac41a2917760432ef19eea610807e2a42ac1dcd8be5ebeae4e4e6cd04519b,extracted,1580,0,# ノイズ強度別のモデル比較グラフ
+experiments/2026-09-14_noise_trend_graphs/preview_20260903_0618_22khz/simple_equal/chunk_fold_mean_auc_binary.pdf,.pdf,original_or_generated_artifact,25273,479fab8239b62396742d39f7ead5489e47a1af42b9e440376a42f00f55d41776,extracted,256,1,PDF page 1
+experiments/2026-09-14_noise_trend_graphs/preview_20260903_0618_22khz/simple_equal/chunk_fold_mean_r2.pdf,.pdf,original_or_generated_artifact,24656,980c3420cc052c0754df122d5b24c9bd45d67fe70bdff730a9cddea72a3fc892,extracted,241,1,PDF page 1
+experiments/2026-09-14_noise_trend_graphs/preview_20260903_0618_22khz/simple_equal/chunk_fold_mean_roc_auc_cont.pdf,.pdf,original_or_generated_artifact,24720,0f179b3daec28299e8c03a2d9bbae85031671bfc8191bb3c43d5ee2571b04e5a,extracted,249,1,PDF page 1
+experiments/2026-09-14_noise_trend_graphs/preview_20260903_0618_22khz/simple_equal/wav_median_auc_binary.pdf,.pdf,original_or_generated_artifact,22412,0174818b87d0f94eefe4f7c20cb046fa012634ae54712979842a8bde97f316af,extracted,252,1,PDF page 1
+experiments/2026-09-14_noise_trend_graphs/preview_20260903_0618_22khz/simple_equal/wav_median_r2.pdf,.pdf,original_or_generated_artifact,22533,0fe6354920a5f4c1e9a6258b861644a0c489184dcdd1106d47d57406b6a4eb0a,extracted,227,1,PDF page 1
+experiments/2026-09-14_noise_trend_graphs/preview_20260903_0618_22khz/simple_equal/wav_median_roc_auc_cont.pdf,.pdf,original_or_generated_artifact,21934,135a147495bf9ada48fae65f690af9a68314df8ef8452d96d50b47c9feeae5b5,extracted,263,1,PDF page 1
+experiments/2026-09-14_remove_prediction_max/README.md,.md,historical,981,58604f4d21af25194cd3f3a0607e233c74ed18a92e74f078f2106ea8dc7903c6,extracted,487,0,# 最大予測値による統合方式の削除記録
+experiments/2026-09-14_status_audit/README.md,.md,historical,3429,5563f56195ccf52744c4f967b3649e746f68cae52b411740eb328ade146bc67b,extracted,2008,0,# 研究状況調査の結果スナップショット
+experiments/2026-09-15_onb_22khz_noise_sweep/README.md,.md,historical,4613,d17d02a8252ec3040830773561d61860c1fa7cf08e6dce047548d1fab4482534,extracted,2263,0,# 06.11・22 kHz・全7ノイズ条件：結果と解析の入口
+experiments/2026-09-15_onb_22khz_noise_sweep/analysis.md,.md,historical,16513,cae2a0b28bc83f8e5231ec5df7e95491d590cdddec06205d0dfd0fbcdee081b2,extracted,9249,0,# 22 kHz・全7ノイズ条件の解析結果
+experiments/2026-09-15_onb_22khz_noise_sweep/diagnostics_20260915/matched_onb_input_and_ig.pdf,.pdf,original_or_generated_artifact,505861,ce7cd977630b32868bf945608c0446bd61e6b469f1a8ad08f08fcf9af804d4cb,extracted,969,1,PDF page 1
+experiments/2026-09-15_onb_22khz_noise_sweep/diagnostics_20260915/operating_point_predictions.pdf,.pdf,original_or_generated_artifact,27654,e94559095150c6ab7b15e1ef347bfae1b751c56ca17599e0986f3261c83d366e,extracted,292,1,PDF page 1
+experiments/2026-09-15_onb_22khz_noise_sweep/snapshot_20260915/figures/first_onb_prediction.pdf,.pdf,original_or_generated_artifact,21823,84e71e4c9b395b153ffa51bd57ba6a68199a558d9263ba5f4bbc202f6db4cfae,extracted,233,1,PDF page 1
+experiments/2026-09-15_onb_22khz_noise_sweep/snapshot_20260915/figures/frequency_mask_comparison.pdf,.pdf,original_or_generated_artifact,29336,c1e13fb9d72b91c58dbf7c41377e5a6b73e44415abc4528896f9cd11ff7e0d65,extracted,1333,1,PDF page 1
+experiments/2026-09-15_onb_22khz_noise_sweep/snapshot_20260915/figures/ig_completeness.pdf,.pdf,original_or_generated_artifact,24662,e3489737480c93aefddc706523744fb628890ded1dbd491a0397d55187e328fc,extracted,347,1,PDF page 1
+experiments/2026-09-15_onb_22khz_noise_sweep/snapshot_20260915/figures/performance_by_noise.pdf,.pdf,original_or_generated_artifact,25472,b68cd1578f40e4ed2c7c895b51b44c7afb535df35aa7195886d61e4f64c68314,extracted,369,1,PDF page 1
+experiments/2026-09-15_onb_frequency_comparison/analysis.md,.md,historical,28610,79049e52a2bd21d1bf135649e198ccc91e8f5f4810ef4afe4ae0eafd0335573c,extracted,14327,0,# 3 kHz・22 kHzのノイズ傾向、学部結果との対応、説明性の分析
+experiments/2026-09-15_onb_frequency_comparison/chunk_comparison/thesis_chunk_comparison.pdf,.pdf,original_or_generated_artifact,51789,9570c4f403a725a788ac8e77d5cdbbfbbcb4da0a722dfe5ee3b1e5d5ecc3f24e,extracted,833,1,PDF page 1
+experiments/2026-09-15_onb_frequency_comparison/comparison/degradation_comparison.pdf,.pdf,original_or_generated_artifact,24020,dcc62387b31d0ff1aec95164639eee2563784907bc628138794a95ab985adc02,extracted,444,1,PDF page 1
+experiments/2026-09-15_onb_frequency_comparison/comparison/frequency_metric_comparison.pdf,.pdf,original_or_generated_artifact,33987,c6df26f8bb1326d4d0b9fbf0e41c86b7c98ba3f0d82ee83339ddf870f362a0b0,extracted,790,1,PDF page 1
+experiments/2026-09-15_onb_frequency_comparison/comparison/thesis_current_comparison.pdf,.pdf,original_or_generated_artifact,39926,0756061752af45113be68a4746b9be82b7cc27f0b1490894ffbc054a42c5cc13,extracted,871,1,PDF page 1
+experiments/2026-09-15_onb_frequency_comparison/input_probe/band_signal_noise.pdf,.pdf,original_or_generated_artifact,35574,de0418eda0bd6af3f0456466aa21498f9cb8ae08cfec207d65548934f5117c30,extracted,489,1,PDF page 1
+experiments/2026-09-15_onb_frequency_comparison/snapshot_3khz/figures/first_onb_prediction.pdf,.pdf,original_or_generated_artifact,21843,d5841db12ca470a88d3f9ac1fa4a422d576bf680f7f255468f535b95774c5ad9,extracted,236,1,PDF page 1
+experiments/2026-09-15_onb_frequency_comparison/snapshot_3khz/figures/frequency_mask_comparison.pdf,.pdf,original_or_generated_artifact,28305,3c9bd88cb8c4b9d20a6dafbad11e57ab4ecb3177410ca9fb25176a1a8f1a03b3,extracted,950,1,PDF page 1
+experiments/2026-09-15_onb_frequency_comparison/snapshot_3khz/figures/ig_completeness.pdf,.pdf,original_or_generated_artifact,24684,4fe185f5b75c7044211d8a052a29aa0b5161c1de2c19f282ab359a013bed0fab,extracted,351,1,PDF page 1
+experiments/2026-09-15_onb_frequency_comparison/snapshot_3khz/figures/performance_by_noise.pdf,.pdf,original_or_generated_artifact,25492,dde07f473b4917d332aa096c25073e1ba19dff445228239b19e15fc51a6b8078,extracted,371,1,PDF page 1
+experiments/2026-09-15_research_status_snapshot/README.md,.md,historical,6010,6e339f525d6d5cf04f7002ef5e59ca3f7dd4e669d19f0af3b958ac216cdba322,extracted,3552,0,# 9月15日の研究整理用スナップショット
+experiments/README.md,.md,current_or_index,4215,5c6e40cf241b923c54bf991029e85b337fd294844d9371d6a052dd65b51d8ef9,extracted,2335,0,# 実験結果・実装記録の入口
+experiments/_template/run_summary.md,.md,template,2370,3dc6f189c252be3cc36bf51ed36e7277cd61005c7087403246a27452a8330028,extracted,1155,0,# 実験・解析サマリー
+templates/weekly_progress_SOAP.md,.md,template,599,091ba28f67471e5fe8b28d7c9e7f936af505b475ea62d70bacc4e7486f58625a,extracted,265,0,# 植木研・研究進捗報告
+templates/論文輪講_スライド構成案.md,.md,template,18752,c7134637613b7603192a98b1e46436283554ccbad98b810ea6a95e75504c981a,extracted,8288,0,# 論文輪講スライド構成案（テンプレート）
+研究進捗報告/2024/10月11日/研究進捗報告_柴崎陸_10月11日.docx,.docx,original_or_generated_artifact,29599,54972e24aa3ed32f8dba49da6f4087459f6a549e22627604de8694dc2d4afd4e,extracted,669,3,word/document.xml
+研究進捗報告/2024/10月11日/研究進捗報告_柴崎陸_10月11日.pdf,.pdf,original_or_generated_artifact,327229,3997661b75b9ca0fc8f9a6eb55a3b14af7de20e2c32aafae0ebcfd0b39763d15,extracted,636,1,PDF page 1
+研究進捗報告/2024/10月18日(発表)/進捗報告_柴崎陸_10月18日.pptx,.pptx,original_or_generated_artifact,16123823,2da1218720ba96c9086f1316fd9ee51278d6259a25a3d7486ba91111e24c233f,extracted,2781,19,ppt/slides/slide1.xml
+研究進捗報告/2024/10月25日/研究進捗報告_柴崎陸_10月25日.docx,.docx,original_or_generated_artifact,29388,343f70b9c87c3a349dd754bb66f739cfb5040498551150faa6822eeb3ee750cf,extracted,553,3,word/document.xml
+研究進捗報告/2024/10月25日/研究進捗報告_柴崎陸_10月25日.pdf,.pdf,original_or_generated_artifact,312936,1bc31f3d319ebbb7af33f669f4125b5e19f6b8e0f9d353c9498e5ba91b755719,extracted,509,1,PDF page 1
+研究進捗報告/2024/10月29日_原子力機構/原子力機構発表_柴崎陸_10月29日.pptx,.pptx,original_or_generated_artifact,16580852,57d07571326dcf8e3fbd58b31bcc95d7778230bbc3b5f49e7d0866efb7260048,extracted,4540,24,ppt/slides/slide1.xml
+研究進捗報告/2024/10月4日/研究進捗報告_柴崎陸_10月4日.docx,.docx,original_or_generated_artifact,29788,a719ec3d4ec4cec510433b28717084f06a2e6dc03439b7a13da14c9fdb024f61,extracted,737,3,word/document.xml
+研究進捗報告/2024/10月4日/研究進捗報告_柴崎陸_10月4日.pdf,.pdf,original_or_generated_artifact,367645,2894d846baa3c69ddc6fe132a28958c566f30e06b70d4b28cf8ebd60a34b80f6,extracted,692,1,PDF page 1
+研究進捗報告/2024/11月15日(発表)/研究進捗発表_柴崎陸_11月15日.pptx,.pptx,original_or_generated_artifact,19625437,c015726d9efd919ff1251aabf5eabfeb259a4ea7cce588680a7d487f8261a644,extracted,4204,26,ppt/slides/slide1.xml
+研究進捗報告/2024/11月1日/研究進捗報告_柴崎陸_11月1日.docx,.docx,original_or_generated_artifact,29325,9740f978baa61501080f131ba8944d47038dfe7c06678eaa093842d2a2ff2f9a,extracted,495,3,word/document.xml
+研究進捗報告/2024/11月1日/研究進捗報告_柴崎陸_11月1日.pdf,.pdf,original_or_generated_artifact,259700,7e4c2247d85d0f025370a4566b54cf6b746a1b7f2ad7e7d0ebc5d0883f09bf70,extracted,455,1,PDF page 1
+研究進捗報告/2024/11月22日/研究進捗報告_柴崎陸_11月22日.docx,.docx,original_or_generated_artifact,30110,7b7e1a553fefeeab2a354f409da61afb425ba2e417049a9ccd8ef91dcd93a16d,extracted,657,3,word/document.xml
+研究進捗報告/2024/11月22日/研究進捗報告_柴崎陸_11月22日.pdf,.pdf,original_or_generated_artifact,331219,7290a2168444ee40a9f28d52f31fbe34d49c7d506858419aee5c111c9f213d97,extracted,627,1,PDF page 1
+研究進捗報告/2024/11月29日/研究進捗報告_柴崎陸_11月29日.docx,.docx,original_or_generated_artifact,29930,84d4a5b182abd64da4c2c5841451959372588a037e21453704892127a916a850,extracted,522,3,word/document.xml
+研究進捗報告/2024/11月8日/研究進捗報告_柴崎陸_11月8日.docx,.docx,original_or_generated_artifact,29823,cfa5c4614c47e4690e75f5972cd7e01fa225e13c2785b0a50ea36dbca3c86cb3,extracted,590,3,word/document.xml
+研究進捗報告/2024/11月8日/研究進捗報告_柴崎陸_11月8日.pdf,.pdf,original_or_generated_artifact,326395,14a65e103f1ebf28fbd5c1ea3cbb30e17191eb254347a8ebe12459c37317d235,extracted,563,1,PDF page 1
+研究進捗報告/2024/12月13日(中間発表下半期)/中間発表(下半期)_前刷り_柴崎陸.docx,.docx,original_or_generated_artifact,240763,37f7a9a01991850ecc15e37ea5d703d919ee2023bb1f07e6ad9b0620d646d9ba,extracted,2785,3,word/document.xml
+研究進捗報告/2024/12月13日(中間発表下半期)/中間発表(下半期)_前刷り_柴崎陸.pdf,.pdf,original_or_generated_artifact,871520,eaa0cdb5e043aeb12734555093a72878c45ff0c3c10cca3722229f98594f8dc0,extracted,2681,2,PDF page 1
+研究進捗報告/2024/12月13日(中間発表下半期)/中間発表(下半期)_柴崎陸.pptx,.pptx,original_or_generated_artifact,48846755,c8d2320ff97813f2bcdbf3f654079174158695e7dd9c05a2e44d1314dffe4d5f,extracted,6359,32,ppt/slides/slide1.xml
+研究進捗報告/2024/12月13日(中間発表下半期)/中間発表_柴崎陸_前刷りの図.pptx,.pptx,original_or_generated_artifact,1158015,a0ef5b9aec469c5d1c0cf0214c19747c9a9101778ca7723ac5a5fa64bbf6b43d,extracted,988,12,ppt/slides/slide1.xml
+研究進捗報告/2024/12月13日(中間発表下半期)/中間発表フィードバック（柴崎さん）.docx,.docx,original_or_generated_artifact,22269,ec7fb3dff93404ed33f9629ac6ba2cc0eee96032cffe8dab8067f60c0ac131cc,extracted,2181,3,word/document.xml
+研究進捗報告/2024/12月20日/研究進捗報告_柴崎陸_12月20日.docx,.docx,original_or_generated_artifact,30147,eed9d04ddc6e241283303cb5b8e8f7e322aa3cec5bc85044fc549ceeea89a2f2,extracted,527,3,word/document.xml
+研究進捗報告/2024/12月20日/研究進捗報告_柴崎陸_12月20日.pdf,.pdf,original_or_generated_artifact,284636,4fcc3e946e56614e68b80caf91bde024b404b8b7acfe76f9b6e1cc0b56c53e77,extracted,500,1,PDF page 1
+研究進捗報告/2024/12月6日/研究進捗報告_柴崎陸_12月6日.docx,.docx,original_or_generated_artifact,30153,b295dbdd1b2231c25a90c60cb3e0984d73fc5d3542079a2c0750b8068ea9d9bd,extracted,619,3,word/document.xml
+研究進捗報告/2024/12月6日/研究進捗報告_柴崎陸_12月6日.pdf,.pdf,original_or_generated_artifact,262719,96fcf3ff560001b20997e0e3d4f6d9822237fb5415a52ef917c1842c81f49c28,extracted,570,1,PDF page 1
+研究進捗報告/2024/1月10日/進捗報告_柴崎陸_1月10日.pptx,.pptx,original_or_generated_artifact,15770227,1e279ed31ff38fc6d7aa78b33531bff0824c6c12704c1322078af28c05c68a97,extracted,2099,12,ppt/slides/slide1.xml
+研究進捗報告/2024/1月17日/進捗報告_柴崎陸_1月17日.pptx,.pptx,original_or_generated_artifact,15979843,cf0c2aaf583ab80b72dedf2c4d713da659c60d8e8e2e78a4a6a86245b8fb75cd,extracted,743,6,ppt/slides/slide1.xml
+研究進捗報告/2024/1月24日(最終卒論発表)/8121048_柴崎陸.pdf,.pdf,original_or_generated_artifact,8171272,d91cc8167d16c412cbe8c7223f218a8f913b3b70e119f25d26b1aa8d47a88e63,extracted,35934,60,PDF page 1
+研究進捗報告/2024/1月24日(最終卒論発表)/卒論_8121048_柴崎陸.pptx,.pptx,original_or_generated_artifact,187086,60a35c7c037e40a4b92bc0975c141f228bca100f76a4f1f6c5ca2d72f3204238,extracted,461,5,ppt/slides/slide1.xml
+研究進捗報告/2024/1月24日(最終卒論発表)/卒論最終発表_前刷り_柴崎陸.docx,.docx,original_or_generated_artifact,118831,28895f96ece206626d4a0583c2d6c7bc63a393ad5defad9833b76ea224155315,extracted,2824,3,word/document.xml
+研究進捗報告/2024/1月24日(最終卒論発表)/卒論最終発表_前刷り_柴崎陸.pdf,.pdf,original_or_generated_artifact,829976,a8cb12aba5dc1cc07202510341cabc773e79b1e3dfe67b44da9b1c80352cb4b6,extracted,2782,2,PDF page 1
+研究進捗報告/2024/1月24日(最終卒論発表)/卒論最終発表_柴崎陸.pptx,.pptx,original_or_generated_artifact,49126350,2d1aadd12f71b5d5307818bc414f06d0a177dfa62d4ab207ffaeb8d2b6b614f1,extracted,11083,41,ppt/slides/slide1.xml
+研究進捗報告/2024/1月24日(最終卒論発表)/提出後FB.pdf,.pdf,original_or_generated_artifact,7343894,b83639750b2e03e953f751b0fd7d7d957ea3c095b9761caa3bc4fd9a4734c041,extracted,33683,52,PDF page 1
+研究進捗報告/2024/3月自己紹介/植木研　自己紹介.pptx,.pptx,original_or_generated_artifact,4781429,94753d7da47ccc40f3b153b95ee597c411f13540ebd78c6fd1a46717685f552a,extracted,453,11,ppt/slides/slide1.xml
+研究進捗報告/2024/4月12日(発表)/植木研_4月12日_柴崎陸.pptx,.pptx,original_or_generated_artifact,132625,e77de3e9266c9e93822fd19b2979efccaece06251fd8d9e1cc1fba123f38d67d,extracted,1882,13,ppt/slides/slide1.xml
+研究進捗報告/2024/4月19日/研究進捗報告_柴崎陸_4月19日-DESKTOP-7328A13.docx,.docx,original_or_generated_artifact,27974,58360d36918f2422330d080566ffd2794d638f20df43cfb7e0bc284124f685af,extracted,547,3,word/document.xml
+研究進捗報告/2024/4月19日/研究進捗報告_柴崎陸_4月19日.docx,.docx,original_or_generated_artifact,28316,a6f1b81cdb744c470329e7022070e5f008eafb9ff0d3e20bb5f81de02b9e97b0,extracted,580,3,word/document.xml
+研究進捗報告/2024/4月19日/研究進捗報告_柴崎陸_4月19日.pdf,.pdf,original_or_generated_artifact,284915,7d7887dfd7361553ef31145f7acfdacd86dbfd0394fa5c7b4257028aeae4e245,extracted,513,1,PDF page 1
+研究進捗報告/2024/4月26日/研究進捗報告_柴崎陸_4月26日.docx,.docx,original_or_generated_artifact,27501,41fdb66c1ebb436179cd68a9c2e8eb238a969f8e6cd4de6ac6ac77446e800386,extracted,331,3,word/document.xml
+研究進捗報告/2024/4月26日/研究進捗報告_柴崎陸_4月26日.pdf,.pdf,original_or_generated_artifact,284049,dc2531305313b4458dfc2551a21bfd5b887ef9fb2eac63aacc333fe792dc3a13,extracted,532,1,PDF page 1
+研究進捗報告/2024/4月5日/植木研_4月12日_柴崎陸.pptx,.pptx,original_or_generated_artifact,137457,511965da2caf723fcb8f0c3908c9abe510194ee8a9ea273e05781c917c5a344a,extracted,1882,13,ppt/slides/slide1.xml
+研究進捗報告/2024/4月5日/研究進捗報告_柴崎陸_4月5日.docx,.docx,original_or_generated_artifact,22037,83ab60fa8041a36e425235133ea3674ca90e4e30fb5aa6e19987727e6f787412,extracted,601,3,word/document.xml
+研究進捗報告/2024/4月5日/研究進捗報告_柴崎陸_4月5日.pdf,.pdf,original_or_generated_artifact,287476,b223ae7f36f59e0cee4b9d1edabb59bc5a76af3399e37993719415d00e4bf78b,extracted,569,1,PDF page 1
+研究進捗報告/2024/4月5日/研究進捗報告_柴崎陸_４月5日.docx,.docx,original_or_generated_artifact,22037,83ab60fa8041a36e425235133ea3674ca90e4e30fb5aa6e19987727e6f787412,extracted,601,3,word/document.xml
+研究進捗報告/2024/4月5日/研究進捗報告_柴崎陸_４月5日.pdf,.pdf,original_or_generated_artifact,287476,b223ae7f36f59e0cee4b9d1edabb59bc5a76af3399e37993719415d00e4bf78b,extracted,569,1,PDF page 1
+研究進捗報告/2024/5月10日/研究進捗報告_柴崎陸_5月10日.docx,.docx,original_or_generated_artifact,28294,9395882e7226d99be1a316f1327626718adcd3c413490d9150e4f4515843f60e,extracted,552,3,word/document.xml
+研究進捗報告/2024/5月10日/研究進捗報告_柴崎陸_5月10日.pdf,.pdf,original_or_generated_artifact,277983,5792a618b9715ee7c3174c876a4f35e7e20ff16b1839829c3a5f2b9a146c433b,extracted,510,1,PDF page 1
+研究進捗報告/2024/5月17日(発表)/植木研発表資料_柴崎陸_5月17日.pptx,.pptx,original_or_generated_artifact,1533760,2e5414fa50bb3429fbb62cee328273dcb88e30740c41440e8bc27d7b93df2e59,extracted,2614,26,ppt/slides/slide1.xml
+研究進捗報告/2024/5月24日/研究進捗報告_柴崎陸_5月24日.docx,.docx,original_or_generated_artifact,28146,5b68e4352dc271c8fb068cc423475bb0e6697cb775191753005f2c5dadb06ffc,extracted,543,3,word/document.xml
+研究進捗報告/2024/5月24日/研究進捗報告_柴崎陸_5月24日.pdf,.pdf,original_or_generated_artifact,251082,7f22ace24632972b7efc22651663b79d132c4c35607e6acfe070ab5b61ba054a,extracted,503,1,PDF page 1
+研究進捗報告/2024/5月31日/研究進捗報告_柴崎陸_5月31日.docx,.docx,original_or_generated_artifact,28265,6432b1b5e9f2c9314e17539ebe214e18e3486505af4c651ceff3431ddbb3bcd2,extracted,554,3,word/document.xml
+研究進捗報告/2024/5月31日/研究進捗報告_柴崎陸_5月31日.pdf,.pdf,original_or_generated_artifact,291551,0ad46f580f960bd32e180d2720a91839cbcb1d76253c6ee36a737094932bb832,extracted,522,1,PDF page 1
+研究進捗報告/2024/6月14日(発表)/植木研発表資料_柴崎陸_6月14日.pptx,.pptx,original_or_generated_artifact,5825000,b63668be6bf77b64a7976c554eb37d97a2994746d3d9133f850248ec54520ca5,extracted,9200,38,ppt/slides/slide1.xml
+研究進捗報告/2024/6月21日/研究進捗報告_柴崎陸_6月21日.docx,.docx,original_or_generated_artifact,28129,f6ba2177a05d65c0d18b1f436b17ab2795c62339d80a8214c3488576b7d90931,extracted,481,3,word/document.xml
+研究進捗報告/2024/6月21日/研究進捗報告_柴崎陸_6月21日.pdf,.pdf,original_or_generated_artifact,250460,6ede02623aa16d381947ba831aadd9f9164ea757434527a751ee7ba5f849c2c9,extracted,437,1,PDF page 1
+研究進捗報告/2024/6月28日(論文輪講)/論文輪講_柴崎陸_8121048.docx,.docx,original_or_generated_artifact,32984,10cb49ac09ec52d234229c5e56dbeed375f2722ffc70a82c148fd7feccb5e707,extracted,15054,1,word/document.xml
+研究進捗報告/2024/6月28日(論文輪講)/論文輪講_柴崎陸_8121048.pptx,.pptx,original_or_generated_artifact,683684,0366d09895d1580db3ef882212749f5fc00046137ba4527d42e196ab36c59609,extracted,8676,28,ppt/slides/slide1.xml
+研究進捗報告/2024/6月7日/研究進捗報告_柴崎陸_6月7日.docx,.docx,original_or_generated_artifact,28292,5aa3f1e5c1713ee9edc47dbd309eb9eae9f89d21990eb95b73e83973377954cb,extracted,601,3,word/document.xml
+研究進捗報告/2024/6月7日/研究進捗報告_柴崎陸_6月7日.pdf,.pdf,original_or_generated_artifact,291081,3b9970ccf6913142fc4328ecca23a8f84f6a9ee65a13de1dd3dee71bb48896f1,extracted,563,1,PDF page 1
+研究進捗報告/2024/7月19日(中間発表上半期)/中間発表_前刷り_柴崎陸.docx,.docx,original_or_generated_artifact,652785,9bee5f7f1482ce66abd9563b076bb7c8757568d519e3c4cedd5360ebc06892c9,extracted,2562,3,word/document.xml
+研究進捗報告/2024/7月19日(中間発表上半期)/中間発表_前刷り_柴崎陸.pdf,.pdf,original_or_generated_artifact,919883,1cc7b2467ab822469ae85bcfb355651c6074979d67dc5051cc6104b9d9b66d27,extracted,2405,2,PDF page 1
+研究進捗報告/2024/7月19日(中間発表上半期)/中間発表_柴崎陸.pptx,.pptx,original_or_generated_artifact,22387705,9c65da8ee6a0645bcf7d53b7d4f6241170bd69d73dee750970907ffbc7e39a8b,extracted,4970,30,ppt/slides/slide1.xml
+研究進捗報告/2024/7月19日(中間発表上半期)/沸騰開始点近傍のノイズ2種付与スペクトログラム.pptx,.pptx,original_or_generated_artifact,5102232,8710c31acafc6c60dbe9af01cd66808aa02e93d6208dce7dba5399a7c3a80fcc,extracted,524,4,ppt/slides/slide1.xml
+研究進捗報告/2024/7月5日/研究進捗報告_柴崎陸_7月5日.docx,.docx,original_or_generated_artifact,28589,4da1bb4ae262a459725171a88541cec8fc42588f2be3166df16ac1124d321a56,extracted,662,3,word/document.xml
+研究進捗報告/2024/7月5日/研究進捗報告_柴崎陸_7月5日.pdf,.pdf,original_or_generated_artifact,305501,05d78ddec9f05eae1b40ba68c68ec3dc38cbf124b033e059064b06dd0633eb2b,extracted,620,1,PDF page 1
+研究進捗報告/2024/9月1日/研究進捗報告_柴崎陸_9月1日.docx,.docx,original_or_generated_artifact,28958,8ec71bd9e41b0b9225d35992a036d29f4e42cba365cb1d9365a1041e9b7c5642,extracted,633,3,word/document.xml
+研究進捗報告/2024/9月1日/研究進捗報告_柴崎陸_9月1日.pdf,.pdf,original_or_generated_artifact,303488,11fdc851af42fa5bba9df3408db00e73bc5d8dd34621de1b692d794a00e2c686,extracted,598,1,PDF page 1
+研究進捗報告/2024/9月20日/研究進捗報告_9月20日_柴崎陸.docx,.docx,original_or_generated_artifact,29624,b6bd04791046e0143b2ac10645d2d800faeaac5abf1cfd3a3213efd247e920a7,extracted,649,3,word/document.xml
+研究進捗報告/2024/9月20日/研究進捗報告_9月20日_柴崎陸.pdf,.pdf,original_or_generated_artifact,336073,e7446fc03b156d17ba1bd997a9dd52dfeae3a230978f71d34a0f816b31af05f5,extracted,630,1,PDF page 1
+研究進捗報告/2024/9月27日/研究進捗報告_柴崎陸_9月27日.docx,.docx,original_or_generated_artifact,29636,735f51e469d1e85d1b72815c368735a7413ebcff6078e0ffc566eb18675cbdf4,extracted,680,3,word/document.xml
+研究進捗報告/2024/9月27日/研究進捗報告_柴崎陸_9月27日.pdf,.pdf,original_or_generated_artifact,363282,83886948b73598abed066ae29796a14910d909945fde7039c61fe15061e25135,extracted,666,1,PDF page 1
+研究進捗報告/2024/9月9日(発表)/研究進捗発表_柴崎陸_9月9日.pptx,.pptx,original_or_generated_artifact,15387200,231d88597f645d3c5b8ccb3037ea57350305eb7348d0db4e043c4d3ef6416ec9,extracted,1171,11,ppt/slides/slide1.xml
+研究進捗報告/2024_1029_MEXT受託研究.pptx,.pptx,original_or_generated_artifact,56059652,b02dfa4a8a108700eee972ab04f239377e30735b5e41d07456ca8d980871c9c9,extracted,7205,42,ppt/slides/slide1.xml
+研究進捗報告/2024年6月7日 プレゼン資料_植木研ミーティングでの高速炉開発概要紹介.pdf,.pdf,original_or_generated_artifact,13798788,6021b996b7fe7b5392e754e04d7c61818b7edbd5c69229e815b23761a8c4b635,extracted,12486,53,PDF page 1
+研究進捗報告/2025/10月10日/研究進捗報告_柴崎陸_10月10日.docx,.docx,original_or_generated_artifact,22714,447dda43a7b83a0827c00175dc28fcdbec8f5467ee07eddc068a597aa632c444,extracted,549,3,word/document.xml
+研究進捗報告/2025/10月10日/研究進捗報告_柴崎陸_10月10日.pdf,.pdf,original_or_generated_artifact,270502,abc436ecfe16e84d3a5c87bb687db51a1bbbf30d3b4b15e50b8d0923a43cd23d,extracted,489,1,PDF page 1
+研究進捗報告/2025/10月17日/研究進捗報告_柴崎陸_10月17日.docx,.docx,original_or_generated_artifact,22569,7fd0aecc6d9d6f68d95bba86553eef4df0a711d3a8508b668575cb406e9e87cf,extracted,552,3,word/document.xml
+研究進捗報告/2025/10月17日/研究進捗報告_柴崎陸_10月17日.pdf,.pdf,original_or_generated_artifact,291109,299ac3addd6b5bcd75028c7b0f576032c46ad9cd1b877654d6cb414155996300,extracted,505,1,PDF page 1
+研究進捗報告/2025/10月24日/研究進捗報告_柴崎陸_10月24日.docx,.docx,original_or_generated_artifact,217338,ebcf65ba8776d7b575d319be263235e0eba683404483058a2c7e33779a561568,extracted,419,3,word/document.xml
+研究進捗報告/2025/10月24日/研究進捗報告_柴崎陸_10月24日.pdf,.pdf,original_or_generated_artifact,405569,011e26095ac6c7fde9bed971118e3aca9646e138ef616fa39f82fbc6126fb897,extracted,384,2,PDF page 1
+研究進捗報告/2025/10月2日（進捗報告）/研究計画_柴崎陸_10月3日.pptx,.pptx,original_or_generated_artifact,19216290,5988e719fb2f68ef016912b18f6fb4783a8b1232f6bf1ec58c9a8e8dd82af262,extracted,3656,24,ppt/slides/slide1.xml
+研究進捗報告/2025/10月31日/研究進捗報告_柴崎陸_10月24日.docx,.docx,original_or_generated_artifact,29547,6a001e67541b9098113ab4c5855029e2e221c1aa104b7edcdc1886cc4bf2c66c,extracted,489,3,word/document.xml
+研究進捗報告/2025/10月31日/研究進捗報告_柴崎陸_10月31日.pdf,.pdf,original_or_generated_artifact,256156,335cd5b51d0a590361fa62429cb4ca4daff39c137defdf00c574734d59e0b5da,extracted,469,2,PDF page 1
+研究進捗報告/2025/11月14日（論文輪講）/Time-Weighted_Frequency_Domain_Audio_Representation_with_GMM_Estimator_for_Anomalous_Sound_Detection.pdf,.pdf,original_or_generated_artifact,1569167,a7e696ee132918f1365d41d671b400be282db9c4a7253ea9529a3a1980e7f1e1,extracted,23301,5,PDF page 1
+研究進捗報告/2025/11月14日（論文輪講）/論文輪講_柴崎陸_11月14日.pptx,.pptx,original_or_generated_artifact,17772204,3e650e61b756226cec867e504f75e709f471d72e6ea61601cbe9f8913a02abbe,extracted,4622,34,ppt/slides/slide1.xml
+研究進捗報告/2025/11月21日/研究進捗報告_柴崎陸_11月21日.docx,.docx,original_or_generated_artifact,25944,7ca7add4c9533c5718bbe10716dbbe553fd4f052ef98a09b09abeca8d20be53a,extracted,1193,3,word/document.xml
+研究進捗報告/2025/11月21日/研究進捗報告_柴崎陸_11月21日.pdf,.pdf,original_or_generated_artifact,395239,10bb915ec782dcccabbb8f00c60a7c99dfe5e6f2c87a8d7069097f8bbd1556d7,extracted,1225,2,PDF page 1
+研究進捗報告/2025/11月28日/研究進捗報告_柴崎陸_11月28日.docx,.docx,original_or_generated_artifact,22963,696bfb71e24111c21ba0dc18aa72b29570e5cbb5db9a83bd0230da3d3b1df8c0,extracted,538,3,word/document.xml
+研究進捗報告/2025/11月28日/研究進捗報告_柴崎陸_11月28日.pdf,.pdf,original_or_generated_artifact,254613,e58ed1203514cb1b0d899bd7b54198681cd46d562e71b341495511a7fed02165,extracted,487,1,PDF page 1
+研究進捗報告/2025/11月6日（進捗報告）/研究計画_柴崎陸_11月7日.pptx,.pptx,original_or_generated_artifact,19587854,c4ca8dbd9d49fdc34ee1b30d7c1712940f75339506c951939367378fb821ed3a,extracted,3897,25,ppt/slides/slide1.xml
+研究進捗報告/2025/12月12日（中間発表）/1212_中間発表_前刷り_柴崎陸.docx,.docx,original_or_generated_artifact,192419,ac9ccfc4a06bc7cae05ef7bc874c8464d606885295bf80ff64d2d44feac4ed79,extracted,2675,3,word/document.xml
+研究進捗報告/2025/12月12日（中間発表）/1212_中間発表_前刷り_柴崎陸.pdf,.pdf,original_or_generated_artifact,884550,b498f4bf4cf5dff246b07f929ca76b61c08d4125d924a1ff4ce3788a50253fc9,extracted,2632,2,PDF page 1
+研究進捗報告/2025/12月12日（中間発表）/CNN_Ensemble_Learning_Acoustic_Detection_Pool_Boiling.pdf,.pdf,original_or_generated_artifact,11181888,d11b334b6e27b2943dca3b26eb388e367d4b5ee53be83c0a56d78bb75eae1e44,image_or_sparse_text,185,14,PDF page 1
+研究進捗報告/2025/12月12日（中間発表）/中間発表_柴崎陸_12月12日.pptx,.pptx,original_or_generated_artifact,19577696,f1df5af0f9b680c6fa941c199ae7e63babcdab1c8c16fb2fe6705909179ba080,extracted,6300,42,ppt/slides/slide1.xml
+研究進捗報告/2025/12月19日/研究計画_柴崎陸_12月19日.pptx,.pptx,original_or_generated_artifact,19269296,eefb3c84ec504247f9436ccdfb9d46b1c5d34f71e682e6fbc638894bd6bb0ee1,extracted,3729,24,ppt/slides/slide1.xml
+研究進捗報告/2025/12月19日/研究進捗報告_柴崎陸_12月19日.docx,.docx,original_or_generated_artifact,161649,0455354ae44ac960e4695b47d883f4588eaaa90d7eec95ccb505953b609af974,extracted,604,3,word/document.xml
+研究進捗報告/2025/12月19日/研究進捗報告_柴崎陸_12月19日.pdf,.pdf,original_or_generated_artifact,382787,e4708904bea84c1de66526143761d8e153182bf167ad6c97c084e312bc4920a3,extracted,547,1,PDF page 1
+研究進捗報告/2025/1月23日/研究進捗報告_柴崎陸_1月23日.docx,.docx,original_or_generated_artifact,22927,3ac0179726fffefb3477bb05ccb73de24add8b18c6d5ac9f8358397c6672e506,extracted,538,3,word/document.xml
+研究進捗報告/2025/1月23日/研究進捗報告_柴崎陸_1月23日.pdf,.pdf,original_or_generated_artifact,289989,44cdb40e7480a1c6d292b968ea3103aa6baadc8a05abc023c55ec672544e7fb7,extracted,478,1,PDF page 1
+研究進捗報告/2025/1月7日（中間審査）/8125517_AE_柴崎陸_中間審査.pdf,.pdf,original_or_generated_artifact,2924967,5c8909111ed2acfcb03acf641bc7c5b59ad8cca8dc71572934270e34d22f55e9,extracted,3215,14,PDF page 1
+研究進捗報告/2025/1月7日（中間審査）/8125517_AE_柴崎陸_中間審査.pptx,.pptx,original_or_generated_artifact,16783187,652d63eb6bcc6087bb73e6862bc87a00bf4e09bbb6ddcfee4b4213405fd2c49d,extracted,3472,18,ppt/slides/slide1.xml
+研究進捗報告/2025/1月9日/研究進捗報告_柴崎陸_1月9日.docx,.docx,original_or_generated_artifact,22668,78de644799b07b897cc437a8ac0bb3dd08c45391a34e92f52864aeb4bf43befc,extracted,458,3,word/document.xml
+研究進捗報告/2025/1月9日/研究進捗報告_柴崎陸_1月9日.pdf,.pdf,original_or_generated_artifact,255267,0199b807b0076817f05d706414719721607d0bae4d6578b19f6c83e9776ce14d,extracted,400,1,PDF page 1
+研究進捗報告/2025/3月21日（自己紹介）/植木研　自己紹介.pptx,.pptx,original_or_generated_artifact,4779869,cb80842371ad403d586a2021548eebe1c4710459f6d013621e04947ee7bec252,extracted,452,11,ppt/slides/slide1.xml
+研究進捗報告/2025/3月28日（研究計画発表）/研究計画_柴崎陸_3月28日.pptx,.pptx,original_or_generated_artifact,18381147,8ea3751b7abc7ee2ef830be43dcb12aa882e255c89b8b30f0accb52385b89dca,extracted,2802,20,ppt/slides/slide1.xml
+研究進捗報告/2025/4月11日/進捗報告_柴崎陸_4月11日.pptx,.pptx,original_or_generated_artifact,19206242,320283e404464df2d0664cde5c2c44c403c3862d5087b0667b553e8f154f6ffb,extracted,2545,20,ppt/slides/slide1.xml
+研究進捗報告/2025/4月25日/研究進捗報告_柴崎陸_4月25日.docx,.docx,original_or_generated_artifact,22968,448efd44891625e0653c726ce5c1ed07b5a9434d001ce87a93fae5ae19734fcc,extracted,810,3,word/document.xml
+研究進捗報告/2025/4月25日/研究進捗報告_柴崎陸_4月25日.pdf,.pdf,original_or_generated_artifact,352631,23f8928ce1b8e64edf496aa5480de1041b2d810c98382dc5f28b6c38988b6a4c,extracted,763,1,PDF page 1
+研究進捗報告/2025/4月4日（論文輪講）/wavenet.pdf,.pdf,original_or_generated_artifact,1401303,7949c8891c0a9b1c9b4ef0a7f2a920c942f4ce71b2e1ca4a66cdb86621a3ed42,extracted,24060,5,PDF page 1
+研究進捗報告/2025/4月4日（論文輪講）/論文輪講_柴崎陸_4月3日.pdf,.pdf,original_or_generated_artifact,2729976,ff0372a8bcf76266586840018a8f6c910fdbb262cbece250a49c86b68e5783cc,extracted,554,19,PDF page 1
+研究進捗報告/2025/4月4日（論文輪講）/論文輪講_柴崎陸_4月3日.pptx,.pptx,original_or_generated_artifact,18052420,1843c1b99b68c1fb7cd4152fcc63e16a86b705e85bb2f93f541f42eceef0a9ae,extracted,7685,40,ppt/slides/slide1.xml
+研究進捗報告/2025/5月23日（論文輪講）/Anomalous Sound Detection Using Self-Attention-Based Frequency Pattern.pdf,.pdf,original_or_generated_artifact,1300379,ec47d9116fbf9fde9820d5b8795f9cd3686d70adc9c53151597ca0d81dced79f,extracted,24330,5,PDF page 1
+研究進捗報告/2025/5月23日（論文輪講）/自己注意機構による周波数パターン解析を用いた異常音検知.pdf,.pdf,original_or_generated_artifact,7556387,e3c61319331f016f553757dceb29ebc8a69e8f75ac10d21bc8e35f77b2070121,extracted,7422,13,PDF page 1
+研究進捗報告/2025/5月23日（論文輪講）/自己注意機構による周波数パターン解析を用いた異常音検知.pptx,.pptx,original_or_generated_artifact,1873417,ab47ced4132fe52f65d9828d1e5c9799af04bfe572062c2a75713cefe858fef7,extracted,8906,13,ppt/slides/slide1.xml
+研究進捗報告/2025/5月23日（論文輪講）/論文輪講_柴崎陸_5月23日.pptx,.pptx,original_or_generated_artifact,3120756,3f88fe5405ebbca5dbd0ae4fbe569a06b2fe815e854104110c92b2198b8a8792,extracted,826,14,ppt/slides/slide1.xml
+研究進捗報告/2025/5月2日/研究進捗報告_柴崎陸_5月2日.docx,.docx,original_or_generated_artifact,22759,9df535956645e59aca95f87ca77178830ded0946e32f1b9c0573570f90a3d8d5,extracted,705,3,word/document.xml
+研究進捗報告/2025/5月2日/研究進捗報告_柴崎陸_5月2日.pdf,.pdf,original_or_generated_artifact,330211,737a0e944235d480449146bff2af90f973990e8855b981f6730e6f292493a2d3,extracted,654,1,PDF page 1
+研究進捗報告/2025/5月30日/研究進捗報告_柴崎陸_5月30日.pdf,.pdf,original_or_generated_artifact,330955,fc7e69a0728391f5d5afb9f55a8931a22ef0a265437c7e722b0c94045c28d503,extracted,651,1,PDF page 1
+研究進捗報告/2025/5月9日（進捗報告）/研究計画_柴崎陸_5月9日.pptx,.pptx,original_or_generated_artifact,18957579,670866cce66ad7483aad6e5ef8ebc20afcc0a82a01c52de87760293dc5fc484d,extracted,3614,25,ppt/slides/slide1.xml
+研究進捗報告/2025/6月13日（進捗報告）/研究計画_柴崎陸_6月13日.pptx,.pptx,original_or_generated_artifact,19042979,8dfaad474def38b629ed6872d2ee542ef1c622c74f3745d66a2a85bb60638155,extracted,3674,24,ppt/slides/slide1.xml
+研究進捗報告/2025/6月20日/研究進捗報告_柴崎陸_6月20日.docx,.docx,original_or_generated_artifact,22446,ec72d4f25959c6e6f0e078ab73ce62c3784d6b108be9279c47f599bd25e33527,extracted,575,3,word/document.xml
+研究進捗報告/2025/6月20日/研究進捗報告_柴崎陸_6月20日.pdf,.pdf,original_or_generated_artifact,283943,62b2e9e1cef9253d9d72e6ffccaa020674f5af7dc05d8b5182e43cb8d4a52530,extracted,527,1,PDF page 1
+研究進捗報告/2025/6月27日/研究進捗報告_柴崎陸_6月27日.docx,.docx,original_or_generated_artifact,22660,b10728ec9c450db255d074c1caced376dae37f55aa868c105d0872df77f5b781,extracted,628,3,word/document.xml
+研究進捗報告/2025/6月27日/研究進捗報告_柴崎陸_6月27日.pdf,.pdf,original_or_generated_artifact,308223,ff01e1d150ab482f03fd14ee9d5d64431b91d395315848edeb18980ec15408fe,extracted,582,1,PDF page 1
+研究進捗報告/2025/6月6日/研究進捗報告_柴崎陸_6月6日.docx,.docx,original_or_generated_artifact,22490,6a9aed881fd9685f3c4b8de15992f848ebba32ce4d6f3126c74c4ec66b149a13,extracted,535,3,word/document.xml
+研究進捗報告/2025/6月6日/研究進捗報告_柴崎陸_6月6日.pdf,.pdf,original_or_generated_artifact,270692,a1e98395b4b0fadaba135f72294cf0c254d4afd7e8dba703f8cb076c67563494,extracted,478,1,PDF page 1
+研究進捗報告/2025/7月11日/研究進捗報告_柴崎陸_7月11日.docx,.docx,original_or_generated_artifact,22891,ade7f9ff4da790afe059a8ef6861986b2fdaec4d21a06355261a5174dd6374e4,extracted,611,3,word/document.xml
+研究進捗報告/2025/7月11日/研究進捗報告_柴崎陸_7月11日.pdf,.pdf,original_or_generated_artifact,276925,c081e18afb0cc823b754698a28b21d00de46a349110ef1357ac759a5a73ba8d9,extracted,553,1,PDF page 1
+研究進捗報告/2025/7月18日（中間発表）/718_中間発表_前刷り_柴崎陸.docx,.docx,original_or_generated_artifact,236198,9262637e6be072ccd6c97a1919959590d13f269646dcbf1d51344e6787d28462,extracted,2747,3,word/document.xml
+研究進捗報告/2025/7月18日（中間発表）/718_中間発表_前刷り_柴崎陸.pdf,.pdf,original_or_generated_artifact,889985,bf3128f64036cd4fa68635a627d35e9056bd0d3cb88463b570f4c6138fa7c7bb,extracted,2626,2,PDF page 1
+研究進捗報告/2025/7月18日（中間発表）/res.pdf,.pdf,original_or_generated_artifact,819383,1e0651b6810ecba34a3dbc5b5b0209226f889004607c1f203540a48d64e5a93a,extracted,59582,12,PDF page 1
+研究進捗報告/2025/7月18日（中間発表）/seldnet.pdf,.pdf,original_or_generated_artifact,2732217,08e7977180cc527f563513e0561194822d7af97fbafdd284440cf2cf1bd9d447,extracted,30970,5,PDF page 1
+研究進捗報告/2025/7月18日（中間発表）/vgg.pdf,.pdf,original_or_generated_artifact,200010,83728f9efc21081792902b4c17a4657022d1e4a92ec81655c2427f4ef0755e50,extracted,54922,14,PDF page 1
+研究進捗報告/2025/7月18日（中間発表）/wavenet.pdf,.pdf,original_or_generated_artifact,1300379,ec47d9116fbf9fde9820d5b8795f9cd3686d70adc9c53151597ca0d81dced79f,extracted,24330,5,PDF page 1
+研究進捗報告/2025/7月18日（中間発表）/中間発表_柴崎陸_7月18日.pdf,.pdf,original_or_generated_artifact,2728792,a103a6c26771521afdb0abeb96858978e75f292f5974511ad1f726d2cc66efde,extracted,4074,21,PDF page 1
+研究進捗報告/2025/7月18日（中間発表）/中間発表_柴崎陸_7月18日.pptx,.pptx,original_or_generated_artifact,19587142,ccd81763c4a810edb2ac9f19fa7f8ff0e180a9b1e6b5ee18085bebf5b085dd0b,extracted,6301,42,ppt/slides/slide1.xml
+研究進捗報告/2025/7月25日/研究進捗報告_柴崎陸_7月25日.docx,.docx,original_or_generated_artifact,22532,db17c0a51d28ebfd16f47c0649dbadf4b08e262bd02af6c44437d6276ae170fa,extracted,485,3,word/document.xml
+研究進捗報告/2025/7月25日/研究進捗報告_柴崎陸_7月25日.pdf,.pdf,original_or_generated_artifact,259051,6a5f9ab981a452fb3c4b6466680115db3af2f5ff9619e71482a9f74d1188a714,extracted,420,1,PDF page 1
+研究進捗報告/2025/7月4日/研究進捗報告_柴崎陸_7月4日.docx,.docx,original_or_generated_artifact,22584,3513d815aa7dd86c2162b814738792c21e5834792180292415b6cbafeb64eef5,extracted,567,3,word/document.xml
+研究進捗報告/2025/7月4日/研究進捗報告_柴崎陸_7月4日.pdf,.pdf,original_or_generated_artifact,269720,defa48402dc45ae34ee0cd549923e0e335426cd8378e7dc833d466c7665f9d36,extracted,520,1,PDF page 1
+研究進捗報告/2025_AE＿植木研＿8125517＿柴崎陸.docx,.docx,original_or_generated_artifact,27503,3febc5ba173621343d2f841fee71102f2e581dae4df1e6ae9ae612ca2e02d885,extracted,1939,3,word/document.xml
+研究進捗報告/2026/403/植木研　自己紹介.pptx,.pptx,original_or_generated_artifact,4418625,9036e3aa9903edac970810ec4f04bb454d2d55d173321bee3a9eaa53fe871f00,extracted,430,9,ppt/slides/slide1.xml
+研究進捗報告/2026/416（研究計画発表）/年間計画_柴崎陸_0417.pptx,.pptx,original_or_generated_artifact,18266869,a9895d04b65902f9d44ed24368457bb86ee78bb76e493f2f314f2d3ad5131cdc,extracted,3312,18,ppt/slides/slide1.xml
+研究進捗報告/2026/501（論文輪講）/Hit2flux A machine learning framework for boiling heat flux prediction .pdf,.pdf,original_or_generated_artifact,3224043,0cb3262e034b6b4fb6891cdd6d71aff3804216bdcb973b9cb3759eb6888e8a80,extracted,53762,10,PDF page 1
+研究進捗報告/2026/501（論文輪講）/論文輪講_柴崎陸_5月1日.pptx,.pptx,original_or_generated_artifact,18315526,f0c7006d87ce901150e4ea97320a366ac4a7e7bf46edf45ca64d094d86b71d05,extracted,5736,39,ppt/slides/slide1.xml
+研究進捗報告/2026/508/研究進捗報告_柴崎陸_5月8日.docx,.docx,original_or_generated_artifact,24101,d54c4885284bde103a64dfce11f17b27659b46e1850ae02e22b6a2b823592f1a,extracted,897,3,word/document.xml
+研究進捗報告/2026/508/研究進捗報告_柴崎陸_5月8日.pdf,.pdf,original_or_generated_artifact,436834,844c0d9573668bf1501217fbcbdb48494673b80ed21a8ee2273ef0d0e60be7f4,extracted,823,1,PDF page 1
+研究進捗報告/2026/515/研究進捗報告_柴崎陸_5月15日.docx,.docx,original_or_generated_artifact,24317,c6824d903873f4c4e70875c296acd317583a8e27b81b17775c3e0f699b66ceb3,extracted,969,3,word/document.xml
+研究進捗報告/2026/515/研究進捗報告_柴崎陸_5月15日.pdf,.pdf,original_or_generated_artifact,338725,d25b2fb431a68273c83e5f9e2a738a997894f21b6ebaa2458894475210b89edd,extracted,896,1,PDF page 1
+研究進捗報告/2026/522（研究計画発表）/研究進捗_柴崎陸_0522.pptx,.pptx,original_or_generated_artifact,15658228,b1540ab180f76b7b2b2830bbc2b3f0ecd0f1281d55f78ca2073e845a091a7892,extracted,4240,26,ppt/slides/slide1.xml
+研究進捗報告/2026/529/研究進捗報告_柴崎陸_5月29日.docx,.docx,original_or_generated_artifact,23096,81b3b56be2d086cc7f07e9094b46f935264138ca18392ce88d688abed30ea32c,extracted,460,3,word/document.xml
+研究進捗報告/2026/605/Explainable AI_Context-aware layer-wise integrated gradients for explaining transformer models.pdf,.pdf,original_or_generated_artifact,4489042,7af0753ae63cfdd0a2226d68538156ab95584545d2837c721455cb4b9a6f19a3,extracted,82800,14,PDF page 1
+研究進捗報告/2026/605/Transformer_Interpretability_Beyond_Attention_Visualization_CVPR_2021_paper.pdf,.pdf,original_or_generated_artifact,1889784,6fc994df3e5fccea6dd65aa8a8895facc8ad603c7edacc191a332f10b2911ea2,extracted,44664,10,PDF page 1
+研究進捗報告/2026/605（論文輪講）/Explainable AI_Context-Aware Layer-Wise Integrated Gradients for Explaining.pdf,.pdf,original_or_generated_artifact,45800651,9be39900d9d02869dd6053793941631c881cc15ef495db47010917e7365ed596,extracted,82325,19,PDF page 1
+研究進捗報告/2026/605（論文輪講）/この論文の内容の要約.md,.md,historical,12771,f23f1fb8f3be8a7898a1895eed5a8e8693b4ea622a0182c69f275a8edbd2f613,extracted,6740,0,## 1. この論文の問題意識
+研究進捗報告/2026/605（論文輪講）/スライド構成案.md,.md,historical,5606,931d8cb1efbacb607cc057386ad5733a8707fd69fd2dd55d9c1d76906a52ae7b,extracted,2737,0,おすすめは **14枚構成**です。軸は、
+研究進捗報告/2026/605（論文輪講）/スライド構成案_改訂版.md,.md,historical,50427,1462ec27cb01580df00f82791d99ad32d9080e59f003ea01a660d5b6ad440bc3,extracted,26697,0,# 論文輪講スライド構成案（改訂版 v2）
+研究進捗報告/2026/605（論文輪講）/論文輪講_柴崎陸_6月5日.pdf,.pdf,original_or_generated_artifact,3821851,5d89f8ac9af374764c2fabe4c5313b4411f54874d9a8dfb6e315ab832651c965,extracted,4307,24,PDF page 1
+研究進捗報告/2026/605（論文輪講）/論文輪講_柴崎陸_6月5日.pptx,.pptx,original_or_generated_artifact,16844175,797e0b973f3fced09ec53b62c768ad2afca716db316c874a34f85f0fb5dcd7ba,extracted,9362,39,ppt/slides/slide1.xml
+研究進捗報告/2026/612/今後の研究計画_2026-06-12.md,.md,historical,28635,21e8f3b43818ff94fececc2ddbd67be85f45ca30f9bcf6a5ee682e4bd1484f55,extracted,11982,0,# 2026-06-12 今後の研究計画整理
+研究進捗報告/2026/612/研究進捗報告_柴崎陸_6月12日.docx,.docx,original_or_generated_artifact,23480,16c7b536e579bd7c0183e5f9d072b20347e783303265d302f42fe8add4f6c0e5,extracted,705,3,word/document.xml
+研究進捗報告/2026/612/研究進捗報告_柴崎陸_6月12日.pdf,.pdf,original_or_generated_artifact,248151,91dc9377d150ee832f79f2869c47a106e957e2c16ec38ae3675c325a5f0566ec,extracted,642,1,PDF page 1
+研究進捗報告/2026/619（研究計画発表）/スライド内容案_0619.md,.md,historical,40382,e865c4dfa09c2234900d7f95cdc2ccd10c57877b1e567aa88b5269d8c3a3288d,extracted,19231,0,# 2026-06-19 研究進捗発表 スライド内容案
+研究進捗報告/2026/619（研究計画発表）/研究目的再整理_2026-06-19.md,.md,historical,10479,7db8d6c1999e555f1e3ded96aed5a45125e09d12403c6f76d65499204952e398,extracted,3871,0,# 研究目的の再整理 2026-06-19
+研究進捗報告/2026/619（研究計画発表）/研究進捗_柴崎陸_0619.pptx,.pptx,original_or_generated_artifact,21020454,cc0716c6ad5dee32a413e2326f259816fa41000b462c7fe9d5a4f7d8057b5a37,extracted,4282,25,ppt/slides/slide1.xml
+研究進捗報告/2026/626/6月19日発表後_今後の進め方.md,.md,historical,8912,7a5c9f78de69ef1471092ff998791e003580c2556e80fe40c1418bbe1521ded4,extracted,3930,0,# 6月19日発表後 今後の進め方
+研究進捗報告/2026/626/研究進捗報告_柴崎陸_6月26日.docx,.docx,original_or_generated_artifact,23379,1f7d1b861473814251f048e02ddac035f57c0bf066b4391134cdb0f86d374f44,extracted,617,3,word/document.xml
+研究進捗報告/2026/626/研究進捗報告_柴崎陸_6月26日.pdf,.pdf,original_or_generated_artifact,240527,3ad7a450cb4ec90dda6d861658f5fec2af2669f9b75e11b467fb167f869f3191,extracted,559,1,PDF page 1
+研究進捗報告/2026/703/研究進捗報告_柴崎陸_7月3日.docx,.docx,original_or_generated_artifact,23653,bae6f08c98eea30b170c19baa9e025170f6dc140bc2d234c5a7aca74615f6062,extracted,731,3,word/document.xml
+研究進捗報告/2026/703/研究進捗報告_柴崎陸_7月3日.pdf,.pdf,original_or_generated_artifact,295851,a684f67ac4b5363332bf70ff278d1daf8a742f330fbc7433778cab5993304e2c,extracted,676,1,PDF page 1
+研究進捗報告/2026/710/研究進捗報告_柴崎陸_7月10日.docx,.docx,original_or_generated_artifact,23360,c70748d83579ac650c7dd14e00e9a054b13425e926f8890c55f1792c8424129b,extracted,515,3,word/document.xml
+研究進捗報告/2026/710/研究進捗報告_柴崎陸_7月10日.pdf,.pdf,original_or_generated_artifact,234222,bca1ae43525f93de7744dc7990187991120fbf2fe49969b2a38fb892807ac5e5,extracted,454,1,PDF page 1
+研究進捗報告/2026/717/研究進捗報告_柴崎陸_7月17日.docx,.docx,original_or_generated_artifact,23360,c70748d83579ac650c7dd14e00e9a054b13425e926f8890c55f1792c8424129b,extracted,515,3,word/document.xml
+研究進捗報告/2026/717/研究進捗報告_柴崎陸_7月17日.pdf,.pdf,original_or_generated_artifact,278225,18f23621b749d13f7accc36615a08c1b159ca6cd7c36242483099f72d83f781b,extracted,780,1,PDF page 1
+研究進捗報告/2026/724（中間発表）/PowerPoint_Claude作成プロンプト_0724.md,.md,historical,16961,9b61779ecb15970326bf479edd731eab3d51084f2db7cb3837e08c8df8dbb696,extracted,6565,0,# PowerPoint内Claude用プロンプト
+研究進捗報告/2026/724（中間発表）/スライド内容案_0724.md,.md,historical,21064,a0c2347e62bdd738f716c605653eff51b3a44591f1e1a2b21eb65f0a869851aa,extracted,8986,0,# 2026-07-24 中間発表 スライド内容案
+研究進捗報告/2026/724（中間発表）/研究進捗_柴崎陸_0724.pptx,.pptx,original_or_generated_artifact,15831430,247322a09ce055d25a2b5ee55b3a844482da0dd7c204651122d4cd3e58879c0e,extracted,3464,21,ppt/slides/slide1.xml
+研究進捗報告/2026_AE＿植木研＿8125517＿柴崎陸.docx,.docx,original_or_generated_artifact,28491,44cbfbd996cf3666da33cc8537f26a90334246e0d1d126ecda9445663e43c26e,extracted,1997,3,word/document.xml
+研究進捗報告/8121048_柴崎陸_最終投稿卒論.pdf,.pdf,original_or_generated_artifact,8171272,d91cc8167d16c412cbe8c7223f218a8f913b3b70e119f25d26b1aa8d47a88e63,extracted,35934,60,PDF page 1
+研究進捗報告/Conformer.pdf,.pdf,original_or_generated_artifact,412099,4d53a2d87f7b68b3b5a86d8e4301c5092ae61e260f9c76dab48af34faac9a81f,extracted,28015,5,PDF page 1
+研究進捗報告/Deep Autoencoders for Acoustic Anomaly Detection.pdf,.pdf,original_or_generated_artifact,2856528,1786309f8f21ef594017de53f9ddfcb310e22346a140a1780f172e06175981f4,extracted,51061,15,PDF page 1
+研究進捗報告/卒論_柴崎陸.pdf,.pdf,original_or_generated_artifact,8171272,d91cc8167d16c412cbe8c7223f218a8f913b3b70e119f25d26b1aa8d47a88e63,extracted,35934,60,PDF page 1
+研究進捗報告/原子力学会/2025#2.U2.pptx,.pptx,original_or_generated_artifact,2403436,6f15e3be4555a538a958a2fe48f2823a6d528d38f52834f4ee4e18ed2c12cb90,extracted,9415,46,ppt/slides/slide1.xml
+研究進捗報告/原子力学会/2025ポスターセッション予稿_柴崎陸.pptx,.pptx,original_or_generated_artifact,32525770,183066846254af8ba723e6459c0386822de1271638b8b41c0b3375d248a2beab,extracted,11496,60,ppt/slides/slide1.xml
+研究進捗報告/原子力学会/2025年日本原子力学会 春の年会発表概要集.pdf,.pdf,original_or_generated_artifact,1106964,9e4dc7939469a2347189afee89d70dd55ec7dac20e39d03d3115dbebd930e266,extracted,19870,13,PDF page 1
+研究進捗報告/原子力学会/原子力学会_柴崎陸.pptx,.pptx,original_or_generated_artifact,48799148,793d920dc5da5dd96b6f35777f2ef6a827a2035ad9b1f72b8c713ae20d4775b6,extracted,16669,62,ppt/slides/slide1.xml
+研究進捗報告/原子力学会/原子力学会申し込み_柴崎陸_領収書.pdf,.pdf,original_or_generated_artifact,65654,d17cc5915b7fdc84cc5757a32690d65351aa6f0e0924306de36f1c4106f9e7a3,extracted,328,1,PDF page 1
+研究進捗報告/原子力学会/原学会_予稿.docx,.docx,original_or_generated_artifact,20088,d4471cb4be8d8e6b20015f989c1ab4bfc97811c30073ddc5a3e7d9c2213abdff,extracted,1713,3,word/document.xml
+研究進捗報告/原子力学会/原学会春_（２）沸騰検知技術.docx,.docx,original_or_generated_artifact,20538,eadd1b0fe8b7e6c97ea6e5908f0030c9d5d339183a8b92a1cb3b7a14b7e3077e,extracted,1823,3,word/document.xml
+研究進捗報告/原子力学会/原学会春＿(1)概要説明_U1.pdf,.pdf,original_or_generated_artifact,349707,f2342ac5945253df6060ff8009c30da49d4cfe7b73c5115e132ebc11cbea3c03,extracted,1440,1,PDF page 1
+研究進捗報告/原子力学会/原学会春＿(2)沸騰検知技術_U1_aiz.docx,.docx,original_or_generated_artifact,22229,118435d9122a1a226b58508f4d4ca02191907e2023033b0b7f994030d59e068f,extracted,1828,3,word/document.xml
+研究進捗報告/原子力学会/原学会春＿(2)沸騰検知技術_U1_aiz.pdf,.pdf,original_or_generated_artifact,296467,030f4b990eea88df9e30ea6ba3830c4d78190053862d6a07a7c30e85fe56794e,extracted,1609,1,PDF page 1
+研究進捗報告/原子力学会/発表要綱_2025春学生ポスターセッション.pdf,.pdf,original_or_generated_artifact,240893,5626967c3a6d021bbfe7b001b3d4246e383e84ffd117c91737037644bc1d48f1,extracted,2548,3,PDF page 1
+研究進捗報告/原子力機構_三上_1.pdf,.pdf,original_or_generated_artifact,3689740,f705a81afcf6a208862f2a31c68123d30268dcd49d5ac02b24ae57c61a7fbc76,image_or_sparse_text,171,13,PDF page 1
+研究進捗報告/研究計画の基本となる考え方_柴崎陸.docx,.docx,original_or_generated_artifact,18361,73c087e5abd70292f6ec8064427421e5e7913a25dd0755736135c2407804f432,extracted,1397,3,word/document.xml
+研究進捗報告/音響工学特論/スライド/2024_音響工学特論_02.pdf,.pdf,original_or_generated_artifact,3215443,c0d16cfbe891082057d9fbedc057c16b9cead405317674fccd4fcc0a88409d4e,extracted,12674,40,PDF page 1
+研究進捗報告/音響工学特論/スライド/2024_音響工学特論_03.pdf,.pdf,original_or_generated_artifact,5381748,e338d9367cbc5b3ad0511d217b152c151deee3f4f415136c737f3c88037b72da,extracted,18005,69,PDF page 1
+研究進捗報告/音響工学特論/スライド/2024_音響工学特論_04.pdf,.pdf,original_or_generated_artifact,2610310,05f34446c98f8e0e573672ad0445939a2adcf3f35120c19058a96e6408407aec,extracted,5410,27,PDF page 1
+研究進捗報告/音響工学特論/スライド/2024_音響工学特論_05.pdf,.pdf,original_or_generated_artifact,3242543,f6f2873540f1184f9895224e60121ef04d7b9891f1dc8bdc11951124425bc2d2,extracted,6331,30,PDF page 1
+研究進捗報告/音響工学特論/スライド/2024_音響工学特論_06.pdf,.pdf,original_or_generated_artifact,3166174,2e57b9c8e6d04ddfc351e9a5a7514acad75681ab7ec5445010652538f9d851ad,extracted,6476,32,PDF page 1
+研究進捗報告/音響工学特論/スライド/2024_音響工学特論_07.pdf,.pdf,original_or_generated_artifact,2269504,7469aa60184eb916b37f5c49834d59bb036b61c6c4391a50bfed230e9a196e87,extracted,7356,41,PDF page 1
+研究進捗報告/音響工学特論/スライド/2024_音響工学特論_08.pdf,.pdf,original_or_generated_artifact,930332,f6adc04e64973dc80673306994a9e55a245e5f22593525522dcda772944f58d7,extracted,2930,12,PDF page 1
+研究進捗報告/音響工学特論/スライド/2024_音響工学特論_09.pdf,.pdf,original_or_generated_artifact,407864,124849cea3f96e094264510db794a6fb9df3a0c9e2df6b7d1e9c4c63cdcbb151,extracted,2173,9,PDF page 1
+研究進捗報告/音響工学特論/スライド/2024_音響工学特論_10.pdf,.pdf,original_or_generated_artifact,960549,234b053ec2468d0ced53265d0e015beb10bf3784ef33bbcceaf047af3546cb0f,extracted,2277,12,PDF page 1
+研究進捗報告/音響工学特論/スライド/2024_音響工学特論_11.pdf,.pdf,original_or_generated_artifact,3279933,485da8d2527d8bf7398dc09757816fdd35275d3ee8257099be4bd66bf53f822a,extracted,8823,37,PDF page 1
+研究進捗報告/音響工学特論/スライド/2024_音響工学特論_12.pdf,.pdf,original_or_generated_artifact,300296,211090bd0b81b4a4de914916aca845d41bb99732817effac86c2be7905a33569,extracted,1748,7,PDF page 1
+研究進捗報告/音響工学特論/中間発表_柴崎陸_音響工学概論.pptx,.pptx,original_or_generated_artifact,15509326,081563672162c735f3ee6e024825317326dffbd94274648e37cd677f8750c70d,extracted,1643,17,ppt/slides/slide1.xml

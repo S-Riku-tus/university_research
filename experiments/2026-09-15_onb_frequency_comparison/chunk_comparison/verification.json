@@ -1,0 +1,422 @@
+[
+  {
+    "maxfreq_khz": "3",
+    "snr": "no_noise",
+    "model": "rf",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "3",
+    "snr": "no_noise",
+    "model": "cnntf_v2_gap",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "3",
+    "snr": "no_noise",
+    "model": "alexnet",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "3",
+    "snr": "no_noise",
+    "model": "ensemble__simple_equal",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "3",
+    "snr": "no_noise",
+    "model": "ensemble__inner_holdout",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "3",
+    "snr": "0",
+    "model": "rf",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "3",
+    "snr": "0",
+    "model": "cnntf_v2_gap",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "3",
+    "snr": "0",
+    "model": "alexnet",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "3",
+    "snr": "0",
+    "model": "ensemble__simple_equal",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "3",
+    "snr": "0",
+    "model": "ensemble__inner_holdout",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "3",
+    "snr": "-4",
+    "model": "rf",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "3",
+    "snr": "-4",
+    "model": "cnntf_v2_gap",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "3",
+    "snr": "-4",
+    "model": "alexnet",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "3",
+    "snr": "-4",
+    "model": "ensemble__simple_equal",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "3",
+    "snr": "-4",
+    "model": "ensemble__inner_holdout",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "3",
+    "snr": "-8",
+    "model": "rf",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "3",
+    "snr": "-8",
+    "model": "cnntf_v2_gap",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "3",
+    "snr": "-8",
+    "model": "alexnet",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "3",
+    "snr": "-8",
+    "model": "ensemble__simple_equal",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "3",
+    "snr": "-8",
+    "model": "ensemble__inner_holdout",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "3",
+    "snr": "-12",
+    "model": "rf",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "3",
+    "snr": "-12",
+    "model": "cnntf_v2_gap",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "3",
+    "snr": "-12",
+    "model": "alexnet",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "3",
+    "snr": "-12",
+    "model": "ensemble__simple_equal",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "3",
+    "snr": "-12",
+    "model": "ensemble__inner_holdout",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "3",
+    "snr": "-16",
+    "model": "rf",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "3",
+    "snr": "-16",
+    "model": "cnntf_v2_gap",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "3",
+    "snr": "-16",
+    "model": "alexnet",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "3",
+    "snr": "-16",
+    "model": "ensemble__simple_equal",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "3",
+    "snr": "-16",
+    "model": "ensemble__inner_holdout",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "3",
+    "snr": "-20",
+    "model": "rf",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "3",
+    "snr": "-20",
+    "model": "cnntf_v2_gap",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "3",
+    "snr": "-20",
+    "model": "alexnet",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "3",
+    "snr": "-20",
+    "model": "ensemble__simple_equal",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "3",
+    "snr": "-20",
+    "model": "ensemble__inner_holdout",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "22",
+    "snr": "no_noise",
+    "model": "rf",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "22",
+    "snr": "no_noise",
+    "model": "cnntf_v2_gap",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "22",
+    "snr": "no_noise",
+    "model": "alexnet",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "22",
+    "snr": "no_noise",
+    "model": "ensemble__simple_equal",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "22",
+    "snr": "no_noise",
+    "model": "ensemble__inner_holdout",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "22",
+    "snr": "0",
+    "model": "rf",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "22",
+    "snr": "0",
+    "model": "cnntf_v2_gap",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "22",
+    "snr": "0",
+    "model": "alexnet",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "22",
+    "snr": "0",
+    "model": "ensemble__simple_equal",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "22",
+    "snr": "0",
+    "model": "ensemble__inner_holdout",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "22",
+    "snr": "-4",
+    "model": "rf",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "22",
+    "snr": "-4",
+    "model": "cnntf_v2_gap",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "22",
+    "snr": "-4",
+    "model": "alexnet",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "22",
+    "snr": "-4",
+    "model": "ensemble__simple_equal",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "22",
+    "snr": "-4",
+    "model": "ensemble__inner_holdout",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "22",
+    "snr": "-8",
+    "model": "rf",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "22",
+    "snr": "-8",
+    "model": "cnntf_v2_gap",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "22",
+    "snr": "-8",
+    "model": "alexnet",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "22",
+    "snr": "-8",
+    "model": "ensemble__simple_equal",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "22",
+    "snr": "-8",
+    "model": "ensemble__inner_holdout",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "22",
+    "snr": "-12",
+    "model": "rf",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "22",
+    "snr": "-12",
+    "model": "cnntf_v2_gap",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "22",
+    "snr": "-12",
+    "model": "alexnet",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "22",
+    "snr": "-12",
+    "model": "ensemble__simple_equal",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "22",
+    "snr": "-12",
+    "model": "ensemble__inner_holdout",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "22",
+    "snr": "-16",
+    "model": "rf",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "22",
+    "snr": "-16",
+    "model": "cnntf_v2_gap",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "22",
+    "snr": "-16",
+    "model": "alexnet",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "22",
+    "snr": "-16",
+    "model": "ensemble__simple_equal",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "22",
+    "snr": "-16",
+    "model": "ensemble__inner_holdout",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "22",
+    "snr": "-20",
+    "model": "rf",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "22",
+    "snr": "-20",
+    "model": "cnntf_v2_gap",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "22",
+    "snr": "-20",
+    "model": "alexnet",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "22",
+    "snr": "-20",
+    "model": "ensemble__simple_equal",
+    "verified": true
+  },
+  {
+    "maxfreq_khz": "22",
+    "snr": "-20",
+    "model": "ensemble__inner_holdout",
+    "verified": true
+  }
+]

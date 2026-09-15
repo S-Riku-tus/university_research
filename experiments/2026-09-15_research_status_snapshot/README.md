@@ -1,5 +1,7 @@
 # 9月15日の研究整理用スナップショット
 
+> **9/15追加比較後の更新先**: 本書は9/14の6条件と9/15午前の状態の固定記録。最新2帯域比較の数値・IG例数・ONB結果へ読み替えない。 最新の[比較解析](../2026-09-15_onb_frequency_comparison/analysis.md)、[本人の研究仮説](../../docs/research_plan/2026-09-15_master_thesis_hypothesis.md)、[解析手順](../../docs/analysis_workflow.md)を参照する。以下の本文は当時の記録として保持する。
+
 対象: 9/14の完了済み6条件の数値・説明性、および9月のselected-log実行一覧。採取時刻は[snapshot_manifest.json](snapshot_manifest.json)。元runを変更せず読み取り、学習・XAI再計算は行っていない。
 
 ## 完了範囲

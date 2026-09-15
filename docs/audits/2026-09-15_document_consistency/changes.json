@@ -1,0 +1,236 @@
+[
+  {
+    "path": "docs/progress/2026-09-18_weekly_progress_draft.md",
+    "reason": "Integrate completed two-band analysis and user hypothesis into the active SOAP draft",
+    "before_sha256": "cf1fbc0bd06e5a74a9414de5d9b6dc212dd250f02266e88b615d92d368e3b0e3",
+    "after_sha256": "1fe163ec7db0e3644b7122e43aba8b3f784083ee69c147e26c41c3c7d8f9b6b1"
+  },
+  {
+    "path": "docs/research_plan/2026-09-18_xai_progress_brief.md",
+    "reason": "Keep one active presentation draft; retain prior text in audit",
+    "before_sha256": "9ca479dddec16980cace600e0416c4fb100e6d08d083842908459854565aadc6",
+    "after_sha256": "42770c7dc927443244fb15070c201f3d0c028d28892cbcbcbcf5bed2d705a2bb"
+  },
+  {
+    "path": "docs/research_status.md",
+    "reason": "Align research focus, completed materials and parallel post-presentation work",
+    "before_sha256": "82d46f5cf9c60ed9b6c0dadc16646e494fa1176decd55177ab04db08e9439e0b",
+    "after_sha256": "26c993e4d33da684a806d18cc8f02eb878e61cc063867742602c0bb95edc7d25"
+  },
+  {
+    "path": "docs/research_plan/2026_annual_plan.md",
+    "reason": "Reflect the integrated hypothesis and parallel validation/new-experiment work",
+    "before_sha256": "efc4b27585ea885883015286db3bf80bc6eba35dc8720b2ac992e78fb7e37c16",
+    "after_sha256": "6c5f49c199729aa015ff76e1c5280649f04784c931201c3d142a1fb8fd950b91"
+  },
+  {
+    "path": "docs/document_index.md",
+    "reason": "Update active draft pointers, successor evidence and full catalog",
+    "before_sha256": "3409579bbe3d8f1239499b4dc370726267a3d51fff3328e6256389edef4a2875",
+    "after_sha256": "145aecacb9a12ebb790f966dce9449d05bd7d262716361276e2628315a46e21d"
+  },
+  {
+    "path": "README.md",
+    "reason": "Expose user hypothesis and reusable analysis entry points",
+    "before_sha256": "7c3c01e5aff3a568a3abec3fa8fa52de12dd567f7e63847f522871cb2d969b8c",
+    "after_sha256": "bdb15863b22677be425c5ef581bffbfe8cf43ca7dd24ed99ebdf889ba14a0bc4"
+  },
+  {
+    "path": "AGENTS.md",
+    "reason": "Ensure future sessions retain user hypothesis and analysis workflow",
+    "before_sha256": "0fa52dfd157fcfce3b98de1368af72b88fc0b5a174d41fd391aeb2075cbdbdb0",
+    "after_sha256": "19be01518333df55308d497754441a36bb426f67e94c55a237d79450f724fd1e"
+  },
+  {
+    "path": "docs/notes/experiment_log.md",
+    "reason": "Point to latest completed evidence instead of September 14 only",
+    "before_sha256": "b9b8e537aac8e43a48f029587fe438fbdb0b5a93864d78a0687c300a1d8e9990",
+    "after_sha256": "fd6bd0c2f3c7bfc8a514707872f2439b0cc0f4c3b21c7e770e201229fd6622c7"
+  },
+  {
+    "path": "docs/code_map.md",
+    "reason": "Link current analysis scripts and explain model-dependent diagnostics",
+    "before_sha256": "c43b484d56356d805a096d152b46fdc8950f90c9b6320f335e813f74517812db",
+    "after_sha256": "3cb0f7fc378932530ff5247052aa01451b0f77d78cc34e35b0c863eb4d8fa2ae"
+  },
+  {
+    "path": "docs/notes/data_notes.md",
+    "reason": "Correct display spacing versus physical resolution and connect band-SNR evidence",
+    "before_sha256": "5583b2a34b026d3cb003db503ca9b7e3b4fc999a2e588ddebdb05336ca40416b",
+    "after_sha256": "0fdd9d5724c54a701022d048c93adfaa51a57c328a65e740cdd785168962dc42"
+  },
+  {
+    "path": "docs/notes/model_notes.md",
+    "reason": "Make explanation targets and acceptance limits explicit",
+    "before_sha256": "8d0d005dca024d31f8eab1ee482e58896e4f61b6e0707a99e687e3f4dfc53389",
+    "after_sha256": "420e788205d479496232e19f53be3612320f4561ffcbb414402bc579d2e1151c"
+  },
+  {
+    "path": "docs/progress/weekly_report_guide.md",
+    "reason": "Carry user hypothesis, evidence units and updates into recurring reporting",
+    "before_sha256": "5f07402b4eac7b800716389bca5fd66fbd2c986d32d036f51ad9bdbb30e6a78d",
+    "after_sha256": "11d2d67f62c2a53a295ff4bfd4105b4a8c8f2246f6fd51199ec945da0de638fe"
+  },
+  {
+    "path": "templates/weekly_progress_SOAP.md",
+    "reason": "Add lightweight evidence prompts to reusable SOAP template",
+    "before_sha256": "091ba28f67471e5fe8b28d7c9e7f936af505b475ea62d70bacc4e7486f58625a",
+    "after_sha256": "122f7a135e6446cb1cc798870755561150050ea408b138c1e282b19bdca9929a"
+  },
+  {
+    "path": "experiments/_template/run_summary.md",
+    "reason": "Record controlled comparisons, competing causes and stopping evidence",
+    "before_sha256": "3dc6f189c252be3cc36bf51ed36e7277cd61005c7087403246a27452a8330028",
+    "after_sha256": "1f63fa9ad3d972048da4a9cbe88ff2df44054de3ed5d11ad7c8c05fb8921c9fb"
+  },
+  {
+    "path": "docs/repository_management.md",
+    "reason": "Explain current versus historical revisions and report synchronization",
+    "before_sha256": "3114bec4814cbca42c57d3b091115bb0063f45c209d479c8e3894bfcc0517a1f",
+    "after_sha256": "e49d70f2cdca30ff9f34368548ee6921d1e74da7e411fecad319eaf159febac6"
+  },
+  {
+    "path": "docs/research_plan/2026-08-17_noise_accuracy_reversal_investigation.md",
+    "reason": "Historical scope and specific successor: 本文の「現行逆転の主因」は旧相対RMSデータの診断を指す。9/15の固定global RMSデータの非単調性の原因を確定したものではない。matchedも条件に合わせた学習を含むノイズ下性能として有用で、固定モデルの転送と区別する。",
+    "before_sha256": "0ca556f4cbb58842a18904fc2404dd22350a54aedb44bfc1f203c101ed089af3",
+    "after_sha256": "26c3dcb6ac54dac2b034bca9079edb547123d38d118d3187b7bf6b431ec473f6"
+  },
+  {
+    "path": "docs/research_plan/2026-08-28_research_landing_xai_ensemble_assessment.md",
+    "reason": "Historical scope and specific successor: 当時のRF優位・全モデル共通帯域・ONBを副評価へ回す提案は現行方針へ引き継がない。log-power後の順位と帯域は異なり、本人はアンサンブルの劣化抑制とその原因を中心仮説として指定している。",
+    "before_sha256": "8f3f216c320ac7c78d16cafb6887a03364adcb77bc7f9b0a9a87f7e9252df431",
+    "after_sha256": "eb73485e7a29da3e8fd0675bfbfd2940945ccd5fae045451a5e4def8258767fa"
+  },
+  {
+    "path": "docs/research_plan/2026-08-30_treeshap_guided_gradcam_ensemble_recovery_assessment.md",
+    "reason": "Historical scope and specific successor: RFを固定の基準モデルとする提案や追加モデル/stackingは当時の候補。現行innerは元WAV非重複へ修正済み。今回はIGが両帯域で不整合であり、物理的補完の確定や新方式の採用を意味しない。",
+    "before_sha256": "da8f84c808724a61dcc3a2be583bcbfc2d1037a61f5b68f5acea2a70edc2fea2",
+    "after_sha256": "3ad4a9caba75e95b14b8305072010b356d2769ab5de1e73e67f75304ec17394f"
+  },
+  {
+    "path": "docs/research_plan/2026-06-26_xai_method_selection.md",
+    "reason": "Historical scope and specific successor: 手法の候補選定の記録。PCAを変更し終えるまで共通マスクを実施できないという必須の順序にはしない。現行ではPCA空間SHAPと元スペクトログラムのマスクを分担して出力済み。",
+    "before_sha256": "a6c354bbf38fdac80a1c01e5f5033a8d8a565676266fcaf4a9d21750c282bee9",
+    "after_sha256": "04c025c80473222637a26c0e46eea521fbc597164988d8fb253421a600f5f6f2"
+  },
+  {
+    "path": "docs/research_plan/2026-06-26_xai_method_and_metric_selection.md",
+    "reason": "Historical scope and specific successor: 本文の「確定」は当時の手法選定。現在はTreeSHAP・IG・Grad-CAM・共通マスクを出力済みだが、IGの数値整合は未解決。手法選定と説明としての検証完了を分ける。",
+    "before_sha256": "3de89a3c66078f6bf2fb5586b5bb4baa50316f387a3e9db2d4575aa24c9c60f4",
+    "after_sha256": "155774f15279df08ee5fc4958f7459e544d0faf0c4dc4d52206f21149b337ed4"
+  },
+  {
+    "path": "docs/research_plan/2026-07-16_model_specific_xai_selection_and_implementation.md",
+    "reason": "Historical scope and specific successor: モデル別の手法分担は現行と接続するが、IGの寄与量を研究上の根拠に使える状態とは限らない。9/15の両帯域で420/420例の不整合を確認した。",
+    "before_sha256": "a4895aec5b04283d26170559373d19b69b08923e692d98dce92040335f619926",
+    "after_sha256": "5bfb70d2ddaf730b8ff1993a4fbf098cc8f9c3c28ff7d0fd2c1ec98d4ec03663"
+  },
+  {
+    "path": "docs/research_plan/2026-07-24_explainability_output_guide.md",
+    "reason": "Historical scope and specific successor: 出力の読み方は実装時点の記録。最新は単体chunkの説明、fold内WAVマスク、IG積分不整合、回帰のdeletion/insertion面積を区別する。",
+    "before_sha256": "7e9828ddadf2397f43cec1159411b38bf6259acd51a415cbf0f3d048d27fa1df",
+    "after_sha256": "30083748f1d0f37ee16fa99a63b44fb1c6384916c16f1c11ab1b721cabbe1266"
+  },
+  {
+    "path": "docs/research_plan/2026-07-24_current_progress_and_priorities.md",
+    "reason": "Historical scope and specific successor: 旧ノイズ生成の診断、現行データ生成、log-power改善、元WAV分離、一般化4方針の実装は進展済み。本文の未着手と優先順位を現在へそのまま戻さない。",
+    "before_sha256": "8f17ece208ca2e08c0ad67d25f755c098276dfacaaa9669d72599f3c2df92c26",
+    "after_sha256": "ae3538fc257f790186b10d7b97bf6483d5c425c38d7ae746407e7d76597fa86f"
+  },
+  {
+    "path": "docs/research_plan/2026-09-14_current_state_and_next_steps.md",
+    "reason": "Historical scope and specific successor: 現在の解析根拠は06.11の3/22 kHz各7条件。旧6条件/105条件の成績・ONB見逃しを最新runへ代入せず、本人の劣化抑制の仮説と追加比較に沿って次工程を選ぶ。",
+    "before_sha256": "85a8964bc272ce037039c87744df071805ffe58eb073f8324c23d1a4ab1050fe",
+    "after_sha256": "fac8e2ce1f167fc5152368057b8920a5667c66d589e6f71ca5a638d5495f9a59"
+  },
+  {
+    "path": "docs/research_plan/2026-09-14_execution_policy_and_generalization_design.md",
+    "reason": "Historical scope and specific successor: 70条件完了は金曜の準備の前提ではない。今回の対象は本人の指定で完了済み06.11の2帯域に限定。一般化は実装済みで本性能の確認とは別。",
+    "before_sha256": "90bce3777c97b28c9b7020667503cd131353bb10c0db8e53c310d8d1c7bdcdf1",
+    "after_sha256": "76f83a4cb53852dc702e4dea855c81b62d225b2dde54b42e837f0b6d99e53fe4"
+  },
+  {
+    "path": "docs/research_plan/2026-09-14_result_layout_and_generalization.md",
+    "reason": "Historical scope and specific successor: 保存階層・一般化4方針の実装記録として有効。本文の6条件/3方式は当時の試行で、最新比較は2帯域各7条件/2方式。追加実行の採用範囲は現在地で指定する。",
+    "before_sha256": "3069e174ef2cc6d988d10d73bedd82df8619555733d880a6db69b6a5042e24b5",
+    "after_sha256": "66f8f5b1a3aeb23413191028bf3cdbdfc32ea9ccd891769bc16f1779609237d3"
+  },
+  {
+    "path": "experiments/2026-09-15_research_status_snapshot/README.md",
+    "reason": "Historical scope and specific successor: 本書は9/14の6条件と9/15午前の状態の固定記録。最新2帯域比較の数値・IG例数・ONB結果へ読み替えない。",
+    "before_sha256": "6e339f525d6d5cf04f7002ef5e59ca3f7dd4e669d19f0af3b958ac216cdba322",
+    "after_sha256": "90be473cfe3c45cff92d05b53651dca803859dcee0b51b715e28eb821c8afaa2"
+  },
+  {
+    "path": "experiments/2026-09-15_onb_22khz_noise_sweep/README.md",
+    "reason": "Historical scope and specific successor: 22 kHz単独7条件の入口。3 kHzとの比較・本人の研究仮説・帯域差の原因分析は後続に追加済み。",
+    "before_sha256": "d17d02a8252ec3040830773561d61860c1fa7cf08e6dce047548d1fab4482534",
+    "after_sha256": "a72f62c2c18c96fcc9d98446155f8bcacb832e399d14956e92b5d06d3095913d"
+  },
+  {
+    "path": "研究進捗報告/2026/605（論文輪講）/この論文の内容の要約.md",
+    "reason": "Historical scope and specific successor: 論文輪講の理論紹介と当時の自研究への接続案。現在のIG実装の信頼性検証やCA-LIG採用を示すものではない。",
+    "before_sha256": "6aa0d0fb75f7ac95a3adc2ebad3602833104cfba6b5a4976007e30d200965fb6",
+    "after_sha256": "f6485e38c65257a97f8520651502b98ae06a41cee64d5ab83b32bd0e3b0a9769"
+  },
+  {
+    "path": "研究進捗報告/2026/605（論文輪講）/スライド構成案.md",
+    "reason": "Historical scope and specific successor: 論文輪講の理論紹介と当時の自研究への接続案。現在のIG実装の信頼性検証やCA-LIG採用を示すものではない。",
+    "before_sha256": "5f0c810c00f3fdfa5260a84b6ef8514938d29fb57e8015d497b81ac11a91bb60",
+    "after_sha256": "95e2b1f34ea18ceb3b04cdf609f016397ff014217d451695bce91d2378628875"
+  },
+  {
+    "path": "研究進捗報告/2026/605（論文輪講）/スライド構成案_改訂版.md",
+    "reason": "Historical scope and specific successor: 論文輪講の理論紹介と当時の自研究への接続案。現在のIG実装の信頼性検証やCA-LIG採用を示すものではない。",
+    "before_sha256": "9fa646e3d8a383b57f383110f0719e190326626d33cdffda232051f66e292be4",
+    "after_sha256": "f3b01711fed6b84ed45f5877ed05846b85af6e8c3ff30306cccffaffb0a42e19"
+  },
+  {
+    "path": "研究進捗報告/2026/612/今後の研究計画_2026-06-12.md",
+    "reason": "Historical scope and specific successor: 当時の発表・計画・指導後整理の履歴。本文の実行状況・次の作業・モデル順位はその時点に限る。",
+    "before_sha256": "21e8f3b43818ff94fececc2ddbd67be85f45ca30f9bcf6a5ee682e4bd1484f55",
+    "after_sha256": "452e337815ac4f412d3197f6247b6d30c1800c88e5155a7f5a093fd518620f65"
+  },
+  {
+    "path": "研究進捗報告/2026/619（研究計画発表）/スライド内容案_0619.md",
+    "reason": "Historical scope and specific successor: 当時の発表・計画・指導後整理の履歴。本文の実行状況・次の作業・モデル順位はその時点に限る。",
+    "before_sha256": "867bbacc465913896627b37145b8e99a00b65040a768f31e2e649c433a388fe0",
+    "after_sha256": "dea1e3ae6f712f02a91d842cc6e3caad5745923f76f714a98d4c98185fb8e9b4"
+  },
+  {
+    "path": "研究進捗報告/2026/619（研究計画発表）/研究目的再整理_2026-06-19.md",
+    "reason": "Historical scope and specific successor: 当時の発表・計画・指導後整理の履歴。本文の実行状況・次の作業・モデル順位はその時点に限る。",
+    "before_sha256": "7db8d6c1999e555f1e3ded96aed5a45125e09d12403c6f76d65499204952e398",
+    "after_sha256": "0f82af96b6f0a66b47268a8bfabf07bf02fc861b117d828271b3306bb955a70b"
+  },
+  {
+    "path": "研究進捗報告/2026/626/6月19日発表後_今後の進め方.md",
+    "reason": "Historical scope and specific successor: 当時の発表・計画・指導後整理の履歴。本文の実行状況・次の作業・モデル順位はその時点に限る。",
+    "before_sha256": "7a5c9f78de69ef1471092ff998791e003580c2556e80fe40c1418bbe1521ded4",
+    "after_sha256": "056aa461723f2b9f349e6af1cabd9d28658923c79604877a40133f5bc7bacfdd"
+  },
+  {
+    "path": "研究進捗報告/2026/724（中間発表）/PowerPoint_Claude作成プロンプト_0724.md",
+    "reason": "Historical scope and specific successor: 当時の発表・計画・指導後整理の履歴。本文の実行状況・次の作業・モデル順位はその時点に限る。",
+    "before_sha256": "9b61779ecb15970326bf479edd731eab3d51084f2db7cb3837e08c8df8dbb696",
+    "after_sha256": "07e7e2e9c0d937abbdbf5bc8ef79dc94a73792e3186ee632a2720b599992f50c"
+  },
+  {
+    "path": "研究進捗報告/2026/724（中間発表）/スライド内容案_0724.md",
+    "reason": "Historical scope and specific successor: 当時の発表・計画・指導後整理の履歴。本文の実行状況・次の作業・モデル順位はその時点に限る。",
+    "before_sha256": "a0c2347e62bdd738f716c605653eff51b3a44591f1e1a2b21eb65f0a869851aa",
+    "after_sha256": "2e7a7d8edd5f9565109d8cbf10d4d23e806939632b6893e4bfa7ac678a845ac1"
+  },
+  {
+    "path": "docs/audits/2026-09-15_workspace_review/README.md",
+    "reason": "Point prior inventory to the later comprehensive text audit",
+    "before_sha256": "08e5ea3f5f234534dec338bf8ebde06d4a7dbff20625bc8e526552393fcfdb72",
+    "after_sha256": "45ee953308e399082c252d0a6c47dd4dd365549c4f1951a49a041dc9a20671c8"
+  },
+  {
+    "path": "experiments/README.md",
+    "reason": "Add reusable analysis workflow and original-document interpretation",
+    "before_sha256": "5c6e40cf241b923c54bf991029e85b337fd294844d9371d6a052dd65b51d8ef9",
+    "after_sha256": "8f5c271d3df90ddc19a7b6359198f1d9c14b699352e99b15e7f56c5ac6467e95"
+  }
+]

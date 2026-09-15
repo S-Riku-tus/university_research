@@ -7,13 +7,16 @@
 | 知りたいこと | 入口 |
 |---|---|
 | **今どこまで終わり、次に何をするか** | **[研究の現在地](docs/research_status.md)** |
+| 本人が目指す修論の結論と背景 | [研究仮説と確かめ方](docs/research_plan/2026-09-15_master_thesis_hypothesis.md) |
 | 年間計画・目指す成果 | [2026年度研究計画](docs/research_plan/2026_annual_plan.md) |
 | 9月18日の進捗発表準備 | [説明性の出力・解釈・まとめ](docs/research_plan/2026-09-18_xai_progress_brief.md) |
 | 研究目的と用語 | [研究コンテキスト](docs/research_context.md) |
 | 過去の判断・古い資料の扱い | [文書案内](docs/document_index.md)、[進捗履歴](docs/progress_index.md) |
 | 最新の確認済み数値 | [結果スナップショット一覧](experiments/README.md) |
+| 追加結果を段階的に分析する | [解析手順](docs/analysis_workflow.md) |
+| 原資料と現在の方針の関係 | [原資料ガイド](docs/original_document_guide.md) |
 
-9月15日に、文書・コード・保存結果の更新差を整理しました。今週は説明性の出力と解釈を優先し、ONB近傍の検知設計・新実験・同時計測は金曜の発表後に進めます。日々変わる設定・完了状況は「研究の現在地」で管理します。
+9月15日に、3/22 kHzの比較と本人の研究仮説を文書全体へ反映しました。今週は劣化抑制・帯域差・説明性の出力と解釈を整理し、ONB近傍の検知設計・新実験・同時計測は金曜の発表後に進めます。日々変わる設定・完了状況は「研究の現在地」で管理します。
 
 ## 配置
 
@@ -29,6 +32,6 @@
 
 ## 運用の地図
 
-[コード地図](docs/code_map.md) / [データ索引](docs/data_inventory.md) / [管理方針](docs/repository_management.md) / [今回の確認範囲と変更理由](docs/audits/2026-09-15_workspace_review/README.md)
+[コード地図](docs/code_map.md) / [データ索引](docs/data_inventory.md) / [管理方針](docs/repository_management.md) / [文書全体の確認範囲と変更理由](docs/audits/2026-09-15_document_consistency/README.md)
 
 Codexは最初に [AGENTS.md](AGENTS.md) と現在地を読み、作業に必要な根拠へ進みます。過去の「次にやること」を、そのまま現在の未完了作業として再実行しない運用にします。

@@ -4,6 +4,9 @@
 
 ## 直近の固定記録
 
+- [9/15：3/22 kHz各7ノイズ、卒論比較・帯域SNR・説明性](../../experiments/2026-09-15_onb_frequency_comparison/analysis.md)：最新の比較根拠。
+- [9/15：22 kHz単独解析](../../experiments/2026-09-15_onb_22khz_noise_sweep/analysis.md)：先行結果。
+
 - [9/15採取：9/14の6条件・説明性と9月実行一覧](../../experiments/2026-09-15_research_status_snapshot/README.md)
 - [9/14採取：9/3の105条件・9/8の3条件](../../experiments/2026-09-14_status_audit/README.md)
 - [9/2の56条件記録](../../experiments/2026-09-02_selected_log_architecture/README.md)：当時の中断スナップショット。旧inner holdoutの安全性は9/8監査で更新。

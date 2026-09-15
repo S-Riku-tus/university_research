@@ -1,0 +1,21 @@
+{
+  "created_at": "2026-09-15T17:52:42.711626+09:00",
+  "counts_by_format": {
+    ".md": 105,
+    ".pdf": 113,
+    ".docx": 61,
+    ".pptx": 45
+  },
+  "counts_by_status": {
+    "extracted": 322,
+    "image_or_sparse_text": 2
+  },
+  "total_documents": 324,
+  "total_extracted_characters": 1652947,
+  "errors": [],
+  "exclusions": [
+    "Pool_boiling: generated datasets and run outputs, including the ongoing run excluded by user",
+    ".git, logs, caches, this audit output"
+  ],
+  "inspection": "All enumerated text extracted and scanned; selected original pages and critical claims reviewed semantically. Not a full visual rereading of every historical figure."
+}
