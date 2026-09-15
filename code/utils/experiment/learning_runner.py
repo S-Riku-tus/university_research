@@ -118,10 +118,11 @@ class ResultRecorder:
                                   fold, self.path, self.snr)
 
     def record_fold(self, fold, indices, metadata, y_true, single_predictions, inner_errors,
-                    training_groups, fit_id, plotter):
+                    training_groups, fit_id, plotter, crossfit_fit=None):
         for key, prediction in single_predictions.items():
             self.ensemble.record_validation_error(key, y_true, prediction)
-        outputs = self.ensemble.combine_predictions(single_predictions, inner_errors, fold)
+        outputs = self.ensemble.combine_predictions(single_predictions, inner_errors, fold, crossfit_fit)
+        self.ensemble.save_crossfit_fit(self.path, fold, crossfit_fit)
         predictions = self.ensemble.merge_predictions(single_predictions, outputs)
         rows = build_fold_prediction_rows(indices, y_true, predictions, metadata, fold)
         self.oof_rows.extend(rows)
@@ -326,6 +327,9 @@ def run_learning_experiments(jobs, policy, config, enabled_specs, parameter_sets
                 inner_errors = ensemble.fit_inner_holdout_errors(
                     trainer, x_fit, y_fit, groups[fit_indices], config["features"]["pca_components"],
                     tuple(x.shape[1:]), config["run"]["epochs"], fold, fold_count)
+                crossfit_fit = ensemble.fit_crossfit_weights(
+                    trainer, x_fit, y_fit, groups[fit_indices], config["features"]["pca_components"],
+                    tuple(x.shape[1:]), config["run"]["epochs"], fold, fold_count)
                 scaler = MinMaxScaler()
                 y_scaled = scaler.fit_transform(y_fit.reshape(-1, 1))
                 pca, x_fit_pca = None, None
@@ -363,8 +367,9 @@ def run_learning_experiments(jobs, policy, config, enabled_specs, parameter_sets
                     metadata = metadata_by_noise[recorder.job["noise_dir_name"]]
                     indices = splits_by_noise[recorder.job["noise_dir_name"]][fold - 1][1]
                     recorder.record_fold(fold, indices, metadata, targets_from_metadata(metadata)[indices],
-                                          predictions[recorder.snr], inner_errors, groups[fit_indices], fit_id, plotter)
-                del x_fit, y_fit, y_scaled, x_fit_pca, pca, predictions
+                                          predictions[recorder.snr], inner_errors, groups[fit_indices], fit_id, plotter,
+                                          crossfit_fit=crossfit_fit)
+                del x_fit, y_fit, y_scaled, x_fit_pca, pca, predictions, crossfit_fit
                 gc.collect()
             for recorder in recorders:
                 recorder.finish(plotter, update_noise_trends)

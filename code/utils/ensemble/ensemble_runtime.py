@@ -1,5 +1,6 @@
 import csv
 import gc
+import json
 import math
 import os
 from copy import deepcopy
@@ -11,6 +12,9 @@ from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras import backend as K
 
 from utils.ensemble.ensemble_weighting import EnsembleWeighting
+from utils.ensemble.crossfit_stacking import (
+    CROSSFIT_STRATEGIES, fit_crossfit_strategy, group_crossfit_splits,
+)
 from utils.ensemble.strategy_catalog import resolve_ensemble_selection
 from utils.ensemble.strategy_comparison import (
     aggregate_correction_rows,
@@ -21,7 +25,7 @@ from utils.ensemble.strategy_comparison import (
     pairwise_diversity_rows,
     strategy_plan_requires_inner_holdout,
 )
-from utils.experiment.run_helpers import open_text, path_exists
+from utils.experiment.run_helpers import open_text, path_exists, set_global_seed
 from utils.models.regression.base_regression import RegressionModelMaker
 
 
@@ -164,6 +168,14 @@ class EnsembleManager:
             raise ValueError(
                 "Ensemble inner_holdout_aggregation must be 'mean' or 'median'."
             )
+        crossfit = [item for item in self.strategy_plan if item["strategy"] in CROSSFIT_STRATEGIES]
+        if crossfit:
+            if self.combine != "mean":
+                raise ValueError("Crossfit strategies require combine='mean'.")
+            if len({item["crossfit"]["inner_folds"] for item in crossfit}) != 1:
+                raise ValueError("Crossfit strategies must share inner_folds for OOF reuse.")
+            if any(len(model_keys) > item["crossfit"]["max_models"] for item in crossfit):
+                raise ValueError("Too many models for exhaustive crossfit subsets.")
 
     def snapshot(self):
         return {
@@ -328,9 +340,103 @@ class EnsembleRun:
         if self.needs_legacy_errors:
             self.legacy_errors[model_key] = 1.0 - r2_score(y_true, prediction)
 
-    def combine_predictions(self, val_preds, inner_errors, fold):
+    def fit_crossfit_weights(
+        self, trainer, x_train, y_train, groups, pca_components,
+        input_shape, epochs, fold, total_folds,
+    ):
+        """One shared inner OOF pass for all selected crossfit strategies.
+
+        This API deliberately accepts no outer evaluation data. In clean_only,
+        the caller reuses the returned bundle across every evaluation noise.
+        """
+        plan = [item for item in self.strategy_plan if item["strategy"] in CROSSFIT_STRATEGIES]
+        if not plan:
+            return None
+        if len({item["crossfit"]["inner_folds"] for item in plan}) != 1:
+            raise ValueError("Crossfit strategies must share inner_folds.")
+        splits = group_crossfit_splits(groups, plan[0]["crossfit"]["inner_folds"],
+                                      self.manager.random_seed + int(fold))
+        groups = np.asarray(groups).ravel()
+        y_train = np.asarray(y_train, dtype=float).ravel()
+        if not (len(groups) == len(y_train) == len(x_train)):
+            raise ValueError("Crossfit inputs, targets and groups must have equal lengths.")
+        oof = {key: np.full(len(y_train), np.nan) for key in self.model_keys}
+        coverage = np.zeros(len(y_train), dtype=int)
+        inner_fold_ids = np.zeros(len(y_train), dtype=int)
+        split_records = []
+        use_pca = any(spec["kind"] == "sklearn" for spec in self.run_specs)
+        for inner_fold, (fit_index, held_index) in enumerate(splits, 1):
+            seed = self.manager.random_seed + 10000 * int(fold) + inner_fold
+            set_global_seed(seed)
+            x_fit, x_held = x_train[fit_index], x_train[held_index]
+            scaler = MinMaxScaler()
+            y_scaled = scaler.fit_transform(y_train[fit_index].reshape(-1, 1))
+            x_fit_pca = x_held_pca = None
+            if use_pca:
+                x_fit_pca, (x_held_pca,) = trainer.make_pca(x_fit, [x_held], pca_components)
+            model_training = {}
+            for spec in self.run_specs:
+                set_global_seed(seed)
+                print(f"[{spec['label']}] Fold {fold}/{total_folds} inner crossfit {inner_fold}/{len(splits)}")
+                inner_spec = {**spec, "fit_verbose": 0}
+                model = history = None
+                try:
+                    model, history = trainer.train_one_model(
+                        inner_spec, RegressionModelMaker(input_shape), x_fit, y_scaled, x_fit_pca, epochs)
+                    prediction = np.asarray(trainer.predict_one_model(
+                        inner_spec, model, x_held, x_held_pca, scaler), dtype=float).ravel()
+                    if len(prediction) != len(held_index) or not np.isfinite(prediction).all():
+                        raise ValueError("Invalid inner OOF prediction shape or nonfinite values.")
+                    oof[spec["key"]][held_index] = prediction
+                    params = history.params if history is not None else {}
+                    model_training[spec["key"]] = {key: params.get(key) for key in (
+                        "epochs_completed", "actual_batch_size", "requested_batch_size", "stopped_by_memory_error")}
+                finally:
+                    del model, history
+                    K.clear_session()
+                    gc.collect()
+            coverage[held_index] += 1
+            inner_fold_ids[held_index] = inner_fold
+            split_records.append({
+                "inner_fold": inner_fold, "random_seed": seed,
+                "training_wav_groups": sorted(set(groups[fit_index].tolist())),
+                "heldout_wav_groups": sorted(set(groups[held_index].tolist())),
+                "n_training_chunks": len(fit_index), "n_heldout_chunks": len(held_index),
+                "model_training": model_training,
+            })
+            del x_fit, x_held, x_fit_pca, x_held_pca, y_scaled
+        if not np.all(coverage == 1):
+            raise RuntimeError("Every crossfit training chunk must have exactly one held-out prediction.")
+        weights, diagnostics = {}, {}
+        for item in plan:
+            weights[item["name"]], diagnostics[item["name"]] = fit_crossfit_strategy(
+                y_train, oof, groups, self.model_keys, item["strategy"], item["crossfit"])
+        return {"fold": int(fold), "weights": weights, "diagnostics": diagnostics,
+                "splits": split_records, "oof_predictions": oof, "targets": y_train,
+                "groups": groups, "inner_fold_ids": inner_fold_ids}
+
+    def save_crossfit_fit(self, save_path, fold, fit):
+        if fit is None:
+            return
+        if fit["fold"] != fold:
+            raise ValueError("Crossfit fit belongs to a different outer fold.")
+        audit = {key: fit[key] for key in ("fold", "weights", "diagnostics", "splits")}
+        with open_text(os.path.join(save_path, f"ensemble_crossfit_fit_f{fold}.json"),
+                       "w", encoding="utf-8") as output:
+            json.dump(audit, output, ensure_ascii=False, indent=2, allow_nan=False)
+        with open_text(os.path.join(save_path, f"ensemble_inner_oof_f{fold}.csv"),
+                       "w", newline="", encoding="utf-8") as output:
+            writer = csv.writer(output)
+            writer.writerow(["training_row_index", "source_wav_group", "inner_fold", "y_true", *self.model_keys])
+            for index, target in enumerate(fit["targets"]):
+                writer.writerow([index, fit["groups"][index], fit["inner_fold_ids"][index], target,
+                                 *[fit["oof_predictions"][key][index] for key in self.model_keys]])
+
+    def combine_predictions(self, val_preds, inner_errors, fold, crossfit_fit=None):
         if not self.enabled:
             return {}
+        if crossfit_fit is not None and crossfit_fit["fold"] != fold:
+            raise ValueError("Crossfit fit belongs to a different outer fold.")
         outputs = compute_strategy_outputs(
             self.weighting,
             self.strategy_plan,
@@ -339,6 +445,7 @@ class EnsembleRun:
             self.manager.combine,
             inner_errors=inner_errors,
             legacy_errors=self.legacy_errors,
+            fitted_weights=crossfit_fit["weights"] if crossfit_fit is not None else None,
         )
         for output in outputs.values():
             item = output["strategy"]

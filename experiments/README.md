@@ -6,6 +6,7 @@
 
 | 記録 | 範囲・用途 |
 |---|---|
+| [9/16 crossfitアンサンブル追加](2026-09-16_crossfit_ensemble/README.md) | 3方式の追加実装・44テスト。研究実データの新方式での本学習・精度改善は未検証 |
 | [9/15・3/22 kHz比較](2026-09-15_onb_frequency_comparison/analysis.md) | **最新の比較解析**。卒論の実図・数表、劣化抑制、ONB、XAI420例、54区間の帯域SNR、216配列再構成、金曜の論点 |
 | [9/15・22 kHz全7ノイズ解析](2026-09-15_onb_22khz_noise_sweep/analysis.md) | 先行する22 kHz単独解析。35組の性能検算、ONB見逃し、帯域マスク、IG210例の不整合、図表と発表原稿 |
 | [9/15研究整理スナップショット](2026-09-15_research_status_snapshot/README.md) | 9/14の完了6条件の性能・XAI、9月178 manifestsの当時の状態。過去runの比較用 |

@@ -1,0 +1,34 @@
+# 条件記録。主実行はこのYAMLを自動読込しない。未実行の代表比較案。
+status: proposed_not_run
+purpose: compare_training_only_crossfit_ensembles_against_existing_two_strategies
+experiment_names: [2025.06.11_0.3_2]
+frequency_upper_limits_khz: [3, 22]
+noise_conditions: [heatflux_no_noise, heatflux_reference_SNR=-20]
+model_keys: [rf, cnntf_v2_gap, alexnet]
+model_parameters: keep_current_VALIDATION_CONFIG
+epochs: 300
+outer_folds: 3
+random_seed: 42
+learning_policy:
+  split_mode: within_day
+  training_noise: matched
+ensemble:
+  enabled_strategy_names:
+    - simple_equal
+    - inner_holdout
+    - subset_equal_cv
+    - crossfit_wav_stack
+    - crossfit_shrinkage_stack
+  primary_strategy_name: inner_holdout
+crossfit:
+  independent_unit: experiment_day_and_source_wav
+  inner_folds: 4
+  primary_objective: chunk_weighted_mean_then_wav_median_mse
+  shrinkage_lambda: 0.1
+  tune_on_outer_labels: false
+evaluation:
+  primary: [wav_r2, wav_rmse, wav_mae]
+  additional: [first_onb_false_negative, false_positive, weights_by_fold]
+  reporting: report_all_selected_strategies_including_negative_results
+  limitations: same_source_wavs_across_frequency_and_noise_are_not_independent_replicates
+followup: multiple_seeds_then_clean_only_and_leave_one_day_out

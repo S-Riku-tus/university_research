@@ -24,7 +24,7 @@
 
 主実行の`VALIDATION_CONFIG`にデータ、学習条件、モデル別parameter grid、統合、評価、XAI、保存方針を指定する。`configs/`のYAMLは条件記録で、現在は自動読込しない。
 
-現行の有効3モデルは`rf / cnntf_v2_gap / alexnet`。統合は`simple_equal / inner_holdout`。`prediction_max`は削除済み。`val_fold_legacy`は再現・診断用で主張不可。詳細な構造の採用根拠は[8/30比較](../experiments/2026-08-30_log_power_architecture_study.md)。
+現行の有効3モデルは`rf / cnntf_v2_gap / alexnet`。既定の統合は`simple_equal / inner_holdout`。9/16に`subset_equal_cv / crossfit_wav_stack / crossfit_shrinkage_stack`を選択肢へ追加した。[重み学習の実装](../code/utils/ensemble/crossfit_stacking.py)、[有効化と計算量](ensemble_crossfit.md)。新方式は実データの性能未検証。`prediction_max`は削除済み。`val_fold_legacy`は再現・診断用で主張不可。詳細な構造の採用根拠は[8/30比較](../experiments/2026-08-30_log_power_architecture_study.md)。
 
 `within_day / leave_one_day_out`と`matched / clean_only`を組み合わせる。clean_onlyは同じモデル・PCA・scaler・重みをノイズ間で共有する。一般化評価の[実装・制約](research_plan/2026-09-14_result_layout_and_generalization.md)も確認する。
 

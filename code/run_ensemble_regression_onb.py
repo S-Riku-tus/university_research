@@ -159,6 +159,11 @@ VALIDATION_CONFIG = {
         "enabled_strategy_names": [
             "simple_equal",
             "inner_holdout",
+            # 追加比較時に有効化する（共通の元WAV分離inner 4-fold学習が増える）。
+            # "subset_equal_cv",
+            # "crossfit_wav_stack",
+            # "crossfit_shrinkage_stack",
+            # 設計・計算量・保存物: docs/ensemble_crossfit.md
         ],
         # 主方式
         "primary_strategy_name": "inner_holdout",

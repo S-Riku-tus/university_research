@@ -3,10 +3,12 @@ import re
 
 import numpy as np
 
+from utils.ensemble.crossfit_stacking import CROSSFIT_STRATEGIES, validate_crossfit_options
+
 
 VALID_STRATEGIES = {
     "simple", "inner_holdout", "val_fold_legacy",
-}
+} | CROSSFIT_STRATEGIES
 HIGHER_IS_BETTER = {
     "r2", "r2_high", "auc_binary", "roc_auc_cont", "pr_auc_cont",
     "accuracy", "precision", "recall", "f1",
@@ -69,6 +71,9 @@ def normalize_strategy_plan(config):
             "strategy": strategy,
             "claim_safe": strategy != "val_fold_legacy",
         }
+        if strategy in CROSSFIT_STRATEGIES:
+            item["crossfit"] = dict(raw["crossfit"])
+            validate_crossfit_options(item["crossfit"])
         plan.append(item)
         names.add(name)
         result_keys.add(result_key)
@@ -90,6 +95,7 @@ def compute_strategy_outputs(
     combine,
     inner_errors=None,
     legacy_errors=None,
+    fitted_weights=None,
 ):
     outputs = {}
     inner_errors = inner_errors or {}
@@ -102,11 +108,24 @@ def compute_strategy_outputs(
             errors = legacy_errors
         else:
             errors = {}
-        weights = weighting.compute_weights(
-            strategy,
-            run_specs,
-            errors,
-        )
+        if strategy in CROSSFIT_STRATEGIES:
+            if combine != "mean":
+                raise ValueError("Crossfit strategies require weighted mean combination.")
+            if fitted_weights is None or item["name"] not in fitted_weights:
+                raise ValueError(f"Missing training-only crossfit weights for {item['name']}.")
+            weights = dict(fitted_weights[item["name"]])
+            keys = [spec["key"] for spec in run_specs]
+            values = np.asarray([weights.get(key, np.nan) for key in keys])
+            if (set(weights) != set(keys) or set(val_preds) != set(keys)
+                    or not np.isfinite(values).all() or np.any(values < 0)
+                    or not np.isclose(values.sum(), 1.0, rtol=0, atol=1e-8)):
+                raise ValueError("Invalid crossfit weights or model keys.")
+        else:
+            weights = weighting.compute_weights(
+                strategy,
+                run_specs,
+                errors,
+            )
         prediction = weighting.combine_predictions(
             val_preds, weights, combine
         )

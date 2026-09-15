@@ -1,5 +1,7 @@
 from copy import deepcopy
 
+from utils.ensemble.crossfit_stacking import CROSSFIT_DEFAULTS
+
 
 # Stable strategy definitions live here so experiment scripts only choose names.
 # Add or revise a reusable ensemble profile in this catalog, not in a run script.
@@ -11,6 +13,21 @@ ENSEMBLE_STRATEGY_CATALOG = {
     "inner_holdout": {
         "label": "Ensemble inner holdout",
         "strategy": "inner_holdout",
+    },
+    "subset_equal_cv": {
+        "label": "Ensemble crossfit subset equal",
+        "strategy": "subset_equal_cv",
+        "crossfit": {**CROSSFIT_DEFAULTS},
+    },
+    "crossfit_wav_stack": {
+        "label": "Ensemble crossfit WAV stack",
+        "strategy": "crossfit_wav_stack",
+        "crossfit": {**CROSSFIT_DEFAULTS},
+    },
+    "crossfit_shrinkage_stack": {
+        "label": "Ensemble crossfit shrinkage stack",
+        "strategy": "crossfit_shrinkage_stack",
+        "crossfit": {**CROSSFIT_DEFAULTS, "regularization": 0.1},
     },
     "val_fold_legacy": {
         "label": "Ensemble validation-fold legacy",
