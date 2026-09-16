@@ -1,0 +1,74 @@
+[
+  {
+    "frequency": "maxfreq=22kHz",
+    "experiment_name": "2025.06.11_0.3_2",
+    "role": "train",
+    "n_wavs": 18,
+    "heatflux_log_mean_pearson": 0.9441980030997839,
+    "pre_onb_log_mean_median": 3.818750293316054,
+    "onb_positive_log_mean_median": 10.552283951918344,
+    "below_200kw_log_mean_median": 3.826076548300996,
+    "selected_wavs": 18,
+    "selected_heatflux_log_mean_pearson": 0.9441980030997839
+  },
+  {
+    "frequency": "maxfreq=22kHz",
+    "experiment_name": "2025.06.18_0.3_3",
+    "role": "test",
+    "n_wavs": 18,
+    "heatflux_log_mean_pearson": 0.9457765500712414,
+    "pre_onb_log_mean_median": 2.8563973881579168,
+    "onb_positive_log_mean_median": 10.206854566487188,
+    "below_200kw_log_mean_median": 2.714663997689321,
+    "selected_wavs": 18,
+    "selected_heatflux_log_mean_pearson": 0.9457765500712414
+  },
+  {
+    "frequency": "maxfreq=22kHz",
+    "experiment_name": "2025.07.09_0.3_1",
+    "role": "train",
+    "n_wavs": 13,
+    "heatflux_log_mean_pearson": 0.6776200354690027,
+    "pre_onb_log_mean_median": 3.337827973995871,
+    "onb_positive_log_mean_median": 2.9318948546733443,
+    "below_200kw_log_mean_median": 3.472710381911736,
+    "selected_wavs": 11,
+    "selected_heatflux_log_mean_pearson": 0.7937953101053724
+  },
+  {
+    "frequency": "maxfreq=3kHz",
+    "experiment_name": "2025.06.11_0.3_2",
+    "role": "train",
+    "n_wavs": 18,
+    "heatflux_log_mean_pearson": 0.930751247090609,
+    "pre_onb_log_mean_median": 5.578105733856412,
+    "onb_positive_log_mean_median": 12.423704414884302,
+    "below_200kw_log_mean_median": 5.60159243552002,
+    "selected_wavs": 18,
+    "selected_heatflux_log_mean_pearson": 0.930751247090609
+  },
+  {
+    "frequency": "maxfreq=3kHz",
+    "experiment_name": "2025.06.18_0.3_3",
+    "role": "test",
+    "n_wavs": 18,
+    "heatflux_log_mean_pearson": 0.9310844486620437,
+    "pre_onb_log_mean_median": 4.659413271152237,
+    "onb_positive_log_mean_median": 12.362924547397474,
+    "below_200kw_log_mean_median": 4.677563460183498,
+    "selected_wavs": 18,
+    "selected_heatflux_log_mean_pearson": 0.9310844486620437
+  },
+  {
+    "frequency": "maxfreq=3kHz",
+    "experiment_name": "2025.07.09_0.3_1",
+    "role": "train",
+    "n_wavs": 13,
+    "heatflux_log_mean_pearson": 0.6969768723097051,
+    "pre_onb_log_mean_median": 6.0843436351352445,
+    "onb_positive_log_mean_median": 5.993107882706844,
+    "below_200kw_log_mean_median": 6.279571223088888,
+    "selected_wavs": 11,
+    "selected_heatflux_log_mean_pearson": 0.7888556890229782
+  }
+]
