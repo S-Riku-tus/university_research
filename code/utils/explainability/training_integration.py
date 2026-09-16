@@ -998,6 +998,23 @@ def explain_keras_model(model_key, model, scaler, x_val, y_val, pred, threshold,
 
     _write_sample_index(out_dir, sample_rows)
     write_csv(os.path.join(out_dir, "explainability_summary.csv"), SUMMARY_HEADER, summary_rows)
+    ig_states = [
+        bool(value)
+        for (sample_id, method), value in base_numerical.items()
+        if method == "integrated_gradients"
+    ]
+    if ig_states:
+        converged = sum(ig_states)
+        note = (
+            "all selected maps passed"
+            if converged == len(ig_states)
+            else "nonconverged maps were saved with diagnostics but are not validated"
+        )
+        print(
+            f"[XAI] {model_key}: IG numerical convergence "
+            f"{converged}/{len(ig_states)}; {note}.",
+            flush=True,
+        )
     if group_rows:
         write_csv(os.path.join(out_dir, "group_occlusion_summary.csv"),
                   OCCLUSION_HEADER, group_rows)

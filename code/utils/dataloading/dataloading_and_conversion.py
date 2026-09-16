@@ -15,7 +15,7 @@ class DataLoadingConversion:
         sample_indices=None,
     ):
         x, y, metadata = [], [], []
-        print("読み込みスタート")
+        print(f"[data] loading NPY: {folder_path}", flush=True)
         manifest_by_filename = {}
         manifest_path = os.path.join(folder_path, "chunk_manifest.csv")
         if os.path.exists(manifest_path):
@@ -54,6 +54,12 @@ class DataLoadingConversion:
         if x.ndim == 3:
             x = x[..., None]
 
+        print(
+            f"[data] loaded {len(x)} samples: shape={x.shape}, "
+            f"target_range=({y.min():.6g}, {y.max():.6g})",
+            flush=True,
+        )
+
         if return_metadata:
             return x, y, metadata
         return x, y
@@ -64,7 +70,7 @@ class DataLoadingConversion:
 
     def load_image_data(self, folder_path):
         x, y = [], []
-        print("読み込みスタート")
+        print(f"[data] loading images: {folder_path}", flush=True)
         for filename in os.listdir(folder_path):
             if filename.endswith(".png"):
                 # ファイル名から熱流束の値を取得

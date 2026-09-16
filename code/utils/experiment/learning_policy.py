@@ -77,7 +77,7 @@ def normalize_learning_policy(policy, experiment_names, color_channel=1):
 
 
 def policy_result_date_dir(result_date_dir, policy):
-    """従来方式の保存先を保ち、一般化評価の結果を別の実行フォルダへ分ける。"""
+    """保存系列パスの末尾へ学習・評価方針を付け、結果を分離する。"""
     if policy == DEFAULT_POLICY:
         return result_date_dir
     day = {"within_day": "wd", "leave_one_day_out": "lodo", "explicit_days": "days"}[policy["split_mode"]]

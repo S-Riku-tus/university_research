@@ -125,10 +125,11 @@ def run_config_digest(validation_config, parameter_set, run_specs, model_tag, sa
         "parameter_set": parameter_set,
         "model_tag": model_tag,
         "model_params": model_param_summary(run_specs),
-    }, length=6)
+    }, length=8)
 
 
-def run_dir_name(epoch_num, param_tag, model_tag, ensemble_enabled, weight_strategy):
+def run_dir_name(epoch_num, param_tag, model_tag, ensemble_enabled, weight_strategy,
+                 run_hash=None, run_instance_id=None):
     parts = [
         f"e{epoch_num}",
         safe_tag(param_tag, max_len=24),
@@ -136,6 +137,10 @@ def run_dir_name(epoch_num, param_tag, model_tag, ensemble_enabled, weight_strat
     ]
     if ensemble_enabled:
         parts.append(compact_weight_strategy_tag(weight_strategy))
+    if run_hash:
+        parts.append(safe_tag(run_hash, max_len=12))
+    if run_instance_id:
+        parts.append(safe_tag(run_instance_id, max_len=24))
     return "_".join(parts)
 
 
@@ -171,8 +176,8 @@ def write_run_manifest(
         "run_hash": run_hash,
         "run_dir": run_dir,
         "folder_naming": {
-            "scheme": "e{epochs}_{param}_{models}[_{weight_when_ensemble_enabled}]",
-            "reason": "Keep Windows paths short while keeping parameter folders readable.",
+            "scheme": "e{epochs}_{param}_{models}[_{weight}]_{config_hash}_{run_instance_id}",
+            "reason": "Keep every execution separate; an explicit repeated RUN_ID resumes that execution.",
             "details": "Full conditions are stored in this manifest and validation_results_*.txt.",
         },
         "dataset": {
@@ -198,7 +203,7 @@ def write_run_manifest(
             validation_config, parameter_set, run_specs, model_tag,
             validation_config["output"]["save_fold_predictions"])
         manifest["learning_context"] = job["learning_context"]
-        manifest["folder_naming"]["result_hierarchy"] = "date/frequency/noise/run"
+        manifest["folder_naming"]["result_hierarchy"] = "analysis_date/study/frequency/noise/run"
     manifest_path = os.path.join(save_path, "run_manifest.json")
     with open_text(manifest_path, "w", encoding="utf-8") as mf:
         json.dump(manifest, mf, ensure_ascii=False, indent=2, default=json_default)
