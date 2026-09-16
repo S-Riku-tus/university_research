@@ -21,7 +21,7 @@ from utils.experiment.learning_policy import (
     policy_result_date_dir,
 )
 from utils.experiment.learning_runner import run_learning_experiments
-from utils.experiment.result_paths import existing_result_run_path, result_run_path
+from utils.experiment.result_paths import existing_result_run_path, result_run_path, scoped_result_job
 from utils.experiment.run_helpers import is_completed_run, run_config_digest
 from utils.plotting.noise_trend_plots import collect_noise_trend_rows
 from utils.training.model_training import ModelTrainer
@@ -101,6 +101,41 @@ def fixture(root, policy, evaluated_noises=("heatflux_no_noise", "heatflux_refer
 
 
 class LearningPolicyTest(unittest.TestCase):
+    def test_scoped_result_directory_separates_executions_and_parameters(self):
+        job = {"save_base_path": Path("ensemble/20260917_selected_log_architecture__days_matched"),
+               "max_freq_hz": "maxfreq=3kHz", "noise_dir_name": "heatflux_no_noise"}
+        first = scoped_result_job(job, "execution-a", "config-a")
+        self.assertEqual(first, scoped_result_job(job, "execution-a", "config-a"))
+        self.assertNotEqual(first["save_base_path"], scoped_result_job(job, "execution-b", "config-a")["save_base_path"])
+        self.assertNotEqual(first["save_base_path"], scoped_result_job(job, "execution-a", "config-b")["save_base_path"])
+        self.assertEqual(first["save_base_path"].parent, job["save_base_path"].parent)
+        self.assertTrue(first["save_base_path"].name.startswith(job["save_base_path"].name + "__"))
+        self.assertEqual(result_run_path(first, ""), first["save_base_path"] / "maxfreq=3kHz" / "heatflux_no_noise")
+
+    def test_scoped_result_layout_writes_directly_below_noise(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            policy = {"split_mode": "within_day", "training_noise": "matched"}
+            jobs, specs, manager, config = fixture(root, policy,
+                                                    evaluated_noises=("heatflux_no_noise",), days=("day-a",))
+            config["output"].update(run_scoped_result_dir=True, execution_id="execution-a")
+            trainer = ObservedTrainer()
+            for execution_id in ("execution-a", "execution-b"):
+                config["output"]["execution_id"] = execution_id
+                with contextlib.redirect_stdout(io.StringIO()), patch("gc.collect"), patch("tensorflow.keras.backend.clear_session"):
+                    run_learning_experiments(jobs, policy, config, specs, [{"name": "test"}],
+                                             manager, trainer, SilentPlotter(), lambda *args: None)
+            base = jobs[0]["save_base_path"]
+            scoped = sorted(base.parent.glob(base.name + "__*"))
+            self.assertEqual(len(scoped), 2)
+            for directory in scoped:
+                result = directory / "maxfreq=3kHz" / "heatflux_no_noise"
+                self.assertTrue((result / "completed.json").is_file())
+                self.assertTrue((result / "run_manifest.json").is_file())
+                self.assertEqual(json.loads((result / "run_manifest.json").read_text(encoding="utf-8"))["run_dir"], "")
+                self.assertTrue((directory / "tuning_summary.csv").is_file())
+                self.assertFalse(any(path.name.startswith("e1_") for path in result.iterdir()))
+
     def run_fixture(self, root, policy, evaluated_noises=None):
         args = {} if evaluated_noises is None else {"evaluated_noises": evaluated_noises}
         jobs, specs, manager, config = fixture(root, policy, **args)

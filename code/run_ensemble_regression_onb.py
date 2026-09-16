@@ -14,6 +14,7 @@
 
 import os
 from datetime import datetime
+from uuid import uuid4
 from pathlib import Path
 from pprint import pformat
 
@@ -187,8 +188,8 @@ VALIDATION_CONFIG = {
         "pca_components": 100,
     },
     "output": {
-        # 各実験日のregression_result/npy/<モデル群>/<実行日>/<周波数>/<ノイズ>/<run>へ保存する。
-        # 比較図は<周波数>/noise_trends/<run>/<方式>に置き、各ノイズフォルダと並べる。
+        # 各実験日のregression_result/npy/<モデル群>/<実行日と実行ハッシュ>/<周波数>/<ノイズ>へ保存する。
+        # 比較図は<周波数>/noise_trends/<方式>に置き、各ノイズフォルダと並べる。
         "save_date": datetime.now().strftime("%Y%m%d"),
         "result_date_dir": datetime.now().strftime("%Y%m%d") + "_selected_log_architecture",
         "save_fold_predictions": True,
@@ -367,6 +368,8 @@ SAVE_TUNING_SUMMARY = _cfg("output", "save_tuning_summary")
 RESUME_COMPLETED_RUNS = _cfg("output", "resume_completed_runs")
 NOISE_TREND_CONFIG = _cfg("output", "noise_trend_plots")
 RUN_INSTANCE_ID = os.environ.get("RUN_ID", datetime.now().strftime("%H%M%S"))
+# RUN_IDが同じでも、プロセスを起動するたびに別の結果フォルダを使う。
+EXECUTION_ID = uuid4().hex
 FOLD_PREDICTIONS_DIR_NAME = "fold_pred"
 WAV_LEVEL_EVALUATION_ENABLED = _cfg("evaluation", "wav_level_enabled")
 WAV_AGGREGATIONS = tuple(_cfg("evaluation", "wav_aggregations"))
@@ -514,6 +517,8 @@ def validation_config_snapshot():
             "save_date": SAVE_DATE,
             "result_date_dir": RESULT_DATE_DIR,
             "run_instance_id": RUN_INSTANCE_ID,
+            "execution_id": EXECUTION_ID,
+            "run_scoped_result_dir": True,
             "save_fold_predictions": SAVE_FOLD_PREDICTIONS,
             "save_tuning_summary": SAVE_TUNING_SUMMARY,
             "resume_completed_runs": RESUME_COMPLETED_RUNS,

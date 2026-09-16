@@ -2,7 +2,16 @@
 
 from pathlib import Path
 
-from utils.experiment.run_helpers import path_exists
+from utils.experiment.run_helpers import path_exists, short_digest
+
+
+def scoped_result_job(job, execution_id, run_hash):
+    """実行とパラメータ条件ごとに日付フォルダを分ける。"""
+    if not execution_id or not run_hash:
+        raise ValueError("execution_id and run_hash are required for scoped results")
+    base = Path(job["save_base_path"])
+    scope = short_digest({"execution_id": execution_id, "run_hash": run_hash}, length=12)
+    return {**job, "save_base_path": base.with_name(f"{base.name}__{scope}")}
 
 
 def result_run_path(job, run_dir):

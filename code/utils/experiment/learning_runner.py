@@ -26,7 +26,7 @@ from utils.experiment.learning_policy import (
     aligned_indices, build_learning_families, checked_metadata, outer_splits,
     targets_from_metadata, wav_groups,
 )
-from utils.experiment.result_paths import existing_result_run_path, result_run_path
+from utils.experiment.result_paths import existing_result_run_path, result_run_path, scoped_result_job
 from utils.experiment.run_helpers import (
     append_tuning_summary, has_threshold, is_completed_run, json_default, makedirs,
     open_text, path_exists, run_config_digest, run_dir_name, safe_tag,
@@ -273,27 +273,35 @@ def run_learning_experiments(jobs, policy, config, enabled_specs, parameter_sets
             ensemble = ensemble_manager.create_run(specs)
             run_dir = run_dir_name(config["run"]["epochs"], param_tag, model_tag,
                                    ensemble.enabled, ensemble.strategy_tag)
-            # 方針変更時の再利用を防ぎ、同じパラメータ名でも別設定の結果を保つ。
-            related_jobs = [job for job in jobs if
-                            job["experiment_name"] == family["evaluation_jobs"][0]["experiment_name"]
-                            and job["max_freq_hz"] == family["evaluation_jobs"][0]["max_freq_hz"]]
-            saved_manifests = []
-            for job in related_jobs:
-                manifest_path = existing_result_run_path(job, run_dir) / "run_manifest.json"
-                if path_exists(manifest_path):
-                    with open_text(manifest_path, "r", encoding="utf-8") as source:
-                        saved_manifests.append(json.load(source))
-            if saved_manifests:
-                compatible = all(saved_run_matches_execution(manifest, config, parameter_set, specs,
-                                 model_tag, config["output"]["save_fold_predictions"]) for manifest in saved_manifests)
-                hashes = {manifest["run_hash"] for manifest in saved_manifests}
-                if compatible and len(hashes) == 1:
-                    run_hash = hashes.pop()
-                else:
-                    run_dir += "_" + run_hash
+            evaluation_jobs = family["evaluation_jobs"]
+            if config["output"].get("run_scoped_result_dir", False):
+                execution_id = config["output"].get("execution_id")
+                evaluation_jobs = [scoped_result_job(job, execution_id, run_hash)
+                                   for job in evaluation_jobs]
+                # 実行・条件の識別は日付フォルダで済むため、末尾のrun階層は作らない。
+                run_dir = ""
+            else:
+                # 旧形式の結果を再開する呼び出しでは既存の照合方法を維持する。
+                related_jobs = [job for job in jobs if
+                                job["experiment_name"] == evaluation_jobs[0]["experiment_name"]
+                                and job["max_freq_hz"] == evaluation_jobs[0]["max_freq_hz"]]
+                saved_manifests = []
+                for job in related_jobs:
+                    manifest_path = existing_result_run_path(job, run_dir) / "run_manifest.json"
+                    if path_exists(manifest_path):
+                        with open_text(manifest_path, "r", encoding="utf-8") as source:
+                            saved_manifests.append(json.load(source))
+                if saved_manifests:
+                    compatible = all(saved_run_matches_execution(manifest, config, parameter_set, specs,
+                                     model_tag, config["output"]["save_fold_predictions"]) for manifest in saved_manifests)
+                    hashes = {manifest["run_hash"] for manifest in saved_manifests}
+                    if compatible and len(hashes) == 1:
+                        run_hash = hashes.pop()
+                    else:
+                        run_dir += "_" + run_hash
             recorders = [ResultRecorder(job, parameter_set, specs, ensemble_manager.create_run(specs),
                          config, run_dir, run_hash, param_tag, model_tag, context)
-                         for job in family["evaluation_jobs"]]
+                         for job in evaluation_jobs]
             completion = [_completed(recorder) for recorder in recorders]
             if all(completion):
                 for recorder in recorders:

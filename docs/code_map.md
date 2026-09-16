@@ -18,7 +18,7 @@
 | ONB閾値 | [onb_thresholds.py](../code/utils/experiment/onb_thresholds.py) | 3日分の正確な閾値と原資料の出典 |
 | 説明性 | [training_integration.py](../code/utils/explainability/training_integration.py)、[spectrogram_explainers.py](../code/utils/explainability/spectrogram_explainers.py) | TreeSHAP/IG/Grad-CAM/マスク、整合性・安定性・最終層ランダム化 |
 | 作図 | [regression_plots.py](../code/utils/plotting/regression_plots.py)、[noise_trend_plots.py](../code/utils/plotting/noise_trend_plots.py) | 損失・散布図・比較図・ノイズ別曲線 |
-| 保存 | [result_paths.py](../code/utils/experiment/result_paths.py)、[run_helpers.py](../code/utils/experiment/run_helpers.py) | 実行日/周波数/ノイズ/run、manifest、hash、再開判定 |
+| 保存 | [result_paths.py](../code/utils/experiment/result_paths.py)、[run_helpers.py](../code/utils/experiment/run_helpers.py) | 実行日と実行ハッシュ/周波数/ノイズ、manifest、条件hash、再開判定 |
 
 ## 設定の正本
 
@@ -33,6 +33,8 @@
 ## 保存されるもの
 
 各runは`fold_pred/`のchunk予測、`wav_eval/`のpooled WAV指標・ONB遷移、`explainability/`、損失/散布図/指標、manifestを持つ。新実行経路は`split_manifest.json`と完了時の`completed.json`も保存する。
+
+主実行の保存先は各実験日の`regression_result/npy/<モデル群>/<実行日と方針>__<12桁hash>/<周波数>/<ノイズ>/`。末尾にモデル・epoch名のrunフォルダは作らない。12桁hashは起動ごとに生成する`execution_id`と条件hashから作るため、同日・同条件の再実行でも別フォルダとなり、1起動内のパラメータ候補も分かれる。実際の条件と`execution_id`は`run_manifest.json`に記録する。`tuning_summary.csv`はhash付き日付フォルダの直下、ノイズ比較図はその下の`<周波数>/noise_trends/`に置く。新しい起動では別フォルダを使うため、旧runの自動再開はしない。旧階層の結果は移動せず、既存の読み取り経路を維持する。
 
 通常runはモデル本体を永続保存しない。保存済み予測からの後処理と、モデルを必要とするIG再計算・新マスク推論は区別する。clean_onlyの一部ノイズだけ未完了の場合は、同じ学習モデルを揃えるため関連ノイズ一式を再計算する仕様。
 
