@@ -13,6 +13,35 @@ DEFAULT_POLICY = {"split_mode": "within_day", "training_noise": "matched"}
 CLEAN_NOISE = "heatflux_no_noise"
 
 
+def resolve_experiment_names(data_config, policy):
+    """実行対象日を一元化する。明示分割では学習日とテスト日の和集合を使う。"""
+    policy = policy or {}
+    configured = data_config.get("experiment_names")
+    if configured is not None and (
+        not isinstance(configured, (list, tuple))
+        or any(not isinstance(day, str) or not day for day in configured)
+    ):
+        raise ValueError("data.experiment_namesには実験日名のリストを指定してください。")
+    if policy.get("split_mode", DEFAULT_POLICY["split_mode"]) == "explicit_days":
+        days = []
+        for key in ("train_experiments", "test_experiments"):
+            values = policy.get(key)
+            if not isinstance(values, (list, tuple)) or not values or any(
+                not isinstance(day, str) or not day for day in values
+            ):
+                raise ValueError(f"learning_policy.{key}には実験日名のリストが必要です。")
+            days.extend(values)
+        derived = sorted(set(days))
+        if configured is None:
+            return derived
+        if set(configured) != set(derived) or len(configured) != len(derived):
+            raise ValueError("explicit_daysのdata.experiment_namesは学習日とテスト日の和集合に一致させてください。")
+        return list(configured)
+    if not configured:
+        raise ValueError("within_day / leave_one_day_outではdata.experiment_namesに実験日を指定してください。")
+    return list(configured)
+
+
 def normalize_learning_policy(policy, experiment_names, color_channel=1):
     resolved = {**DEFAULT_POLICY, **(policy or {})}
     extra_keys = {"train_experiments", "test_experiments", "internal_validation"}
@@ -35,6 +64,9 @@ def normalize_learning_policy(policy, experiment_names, color_channel=1):
                 raise ValueError(f"{key}にdata.experiment_names外の実験日があります。")
         if set(resolved["train_experiments"]) & set(resolved["test_experiments"]):
             raise ValueError("学習日とテスト日は完全に分離してください。")
+        unused = set(experiment_names) - set(resolved["train_experiments"]) - set(resolved["test_experiments"])
+        if unused:
+            raise ValueError(f"explicit_daysのexperiment_namesに未使用の実験日があります: {sorted(unused)}")
     elif any(key in resolved for key in ("train_experiments", "test_experiments")):
         raise ValueError("実験日の明示指定にはsplit_mode=explicit_daysを使ってください。")
     if resolved.get("internal_validation", "chunk_kfold") not in {"chunk_kfold", "wav_kfold"}:

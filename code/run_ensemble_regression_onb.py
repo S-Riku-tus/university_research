@@ -36,7 +36,7 @@ from utils.explainability.training_integration import (
 )
 from utils.experiment.dataset_jobs import build_dataset_jobs as make_dataset_jobs
 from utils.experiment.learning_policy import (
-    normalize_learning_policy, policy_result_date_dir,
+    normalize_learning_policy, policy_result_date_dir, resolve_experiment_names,
 )
 from utils.experiment.learning_runner import run_learning_experiments
 from utils.experiment.result_paths import existing_result_run_path, noise_trend_path
@@ -55,7 +55,7 @@ from utils.experiment.run_helpers import set_global_seed
 #
 # 現在の設定の読み方:
 # ・目的: 同じ検証予測から単体モデルと各アンサンブル方式を比較する。
-# ・データ: experiment_namesで有効にした実験日と周波数・ノイズ条件を使う。
+# ・データ: explicit_daysでは学習日とテスト日の和集合、他の分割ではexperiment_namesを使う。
 # ・モデル: RF、CNN＋Transformer、AlexNet。
 # ・統合方式: ensembleに列挙した方式を実行し、主方式を別途指定する。
 # ・説明性: 有効なデータ条件・モデル・foldについて指定手法を実行する。
@@ -78,26 +78,21 @@ VALIDATION_CONFIG = {
         "experiment_root_parts": ["Pool_boiling", "Subcooling_20_degrees", "0.3"],
         "noise_source": "waterflow",  # 水流音はwaterflow、白色雑音はwhitenoise
         "chunk_seconds": 1,
-        "experiment_names": [
-            "2025.06.11_0.3_2",
-            "2025.06.18_0.3_3",
-            "2025.07.09_0.3_1",
-        ],
         "max_freq_hz_list": [
             "maxfreq=3kHz",
-            "maxfreq=5kHz",
-            "maxfreq=10kHz",
-            "maxfreq=15kHz",
+            # "maxfreq=5kHz",
+            # "maxfreq=10kHz",
+            # "maxfreq=15kHz",
             "maxfreq=22kHz",
         ],
         "noise_dir_names": [
             "heatflux_no_noise",
-            "heatflux_reference_SNR=0",
-            "heatflux_reference_SNR=-4",
-            "heatflux_reference_SNR=-8",
-            "heatflux_reference_SNR=-12",
-            "heatflux_reference_SNR=-16",
-            "heatflux_reference_SNR=-20",
+            # "heatflux_reference_SNR=0",
+            # "heatflux_reference_SNR=-4",
+            # "heatflux_reference_SNR=-8",
+            # "heatflux_reference_SNR=-12",
+            # "heatflux_reference_SNR=-16",
+            # "heatflux_reference_SNR=-20",
         ],
         "data_source_dir_by_experiment": {
             "2025.06.11_0.3_2": "waterflow_20260817_1s",
@@ -108,7 +103,8 @@ VALIDATION_CONFIG = {
     },
     "learning_policy": {
         # 学習日・テスト日を明示指定。テスト日は重み・PCA・選別閾値のfitに使わない。
-        # 旧within_day / leave_one_day_outも保持（使用時は下記の実験日指定を外す）。
+        # 旧within_day / leave_one_day_outでは下記のtrain/test指定を外し、
+        # data.experiment_namesに評価対象日を指定する。
         "split_mode": "explicit_days",
         "train_experiments": ["2025.06.11_0.3_2", "2025.07.09_0.3_1"],
         "test_experiments": ["2025.06.18_0.3_3"],
@@ -177,12 +173,12 @@ VALIDATION_CONFIG = {
     "ensemble": {
         # 実行するアンサンブル方式
         "enabled_strategy_names": [
-            "performance_kfold",
-            # "simple_equal",
-            # "inner_holdout",
-            # "subset_equal_cv",
-            # "crossfit_wav_stack",
-            # "crossfit_shrinkage_stack",
+            "performance_kfold",  # 学習データの1秒データを通常KFoldで分け、全件の内部予測を集める
+            "simple_equal",  # 等しい重みで平均
+            "inner_holdout",  # 学習データの約20%を、元WAVが重ならないように一度だけ取り分ける
+            "subset_equal_cv",  # 使うモデルの組合せを選び、選んだモデルを等重みで平均
+            "crossfit_wav_stack",  # WAV単位の予測誤差が小さくなる重みを直接求める
+            "crossfit_shrinkage_stack",  # 上の方法に「極端な重みを避け、等重みに近づける」制約を加える
         ],
         # 主方式
         "primary_strategy_name": "performance_kfold",
@@ -325,7 +321,8 @@ FLG_ROOP = _cfg("run", "loop_parameter_sets")
 
 NOISE_SOURCE_PREFIX = _noise_source_prefix(_cfg("data", "noise_source"))
 CHUNK = _cfg("data", "chunk_seconds")
-EXPERIMENT_DIR_NAMES = _cfg("data", "experiment_names")
+EXPERIMENT_DIR_NAMES = resolve_experiment_names(
+    VALIDATION_CONFIG["data"], VALIDATION_CONFIG["learning_policy"])
 MAX_FREQ_HZ_LIST = _cfg("data", "max_freq_hz_list")
 NOISE_DIR_NAMES = _cfg("data", "noise_dir_names")
 DATA_SOURCE_DIR_BY_EXPERIMENT = _cfg("data", "data_source_dir_by_experiment")
@@ -472,6 +469,7 @@ def build_dataset_jobs():
         color_channel=COLOR_CHANNEL,
         require_experiment_threshold=REQUIRE_EXPERIMENT_THRESHOLD,
         skip_missing_datasets=SKIP_MISSING_DATASETS,
+        learning_policy=LEARNING_POLICY,
     )
 
 

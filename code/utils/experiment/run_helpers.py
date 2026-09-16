@@ -8,7 +8,6 @@ from datetime import datetime
 from pathlib import Path
 
 import numpy as np
-import tensorflow as tf
 
 
 WEIGHT_STRATEGY_TAGS = {
@@ -247,6 +246,8 @@ def join_unique(values):
 
 def set_global_seed(seed):
     """Keep KFold, sklearn, and Keras runs as reproducible as practical."""
+    import tensorflow as tf
+
     random.seed(seed)
     np.random.seed(seed)
     tf.random.set_seed(seed)

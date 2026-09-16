@@ -124,7 +124,7 @@ PSDを帯域内で積分した**パワーに閾値を置く**。「ある周波�
 },
 ```
 
-別の日をテストにするときは、data.experiment_namesに3日を残し、train_experiments/test_experimentsを互いに重ならないよう変更。未使用日を学習へ自動で入れない。内部fold数はrun.folds。内部を元WAVで分けたい場合には `wav_kfold`（元WAV一覧への通常KFold）も選択できる。
+別の日をテストにするときは、train_experiments/test_experimentsを互いに重ならないよう変更する。2026-09-16の[設定整理](../2026-09-16_onb_experiment_day_audit/README.md)以降、`explicit_days`ではこの和集合から対象日を自動決定するため、`data.experiment_names`の手動変更は不要。未使用日を学習へ自動で入れない。内部fold数はrun.folds。内部を元WAVで分けたい場合には `wav_kfold`（元WAV一覧への通常KFold）も選択できる。
 
 旧日内GroupKFold、LODO、等重み、inner holdout、crossfit各方式は保持。今回の学習選別はperformance_kfoldの内部fitに統合したため、新crossfitと併用する設定は明示エラーにする。将来の方式比較時には、選別条件も同じに保つ対応を追加してから比較する。
 

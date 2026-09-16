@@ -48,10 +48,15 @@ def build_dataset_jobs(
     color_channel,
     require_experiment_threshold,
     skip_missing_datasets,
+    learning_policy=None,
 ):
     jobs = []
     missing = []
     root = Path(experiment_root)
+    policy = learning_policy or {}
+    explicit_days = policy.get("split_mode") == "explicit_days"
+    test_days = set(policy["test_experiments"]) if explicit_days else set(experiment_names)
+    intended = 0
     for experiment_name in experiment_names:
         exp_root = root / experiment_name
         source_dir = find_data_source_dir(
@@ -62,8 +67,17 @@ def build_dataset_jobs(
             chunk_seconds,
         )
         threshold = threshold_by_experiment.get(experiment_name)
+        # 学習専用日のclean_onlyでは評価ノイズを全件要求しない。
+        # clean条件を評価一覧から外しても、学習専用日では検査する。
+        if experiment_name in test_days:
+            required_noises = list(noise_dir_names)
+        elif policy.get("training_noise") == "clean_only":
+            required_noises = ["heatflux_no_noise"]
+        else:
+            required_noises = list(noise_dir_names)
         for max_freq_name in max_freq_hz_list:
-            for noise_dir_name in noise_dir_names:
+            for noise_dir_name in required_noises:
+                intended += 1
                 data_path = None if source_dir is None else source_dir / max_freq_name / noise_dir_name
                 job = {
                     "experiment_name": experiment_name,
@@ -85,7 +99,6 @@ def build_dataset_jobs(
                 else:
                     missing.append({**job, "missing_reason": "data"})
 
-    intended = len(experiment_names) * len(max_freq_hz_list) * len(noise_dir_names)
     print(f"dataset plan: existing={len(jobs)} / intended={intended}")
     if missing:
         print("missing datasets:")

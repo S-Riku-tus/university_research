@@ -1,6 +1,6 @@
 # コード地図
 
-更新日: 2026-09-15。現在の設定・完了runは[研究の現在地](research_status.md)。通常の主実行は[run_ensemble_regression_onb.py](../code/run_ensemble_regression_onb.py)。
+更新日: 2026-09-16。現在の設定・完了runは[研究の現在地](research_status.md)。通常の主実行は[run_ensemble_regression_onb.py](../code/run_ensemble_regression_onb.py)。
 
 ## 主経路と入出力
 
@@ -9,7 +9,7 @@
 | 前処理 | [水流音STFT生成](../code/2.run_npy_waterflow_2つhighpass.py)、[waterflow_preprocessing.py](../code/utils/dataloading/waterflow_preprocessing.py) | 元WAV→固定基準ノイズ・STFT power→224×224 NPY、manifest |
 | 読込 | [dataloading_and_conversion.py](../code/utils/dataloading/dataloading_and_conversion.py) | 時間×周波数×channelのx、熱流束y、元WAV/chunk情報 |
 | 条件・分割 | [dataset_jobs.py](../code/utils/experiment/dataset_jobs.py)、[learning_policy.py](../code/utils/experiment/learning_policy.py) | 実験日/ノイズ方針、元WAV分離、ノイズ間の対応検査 |
-| 学習・評価実行 | [learning_runner.py](../code/utils/experiment/learning_runner.py) | 4方針の学習・予測・XAI・指標・保存をまとめる |
+| 学習・評価実行 | [learning_runner.py](../code/utils/experiment/learning_runner.py) | 分割・ノイズ方針ごとの学習・予測・XAI・指標・保存をまとめる |
 | モデル | [base_regression.py](../code/utils/models/regression/base_regression.py) | RF=XGBRF、log-power AlexNet、log-power CNN＋Transformer |
 | 学習器 | [model_training.py](../code/utils/training/model_training.py) | 学習側PCA、Keras/RF学習、元スケールへの予測復元 |
 | 統合 | [strategy_catalog.py](../code/utils/ensemble/strategy_catalog.py)、[ensemble_runtime.py](../code/utils/ensemble/ensemble_runtime.py)、[ensemble_weighting.py](../code/utils/ensemble/ensemble_weighting.py) | 選択式の統合、元WAV非重複inner holdout、WAV medianでの重み用誤差 |
@@ -22,11 +22,11 @@
 
 ## 設定の正本
 
-主実行の`VALIDATION_CONFIG`にデータ、学習条件、モデル別parameter grid、統合、評価、XAI、保存方針を指定する。`configs/`のYAMLは条件記録で、現在は自動読込しない。
+主実行の`VALIDATION_CONFIG`にデータ、学習条件、モデル別parameter grid、統合、評価、XAI、保存方針を指定する。`configs/`のYAMLは条件記録で、現在は自動読込しない。現在の`explicit_days`では`learning_policy.train_experiments`と`test_experiments`の和集合からデータ対象日を自動決定し、`data.experiment_names`は指定しない。旧`within_day / leave_one_day_out`へ切り替える場合のみ`data.experiment_names`に対象日を指定する。実行manifestには解決後の日付一覧を従来どおり保存する。[日付指定の監査](../experiments/2026-09-16_onb_experiment_day_audit/README.md)。
 
-現行の有効3モデルは`rf / cnntf_v2_gap / alexnet`。既定の統合は`simple_equal / inner_holdout`。9/16に`subset_equal_cv / crossfit_wav_stack / crossfit_shrinkage_stack`を選択肢へ追加した。[重み学習の実装](../code/utils/ensemble/crossfit_stacking.py)、[5方式の手法と数式](ensemble_methods.md)。新方式は実データの性能未検証。`prediction_max`は削除済み。`val_fold_legacy`は再現・診断用で主張不可。詳細な構造の採用根拠は[8/30比較](../experiments/2026-08-30_log_power_architecture_study.md)。
+現行の有効3モデルは`rf / cnntf_v2_gap / alexnet`。主設定で有効な統合は`performance_kfold`。`simple_equal / inner_holdout`も選択可能で、9/16に`subset_equal_cv / crossfit_wav_stack / crossfit_shrinkage_stack`を選択肢へ追加した。[重み学習の実装](../code/utils/ensemble/crossfit_stacking.py)、[5方式の手法と数式](ensemble_methods.md)。新方式は実データの性能未検証。`prediction_max`は削除済み。`val_fold_legacy`は再現・診断用で主張不可。詳細な構造の採用根拠は[8/30比較](../experiments/2026-08-30_log_power_architecture_study.md)。
 
-`within_day / leave_one_day_out`と`matched / clean_only`を組み合わせる。clean_onlyは同じモデル・PCA・scaler・重みをノイズ間で共有する。一般化評価の[実装・制約](research_plan/2026-09-14_result_layout_and_generalization.md)も確認する。
+`within_day / leave_one_day_out / explicit_days`と`matched / clean_only`を組み合わせる。clean_onlyは同じモデル・PCA・scaler・重みをノイズ間で共有する。明示分割では学習専用日は学習に要るノイズだけを探索する。一般化評価の[実装・制約](research_plan/2026-09-14_result_layout_and_generalization.md)も確認する。
 
 通常の学習は要求epochまで行い、validation lossによるearly stoppingは現行主経路にない。OOM時にbatchを減らす再試行や、一定epoch以上の途中学習を受け入れる処理があるため、`tuning_summary.csv`等の実際のepoch/batchも確認する。要求300という名前だけで全モデルが必ず300完走したと断定しない。
 
@@ -50,6 +50,6 @@
 
 ## 過去コード・資料処理
 
-`3.run_ensemble_ROC_100%_analysis.py`、`3.run_ensemble_100percent_classification.py`は旧実行。`regression_analysis/`、`6-class classification/`、`dBdata/`は個別回帰/分類の過去比較。`various_feature_values/`はSTFT/SWT/spectrumの試行。`code/trush_box/`と`archive/`は過去実装を保持する。
+`3.run_ensemble_ROC_100%_analysis.py`、`3.run_ensemble_100percent_classification.py`は旧実行。`regression_analysis/`、`6-class classification/`、`dBdata/`は個別回帰/分類の過去比較。`various_feature_values/`はSTFT/SWT/spectrumの試行。`code/trush_box/`と`archive/`は過去実装を保持する。旧PCの固定パスを持つ単発スクリプト3本は`code/trush_box/`へ退避した。
 
 熱流束計算・名前対応は`0.run_auto_heatflux_analysis*.ipynb`、`1.run_rename_files.ipynb`等。過去Notebookを再実行する前に対象パスと名前変更の影響を確認する。研究資料内にも過去Notebook・スクリプトがあり、主実行と混同しない。
