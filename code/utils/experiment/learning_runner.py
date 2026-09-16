@@ -248,7 +248,7 @@ def run_learning_experiments(jobs, policy, config, enabled_specs, parameter_sets
     if performance_cv and "inner_holdout" in ensemble_manager.selected_strategy_names:
         raise ValueError("performance_kfoldとinner_holdoutは重み推定が異なるため同時選択できません。")
     if selector.enabled and (policy["split_mode"] == "within_day" or not performance_cv):
-        raise ValueError("学習選別は別日評価＋performance_kfoldで使用してください。内部fitごとに閾値を推定します。")
+        raise ValueError("学習選別は別日評価＋performance_kfoldで使用してください。各fit側だけを選別します。")
     if selector.enabled and any(name.startswith("crossfit_") or name == "subset_equal_cv"
                                 for name in ensemble_manager.selected_strategy_names):
         raise ValueError("学習選別と新アンサンブル方式の併用は未対応です。今回の基準方式を使用してください。")

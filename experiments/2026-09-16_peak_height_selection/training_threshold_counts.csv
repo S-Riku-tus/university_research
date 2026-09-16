@@ -1,0 +1,7 @@
+threshold_in_1e9_units,n_training_retained_if_applied
+0.1,1657
+0.3,1652
+1.0,1649
+3.0,1641
+10.0,1633
+30.0,1612

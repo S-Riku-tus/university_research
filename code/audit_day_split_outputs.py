@@ -49,6 +49,8 @@ def main():
     for path in smoke_base.rglob("completed.json"):
         directory = path.parent
         manifest = json.loads((directory / "run_manifest.json").read_text(encoding="utf-8"))
+        if manifest["validation_config"].get("acoustic_selection", {}).get("mode") == "peak_height":
+            continue  # Later peak-height runs are audited by audit_peak_height_outputs.py.
         strategies = manifest["validation_config"]["ensemble"]["strategies"]
         if not any(s["strategy"] == "performance_kfold" for s in strategies):
             continue  # development run before the final strategy type was named

@@ -123,11 +123,16 @@ VALIDATION_CONFIG = {
     "acoustic_selection": {
         # clean原音から得た同じ判定を全周波数・付加ノイズ条件へ適用。
         # 学習だけを選別し、内部validation・別日testは全1秒区間を評価する。
-        "enabled": True,  # 9/16の探索的な暫定条件。Falseで選別なしの対照比較。
-        "features_csv": "experiments/2026-09-16_day_split_spectral_selection/spectral_features.csv",
-        "feature": "band_2000_3000_db",
-        "background_quantile": 0.99,
-        "margin_db": 0.0,
+        "enabled": True,  # Falseで選別なし。下記はピーク前後を含める探索的な暫定条件。
+        "mode": "peak_height",
+        "features_csv": "experiments/2026-09-16_peak_height_selection/peak_features.csv",
+        # 2300 Hz付近の山の頂点（2100～2500 Hz内の最大PSD）。帯域の面積ではない。
+        "feature": "peak_2100_2500_psd",
+        # スペクトルの縦軸に引く横線。図の「×10^-9」表示で高さ1に相当。
+        # 0.3e-9なら弱い秒も含む。3e-9 / 10e-9なら大きいピークの秒に絞る。
+        # 秒ごとの正規化やONB前のパーセンタイルを使用しない。
+        "peak_height_threshold": 1.0e-9,
+        "peak_height_threshold_by_experiment": {},  # 必要時のみ実験日別に明示上書き。
         # ONB以上を対象。上限を指定したい日は W/m² で設定（未指定なら全陽性域）。
         "apply_max_heat_flux_by_experiment": {},
     },

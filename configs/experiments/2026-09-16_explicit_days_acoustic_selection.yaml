@@ -1,4 +1,6 @@
 # 記録用。主実行はcode/run_ensemble_regression_onb.pyのVALIDATION_CONFIGを使う。
+# 9/16追加指示で選別方法を変更。現行は2026-09-16_peak_height_selection.yaml。
+# 以下は分位点ルール実装時の履歴であり、その数値を保持する。
 status: implemented_and_spectral_analysis_completed
 training_experiments: [2025.06.11_0.3_2, 2025.07.09_0.3_1]
 test_experiments: [2025.06.18_0.3_3]

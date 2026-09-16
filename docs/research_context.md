@@ -27,6 +27,8 @@
 
 **9/16の本人指定**：学習6/11+7/9、テスト6/18、学習内は学部と同じ通常chunk KFold。内部OOFの単体性能で重みを決定する。新方式比較は分割・選別の本検証後。静かな秒の熱流束ラベルを誤りと断定せず、選別あり/なしをテスト全秒で比較する。[実装と根拠](../experiments/2026-09-16_day_split_spectral_selection/README.md)。
 
+**同日の追加説明**：選別の意図は特徴的な周波数付近のピークに縦軸の閾値を設け、弱い前後をどこまで含めるか決めること。現行は2,100–2,500 Hz内の最大PSDと固定した高さを比較する。[ピーク高さでの実装・探索](../experiments/2026-09-16_peak_height_selection/README.md)。以前のONB前分位点ルールは履歴として保持する。
+
 - 現行データ仕様は[waterflow_20260817_1s](../configs/datasets/waterflow_20260817_1s.yaml)。
 - 入力配列は時間×周波数×channel。図では横軸時間、縦軸周波数。
 - RFの実体はXGBRFRegressor。flatten→学習側だけでPCAをfit。

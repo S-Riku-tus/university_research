@@ -7,6 +7,7 @@
 | 目的 | 読む文書 | 更新方法 |
 |---|---|---|
 | 次の作業を始める | [研究の現在地](research_status.md) | 状態・本人の希望・次の一手を更新する唯一の入口 |
+| ピークの高さで学習する秒を選ぶ | [9/16ピーク高さの検証](../experiments/2026-09-16_peak_height_selection/README.md)、[操作画面](../experiments/2026-09-16_peak_height_selection/peak_threshold_review.html) | 本人の付録図・追加説明に対応。縦軸の横線、全秒画像、1,649秒、62テスト。最適値と改善は未確定 |
 | 別日分割・通常KFold・音響選別 | [9/16実装と全秒スペクトル解析](../experiments/2026-09-16_day_split_spectral_selection/README.md) | 学習6/11+7/9、テスト6/18。2 epochs動作確認と本性能の未検証を区別 |
 | 12/24までの後期タスク | [後期計画・WBS](research_plan/2026-09-16_second_semester_plan.md) | 大項目・中項目・小項目、時期、終了条件、判断点 |
 | 修論の目次と論理 | [7章の構成案](research_plan/2026-09-16_master_thesis_outline.md) | 研究課題→章→必要な根拠→執筆時期を対応 |

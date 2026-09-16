@@ -1,0 +1,50 @@
+{
+  "datasets": [
+    {
+      "experiment_name": "2025.06.11_0.3_2",
+      "n_chunks": 1080,
+      "n_wavs": 18,
+      "source_psd": "experiments\\2026-09-16_day_split_spectral_selection\\spectra_2025.06.11_0.3_2.npz",
+      "source_psd_sha256": "83139400ef0e2618bb8c4880eb614b30ff09f1ad7ed576182c374091ba04511d",
+      "source_metadata_sha256": "446bb601f658717ba58b6af628ec64894d4c95497ebc056efaa249948767ad55"
+    },
+    {
+      "experiment_name": "2025.06.18_0.3_3",
+      "n_chunks": 1080,
+      "n_wavs": 18,
+      "source_psd": "experiments\\2026-09-16_day_split_spectral_selection\\spectra_2025.06.18_0.3_3.npz",
+      "source_psd_sha256": "fe65ec7a9fb409a51da173d52f7a0a54bddfef3ece51b9ed549f613c0119c971",
+      "source_metadata_sha256": "9aea1f8b0f71ae4171ecc20d07f0a8af624912d5d233027ec44f3efa4c8fe77e"
+    },
+    {
+      "experiment_name": "2025.07.09_0.3_1",
+      "n_chunks": 780,
+      "n_wavs": 13,
+      "source_psd": "experiments\\2026-09-16_day_split_spectral_selection\\spectra_2025.07.09_0.3_1.npz",
+      "source_psd_sha256": "78ac97f88655f054a40b742d96136b70e539e61b915ba9a4ee1d32b91315e620",
+      "source_metadata_sha256": "3db35f6926aaac5b3cc2aa5b16bf889e498288e62fd5c7f43f660cf44ceee5ed"
+    }
+  ],
+  "peak_windows_hz": [
+    [
+      850,
+      1200
+    ],
+    [
+      1250,
+      1650
+    ],
+    [
+      2100,
+      2500
+    ]
+  ],
+  "rule": "maximum linear PSD ordinate in 2100-2500 Hz >= fixed 1e-9",
+  "image_count": 2940,
+  "images_written_this_run": 0,
+  "temporal_padding": false,
+  "strong_threshold_for_description_only": 1e-08,
+  "retention_threshold": 1e-09,
+  "source_verified_against_production_manifest": "experiments\\2026-09-16_day_split_spectral_selection\\spectrum_manifest.json",
+  "scientific_status": "exploratory threshold sensitivity, no bubble-event ground truth"
+}

@@ -1,0 +1,334 @@
+{
+  "created_at": "2026-09-16T18:11:59",
+  "run_instance_id": "day_split_integration",
+  "run_hash": "a9603d",
+  "run_dir": "e2_active_rf-ctf-alex_ed198_s_rf-cnntf_v_performa",
+  "folder_naming": {
+    "scheme": "e{epochs}_{param}_{models}[_{weight_when_ensemble_enabled}]",
+    "reason": "Keep Windows paths short while keeping parameter folders readable.",
+    "details": "Full conditions are stored in this manifest and validation_results_*.txt.",
+    "result_hierarchy": "date/frequency/noise/run"
+  },
+  "dataset": {
+    "experiment_name": "2025.06.18_0.3_3",
+    "source_dir": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\data\\npy\\waterflow_20260817_1s",
+    "data_path": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\data\\npy\\waterflow_20260817_1s\\maxfreq=3kHz\\heatflux_no_noise",
+    "max_freq_hz": "maxfreq=3kHz",
+    "noise_dir_name": "heatflux_no_noise",
+    "snr_value": "no_noise",
+    "threshold": 376320.1201
+  },
+  "parameter_set_name": "rf__n_estimators=300__max_depth=4__subsample=0.6__colsample_bynode=0.6___cnntf_v2_gap__lr=0.001__batch_size=16___alexnet__lr=0.001__batch_size=16",
+  "parameter_set_tag": "active_rf-ctf-alex_ed19895",
+  "model_tag": "s_rf-cnntf_v2_gap-alexnet",
+  "model_params": {
+    "rf": {
+      "kind": "sklearn",
+      "params": {
+        "n_estimators": 300,
+        "max_depth": 4,
+        "subsample": 0.6,
+        "colsample_bynode": 0.6
+      }
+    },
+    "cnntf_v2_gap": {
+      "lr": 0.001,
+      "batch_size": 16,
+      "input_axes_assumption": [
+        "time_frame",
+        "frequency_bin",
+        "channel"
+      ],
+      "architecture": {
+        "front_end": "alexnet_like_cnn",
+        "input_transform": "log1p(power / 1e-12)",
+        "sequence_length_after_cnn": 7,
+        "model_dim": 64,
+        "num_heads": 4,
+        "attention_key_dim_per_head": 16,
+        "ff_dim": 256,
+        "num_transformer_blocks": 2,
+        "dropout": 0.1,
+        "encoder": "transformer_encoder",
+        "pooling": "GlobalAveragePooling1D"
+      }
+    },
+    "alexnet": {
+      "lr": 0.001,
+      "batch_size": 16,
+      "architecture": {
+        "input_transform": "log1p(power / 1e-12)",
+        "regression_head": "Flatten-Dense4096-Dense4096"
+      }
+    }
+  },
+  "run_specs": [
+    {
+      "key": "rf",
+      "label": "RandomForest",
+      "kind": "sklearn",
+      "builder_params": {
+        "n_estimators": 300,
+        "max_depth": 4,
+        "subsample": 0.6,
+        "colsample_bynode": 0.6
+      }
+    },
+    {
+      "key": "cnntf_v2_gap",
+      "label": "CNN+Tf v2 GAP",
+      "kind": "keras",
+      "input_axes_assumption": [
+        "time_frame",
+        "frequency_bin",
+        "channel"
+      ],
+      "architecture": {
+        "front_end": "alexnet_like_cnn",
+        "input_transform": "log1p(power / 1e-12)",
+        "sequence_length_after_cnn": 7,
+        "model_dim": 64,
+        "num_heads": 4,
+        "attention_key_dim_per_head": 16,
+        "ff_dim": 256,
+        "num_transformer_blocks": 2,
+        "dropout": 0.1,
+        "encoder": "transformer_encoder",
+        "pooling": "GlobalAveragePooling1D"
+      },
+      "fit_verbose": 1,
+      "lr": 0.001,
+      "batch_size": 16
+    },
+    {
+      "key": "alexnet",
+      "label": "AlexNet",
+      "kind": "keras",
+      "architecture": {
+        "input_transform": "log1p(power / 1e-12)",
+        "regression_head": "Flatten-Dense4096-Dense4096"
+      },
+      "fit_verbose": 1,
+      "lr": 0.001,
+      "batch_size": 16
+    }
+  ],
+  "validation_config": {
+    "learning_policy": {
+      "split_mode": "explicit_days",
+      "training_noise": "matched",
+      "train_experiments": [
+        "2025.06.11_0.3_2",
+        "2025.07.09_0.3_1"
+      ],
+      "test_experiments": [
+        "2025.06.18_0.3_3"
+      ],
+      "internal_validation": "chunk_kfold"
+    },
+    "acoustic_selection": {
+      "enabled": true,
+      "mode": "peak_height",
+      "features_csv": "experiments/2026-09-16_peak_height_selection/peak_features.csv",
+      "feature": "peak_2100_2500_psd",
+      "peak_height_threshold": 1e-09,
+      "peak_height_threshold_by_experiment": {},
+      "apply_max_heat_flux_by_experiment": {},
+      "features_sha256": "ee618a232997136a4a0f19df23eb3541591dad17340869bc140bcfc2651baa50"
+    },
+    "run": {
+      "smoke_test": true,
+      "epochs": 2,
+      "folds": 3,
+      "color_channel": 1,
+      "random_seed": 42,
+      "loop_parameter_sets": true
+    },
+    "data": {
+      "experiment_root": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3",
+      "result_model_group": "ensemble",
+      "noise_source": "waterflow",
+      "chunk_seconds": 1,
+      "experiment_names": [
+        "2025.06.11_0.3_2",
+        "2025.06.18_0.3_3",
+        "2025.07.09_0.3_1"
+      ],
+      "max_freq_hz_list": [
+        "maxfreq=3kHz"
+      ],
+      "noise_dir_names": [
+        "heatflux_no_noise"
+      ],
+      "data_source_dir_by_experiment": {
+        "2025.06.11_0.3_2": "waterflow_20260817_1s",
+        "2025.06.18_0.3_3": "waterflow_20260817_1s",
+        "2025.07.09_0.3_1": "waterflow_20260817_1s"
+      },
+      "skip_missing_datasets": false
+    },
+    "thresholds": {
+      "by_experiment": {
+        "2025.06.11_0.3_2": 368978.105,
+        "2025.06.18_0.3_3": 376320.1201,
+        "2025.07.09_0.3_1": 442169.29243200656
+      },
+      "provenance_by_experiment": {
+        "2025.06.11_0.3_2": {
+          "threshold": 368978.105,
+          "reported_value": 369000.0,
+          "source": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/実験結果2025.06.11_0.3_2/2025.06.11_0.3_2.txt:3",
+          "definition": "first measured heat-flux level identified as ONB"
+        },
+        "2025.06.18_0.3_3": {
+          "threshold": 376320.1201,
+          "reported_value": 376000.0,
+          "source": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/実験結果2025.06.18_0.3_3/2025.06.18_0.3_3.txt:3",
+          "definition": "first measured heat-flux level identified as ONB"
+        },
+        "2025.07.09_0.3_1": {
+          "threshold": 442169.29243200656,
+          "reported_value": 442000.0,
+          "source": "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/実験結果2025.07.09_0.3_1/2025.07.09_0.3_1.txt:3",
+          "definition": "first measured heat-flux level identified as ONB"
+        }
+      },
+      "require_experiment_threshold": true,
+      "onb_band_frac": 0.1
+    },
+    "models": {
+      "active_model_keys": [
+        "rf",
+        "cnntf_v2_gap",
+        "alexnet"
+      ],
+      "parameter_sets": [
+        {
+          "name": "rf__n_estimators=300__max_depth=4__subsample=0.6__colsample_bynode=0.6___cnntf_v2_gap__lr=0.001__batch_size=16___alexnet__lr=0.001__batch_size=16",
+          "tag": "active_rf-ctf-alex_ed19895",
+          "models": {
+            "rf": {
+              "n_estimators": 300,
+              "max_depth": 4,
+              "subsample": 0.6,
+              "colsample_bynode": 0.6
+            },
+            "cnntf_v2_gap": {
+              "lr": 0.001,
+              "batch_size": 16
+            },
+            "alexnet": {
+              "lr": 0.001,
+              "batch_size": 16
+            }
+          },
+          "default_keras": {
+            "fit_verbose": 1
+          }
+        }
+      ]
+    },
+    "ensemble": {
+      "selection": {
+        "enabled_strategy_names": [
+          "performance_kfold"
+        ],
+        "primary_strategy_name": "performance_kfold"
+      },
+      "enabled": true,
+      "primary_strategy": "performance_kfold",
+      "strategies": [
+        {
+          "label": "Ensemble individual-performance KFold",
+          "strategy": "performance_kfold",
+          "name": "performance_kfold"
+        }
+      ],
+      "reference_model": "rf",
+      "inner_holdout_frac": 0.2,
+      "inner_holdout_aggregation": "median",
+      "combine": "mean",
+      "allow_leaky_strategies": false,
+      "resolved_strategy_plan": [
+        {
+          "name": "performance_kfold",
+          "result_key": "ensemble__performance_kfold",
+          "label": "Ensemble individual-performance KFold",
+          "strategy": "performance_kfold",
+          "claim_safe": true
+        }
+      ]
+    },
+    "features": {
+      "pca_components": 100
+    },
+    "output": {
+      "save_date": "20260916",
+      "result_date_dir": "20260916_peak_height_smoke_selected",
+      "run_instance_id": "day_split_integration",
+      "save_fold_predictions": true,
+      "save_tuning_summary": true,
+      "resume_completed_runs": true,
+      "noise_trend_plots": {
+        "enabled": false
+      }
+    },
+    "evaluation": {
+      "wav_level_enabled": true,
+      "wav_aggregations": [
+        "mean",
+        "median",
+        "p90"
+      ],
+      "primary_wav_aggregation": "median",
+      "onb_transition_persistence_wavs": [
+        1,
+        2
+      ],
+      "predicted_event_summary_enabled": true,
+      "event_ground_truth_status": "not_annotated"
+    },
+    "explainability": {
+      "enabled": false
+    }
+  },
+  "execution_schema_version": 2,
+  "execution_config_hash": "a9603d",
+  "learning_context": {
+    "split_mode": "explicit_days",
+    "training_noise": "matched",
+    "train_experiments": [
+      "2025.06.11_0.3_2",
+      "2025.07.09_0.3_1"
+    ],
+    "test_experiments": [
+      "2025.06.18_0.3_3"
+    ],
+    "internal_validation": "chunk_kfold",
+    "training_experiments": [
+      "2025.06.11_0.3_2",
+      "2025.07.09_0.3_1"
+    ],
+    "evaluation_experiments": [
+      "2025.06.18_0.3_3"
+    ],
+    "training_noise_dir": "heatflux_no_noise",
+    "generalization_scope": "held_out_experiment_day",
+    "outer_folds_per_evaluation_day": 1,
+    "training_datasets": [
+      {
+        "experiment_name": "2025.06.11_0.3_2",
+        "data_path": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\data\\npy\\waterflow_20260817_1s\\maxfreq=3kHz\\heatflux_no_noise",
+        "noise_dir_name": "heatflux_no_noise",
+        "max_freq_hz": "maxfreq=3kHz"
+      },
+      {
+        "experiment_name": "2025.07.09_0.3_1",
+        "data_path": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\data\\npy\\waterflow_20260817_1s\\maxfreq=3kHz\\heatflux_no_noise",
+        "noise_dir_name": "heatflux_no_noise",
+        "max_freq_hz": "maxfreq=3kHz"
+      }
+    ],
+    "evaluation_noise_dir": "heatflux_no_noise"
+  }
+}

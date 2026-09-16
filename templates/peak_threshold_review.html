@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="ja"><meta charset="utf-8"><title>1秒スペクトルとピーク高さの閾値</title>
+<style>body{font:16px system-ui,sans-serif;max-width:1150px;margin:30px auto;padding:0 18px;color:#203345;background:#f7f9fc}h1{font-size:25px}section{background:white;border:1px solid #dbe3ed;border-radius:12px;padding:20px;margin:18px 0}label{display:inline-block;margin:8px 18px 8px 0}select,input,button{font:inherit;padding:5px}canvas{width:100%;height:280px}#spec{height:350px}.note{font-size:14px;color:#53667b}#status{font-size:18px}#scale{width:90px}#threshold{width:90px}</style>
+<h1>2,300 Hz付近のピークを、どの高さから含めるか</h1>
+<p>1秒ごとのスペクトルに横線を引き、2,100～2,500 Hzのピークが横線以上なら採用候補です。閾値を下げると弱いピークの秒も含みます。隣の秒を自動追加する処理はありません。</p>
+<section><label>実験日 <select id="day"></select></label><label>60秒の録音 <select id="wav"></select></label><br>
+<label>横線の高さ <input id="threshold" type="number" min="0.001" step="0.1" value="1"></label>
+<input id="slider" type="range" min="-1" max="1.477121" step="0.01" value="0" aria-label="閾値の高さ">
+<button data-v="0.3">0.3</button> <button data-v="1">1（暫定）</button> <button data-v="3">3</button> <button data-v="10">10（厳しめ）</button>
+<p class="note">縦軸と閾値の単位：×10⁻⁹ digital amplitude²/Hz（線形Welch PSD）。ここでの「1」は設定値 <code>1e-9</code>。付録のPower値とは換算なしに比較できません。これは音響選別の探索で、気泡の正解ラベルではありません。</p>
+<p id="status"></p><canvas id="trace" width="1100" height="280" aria-label="60秒のピーク高さ"></canvas>
+<label><input type="checkbox" id="detail" checked> 時系列の縦軸を12まで拡大</label>
+<p class="note">青：ピークが閾値以上／灰：未満。点をクリックすると、その秒のスペクトルを下に表示します。拡大表示で上限を超える点は上端に表示します。熱流束がONB未満のデータは、学習ではピークの大小に関係なく保持します。6/18はテスト日なので全秒を評価します。</p></section>
+<section><label>秒 <input id="second" type="range" min="0" max="59" value="0"></label><span id="secondtext"></span>
+<label>スペクトル縦軸 <select id="scale"><option value="detail">拡大</option><option value="full">録音全体</option></select></label>
+<canvas id="spec" width="1100" height="350" aria-label="選択した1秒の線形スペクトル"></canvas><p id="value"></p>
+<p class="note">オレンジの範囲で最も高い縦軸の値を読みます。線形軸のまま、同じ録音内で表示倍率を固定しています。秒ごとの最大値を1に正規化していません。</p></section>
+<script>
+const data=__REVIEW_DATA__;
+const el=id=>document.getElementById(id), days=[...new Set(data.map(x=>x.day))];
+let current, index=0;
+days.forEach(d=>el('day').add(new Option(d,d)));
+function chooseDay(){el('wav').replaceChildren();data.forEach((w,i)=>{if(w.day===el('day').value)el('wav').add(new Option(`${(w.q/1000).toFixed(2)} kW/m² ｜ ${w.wav}`,i));});chooseWav();}
+function chooseWav(){index=Number(el('wav').value);current=data[index];draw();}
+function axes(canvas,ymax,xmax,xlabel){const c=canvas.getContext('2d'),W=canvas.width,H=canvas.height,L=70,R=25,T=22,B=46;c.clearRect(0,0,W,H);c.font='13px sans-serif';c.lineWidth=1;let X=x=>L+x/xmax*(W-L-R),Y=y=>H-B-y/ymax*(H-T-B);c.strokeStyle='#dde5ed';c.fillStyle='#40546a';for(let i=0;i<=4;i++){let y=ymax*i/4;c.beginPath();c.moveTo(L,Y(y));c.lineTo(W-R,Y(y));c.stroke();c.fillText(y.toPrecision(3),2,Y(y)+4);}for(let i=0;i<=6;i++){let x=xmax*i/6;c.fillText(x.toFixed(0),X(x)-9,H-24);}c.fillText(xlabel,W/2-55,H-4);return {c,X,Y,W,H,L,R,T,B};}
+function draw(){if(!current)return;let th=Number(el('threshold').value);if(!(th>0&&Number.isFinite(th)))return;let sec=Number(el('second').value);let n=current.peaks.filter(v=>v>=th).length;let train=current.role==='training'&&current.q>=current.q_onb;el('status').textContent=`ピークが横線以上：${n}/60 秒 ｜ q/qONB=${(current.q/current.q_onb).toFixed(3)} ｜ ${train?'学習採用 '+n+' 秒':current.role==='training'?'ONB未満：学習は全60秒保持':'6/18テスト：全60秒を評価'}`;
+let ymax=el('detail').checked?Math.max(12,th*1.1):Math.max(12,...current.peaks)*1.05;
+let a=axes(el('trace'),ymax,60,'Time (s)');let {c,X,Y}=a;c.save();c.beginPath();c.rect(a.L,a.T,a.W-a.L-a.R,a.H-a.T-a.B);c.clip();c.strokeStyle='#8a9db0';c.beginPath();current.peaks.forEach((p,i)=>i?c.lineTo(X(i+.5),Y(p)):c.moveTo(X(i+.5),Y(p)));c.stroke();current.peaks.forEach((p,i)=>{c.fillStyle=p>=th?'#146c9c':'#a5aeb8';c.beginPath();c.arc(X(i+.5),Y(Math.min(p,ymax*.98)),i===sec?6:3,0,7);c.fill();});c.strokeStyle='#cb3c35';c.setLineDash([6,4]);c.beginPath();c.moveTo(X(0),Y(th));c.lineTo(X(60),Y(th));c.stroke();c.restore();
+let ymax2=el('scale').value==='detail'?Math.max(12,th*1.2):Math.max(12,...current.spectra.map(s=>Math.max(...s)))*1.05;
+a=axes(el('spec'),ymax2,3000,'Frequency (Hz)');({c,X,Y}=a);c.save();c.beginPath();c.rect(a.L,a.T,a.W-a.L-a.R,a.H-a.T-a.B);c.clip();c.fillStyle='rgba(235,153,60,.12)';c.fillRect(X(2100),Y(ymax2),X(2500)-X(2100),Y(0)-Y(ymax2));c.strokeStyle='#2865a5';c.beginPath();current.spectra[sec].forEach((p,i)=>i?c.lineTo(X(current.frequency[i]),Y(p)):c.moveTo(X(current.frequency[i]),Y(p)));c.stroke();c.strokeStyle='#cb3c35';c.setLineDash([6,4]);c.beginPath();c.moveTo(X(2100),Y(th));c.lineTo(X(2500),Y(th));c.stroke();c.restore();el('secondtext').textContent=`${sec}～${sec+1}秒`;el('value').textContent=`ピーク：${current.peaks[sec].toPrecision(4)}（${current.peak_hz[sec].toFixed(0)} Hz）　${current.peaks[sec]>=th?'横線以上':'横線未満'}`;
+}
+el('day').onchange=chooseDay;el('wav').onchange=chooseWav;el('threshold').oninput=()=>{el('slider').value=Math.log10(Number(el('threshold').value));draw();};el('slider').oninput=()=>{el('threshold').value=(10**Number(el('slider').value)).toPrecision(3);draw();};['second','scale','detail'].forEach(id=>el(id).oninput=draw);document.querySelectorAll('button[data-v]').forEach(b=>b.onclick=()=>{el('threshold').value=b.dataset.v;el('slider').value=Math.log10(Number(b.dataset.v));draw();});el('trace').onclick=e=>{const r=el('trace').getBoundingClientRect();el('second').value=Math.max(0,Math.min(59,Math.floor(((e.clientX-r.left)*1100/r.width-70)/(1100-95)*60)));draw();};chooseDay();
+// Start with a recording containing strong peaks and weaker surrounding seconds.
+el('day').value='2025.07.09_0.3_1';chooseDay();el('wav').value=data.findIndex(w=>w.day==='2025.07.09_0.3_1'&&w.wav==='index=14.643516');el('second').value=4;chooseWav();
+</script></html>

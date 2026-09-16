@@ -18,6 +18,7 @@ from utils.experiment.acoustic_selection import AcousticTrainingSelector
 from utils.experiment.learning_policy import normalize_learning_policy, checked_metadata
 from utils.experiment.learning_runner import run_learning_experiments
 from utils.training.internal_validation import internal_splits
+from utils.experiment.spectral_peaks import PSD_UNIT, SPECTRUM_METHOD
 
 
 class DaySelectionTest(unittest.TestCase):
@@ -50,6 +51,12 @@ class DaySelectionTest(unittest.TestCase):
             self.assertEqual(any(shared), mode == "chunk_kfold")
 
     def test_selection_kfold_training_and_full_test_end_to_end(self):
+        self.run_selection_pipeline("background_quantile")
+
+    def test_peak_selection_kfold_training_and_full_test_end_to_end(self):
+        self.run_selection_pipeline("peak_height")
+
+    def run_selection_pipeline(self, mode):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             policy = self.policy()
@@ -63,9 +70,13 @@ class DaySelectionTest(unittest.TestCase):
                         q = float(row["sample_filename"].split("_")[0])
                         row["heat_flux"] = q
                         row["band_2000_3000_db"] = -80 if q < job["threshold"] else (-20 if row["chunk_index"] == "0" else -90)
+                        row["peak_2100_2500_psd"] = .01e-9 if q < job["threshold"] else (10e-9 if row["chunk_index"] == "0" else .1e-9)
+                        row["spectrum_method"] = SPECTRUM_METHOD
+                        row["spectrum_unit"] = PSD_UNIT
                         # Adversarial test-day features must never set the fit thresholds.
                         if row["experiment_name"] == "day-b":
                             row["band_2000_3000_db"] = 10000
+                            row["peak_2100_2500_psd"] = 10000
                         features.append(row)
             feature_path = root / "features.csv"
             with feature_path.open("w", newline="", encoding="utf-8") as out:
@@ -74,6 +85,8 @@ class DaySelectionTest(unittest.TestCase):
             config["thresholds"]["by_experiment"] = {"day-a": 36, "day-b": 37, "day-c": 38}
             config["acoustic_selection"] = {"enabled": True, "features_csv": str(feature_path),
                                                "feature": "band_2000_3000_db", "background_quantile": 0.99}
+            if mode == "peak_height":
+                config["acoustic_selection"].update(mode=mode, feature="peak_2100_2500_psd", peak_height_threshold=1e-9)
             manager = EnsembleManager({"enabled_strategy_names": ["performance_kfold"],
                                        "primary_strategy_name": "performance_kfold"}, [s["key"] for s in specs])
             config["ensemble"] = manager.snapshot()

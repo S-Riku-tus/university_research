@@ -1,0 +1,38 @@
+# 記録用。実行はONB主コードのVALIDATION_CONFIGを参照する。
+status: implemented_with_full_spectra_and_two_epoch_smoke
+supersedes_selection: 2026-09-16_explicit_days_acoustic_selection.yaml
+train_experiments: [2025.06.11_0.3_2, 2025.07.09_0.3_1]
+test_experiments: [2025.06.18_0.3_3]
+internal_validation: chunk_kfold
+ensemble: performance_kfold
+selection:
+  enabled: true
+  mode: peak_height
+  feature: peak_2100_2500_psd
+  features_csv: experiments/2026-09-16_peak_height_selection/peak_features.csv
+  peak_height_threshold: 1.0e-9
+  peak_height_threshold_by_experiment: {}
+  apply_max_heat_flux_by_experiment: {}
+  scope: training_only_at_or_above_onb
+  operator: greater_than_or_equal
+  unit: digital_amplitude_squared_per_hz
+  spectrum_method: welch_hann_2048_overlap_1024_fs_44100
+  test_or_internal_validation_filtering: false
+  temporal_padding: false
+  per_chunk_normalization: false
+  clean_source_shared_across_variants: true
+  labels_changed: false
+  confirmed_bubble_event_labels: false
+  threshold_status: fixed_exploratory_value_not_validated_optimum
+plot_units: 1e-9_digital_amplitude_squared_per_hz
+descriptive_strong_peak_threshold: 1.0e-8
+training_chunks_before: 1860
+training_chunks_after: 1649
+unfiltered_test_chunks: 1080
+next_scientific_comparison:
+  factors: [selection_disabled, selection_enabled]
+  threshold: 1.0e-9
+  epochs: 300
+  frequency: maxfreq=3kHz
+  noise: heatflux_no_noise
+  status: not_run

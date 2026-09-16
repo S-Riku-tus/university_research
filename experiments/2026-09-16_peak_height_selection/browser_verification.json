@@ -1,0 +1,28 @@
+{
+  "browser": "headless Chrome",
+  "checks": [
+    {
+      "threshold_plot_units": 1,
+      "expected_count": 13,
+      "status": "ピークが横線以上：13/60 秒 ｜ q/qONB=1.455 ｜ 学習採用 13 秒"
+    },
+    {
+      "threshold_plot_units": 10,
+      "expected_count": 5,
+      "status": "ピークが横線以上：5/60 秒 ｜ q/qONB=1.455 ｜ 学習採用 5 秒"
+    },
+    {
+      "threshold_plot_units": 0.3,
+      "expected_count": 16,
+      "status": "ピークが横線以上：16/60 秒 ｜ q/qONB=1.455 ｜ 学習採用 16 秒"
+    },
+    {
+      "threshold_plot_units": 3,
+      "expected_count": 9,
+      "status": "ピークが横線以上：9/60 秒 ｜ q/qONB=1.455 ｜ 学習採用 9 秒"
+    }
+  ],
+  "all_49_wavs_loaded": true,
+  "below_line_status_correct": true,
+  "test_day_unfiltered_notice": true
+}

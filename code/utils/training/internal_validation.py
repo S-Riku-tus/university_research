@@ -26,7 +26,11 @@ def internal_splits(metadata, folds, seed, mode="chunk_kfold"):
 
 def fit_individual_performance_cv(trainer, specs, x, y, metadata, selector,
                                   folds, seed, mode, pca_components, epochs):
-    """Test data never enter this API. Fit selector/PCA/scaler on inner-fit only."""
+    """Test data never enter this API. Apply selection to inner-fit only.
+
+    Peak-height selection is fixed by config; the legacy quantile estimator and
+    PCA/scaler are fitted on inner-fit only. Validation seconds remain intact.
+    """
     predictions = {spec["key"]: np.full(len(y), np.nan) for spec in specs}
     groups = wav_groups(metadata)
     records, coverage = [], np.zeros(len(y), dtype=int)

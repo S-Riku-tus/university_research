@@ -5,6 +5,7 @@ unchanged. Writes a dedicated smoke-test directory with predictions/audits.
 """
 from copy import deepcopy
 from pathlib import Path
+import argparse
 
 import matplotlib
 matplotlib.use("Agg")
@@ -17,16 +18,22 @@ from utils.training.model_training import ModelTrainer
 
 
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--output-tag", default="20260916_peak_height_smoke")
+    parser.add_argument("--selection", choices=["both", "baseline", "selected"], default="both")
+    args = parser.parse_args()
     all_jobs = onb.build_dataset_jobs()
     specs = [s for s in onb.MODEL_SPECS if s["key"] in onb.ACTIVE_MODEL_KEYS]
     for enabled in (False, True):
+        if args.selection != "both" and enabled != (args.selection == "selected"):
+            continue
         config = deepcopy(onb.validation_config_snapshot())
         config["run"].update(epochs=2, folds=3, smoke_test=True)
         config["data"].update(max_freq_hz_list=["maxfreq=3kHz"], noise_dir_names=["heatflux_no_noise"])
         config["explainability"] = {"enabled": False}
         config["acoustic_selection"]["enabled"] = enabled
         config["output"]["noise_trend_plots"] = {"enabled": False}
-        config["output"]["result_date_dir"] = "20260916_day_split_smoke_" + ("selected" if enabled else "baseline")
+        config["output"]["result_date_dir"] = args.output_tag + "_" + ("selected" if enabled else "baseline")
         config["output"]["run_instance_id"] = "day_split_integration"
         jobs = []
         for job in all_jobs:

@@ -1,0 +1,9 @@
+{
+  "date": "2026-09-16",
+  "command": "python -m unittest discover -s tests -v",
+  "exit_code": 0,
+  "tests_run": 62,
+  "seconds": 16.183,
+  "result": "OK",
+  "scope": "unit and integration tests; real-data smoke is separately recorded in verification.json"
+}
