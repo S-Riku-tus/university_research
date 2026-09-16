@@ -24,7 +24,7 @@
 
 主実行の`VALIDATION_CONFIG`にはデータ、学習条件、モデル別parameter grid、統合など実験ごとに変える項目を置く。`acoustic_selection`はピーク高さ閾値だけを置き、`None`なら選別なしとする。特徴CSV・帯域・対象範囲など通常固定する条件と、output/evaluation/explainability、モデルregistryは[onb_defaults.py](../code/utils/config/onb_defaults.py)で補完し、解決後の全設定をmanifestへ保存する。`configs/`のYAMLは条件記録で、現在は自動読込しない。現在の`explicit_days`では`learning_policy.train_experiments`と`test_experiments`の和集合からデータ対象日を自動決定し、`data.experiment_names`は指定しない。旧`within_day / leave_one_day_out`へ切り替える場合のみ`data.experiment_names`に対象日を指定する。[日付指定の監査](../experiments/2026-09-16_onb_experiment_day_audit/README.md)。
 
-現行の有効3モデルは`rf / cnntf_v2_gap / alexnet`。主設定では`subset_equal_cv / crossfit_wav_stack / crossfit_shrinkage_stack`を同じ元WAV分離inner OOFで実行し、正則化付き方式を主表示にする。固定ピーク選別との併用も対応済み。`performance_kfold`へ戻す場合も現在は`wav_kfold`とWAV中央値OOF R²を使う。新方式の実データ性能は未検証。[重み学習の実装](../code/utils/ensemble/crossfit_stacking.py)、[診断と修正](../experiments/2026-09-16_onb_result_diagnosis/README.md)、[5方式の手法と数式](ensemble_methods.md)。`prediction_max`は削除済み。`val_fold_legacy`は再現・診断用で主張不可。
+現行の有効3モデルは`rf / cnntf_v2_gap / alexnet`。主設定で有効な統合方式は`inner_holdout`で、これを主表示にも使う。`performance_kfold`へ戻す場合は現在の`wav_kfold`とWAV中央値OOF R²を使う。`subset_equal_cv / crossfit_wav_stack / crossfit_shrinkage_stack`の固定ピーク選別との併用も実装済みだが、現在は無効。[重み学習の実装](../code/utils/ensemble/crossfit_stacking.py)、[診断と修正](../experiments/2026-09-16_onb_result_diagnosis/README.md)、[5方式の手法と数式](ensemble_methods.md)。`prediction_max`は削除済み。`val_fold_legacy`は再現・診断用で主張不可。
 
 `within_day / leave_one_day_out / explicit_days`と`matched / clean_only`を組み合わせる。clean_onlyは同じモデル・PCA・scaler・重みをノイズ間で共有する。明示分割では学習専用日は学習に要るノイズだけを探索する。一般化評価の[実装・制約](research_plan/2026-09-14_result_layout_and_generalization.md)も確認する。
 
@@ -34,7 +34,7 @@
 
 各runは`fold_pred/`のchunk予測、`wav_eval/`のpooled WAV指標・ONB遷移、`explainability/`、損失/散布図/指標、manifestを持つ。新実行経路は`split_manifest.json`と完了時の`completed.json`も保存する。
 
-主実行の保存先は各実験日の`regression_result/npy/<モデル群>/<実行日と方針>__<12桁hash>/<周波数>/<ノイズ>/`。末尾にモデル・epoch名のrunフォルダは作らない。12桁hashは起動ごとに生成する`execution_id`と条件hashから作るため、同日・同条件の再実行でも別フォルダとなり、1起動内のパラメータ候補も分かれる。実際の条件と`execution_id`は`run_manifest.json`に記録する。`tuning_summary.csv`はhash付き日付フォルダの直下、ノイズ比較図はその下の`<周波数>/noise_trends/`に置く。新しい起動では別フォルダを使うため、旧runの自動再開はしない。旧階層の結果は移動せず、既存の読み取り経路を維持する。
+主実行の保存先は各実験日の`regression_result/npy/<モデル群>/<実行日>/<方針名>__<12桁hash>/<周波数>/<ノイズ>/`。末尾にモデル・epoch名のrunフォルダは作らない。12桁hashは起動ごとのIDと条件hashから作るため、同日・同条件の別起動でも別フォルダとなり、1起動内のパラメータ候補も分かれる。実際の条件と`execution_id`は`run_manifest.json`に記録する。`tuning_summary.csv`はhash付き方針フォルダの直下、ノイズ比較図はその下の`<周波数>/noise_trends/`に置く。`RUN_ID`を明示して同じ条件で再実行した場合は同じフォルダを参照して完了判定する。旧階層の結果は移動せず、既存の読み取り経路を維持する。
 
 通常runはモデル本体を永続保存しない。保存済み予測からの後処理と、モデルを必要とするIG再計算・新マスク推論は区別する。clean_onlyの一部ノイズだけ未完了の場合は、同じ学習モデルを揃えるため関連ノイズ一式を再計算する仕様。
 

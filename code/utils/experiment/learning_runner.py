@@ -278,9 +278,6 @@ def run_learning_experiments(jobs, policy, config, enabled_specs, parameter_sets
             run_hash = run_config_digest(config, parameter_set, specs, model_tag,
                                          config["output"]["save_fold_predictions"])
             ensemble = ensemble_manager.create_run(specs)
-            run_dir = run_dir_name(config["run"]["epochs"], param_tag, model_tag,
-<<<<<<< HEAD
-                                   ensemble.enabled, ensemble.strategy_tag)
             evaluation_jobs = family["evaluation_jobs"]
             if config["output"].get("run_scoped_result_dir", False):
                 execution_id = config["output"].get("execution_id")
@@ -289,34 +286,15 @@ def run_learning_experiments(jobs, policy, config, enabled_specs, parameter_sets
                 # 実行・条件の識別は日付フォルダで済むため、末尾のrun階層は作らない。
                 run_dir = ""
             else:
-                # 旧形式の結果を再開する呼び出しでは既存の照合方法を維持する。
-                related_jobs = [job for job in jobs if
-                                job["experiment_name"] == evaluation_jobs[0]["experiment_name"]
-                                and job["max_freq_hz"] == evaluation_jobs[0]["max_freq_hz"]]
-                saved_manifests = []
-                for job in related_jobs:
-                    manifest_path = existing_result_run_path(job, run_dir) / "run_manifest.json"
-                    if path_exists(manifest_path):
-                        with open_text(manifest_path, "r", encoding="utf-8") as source:
-                            saved_manifests.append(json.load(source))
-                if saved_manifests:
-                    compatible = all(saved_run_matches_execution(manifest, config, parameter_set, specs,
-                                     model_tag, config["output"]["save_fold_predictions"]) for manifest in saved_manifests)
-                    hashes = {manifest["run_hash"] for manifest in saved_manifests}
-                    if compatible and len(hashes) == 1:
-                        run_hash = hashes.pop()
-                    else:
-                        run_dir += "_" + run_hash
-=======
-                                   ensemble.enabled, ensemble.strategy_tag,
-                                   run_hash=run_hash,
-                                   run_instance_id=config["output"]["run_instance_id"])
-            # 設定hashで条件を、run instance IDで同条件の別実行を分離する。
-            related_jobs = [job for job in jobs if
-                            job["experiment_name"] == family["evaluation_jobs"][0]["experiment_name"]
-                            and job["max_freq_hz"] == family["evaluation_jobs"][0]["max_freq_hz"]]
+                run_dir = run_dir_name(
+                    config["run"]["epochs"], param_tag, model_tag,
+                    ensemble.enabled, ensemble.strategy_tag,
+                    run_hash=run_hash,
+                    run_instance_id=config["output"]["run_instance_id"],
+                )
+            # 既存結果を上書きしないよう、保存先のmanifestと実行条件を確認する。
             saved_manifests = []
-            for job in related_jobs:
+            for job in evaluation_jobs:
                 manifest_path = existing_result_run_path(job, run_dir) / "run_manifest.json"
                 if path_exists(manifest_path):
                     with open_text(manifest_path, "r", encoding="utf-8") as source:
@@ -329,9 +307,9 @@ def run_learning_experiments(jobs, policy, config, enabled_specs, parameter_sets
                     run_hash = hashes.pop()
                 else:
                     raise RuntimeError(
-                        f"Run directory hash collision or inconsistent manifests: {run_dir}"
+                        f"Result directory hash collision or inconsistent manifests: "
+                        f"{result_run_path(evaluation_jobs[0], run_dir)}"
                     )
->>>>>>> 9943ba413e8a7cb7dd56f0a3c92a20ae48cf39c1
             recorders = [ResultRecorder(job, parameter_set, specs, ensemble_manager.create_run(specs),
                          config, run_dir, run_hash, param_tag, model_tag, context)
                          for job in evaluation_jobs]

@@ -14,7 +14,6 @@
 
 import os
 from datetime import datetime
-from uuid import uuid4
 from pathlib import Path
 from pprint import pformat
 from uuid import uuid4
@@ -183,9 +182,8 @@ VALIDATION_CONFIG = apply_onb_defaults({
             # "crossfit_wav_stack",  # WAV単位の予測誤差が小さくなる重みを直接求める
             # "crossfit_shrinkage_stack",  # 極端な重みを避け、等重みに近づける制約を加える
         ],
-        # 3方式を全て保存し、正則化付き方式を主図・散布図に使う。
-        # 実データでの優位性は未検証なので、他2方式の結果も必ず併記する。
-        "primary_strategy_name": "performance_kfold",
+        # 有効にした方式の中から主図・散布図に用いる方式を指定する。
+        "primary_strategy_name": "inner_holdout",
     },
     "features": {
         "pca_components": 100,
@@ -263,6 +261,8 @@ NOISE_TREND_CONFIG = _cfg("output", "noise_trend_plots")
 RUN_INSTANCE_ID = os.environ.get("RUN_ID") or (
     f"{datetime.now():%H%M%S}_{uuid4().hex[:8]}"
 )
+# 同じRUN_IDを明示した再実行では、同じ保存先を参照して完了判定する。
+EXECUTION_ID = RUN_INSTANCE_ID
 FOLD_PREDICTIONS_DIR_NAME = "fold_pred"
 WAV_LEVEL_EVALUATION_ENABLED = _cfg("evaluation", "wav_level_enabled")
 WAV_AGGREGATIONS = tuple(_cfg("evaluation", "wav_aggregations"))

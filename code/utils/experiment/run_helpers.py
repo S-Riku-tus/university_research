@@ -203,7 +203,6 @@ def write_run_manifest(
             validation_config, parameter_set, run_specs, model_tag,
             validation_config["output"]["save_fold_predictions"])
         manifest["learning_context"] = job["learning_context"]
-<<<<<<< HEAD
         if validation_config["output"].get("run_scoped_result_dir", False):
             manifest["folder_naming"] = {
                 "scheme": "{result_date_dir}__{execution_and_config_digest}",
@@ -212,10 +211,7 @@ def write_run_manifest(
                 "result_hierarchy": "scoped_date/frequency/noise",
             }
         else:
-            manifest["folder_naming"]["result_hierarchy"] = "date/frequency/noise/run"
-=======
-        manifest["folder_naming"]["result_hierarchy"] = "analysis_date/study/frequency/noise/run"
->>>>>>> 9943ba413e8a7cb7dd56f0a3c92a20ae48cf39c1
+            manifest["folder_naming"]["result_hierarchy"] = "analysis_date/study/frequency/noise/run"
     manifest_path = os.path.join(save_path, "run_manifest.json")
     with open_text(manifest_path, "w", encoding="utf-8") as mf:
         json.dump(manifest, mf, ensure_ascii=False, indent=2, default=json_default)
