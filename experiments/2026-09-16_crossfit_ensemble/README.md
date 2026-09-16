@@ -40,3 +40,9 @@
 実RF/CNN+Transformer/AlexNet・300 epochsでの新方式の成績は未確認。単体より優れること、ノイズ耐性やONB検知が改善することは、今回の合成テストからは結論づけない。現在の主実行の既定選択は従来の2方式のまま。
 
 次は [代表条件書](../../configs/experiments/2026-09-16_crossfit_ensemble.yaml)のように、同一モデル・外側分割で既存2方式と新3方式の実データ比較を行う。これは未実行の提案で、進行中runを今回の結果として追加採用していない。全ノイズ同時最適化、XAI gating、ONB校正、多表現expertの追加は別設計とする。
+
+## 追記: 9/16別日結果診断後
+
+[別日300 epochs結果の診断](../2026-09-16_onb_result_diagnosis/README.md)で、旧`performance_kfold`が1秒分割により全inner foldで同じWAVを共有し、別日3 kHzで破綻したCNNへ最大重みを与えたことを確認した。本人の追加依頼により、固定`peak_height`選別と新3方式の併用を実装し、主設定で新3方式を有効化した。3方式は共通4-fold OOFを共有する。
+
+合成・小型Keras・選別付きend-to-endテストは成功したが、実RF/CNN+Transformer/AlexNetでの新3方式の数値は依然として未取得である。主設定に入ったことと、性能優位が検証済みであることを混同しない。

@@ -245,13 +245,20 @@ def run_learning_experiments(jobs, policy, config, enabled_specs, parameter_sets
     if "acoustic_selection" in config:
         config["acoustic_selection"] = selector.config
     performance_cv = "performance_kfold" in ensemble_manager.selected_strategy_names
+    crossfit_cv = any(
+        name in {"subset_equal_cv", "crossfit_wav_stack", "crossfit_shrinkage_stack"}
+        for name in ensemble_manager.selected_strategy_names
+    )
     if performance_cv and "inner_holdout" in ensemble_manager.selected_strategy_names:
         raise ValueError("performance_kfoldとinner_holdoutは重み推定が異なるため同時選択できません。")
-    if selector.enabled and (policy["split_mode"] == "within_day" or not performance_cv):
-        raise ValueError("学習選別は別日評価＋performance_kfoldで使用してください。各fit側だけを選別します。")
-    if selector.enabled and any(name.startswith("crossfit_") or name == "subset_equal_cv"
-                                for name in ensemble_manager.selected_strategy_names):
-        raise ValueError("学習選別と新アンサンブル方式の併用は未対応です。今回の基準方式を使用してください。")
+    if selector.enabled and policy["split_mode"] == "within_day":
+        raise ValueError("学習選別は実験日を分離した評価で使用してください。")
+    if (selector.enabled and not performance_cv and selector.mode != "peak_height"
+            and (crossfit_cv or "inner_holdout" in ensemble_manager.selected_strategy_names)):
+        raise ValueError(
+            "background_quantile selection must be fitted inside each weight CV fold. "
+            "Use fixed peak_height selection with crossfit/inner_holdout."
+        )
     loader = DataLoadingConversion()
     reference_metadata = {}
     for family_i, family in enumerate(families, 1):
@@ -272,6 +279,7 @@ def run_learning_experiments(jobs, policy, config, enabled_specs, parameter_sets
                                          config["output"]["save_fold_predictions"])
             ensemble = ensemble_manager.create_run(specs)
             run_dir = run_dir_name(config["run"]["epochs"], param_tag, model_tag,
+<<<<<<< HEAD
                                    ensemble.enabled, ensemble.strategy_tag)
             evaluation_jobs = family["evaluation_jobs"]
             if config["output"].get("run_scoped_result_dir", False):
@@ -299,6 +307,31 @@ def run_learning_experiments(jobs, policy, config, enabled_specs, parameter_sets
                         run_hash = hashes.pop()
                     else:
                         run_dir += "_" + run_hash
+=======
+                                   ensemble.enabled, ensemble.strategy_tag,
+                                   run_hash=run_hash,
+                                   run_instance_id=config["output"]["run_instance_id"])
+            # 設定hashで条件を、run instance IDで同条件の別実行を分離する。
+            related_jobs = [job for job in jobs if
+                            job["experiment_name"] == family["evaluation_jobs"][0]["experiment_name"]
+                            and job["max_freq_hz"] == family["evaluation_jobs"][0]["max_freq_hz"]]
+            saved_manifests = []
+            for job in related_jobs:
+                manifest_path = existing_result_run_path(job, run_dir) / "run_manifest.json"
+                if path_exists(manifest_path):
+                    with open_text(manifest_path, "r", encoding="utf-8") as source:
+                        saved_manifests.append(json.load(source))
+            if saved_manifests:
+                compatible = all(saved_run_matches_execution(manifest, config, parameter_set, specs,
+                                 model_tag, config["output"]["save_fold_predictions"]) for manifest in saved_manifests)
+                hashes = {manifest["run_hash"] for manifest in saved_manifests}
+                if compatible and len(hashes) == 1:
+                    run_hash = hashes.pop()
+                else:
+                    raise RuntimeError(
+                        f"Run directory hash collision or inconsistent manifests: {run_dir}"
+                    )
+>>>>>>> 9943ba413e8a7cb7dd56f0a3c92a20ae48cf39c1
             recorders = [ResultRecorder(job, parameter_set, specs, ensemble_manager.create_run(specs),
                          config, run_dir, run_hash, param_tag, model_tag, context)
                          for job in evaluation_jobs]
@@ -353,15 +386,15 @@ def run_learning_experiments(jobs, policy, config, enabled_specs, parameter_sets
                         config["features"]["pca_components"], config["run"]["epochs"])
                     for recorder in recorders:
                         write_json(recorder.path / f"internal_validation_fold{fold}.json", internal_audit)
-                else:
-                    inner_errors = ensemble.fit_inner_holdout_errors(
-                        trainer, x_fit, y_fit, groups[fit_indices], config["features"]["pca_components"],
-                        tuple(x.shape[1:]), config["run"]["epochs"], fold, fold_count)
                 retained, selection_audit = selector.select([train_metadata[i] for i in fit_indices])
                 for recorder in recorders:
                     write_json(recorder.path / f"training_selection_fold{fold}.json", selection_audit)
                 fit_indices = fit_indices[retained]
                 x_fit, y_fit = x[fit_indices], y[fit_indices]
+                if not performance_cv:
+                    inner_errors = ensemble.fit_inner_holdout_errors(
+                        trainer, x_fit, y_fit, groups[fit_indices], config["features"]["pca_components"],
+                        tuple(x.shape[1:]), config["run"]["epochs"], fold, fold_count)
                 crossfit_fit = ensemble.fit_crossfit_weights(
                     trainer, x_fit, y_fit, groups[fit_indices], config["features"]["pca_components"],
                     tuple(x.shape[1:]), config["run"]["epochs"], fold, fold_count)

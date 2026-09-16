@@ -24,6 +24,35 @@ def internal_splits(metadata, folds, seed, mode="chunk_kfold"):
     raise ValueError(f"Unknown internal validation: {mode}")
 
 
+def _validation_errors(y, predictions, groups, mode):
+    """Score the independent unit represented by the selected CV mode."""
+    if mode == "chunk_kfold":
+        return {
+            key: float(1.0 - r2_score(y, prediction))
+            for key, prediction in predictions.items()
+        }, "pooled_chunk_oof_R2"
+
+    unique_groups = np.unique(groups)
+    grouped_y = []
+    grouped_predictions = {key: [] for key in predictions}
+    for group in unique_groups:
+        index = np.flatnonzero(groups == group)
+        targets = np.asarray(y)[index]
+        tolerance = max(1e-6, float(np.max(np.abs(targets))) * 1e-9)
+        if not np.allclose(targets, targets[0], rtol=0.0, atol=tolerance):
+            raise ValueError(f"Source WAV group {group!r} has multiple targets.")
+        grouped_y.append(float(targets[0]))
+        for key, prediction in predictions.items():
+            grouped_predictions[key].append(float(np.median(prediction[index])))
+    grouped_y = np.asarray(grouped_y)
+    if np.var(grouped_y) == 0:
+        raise ValueError("WAV-level internal weighting requires varying heat flux")
+    return {
+        key: float(1.0 - r2_score(grouped_y, prediction))
+        for key, prediction in grouped_predictions.items()
+    }, "source_wav_median_oof_R2"
+
+
 def fit_individual_performance_cv(trainer, specs, x, y, metadata, selector,
                                   folds, seed, mode, pca_components, epochs):
     """Test data never enter this API. Apply selection to inner-fit only.
@@ -34,6 +63,11 @@ def fit_individual_performance_cv(trainer, specs, x, y, metadata, selector,
     predictions = {spec["key"]: np.full(len(y), np.nan) for spec in specs}
     groups = wav_groups(metadata)
     records, coverage = [], np.zeros(len(y), dtype=int)
+    print(
+        f"[internal validation] {mode}, folds={folds}; "
+        "inner epoch progress is hidden and each fold/model is reported.",
+        flush=True,
+    )
     for fold, (fit, held) in enumerate(internal_splits(metadata, folds, seed, mode), 1):
         selected, selection = selector.select([metadata[i] for i in fit])
         fit = fit[selected]
@@ -61,9 +95,10 @@ def fit_individual_performance_cv(trainer, specs, x, y, metadata, selector,
         raise ValueError("Internal CV did not produce one finite prediction per sample")
     if np.var(y) == 0:
         raise ValueError("Internal performance weighting requires varying heat flux")
-    errors = {key: float(1.0 - r2_score(y, p)) for key, p in predictions.items()}
+    errors, score_unit = _validation_errors(y, predictions, groups, mode)
     audit = {"method": mode, "shuffle": True, "random_state": seed, "folds": records,
-             "weight_formula": "normalize(1 / max(1 - pooled_chunk_oof_R2, 1e-6))",
+             "weight_formula": f"normalize(1 / max(1 - {score_unit}, 1e-6))",
+             "score_unit": score_unit,
              "internal_score_scope": "training-day model selection only; not unknown-recording performance",
              "test_used": False, "individual_errors": errors,
              "samples": [{"experiment_name": row["experiment_name"], "source_wav_id": row["source_wav_id"],

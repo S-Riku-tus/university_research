@@ -1,28 +1,34 @@
 # 研究の現在地と次にすること
 
-更新日: **2026-09-16（本人の付録図・追加説明に合わせ、ピーク高さでの選別へ修正）**。別日分割と後期計画は維持。分位点ルール時点の状態は[変更前の記録](../experiments/2026-09-16_peak_height_selection/previous_documents/research_status.md)に保存した。
+更新日: **2026-09-17（6/11学習・6/18評価の3 kHz crossfit結果を解析）**。ピーク高さ選別、別日分割、後期計画は維持。分位点ルール時点の状態は[変更前の記録](../experiments/2026-09-16_peak_height_selection/previous_documents/research_status.md)に保存した。
+
+## 9/17保存結果の確認
+
+- [9/17別日結果の解析](../experiments/2026-09-17_onb_crossday_result_analysis/README.md)を追加。完成runの実条件は学習6/11のみ、評価6/18、3 kHz、無雑音、150 epochs、seed 42。ピーク選別による除外はなく、22 kHzは未完了。
+- 6/11内部OOFのWAV単位MSEは重みfit用の同日未知WAV指標で、6/18性能ではない。内部ではCNNが最良だったため重みはCNN中心となったが、6/18全域ではRFのWAV中央値R²=0.842が最良。主shrinkage統合は0.621でRFを超えなかった。
+- CNNはONB以上R²=0.967だがONB前を平均203.9 kW/m²高く予測する。元WAV分離は内部リークを解消した一方、日間校正ずれは残る。
 
 ## 本人が今回決めたこと
 
 - **学習日：6/11・7/9、テスト日：6/18**。ONB主コードのconfigから変更できるようにする。
-- 学習内は学部コードと同じ通常KFold。実コードで確認した単位は**WAVではなく1秒データ**。GroupKFoldを今回の基準には使わない。
+- 当初は学部コードと同じ1秒通常KFoldを指定したが、300 epochs結果で全内部foldに同じ29 WAVが共有され、CNNへ最大重みを与えたまま別日で破綻した。**現在は元WAV分離KFold/crossfitを使う**。当該runの履歴は変更しない。
 - ONB以上の熱流束ラベルについて、**特定周波数付近の山の高さに横線を引き、弱い前後をどこまで学習に含めるか決めたい**。帯域パワーの分位点ではない。ラベルは変えず、データ不足への対策は保留。
-- アンサンブルは単体性能から重みを決める方式を使う。新方式の比較は、分割・選別の本検証結果を見てから再開する。
+- 現在の主設定は`subset_equal_cv / crossfit_wav_stack / crossfit_shrinkage_stack`を同じ元WAV分離OOFで比較する。実データで最良方式は未確定。
 - **9/18（金）発表**は今回の実装・検証状態と後期計画・修論構成を中心とする。
 - **12/24頃までに研究・主要解析を終了、1月に修論を仕上げ、1月末に最終発表**という本人の見通しで逆算する。公式締切は未確認。
 
 ## 今回できたこと
 
-最新の根拠は[ピーク高さの実装・検証](../experiments/2026-09-16_peak_height_selection/README.md)。[スペクトルと横線を動かす画面](../experiments/2026-09-16_peak_height_selection/peak_threshold_review.html)で採否を確認できる。分割等の経緯は[先行実装](../experiments/2026-09-16_day_split_spectral_selection/README.md)。
+最新の性能・分割・IG・実装修正の根拠は[9/16別日結果の診断](../experiments/2026-09-16_onb_result_diagnosis/README.md)。選別自体は[ピーク高さの実装・検証](../experiments/2026-09-16_peak_height_selection/README.md)と[操作画面](../experiments/2026-09-16_peak_height_selection/peak_threshold_review.html)で確認できる。
 
 | 項目 | 確認した状態 | 未確認のこと |
 |---|---|---|
-| 別日指定 | explicit_daysで学習日・テスト日を選択。日重複を拒否 | 十分な学習後の別日性能 |
-| 内部検証・統合 | 通常chunk KFold→単体の内部OOF R²→逆誤差重み→学習2日で最終再学習 | 内部KFold値を未知録音性能とは扱わない |
+| 別日指定 | explicit_daysで学習6/11+7/9、テスト6/18。300 epochs runでも学習1,649秒・テスト全1,080秒を確認 | 新しい独立日での再現性 |
+| 内部検証・統合 | 旧chunk KFoldは全foldで29 WAV共有と判明。現在はWAV分離KFoldとcrossfit 3方式へ修正 | 新3方式の実データ成績 |
 | 1秒スペクトル | **49 WAV・2,940秒の線形PSD画像、49時系列、3帯域のピーク高さを出力**。全値と105 manifestを照合 | 気泡由来かどうかの秒単位正解 |
 | 学習選別 | clean音の**2,100–2,500 Hz内の最大PSD ≥ 1e-9**。図の縦軸×10⁻⁹で横線1。学習のONB以上だけに固定値を適用 | 1は探索的候補。閾値の最適性、十分な学習後の改善は未確認 |
 | 選別の量 | 学習**1,860→1,649秒**。6/11は全保持、7/9で211秒を除外。テスト6/18の1,080秒・18 WAVは全て保持 | データ不足対策は本人指定で保留 |
-| 検証 | **62テスト成功**。新ルールで実3モデル・3 kHz・無雑音・2 epochs動作確認、予測・重み・全テスト保持を検算 | 300 epochsの本比較・ノイズ下の効果・新方式比較は未実施 |
+| 検証 | 3/22 kHz・無雑音・300 epochs完了runを診断。3 kHz CNN R²=-0.084、RF=0.818、旧統合=0.534。22 kHz CNN=0.804 | 選別なし対照、7/9追加効果、複数seed、新方式比較 |
 | 文書 | 後期WBS、修論7章、9/18発表案とSOAPを更新 | 教授の承認、正式な提出日、完成PPTX |
 
 **スペクトルの重要な事実**：7/9の記録上の最初のONB点442.17 kW/m²と次点505.10 kW/m²は、今回のピーク高さでも各60秒全除外となる。571.69は16/60、643.52は13/60を採用。後者は横線10で5秒、1で13秒、0.3で16秒となり、弱い山をどこまで含めるかを確認できた。録音対応・計測感度・実験上のONBと音響変化の関係は未確定。原記録のONB値は変更しない。
@@ -33,11 +39,11 @@
 
 ## 現行設定と次の一手
 
-[ONB主コード](../code/run_ensemble_regression_onb.py)の learning_policy / acoustic_selection / ensemble を使用。学習6/11+7/9、テスト6/18、performance_kfold、選別有効。**主設定の5帯域×7ノイズ・300 epochs・XAI有効は今回全件実行していない**。設定上はテスト日35条件。
+[ONB主コード](../code/run_ensemble_regression_onb.py)の learning_policy / acoustic_selection / ensemble を使用。学習6/11+7/9、テスト6/18、ピーク選別、新crossfit 3方式。`acoustic_selection`は主configでピーク高さ閾値だけを指定し、`None`なら選別なし。固定的な選別条件・output/evaluation/explainability・モデルregistryは`utils/config/onb_defaults.py`へ移した。保存先は`<解析日>/selected_log_architecture__方針/.../<run>_<設定hash>_<実行ID>`とし、同日の異なる学習条件と同条件の別実行をともに分離する。**現在の主設定は3/22 kHz×無雑音×150 epochs**で、診断対象runの300 epochsとは異なる。
 
 2026-09-16に[実験日指定を整理](../experiments/2026-09-16_onb_experiment_day_audit/README.md)。現在の`explicit_days`は学習日・テスト日から対象3日を自動算出する。設定変更と単体テストの記録であり、300 epochs本比較の実行・性能検証ではない。
 
-**次は横線1e-9を固定し、6/18固定テストで、3 kHz・無雑音の選別なし/ありを300 epochsで本比較する。** 同じモデル・seed・テスト全秒・性能重みで比較する。その後、代表強ノイズを追加する。実行前に周波数・ノイズ・説明性の範囲を限定比較へ合わせる。必要な閾値感度確認は0.3e-9・3e-9を候補とし、テスト精度で最良値を選び直さない。2 epochsの動作確認値から効果を結論しない。
+**次は3 kHz・無雑音・同じseed/300 epochs/全テスト秒で、(1)選別なし/あり、(2)6/11のみ学習/6/11+7/9学習を固定比較する。** 前者で選別効果、後者で7/9の負の転移を識別する。同じ単体予測上でcrossfit 3方式も比較する。6/18を見て選ぶ作業は原因診断であり、最終的な一般化主張には新しい独立日を必要とする。
 
 WAV中央値のR²/RMSE/MAE、ONB近傍誤差、見逃し/誤警報、最初の陽性測定点を読む。内部OOF・別日テスト・測定点ONB・秒単位の音響イベントを分ける。
 
@@ -54,7 +60,7 @@ WAV中央値のR²/RMSE/MAE、ONB近傍誤差、見逃し/誤警報、最初の�
 - [9/14限定の原因分析](../experiments/2026-09-16_sep14_cause_analysis/analysis.md)：本人指定の06.11・6条件。9/15を混ぜないという当時の対象範囲を保持。
 - [9/15・2帯域比較](../experiments/2026-09-15_onb_frequency_comparison/analysis.md)：旧日内評価の履歴。新しい別日・選別後結果ではない。
 - [IG数値修正](../experiments/2026-09-16_ig_numerical_fix/README.md)：積分・収束診断を修正済み。旧9/14学習済みモデルは未発見で旧画像再計算は未実施。ランダム初期化の検証ではCNNが収束、AlexNetは上限でも厳しい許容値に未到達。
-- [crossfit3方式](../experiments/2026-09-16_crossfit_ensemble/README.md)：実装保持。本比較は今回の基準検証後。
+- [crossfit3方式](../experiments/2026-09-16_crossfit_ensemble/README.md)：ピーク選別との併用を追加し主設定で有効化。合成/小型Keras検証済み、実データ性能は未確認。
 - 9/3の105条件や途中runを追加解析・再実行していない。
 
 実装済み・出力済み・研究上の検証済みを分ける。[文書案内](document_index.md)。

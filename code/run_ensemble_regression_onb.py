@@ -17,6 +17,7 @@ from datetime import datetime
 from uuid import uuid4
 from pathlib import Path
 from pprint import pformat
+from uuid import uuid4
 
 # 学習前のGPUメモリ一括確保を避け、必要な分だけ順次確保する。
 # Windowsでメモリ不足が起きた際、バッチサイズを下げた再試行を可能にする。
@@ -32,6 +33,7 @@ from utils.config.parameter_sets import (
     expand_parameter_sets,
     resolve_parameter_set,
 )
+from utils.config.onb_defaults import apply_onb_defaults, onb_model_specs
 from utils.explainability.training_integration import (
     resolve_explainability_scope,
 )
@@ -52,7 +54,8 @@ from utils.experiment.run_helpers import set_global_seed
 #                         実験条件の設定
 #######################################################################
 # 実験条件を変更するときは、まずVALIDATION_CONFIGを編集する。
-# 学習・評価・説明性・作図の設定をここにまとめる。
+# 実験ごとに変更する条件をここにまとめる。
+# 固定的な出力・評価・説明性とモデル対応表はutils/config/onb_defaults.py。
 #
 # 現在の設定の読み方:
 # ・目的: 同じ検証予測から単体モデルと各アンサンブル方式を比較する。
@@ -64,10 +67,10 @@ from utils.experiment.run_helpers import set_global_seed
 # ensembleには方式名と主方式を指定する。
 # 重みの計算や予測の統合処理はutils/ensemble/で管理する。
 
-VALIDATION_CONFIG = {
+VALIDATION_CONFIG = apply_onb_defaults({
     "run": {
         "smoke_test": False,
-        "epochs": 300,
+        "epochs": 150,
         "folds": 3,
         "smoke_epochs": 2,
         "smoke_folds": 2,
@@ -107,31 +110,29 @@ VALIDATION_CONFIG = {
         # 旧within_day / leave_one_day_outでは下記のtrain/test指定を外し、
         # data.experiment_namesに評価対象日を指定する。
         "split_mode": "explicit_days",
-        "train_experiments": ["2025.06.11_0.3_2", "2025.07.09_0.3_1"],
-        "test_experiments": ["2025.06.18_0.3_3"],
-        # 学部コードと同じ、1秒配列に通常KFold(shuffle=True, seed=42)。
-        # wav_kfoldなら元WAVの一覧に通常KFoldを適用。内部fold数はrun.folds。
-        "internal_validation": "chunk_kfold",
+        "train_experiments": [
+            "2025.06.11_0.3_2",
+            # "2025.07.09_0.3_1",
+            # "2025.06.18_0.3_3",
+            ],
+        "test_experiments": [
+            # "2025.06.11_0.3_2",
+            # "2025.07.09_0.3_1",
+            "2025.06.18_0.3_3",
+            ],
+        # 重み決定でも同じ元WAVの1秒区間を学習・検証へ分けない。
+        # 内部fold数はrun.folds。chunk_kfoldは旧比較の再現時だけ使う。
+        "internal_validation": "wav_kfold",
         # matched: 各ノイズ条件で学習し、その条件で評価する（現在の方式）。
         # clean_only: 無雑音だけで学習し、同じモデルで全評価ノイズを予測する。
         # 評価ノイズ一覧から無雑音を外しても、学習には無雑音を読み込む。
         "training_noise": "matched",
     },
     "acoustic_selection": {
-        # clean原音から得た同じ判定を全周波数・付加ノイズ条件へ適用。
-        # 学習だけを選別し、内部validation・別日testは全1秒区間を評価する。
-        "enabled": True,  # Falseで選別なし。下記はピーク前後を含める探索的な暫定条件。
-        "mode": "peak_height",
-        "features_csv": "experiments/2026-09-16_peak_height_selection/peak_features.csv",
-        # 2300 Hz付近の山の頂点（2100～2500 Hz内の最大PSD）。帯域の面積ではない。
-        "feature": "peak_2100_2500_psd",
         # スペクトルの縦軸に引く横線。図の「×10^-9」表示で高さ1に相当。
         # 0.3e-9なら弱い秒も含む。3e-9 / 10e-9なら大きいピークの秒に絞る。
-        # 秒ごとの正規化やONB前のパーセンタイルを使用しない。
+        # Noneなら選別なし。特徴量・対象範囲などの固定条件はonb_defaults.pyで管理する。
         "peak_height_threshold": 1.0e-9,
-        "peak_height_threshold_by_experiment": {},  # 必要時のみ実験日別に明示上書き。
-        # ONB以上を対象。上限を指定したい日は W/m² で設定（未指定なら全陽性域）。
-        "apply_max_heat_flux_by_experiment": {},
     },
     "thresholds": {
         # ONBと確認された最初の測定点の熱流束と、その出典を一元管理する。
@@ -174,19 +175,22 @@ VALIDATION_CONFIG = {
     "ensemble": {
         # 実行するアンサンブル方式
         "enabled_strategy_names": [
-            "performance_kfold",  # 学習データの1秒データを通常KFoldで分け、全件の内部予測を集める
-            "simple_equal",  # 等しい重みで平均
+            # "performance_kfold",  # learning_policy.internal_validation単位のOOF単体性能で重み付け
+            # "simple_equal",  # 等しい重みで平均
             "inner_holdout",  # 学習データの約20%を、元WAVが重ならないように一度だけ取り分ける
-            "subset_equal_cv",  # 使うモデルの組合せを選び、選んだモデルを等重みで平均
-            "crossfit_wav_stack",  # WAV単位の予測誤差が小さくなる重みを直接求める
-            "crossfit_shrinkage_stack",  # 上の方法に「極端な重みを避け、等重みに近づける」制約を加える
+            # 次の3方式は同じ元WAV分離inner OOFを共有するため、3倍の追加学習にはならない。
+            # "subset_equal_cv",  # 使うモデルの組合せを選び、選んだモデルを等重みで平均
+            # "crossfit_wav_stack",  # WAV単位の予測誤差が小さくなる重みを直接求める
+            # "crossfit_shrinkage_stack",  # 極端な重みを避け、等重みに近づける制約を加える
         ],
-        # 主方式
+        # 3方式を全て保存し、正則化付き方式を主図・散布図に使う。
+        # 実データでの優位性は未検証なので、他2方式の結果も必ず併記する。
         "primary_strategy_name": "performance_kfold",
     },
     "features": {
         "pca_components": 100,
     },
+<<<<<<< HEAD
     "output": {
         # 各実験日のregression_result/npy/<モデル群>/<実行日と実行ハッシュ>/<周波数>/<ノイズ>へ保存する。
         # 比較図は<周波数>/noise_trends/<方式>に置き、各ノイズフォルダと並べる。
@@ -299,6 +303,9 @@ VALIDATION_CONFIG = {
         "retrain_completed_runs_for_xai": False,
     },
 }
+=======
+})
+>>>>>>> 9943ba413e8a7cb7dd56f0a3c92a20ae48cf39c1
 
 
 def _cfg(section, key):
@@ -367,9 +374,16 @@ SAVE_FOLD_PREDICTIONS = _cfg("output", "save_fold_predictions")
 SAVE_TUNING_SUMMARY = _cfg("output", "save_tuning_summary")
 RESUME_COMPLETED_RUNS = _cfg("output", "resume_completed_runs")
 NOISE_TREND_CONFIG = _cfg("output", "noise_trend_plots")
+<<<<<<< HEAD
 RUN_INSTANCE_ID = os.environ.get("RUN_ID", datetime.now().strftime("%H%M%S"))
 # RUN_IDが同じでも、プロセスを起動するたびに別の結果フォルダを使う。
 EXECUTION_ID = uuid4().hex
+=======
+# 起動ごとに別の保存先にする。同じRUN_IDを明示した場合だけ同一実行として再開する。
+RUN_INSTANCE_ID = os.environ.get("RUN_ID") or (
+    f"{datetime.now():%H%M%S}_{uuid4().hex[:8]}"
+)
+>>>>>>> 9943ba413e8a7cb7dd56f0a3c92a20ae48cf39c1
 FOLD_PREDICTIONS_DIR_NAME = "fold_pred"
 WAV_LEVEL_EVALUATION_ENABLED = _cfg("evaluation", "wav_level_enabled")
 WAV_AGGREGATIONS = tuple(_cfg("evaluation", "wav_aggregations"))
@@ -401,44 +415,7 @@ EXPLAINABILITY_ENABLED = EXPLAINABILITY_CONFIG.get("enabled", False)
 # 学習率とバッチサイズなどは上のparameter_setsで指定する。
 
 
-MODEL_SPECS = [
-    {
-        "key": "rf",
-        "label": "RandomForest",
-        "kind": "sklearn",
-        "builder": lambda mm, **params: mm.random_forest(**params),
-    },
-    {
-        "key": "cnntf_v2_gap",
-        "label": "CNN+Tf v2 GAP",
-        "kind": "keras",
-        "builder": lambda mm, **params: mm.cnn_transformer_v2(**params),
-        "input_axes_assumption": ["time_frame", "frequency_bin", "channel"],
-        "architecture": {
-            "front_end": "alexnet_like_cnn",
-            "input_transform": "log1p(power / 1e-12)",
-            "sequence_length_after_cnn": 7,
-            "model_dim": 64,
-            "num_heads": 4,
-            "attention_key_dim_per_head": 16,
-            "ff_dim": 256,
-            "num_transformer_blocks": 2,
-            "dropout": 0.1,
-            "encoder": "transformer_encoder",
-            "pooling": "GlobalAveragePooling1D",
-        },
-    },
-    {
-        "key": "alexnet",
-        "label": "AlexNet",
-        "kind": "keras",
-        "builder": lambda mm, **params: mm.alexnet(**params),
-        "architecture": {
-            "input_transform": "log1p(power / 1e-12)",
-            "regression_head": "Flatten-Dense4096-Dense4096",
-        },
-    },
-]
+MODEL_SPECS = onb_model_specs()
 
 
 

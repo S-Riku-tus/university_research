@@ -141,7 +141,7 @@ class ModelTrainer:
     def predict_one_model(self, spec, model, x, x_pca, scaler):
         """学習済みモデルで予測し、元スケールの熱流束に戻して返す。"""
         if spec["kind"] == "keras":
-            pred_scaled = model.predict(x)
+            pred_scaled = model.predict(x, verbose=0)
         else:
             pred_scaled = model.predict(x_pca).reshape(-1, 1)
         return scaler.inverse_transform(pred_scaled).ravel()

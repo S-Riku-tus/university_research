@@ -17,7 +17,7 @@ from utils.ensemble.ensemble_weighting import EnsembleWeighting
 from utils.experiment.acoustic_selection import AcousticTrainingSelector
 from utils.experiment.learning_policy import normalize_learning_policy, checked_metadata
 from utils.experiment.learning_runner import run_learning_experiments
-from utils.training.internal_validation import internal_splits
+from utils.training.internal_validation import internal_splits, _validation_errors
 from utils.experiment.spectral_peaks import PSD_UNIT, SPECTRUM_METHOD
 
 
@@ -50,13 +50,38 @@ class DaySelectionTest(unittest.TestCase):
                 shared.append({rows[i]["source_wav_id"] for i in fit} & {rows[i]["source_wav_id"] for i in held})
             self.assertEqual(any(shared), mode == "chunk_kfold")
 
+    def test_wav_kfold_weights_use_one_median_prediction_per_wav(self):
+        targets = np.repeat([0.0, 10.0, 20.0, 30.0], 3)
+        groups = np.repeat(["a", "b", "c", "d"], 3)
+        prediction = targets + np.tile([0.0, 0.0, 100.0], 4)
+        wav_errors, unit = _validation_errors(
+            targets, {"model": prediction}, groups, "wav_kfold"
+        )
+        chunk_errors, chunk_unit = _validation_errors(
+            targets, {"model": prediction}, groups, "chunk_kfold"
+        )
+        self.assertEqual(unit, "source_wav_median_oof_R2")
+        self.assertEqual(chunk_unit, "pooled_chunk_oof_R2")
+        self.assertAlmostEqual(wav_errors["model"], 0.0)
+        self.assertGreater(chunk_errors["model"], 1.0)
+
     def test_selection_kfold_training_and_full_test_end_to_end(self):
         self.run_selection_pipeline("background_quantile")
 
     def test_peak_selection_kfold_training_and_full_test_end_to_end(self):
         self.run_selection_pipeline("peak_height")
 
-    def run_selection_pipeline(self, mode):
+    def test_peak_selection_crossfit_ensembles_end_to_end(self):
+        self.run_selection_pipeline(
+            "peak_height",
+            strategy_names=[
+                "subset_equal_cv",
+                "crossfit_wav_stack",
+                "crossfit_shrinkage_stack",
+            ],
+        )
+
+    def run_selection_pipeline(self, mode, strategy_names=None):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             policy = self.policy()
@@ -87,16 +112,19 @@ class DaySelectionTest(unittest.TestCase):
                                                "feature": "band_2000_3000_db", "background_quantile": 0.99}
             if mode == "peak_height":
                 config["acoustic_selection"].update(mode=mode, feature="peak_2100_2500_psd", peak_height_threshold=1e-9)
-            manager = EnsembleManager({"enabled_strategy_names": ["performance_kfold"],
-                                       "primary_strategy_name": "performance_kfold"}, [s["key"] for s in specs])
+            strategy_names = strategy_names or ["performance_kfold"]
+            manager = EnsembleManager({"enabled_strategy_names": strategy_names,
+                                       "primary_strategy_name": strategy_names[0]}, [s["key"] for s in specs])
             config["ensemble"] = manager.snapshot()
             trainer = ObservedTrainer()
             with contextlib.redirect_stdout(io.StringIO()), patch("gc.collect"), patch("tensorflow.keras.backend.clear_session"):
                 for _ in range(2):
                     run_learning_experiments(jobs, policy, config, specs, [{"name": "test"}],
                                              manager, trainer, SilentPlotter(), lambda *a: None)
-            # 3 inner folds + final refit, 2 models; same models reused across noises, resume skips.
-            self.assertEqual(len(trainer.fits), 8)
+            # KFold is 3 inner folds; crossfit shares one 4-fold OOF pass across
+            # all three strategies. Both then do one final refit per model.
+            expected_fits = 10 if "subset_equal_cv" in strategy_names else 8
+            self.assertEqual(len(trainer.fits), expected_fits)
             for x in trainer.fits + trainer.pca_fits:
                 values = x[:, 0, 0, 0]
                 self.assertFalse(np.any((values >= 200) & (values < 300)))
@@ -111,9 +139,19 @@ class DaySelectionTest(unittest.TestCase):
                 self.assertEqual(selection["n_before"], 24)
                 self.assertEqual(selection["n_after"], 18)
                 self.assertNotIn("day-b", selection["by_experiment"])
-                internal = json.loads((directory / "internal_validation_fold1.json").read_text())
-                self.assertEqual(len(internal["samples"]), 24)
-                self.assertTrue(all(f["shared_source_wavs"] > 0 for f in internal["folds"]))
+                if "performance_kfold" in strategy_names:
+                    internal = json.loads((directory / "internal_validation_fold1.json").read_text())
+                    self.assertEqual(len(internal["samples"]), 24)
+                    self.assertTrue(all(f["shared_source_wavs"] > 0 for f in internal["folds"]))
+                else:
+                    crossfit = json.loads((directory / "ensemble_crossfit_fit_f1.json").read_text())
+                    self.assertEqual(len(crossfit["splits"]), 4)
+                    self.assertEqual(set(crossfit["weights"]), set(strategy_names))
+                    for split in crossfit["splits"]:
+                        self.assertFalse(
+                            set(split["training_wav_groups"])
+                            & set(split["heldout_wav_groups"])
+                        )
                 with (directory / "fold_pred" / f"pred_f1_{job['snr_value']}.csv").open() as inp:
                     self.assertEqual(len(list(csv.DictReader(inp))), 12)
 

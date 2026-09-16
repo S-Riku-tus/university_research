@@ -21,8 +21,13 @@ from utils.experiment.learning_policy import (
     policy_result_date_dir,
 )
 from utils.experiment.learning_runner import run_learning_experiments
+<<<<<<< HEAD
 from utils.experiment.result_paths import existing_result_run_path, result_run_path, scoped_result_job
 from utils.experiment.run_helpers import is_completed_run, run_config_digest
+=======
+from utils.experiment.result_paths import existing_result_run_path, result_run_path
+from utils.experiment.run_helpers import is_completed_run, run_config_digest, run_dir_name
+>>>>>>> 9943ba413e8a7cb7dd56f0a3c92a20ae48cf39c1
 from utils.plotting.noise_trend_plots import collect_noise_trend_rows
 from utils.training.model_training import ModelTrainer
 from reorganize_onb_results import migrate_results
@@ -101,6 +106,7 @@ def fixture(root, policy, evaluated_noises=("heatflux_no_noise", "heatflux_refer
 
 
 class LearningPolicyTest(unittest.TestCase):
+<<<<<<< HEAD
     def test_scoped_result_directory_separates_executions_and_parameters(self):
         job = {"save_base_path": Path("ensemble/20260917_selected_log_architecture__days_matched"),
                "max_freq_hz": "maxfreq=3kHz", "noise_dir_name": "heatflux_no_noise"}
@@ -135,6 +141,36 @@ class LearningPolicyTest(unittest.TestCase):
                 self.assertEqual(json.loads((result / "run_manifest.json").read_text(encoding="utf-8"))["run_dir"], "")
                 self.assertTrue((directory / "tuning_summary.csv").is_file())
                 self.assertFalse(any(path.name.startswith("e1_") for path in result.iterdir()))
+=======
+    def test_nested_analysis_date_path_and_config_scoped_run_name(self):
+        policy = {"split_mode": "explicit_days", "training_noise": "matched"}
+        self.assertEqual(
+            policy_result_date_dir("20260916/selected_log_architecture", policy),
+            "20260916/selected_log_architecture__days_matched",
+        )
+        first_hash = run_config_digest(
+            {"models": {}, "output": {}, "learning_policy": {**policy, "train_experiments": ["day-a"]}},
+            {}, [], "rf", True,
+        )
+        second_hash = run_config_digest(
+            {"models": {}, "output": {}, "learning_policy": {**policy, "train_experiments": ["day-a", "day-b"]}},
+            {}, [], "rf", True,
+        )
+        self.assertNotEqual(first_hash, second_hash)
+        first_dir = run_dir_name(
+            300, "fixed", "rf", False, "simple", first_hash, "run-a"
+        )
+        second_dir = run_dir_name(
+            300, "fixed", "rf", False, "simple", second_hash, "run-a"
+        )
+        self.assertNotEqual(first_dir, second_dir)
+        self.assertTrue(first_dir.endswith(f"{first_hash}_run-a"))
+
+        repeated_condition = run_dir_name(
+            300, "fixed", "rf", False, "simple", first_hash, "run-b"
+        )
+        self.assertNotEqual(first_dir, repeated_condition)
+>>>>>>> 9943ba413e8a7cb7dd56f0a3c92a20ae48cf39c1
 
     def run_fixture(self, root, policy, evaluated_noises=None):
         args = {} if evaluated_noises is None else {"evaluated_noises": evaluated_noises}
@@ -301,7 +337,7 @@ class LearningPolicyTest(unittest.TestCase):
             jobs, trainer, config, call = self.run_fixture(root, {"split_mode": "within_day", "training_noise": "clean_only"})
             target = next((jobs[0]["save_base_path"] / jobs[0]["max_freq_hz"] / jobs[0]["noise_dir_name"]).iterdir())
             (target / "completed.json").unlink()
-            config["output"]["run_instance_id"] = "resumed-instance"
+            # 同じ実行IDを指定した場合だけ、中断した保存先を再開する。
             before = len(trainer.fits)
             with contextlib.redirect_stdout(io.StringIO()), patch("gc.collect"), patch("tensorflow.keras.backend.clear_session"):
                 call()
