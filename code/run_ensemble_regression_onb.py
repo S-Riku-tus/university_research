@@ -190,122 +190,7 @@ VALIDATION_CONFIG = apply_onb_defaults({
     "features": {
         "pca_components": 100,
     },
-<<<<<<< HEAD
-    "output": {
-        # 各実験日のregression_result/npy/<モデル群>/<実行日と実行ハッシュ>/<周波数>/<ノイズ>へ保存する。
-        # 比較図は<周波数>/noise_trends/<方式>に置き、各ノイズフォルダと並べる。
-        "save_date": datetime.now().strftime("%Y%m%d"),
-        "result_date_dir": datetime.now().strftime("%Y%m%d") + "_selected_log_architecture",
-        "save_fold_predictions": True,
-        "save_tuning_summary": True,
-        "resume_completed_runs": True,
-        "noise_trend_plots": {
-            # 各ノイズ条件の完了時と再開時に、保存指標から折れ線グラフを更新する。
-            "enabled": True,
-            # primaryは主方式のみ。allなら各方式につき単体3モデル＋統合の図を作る。
-            # ["simple_equal", "inner_holdout"]のように方式を指定することもできる。
-            "ensemble_strategy_names": "all",
-            # R²、連続予測によるROC-AUC、卒論互換の二値化後AUCを別図で保存する。
-            "metrics": ["r2", "roc_auc_cont", "auc_binary"],
-            # chunkはfold平均±標準誤差、wavは全OOFの元録音集約値を表示する。
-            "evaluation_units": ["chunk", "wav"],
-            # WAVの集約方法にはevaluationのprimary_wav_aggregationを使用する。
-            "formats": ["png", "pdf"],
-        },
-    },
-    "evaluation": {
-        # 同じ学習・検証予測から、chunk単位と元WAV単位の両方を評価する。
-        # chunk指標はfoldごとに計算し、その平均と標準誤差を保存する。
-        # WAV指標は全foldの学習外予測を集め、元録音ごとに集約して計算する。
-        "wav_level_enabled": True,
-        "wav_aggregations": ["mean", "median", "p90"],
-        "primary_wav_aggregation": "median",
-        # 最初の陽性点と、2 WAV連続で陽性になる区間の開始点を併記する。
-        # 単発の誤警報と持続的な遷移を、熱流束の測定点順に確認する。
-        # この測定点差は秒単位の検知遅れではない。
-        "onb_transition_persistence_wavs": [1, 2],
-        # WAV内のしきい値交差も診断用に保存する。
-        # 同期したイベント正解がないため、気泡イベントの検出精度とは区別する。
-        "predicted_event_summary_enabled": True,
-    },
-    "explainability": {
-        # 学習済みの各foldモデルについて、検証データ上の説明性を追加評価する。
-        # 各実行フォルダ内の次の場所に保存する。
-        # 保存先: <SAVE_PATH>/explainability/fold{n}/{model_key}/
-        #
-        # 対象データ、モデル、foldはdata/models/runの設定から引き継ぐ。
-        # 説明性だけ別の対象条件へずれないようにする。
-        "enabled": True,
-        "max_samples_per_fold": 5,
-        "ig_steps": 64,
-        # IGの初期点数→上限まで増やし、寄与合計と説明mapの収束を確認。
-        # ig_atolは熱流束へ逆変換する前のモデル出力単位。
-        "ig_max_steps": 4096,
-        "ig_batch_size": 8,
-        "ig_rtol": 1e-3,
-        "ig_atol": 1e-6,
-        "ig_map_rtol": 1e-2,
-        # モデル構造に適した説明手法を指定する。
-        # RFのTreeSHAPはPCA成分の監査用、物理帯域の比較にはマスクを使う。
-        "methods_by_model": {
-            "rf": [
-                "tree_shap_pca",
-                "group_occlusion"
-            ],
-            "cnntf_v2_gap": [
-                "integrated_gradients",
-                "group_occlusion"
-            ],
-            "alexnet": [
-                "integrated_gradients",
-                "grad_cam",
-                "group_occlusion",
-            ],
-        },
-        "frequency_bands_hz": [
-            [0, 256],
-            [256, 512],
-            [512, 1000],
-            [1000, 2000],
-            [2000, 5000],
-            [5000, 10000],
-            [10000, 15000],
-            [15000, 22000],
-        ],
-        "time_groups": 4,
-        "time_extent_seconds": 1.0,
-        "onb_band_frac": 0.10,
-        # マスク後の性能も、主評価と同じ元WAV中央値の単位で比較する。
-        "performance_evaluation_unit": "source_wav",
-        "performance_wav_aggregation": "median",
-        "baseline_value": 0.0,
-        "curve_fractions": [0.0, 0.05, 0.10, 0.20, 0.30, 0.50, 1.0],
-        # 入力への小さな非負摂動でIG画像の局所的な安定性を調べる。
-        # ノイズ条件を変えたときの予測性能評価とは別の診断である。
-        "stability": {
-            "enabled": True,
-            "methods": ["integrated_gradients"],
-            "repeats": 2,
-            "noise_fraction": 0.01,
-            "clip_nonnegative": True,
-            "random_seed": 42,
-        },
-        # 最終学習層だけをランダム化する簡易的な妥当性確認。
-        # 全層を順次ランダム化する検証ではないため、部分的な診断として扱う。
-        # 対象となる説明手法と乱数seedを以下で指定する。
-        "sanity_check": {
-            "enabled": True,
-            "methods": ["integrated_gradients"],
-            "random_seed": 42,
-        },
-        # 説明性の出力不足だけを理由に、完了した学習を自動で繰り返さない。
-        # 説明性のために再学習したい場合だけTrueに変更する。
-        "retrain_completed_runs_for_xai": False,
-    },
-}
-=======
 })
->>>>>>> 9943ba413e8a7cb7dd56f0a3c92a20ae48cf39c1
 
 
 def _cfg(section, key):
@@ -374,16 +259,10 @@ SAVE_FOLD_PREDICTIONS = _cfg("output", "save_fold_predictions")
 SAVE_TUNING_SUMMARY = _cfg("output", "save_tuning_summary")
 RESUME_COMPLETED_RUNS = _cfg("output", "resume_completed_runs")
 NOISE_TREND_CONFIG = _cfg("output", "noise_trend_plots")
-<<<<<<< HEAD
-RUN_INSTANCE_ID = os.environ.get("RUN_ID", datetime.now().strftime("%H%M%S"))
-# RUN_IDが同じでも、プロセスを起動するたびに別の結果フォルダを使う。
-EXECUTION_ID = uuid4().hex
-=======
 # 起動ごとに別の保存先にする。同じRUN_IDを明示した場合だけ同一実行として再開する。
 RUN_INSTANCE_ID = os.environ.get("RUN_ID") or (
     f"{datetime.now():%H%M%S}_{uuid4().hex[:8]}"
 )
->>>>>>> 9943ba413e8a7cb7dd56f0a3c92a20ae48cf39c1
 FOLD_PREDICTIONS_DIR_NAME = "fold_pred"
 WAV_LEVEL_EVALUATION_ENABLED = _cfg("evaluation", "wav_level_enabled")
 WAV_AGGREGATIONS = tuple(_cfg("evaluation", "wav_aggregations"))
