@@ -7,7 +7,7 @@
 - 本人の添付した2件の提案を現行コード・標本数・中央値の評価順序と照合し、subset選択、WAV損失の重み最適化、等重みへの縮小を追加した。
 - 共通の元WAV分離inner OOFを外側学習側だけで生成し、clean_onlyは各評価ノイズへ同じ重みを適用する。既定の2方式・主表示は維持。
 - CPUで44テスト成功。4学習方針の分割、保存、再開、旧予測との一致、小型Kerasの実学習を確認。実データ300 epochsでの性能改善は未検証。
-- [実装・検証記録](../experiments/2026-09-16_crossfit_ensemble/README.md)、[有効化・計算量・限界](ensemble_crossfit.md)、[未実行の代表比較案](../configs/experiments/2026-09-16_crossfit_ensemble.yaml)。
+- [実装・検証記録](../experiments/2026-09-16_crossfit_ensemble/README.md)、[5方式の手法と数式](ensemble_methods.md)、[未実行の代表比較案](../configs/experiments/2026-09-16_crossfit_ensemble.yaml)。
 
 ## 2026-09-15 比較解析後の文書全体の整合性を更新
 

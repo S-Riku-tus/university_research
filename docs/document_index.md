@@ -13,7 +13,7 @@
 | 最新2帯域の結果を説明する | [9/15・3/22 kHz比較](../experiments/2026-09-15_onb_frequency_comparison/analysis.md)、[本人の修論仮説](research_plan/2026-09-15_master_thesis_hypothesis.md) | 卒論比較・帯域SNR・XAIの役割と原因分析。本人の理想は仮説として別記 |
 | 今週の報告を作る | [2帯域のSOAP下書き](progress/2026-09-18_weekly_progress_draft.md) | 本人の仮説・最新比較・原因候補を統合した未提出の草稿 |
 | 追加結果を解析する | [解析手順](analysis_workflow.md) | 対象固定→性能→原因候補→XAI→次の比較の判定基準 |
-| 新しいアンサンブルを比較する | [crossfit方式の設計・使い方](ensemble_crossfit.md) | 既定の2方式を維持した追加3方式。実装検証と本学習の成績を区別 |
+| 5つのアンサンブル手法を確認する | [5方式の手法と数式](ensemble_methods.md) | 既存2方式と追加3方式の重み、目的関数、性質を同じ記号で比較 |
 | 原資料の位置づけを確認する | [原資料と現在方針の対応](original_document_guide.md) | 学部からの連続性、旧計画・説明手法・原本の扱い |
 | 22 kHz単独解析時点を確認する | [9/15・22 kHz解析](../experiments/2026-09-15_onb_22khz_noise_sweep/analysis.md) | 先行結果は保持。発表草稿は現行2帯域へ更新 |
 | 数値・コード変更・解釈の根拠 | [experiments](../experiments/README.md) | 日付付きで固定。訂正理由と後継を追記する |

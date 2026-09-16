@@ -8,7 +8,7 @@
 
 根拠は、現行inner holdoutが12外側学習WAV中3 WAVから重みを決めていること、単体誤差の逆数が誤差相殺を直接最適化しないこと、WAV中央値とモデル間加重平均の順序が交換できないこと。最後の点は過去の [誤差分解CSV](../2026-09-15_onb_frequency_comparison/comparison/ensemble_error_decomposition.csv)にも差が記録されている。
 
-新方式では同じ外側学習WAVから4-fold inner OOFを作る。候補評価・最適化ともchunk統合後のWAV中央値を目的とし、等重み縮小は事前固定λ=0.1の罰則で実装する。非凸目的なので、多始点の数値解を大域最適解とは呼ばない。詳細な [設計・有効化・計算量・出典](../../docs/ensemble_crossfit.md)。
+新方式では同じ外側学習WAVから4-fold inner OOFを作る。候補評価・最適化ともchunk統合後のWAV中央値を目的とし、等重み縮小は事前固定λ=0.1の罰則で実装する。非凸目的なので、多始点の数値解を大域最適解とは呼ばない。詳細な [5方式の手法と数式](../../docs/ensemble_methods.md)。
 
 ## 変更箇所
 
