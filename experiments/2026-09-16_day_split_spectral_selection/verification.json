@@ -1,0 +1,776 @@
+{
+  "all_seconds_image_count": 2940,
+  "dataset_manifest_count": 105,
+  "same_clean_selection_across_all_variants": true,
+  "runs": [
+    {
+      "selection_enabled": false,
+      "run_hash": "1d5e04",
+      "path": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\day_split_smoke\\20260916_day_split_smoke_baseline\\maxfreq=3kHz\\heatflux_no_noise\\e2_active_rf-ctf-alex_ed198_s_rf-cnntf_v_performa",
+      "n_train": 1860,
+      "n_test": 1080,
+      "test_wavs": 18,
+      "finite_predictions_all_models": true,
+      "weights_recomputed_from_training_oof": true,
+      "internal_cv_shared_wavs": [
+        31,
+        31,
+        31
+      ],
+      "scope": "2-epoch integration verification, not scientific model ranking"
+    },
+    {
+      "selection_enabled": true,
+      "run_hash": "7a63a2",
+      "path": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\day_split_smoke\\20260916_day_split_smoke_selected\\maxfreq=3kHz\\heatflux_no_noise\\e2_active_rf-ctf-alex_ed198_s_rf-cnntf_v_performa",
+      "n_train": 1648,
+      "n_test": 1080,
+      "test_wavs": 18,
+      "finite_predictions_all_models": true,
+      "weights_recomputed_from_training_oof": true,
+      "internal_cv_shared_wavs": [
+        29,
+        29,
+        29
+      ],
+      "scope": "2-epoch integration verification, not scientific model ranking"
+    }
+  ],
+  "datasets": [
+    {
+      "day": "2025.06.11_0.3_2",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\data\\npy\\waterflow_20260817_1s\\maxfreq=10kHz\\heatflux_no_noise\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1072,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.06.11_0.3_2",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\data\\npy\\waterflow_20260817_1s\\maxfreq=10kHz\\heatflux_reference_SNR=-12\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1072,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.06.11_0.3_2",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\data\\npy\\waterflow_20260817_1s\\maxfreq=10kHz\\heatflux_reference_SNR=-16\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1072,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.06.11_0.3_2",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\data\\npy\\waterflow_20260817_1s\\maxfreq=10kHz\\heatflux_reference_SNR=-20\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1072,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.06.11_0.3_2",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\data\\npy\\waterflow_20260817_1s\\maxfreq=10kHz\\heatflux_reference_SNR=-4\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1072,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.06.11_0.3_2",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\data\\npy\\waterflow_20260817_1s\\maxfreq=10kHz\\heatflux_reference_SNR=-8\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1072,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.06.11_0.3_2",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\data\\npy\\waterflow_20260817_1s\\maxfreq=10kHz\\heatflux_reference_SNR=0\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1072,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.06.11_0.3_2",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\data\\npy\\waterflow_20260817_1s\\maxfreq=15kHz\\heatflux_no_noise\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1072,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.06.11_0.3_2",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\data\\npy\\waterflow_20260817_1s\\maxfreq=15kHz\\heatflux_reference_SNR=-12\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1072,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.06.11_0.3_2",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\data\\npy\\waterflow_20260817_1s\\maxfreq=15kHz\\heatflux_reference_SNR=-16\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1072,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.06.11_0.3_2",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\data\\npy\\waterflow_20260817_1s\\maxfreq=15kHz\\heatflux_reference_SNR=-20\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1072,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.06.11_0.3_2",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\data\\npy\\waterflow_20260817_1s\\maxfreq=15kHz\\heatflux_reference_SNR=-4\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1072,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.06.11_0.3_2",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\data\\npy\\waterflow_20260817_1s\\maxfreq=15kHz\\heatflux_reference_SNR=-8\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1072,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.06.11_0.3_2",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\data\\npy\\waterflow_20260817_1s\\maxfreq=15kHz\\heatflux_reference_SNR=0\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1072,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.06.11_0.3_2",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\data\\npy\\waterflow_20260817_1s\\maxfreq=22kHz\\heatflux_no_noise\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1072,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.06.11_0.3_2",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\data\\npy\\waterflow_20260817_1s\\maxfreq=22kHz\\heatflux_reference_SNR=-12\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1072,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.06.11_0.3_2",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\data\\npy\\waterflow_20260817_1s\\maxfreq=22kHz\\heatflux_reference_SNR=-16\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1072,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.06.11_0.3_2",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\data\\npy\\waterflow_20260817_1s\\maxfreq=22kHz\\heatflux_reference_SNR=-20\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1072,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.06.11_0.3_2",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\data\\npy\\waterflow_20260817_1s\\maxfreq=22kHz\\heatflux_reference_SNR=-4\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1072,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.06.11_0.3_2",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\data\\npy\\waterflow_20260817_1s\\maxfreq=22kHz\\heatflux_reference_SNR=-8\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1072,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.06.11_0.3_2",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\data\\npy\\waterflow_20260817_1s\\maxfreq=22kHz\\heatflux_reference_SNR=0\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1072,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.06.11_0.3_2",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\data\\npy\\waterflow_20260817_1s\\maxfreq=3kHz\\heatflux_no_noise\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1072,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.06.11_0.3_2",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\data\\npy\\waterflow_20260817_1s\\maxfreq=3kHz\\heatflux_reference_SNR=-12\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1072,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.06.11_0.3_2",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\data\\npy\\waterflow_20260817_1s\\maxfreq=3kHz\\heatflux_reference_SNR=-16\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1072,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.06.11_0.3_2",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\data\\npy\\waterflow_20260817_1s\\maxfreq=3kHz\\heatflux_reference_SNR=-20\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1072,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.06.11_0.3_2",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\data\\npy\\waterflow_20260817_1s\\maxfreq=3kHz\\heatflux_reference_SNR=-4\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1072,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.06.11_0.3_2",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\data\\npy\\waterflow_20260817_1s\\maxfreq=3kHz\\heatflux_reference_SNR=-8\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1072,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.06.11_0.3_2",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\data\\npy\\waterflow_20260817_1s\\maxfreq=3kHz\\heatflux_reference_SNR=0\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1072,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.06.11_0.3_2",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\data\\npy\\waterflow_20260817_1s\\maxfreq=5kHz\\heatflux_no_noise\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1072,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.06.11_0.3_2",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\data\\npy\\waterflow_20260817_1s\\maxfreq=5kHz\\heatflux_reference_SNR=-12\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1072,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.06.11_0.3_2",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\data\\npy\\waterflow_20260817_1s\\maxfreq=5kHz\\heatflux_reference_SNR=-16\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1072,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.06.11_0.3_2",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\data\\npy\\waterflow_20260817_1s\\maxfreq=5kHz\\heatflux_reference_SNR=-20\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1072,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.06.11_0.3_2",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\data\\npy\\waterflow_20260817_1s\\maxfreq=5kHz\\heatflux_reference_SNR=-4\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1072,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.06.11_0.3_2",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\data\\npy\\waterflow_20260817_1s\\maxfreq=5kHz\\heatflux_reference_SNR=-8\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1072,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.06.11_0.3_2",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\data\\npy\\waterflow_20260817_1s\\maxfreq=5kHz\\heatflux_reference_SNR=0\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1072,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.06.18_0.3_3",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\data\\npy\\waterflow_20260817_1s\\maxfreq=10kHz\\heatflux_no_noise\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1056,
+      "applied_in_training": false
+    },
+    {
+      "day": "2025.06.18_0.3_3",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\data\\npy\\waterflow_20260817_1s\\maxfreq=10kHz\\heatflux_reference_SNR=-12\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1056,
+      "applied_in_training": false
+    },
+    {
+      "day": "2025.06.18_0.3_3",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\data\\npy\\waterflow_20260817_1s\\maxfreq=10kHz\\heatflux_reference_SNR=-16\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1056,
+      "applied_in_training": false
+    },
+    {
+      "day": "2025.06.18_0.3_3",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\data\\npy\\waterflow_20260817_1s\\maxfreq=10kHz\\heatflux_reference_SNR=-20\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1056,
+      "applied_in_training": false
+    },
+    {
+      "day": "2025.06.18_0.3_3",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\data\\npy\\waterflow_20260817_1s\\maxfreq=10kHz\\heatflux_reference_SNR=-4\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1056,
+      "applied_in_training": false
+    },
+    {
+      "day": "2025.06.18_0.3_3",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\data\\npy\\waterflow_20260817_1s\\maxfreq=10kHz\\heatflux_reference_SNR=-8\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1056,
+      "applied_in_training": false
+    },
+    {
+      "day": "2025.06.18_0.3_3",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\data\\npy\\waterflow_20260817_1s\\maxfreq=10kHz\\heatflux_reference_SNR=0\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1056,
+      "applied_in_training": false
+    },
+    {
+      "day": "2025.06.18_0.3_3",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\data\\npy\\waterflow_20260817_1s\\maxfreq=15kHz\\heatflux_no_noise\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1056,
+      "applied_in_training": false
+    },
+    {
+      "day": "2025.06.18_0.3_3",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\data\\npy\\waterflow_20260817_1s\\maxfreq=15kHz\\heatflux_reference_SNR=-12\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1056,
+      "applied_in_training": false
+    },
+    {
+      "day": "2025.06.18_0.3_3",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\data\\npy\\waterflow_20260817_1s\\maxfreq=15kHz\\heatflux_reference_SNR=-16\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1056,
+      "applied_in_training": false
+    },
+    {
+      "day": "2025.06.18_0.3_3",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\data\\npy\\waterflow_20260817_1s\\maxfreq=15kHz\\heatflux_reference_SNR=-20\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1056,
+      "applied_in_training": false
+    },
+    {
+      "day": "2025.06.18_0.3_3",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\data\\npy\\waterflow_20260817_1s\\maxfreq=15kHz\\heatflux_reference_SNR=-4\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1056,
+      "applied_in_training": false
+    },
+    {
+      "day": "2025.06.18_0.3_3",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\data\\npy\\waterflow_20260817_1s\\maxfreq=15kHz\\heatflux_reference_SNR=-8\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1056,
+      "applied_in_training": false
+    },
+    {
+      "day": "2025.06.18_0.3_3",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\data\\npy\\waterflow_20260817_1s\\maxfreq=15kHz\\heatflux_reference_SNR=0\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1056,
+      "applied_in_training": false
+    },
+    {
+      "day": "2025.06.18_0.3_3",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\data\\npy\\waterflow_20260817_1s\\maxfreq=22kHz\\heatflux_no_noise\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1056,
+      "applied_in_training": false
+    },
+    {
+      "day": "2025.06.18_0.3_3",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\data\\npy\\waterflow_20260817_1s\\maxfreq=22kHz\\heatflux_reference_SNR=-12\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1056,
+      "applied_in_training": false
+    },
+    {
+      "day": "2025.06.18_0.3_3",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\data\\npy\\waterflow_20260817_1s\\maxfreq=22kHz\\heatflux_reference_SNR=-16\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1056,
+      "applied_in_training": false
+    },
+    {
+      "day": "2025.06.18_0.3_3",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\data\\npy\\waterflow_20260817_1s\\maxfreq=22kHz\\heatflux_reference_SNR=-20\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1056,
+      "applied_in_training": false
+    },
+    {
+      "day": "2025.06.18_0.3_3",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\data\\npy\\waterflow_20260817_1s\\maxfreq=22kHz\\heatflux_reference_SNR=-4\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1056,
+      "applied_in_training": false
+    },
+    {
+      "day": "2025.06.18_0.3_3",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\data\\npy\\waterflow_20260817_1s\\maxfreq=22kHz\\heatflux_reference_SNR=-8\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1056,
+      "applied_in_training": false
+    },
+    {
+      "day": "2025.06.18_0.3_3",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\data\\npy\\waterflow_20260817_1s\\maxfreq=22kHz\\heatflux_reference_SNR=0\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1056,
+      "applied_in_training": false
+    },
+    {
+      "day": "2025.06.18_0.3_3",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\data\\npy\\waterflow_20260817_1s\\maxfreq=3kHz\\heatflux_no_noise\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1056,
+      "applied_in_training": false
+    },
+    {
+      "day": "2025.06.18_0.3_3",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\data\\npy\\waterflow_20260817_1s\\maxfreq=3kHz\\heatflux_reference_SNR=-12\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1056,
+      "applied_in_training": false
+    },
+    {
+      "day": "2025.06.18_0.3_3",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\data\\npy\\waterflow_20260817_1s\\maxfreq=3kHz\\heatflux_reference_SNR=-16\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1056,
+      "applied_in_training": false
+    },
+    {
+      "day": "2025.06.18_0.3_3",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\data\\npy\\waterflow_20260817_1s\\maxfreq=3kHz\\heatflux_reference_SNR=-20\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1056,
+      "applied_in_training": false
+    },
+    {
+      "day": "2025.06.18_0.3_3",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\data\\npy\\waterflow_20260817_1s\\maxfreq=3kHz\\heatflux_reference_SNR=-4\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1056,
+      "applied_in_training": false
+    },
+    {
+      "day": "2025.06.18_0.3_3",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\data\\npy\\waterflow_20260817_1s\\maxfreq=3kHz\\heatflux_reference_SNR=-8\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1056,
+      "applied_in_training": false
+    },
+    {
+      "day": "2025.06.18_0.3_3",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\data\\npy\\waterflow_20260817_1s\\maxfreq=3kHz\\heatflux_reference_SNR=0\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1056,
+      "applied_in_training": false
+    },
+    {
+      "day": "2025.06.18_0.3_3",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\data\\npy\\waterflow_20260817_1s\\maxfreq=5kHz\\heatflux_no_noise\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1056,
+      "applied_in_training": false
+    },
+    {
+      "day": "2025.06.18_0.3_3",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\data\\npy\\waterflow_20260817_1s\\maxfreq=5kHz\\heatflux_reference_SNR=-12\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1056,
+      "applied_in_training": false
+    },
+    {
+      "day": "2025.06.18_0.3_3",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\data\\npy\\waterflow_20260817_1s\\maxfreq=5kHz\\heatflux_reference_SNR=-16\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1056,
+      "applied_in_training": false
+    },
+    {
+      "day": "2025.06.18_0.3_3",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\data\\npy\\waterflow_20260817_1s\\maxfreq=5kHz\\heatflux_reference_SNR=-20\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1056,
+      "applied_in_training": false
+    },
+    {
+      "day": "2025.06.18_0.3_3",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\data\\npy\\waterflow_20260817_1s\\maxfreq=5kHz\\heatflux_reference_SNR=-4\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1056,
+      "applied_in_training": false
+    },
+    {
+      "day": "2025.06.18_0.3_3",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\data\\npy\\waterflow_20260817_1s\\maxfreq=5kHz\\heatflux_reference_SNR=-8\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1056,
+      "applied_in_training": false
+    },
+    {
+      "day": "2025.06.18_0.3_3",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\data\\npy\\waterflow_20260817_1s\\maxfreq=5kHz\\heatflux_reference_SNR=0\\chunk_manifest.csv",
+      "n_samples": 1080,
+      "same_clean_selection_n": 1056,
+      "applied_in_training": false
+    },
+    {
+      "day": "2025.07.09_0.3_1",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\data\\npy\\waterflow_20260817_1s\\maxfreq=10kHz\\heatflux_no_noise\\chunk_manifest.csv",
+      "n_samples": 780,
+      "same_clean_selection_n": 576,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.07.09_0.3_1",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\data\\npy\\waterflow_20260817_1s\\maxfreq=10kHz\\heatflux_reference_SNR=-12\\chunk_manifest.csv",
+      "n_samples": 780,
+      "same_clean_selection_n": 576,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.07.09_0.3_1",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\data\\npy\\waterflow_20260817_1s\\maxfreq=10kHz\\heatflux_reference_SNR=-16\\chunk_manifest.csv",
+      "n_samples": 780,
+      "same_clean_selection_n": 576,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.07.09_0.3_1",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\data\\npy\\waterflow_20260817_1s\\maxfreq=10kHz\\heatflux_reference_SNR=-20\\chunk_manifest.csv",
+      "n_samples": 780,
+      "same_clean_selection_n": 576,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.07.09_0.3_1",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\data\\npy\\waterflow_20260817_1s\\maxfreq=10kHz\\heatflux_reference_SNR=-4\\chunk_manifest.csv",
+      "n_samples": 780,
+      "same_clean_selection_n": 576,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.07.09_0.3_1",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\data\\npy\\waterflow_20260817_1s\\maxfreq=10kHz\\heatflux_reference_SNR=-8\\chunk_manifest.csv",
+      "n_samples": 780,
+      "same_clean_selection_n": 576,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.07.09_0.3_1",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\data\\npy\\waterflow_20260817_1s\\maxfreq=10kHz\\heatflux_reference_SNR=0\\chunk_manifest.csv",
+      "n_samples": 780,
+      "same_clean_selection_n": 576,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.07.09_0.3_1",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\data\\npy\\waterflow_20260817_1s\\maxfreq=15kHz\\heatflux_no_noise\\chunk_manifest.csv",
+      "n_samples": 780,
+      "same_clean_selection_n": 576,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.07.09_0.3_1",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\data\\npy\\waterflow_20260817_1s\\maxfreq=15kHz\\heatflux_reference_SNR=-12\\chunk_manifest.csv",
+      "n_samples": 780,
+      "same_clean_selection_n": 576,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.07.09_0.3_1",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\data\\npy\\waterflow_20260817_1s\\maxfreq=15kHz\\heatflux_reference_SNR=-16\\chunk_manifest.csv",
+      "n_samples": 780,
+      "same_clean_selection_n": 576,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.07.09_0.3_1",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\data\\npy\\waterflow_20260817_1s\\maxfreq=15kHz\\heatflux_reference_SNR=-20\\chunk_manifest.csv",
+      "n_samples": 780,
+      "same_clean_selection_n": 576,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.07.09_0.3_1",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\data\\npy\\waterflow_20260817_1s\\maxfreq=15kHz\\heatflux_reference_SNR=-4\\chunk_manifest.csv",
+      "n_samples": 780,
+      "same_clean_selection_n": 576,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.07.09_0.3_1",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\data\\npy\\waterflow_20260817_1s\\maxfreq=15kHz\\heatflux_reference_SNR=-8\\chunk_manifest.csv",
+      "n_samples": 780,
+      "same_clean_selection_n": 576,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.07.09_0.3_1",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\data\\npy\\waterflow_20260817_1s\\maxfreq=15kHz\\heatflux_reference_SNR=0\\chunk_manifest.csv",
+      "n_samples": 780,
+      "same_clean_selection_n": 576,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.07.09_0.3_1",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\data\\npy\\waterflow_20260817_1s\\maxfreq=22kHz\\heatflux_no_noise\\chunk_manifest.csv",
+      "n_samples": 780,
+      "same_clean_selection_n": 576,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.07.09_0.3_1",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\data\\npy\\waterflow_20260817_1s\\maxfreq=22kHz\\heatflux_reference_SNR=-12\\chunk_manifest.csv",
+      "n_samples": 780,
+      "same_clean_selection_n": 576,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.07.09_0.3_1",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\data\\npy\\waterflow_20260817_1s\\maxfreq=22kHz\\heatflux_reference_SNR=-16\\chunk_manifest.csv",
+      "n_samples": 780,
+      "same_clean_selection_n": 576,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.07.09_0.3_1",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\data\\npy\\waterflow_20260817_1s\\maxfreq=22kHz\\heatflux_reference_SNR=-20\\chunk_manifest.csv",
+      "n_samples": 780,
+      "same_clean_selection_n": 576,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.07.09_0.3_1",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\data\\npy\\waterflow_20260817_1s\\maxfreq=22kHz\\heatflux_reference_SNR=-4\\chunk_manifest.csv",
+      "n_samples": 780,
+      "same_clean_selection_n": 576,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.07.09_0.3_1",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\data\\npy\\waterflow_20260817_1s\\maxfreq=22kHz\\heatflux_reference_SNR=-8\\chunk_manifest.csv",
+      "n_samples": 780,
+      "same_clean_selection_n": 576,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.07.09_0.3_1",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\data\\npy\\waterflow_20260817_1s\\maxfreq=22kHz\\heatflux_reference_SNR=0\\chunk_manifest.csv",
+      "n_samples": 780,
+      "same_clean_selection_n": 576,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.07.09_0.3_1",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\data\\npy\\waterflow_20260817_1s\\maxfreq=3kHz\\heatflux_no_noise\\chunk_manifest.csv",
+      "n_samples": 780,
+      "same_clean_selection_n": 576,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.07.09_0.3_1",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\data\\npy\\waterflow_20260817_1s\\maxfreq=3kHz\\heatflux_reference_SNR=-12\\chunk_manifest.csv",
+      "n_samples": 780,
+      "same_clean_selection_n": 576,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.07.09_0.3_1",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\data\\npy\\waterflow_20260817_1s\\maxfreq=3kHz\\heatflux_reference_SNR=-16\\chunk_manifest.csv",
+      "n_samples": 780,
+      "same_clean_selection_n": 576,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.07.09_0.3_1",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\data\\npy\\waterflow_20260817_1s\\maxfreq=3kHz\\heatflux_reference_SNR=-20\\chunk_manifest.csv",
+      "n_samples": 780,
+      "same_clean_selection_n": 576,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.07.09_0.3_1",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\data\\npy\\waterflow_20260817_1s\\maxfreq=3kHz\\heatflux_reference_SNR=-4\\chunk_manifest.csv",
+      "n_samples": 780,
+      "same_clean_selection_n": 576,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.07.09_0.3_1",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\data\\npy\\waterflow_20260817_1s\\maxfreq=3kHz\\heatflux_reference_SNR=-8\\chunk_manifest.csv",
+      "n_samples": 780,
+      "same_clean_selection_n": 576,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.07.09_0.3_1",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\data\\npy\\waterflow_20260817_1s\\maxfreq=3kHz\\heatflux_reference_SNR=0\\chunk_manifest.csv",
+      "n_samples": 780,
+      "same_clean_selection_n": 576,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.07.09_0.3_1",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\data\\npy\\waterflow_20260817_1s\\maxfreq=5kHz\\heatflux_no_noise\\chunk_manifest.csv",
+      "n_samples": 780,
+      "same_clean_selection_n": 576,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.07.09_0.3_1",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\data\\npy\\waterflow_20260817_1s\\maxfreq=5kHz\\heatflux_reference_SNR=-12\\chunk_manifest.csv",
+      "n_samples": 780,
+      "same_clean_selection_n": 576,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.07.09_0.3_1",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\data\\npy\\waterflow_20260817_1s\\maxfreq=5kHz\\heatflux_reference_SNR=-16\\chunk_manifest.csv",
+      "n_samples": 780,
+      "same_clean_selection_n": 576,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.07.09_0.3_1",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\data\\npy\\waterflow_20260817_1s\\maxfreq=5kHz\\heatflux_reference_SNR=-20\\chunk_manifest.csv",
+      "n_samples": 780,
+      "same_clean_selection_n": 576,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.07.09_0.3_1",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\data\\npy\\waterflow_20260817_1s\\maxfreq=5kHz\\heatflux_reference_SNR=-4\\chunk_manifest.csv",
+      "n_samples": 780,
+      "same_clean_selection_n": 576,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.07.09_0.3_1",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\data\\npy\\waterflow_20260817_1s\\maxfreq=5kHz\\heatflux_reference_SNR=-8\\chunk_manifest.csv",
+      "n_samples": 780,
+      "same_clean_selection_n": 576,
+      "applied_in_training": true
+    },
+    {
+      "day": "2025.07.09_0.3_1",
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\data\\npy\\waterflow_20260817_1s\\maxfreq=5kHz\\heatflux_reference_SNR=0\\chunk_manifest.csv",
+      "n_samples": 780,
+      "same_clean_selection_n": 576,
+      "applied_in_training": true
+    }
+  ]
+}

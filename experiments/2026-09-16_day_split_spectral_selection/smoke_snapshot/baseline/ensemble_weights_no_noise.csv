@@ -1,0 +1,2 @@
+fold,strategy_name,strategy_type,claim_safe,rf,cnntf_v2_gap,alexnet
+1,performance_kfold,performance_kfold,1,0.711226288448673,0.09781765969863501,0.19095605185269193

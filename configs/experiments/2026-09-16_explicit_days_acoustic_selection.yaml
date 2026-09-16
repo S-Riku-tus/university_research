@@ -1,0 +1,31 @@
+# 記録用。主実行はcode/run_ensemble_regression_onb.pyのVALIDATION_CONFIGを使う。
+status: implemented_and_spectral_analysis_completed
+training_experiments: [2025.06.11_0.3_2, 2025.07.09_0.3_1]
+test_experiments: [2025.06.18_0.3_3]
+split_mode: explicit_days
+internal_validation: chunk_kfold
+internal_folds: 3
+shuffle: true
+random_seed: 42
+ensemble: performance_kfold
+weight_formula: normalized_inverse_of_1_minus_pooled_chunk_oof_r2
+selection:
+  feature: band_2000_3000_db
+  background_quantile: 0.99
+  margin_db: 0.0
+  fit_reference: current_training_partition_pre_onb_by_experiment
+  scope: training_only_onb_and_above
+  test_or_internal_validation_filtering: false
+  clean_source_decision_shared_across_noise_and_frequency: true
+  labels_changed: false
+  confirmed_bubble_event_labels: false
+  features_csv: experiments/2026-09-16_day_split_spectral_selection/spectral_features.csv
+first_scientific_comparison:
+  factors: [selection_disabled, selection_enabled]
+  fixed_test_day: 2025.06.18_0.3_3
+  first_frequency: maxfreq=3kHz
+  first_noise: heatflux_no_noise
+  next_noise: heatflux_reference_SNR=-20
+  epochs: 300
+  status: not_run
+future_ensemble_comparisons: deferred_until_day_split_and_selection_results_reviewed

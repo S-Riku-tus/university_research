@@ -1,0 +1,100 @@
+﻿python : test_paired_fixed_global_generation (test_corrected_waterflow_generation.CorrectedWaterflowGenerationTest) ...
+ ok
+発生場所 行:2 文字:64
++ ... N_LOG_LEVEL='2'; python -m unittest discover -s tests -v 2>&1 | Out-F ...
++                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (test_paired_fix...ionTest) ... ok:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+test_actual_keras_crossfit_without_pca (test_crossfit_stacking.CrossfitPipelineTest) ... 2026-09-16 17:25:21.960591: E 
+tensorflow/stream_executor/cuda/cuda_driver.cc:271] failed call to cuInit: CUDA_ERROR_NO_DEVICE: no CUDA-capable device
+ is detected
+WARNING:tensorflow:5 out of the last 9 calls to <function Model.make_train_function.<locals>.train_function at 0x000002
+9A9D7E7550> triggered tf.function retracing. Tracing is expensive and the excessive number of tracings could be due to 
+(1) creating @tf.function repeatedly in a loop, (2) passing tensors with different shapes, (3) passing Python objects i
+nstead of tensors. For (1), please define your @tf.function outside of the loop. For (2), @tf.function has reduce_retra
+cing=True option that can avoid unnecessary retracing. For (3), please refer to https://www.tensorflow.org/guide/functi
+on#controlling_retracing and https://www.tensorflow.org/api_docs/python/tf/function for  more details.
+WARNING:tensorflow:5 out of the last 5 calls to <function Model.make_predict_function.<locals>.predict_function at 0x00
+00029A9C83DD30> triggered tf.function retracing. Tracing is expensive and the excessive number of tracings could be due
+ to (1) creating @tf.function repeatedly in a loop, (2) passing tensors with different shapes, (3) passing Python objec
+ts instead of tensors. For (1), please define your @tf.function outside of the loop. For (2), @tf.function has reduce_r
+etracing=True option that can avoid unnecessary retracing. For (3), please refer to https://www.tensorflow.org/guide/fu
+nction#controlling_retracing and https://www.tensorflow.org/api_docs/python/tf/function for  more details.
+WARNING:tensorflow:6 out of the last 11 calls to <function Model.make_train_function.<locals>.train_function at 0x00000
+29A9D7E73A0> triggered tf.function retracing. Tracing is expensive and the excessive number of tracings could be due to
+ (1) creating @tf.function repeatedly in a loop, (2) passing tensors with different shapes, (3) passing Python objects 
+instead of tensors. For (1), please define your @tf.function outside of the loop. For (2), @tf.function has reduce_retr
+acing=True option that can avoid unnecessary retracing. For (3), please refer to https://www.tensorflow.org/guide/funct
+ion#controlling_retracing and https://www.tensorflow.org/api_docs/python/tf/function for  more details.
+WARNING:tensorflow:6 out of the last 6 calls to <function Model.make_predict_function.<locals>.predict_function at 0x00
+00029A9EC053A0> triggered tf.function retracing. Tracing is expensive and the excessive number of tracings could be due
+ to (1) creating @tf.function repeatedly in a loop, (2) passing tensors with different shapes, (3) passing Python objec
+ts instead of tensors. For (1), please define your @tf.function outside of the loop. For (2), @tf.function has reduce_r
+etracing=True option that can avoid unnecessary retracing. For (3), please refer to https://www.tensorflow.org/guide/fu
+nction#controlling_retracing and https://www.tensorflow.org/api_docs/python/tf/function for  more details.
+ok
+test_all_policies_oof_sharing_audit_resume_and_legacy_predictions (test_crossfit_stacking.CrossfitPipelineTest) ... ok
+test_degenerate_predictions_invalid_data_and_solver_failure (test_crossfit_stacking.CrossfitStackingTest) ... ok
+test_joint_error_cancellation_beats_each_single_and_equal (test_crossfit_stacking.CrossfitStackingTest) ... ok
+test_legacy_config_has_no_new_settings_or_extra_fitting (test_crossfit_stacking.CrossfitStackingTest) ... ok
+test_median_order_and_equal_wav_weighting_are_preserved (test_crossfit_stacking.CrossfitStackingTest) ... ok
+test_missing_weights_and_wrong_fold_fail_instead_of_using_equal (test_crossfit_stacking.CrossfitStackingTest) ... ok
+test_shrinkage_moves_weights_towards_equal_and_is_scale_invariant (test_crossfit_stacking.CrossfitStackingTest) ... ok
+test_subset_drops_harmful_model_or_selects_single (test_crossfit_stacking.CrossfitStackingTest) ... ok
+test_unequal_chunk_counts_never_split_wav_and_cover_exactly_once (test_crossfit_stacking.CrossfitStackingTest) ... ok
+test_bad_day_selection_rejected (test_day_split_acoustic_selection.DaySelectionTest) ... ok
+test_ordinary_kfold_modes_cover_once (test_day_split_acoustic_selection.DaySelectionTest) ... ok
+test_performance_weights_stabilize_near_perfect_scores (test_day_split_acoustic_selection.DaySelectionTest) ... ok
+test_selection_kfold_training_and_full_test_end_to_end (test_day_split_acoustic_selection.DaySelectionTest) ... ok
+test_inner_holdout_never_splits_one_wav_across_partitions (test_ensemble_group_holdout.EnsembleGroupHoldoutTest) ... ok
+test_inner_weight_metric_has_one_value_per_wav (test_ensemble_group_holdout.EnsembleGroupHoldoutTest) ... ok
+test_heatflux_scaling_and_saved_diagnostics (test_integrated_gradients.IntegratedGradientsTest) ... ok
+test_linear_channels_and_batch_invariance (test_integrated_gradients.IntegratedGradientsTest) ... ok
+test_log_dynamic_range_matches_each_analytic_signed_contribution (test_integrated_gradients.IntegratedGradientsTest) ..
+. ok
+test_mixed_increasing_decreasing_nonzero_baseline (test_integrated_gradients.IntegratedGradientsTest) ... ok
+test_nonlinear_interaction_preserves_raw_straight_line_path (test_integrated_gradients.IntegratedGradientsTest) ... ok
+test_pipeline_records_primary_and_auxiliary_convergence (test_integrated_gradients.IntegratedGradientsTest) ... ok
+test_unconverged_is_reported_without_forcing_sum (test_integrated_gradients.IntegratedGradientsTest) ... ok
+test_zero_delta_and_signed_cancellation (test_integrated_gradients.IntegratedGradientsTest) ... ok
+test_actual_keras_trainer_reuses_one_fit_per_held_out_day (test_learning_policy.LearningPolicyTest) ... ok
+test_alignment_uses_recording_and_chunk_and_checks_labels (test_learning_policy.LearningPolicyTest) ... ok
+test_all_four_policies_fit_counts_leakage_and_both_evaluations (test_learning_policy.LearningPolicyTest) ... ok
+test_clean_training_does_not_require_clean_in_evaluation_list (test_learning_policy.LearningPolicyTest) ... ok
+test_default_hash_is_compatible_and_other_policies_change_hash (test_learning_policy.LearningPolicyTest) ... ok
+test_migration_preserves_metric_values_updates_paths_and_never_overwrites (test_learning_policy.LearningPolicyTest) ...
+ ok
+test_new_and_legacy_paths_and_resume_hash (test_learning_policy.LearningPolicyTest) ... ok
+test_partial_clean_resume_recomputes_one_family_with_shared_models (test_learning_policy.LearningPolicyTest) ... ok
+test_single_day_leave_out_and_typo_are_rejected (test_learning_policy.LearningPolicyTest) ... ok
+test_three_day_leave_out_pools_two_training_days_without_id_collision (test_learning_policy.LearningPolicyTest) ... ok
+test_chunk_manifest_upserts_by_filename (test_noise_shortcut_diagnostics.WaterflowNoiseDiagnosticsTest) ... ok
+test_fixed_global_rms_is_independent_of_source_power (test_noise_shortcut_diagnostics.WaterflowNoiseDiagnosticsTest) ..
+. ok
+test_old_style_normalization_removes_absolute_scale (test_noise_shortcut_diagnostics.WaterflowNoiseDiagnosticsTest) ...
+ ok
+test_random_noise_offset_is_reproducible (test_noise_shortcut_diagnostics.WaterflowNoiseDiagnosticsTest) ... ok
+test_relative_and_fixed_scaling_are_distinct (test_noise_shortcut_diagnostics.WaterflowNoiseDiagnosticsTest) ... ok
+test_same_outer_splits_support_scalar_and_group_diagnostics (test_noise_shortcut_diagnostics.WaterflowNoiseDiagnosticsT
+est) ... ok
+test_disabled_wav_evaluation_does_not_create_empty_wav_plot (test_noise_trend_plots.NoiseTrendPlotsTest) ... ok
+test_incompatible_frequency_and_threshold_are_rejected (test_noise_trend_plots.NoiseTrendPlotsTest) ... ok
+test_missing_noise_stays_gap_and_evaluation_units_are_separate (test_noise_trend_plots.NoiseTrendPlotsTest) ... ok
+test_previous_configuration_does_not_enter_resumed_curve (test_noise_trend_plots.NoiseTrendPlotsTest) ... ok
+test_render_and_resume_use_saved_metrics_without_training (test_noise_trend_plots.NoiseTrendPlotsTest) ... ok
+test_every_threshold_has_line_level_provenance (test_onb_thresholds.OnbThresholdRegistryTest) ... ok
+test_registry_uses_first_onb_measurement_not_preceding_level (test_onb_thresholds.OnbThresholdRegistryTest) ... ok
+test_legacy_fold_csv_is_enriched_from_manifest_order (test_wav_event_metrics.WavEventMetricsTest) ... ok
+test_metrics_are_pooled_over_wavs (test_wav_event_metrics.WavEventMetricsTest) ... ok
+test_onb_transition_separates_early_alarm_and_post_onb_delay (test_wav_event_metrics.WavEventMetricsTest) ... ok
+test_output_labels_event_rows_as_predictions_only (test_wav_event_metrics.WavEventMetricsTest) ... ok
+test_wav_aggregation_and_predicted_event_runs (test_wav_event_metrics.WavEventMetricsTest) ... ok
+test_group_mask_output_schema_records_wav_unit (test_xai_wav_evaluation.XaiWavEvaluationTest) ... ok
+test_mask_metrics_aggregate_each_source_wav_once (test_xai_wav_evaluation.XaiWavEvaluationTest) ... ok
+test_one_wav_cannot_contain_multiple_targets (test_xai_wav_evaluation.XaiWavEvaluationTest) ... ok
+
+----------------------------------------------------------------------
+Ran 56 tests in 14.050s
+
+OK

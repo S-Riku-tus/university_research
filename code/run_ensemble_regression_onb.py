@@ -107,14 +107,29 @@ VALIDATION_CONFIG = {
         "skip_missing_datasets": False,
     },
     "learning_policy": {
-        # within_day: 同日の元WAVを分離する交差検証（現在の方式）。
-        # leave_one_day_out: 有効にした実験日を1日ずつ丸ごと評価側へ回す。
-        # 別日評価を選ぶ場合、data.experiment_namesで2日以上を有効にする。
-        "split_mode": "within_day",
+        # 学習日・テスト日を明示指定。テスト日は重み・PCA・選別閾値のfitに使わない。
+        # 旧within_day / leave_one_day_outも保持（使用時は下記の実験日指定を外す）。
+        "split_mode": "explicit_days",
+        "train_experiments": ["2025.06.11_0.3_2", "2025.07.09_0.3_1"],
+        "test_experiments": ["2025.06.18_0.3_3"],
+        # 学部コードと同じ、1秒配列に通常KFold(shuffle=True, seed=42)。
+        # wav_kfoldなら元WAVの一覧に通常KFoldを適用。内部fold数はrun.folds。
+        "internal_validation": "chunk_kfold",
         # matched: 各ノイズ条件で学習し、その条件で評価する（現在の方式）。
         # clean_only: 無雑音だけで学習し、同じモデルで全評価ノイズを予測する。
         # 評価ノイズ一覧から無雑音を外しても、学習には無雑音を読み込む。
         "training_noise": "matched",
+    },
+    "acoustic_selection": {
+        # clean原音から得た同じ判定を全周波数・付加ノイズ条件へ適用。
+        # 学習だけを選別し、内部validation・別日testは全1秒区間を評価する。
+        "enabled": True,  # 9/16の探索的な暫定条件。Falseで選別なしの対照比較。
+        "features_csv": "experiments/2026-09-16_day_split_spectral_selection/spectral_features.csv",
+        "feature": "band_2000_3000_db",
+        "background_quantile": 0.99,
+        "margin_db": 0.0,
+        # ONB以上を対象。上限を指定したい日は W/m² で設定（未指定なら全陽性域）。
+        "apply_max_heat_flux_by_experiment": {},
     },
     "thresholds": {
         # ONBと確認された最初の測定点の熱流束と、その出典を一元管理する。
@@ -157,14 +172,15 @@ VALIDATION_CONFIG = {
     "ensemble": {
         # 実行するアンサンブル方式
         "enabled_strategy_names": [
-            "simple_equal",
-            "inner_holdout",
+            "performance_kfold",
+            # "simple_equal",
+            # "inner_holdout",
             # "subset_equal_cv",
             # "crossfit_wav_stack",
             # "crossfit_shrinkage_stack",
         ],
         # 主方式
-        "primary_strategy_name": "inner_holdout",
+        "primary_strategy_name": "performance_kfold",
     },
     "features": {
         "pca_components": 100,
@@ -457,6 +473,7 @@ def build_dataset_jobs():
 def validation_config_snapshot():
     return {
         "learning_policy": dict(LEARNING_POLICY),
+        "acoustic_selection": dict(VALIDATION_CONFIG.get("acoustic_selection", {})),
         "run": {
             "smoke_test": SMOKE_TEST,
             "epochs": EPOCH_NUM,
@@ -546,7 +563,7 @@ def update_noise_trend_plots(plotter, job, run_dir, run_hash, model_keys):
 
 
 def validate_validation_config(enabled_specs):
-    if LEARNING_POLICY["split_mode"] == "within_day" and DIVISIONS < 2:
+    if (LEARNING_POLICY["split_mode"] == "within_day" or "performance_kfold" in ENSEMBLE_MANAGER.selected_strategy_names) and DIVISIONS < 2:
         raise ValueError("folds must be at least 2.")
     if not PARAMETER_SETS:
         raise ValueError("VALIDATION_CONFIG['models']['parameter_sets'] must not be empty.")

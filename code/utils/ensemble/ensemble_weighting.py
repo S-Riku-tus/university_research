@@ -12,14 +12,14 @@ class EnsembleWeighting:
     def compute_weights(self, strategy, enabled_specs, errors_for_weight):
         """
         戦略に応じてモデル重みを返す (合計 1 に正規化)。
-          strategy          : "simple" / "inner_holdout" / "val_fold_legacy"
+          strategy          : "simple" / "inner_holdout" / "performance_kfold" / "val_fold_legacy"
           enabled_specs     : 有効なモデル spec のリスト (key を持つ)
           errors_for_weight : key -> 誤差 (1 - R2)。simple では使わない。
         """
         keys = [s["key"] for s in enabled_specs]
         n = len(keys)
 
-        if strategy not in {"simple", "inner_holdout", "val_fold_legacy"}:
+        if strategy not in {"simple", "inner_holdout", "performance_kfold", "val_fold_legacy"}:
             raise ValueError(f"Unknown ensemble weight strategy: {strategy}")
         if strategy == "simple":
             return {k: 1.0 / n for k in keys}
@@ -30,6 +30,8 @@ class EnsembleWeighting:
             err = errors_for_weight.get(k, np.nan)
             if err is None or np.isinf(err) or np.isnan(err):
                 weights.append(1e-6)
+            elif strategy == "performance_kfold":
+                weights.append(1.0 / max(float(err), 1e-6))
             elif err <= 0:
                 # A perfect or numerically-above-one R2 should receive the
                 # largest weight, not the smallest one.

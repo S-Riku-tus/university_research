@@ -14,6 +14,10 @@ ENSEMBLE_STRATEGY_CATALOG = {
         "label": "Ensemble inner holdout",
         "strategy": "inner_holdout",
     },
+    "performance_kfold": {
+        "label": "Ensemble individual-performance KFold",
+        "strategy": "performance_kfold",
+    },
     "subset_equal_cv": {
         "label": "Ensemble crossfit subset equal",
         "strategy": "subset_equal_cv",

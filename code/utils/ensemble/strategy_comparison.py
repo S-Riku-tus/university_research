@@ -7,7 +7,7 @@ from utils.ensemble.crossfit_stacking import CROSSFIT_STRATEGIES, validate_cross
 
 
 VALID_STRATEGIES = {
-    "simple", "inner_holdout", "val_fold_legacy",
+    "simple", "inner_holdout", "performance_kfold", "val_fold_legacy",
 } | CROSSFIT_STRATEGIES
 HIGHER_IS_BETTER = {
     "r2", "r2_high", "auc_binary", "roc_auc_cont", "pr_auc_cont",
@@ -102,8 +102,11 @@ def compute_strategy_outputs(
     legacy_errors = legacy_errors or {}
     for item in strategy_plan:
         strategy = item["strategy"]
-        if strategy == "inner_holdout":
+        if strategy in {"inner_holdout", "performance_kfold"}:
             errors = inner_errors
+            if strategy == "performance_kfold" and any(
+                    not np.isfinite(errors.get(spec["key"], np.nan)) for spec in run_specs):
+                raise ValueError("performance_kfold requires finite training-only CV errors for every model")
         elif strategy == "val_fold_legacy":
             errors = legacy_errors
         else:

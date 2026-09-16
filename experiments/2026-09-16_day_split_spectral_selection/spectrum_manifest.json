@@ -1,0 +1,34 @@
+{
+  "method": "Welch Hann 2048 / overlap 1024 / 44100 Hz; production 500 Hz high-pass",
+  "unit": "uncalibrated digital amplitude squared per Hz",
+  "normalization": "none; fixed image scales",
+  "noise": "clean source only",
+  "source_power_verified_for_every_chunk": true,
+  "datasets": [
+    {
+      "experiment": "2025.06.11_0.3_2",
+      "n_wavs": 18,
+      "n_chunks": 1080,
+      "manifest": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\data\\npy\\waterflow_20260817_1s\\maxfreq=22kHz\\heatflux_no_noise\\chunk_manifest.csv",
+      "manifest_sha256": "67f72f2e720d2684017c157dce664c0e9c9505dc0400fd9a4deed0f79ac9b6b4",
+      "image_directory": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\data\\spectrum_png\\waterflow_20260817_1s"
+    },
+    {
+      "experiment": "2025.06.18_0.3_3",
+      "n_wavs": 18,
+      "n_chunks": 1080,
+      "manifest": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\data\\npy\\waterflow_20260817_1s\\maxfreq=22kHz\\heatflux_no_noise\\chunk_manifest.csv",
+      "manifest_sha256": "d186e3e4cee7853541bd858ceb3ffe2bea2d59800f784c125824e4209096cc4b",
+      "image_directory": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\data\\spectrum_png\\waterflow_20260817_1s"
+    },
+    {
+      "experiment": "2025.07.09_0.3_1",
+      "n_wavs": 13,
+      "n_chunks": 780,
+      "manifest": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\data\\npy\\waterflow_20260817_1s\\maxfreq=22kHz\\heatflux_no_noise\\chunk_manifest.csv",
+      "manifest_sha256": "f161f5a19a2a3295f265e4cd744583473deb5417e039c6a7058335319423ff66",
+      "image_directory": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\data\\spectrum_png\\waterflow_20260817_1s"
+    }
+  ],
+  "images_written": true
+}

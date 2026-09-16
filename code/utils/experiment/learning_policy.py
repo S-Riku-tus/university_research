@@ -15,16 +15,30 @@ CLEAN_NOISE = "heatflux_no_noise"
 
 def normalize_learning_policy(policy, experiment_names, color_channel=1):
     resolved = {**DEFAULT_POLICY, **(policy or {})}
-    if set(resolved) != set(DEFAULT_POLICY):
+    extra_keys = {"train_experiments", "test_experiments", "internal_validation"}
+    if set(resolved) - set(DEFAULT_POLICY) - extra_keys:
         raise ValueError(f"未知のlearning_policy設定です: {set(resolved) - set(DEFAULT_POLICY)}")
-    if resolved["split_mode"] not in {"within_day", "leave_one_day_out"}:
-        raise ValueError("split_modeはwithin_dayまたはleave_one_day_outです。")
+    if resolved["split_mode"] not in {"within_day", "leave_one_day_out", "explicit_days"}:
+        raise ValueError("split_modeはwithin_day / leave_one_day_out / explicit_daysです。")
     if resolved["training_noise"] not in {"matched", "clean_only"}:
         raise ValueError("training_noiseはmatchedまたはclean_onlyです。")
     if len(set(experiment_names)) != len(experiment_names):
         raise ValueError("experiment_namesに同じ実験日を重複指定できません。")
     if resolved["split_mode"] == "leave_one_day_out" and len(experiment_names) < 2:
         raise ValueError("別日評価にはdata.experiment_namesで2日以上を有効にしてください。")
+    if resolved["split_mode"] == "explicit_days":
+        for key in ("train_experiments", "test_experiments"):
+            days = resolved.get(key)
+            if not isinstance(days, (list, tuple)) or not days or len(set(days)) != len(days):
+                raise ValueError(f"{key}には重複のない実験日リストが必要です。")
+            if set(days) - set(experiment_names):
+                raise ValueError(f"{key}にdata.experiment_names外の実験日があります。")
+        if set(resolved["train_experiments"]) & set(resolved["test_experiments"]):
+            raise ValueError("学習日とテスト日は完全に分離してください。")
+    elif any(key in resolved for key in ("train_experiments", "test_experiments")):
+        raise ValueError("実験日の明示指定にはsplit_mode=explicit_daysを使ってください。")
+    if resolved.get("internal_validation", "chunk_kfold") not in {"chunk_kfold", "wav_kfold"}:
+        raise ValueError("internal_validationはchunk_kfold / wav_kfoldです。")
     if color_channel != 1:
         raise ValueError("元WAVを分離する評価にはchunk_manifest.csv付きのNPY入力が必要です。")
     return resolved
@@ -34,16 +48,19 @@ def policy_result_date_dir(result_date_dir, policy):
     """従来方式の保存先を保ち、一般化評価の結果を別の実行フォルダへ分ける。"""
     if policy == DEFAULT_POLICY:
         return result_date_dir
-    day = "wd" if policy["split_mode"] == "within_day" else "lodo"
+    day = {"within_day": "wd", "leave_one_day_out": "lodo", "explicit_days": "days"}[policy["split_mode"]]
     noise = "clean" if policy["training_noise"] == "clean_only" else "matched"
     return f"{result_date_dir}__{day}_{noise}"
 
 
 def build_learning_families(jobs, policy, experiment_names):
     """clean_onlyでは複数の評価ノイズを一つの学習処理にまとめる。"""
+    policy = normalize_learning_policy(policy, experiment_names)
     lookup = {(j["experiment_name"], j["max_freq_hz"]): j for j in jobs}
     grouped = {}
     for job in jobs:
+        if policy["split_mode"] == "explicit_days" and job["experiment_name"] not in policy["test_experiments"]:
+            continue
         noise = CLEAN_NOISE if policy["training_noise"] == "clean_only" else job["noise_dir_name"]
         key = (job["experiment_name"], job["max_freq_hz"], noise)
         grouped.setdefault(key, []).append(job)
@@ -51,6 +68,8 @@ def build_learning_families(jobs, policy, experiment_names):
     for (test_day, frequency, train_noise), evaluation_jobs in grouped.items():
         train_days = ([test_day] if policy["split_mode"] == "within_day"
                       else [day for day in experiment_names if day != test_day])
+        if policy["split_mode"] == "explicit_days":
+            train_days = list(policy["train_experiments"])
         training_jobs = []
         for day in train_days:
             template = lookup.get((day, frequency))
@@ -135,12 +154,14 @@ def outer_splits(training_metadata, evaluation_metadata, split_mode, folds):
         splitter = GroupKFold(n_splits=folds)
         splits = [(fit, alignment[test]) for fit, test in
                   splitter.split(np.zeros(len(train_groups)), groups=train_groups)]
-    else:
+    elif split_mode in {"leave_one_day_out", "explicit_days"}:
         training_days = {row["experiment_name"] for row in training_metadata}
         test_days = {row["experiment_name"] for row in evaluation_metadata}
         if training_days & test_days:
             raise ValueError("別日評価の学習日と評価日が重複しています。")
         splits = [(np.arange(len(train_groups)), np.arange(len(test_groups)))]
+    else:
+        raise ValueError(f"Unknown split_mode: {split_mode}")
     for fit, test in splits:
         if set(train_groups[fit]) & set(test_groups[test]):
             raise ValueError("学習側と評価側で元WAVが重複しています。")

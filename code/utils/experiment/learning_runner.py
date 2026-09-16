@@ -34,6 +34,8 @@ from utils.experiment.run_helpers import (
     saved_run_matches_execution,
 )
 from utils.models.regression.base_regression import RegressionModelMaker
+from utils.experiment.acoustic_selection import AcousticTrainingSelector
+from utils.training.internal_validation import fit_individual_performance_cv
 
 
 SUMMARY_METRICS = [
@@ -239,6 +241,17 @@ def run_learning_experiments(jobs, policy, config, enabled_specs, parameter_sets
                              ensemble_manager, trainer, plotter, update_noise_trends):
     """同じ学習済みモデルを必要な評価ノイズへ適用し、完了後に共通出力を保存する。"""
     families = build_learning_families(jobs, policy, config["data"]["experiment_names"])
+    selector = AcousticTrainingSelector(config.get("acoustic_selection"), config["thresholds"].get("by_experiment", {}))
+    if "acoustic_selection" in config:
+        config["acoustic_selection"] = selector.config
+    performance_cv = "performance_kfold" in ensemble_manager.selected_strategy_names
+    if performance_cv and "inner_holdout" in ensemble_manager.selected_strategy_names:
+        raise ValueError("performance_kfoldとinner_holdoutは重み推定が異なるため同時選択できません。")
+    if selector.enabled and (policy["split_mode"] == "within_day" or not performance_cv):
+        raise ValueError("学習選別は別日評価＋performance_kfoldで使用してください。内部fitごとに閾値を推定します。")
+    if selector.enabled and any(name.startswith("crossfit_") or name == "subset_equal_cv"
+                                for name in ensemble_manager.selected_strategy_names):
+        raise ValueError("学習選別と新アンサンブル方式の併用は未対応です。今回の基準方式を使用してください。")
     loader = DataLoadingConversion()
     reference_metadata = {}
     for family_i, family in enumerate(families, 1):
@@ -324,9 +337,23 @@ def run_learning_experiments(jobs, policy, config, enabled_specs, parameter_sets
                                        "instance": config["output"]["run_instance_id"],
                                        "fit_session": fit_session_id}, length=12)
                 set_global_seed(config["run"]["random_seed"] + fold)
-                inner_errors = ensemble.fit_inner_holdout_errors(
-                    trainer, x_fit, y_fit, groups[fit_indices], config["features"]["pca_components"],
-                    tuple(x.shape[1:]), config["run"]["epochs"], fold, fold_count)
+                if performance_cv:
+                    inner_errors, internal_audit = fit_individual_performance_cv(
+                        trainer, specs, x_fit, y_fit, [train_metadata[i] for i in fit_indices], selector,
+                        config["run"]["folds"], config["run"]["random_seed"],
+                        policy.get("internal_validation", "chunk_kfold"),
+                        config["features"]["pca_components"], config["run"]["epochs"])
+                    for recorder in recorders:
+                        write_json(recorder.path / f"internal_validation_fold{fold}.json", internal_audit)
+                else:
+                    inner_errors = ensemble.fit_inner_holdout_errors(
+                        trainer, x_fit, y_fit, groups[fit_indices], config["features"]["pca_components"],
+                        tuple(x.shape[1:]), config["run"]["epochs"], fold, fold_count)
+                retained, selection_audit = selector.select([train_metadata[i] for i in fit_indices])
+                for recorder in recorders:
+                    write_json(recorder.path / f"training_selection_fold{fold}.json", selection_audit)
+                fit_indices = fit_indices[retained]
+                x_fit, y_fit = x[fit_indices], y[fit_indices]
                 crossfit_fit = ensemble.fit_crossfit_weights(
                     trainer, x_fit, y_fit, groups[fit_indices], config["features"]["pca_components"],
                     tuple(x.shape[1:]), config["run"]["epochs"], fold, fold_count)

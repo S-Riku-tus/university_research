@@ -265,6 +265,8 @@ class EnsembleRun:
         total_folds,
     ):
         """Fit temporary inner models only when the selected strategy needs them."""
+        if any(item["name"] == "performance_kfold" for item in self.strategy_plan):
+            raise ValueError("performance_kfold must use the training-only internal KFold runner")
         if not strategy_plan_requires_inner_holdout(self.strategy_plan):
             return {}
 
