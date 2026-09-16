@@ -70,7 +70,7 @@ from utils.experiment.run_helpers import set_global_seed
 VALIDATION_CONFIG = apply_onb_defaults({
     "run": {
         "smoke_test": False,
-        "epochs": 150,
+        "epochs": 200,
         "folds": 3,
         "smoke_epochs": 2,
         "smoke_folds": 2,
@@ -84,19 +84,19 @@ VALIDATION_CONFIG = apply_onb_defaults({
         "chunk_seconds": 1,
         "max_freq_hz_list": [
             "maxfreq=3kHz",
-            # "maxfreq=5kHz",
-            # "maxfreq=10kHz",
-            # "maxfreq=15kHz",
+            "maxfreq=5kHz",
+            "maxfreq=10kHz",
+            "maxfreq=15kHz",
             "maxfreq=22kHz",
         ],
         "noise_dir_names": [
             "heatflux_no_noise",
-            # "heatflux_reference_SNR=0",
-            # "heatflux_reference_SNR=-4",
-            # "heatflux_reference_SNR=-8",
-            # "heatflux_reference_SNR=-12",
-            # "heatflux_reference_SNR=-16",
-            # "heatflux_reference_SNR=-20",
+            "heatflux_reference_SNR=0",
+            "heatflux_reference_SNR=-4",
+            "heatflux_reference_SNR=-8",
+            "heatflux_reference_SNR=-12",
+            "heatflux_reference_SNR=-16",
+            "heatflux_reference_SNR=-20",
         ],
         "data_source_dir_by_experiment": {
             "2025.06.11_0.3_2": "waterflow_20260817_1s",
