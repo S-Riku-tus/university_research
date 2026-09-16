@@ -1,0 +1,9 @@
+#:schema https://developers.openai.com/codex/config-schema.json
+
+# モデルとreasoning effortは、CursorのCodexサイドバーで
+# タスクごとに選択するため、このファイルでは固定しない。
+model_verbosity = "low"
+
+# 長い学習ログやテスト出力が、その後の全ターンを圧迫するのを抑える。
+# 必要なエラーが切れる場合は、コマンド側で対象範囲を狭めて再取得する。
+tool_output_token_limit = 6000

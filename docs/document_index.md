@@ -19,6 +19,7 @@
 | 最新2帯域の結果を説明する | [9/15・3/22 kHz比較](../experiments/2026-09-15_onb_frequency_comparison/analysis.md)、[本人の修論仮説](research_plan/2026-09-15_master_thesis_hypothesis.md) | 卒論比較・帯域SNR・XAIの役割と原因分析。本人の理想は仮説として別記 |
 | 今週の報告を作る | [SOAP下書き](progress/2026-09-18_weekly_progress_draft.md) | 9/16新方針の実装・解析と後期計画。旧草稿を保存した上で更新 |
 | 追加結果を解析する | [解析手順](analysis_workflow.md) | 対象固定→性能→原因候補→XAI→次の比較の判定基準 |
+| Cursor内のCodexを効率よく使う | [Codex利用枠の節約運用](codex_token_efficiency.md) | サイドバーでのモデル選択、段階昇格、スレッド分割、対象を絞った探索・確認 |
 | 5つのアンサンブル手法を確認する | [5方式の手法と数式](ensemble_methods.md) | 既存2方式と追加3方式の重み、目的関数、性質を同じ記号で比較 |
 | 原資料の位置づけを確認する | [原資料と現在方針の対応](original_document_guide.md) | 学部からの連続性、旧計画・説明手法・原本の扱い |
 | 22 kHz単独解析時点を確認する | [9/15・22 kHz解析](../experiments/2026-09-15_onb_22khz_noise_sweep/analysis.md) | 先行結果は保持。発表草稿は現行2帯域へ更新 |

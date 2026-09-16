@@ -66,7 +66,7 @@ from utils.experiment.run_helpers import set_global_seed
 VALIDATION_CONFIG = {
     "run": {
         "smoke_test": False,
-        "epochs": 300,
+        "epochs": 150,
         "folds": 3,
         "smoke_epochs": 2,
         "smoke_folds": 2,
@@ -174,11 +174,11 @@ VALIDATION_CONFIG = {
         # 実行するアンサンブル方式
         "enabled_strategy_names": [
             "performance_kfold",  # 学習データの1秒データを通常KFoldで分け、全件の内部予測を集める
-            "simple_equal",  # 等しい重みで平均
-            "inner_holdout",  # 学習データの約20%を、元WAVが重ならないように一度だけ取り分ける
-            "subset_equal_cv",  # 使うモデルの組合せを選び、選んだモデルを等重みで平均
-            "crossfit_wav_stack",  # WAV単位の予測誤差が小さくなる重みを直接求める
-            "crossfit_shrinkage_stack",  # 上の方法に「極端な重みを避け、等重みに近づける」制約を加える
+            # "simple_equal",  # 等しい重みで平均
+            # "inner_holdout",  # 学習データの約20%を、元WAVが重ならないように一度だけ取り分ける
+            # "subset_equal_cv",  # 使うモデルの組合せを選び、選んだモデルを等重みで平均
+            # "crossfit_wav_stack",  # WAV単位の予測誤差が小さくなる重みを直接求める
+            # "crossfit_shrinkage_stack",  # 上の方法に「極端な重みを避け、等重みに近づける」制約を加える
         ],
         # 主方式
         "primary_strategy_name": "performance_kfold",
