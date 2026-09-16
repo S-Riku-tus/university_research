@@ -1,6 +1,12 @@
 # 研究の現在地と次にすること
 
-更新日: **2026-09-16（別日300 epochs結果を診断し、内部WAV分離・crossfit対応へ修正）**。ピーク高さ選別、別日分割、後期計画は維持。分位点ルール時点の状態は[変更前の記録](../experiments/2026-09-16_peak_height_selection/previous_documents/research_status.md)に保存した。
+更新日: **2026-09-17（6/11学習・6/18評価の3 kHz crossfit結果を解析）**。ピーク高さ選別、別日分割、後期計画は維持。分位点ルール時点の状態は[変更前の記録](../experiments/2026-09-16_peak_height_selection/previous_documents/research_status.md)に保存した。
+
+## 9/17保存結果の確認
+
+- [9/17別日結果の解析](../experiments/2026-09-17_onb_crossday_result_analysis/README.md)を追加。完成runの実条件は学習6/11のみ、評価6/18、3 kHz、無雑音、150 epochs、seed 42。ピーク選別による除外はなく、22 kHzは未完了。
+- 6/11内部OOFのWAV単位MSEは重みfit用の同日未知WAV指標で、6/18性能ではない。内部ではCNNが最良だったため重みはCNN中心となったが、6/18全域ではRFのWAV中央値R²=0.842が最良。主shrinkage統合は0.621でRFを超えなかった。
+- CNNはONB以上R²=0.967だがONB前を平均203.9 kW/m²高く予測する。元WAV分離は内部リークを解消した一方、日間校正ずれは残る。
 
 ## 本人が今回決めたこと
 

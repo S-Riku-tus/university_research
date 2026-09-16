@@ -1,12 +1,13 @@
 # 文書案内と更新ルール
 
-更新日: 2026-09-16。**現在の状態は一か所で更新し、過去の数値と判断は日付付き記録に残す。**
+更新日: 2026-09-17。**現在の状態は一か所で更新し、過去の数値と判断は日付付き記録に残す。**
 
 ## 読む順序と各文書の役割
 
 | 目的 | 読む文書 | 更新方法 |
 |---|---|---|
 | 次の作業を始める | [研究の現在地](research_status.md) | 状態・本人の希望・次の一手を更新する唯一の入口 |
+| 9/17の6/11学習→6/18評価と内部OOFを確認する | [9/17別日結果の解析](../experiments/2026-09-17_onb_crossday_result_analysis/README.md) | WAV単位MSEの定義、crossfit重み、3 kHz性能、ONB誤り、説明性、22 kHz未完了を固定 |
 | 9/16別日300 epochs結果が悪い理由を確認する | [別日ONB結果の診断](../experiments/2026-09-16_onb_result_diagnosis/README.md) | 分割、3 kHz低域バイアス、旧内部KFold、IG警告、crossfit対応、次の識別比較 |
 | ピークの高さで学習する秒を選ぶ | [9/16ピーク高さの検証](../experiments/2026-09-16_peak_height_selection/README.md)、[操作画面](../experiments/2026-09-16_peak_height_selection/peak_threshold_review.html) | 本人の付録図・追加説明に対応。縦軸の横線、全秒画像、1,649秒、62テスト。最適値と改善は未確定 |
 | 別日分割・通常KFold・音響選別 | [9/16実装と全秒スペクトル解析](../experiments/2026-09-16_day_split_spectral_selection/README.md) | 学習6/11+7/9、テスト6/18。2 epochs動作確認と本性能の未検証を区別 |

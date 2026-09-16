@@ -174,9 +174,9 @@ VALIDATION_CONFIG = apply_onb_defaults({
     "ensemble": {
         # 実行するアンサンブル方式
         "enabled_strategy_names": [
-            "performance_kfold",  # learning_policy.internal_validation単位のOOF単体性能で重み付け
+            # "performance_kfold",  # learning_policy.internal_validation単位のOOF単体性能で重み付け
             # "simple_equal",  # 等しい重みで平均
-            # "inner_holdout",  # 学習データの約20%を、元WAVが重ならないように一度だけ取り分ける
+            "inner_holdout",  # 学習データの約20%を、元WAVが重ならないように一度だけ取り分ける
             # 次の3方式は同じ元WAV分離inner OOFを共有するため、3倍の追加学習にはならない。
             # "subset_equal_cv",  # 使うモデルの組合せを選び、選んだモデルを等重みで平均
             # "crossfit_wav_stack",  # WAV単位の予測誤差が小さくなる重みを直接求める
