@@ -1,5 +1,6 @@
 import csv
 import os
+import warnings
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -185,7 +186,9 @@ def save_signed_array_and_png(
     time_extent_seconds=1.0,
 ):
     """Save a signed attribution map with a zero-centred colour scale."""
-    arr = np.nan_to_num(np.asarray(values, dtype=np.float32))
+    arr = np.asarray(values, dtype=np.float64)
+    if not np.isfinite(arr).all():
+        raise FloatingPointError("Cannot save a nonfinite signed attribution map.")
     ensure_dir(os.path.dirname(out_base))
     np.save(windows_long_path(out_base + ".npy"), arr)
 
@@ -248,18 +251,25 @@ def last_conv2d_layer_name(model):
     return None
 
 
-def integrated_gradients(model, sample, baseline=None, steps=32):
+def integrated_gradients(model, sample, baseline=None, steps=64, *,
+                         max_steps=4096, batch_size=8, rtol=1e-3,
+                         atol=1e-6, map_rtol=1e-2, return_diagnostics=False):
     """Return signed input-resolution attributions for a scalar regression model.
 
-    The channel sum is retained with its sign so that the result can be checked
-    against the Integrated Gradients completeness property.  Use
-    ``normalize_magnitude`` only for ranking/visualisation.
+    Raw-input straight-line IG with adaptive Gauss-Legendre quadrature.
+    For a leading LogPowerCompression layer, concentrate nodes near BOTH
+    endpoints using a scalar substitution and its Jacobian. This preserves
+    the raw-input path and baseline (not IG in log coordinates).
+    Check completeness AND successive signed-map agreement; never rescale
+    the answer to force completeness. Tolerances use model-output units.
     """
     x = np.asarray(sample, dtype=np.float32)
     if x.ndim != 3:
         raise ValueError(f"sample must have shape (H, W, C), got {x.shape}")
-    if int(steps) <= 0:
-        raise ValueError(f"steps must be positive, got {steps}.")
+    if int(steps) < 2 or int(max_steps) < 2 * int(steps) or int(batch_size) <= 0:
+        raise ValueError("Require steps >= 2, max_steps >= 2*steps, batch_size > 0.")
+    if not all(np.isfinite(v) and v >= 0 for v in (rtol, atol, map_rtol)):
+        raise ValueError("IG tolerances must be finite and nonnegative.")
     baseline = (
         np.zeros_like(x, dtype=np.float32)
         if baseline is None
@@ -270,19 +280,82 @@ def integrated_gradients(model, sample, baseline=None, steps=32):
             f"baseline shape {baseline.shape} does not match sample shape {x.shape}."
         )
 
-    alphas = tf.linspace(0.0, 1.0, int(steps) + 1)
-    interpolated = baseline[None, ...] + alphas[:, None, None, None] * (x - baseline)[None, ...]
-    with tf.GradientTape() as tape:
-        inputs = tf.cast(interpolated, tf.float32)
-        tape.watch(inputs)
-        outputs = model(inputs, training=False)
-        target = tf.reshape(outputs, (-1,))
-    grads = tape.gradient(target, inputs)
-    if grads is None:
-        raise RuntimeError("Integrated Gradients could not compute input gradients.")
-    avg_grads = tf.reduce_mean(grads[:-1] + grads[1:], axis=0) / 2.0
-    attrs = (x - baseline) * avg_grads.numpy()
-    return np.sum(attrs, axis=-1)
+    if not np.isfinite(x).all() or not np.isfinite(baseline).all():
+        raise ValueError("IG input and baseline must be finite.")
+    difference = x.astype(np.float64) - baseline.astype(np.float64)
+    endpoints = np.asarray(model(np.stack([baseline, x]), training=False))
+    if endpoints.size != 2 or not np.isfinite(endpoints).all():
+        raise ValueError("IG requires one finite scalar output per sample.")
+    delta = float(endpoints.reshape(-1)[1]) - float(endpoints.reshape(-1)[0])
+    ratio = 0.0
+    layers = [layer for layer in model.layers
+              if not isinstance(layer, tf.keras.layers.InputLayer)]
+    if (layers and type(layers[0]).__name__ == 'LogPowerCompression'
+            and np.all(x >= 0) and np.all(baseline >= 0)):
+        ratio = float(np.max(np.abs(difference) /
+                     (float(layers[0].scale) + np.minimum(x, baseline).astype(np.float64))))
+    history, previous = [], None
+    n = int(steps)
+    while True:
+        if ratio > 1:
+            # Integrate each half separately. Mirroring handles decreasing
+            # features/nonzero baselines too, without changing the path.
+            nodes, w = np.polynomial.legendre.leggauss(n//2)
+            t, w = (nodes+1)/2, w/2
+            log_ratio = np.log1p(ratio)
+            left = 0.5*np.expm1(t*log_ratio)/ratio
+            jacobian = 0.5*log_ratio*np.exp(t*log_ratio)/ratio
+            alpha = np.concatenate([left, 1-left])
+            weights = np.concatenate([w*jacobian, w*jacobian])
+        else:
+            nodes, w = np.polynomial.legendre.leggauss(n)
+            alpha, weights = (nodes+1)/2, w/2
+        integral = np.zeros_like(difference, dtype=np.float64)
+        for offset in range(0, len(alpha), int(batch_size)):
+            sl = slice(offset, offset + int(batch_size))
+            points = baseline[None, ...] + alpha[sl, None, None, None]*difference[None, ...]
+            inputs = tf.convert_to_tensor(points, dtype=tf.float32)
+            with tf.GradientTape() as tape:
+                tape.watch(inputs)
+                target = model(inputs, training=False)
+            grads = tape.gradient(target, inputs)
+            if grads is None:
+                raise RuntimeError("Integrated Gradients could not compute input gradients.")
+            values = np.asarray(grads, dtype=np.float64)
+            if not np.isfinite(values).all():
+                raise FloatingPointError("Nonfinite IG gradients; attribution is invalid.")
+            integral += np.sum(values*weights[sl, None, None, None], axis=0)
+        attrs = difference*integral
+        error = float(np.sum(attrs, dtype=np.float64)-delta)
+        map_change = (float(np.sum(np.abs(attrs-previous)) /
+                            max(np.sum(np.abs(attrs)), atol, 1e-30))
+                      if previous is not None else None)
+        complete = abs(error) <= atol + rtol*abs(delta)
+        converged = bool(complete and map_change is not None and map_change <= map_rtol)
+        history.append({'nodes': len(alpha), 'completeness_error': error,
+                        'map_relative_l1_change': map_change})
+        if converged or n >= int(max_steps):
+            break
+        previous = attrs
+        n = min(2*n, int(max_steps))
+    diagnostics = {
+        'algorithm': 'raw_straight_line_ig_gauss_legendre_v2',
+        'sampling': 'symmetric_log_alpha' if ratio > 1 else 'uniform_alpha',
+        'alpha_ratio': ratio, 'nodes': len(alpha),
+        'gradient_batch_size': int(batch_size),
+        'rtol': rtol, 'atol_model_output': atol, 'map_rtol': map_rtol,
+        'output_delta_model_units': delta,
+        'attribution_sum_model_units': float(np.sum(attrs, dtype=np.float64)),
+        'completeness_error_model_units': error,
+        'completeness_passed': bool(complete), 'converged': converged,
+        'history': history,
+    }
+    if not converged:
+        warnings.warn(f"IG did not converge at {len(alpha)} nodes: completeness error={error:.6g}, "
+                      f"map change={map_change}. Do not treat this map as validated.",
+                      RuntimeWarning, stacklevel=2)
+    result = np.sum(attrs, axis=-1, dtype=np.float64)
+    return (result, diagnostics) if return_diagnostics else result
 
 
 def grad_cam_regression(model, sample, conv_layer_name=None):

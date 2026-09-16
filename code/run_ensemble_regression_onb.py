@@ -216,6 +216,13 @@ VALIDATION_CONFIG = {
         "enabled": True,
         "max_samples_per_fold": 5,
         "ig_steps": 64,
+        # IGの初期点数→上限まで増やし、寄与合計と説明mapの収束を確認。
+        # ig_atolは熱流束へ逆変換する前のモデル出力単位。
+        "ig_max_steps": 4096,
+        "ig_batch_size": 8,
+        "ig_rtol": 1e-3,
+        "ig_atol": 1e-6,
+        "ig_map_rtol": 1e-2,
         # モデル構造に適した説明手法を指定する。
         # RFのTreeSHAPはPCA成分の監査用、物理帯域の比較にはマスクを使う。
         "methods_by_model": {
@@ -643,8 +650,14 @@ def validate_validation_config(enabled_specs):
                 f"{invalid_folds}")
         if int(EXPLAINABILITY_CONFIG.get("max_samples_per_fold", 0)) <= 0:
             raise ValueError("Explainability max_samples_per_fold must be positive.")
-        if int(EXPLAINABILITY_CONFIG.get("ig_steps", 0)) <= 0:
-            raise ValueError("Explainability ig_steps must be positive.")
+        ig_steps = int(EXPLAINABILITY_CONFIG.get("ig_steps", 64))
+        if ig_steps < 2 or int(EXPLAINABILITY_CONFIG.get("ig_max_steps", 4096)) < 2*ig_steps:
+            raise ValueError("IG requires ig_steps >= 2 and ig_max_steps >= 2*ig_steps.")
+        if int(EXPLAINABILITY_CONFIG.get("ig_batch_size", 8)) <= 0:
+            raise ValueError("IG batch size must be positive.")
+        for key in ("ig_rtol", "ig_atol", "ig_map_rtol"):
+            if not np.isfinite(float(EXPLAINABILITY_CONFIG[key])) or float(EXPLAINABILITY_CONFIG[key]) < 0:
+                raise ValueError(f"{key} must be finite and nonnegative.")
 
         fractions = [
             float(value)

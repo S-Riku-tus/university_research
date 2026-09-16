@@ -1,4 +1,5 @@
 import csv
+import json
 import os
 
 import matplotlib.pyplot as plt
@@ -46,6 +47,8 @@ SUMMARY_HEADER = [
     "top_frequency_hz",
     "top_time_frame",
     "top_time_s",
+    "ig_numerical_converged",
+    "ig_nodes",
 ]
 
 OCCLUSION_HEADER = [
@@ -443,8 +446,11 @@ def _write_attribution_outputs(
     signed=False,
     units="relative importance",
     compute_curves=True,
+    numerical_diagnostics=None,
 ):
-    raw_values = np.nan_to_num(np.asarray(values, dtype=np.float32))
+    raw_values = np.asarray(values, dtype=np.float64)
+    if not np.isfinite(raw_values).all():
+        raise FloatingPointError("Cannot save nonfinite attribution values.")
     importance = (
         normalize_magnitude(raw_values)
         if signed
@@ -459,6 +465,12 @@ def _write_attribution_outputs(
         f"{model_key} {method} {sample_id}\n"
         f"prediction - baseline = {output_delta:,.3g} heat-flux units"
     )
+    if numerical_diagnostics is not None:
+        status = 'converged' if numerical_diagnostics['converged'] else 'NOT CONVERGED'
+        plot_title += f"\nIG numerical check: {status}"
+        with open(windows_long_path(os.path.join(sample_dir, 'integrated_gradients_diagnostics.json')),
+                  'w', encoding='utf-8') as stream:
+            json.dump(numerical_diagnostics, stream, indent=2, allow_nan=False)
     if config.get("save_maps", True):
         if signed:
             save_signed_array_and_png(
@@ -585,6 +597,8 @@ def _write_attribution_outputs(
         top_freq_hz,
         top_time_frame,
         top_time_s,
+        numerical_diagnostics['converged'] if numerical_diagnostics is not None else '',
+        numerical_diagnostics['nodes'] if numerical_diagnostics is not None else '',
     ]
 
 
@@ -707,22 +721,33 @@ def _write_tree_shap_pca(model, pca, scaler, x_val, selected_samples, out_dir):
         )
 
 
-def _keras_attribution(method, model, sample, scaler, config):
+def _keras_attribution(method, model, sample, scaler, config, return_diagnostics=False):
     if method == "integrated_gradients":
         baseline = np.full_like(
             sample, _baseline_value(config), dtype=np.float32)
-        values_scaled = integrated_gradients(
+        values_scaled, diagnostics = integrated_gradients(
             model, sample, baseline=baseline,
-            steps=int(config.get("ig_steps", 32)),
+            steps=int(config.get("ig_steps", 64)),
+            max_steps=int(config.get("ig_max_steps", 4096)),
+            batch_size=int(config.get("ig_batch_size", 8)),
+            rtol=float(config.get("ig_rtol", 1e-3)),
+            atol=float(config.get("ig_atol", 1e-6)),
+            map_rtol=float(config.get("ig_map_rtol", 1e-2)),
+            return_diagnostics=True,
         )
-        return values_scaled * _inverse_output_scale(scaler), True, "heat_flux"
+        inverse_scale = _inverse_output_scale(scaler)
+        diagnostics['inverse_output_scale'] = inverse_scale
+        diagnostics['completeness_error_heat_flux'] = diagnostics['completeness_error_model_units']*inverse_scale
+        result = (values_scaled * inverse_scale, True, "heat_flux")
+        return (*result, diagnostics) if return_diagnostics else result
     if method == "grad_cam":
-        return grad_cam_regression(model, sample), False, "relative_importance"
+        result = (grad_cam_regression(model, sample), False, "relative_importance")
+        return (*result, None) if return_diagnostics else result
     raise ValueError(f"Unsupported Keras attribution method: {method}")
 
 
 def _input_stability_rows(model, scaler, sample_records, base_attributions,
-                          config):
+                          config, base_numerical=None):
     stability = config.get("stability") or {}
     if not stability.get("enabled", False):
         return []
@@ -749,8 +774,8 @@ def _input_stability_rows(model, scaler, sample_records, base_attributions,
                 if stability.get("clip_nonnegative", True):
                     noisy = np.maximum(noisy, 0.0)
                 noisy = noisy.astype(np.float32)
-                noisy_values, _, _ = _keras_attribution(
-                    method, model, noisy, scaler, config)
+                noisy_values, _, _, diagnostic = _keras_attribution(
+                    method, model, noisy, scaler, config, return_diagnostics=True)
                 base_magnitude = np.abs(base_values)
                 noisy_magnitude = np.abs(noisy_values)
                 rows.append([
@@ -761,6 +786,8 @@ def _input_stability_rows(model, scaler, sample_records, base_attributions,
                     _safe_corr(base_magnitude, noisy_magnitude),
                     _cosine_similarity(base_magnitude, noisy_magnitude),
                     _relative_l1(base_magnitude, noisy_magnitude),
+                    (base_numerical or {}).get((sample_id, method), ''),
+                    diagnostic['converged'] if diagnostic is not None else '',
                 ])
     return rows
 
@@ -786,7 +813,7 @@ def _randomize_top_layer(model, seed):
 
 
 def _top_layer_sanity_rows(model, scaler, sample_records, base_attributions,
-                           config):
+                           config, base_numerical=None):
     sanity = config.get("sanity_check") or {}
     if not sanity.get("enabled", False):
         return []
@@ -809,8 +836,8 @@ def _top_layer_sanity_rows(model, scaler, sample_records, base_attributions,
                 base_values = base_attributions.get((sample_id, method))
                 if base_values is None:
                     continue
-                randomized_values, _, _ = _keras_attribution(
-                    method, model, sample, scaler, config)
+                randomized_values, _, _, diagnostic = _keras_attribution(
+                    method, model, sample, scaler, config, return_diagnostics=True)
                 base_magnitude = np.abs(base_values)
                 randomized_magnitude = np.abs(randomized_values)
                 rows.append([
@@ -822,6 +849,8 @@ def _top_layer_sanity_rows(model, scaler, sample_records, base_attributions,
                     _safe_corr(base_magnitude, randomized_magnitude),
                     _cosine_similarity(base_magnitude, randomized_magnitude),
                     _relative_l1(base_magnitude, randomized_magnitude),
+                    (base_numerical or {}).get((sample_id, method), ''),
+                    diagnostic['converged'] if diagnostic is not None else '',
                 ])
     finally:
         layer.set_weights(original_weights)
@@ -841,6 +870,7 @@ def explain_keras_model(model_key, model, scaler, x_val, y_val, pred, threshold,
     group_rows = []
     sample_records = []
     base_attributions = {}
+    base_numerical = {}
 
     if "group_occlusion" in methods or "occlusion" in methods:
         performance_rows = _group_mask_performance(
@@ -878,13 +908,16 @@ def explain_keras_model(model_key, model, scaler, x_val, y_val, pred, threshold,
             )
 
         if "integrated_gradients" in methods:
-            ig, signed, units = _keras_attribution(
-                "integrated_gradients", model, sample, scaler, config)
+            ig, signed, units, diagnostics = _keras_attribution(
+                "integrated_gradients", model, sample, scaler, config,
+                return_diagnostics=True)
             base_attributions[(sample_id, "integrated_gradients")] = ig
+            base_numerical[(sample_id, "integrated_gradients")] = diagnostics['converged']
             summary_rows.append(_write_attribution_outputs(
                 "integrated_gradients", model_key, sample_id, local_idx,
                 y_true, y_pred, ig, predict_fn, sample, sample_dir,
                 max_freq_hz, config, signed=signed, units=units,
+                numerical_diagnostics=diagnostics,
             ))
 
         if "grad_cam" in methods:
@@ -937,19 +970,20 @@ def explain_keras_model(model_key, model, scaler, x_val, y_val, pred, threshold,
             ))
 
     stability_rows = _input_stability_rows(
-        model, scaler, sample_records, base_attributions, config)
+        model, scaler, sample_records, base_attributions, config, base_numerical)
     if stability_rows:
         write_csv(
             os.path.join(out_dir, "input_stability.csv"),
             [
                 "sample_id", "method", "repeat", "noise_fraction_of_sample_std",
                 "pearson_abs_map", "cosine_abs_map", "relative_l1_abs_map",
+                "base_ig_converged", "perturbed_ig_converged",
             ],
             stability_rows,
         )
 
     sanity_rows = _top_layer_sanity_rows(
-        model, scaler, sample_records, base_attributions, config)
+        model, scaler, sample_records, base_attributions, config, base_numerical)
     if sanity_rows:
         write_csv(
             os.path.join(out_dir, "top_layer_randomization_sanity.csv"),
@@ -957,6 +991,7 @@ def explain_keras_model(model_key, model, scaler, x_val, y_val, pred, threshold,
                 "sample_id", "method", "randomized_layer", "original_prediction",
                 "randomized_prediction", "pearson_abs_map", "cosine_abs_map",
                 "relative_l1_abs_map",
+                "base_ig_converged", "randomized_ig_converged",
             ],
             sanity_rows,
         )
@@ -1394,6 +1429,28 @@ def explainability_outputs_complete(save_path, config, model_keys, fold_count,
             for filename in expected_files:
                 if not _path_exists(os.path.join(out_dir, filename)):
                     return False
+            if 'integrated_gradients' in methods:
+                # Old CSVs/images do not establish completion of the new
+                # numerical diagnostics. A recorded nonconvergence IS a
+                # completed calculation, so do not force endless retraining.
+                try:
+                    with open(windows_long_path(os.path.join(out_dir, 'explainability_summary.csv')),
+                              encoding='utf-8-sig', newline='') as stream:
+                        rows = [r for r in csv.DictReader(stream)
+                                if r['method'] == 'integrated_gradients']
+                    if not rows:
+                        return False
+                    for row in rows:
+                        if row.get('ig_numerical_converged') not in {'True', 'False'}:
+                            return False
+                        diagnostic_path = os.path.join(out_dir, row['sample_id'],
+                                                       'integrated_gradients_diagnostics.json')
+                        with open(windows_long_path(diagnostic_path), encoding='utf-8') as stream:
+                            diagnostic = json.load(stream)
+                        if diagnostic.get('algorithm') != 'raw_straight_line_ig_gauss_legendre_v2':
+                            return False
+                except (OSError, ValueError, KeyError, TypeError):
+                    return False
     return True
 
 
@@ -1432,6 +1489,12 @@ def maybe_explain_trained_model(spec, model, scaler, x_val, y_val, pred, thresho
             ["methods", "|".join(sorted(_methods_for_model(config, model_key)))],
             ["max_samples_per_fold", config.get("max_samples_per_fold", "")],
             ["ig_steps", config.get("ig_steps", "")],
+            ["ig_algorithm", "raw_straight_line_ig_gauss_legendre_v2"],
+            ["ig_max_steps", config.get("ig_max_steps", 4096)],
+            ["ig_batch_size", config.get("ig_batch_size", 8)],
+            ["ig_rtol", config.get("ig_rtol", 1e-3)],
+            ["ig_atol_model_units", config.get("ig_atol", 1e-6)],
+            ["ig_map_rtol", config.get("ig_map_rtol", 1e-2)],
             ["baseline_value", config.get("baseline_value", 0.0)],
             ["time_groups", config.get("time_groups", "")],
             ["time_extent_seconds", config.get("time_extent_seconds", "")],

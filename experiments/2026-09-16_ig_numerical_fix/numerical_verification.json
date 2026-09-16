@@ -1,0 +1,198 @@
+[
+  {
+    "case": "analytic_log_sum",
+    "exact_delta": 39.838094213752846,
+    "old_sum": 789085.0394715184,
+    "old_relative_error": 19806.298894310854,
+    "new_sum": 39.838093534915316,
+    "new_relative_error": 1.70399097543602e-08,
+    "diagnostics": {
+      "algorithm": "raw_straight_line_ig_gauss_legendre_v2",
+      "sampling": "symmetric_log_alpha",
+      "alpha_ratio": 99999997.47378752,
+      "nodes": 128,
+      "gradient_batch_size": 8,
+      "rtol": 0.001,
+      "atol_model_output": 1e-06,
+      "map_rtol": 0.01,
+      "output_delta_model_units": 39.838096618652344,
+      "attribution_sum_model_units": 39.838093534915316,
+      "completeness_error_model_units": -3.0837370275094145e-06,
+      "completeness_passed": true,
+      "converged": true,
+      "history": [
+        {
+          "nodes": 64,
+          "completeness_error": -3.088903440584545e-06,
+          "map_relative_l1_change": null
+        },
+        {
+          "nodes": 128,
+          "completeness_error": -3.0837370275094145e-06,
+          "map_relative_l1_change": 4.467915199018448e-09
+        }
+      ]
+    }
+  },
+  {
+    "case": "cnntf_v2_gap",
+    "weights": "random initialization; no training",
+    "input_source": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\data\\npy\\waterflow_20260817_1s\\maxfreq=22kHz\\heatflux_no_noise\\368978.105_src-index=11.3.69E+05_chunk-0000.npy",
+    "input_sha256": "b38f9bae9874238f6f88af53d7c12380df53e7684c79a855f6f6675dc00ed3d0",
+    "old_sum": -0.918786078679606,
+    "old_relative_error": 0.38637333322848333,
+    "new_relative_error": 0.0009348097494341633,
+    "diagnostics": {
+      "algorithm": "raw_straight_line_ig_gauss_legendre_v2",
+      "sampling": "symmetric_log_alpha",
+      "alpha_ratio": 35803488.57212812,
+      "nodes": 2048,
+      "gradient_batch_size": 8,
+      "rtol": 0.001,
+      "atol_model_output": 1e-06,
+      "map_rtol": 0.01,
+      "output_delta_model_units": -1.4973046779632568,
+      "attribution_sum_model_units": -1.4959049829524225,
+      "completeness_error_model_units": 0.0013996950108343675,
+      "completeness_passed": true,
+      "converged": true,
+      "history": [
+        {
+          "nodes": 1024,
+          "completeness_error": -0.004167802113362207,
+          "map_relative_l1_change": null
+        },
+        {
+          "nodes": 2048,
+          "completeness_error": 0.0013996950108343675,
+          "map_relative_l1_change": 0.0077332400586583565
+        }
+      ]
+    },
+    "diagnostics_at_1024": {
+      "algorithm": "raw_straight_line_ig_gauss_legendre_v2",
+      "sampling": "symmetric_log_alpha",
+      "alpha_ratio": 35803488.57212812,
+      "nodes": 1024,
+      "gradient_batch_size": 8,
+      "rtol": 0.001,
+      "atol_model_output": 1e-06,
+      "map_rtol": 0.01,
+      "output_delta_model_units": -1.4973046779632568,
+      "attribution_sum_model_units": -1.501472480076619,
+      "completeness_error_model_units": -0.004167802113362207,
+      "completeness_passed": false,
+      "converged": false,
+      "history": [
+        {
+          "nodes": 64,
+          "completeness_error": 0.05354099677501756,
+          "map_relative_l1_change": null
+        },
+        {
+          "nodes": 128,
+          "completeness_error": -0.02126762646701197,
+          "map_relative_l1_change": 0.12201217320589705
+        },
+        {
+          "nodes": 256,
+          "completeness_error": -0.0128356928311395,
+          "map_relative_l1_change": 0.061122835622310946
+        },
+        {
+          "nodes": 512,
+          "completeness_error": 0.005442515198654574,
+          "map_relative_l1_change": 0.031103132566585284
+        },
+        {
+          "nodes": 1024,
+          "completeness_error": -0.004167802113362207,
+          "map_relative_l1_change": 0.015355166689533316
+        }
+      ]
+    }
+  },
+  {
+    "case": "alexnet",
+    "weights": "random initialization; no training",
+    "input_source": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\data\\npy\\waterflow_20260817_1s\\maxfreq=22kHz\\heatflux_no_noise\\368978.105_src-index=11.3.69E+05_chunk-0000.npy",
+    "input_sha256": "b38f9bae9874238f6f88af53d7c12380df53e7684c79a855f6f6675dc00ed3d0",
+    "old_sum": 0.0026494551103488596,
+    "old_relative_error": 1.2095253119787988,
+    "new_relative_error": 0.005110902878808271,
+    "diagnostics": {
+      "algorithm": "raw_straight_line_ig_gauss_legendre_v2",
+      "sampling": "symmetric_log_alpha",
+      "alpha_ratio": 35803488.57212812,
+      "nodes": 4096,
+      "gradient_batch_size": 8,
+      "rtol": 0.001,
+      "atol_model_output": 1e-06,
+      "map_rtol": 0.01,
+      "output_delta_model_units": -0.012645035982131958,
+      "attribution_sum_model_units": -0.012709663532940781,
+      "completeness_error_model_units": -6.462755080882329e-05,
+      "completeness_passed": false,
+      "converged": false,
+      "history": [
+        {
+          "nodes": 1024,
+          "completeness_error": 8.611913473266682e-05,
+          "map_relative_l1_change": null
+        },
+        {
+          "nodes": 2048,
+          "completeness_error": 2.2931737023071386e-05,
+          "map_relative_l1_change": 0.006953992081249405
+        },
+        {
+          "nodes": 4096,
+          "completeness_error": -6.462755080882329e-05,
+          "map_relative_l1_change": 0.0034936971747156773
+        }
+      ]
+    },
+    "diagnostics_at_1024": {
+      "algorithm": "raw_straight_line_ig_gauss_legendre_v2",
+      "sampling": "symmetric_log_alpha",
+      "alpha_ratio": 35803488.57212812,
+      "nodes": 1024,
+      "gradient_batch_size": 8,
+      "rtol": 0.001,
+      "atol_model_output": 1e-06,
+      "map_rtol": 0.01,
+      "output_delta_model_units": -0.012645035982131958,
+      "attribution_sum_model_units": -0.012558916847399291,
+      "completeness_error_model_units": 8.611913473266682e-05,
+      "completeness_passed": false,
+      "converged": false,
+      "history": [
+        {
+          "nodes": 64,
+          "completeness_error": -0.003309460748172753,
+          "map_relative_l1_change": null
+        },
+        {
+          "nodes": 128,
+          "completeness_error": -0.001145517701315232,
+          "map_relative_l1_change": 0.10992681029333386
+        },
+        {
+          "nodes": 256,
+          "completeness_error": -0.00014812561198849356,
+          "map_relative_l1_change": 0.05516093908196201
+        },
+        {
+          "nodes": 512,
+          "completeness_error": 0.00028382085320687034,
+          "map_relative_l1_change": 0.02761776702516182
+        },
+        {
+          "nodes": 1024,
+          "completeness_error": 8.611913473266682e-05,
+          "map_relative_l1_change": 0.01399956721879946
+        }
+      ]
+    }
+  }
+]
