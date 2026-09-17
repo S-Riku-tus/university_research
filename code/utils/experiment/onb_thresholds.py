@@ -8,7 +8,7 @@ from copy import deepcopy
 # number written in the experiment result text file.
 ONB_THRESHOLD_RECORDS = {
     "2025.06.11_0.3_2": {
-        "threshold": 368978.105,
+        "threshold": 221505.1102,
         "reported_value": 3.69e5,
         "source": (
             "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/"
@@ -17,7 +17,7 @@ ONB_THRESHOLD_RECORDS = {
         "definition": "first measured heat-flux level identified as ONB",
     },
     "2025.06.18_0.3_3": {
-        "threshold": 376320.1201,
+        "threshold": 271677.6816,
         "reported_value": 3.76e5,
         "source": (
             "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/"
@@ -26,7 +26,7 @@ ONB_THRESHOLD_RECORDS = {
         "definition": "first measured heat-flux level identified as ONB",
     },
     "2025.07.09_0.3_1": {
-        "threshold": 442169.29243200656,
+        "threshold": 571694.252491167,
         "reported_value": 4.42e5,
         "source": (
             "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/"
