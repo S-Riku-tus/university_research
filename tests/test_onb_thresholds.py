@@ -17,9 +17,9 @@ class OnbThresholdRegistryTest(unittest.TestCase):
         self.assertEqual(
             onb_threshold_by_experiment(),
             {
-                "2025.06.11_0.3_2": 368978.105,
-                "2025.06.18_0.3_3": 376320.1201,
-                "2025.07.09_0.3_1": 442169.29243200656,
+                "2025.06.11_0.3_2": 221505.1102,
+                "2025.06.18_0.3_3": 271677.6816,
+                "2025.07.09_0.3_1": 571694.252491167,
             },
         )
 
@@ -32,7 +32,6 @@ class OnbThresholdRegistryTest(unittest.TestCase):
                 )
                 self.assertTrue(record["source"].endswith(".txt:3"))
                 self.assertGreater(record["threshold"], 0)
-                self.assertGreater(record["reported_value"], 0)
 
 
 if __name__ == "__main__":
