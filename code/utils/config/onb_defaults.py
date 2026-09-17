@@ -73,9 +73,9 @@ def default_output_config(now=None):
     return {
         "save_date": save_date,
         # Group every analysis performed on the same day without mixing the
-        # date into the study name.  The learning-policy suffix is added to
-        # the final component by policy_result_date_dir().
-        "result_date_dir": f"{save_date}/selected_log_architecture",
+        # date into the study name. The final onb_* name is derived later.
+        # 実行条件を表す短い系列名はscoped_result_job()でonb_*として付ける。
+        "result_date_dir": f"{save_date}/onb",
         "save_fold_predictions": True,
         "save_tuning_summary": True,
         "resume_completed_runs": True,

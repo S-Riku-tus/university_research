@@ -1,4 +1,4 @@
-﻿run,experiment,maxfreq,snr,fold,model,explainability_summary.csv,group_mask_performance.csv,top_layer_randomization_sanity.csv,input_stability.csv,treeshap_pca_summary.csv
+run,experiment,maxfreq,snr,fold,model,explainability_summary.csv,group_mask_performance.csv,top_layer_randomization_sanity.csv,input_stability.csv,treeshap_pca_summary.csv
 20260914_selected_log_architecture,2025.06.11_0.3_2,maxfreq=22kHz,no_noise,fold1,alexnet,True,True,True,True,False
 20260914_selected_log_architecture,2025.06.11_0.3_2,maxfreq=22kHz,no_noise,fold1,cnntf_v2_gap,True,True,True,True,False
 20260914_selected_log_architecture,2025.06.11_0.3_2,maxfreq=22kHz,no_noise,fold1,rf,True,True,False,False,True

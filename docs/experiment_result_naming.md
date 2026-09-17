@@ -1,27 +1,42 @@
 # 結果の保存階層と識別
 
-更新日: 2026-09-16。実装の正本は [result_paths.py](../code/utils/experiment/result_paths.py) と [run_helpers.py](../code/utils/experiment/run_helpers.py)。
+更新日: 2026-09-17。実装の正本は [result_paths.py](../code/utils/experiment/result_paths.py) と [run_helpers.py](../code/utils/experiment/run_helpers.py)。
 
 ## 現行の保存階層
 
 ```text
 Pool_boiling/Subcooling_20_degrees/0.3/<収録実験日>/
   regression_result/npy/ensemble/<解析実行日>/
-    selected_log_architecture[__方針]/
+    onb_<主要条件>_[parameter番号_]<HHMMSSffff>/
       <周波数上限>/
-        <ノイズ条件>/<run>_<設定hash>_<実行ID>/
+        <ノイズ条件>/
           run_manifest.json
           split_manifest.json
           completed.json
           fold_pred/
           wav_eval/
           explainability/
-        noise_trends/<run>_<設定hash>_<実行ID>/<統合方式>/
+        noise_trends/<統合方式>/
       tuning_summary.csv
       ensemble_presentation_summary.csv
 ```
 
-解析日と収録日を区別する。一般化方針の末尾は`__wd_clean / __lodo_matched / __lodo_clean / __days_matched`など。日内matchedは従来のまま。
+解析日と収録日を区別する。日付直下の名前は最大52文字で、典型例は次のとおり。
+
+```text
+onb_xd-t0611+0709-v0618_iw3-nm_s1e-9_e300_0930154827
+```
+
+- `wd / lo / xd`: 日内分割／leave-one-day-out／学習日・テスト日明示
+- `t... / v...`: 学習日／評価日。通常は月日、長すぎる場合は`2d`のように件数へ縮約
+- `iw3 / ic3`: WAV単位／chunk単位の内部3-fold検証
+- `nm / nc`: matched-noise学習／clean-only学習
+- `s0 / s1e-9`: 音響選別なし／ピーク高さ閾値
+- `e300`: epoch数
+- `p01 / p02`: 1起動で複数parameter setを比較するときだけ付ける候補番号
+- 末尾10桁: 実行時刻`HHMMSSffff`（時分秒＋1/10000秒）。日付は上位にあるため重複させない
+
+フォルダ名は比較時に重要な条件を優先して示す。モデル詳細、seed、全データ名、全ハイパーパラメータと設定hashは、長文化を避けるため`run_manifest.json`で確定する。同一条件の別起動は1/10000秒単位の実行時刻で分離する。
 
 旧runにはノイズ/周波数の順の階層や、完了印・分割manifestのない世代がある。[9/14の移行記録](research_plan/2026-09-14_result_layout_and_generalization.md)を参照し、古い階層を欠落と即断しない。
 
@@ -34,9 +49,9 @@ e{epochs}_{短縮parameter_tag}_{短縮model_tag}[_{weight_tag}]_{設定hash}_{�
 e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp_a1b2c3d4_001530_d4e5f6a7
 ```
 
-run名の末尾には設定hashと実行IDを常に付ける。学習日、選別閾値、モデル条件などが異なるrunは設定hashで分かれ、全く同じ条件を再実行した場合も新しい実行IDで別フォルダになる。完全な条件は`run_manifest.json`の`created_at / run_instance_id / run_hash / execution_config_hash / validation_config / learning_context`で確認する。
+現行の明示日分割では日付直下の`onb_..._<HHMMSSffff>`が実行単位となり、周波数・ノイズ直下に余分なrun階層を作らない。旧形式などrun階層を使う場合は、run名の末尾へ設定hashと実行IDを付ける。完全な条件は`run_manifest.json`の`created_at / run_instance_id / run_hash / execution_config_hash / validation_config / learning_context`で確認する。
 
-実行IDは通常、起動時刻とランダム文字列から自動生成する。中断した特定実行を再開したい場合だけ、開始時のIDを`RUN_ID`環境変数へ明示して同じ保存先を使用する。別条件は設定hash、同条件の別実行は実行IDで分離される。
+実行IDは起動時刻から10桁で自動生成する。中断した特定実行を再開したい場合だけ、開始時の10桁を`RUN_ID`環境変数へ明示して同じ保存先を使用する。異なる設定で同じ`RUN_ID`を指定した場合は、manifest照合で停止して上書きを防ぐ。
 
 ## 完了・再開・比較
 

@@ -1,4 +1,4 @@
-﻿run,experiment,model,claim_safe,conditions,mean_r2,mean_rmse_all,mean_recall,mean_precision
+run,experiment,model,claim_safe,conditions,mean_r2,mean_rmse_all,mean_recall,mean_precision
 20260903_selected_log_architecture,2025.06.11_0.3_2,alexnet,1,35,0.9127439878583754,78731.16747572091,0.8928571428571429,1.0
 20260903_selected_log_architecture,2025.06.11_0.3_2,cnntf_v2_gap,1,35,0.9303404481795269,70362.28925801831,0.975,1.0
 20260903_selected_log_architecture,2025.06.11_0.3_2,ensemble__inner_holdout,0,35,0.9332269570812665,69144.22928260798,0.9178571428571428,1.0

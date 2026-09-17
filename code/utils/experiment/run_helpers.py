@@ -204,11 +204,18 @@ def write_run_manifest(
             validation_config["output"]["save_fold_predictions"])
         manifest["learning_context"] = job["learning_context"]
         if validation_config["output"].get("run_scoped_result_dir", False):
+            study_directory = Path(job["save_base_path"]).name
             manifest["folder_naming"] = {
-                "scheme": "{result_date_dir}__{execution_and_config_digest}",
-                "reason": "Separate executions and parameter sets at the result-date directory.",
-                "details": "Full conditions and execution_id are stored in validation_config.",
+                "scheme": "onb_{split-and-days}_{validation-and-noise}_{selection}_{epochs}[_{parameter-index}]_{HHMMSSffff}",
+                "reason": "Expose the main comparison conditions and the execution time without repeating the date.",
+                "details": "The directory name is capped at 52 characters; full conditions and run_hash are stored in this manifest.",
                 "result_hierarchy": "scoped_date/frequency/noise",
+            }
+            manifest["study_directory_naming"] = {
+                "directory": study_directory,
+                "scheme": manifest["folder_naming"]["scheme"],
+                "max_component_length": 52,
+                "full_conditions": "validation_config and learning_context",
             }
         else:
             manifest["folder_naming"]["result_hierarchy"] = "analysis_date/study/frequency/noise/run"

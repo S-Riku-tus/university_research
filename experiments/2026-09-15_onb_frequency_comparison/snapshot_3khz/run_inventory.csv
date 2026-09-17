@@ -1,4 +1,4 @@
-﻿snr,run_hash,run_instance_id,created_at,completion_marker_mtime,run_manifest,n_wavs,n_chunks,complete
+snr,run_hash,run_instance_id,created_at,completion_marker_mtime,run_manifest,n_wavs,n_chunks,complete
 no_noise,6f5512,121111,2026-09-15T12:11:11,2026-09-15T12:31:53.187148+09:00,Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260915_selected_log_architecture/maxfreq=3kHz/heatflux_no_noise/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json,18,1080,True
 0,6f5512,121111,2026-09-15T12:31:55,2026-09-15T12:52:13.973528+09:00,Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260915_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=0/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json,18,1080,True
 -4,6f5512,121111,2026-09-15T12:52:16,2026-09-15T13:12:49.975121+09:00,Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260915_selected_log_architecture/maxfreq=3kHz/heatflux_reference_SNR=-4/e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp/run_manifest.json,18,1080,True

@@ -269,7 +269,7 @@ def run_learning_experiments(jobs, policy, config, enabled_specs, parameter_sets
                                         ("experiment_name", "data_path", "noise_dir_name", "max_freq_hz")}
                                        for job in family["training_jobs"]]
         print(f"学習計画 {family_i}/{len(families)}: {context}")
-        for parameter_set in parameter_sets:
+        for parameter_i, parameter_set in enumerate(parameter_sets, 1):
             specs = resolve_parameter_set(enabled_specs, parameter_set)
             model_tag = "-".join(spec["key"] for spec in specs)
             if config["run"]["smoke_test"]:
@@ -281,7 +281,11 @@ def run_learning_experiments(jobs, policy, config, enabled_specs, parameter_sets
             evaluation_jobs = family["evaluation_jobs"]
             if config["output"].get("run_scoped_result_dir", False):
                 execution_id = config["output"].get("execution_id")
-                evaluation_jobs = [scoped_result_job(job, execution_id, run_hash)
+                evaluation_jobs = [scoped_result_job(
+                    job, execution_id, run_hash, config,
+                    parameter_index=parameter_i,
+                    parameter_count=len(parameter_sets),
+                )
                                    for job in evaluation_jobs]
                 # 実行・条件の識別は日付フォルダで済むため、末尾のrun階層は作らない。
                 run_dir = ""

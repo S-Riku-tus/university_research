@@ -13,10 +13,10 @@
 """
 
 import os
+import re
 from datetime import datetime
 from pathlib import Path
 from pprint import pformat
-from uuid import uuid4
 
 # 学習前のGPUメモリ一括確保を避け、必要な分だけ順次確保する。
 # Windowsでメモリ不足が起きた際、バッチサイズを下げた再試行を可能にする。
@@ -83,9 +83,9 @@ VALIDATION_CONFIG = apply_onb_defaults({
         "chunk_seconds": 1,
         "max_freq_hz_list": [
             "maxfreq=3kHz",
-            "maxfreq=5kHz",
-            "maxfreq=10kHz",
-            "maxfreq=15kHz",
+            # "maxfreq=5kHz",
+            # "maxfreq=10kHz",
+            # "maxfreq=15kHz",
             "maxfreq=22kHz",
         ],
         "noise_dir_names": [
@@ -257,10 +257,11 @@ SAVE_FOLD_PREDICTIONS = _cfg("output", "save_fold_predictions")
 SAVE_TUNING_SUMMARY = _cfg("output", "save_tuning_summary")
 RESUME_COMPLETED_RUNS = _cfg("output", "resume_completed_runs")
 NOISE_TREND_CONFIG = _cfg("output", "noise_trend_plots")
-# 起動ごとに別の保存先にする。同じRUN_IDを明示した場合だけ同一実行として再開する。
-RUN_INSTANCE_ID = os.environ.get("RUN_ID") or (
-    f"{datetime.now():%H%M%S}_{uuid4().hex[:8]}"
-)
+# 日付は上位フォルダにあるため、実行IDは時分秒＋1/10000秒の10桁だけにする。
+# 同じRUN_IDを明示した場合だけ同一実行として再開する。
+RUN_INSTANCE_ID = os.environ.get("RUN_ID") or datetime.now().strftime("%H%M%S%f")[:10]
+if not re.fullmatch(r"\d{10}", RUN_INSTANCE_ID):
+    raise ValueError("RUN_IDはHHMMSSffff形式の10桁（時分秒＋1/10000秒）で指定してください。")
 # 同じRUN_IDを明示した再実行では、同じ保存先を参照して完了判定する。
 EXECUTION_ID = RUN_INSTANCE_ID
 FOLD_PREDICTIONS_DIR_NAME = "fold_pred"

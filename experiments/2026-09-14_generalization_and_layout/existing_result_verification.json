@@ -38,360 +38,360 @@
       "strategy": "simple_equal",
       "unit": "chunk",
       "metric": "r2",
-      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\chunk_fold_mean_r2.csv",
+      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\chunk_fold_mean_r2.csv",
       "figures": [
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\chunk_fold_mean_r2.png",
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\chunk_fold_mean_r2.pdf"
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\chunk_fold_mean_r2.png",
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\chunk_fold_mean_r2.pdf"
       ]
     },
     {
       "strategy": "simple_equal",
       "unit": "chunk",
       "metric": "roc_auc_cont",
-      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\chunk_fold_mean_roc_auc_cont.csv",
+      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\chunk_fold_mean_roc_auc_cont.csv",
       "figures": [
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\chunk_fold_mean_roc_auc_cont.png",
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\chunk_fold_mean_roc_auc_cont.pdf"
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\chunk_fold_mean_roc_auc_cont.png",
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\chunk_fold_mean_roc_auc_cont.pdf"
       ]
     },
     {
       "strategy": "simple_equal",
       "unit": "chunk",
       "metric": "auc_binary",
-      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\chunk_fold_mean_auc_binary.csv",
+      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\chunk_fold_mean_auc_binary.csv",
       "figures": [
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\chunk_fold_mean_auc_binary.png",
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\chunk_fold_mean_auc_binary.pdf"
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\chunk_fold_mean_auc_binary.png",
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\chunk_fold_mean_auc_binary.pdf"
       ]
     },
     {
       "strategy": "simple_equal",
       "unit": "wav",
       "metric": "r2",
-      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\wav_median_r2.csv",
+      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\wav_median_r2.csv",
       "figures": [
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\wav_median_r2.png",
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\wav_median_r2.pdf"
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\wav_median_r2.png",
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\wav_median_r2.pdf"
       ]
     },
     {
       "strategy": "simple_equal",
       "unit": "wav",
       "metric": "roc_auc_cont",
-      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\wav_median_roc_auc_cont.csv",
+      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\wav_median_roc_auc_cont.csv",
       "figures": [
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\wav_median_roc_auc_cont.png",
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\wav_median_roc_auc_cont.pdf"
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\wav_median_roc_auc_cont.png",
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\wav_median_roc_auc_cont.pdf"
       ]
     },
     {
       "strategy": "simple_equal",
       "unit": "wav",
       "metric": "auc_binary",
-      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\wav_median_auc_binary.csv",
+      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\wav_median_auc_binary.csv",
       "figures": [
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\wav_median_auc_binary.png",
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\wav_median_auc_binary.pdf"
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\wav_median_auc_binary.png",
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\wav_median_auc_binary.pdf"
       ]
     },
     {
       "strategy": "prediction_max",
       "unit": "chunk",
       "metric": "r2",
-      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\chunk_fold_mean_r2.csv",
+      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\chunk_fold_mean_r2.csv",
       "figures": [
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\chunk_fold_mean_r2.png",
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\chunk_fold_mean_r2.pdf"
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\chunk_fold_mean_r2.png",
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\chunk_fold_mean_r2.pdf"
       ]
     },
     {
       "strategy": "prediction_max",
       "unit": "chunk",
       "metric": "roc_auc_cont",
-      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\chunk_fold_mean_roc_auc_cont.csv",
+      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\chunk_fold_mean_roc_auc_cont.csv",
       "figures": [
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\chunk_fold_mean_roc_auc_cont.png",
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\chunk_fold_mean_roc_auc_cont.pdf"
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\chunk_fold_mean_roc_auc_cont.png",
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\chunk_fold_mean_roc_auc_cont.pdf"
       ]
     },
     {
       "strategy": "prediction_max",
       "unit": "chunk",
       "metric": "auc_binary",
-      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\chunk_fold_mean_auc_binary.csv",
+      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\chunk_fold_mean_auc_binary.csv",
       "figures": [
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\chunk_fold_mean_auc_binary.png",
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\chunk_fold_mean_auc_binary.pdf"
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\chunk_fold_mean_auc_binary.png",
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\chunk_fold_mean_auc_binary.pdf"
       ]
     },
     {
       "strategy": "prediction_max",
       "unit": "wav",
       "metric": "r2",
-      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\wav_median_r2.csv",
+      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\wav_median_r2.csv",
       "figures": [
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\wav_median_r2.png",
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\wav_median_r2.pdf"
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\wav_median_r2.png",
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\wav_median_r2.pdf"
       ]
     },
     {
       "strategy": "prediction_max",
       "unit": "wav",
       "metric": "roc_auc_cont",
-      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\wav_median_roc_auc_cont.csv",
+      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\wav_median_roc_auc_cont.csv",
       "figures": [
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\wav_median_roc_auc_cont.png",
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\wav_median_roc_auc_cont.pdf"
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\wav_median_roc_auc_cont.png",
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\wav_median_roc_auc_cont.pdf"
       ]
     },
     {
       "strategy": "prediction_max",
       "unit": "wav",
       "metric": "auc_binary",
-      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\wav_median_auc_binary.csv",
+      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\wav_median_auc_binary.csv",
       "figures": [
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\wav_median_auc_binary.png",
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\wav_median_auc_binary.pdf"
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\wav_median_auc_binary.png",
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\wav_median_auc_binary.pdf"
       ]
     },
     {
       "strategy": "inner_holdout",
       "unit": "chunk",
       "metric": "r2",
-      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\chunk_fold_mean_r2.csv",
+      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\chunk_fold_mean_r2.csv",
       "figures": [
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\chunk_fold_mean_r2.png",
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\chunk_fold_mean_r2.pdf"
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\chunk_fold_mean_r2.png",
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\chunk_fold_mean_r2.pdf"
       ]
     },
     {
       "strategy": "inner_holdout",
       "unit": "chunk",
       "metric": "roc_auc_cont",
-      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\chunk_fold_mean_roc_auc_cont.csv",
+      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\chunk_fold_mean_roc_auc_cont.csv",
       "figures": [
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\chunk_fold_mean_roc_auc_cont.png",
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\chunk_fold_mean_roc_auc_cont.pdf"
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\chunk_fold_mean_roc_auc_cont.png",
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\chunk_fold_mean_roc_auc_cont.pdf"
       ]
     },
     {
       "strategy": "inner_holdout",
       "unit": "chunk",
       "metric": "auc_binary",
-      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\chunk_fold_mean_auc_binary.csv",
+      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\chunk_fold_mean_auc_binary.csv",
       "figures": [
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\chunk_fold_mean_auc_binary.png",
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\chunk_fold_mean_auc_binary.pdf"
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\chunk_fold_mean_auc_binary.png",
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\chunk_fold_mean_auc_binary.pdf"
       ]
     },
     {
       "strategy": "inner_holdout",
       "unit": "wav",
       "metric": "r2",
-      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\wav_median_r2.csv",
+      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\wav_median_r2.csv",
       "figures": [
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\wav_median_r2.png",
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\wav_median_r2.pdf"
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\wav_median_r2.png",
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\wav_median_r2.pdf"
       ]
     },
     {
       "strategy": "inner_holdout",
       "unit": "wav",
       "metric": "roc_auc_cont",
-      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\wav_median_roc_auc_cont.csv",
+      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\wav_median_roc_auc_cont.csv",
       "figures": [
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\wav_median_roc_auc_cont.png",
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\wav_median_roc_auc_cont.pdf"
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\wav_median_roc_auc_cont.png",
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\wav_median_roc_auc_cont.pdf"
       ]
     },
     {
       "strategy": "inner_holdout",
       "unit": "wav",
       "metric": "auc_binary",
-      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\wav_median_auc_binary.csv",
+      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\wav_median_auc_binary.csv",
       "figures": [
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\wav_median_auc_binary.png",
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\wav_median_auc_binary.pdf"
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\wav_median_auc_binary.png",
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=3kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\wav_median_auc_binary.pdf"
       ]
     },
     {
       "strategy": "simple_equal",
       "unit": "chunk",
       "metric": "r2",
-      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\chunk_fold_mean_r2.csv",
+      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\chunk_fold_mean_r2.csv",
       "figures": [
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\chunk_fold_mean_r2.png",
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\chunk_fold_mean_r2.pdf"
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\chunk_fold_mean_r2.png",
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\chunk_fold_mean_r2.pdf"
       ]
     },
     {
       "strategy": "simple_equal",
       "unit": "chunk",
       "metric": "roc_auc_cont",
-      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\chunk_fold_mean_roc_auc_cont.csv",
+      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\chunk_fold_mean_roc_auc_cont.csv",
       "figures": [
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\chunk_fold_mean_roc_auc_cont.png",
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\chunk_fold_mean_roc_auc_cont.pdf"
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\chunk_fold_mean_roc_auc_cont.png",
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\chunk_fold_mean_roc_auc_cont.pdf"
       ]
     },
     {
       "strategy": "simple_equal",
       "unit": "chunk",
       "metric": "auc_binary",
-      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\chunk_fold_mean_auc_binary.csv",
+      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\chunk_fold_mean_auc_binary.csv",
       "figures": [
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\chunk_fold_mean_auc_binary.png",
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\chunk_fold_mean_auc_binary.pdf"
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\chunk_fold_mean_auc_binary.png",
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\chunk_fold_mean_auc_binary.pdf"
       ]
     },
     {
       "strategy": "simple_equal",
       "unit": "wav",
       "metric": "r2",
-      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\wav_median_r2.csv",
+      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\wav_median_r2.csv",
       "figures": [
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\wav_median_r2.png",
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\wav_median_r2.pdf"
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\wav_median_r2.png",
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\wav_median_r2.pdf"
       ]
     },
     {
       "strategy": "simple_equal",
       "unit": "wav",
       "metric": "roc_auc_cont",
-      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\wav_median_roc_auc_cont.csv",
+      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\wav_median_roc_auc_cont.csv",
       "figures": [
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\wav_median_roc_auc_cont.png",
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\wav_median_roc_auc_cont.pdf"
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\wav_median_roc_auc_cont.png",
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\wav_median_roc_auc_cont.pdf"
       ]
     },
     {
       "strategy": "simple_equal",
       "unit": "wav",
       "metric": "auc_binary",
-      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\wav_median_auc_binary.csv",
+      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\wav_median_auc_binary.csv",
       "figures": [
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\wav_median_auc_binary.png",
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\wav_median_auc_binary.pdf"
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\wav_median_auc_binary.png",
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\simple_equal\\wav_median_auc_binary.pdf"
       ]
     },
     {
       "strategy": "prediction_max",
       "unit": "chunk",
       "metric": "r2",
-      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\chunk_fold_mean_r2.csv",
+      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\chunk_fold_mean_r2.csv",
       "figures": [
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\chunk_fold_mean_r2.png",
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\chunk_fold_mean_r2.pdf"
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\chunk_fold_mean_r2.png",
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\chunk_fold_mean_r2.pdf"
       ]
     },
     {
       "strategy": "prediction_max",
       "unit": "chunk",
       "metric": "roc_auc_cont",
-      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\chunk_fold_mean_roc_auc_cont.csv",
+      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\chunk_fold_mean_roc_auc_cont.csv",
       "figures": [
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\chunk_fold_mean_roc_auc_cont.png",
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\chunk_fold_mean_roc_auc_cont.pdf"
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\chunk_fold_mean_roc_auc_cont.png",
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\chunk_fold_mean_roc_auc_cont.pdf"
       ]
     },
     {
       "strategy": "prediction_max",
       "unit": "chunk",
       "metric": "auc_binary",
-      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\chunk_fold_mean_auc_binary.csv",
+      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\chunk_fold_mean_auc_binary.csv",
       "figures": [
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\chunk_fold_mean_auc_binary.png",
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\chunk_fold_mean_auc_binary.pdf"
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\chunk_fold_mean_auc_binary.png",
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\chunk_fold_mean_auc_binary.pdf"
       ]
     },
     {
       "strategy": "prediction_max",
       "unit": "wav",
       "metric": "r2",
-      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\wav_median_r2.csv",
+      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\wav_median_r2.csv",
       "figures": [
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\wav_median_r2.png",
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\wav_median_r2.pdf"
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\wav_median_r2.png",
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\wav_median_r2.pdf"
       ]
     },
     {
       "strategy": "prediction_max",
       "unit": "wav",
       "metric": "roc_auc_cont",
-      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\wav_median_roc_auc_cont.csv",
+      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\wav_median_roc_auc_cont.csv",
       "figures": [
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\wav_median_roc_auc_cont.png",
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\wav_median_roc_auc_cont.pdf"
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\wav_median_roc_auc_cont.png",
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\wav_median_roc_auc_cont.pdf"
       ]
     },
     {
       "strategy": "prediction_max",
       "unit": "wav",
       "metric": "auc_binary",
-      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\wav_median_auc_binary.csv",
+      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\wav_median_auc_binary.csv",
       "figures": [
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\wav_median_auc_binary.png",
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\wav_median_auc_binary.pdf"
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\wav_median_auc_binary.png",
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\prediction_max\\wav_median_auc_binary.pdf"
       ]
     },
     {
       "strategy": "inner_holdout",
       "unit": "chunk",
       "metric": "r2",
-      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\chunk_fold_mean_r2.csv",
+      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\chunk_fold_mean_r2.csv",
       "figures": [
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\chunk_fold_mean_r2.png",
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\chunk_fold_mean_r2.pdf"
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\chunk_fold_mean_r2.png",
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\chunk_fold_mean_r2.pdf"
       ]
     },
     {
       "strategy": "inner_holdout",
       "unit": "chunk",
       "metric": "roc_auc_cont",
-      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\chunk_fold_mean_roc_auc_cont.csv",
+      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\chunk_fold_mean_roc_auc_cont.csv",
       "figures": [
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\chunk_fold_mean_roc_auc_cont.png",
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\chunk_fold_mean_roc_auc_cont.pdf"
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\chunk_fold_mean_roc_auc_cont.png",
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\chunk_fold_mean_roc_auc_cont.pdf"
       ]
     },
     {
       "strategy": "inner_holdout",
       "unit": "chunk",
       "metric": "auc_binary",
-      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\chunk_fold_mean_auc_binary.csv",
+      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\chunk_fold_mean_auc_binary.csv",
       "figures": [
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\chunk_fold_mean_auc_binary.png",
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\chunk_fold_mean_auc_binary.pdf"
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\chunk_fold_mean_auc_binary.png",
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\chunk_fold_mean_auc_binary.pdf"
       ]
     },
     {
       "strategy": "inner_holdout",
       "unit": "wav",
       "metric": "r2",
-      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\wav_median_r2.csv",
+      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\wav_median_r2.csv",
       "figures": [
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\wav_median_r2.png",
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\wav_median_r2.pdf"
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\wav_median_r2.png",
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\wav_median_r2.pdf"
       ]
     },
     {
       "strategy": "inner_holdout",
       "unit": "wav",
       "metric": "roc_auc_cont",
-      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\wav_median_roc_auc_cont.csv",
+      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\wav_median_roc_auc_cont.csv",
       "figures": [
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\wav_median_roc_auc_cont.png",
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\wav_median_roc_auc_cont.pdf"
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\wav_median_roc_auc_cont.png",
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\wav_median_roc_auc_cont.pdf"
       ]
     },
     {
       "strategy": "inner_holdout",
       "unit": "wav",
       "metric": "auc_binary",
-      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\wav_median_auc_binary.csv",
+      "csv": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\wav_median_auc_binary.csv",
       "figures": [
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\wav_median_auc_binary.png",
-        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914_selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\wav_median_auc_binary.pdf"
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\wav_median_auc_binary.png",
+        "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914\\selected_log_architecture\\maxfreq=22kHz\\noise_trends\\e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp\\inner_holdout\\wav_median_auc_binary.pdf"
       ]
     }
   ]

@@ -34,7 +34,7 @@
 
 各runは`fold_pred/`のchunk予測、`wav_eval/`のpooled WAV指標・ONB遷移、`explainability/`、損失/散布図/指標、manifestを持つ。新実行経路は`split_manifest.json`と完了時の`completed.json`も保存する。
 
-主実行の保存先は各実験日の`regression_result/npy/<モデル群>/<実行日>/<方針名>__<12桁hash>/<周波数>/<ノイズ>/`。末尾にモデル・epoch名のrunフォルダは作らない。12桁hashは起動ごとのIDと条件hashから作るため、同日・同条件の別起動でも別フォルダとなり、1起動内のパラメータ候補も分かれる。実際の条件と`execution_id`は`run_manifest.json`に記録する。`tuning_summary.csv`はhash付き方針フォルダの直下、ノイズ比較図はその下の`<周波数>/noise_trends/`に置く。`RUN_ID`を明示して同じ条件で再実行した場合は同じフォルダを参照して完了判定する。旧階層の結果は移動せず、既存の読み取り経路を維持する。
+主実行の保存先は各実験日の`regression_result/npy/<モデル群>/<実行日>/onb_<主要条件>_[p番号_]<HHMMSSffff>/<周波数>/<ノイズ>/`。日付直下は最大52文字で、学習・評価日、WAV/chunk内部検証、学習ノイズ、音響選別閾値、epochを短く表示し、末尾10桁は日付を含まない実行時刻とする。1起動内で複数parameter setを比較するときだけ`p01`等を付ける。実際の全条件と設定hashは`run_manifest.json`に記録する。`tuning_summary.csv`は条件フォルダの直下、ノイズ比較図はその下の`<周波数>/noise_trends/`に置く。`RUN_ID`を明示して同じ条件で再実行した場合は同じフォルダを参照して完了判定する。2026-09-17に既存19系列も同じ日付／条件名階層へ移行済み。
 
 通常runはモデル本体を永続保存しない。保存済み予測からの後処理と、モデルを必要とするIG再計算・新マスク推論は区別する。clean_onlyの一部ノイズだけ未完了の場合は、同じ学習モデルを揃えるため関連ノイズ一式を再計算する仕様。
 

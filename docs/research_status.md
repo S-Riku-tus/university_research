@@ -39,7 +39,7 @@
 
 ## 現行設定と次の一手
 
-[ONB主コード](../code/run_ensemble_regression_onb.py)の learning_policy / acoustic_selection / ensemble を使用。学習6/11+7/9、テスト6/18、ピーク選別、新crossfit 3方式。`acoustic_selection`は主configでピーク高さ閾値だけを指定し、`None`なら選別なし。固定的な選別条件・output/evaluation/explainability・モデルregistryは`utils/config/onb_defaults.py`へ移した。保存先は`<解析日>/selected_log_architecture__方針/.../<run>_<設定hash>_<実行ID>`とし、同日の異なる学習条件と同条件の別実行をともに分離する。**現在の主設定は3/22 kHz×無雑音×150 epochs**で、診断対象runの300 epochsとは異なる。
+[ONB主コード](../code/run_ensemble_regression_onb.py)の learning_policy / acoustic_selection / ensemble を使用。学習6/11+7/9、テスト6/18、ピーク選別、新crossfit 3方式。`acoustic_selection`は主configでピーク高さ閾値だけを指定し、`None`なら選別なし。固定的な選別条件・output/evaluation/explainability・モデルregistryは`utils/config/onb_defaults.py`へ移した。保存先は`<解析日>/onb_<学習・評価日>_<内部検証・学習ノイズ>_<選別閾値>_<epoch>_[parameter番号_]<HHMMSSffff>/...`とし、日付直下を最大52文字に制限しながら主要条件と実行時刻を読めるようにした。同日の異なる学習条件と同条件の別実行をともに分離し、既存19系列も新命名へ移行済み。**現在の主設定は3/22 kHz×無雑音×150 epochs**で、診断対象runの300 epochsとは異なる。
 
 2026-09-16に[実験日指定を整理](../experiments/2026-09-16_onb_experiment_day_audit/README.md)。現在の`explicit_days`は学習日・テスト日から対象3日を自動算出する。設定変更と単体テストの記録であり、300 epochs本比較の実行・性能検証ではない。
 

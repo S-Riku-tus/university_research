@@ -1,17 +1,131 @@
 """周波数／ノイズの保存階層と、旧階層の結果参照を一元管理する。"""
 
+import re
 from pathlib import Path
 
-from utils.experiment.run_helpers import path_exists, short_digest
+from utils.experiment.run_helpers import path_exists, safe_tag
 
 
-def scoped_result_job(job, execution_id, run_hash):
-    """実行とパラメータ条件ごとに日付フォルダを分ける。"""
+MAX_STUDY_DIR_LENGTH = 52
+
+
+def _compact_day(day):
+    """実験日名を人が比較しやすいMMDDへ縮め、日付でなければ安全に短縮する。"""
+    match = re.match(r"^(\d{4})[.-](\d{2})[.-](\d{2})", str(day))
+    if match:
+        return f"{match.group(2)}{match.group(3)}"
+    return safe_tag(day, max_len=8)
+
+
+def _day_list(days):
+    return "+".join(_compact_day(day) for day in days)
+
+
+def _policy_segment(job, config, compact=False):
+    policy = config.get("learning_policy", {})
+    split_mode = policy.get("split_mode", "within_day")
+    all_days = list(config.get("data", {}).get("experiment_names", []))
+    test_day = job.get("experiment_name")
+    if split_mode == "explicit_days":
+        train_days = list(policy.get("train_experiments", []))
+        test_days = list(policy.get("test_experiments", []))
+        code = "xd"
+    elif split_mode == "leave_one_day_out":
+        train_days = [day for day in all_days if day != test_day]
+        test_days = [test_day]
+        code = "lo"
+    else:
+        train_days = [test_day]
+        test_days = [test_day]
+        code = "wd"
+    if compact:
+        train = f"{len(train_days)}d"
+        test = _compact_day(test_days[0]) if len(test_days) == 1 else f"{len(test_days)}d"
+    else:
+        train = _day_list(train_days)
+        test = _day_list(test_days)
+    return f"{code}-t{train}-v{test}"
+
+
+def _selection_segment(config):
+    selection = config.get("acoustic_selection", {})
+    threshold = selection.get("peak_height_threshold")
+    if not selection.get("enabled", threshold is not None) or threshold is None:
+        return "s0"
+    value = format(float(threshold), ".3g").replace("+", "")
+    value = re.sub(r"e(-?)0+(\d+)$", r"e\1\2", value)
+    return "s" + value
+
+
+def result_scope_dir_name(
+    base_name,
+    job,
+    config,
+    execution_id,
+    run_hash,
+    parameter_index=1,
+    parameter_count=1,
+):
+    """短く読める主要条件と10桁の実行時刻から実行系列名を作る。"""
+    if not execution_id or not run_hash:
+        raise ValueError("execution_id and run_hash are required for scoped results")
+    if not re.fullmatch(r"\d{10}", str(execution_id)):
+        raise ValueError("execution_id must be HHMMSSffff (10 digits)")
+    if not 1 <= parameter_index <= parameter_count:
+        raise ValueError("parameter_index must be within parameter_count")
+    policy = config.get("learning_policy", {})
+    validation = "iw" if policy.get("internal_validation", "chunk_kfold") == "wav_kfold" else "ic"
+    validation += str(config.get("run", {}).get("folds", "x"))
+    noise = "nc" if policy.get("training_noise") == "clean_only" else "nm"
+    epochs = config.get("run", {}).get("epochs", "x")
+    prefix = safe_tag(str(base_name).split("__", 1)[0], max_len=12)
+    suffix = str(execution_id)
+
+    def build(compact_days=False, include_epochs=True):
+        parts = [prefix, _policy_segment(job, config, compact=compact_days),
+                 f"{validation}-{noise}", _selection_segment(config)]
+        if include_epochs:
+            parts.append(f"e{epochs}")
+        if parameter_count > 1:
+            parts.append(f"p{parameter_index:02d}")
+        parts.append(suffix)
+        return "_".join(parts)
+
+    name = build()
+    if len(name) > MAX_STUDY_DIR_LENGTH:
+        name = build(include_epochs=False)
+    if len(name) > MAX_STUDY_DIR_LENGTH:
+        name = build(compact_days=True, include_epochs=False)
+    if len(name) > MAX_STUDY_DIR_LENGTH:
+        # 最後の保険。実行時刻を必ず保持し、不完全なtokenを残さない。
+        semantic_budget = MAX_STUDY_DIR_LENGTH - len(suffix) - 1
+        semantic = safe_tag("_".join(name.split("_")[:-1]), max_len=semantic_budget)
+        name = f"{semantic}_{suffix}"
+    return name
+
+
+def scoped_result_job(
+    job,
+    execution_id,
+    run_hash,
+    config,
+    parameter_index=1,
+    parameter_count=1,
+):
+    """主要条件が読める名前で、実行とパラメータ条件ごとに保存先を分ける。"""
     if not execution_id or not run_hash:
         raise ValueError("execution_id and run_hash are required for scoped results")
     base = Path(job["save_base_path"])
-    scope = short_digest({"execution_id": execution_id, "run_hash": run_hash}, length=12)
-    return {**job, "save_base_path": base.with_name(f"{base.name}__{scope}")}
+    scope_name = result_scope_dir_name(
+        base.name,
+        job,
+        config,
+        execution_id,
+        run_hash,
+        parameter_index=parameter_index,
+        parameter_count=parameter_count,
+    )
+    return {**job, "save_base_path": base.with_name(scope_name)}
 
 
 def result_run_path(job, run_dir):
