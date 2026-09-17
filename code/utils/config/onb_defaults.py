@@ -82,7 +82,7 @@ def default_output_config(now=None):
         "noise_trend_plots": {
             "enabled": True,
             "ensemble_strategy_names": "all",
-            "metrics": ["r2", "roc_auc_cont", "auc_binary"],
+            "metrics": ["r2", "roc_auc_cont"],
             "formats": ["png", "pdf"],
         },
     }

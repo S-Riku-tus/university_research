@@ -11,7 +11,6 @@ def _safe_stem(text, max_len=32):
         "AlexNet": "alexnet",
         "Conformer": "conformer",
         "ROC-AUC (continuous)": "roc_auc_cont",
-        "AUC (binary legacy)": "auc_bin",
         "R2 Score": "r2",
     }
     text = aliases.get(text, str(text))

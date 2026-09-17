@@ -44,8 +44,7 @@ def make_run(root, noise, *, run_hash="same", frequency="maxfreq=22kHz", thresho
     labels = {**MODELS, ENSEMBLE: "Ensemble simple equal"}
     write_csv(directory / f"metrics_summary_{noise}.csv", [
         {"model": label, "r2_mean": -0.2, "r2_se": 0.1,
-         "roc_auc_cont_mean": 0.9, "roc_auc_cont_se": 0.02,
-         "auc_binary_mean": 0.6, "auc_binary_se": 0.03} for label in labels.values()
+         "roc_auc_cont_mean": 0.9, "roc_auc_cont_se": 0.02} for label in labels.values()
     ])
     return directory
 
@@ -56,15 +55,14 @@ class NoiseTrendPlotsTest(unittest.TestCase):
             paths = [make_run(Path(temp), "-20"), make_run(Path(temp), "no_noise")]
             rows = collect_noise_trend_rows(
                 paths, noise_order=["-20", "0", "no_noise"], model_keys=list(MODELS),
-                metrics=["r2", "roc_auc_cont", "auc_binary"])
+                metrics=["r2", "roc_auc_cont"])
             chunk = [r for r in rows if r["model_key"] == "randomforest" and r["evaluation_unit"] == "chunk" and r["metric"] == "r2"]
             self.assertEqual([r["noise"] for r in chunk], ["no_noise", "0", "-20"])
             self.assertEqual(chunk[0]["value"], -0.2)
             self.assertTrue(math.isnan(chunk[1]["value"]))
             self.assertEqual(chunk[0]["standard_error"], 0.1)
             self.assertEqual({r["evaluation_unit"] for r in rows}, {"chunk"})
-            for metric, expected in (("roc_auc_cont", 0.9), ("auc_binary", 0.6)):
-                self.assertEqual(next(r["value"] for r in rows if r["metric"] == metric and r["evaluation_unit"] == "chunk" and r["noise"] == "no_noise"), expected)
+            self.assertEqual(next(r["value"] for r in rows if r["metric"] == "roc_auc_cont" and r["evaluation_unit"] == "chunk" and r["noise"] == "no_noise"), 0.9)
             self.assertEqual({r["model_key"] for r in rows}, set(MODELS) | {ENSEMBLE})
 
     def test_previous_configuration_does_not_enter_resumed_curve(self):

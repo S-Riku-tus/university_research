@@ -40,7 +40,7 @@ from utils.training.internal_validation import fit_individual_performance_cv
 
 SUMMARY_METRICS = [
     "r2", "rmse_all", "mae_all", "r2_high", "rmse_high", "mae_high",
-    "rmse_onb", "mae_onb", "auc_binary", "roc_auc_cont", "pr_auc_cont",
+    "rmse_onb", "mae_onb", "roc_auc_cont", "pr_auc_cont",
     "accuracy", "precision", "recall", "f1",
 ]
 
@@ -166,12 +166,9 @@ class ResultRecorder:
         aggregate_group_mask_comparison(self.path, self.config["explainability"], self.keys,
                                         context["outer_folds_per_evaluation_day"])
         plot_keys = self.all_keys
-        for title, metric in (("R2 Score", "r2"), ("AUC (binary legacy)", "auc_binary")):
-            if metric == "auc_binary" and not has_threshold(self.threshold):
-                continue
-            means, errors = zip(*(self.metrics.mean_se(self.store[key][metric]) for key in plot_keys))
-            plotter.plot_bar(title, [self.labels[key] for key in plot_keys], means, errors,
-                             self.config["run"]["epochs"], self.path, self.snr)
+        means, errors = zip(*(self.metrics.mean_se(self.store[key]["r2"]) for key in plot_keys))
+        plotter.plot_bar("R2 Score", [self.labels[key] for key in plot_keys], means, errors,
+                         self.config["run"]["epochs"], self.path, self.snr)
         with open_text(self.path / f"metrics_summary_{self.snr}.csv", "w", encoding="utf-8", newline="") as output:
             writer = csv.writer(output)
             writer.writerow(["model"] + [f"{metric}_mean" for metric in SUMMARY_METRICS]

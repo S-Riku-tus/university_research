@@ -15,7 +15,6 @@ from utils.ensemble.strategy_catalog import available_ensemble_strategy_names
 METRIC_LABELS = {
     "r2": "R² score",
     "roc_auc_cont": "ROC-AUC (continuous score)",
-    "auc_binary": "AUC (binary prediction)",
 }
 MODEL_LABELS = {
     "randomforest": "RandomForest",

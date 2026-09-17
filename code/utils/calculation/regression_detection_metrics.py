@@ -109,7 +109,6 @@ class RegressionDetectionMetrics:
         """
         二値化後の分類指標。予測も正解も閾値で 0/1 化してから算出する。
           - accuracy / precision / recall / f1
-          - auc_binary : 旧コードと同じ二値化後 AUC (後方比較用。意味は限定的)
         """
         if not _has_threshold(threshold):
             return {
@@ -117,7 +116,6 @@ class RegressionDetectionMetrics:
                 "precision": np.nan,
                 "recall": np.nan,
                 "f1": np.nan,
-                "auc_binary": np.nan,
             }
         threshold = float(threshold)
         y_true_bin = (np.asarray(y_true).ravel() >= threshold).astype(int)
@@ -128,8 +126,6 @@ class RegressionDetectionMetrics:
             "recall": recall_score(y_true_bin, y_pred_bin, zero_division=0),
             "f1": f1_score(y_true_bin, y_pred_bin, zero_division=0),
         }
-        # 旧コード互換の二値化後 AUC (ROC が 2 点しか持たないので参考値)
-        out["auc_binary"] = _safe_roc_auc(y_true_bin, y_pred_bin)
         return out
 
     def mean_se(self, arr):

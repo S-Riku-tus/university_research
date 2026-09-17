@@ -5,7 +5,7 @@
 1. 元WAVを分離する交差検証、または実験日全体を除外する分割で学習する。
 2. 同じ検証予測から、各単体モデルと指定したアンサンブル方式を評価する。
 3. 1秒chunk単位の通常指標を、同じ学習外予測から保存する。
-4. R²、連続予測のROC-AUC、二値化後AUCを区別して記録する。
+4. R²と連続予測のROC-AUCを記録する。
 5. 説明性、予測散布図、モデル比較図を保存する。
 
 学習・評価・統合・作図はutils配下の共通処理を呼び出す。
@@ -82,20 +82,20 @@ VALIDATION_CONFIG = apply_onb_defaults({
         "noise_source": "waterflow",  # 水流音はwaterflow、白色雑音はwhitenoise
         "chunk_seconds": 1,
         "max_freq_hz_list": [
-            # "maxfreq=3kHz",
-            # "maxfreq=5kHz",
-            # "maxfreq=10kHz",
-            # "maxfreq=15kHz",
+            "maxfreq=3kHz",
+            "maxfreq=5kHz",
+            "maxfreq=10kHz",
+            "maxfreq=15kHz",
             "maxfreq=22kHz",
         ],
         "noise_dir_names": [
             "heatflux_no_noise",
-            # "heatflux_reference_SNR=0",
-            # "heatflux_reference_SNR=-4",
-            # "heatflux_reference_SNR=-8",
-            # "heatflux_reference_SNR=-12",
-            # "heatflux_reference_SNR=-16",
-            # "heatflux_reference_SNR=-20",
+            "heatflux_reference_SNR=0",
+            "heatflux_reference_SNR=-4",
+            "heatflux_reference_SNR=-8",
+            "heatflux_reference_SNR=-12",
+            "heatflux_reference_SNR=-16",
+            "heatflux_reference_SNR=-20",
         ],
         "data_source_dir_by_experiment": {
             "2025.06.11_0.3_2": "waterflow_20260817_1s",
@@ -110,14 +110,14 @@ VALIDATION_CONFIG = apply_onb_defaults({
         # data.experiment_namesに評価対象日を指定する。
         "split_mode": "explicit_days",
         "train_experiments": [
-            # "2025.06.11_0.3_2",
-            # "2025.07.09_0.3_1",
-            "2025.06.18_0.3_3",
-            ],
-        "test_experiments": [
             "2025.06.11_0.3_2",
             # "2025.07.09_0.3_1",
             # "2025.06.18_0.3_3",
+            ],
+        "test_experiments": [
+            # "2025.06.11_0.3_2",
+            # "2025.07.09_0.3_1",
+            "2025.06.18_0.3_3",
             ],
         # 重み決定でも同じ元WAVの1秒区間を学習・検証へ分けない。
         # 内部fold数はrun.folds。chunk_kfoldは旧比較の再現時だけ使う。

@@ -10,7 +10,7 @@ VALID_STRATEGIES = {
     "simple", "inner_holdout", "performance_kfold", "val_fold_legacy",
 } | CROSSFIT_STRATEGIES
 HIGHER_IS_BETTER = {
-    "r2", "r2_high", "auc_binary", "roc_auc_cont", "pr_auc_cont",
+    "r2", "r2_high", "roc_auc_cont", "pr_auc_cont",
     "accuracy", "precision", "recall", "f1",
 }
 LOWER_IS_BETTER = {
