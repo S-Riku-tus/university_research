@@ -19,6 +19,7 @@ KERAS_TRAINING_PARAM_KEYS = {
     "lr",
     "batch_size",
     "fit_verbose",
+    "progress_interval_epochs",
     "min_batch_size",
     "accept_partial_min_epochs",
 }

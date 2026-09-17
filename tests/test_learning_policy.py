@@ -116,11 +116,16 @@ class LearningPolicyTest(unittest.TestCase):
         first = scoped_result_job(job, "0102030001", "config-a", config)
         self.assertEqual(first, scoped_result_job(job, "0102030001", "config-a", config))
         self.assertNotEqual(first["save_base_path"], scoped_result_job(job, "0102030002", "config-a", config)["save_base_path"])
+        first_parameter = scoped_result_job(
+            job, "0102030001", "config-a", config,
+            parameter_index=1, parameter_count=2,
+        )
         second_parameter = scoped_result_job(
             job, "0102030001", "config-b", config,
             parameter_index=2, parameter_count=2,
         )
-        self.assertNotEqual(first["save_base_path"], second_parameter["save_base_path"])
+        self.assertIn("_p01_0102030001", first_parameter["save_base_path"].name)
+        self.assertNotEqual(first_parameter["save_base_path"], second_parameter["save_base_path"])
         self.assertIn("_p02_0102030001", second_parameter["save_base_path"].name)
         self.assertEqual(first["save_base_path"].parent, job["save_base_path"].parent)
         self.assertEqual(
@@ -138,6 +143,8 @@ class LearningPolicyTest(unittest.TestCase):
         self.assertIn("t0611+0709", name)
         self.assertTrue(name.endswith("_0102030001"))
         self.assertLessEqual(len(name), MAX_STUDY_DIR_LENGTH)
+        with self.assertRaisesRegex(ValueError, "HHMMSSffff"):
+            result_scope_dir_name("onb", job, config, "execution-a", "config-a")
 
     def test_scoped_result_layout_writes_directly_below_noise(self):
         with tempfile.TemporaryDirectory() as temp:

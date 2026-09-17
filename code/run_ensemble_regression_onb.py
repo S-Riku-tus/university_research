@@ -90,12 +90,12 @@ VALIDATION_CONFIG = apply_onb_defaults({
         ],
         "noise_dir_names": [
             "heatflux_no_noise",
-            "heatflux_reference_SNR=0",
-            "heatflux_reference_SNR=-4",
-            "heatflux_reference_SNR=-8",
-            "heatflux_reference_SNR=-12",
-            "heatflux_reference_SNR=-16",
-            "heatflux_reference_SNR=-20",
+            # "heatflux_reference_SNR=0",
+            # "heatflux_reference_SNR=-4",
+            # "heatflux_reference_SNR=-8",
+            # "heatflux_reference_SNR=-12",
+            # "heatflux_reference_SNR=-16",
+            # "heatflux_reference_SNR=-20",
         ],
         "data_source_dir_by_experiment": {
             "2025.06.11_0.3_2": "waterflow_20260817_1s",
@@ -167,7 +167,9 @@ VALIDATION_CONFIG = apply_onb_defaults({
                 },
             },
             "default_keras": {
-                "fit_verbose": 1,
+                # KerasのTTY依存バーではなく、全実行環境で残る共通進捗行を使う。
+                "fit_verbose": 0,
+                "progress_interval_epochs": 10,
             },
         },
     },

@@ -23,6 +23,40 @@ class LightweightHistory(Callback):
         self.history["loss"].append(float(logs.get("loss", np.nan)))
 
 
+class TrainingProgress(Callback):
+    """Emit a log-safe progress bar without relying on an interactive TTY.
+
+    Keras's built-in ``verbose=1`` bar redraws a single line and can be
+    suppressed by IDE consoles, redirected output, or log capture.  This
+    callback instead writes completed checkpoints as ordinary lines, so the
+    same progress is visible from a terminal, VS Code, and saved logs.
+    """
+
+    def __init__(self, label, total_epochs, interval_epochs=10):
+        super().__init__()
+        self.label = str(label)
+        self.total_epochs = max(1, int(total_epochs))
+        self.interval_epochs = max(1, int(interval_epochs))
+
+    def on_train_begin(self, logs=None):
+        print(f"[training] {self.label}: [--------------------] 0/{self.total_epochs}", flush=True)
+
+    def on_epoch_end(self, epoch, logs=None):
+        completed = epoch + 1
+        if completed % self.interval_epochs and completed != self.total_epochs:
+            return
+        width = 20
+        filled = round(width * completed / self.total_epochs)
+        bar = "#" * filled + "-" * (width - filled)
+        loss = (logs or {}).get("loss")
+        loss_text = "" if loss is None else f", loss={float(loss):.6g}"
+        print(
+            f"[training] {self.label}: [{bar}] {completed}/{self.total_epochs}"
+            f" ({completed / self.total_epochs:.0%}){loss_text}",
+            flush=True,
+        )
+
+
 def _is_memory_error(exc):
     text = " ".join(
         str(part).lower()
@@ -78,7 +112,11 @@ class ModelTrainer:
             )
             lr = spec["lr"]
             requested_batch_size = int(spec["batch_size"])
-            fit_verbose = int(spec.get("fit_verbose", 1))
+            # ``verbose=1`` uses Keras's redraw-on-one-line progress bar,
+            # which is not reliably shown outside an interactive terminal.
+            # Keep it opt-in; TrainingProgress below is the standard display.
+            fit_verbose = int(spec.get("fit_verbose", 0))
+            progress_interval = int(spec.get("progress_interval_epochs", 10))
             min_batch_size = int(spec.get("min_batch_size", 1))
             accept_partial_min_epochs = int(spec.get("accept_partial_min_epochs", 100))
             batch_size = requested_batch_size
@@ -91,7 +129,14 @@ class ModelTrainer:
                 model.compile(optimizer=SGD(learning_rate=lr, momentum=0.9, clipnorm=1.0),
                               loss='mean_squared_error')
                 lightweight_history = LightweightHistory()
-                callbacks = [lightweight_history]
+                callbacks = [
+                    lightweight_history,
+                    TrainingProgress(
+                        spec.get("label", spec.get("key", "Keras model")),
+                        epochs,
+                        progress_interval,
+                    ),
+                ]
                 try:
                     history = model.fit(
                         x_fit, y_fit_scaled,
@@ -135,7 +180,10 @@ class ModelTrainer:
             raise last_oom
         else:  # sklearn / xgboost
             model = spec["builder"](mm, **spec.get("builder_params", {}))
+            label = spec.get("label", spec.get("key", "sklearn model"))
+            print(f"[training] {label}: [--------------------] 0/1", flush=True)
             model.fit(x_fit_pca, y_fit_scaled.ravel())
+            print(f"[training] {label}: [####################] 1/1 (100%)", flush=True)
             return model, None
 
     def predict_one_model(self, spec, model, x, x_pca, scaler):
