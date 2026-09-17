@@ -113,24 +113,24 @@ class LearningPolicyTest(unittest.TestCase):
                   "data": {"experiment_names": ["2025.06.11_0.3_2", "2025.06.18_0.3_3"]},
                   "run": {"epochs": 150, "folds": 3},
                   "acoustic_selection": {"enabled": True, "peak_height_threshold": 1e-9}}
-        first = scoped_result_job(job, "0102030001", "config-a", config)
-        self.assertEqual(first, scoped_result_job(job, "0102030001", "config-a", config))
-        self.assertNotEqual(first["save_base_path"], scoped_result_job(job, "0102030002", "config-a", config)["save_base_path"])
+        first = scoped_result_job(job, "010203", "config-a", config)
+        self.assertEqual(first, scoped_result_job(job, "010203", "config-a", config))
+        self.assertNotEqual(first["save_base_path"], scoped_result_job(job, "010204", "config-a", config)["save_base_path"])
         first_parameter = scoped_result_job(
-            job, "0102030001", "config-a", config,
+            job, "010203", "config-a", config,
             parameter_index=1, parameter_count=2,
         )
         second_parameter = scoped_result_job(
-            job, "0102030001", "config-b", config,
+            job, "010203", "config-b", config,
             parameter_index=2, parameter_count=2,
         )
-        self.assertIn("_p01_0102030001", first_parameter["save_base_path"].name)
+        self.assertIn("_p01_010203", first_parameter["save_base_path"].name)
         self.assertNotEqual(first_parameter["save_base_path"], second_parameter["save_base_path"])
-        self.assertIn("_p02_0102030001", second_parameter["save_base_path"].name)
+        self.assertIn("_p02_010203", second_parameter["save_base_path"].name)
         self.assertEqual(first["save_base_path"].parent, job["save_base_path"].parent)
         self.assertEqual(
             first["save_base_path"].name,
-            "onb_xd-t0611-v0618_iw3-nm_s1e-9_e150_0102030001",
+            "onb_xd-t0611-v0618_iw3-nm_s1e-9_e150_010203",
         )
         self.assertLessEqual(len(first["save_base_path"].name), MAX_STUDY_DIR_LENGTH)
         self.assertEqual(result_run_path(first, ""), first["save_base_path"] / "maxfreq=3kHz" / "heatflux_no_noise")
@@ -139,11 +139,11 @@ class LearningPolicyTest(unittest.TestCase):
             **config["learning_policy"],
             "train_experiments": ["2025.06.11_0.3_2", "2025.07.09_0.3_1"],
         }}
-        name = result_scope_dir_name("onb", job, two_day_config, "0102030001", "config-a")
+        name = result_scope_dir_name("onb", job, two_day_config, "010203", "config-a")
         self.assertIn("t0611+0709", name)
-        self.assertTrue(name.endswith("_0102030001"))
+        self.assertTrue(name.endswith("_010203"))
         self.assertLessEqual(len(name), MAX_STUDY_DIR_LENGTH)
-        with self.assertRaisesRegex(ValueError, "HHMMSSffff"):
+        with self.assertRaisesRegex(ValueError, "HHMMSS"):
             result_scope_dir_name("onb", job, config, "execution-a", "config-a")
 
     def test_scoped_result_layout_writes_directly_below_noise(self):
@@ -154,7 +154,7 @@ class LearningPolicyTest(unittest.TestCase):
                                                     evaluated_noises=("heatflux_no_noise",), days=("day-a",))
             config["output"].update(run_scoped_result_dir=True, execution_id="execution-a")
             trainer = ObservedTrainer()
-            for execution_id in ("0102030001", "0102030002"):
+            for execution_id in ("010203", "010204"):
                 config["output"]["execution_id"] = execution_id
                 with contextlib.redirect_stdout(io.StringIO()), patch("gc.collect"), patch("tensorflow.keras.backend.clear_session"):
                     run_learning_experiments(jobs, policy, config, specs, [{"name": "test"}],

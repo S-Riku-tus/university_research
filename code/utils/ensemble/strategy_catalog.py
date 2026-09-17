@@ -11,7 +11,7 @@ ENSEMBLE_STRATEGY_CATALOG = {
         "strategy": "simple",
     },
     "inner_holdout": {
-        "label": "Ensemble inner holdout",
+        "label": "Ensemble",
         "strategy": "inner_holdout",
     },
     "performance_kfold": {

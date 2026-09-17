@@ -66,11 +66,11 @@ def result_scope_dir_name(
     parameter_index=1,
     parameter_count=1,
 ):
-    """短く読める主要条件と10桁の実行時刻から実行系列名を作る。"""
+    """短く読める主要条件と6桁の実行時刻から実行系列名を作る。"""
     if not execution_id or not run_hash:
         raise ValueError("execution_id and run_hash are required for scoped results")
-    if not re.fullmatch(r"\d{10}", str(execution_id)):
-        raise ValueError("execution_id must be HHMMSSffff (10 digits)")
+    if not re.fullmatch(r"\d{6}", str(execution_id)):
+        raise ValueError("execution_id must be HHMMSS (6 digits)")
     if not 1 <= parameter_index <= parameter_count:
         raise ValueError("parameter_index must be within parameter_count")
     policy = config.get("learning_policy", {})

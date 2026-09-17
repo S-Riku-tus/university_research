@@ -82,7 +82,7 @@ VALIDATION_CONFIG = apply_onb_defaults({
         "noise_source": "waterflow",  # 水流音はwaterflow、白色雑音はwhitenoise
         "chunk_seconds": 1,
         "max_freq_hz_list": [
-            "maxfreq=3kHz",
+            # "maxfreq=3kHz",
             # "maxfreq=5kHz",
             # "maxfreq=10kHz",
             # "maxfreq=15kHz",
@@ -159,13 +159,12 @@ VALIDATION_CONFIG = apply_onb_defaults({
                 },
                 "cnntf_v2_gap": {
                     "lr": [0.001],
-                    "batch_size": [16],
+                    "batch_size": [12],
                 },
                 "alexnet": {
                     "lr": [0.001],
-                    "batch_size": [16],
+                    "batch_size": [12],
                 },
-            },
             "default_keras": {
                 # KerasのTTY依存バーではなく、全実行環境で残る共通進捗行を使う。
                 "fit_verbose": 0,
@@ -259,11 +258,11 @@ SAVE_FOLD_PREDICTIONS = _cfg("output", "save_fold_predictions")
 SAVE_TUNING_SUMMARY = _cfg("output", "save_tuning_summary")
 RESUME_COMPLETED_RUNS = _cfg("output", "resume_completed_runs")
 NOISE_TREND_CONFIG = _cfg("output", "noise_trend_plots")
-# 日付は上位フォルダにあるため、実行IDは時分秒＋1/10000秒の10桁だけにする。
+# 日付は上位フォルダにあるため、実行IDは時分秒の6桁だけにする。
 # 同じRUN_IDを明示した場合だけ同一実行として再開する。
-RUN_INSTANCE_ID = os.environ.get("RUN_ID") or datetime.now().strftime("%H%M%S%f")[:10]
-if not re.fullmatch(r"\d{10}", RUN_INSTANCE_ID):
-    raise ValueError("RUN_IDはHHMMSSffff形式の10桁（時分秒＋1/10000秒）で指定してください。")
+RUN_INSTANCE_ID = os.environ.get("RUN_ID") or datetime.now().strftime("%H%M%S")
+if not re.fullmatch(r"\d{6}", RUN_INSTANCE_ID):
+    raise ValueError("RUN_IDはHHMMSS形式の6桁（時分秒）で指定してください。")
 # 同じRUN_IDを明示した再実行では、同じ保存先を参照して完了判定する。
 EXECUTION_ID = RUN_INSTANCE_ID
 FOLD_PREDICTIONS_DIR_NAME = "fold_pred"

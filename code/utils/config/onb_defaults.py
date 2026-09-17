@@ -34,7 +34,7 @@ def onb_model_specs():
         },
         {
             "key": "cnntf_v2_gap",
-            "label": "CNN+Tf v2 GAP",
+            "label": "Conformer",
             "kind": "keras",
             "builder": _build_cnn_transformer,
             "input_axes_assumption": [

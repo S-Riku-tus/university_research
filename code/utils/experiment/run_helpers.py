@@ -206,7 +206,7 @@ def write_run_manifest(
         if validation_config["output"].get("run_scoped_result_dir", False):
             study_directory = Path(job["save_base_path"]).name
             manifest["folder_naming"] = {
-                "scheme": "onb_{split-and-days}_{validation-and-noise}_{selection}_{epochs}[_{parameter-index}]_{HHMMSSffff}",
+                "scheme": "onb_{split-and-days}_{validation-and-noise}_{selection}_{epochs}[_{parameter-index}]_{HHMMSS}",
                 "reason": "Expose the main comparison conditions and the execution time without repeating the date.",
                 "details": "The directory name is capped at 52 characters; full conditions and run_hash are stored in this manifest.",
                 "result_hierarchy": "scoped_date/frequency/noise",
