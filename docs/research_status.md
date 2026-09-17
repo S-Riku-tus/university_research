@@ -2,6 +2,8 @@
 
 更新日: **2026-09-17（6/11学習・6/18評価の3 kHz crossfit結果を解析）**。ピーク高さ選別、別日分割、後期計画は維持。分位点ルール時点の状態は[変更前の記録](../experiments/2026-09-16_peak_height_selection/previous_documents/research_status.md)に保存した。
 
+**9/17の評価方針更新**：現行実行コードから元WAVへの予測集約・ONB遷移の追加評価と「主評価」の選択を外し、1秒chunkの通常指標を全モデル・有効な統合方式について確認する。元WAV情報は学習/検証の分割で同じ録音を跨がせないために使う。現行`inner_holdout`と`performance_kfold`の重み用内部スコアもchunk単位へ変更した。以下のWAV中央値・crossfit成績は変更前に保存した過去runの記録であり、新実行の評価定義とは混同しない。
+
 ## 9/17保存結果の確認
 
 - [9/17別日結果の解析](../experiments/2026-09-17_onb_crossday_result_analysis/README.md)を追加。完成runの実条件は学習6/11のみ、評価6/18、3 kHz、無雑音、150 epochs、seed 42。ピーク選別による除外はなく、22 kHzは未完了。
@@ -13,7 +15,7 @@
 - **学習日：6/11・7/9、テスト日：6/18**。ONB主コードのconfigから変更できるようにする。
 - 当初は学部コードと同じ1秒通常KFoldを指定したが、300 epochs結果で全内部foldに同じ29 WAVが共有され、CNNへ最大重みを与えたまま別日で破綻した。**現在は元WAV分離KFold/crossfitを使う**。当該runの履歴は変更しない。
 - ONB以上の熱流束ラベルについて、**特定周波数付近の山の高さに横線を引き、弱い前後をどこまで学習に含めるか決めたい**。帯域パワーの分位点ではない。ラベルは変えず、データ不足への対策は保留。
-- 現在の主設定は`subset_equal_cv / crossfit_wav_stack / crossfit_shrinkage_stack`を同じ元WAV分離OOFで比較する。実データで最良方式は未確定。
+- 過去に検討した`subset_equal_cv / crossfit_wav_stack / crossfit_shrinkage_stack`は元WAV集約を重み学習に使う別方式で、現行の実行設定では有効にしていない。実データで最良方式は未確定。
 - **9/18（金）発表**は今回の実装・検証状態と後期計画・修論構成を中心とする。
 - **12/24頃までに研究・主要解析を終了、1月に修論を仕上げ、1月末に最終発表**という本人の見通しで逆算する。公式締切は未確認。
 
@@ -39,13 +41,13 @@
 
 ## 現行設定と次の一手
 
-[ONB主コード](../code/run_ensemble_regression_onb.py)の learning_policy / acoustic_selection / ensemble を使用。学習6/11+7/9、テスト6/18、ピーク選別、新crossfit 3方式。`acoustic_selection`は主configでピーク高さ閾値だけを指定し、`None`なら選別なし。固定的な選別条件・output/evaluation/explainability・モデルregistryは`utils/config/onb_defaults.py`へ移した。保存先は`<解析日>/onb_<学習・評価日>_<内部検証・学習ノイズ>_<選別閾値>_<epoch>_[parameter番号_]<HHMMSS>/...`とし、日付直下を最大52文字に制限しながら主要条件と実行時刻を読めるようにした。同日の異なる学習条件と同条件の別実行をともに分離し、既存19系列も新命名へ移行済み。**現在の主設定は3/22 kHz×無雑音×150 epochs**で、診断対象runの300 epochsとは異なる。
+[ONB実行コード](../code/run_ensemble_regression_onb.py)の learning_policy / acoustic_selection / ensemble を使用する。現行configは学習6/11のみ、テスト6/18、22 kHz、無雑音、200 epochs、`inner_holdout`のみ有効。6/11+7/9や3 kHzの比較・過去runとは区別する。`acoustic_selection`はピーク高さ閾値だけを指定し、`None`なら選別なし。固定的な選別条件・output/explainability・モデルregistryは`utils/config/onb_defaults.py`へ置く。元WAV集約の評価設定は削除済み。保存先は`<解析日>/onb_<学習・評価日>_<内部検証・学習ノイズ>_<選別閾値>_<epoch>_[parameter番号_]<HHMMSS>/...`とし、日付直下を最大52文字に制限しながら主要条件と実行時刻を読めるようにしている。
 
 2026-09-16に[実験日指定を整理](../experiments/2026-09-16_onb_experiment_day_audit/README.md)。現在の`explicit_days`は学習日・テスト日から対象3日を自動算出する。設定変更と単体テストの記録であり、300 epochs本比較の実行・性能検証ではない。
 
 **次は3 kHz・無雑音・同じseed/300 epochs/全テスト秒で、(1)選別なし/あり、(2)6/11のみ学習/6/11+7/9学習を固定比較する。** 前者で選別効果、後者で7/9の負の転移を識別する。同じ単体予測上でcrossfit 3方式も比較する。6/18を見て選ぶ作業は原因診断であり、最終的な一般化主張には新しい独立日を必要とする。
 
-WAV中央値のR²/RMSE/MAE、ONB近傍誤差、見逃し/誤警報、最初の陽性測定点を読む。内部OOF・別日テスト・測定点ONB・秒単位の音響イベントを分ける。
+新しい実行では1秒chunkのR²/RMSE/MAE、ONB近傍誤差、見逃し/誤警報など通常指標をすべて読む。内部OOF・別日テスト・秒単位の音響イベントを分け、音響イベントの真値がないことも明記する。
 
 - [後期計画・階層タスク・判断点](research_plan/2026-09-16_second_semester_plan.md)
 - [修論目次・各章に必要な証拠](research_plan/2026-09-16_master_thesis_outline.md)

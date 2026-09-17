@@ -45,9 +45,6 @@ ENSEMBLE_STRATEGY_CATALOG = {
 ENSEMBLE_RUNTIME_DEFAULTS = {
     "reference_model": "randomforest",
     "inner_holdout_frac": 0.20,
-    # Model weights target the same source-WAV unit used by the primary
-    # evaluation.  Median is robust to isolated impulsive chunks.
-    "inner_holdout_aggregation": "median",
     "combine": "mean",
 }
 
@@ -83,19 +80,6 @@ def resolve_ensemble_selection(selection_config):
             f"{available_ensemble_strategy_names()}"
         )
 
-    primary_name = selection_config.get("primary_strategy_name")
-    if selected_names:
-        primary_name = primary_name or selected_names[0]
-        if primary_name not in selected_names:
-            raise ValueError(
-                "ensemble.primary_strategy_name must be included in "
-                f"enabled_strategy_names; got {primary_name!r}."
-            )
-    elif primary_name is not None:
-        raise ValueError(
-            "ensemble.primary_strategy_name must be None when no strategy is enabled."
-        )
-
     strategies = []
     for name in selected_names:
         item = deepcopy(ENSEMBLE_STRATEGY_CATALOG[name])
@@ -104,7 +88,6 @@ def resolve_ensemble_selection(selection_config):
 
     resolved = {
         "enabled": bool(selected_names),
-        "primary_strategy": primary_name,
         "strategies": strategies,
         **deepcopy(ENSEMBLE_RUNTIME_DEFAULTS),
     }

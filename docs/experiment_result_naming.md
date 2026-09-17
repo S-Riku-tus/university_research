@@ -14,7 +14,6 @@ Pool_boiling/Subcooling_20_degrees/0.3/<収録実験日>/
           split_manifest.json
           completed.json
           fold_pred/
-          wav_eval/
           explainability/
         noise_trends/<統合方式>/
       tuning_summary.csv
@@ -57,9 +56,8 @@ e300_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp_a1b2c3d4_001530_d4e5f6a7
 
 - 新形式は完了時に`completed.json`を保存。manifestだけでは開始したことしか分からない。
 - 旧形式は集計・条件別指標・manifest等で判定する。実装上の判定は`is_completed_run`を参照。
-- 主方式の表示変更のみなら、保存済みの全方式から再利用できる場合がある。
 - clean_onlyの部分再開はモデル重みが保存されていないため、対応する学習とノイズ一式を再計算する仕様。
 - 別runの欠測を以前の数値で埋めない。比較表に実行日・hash・評価方針を付ける。
-- `metrics_summary_*.csv`はchunkのfold集計、`wav_eval/wav_metrics_*.csv`はWAV評価。指標名だけで混同しない。
+- `metrics_summary_*.csv`は1秒chunkのfold集計。単体モデルと有効な全アンサンブル方式について同じ指標を保存する。
 
 実行ごとの判断材料は[experiments](../experiments/README.md)に固定し、現在の状態は[研究の現在地](research_status.md)で更新する。

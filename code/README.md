@@ -2,9 +2,8 @@
 
 ## 現在の主経路
 
-- [run_ensemble_regression_onb.py](run_ensemble_regression_onb.py): 現行の主実行。設定は冒頭の `VALIDATION_CONFIG`。3モデル、統合、chunk/WAV評価、説明性、一般化方針を指定する。
+- [run_ensemble_regression_onb.py](run_ensemble_regression_onb.py): 現行の主実行。設定は冒頭の `VALIDATION_CONFIG`。3モデル、統合、1秒chunk評価、説明性、一般化方針を指定する。
 - [2.run_npy_waterflow_2つhighpass.py](2.run_npy_waterflow_2つhighpass.py): 音声から現行STFT powerデータを生成する。
-- [run_wav_event_evaluation.py](run_wav_event_evaluation.py): 保存予測からWAV/ONB遷移を後処理する。
 - [utils/](utils/): データ読込、モデル、学習、指標、統合、XAI、作図の共通処理。
 - [check_gpu.py](check_gpu.py): GPU認識の確認。
 

@@ -18,7 +18,7 @@ class OnbDefaultsTest(unittest.TestCase):
         self.assertEqual(resolved["run"]["epochs"], 3)
         self.assertFalse(resolved["explainability"]["enabled"])
         self.assertEqual(resolved["explainability"]["ig_max_steps"], 4096)
-        self.assertEqual(resolved["evaluation"]["primary_wav_aggregation"], "median")
+        self.assertNotIn("evaluation", resolved)
         self.assertEqual(resolved["output"]["save_date"], "20260916")
         self.assertEqual(
             resolved["output"]["result_date_dir"],

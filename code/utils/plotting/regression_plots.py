@@ -195,8 +195,9 @@ class RegressionPlotter:
         plt.close(fig)
 
     def plot_regression_scatter(self, y_val, ensemble_pred, y_all, metrics_ens,
-                                threshold, save_path, snr_value, fold):
-        """アンサンブル予測の回帰散布図 + 閾値 + 100% 分類閾値線。"""
+                                threshold, save_path, snr_value, fold,
+                                model_key="model", model_label=None):
+        """1秒chunk予測の回帰散布図 + 閾値 + 100%分類閾値線。"""
         y_val = np.asarray(y_val).ravel()
         ensemble_pred = np.asarray(ensemble_pred).ravel()
 
@@ -205,6 +206,8 @@ class RegressionPlotter:
         plt.plot([min(y_all), max(y_all)], [min(y_all), max(y_all)], 'r--')
         plt.xlabel('True Heat Flux MW/m²', fontsize=40)
         plt.ylabel('Predicted Heat Flux MW/m²', fontsize=40)
+        if model_label:
+            plt.title(str(model_label), fontsize=28)
 
         ax = plt.gca()
         ax.xaxis.set_major_formatter(ScalarFormatter(useMathText=True))
@@ -259,5 +262,7 @@ class RegressionPlotter:
 
         out_dir = os.path.join(save_path, "scatter")
         snr_stem = _safe_stem(snr_value, max_len=16)
-        _save_current_figure(os.path.join(out_dir, f'scatter_{snr_stem}_f{fold}.png'))
+        model_stem = _safe_stem(model_key, max_len=32)
+        _save_current_figure(os.path.join(
+            out_dir, f'scatter_{model_stem}_{snr_stem}_f{fold}.png'))
         plt.close()

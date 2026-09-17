@@ -118,8 +118,7 @@ class CrossfitStackingTest(unittest.TestCase):
             run.combine_predictions({}, {}, 2, {"fold": 1, "weights": {}})
 
     def test_legacy_config_has_no_new_settings_or_extra_fitting(self):
-        selection = {"enabled_strategy_names": ["simple_equal", "inner_holdout"],
-                     "primary_strategy_name": "inner_holdout"}
+        selection = {"enabled_strategy_names": ["simple_equal", "inner_holdout"]}
         manager = EnsembleManager(selection, ["randomforest", "second"])
         self.assertNotIn("crossfit", str(manager.snapshot()))
         run = manager.create_run([{"key": "randomforest"}, {"key": "second"}])
@@ -157,8 +156,10 @@ class CrossfitPipelineTest(unittest.TestCase):
                 with self.subTest(split=split, noise=noise), tempfile.TemporaryDirectory() as temp:
                     policy = {"split_mode": split, "training_noise": noise}
                     jobs, specs, baseline, config = fixture(Path(temp), policy)
-                    manager = EnsembleManager({"enabled_strategy_names": ["simple_equal", "inner_holdout", *NAMES],
-                                               "primary_strategy_name": "inner_holdout"}, [s["key"] for s in specs])
+                    manager = EnsembleManager(
+                        {"enabled_strategy_names": ["simple_equal", "inner_holdout", *NAMES]},
+                        [s["key"] for s in specs],
+                    )
                     manager.validate(specs)
                     original_hash = run_config_digest(config, {}, specs, "models", True)
                     config["ensemble"] = manager.snapshot()
@@ -205,8 +206,7 @@ class CrossfitPipelineTest(unittest.TestCase):
                                     self.assertAlmostEqual(float(row["ensemble__" + name]), expected)
                             legacy_predictions[(job["experiment_name"], job["snr_value"], number)] = rows
                         by_day.setdefault(job["experiment_name"], []).append(audits)
-                        with (directory / "wav_eval" / f"wav_metrics_{job['snr_value']}.csv").open(encoding="utf-8") as source:
-                            self.assertEqual(len(list(csv.DictReader(source))), 21)  # 7 outputs x 3 aggregations
+                        self.assertFalse((directory / "wav_eval").exists())
                         trends = collect_trends(directory)
                         self.assertTrue(all(any(row["strategy"] == name for row in trends) for name in NAMES))
                     if noise == "clean_only":

@@ -36,7 +36,6 @@ def make_run(root, noise, *, run_hash="same", frequency="maxfreq=22kHz", thresho
                     "snr_value": noise, "threshold": threshold},
         "run_specs": [{"key": key, "label": label} for key, label in MODELS.items()],
         "validation_config": {"ensemble": {
-            "primary_strategy": "simple_equal",
             "resolved_strategy_plan": [{"name": "simple_equal", "result_key": ENSEMBLE,
                                          "label": "Ensemble simple equal", "claim_safe": True}],
         }},
@@ -48,19 +47,11 @@ def make_run(root, noise, *, run_hash="same", frequency="maxfreq=22kHz", thresho
          "roc_auc_cont_mean": 0.9, "roc_auc_cont_se": 0.02,
          "auc_binary_mean": 0.6, "auc_binary_se": 0.03} for label in labels.values()
     ])
-    write_csv(directory / "wav_eval" / f"wav_metrics_{noise}.csv", [
-        {"model_key": key, "aggregation": aggregation, "n_wavs": 18, "claim_safe": 1,
-         "r2": 0.4 if aggregation == "median" else 0.8,
-         "roc_auc_cont": 0.95, "auc_binary": 0.7}
-        for key in labels for aggregation in ("mean", "median")
-    ])
-    (directory / "wav_eval" / f"evaluation_manifest_{noise}.json").write_text(
-        json.dumps({"threshold": threshold}), encoding="utf-8")
     return directory
 
 
 class NoiseTrendPlotsTest(unittest.TestCase):
-    def test_missing_noise_stays_gap_and_evaluation_units_are_separate(self):
+    def test_missing_noise_stays_gap_and_all_chunk_metrics_are_kept(self):
         with tempfile.TemporaryDirectory() as temp:
             paths = [make_run(Path(temp), "-20"), make_run(Path(temp), "no_noise")]
             rows = collect_noise_trend_rows(
@@ -71,9 +62,7 @@ class NoiseTrendPlotsTest(unittest.TestCase):
             self.assertEqual(chunk[0]["value"], -0.2)
             self.assertTrue(math.isnan(chunk[1]["value"]))
             self.assertEqual(chunk[0]["standard_error"], 0.1)
-            wav = next(r for r in rows if r["evaluation_unit"] == "wav" and r["metric"] == "r2" and r["noise"] == "no_noise")
-            self.assertEqual(wav["value"], 0.4)
-            self.assertTrue(math.isnan(wav["standard_error"]))
+            self.assertEqual({r["evaluation_unit"] for r in rows}, {"chunk"})
             for metric, expected in (("roc_auc_cont", 0.9), ("auc_binary", 0.6)):
                 self.assertEqual(next(r["value"] for r in rows if r["metric"] == metric and r["evaluation_unit"] == "chunk" and r["noise"] == "no_noise"), expected)
             self.assertEqual({r["model_key"] for r in rows}, set(MODELS) | {ENSEMBLE})
@@ -102,7 +91,7 @@ class NoiseTrendPlotsTest(unittest.TestCase):
             path = make_run(root, "no_noise")
             options = dict(noise_order=["no_noise", "-20"], model_keys=list(MODELS), metrics=["r2"], formats=["png", "pdf"])
             artifacts = plot_noise_trends_from_runs([path], root / "plots", **options)
-            self.assertEqual(len(artifacts), 2)
+            self.assertEqual(len(artifacts), 1)
             for artifact in artifacts:
                 self.assertTrue(Path(artifact["csv"]).is_file())
                 for figure in artifact["figures"]:
@@ -113,15 +102,6 @@ class NoiseTrendPlotsTest(unittest.TestCase):
                 rows = list(csv.DictReader(source))
             self.assertEqual(len(rows), 8)
             self.assertTrue(all(math.isfinite(float(r["value"])) for r in rows))
-
-    def test_disabled_wav_evaluation_does_not_create_empty_wav_plot(self):
-        with tempfile.TemporaryDirectory() as temp:
-            root = Path(temp)
-            path = make_run(root, "no_noise")
-            (path / "wav_eval" / "wav_metrics_no_noise.csv").unlink()
-            rows = collect_noise_trend_rows([path], noise_order=["no_noise"], model_keys=list(MODELS))
-            self.assertEqual({r["evaluation_unit"] for r in rows}, {"chunk"})
-
 
 if __name__ == "__main__":
     unittest.main()

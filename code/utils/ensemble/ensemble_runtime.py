@@ -39,27 +39,6 @@ COMPARISON_HEADER = [
 ]
 
 
-def _aggregate_predictions_by_group(y_true, prediction, groups, aggregation):
-    """Give each source WAV one target/prediction for inner weight fitting."""
-    y_true = np.asarray(y_true, dtype=float).ravel()
-    prediction = np.asarray(prediction, dtype=float).ravel()
-    groups = np.asarray(groups).ravel()
-    if not (len(y_true) == len(prediction) == len(groups)):
-        raise ValueError("y_true, prediction, and groups must have equal lengths.")
-    reducer = np.mean if aggregation == "mean" else np.median
-    grouped_y = []
-    grouped_prediction = []
-    for group in np.unique(groups):
-        mask = groups == group
-        group_y = y_true[mask]
-        tolerance = max(1e-6, float(np.max(np.abs(group_y))) * 1e-9)
-        if not np.allclose(group_y, group_y[0], rtol=0.0, atol=tolerance):
-            raise ValueError(f"Source WAV group {group!r} has multiple targets.")
-        grouped_y.append(float(group_y[0]))
-        grouped_prediction.append(float(reducer(prediction[mask])))
-    return np.asarray(grouped_y), np.asarray(grouped_prediction)
-
-
 def _group_disjoint_holdout_indices(y_true, groups, fraction, random_state):
     """Split inner-fit/holdout indices without sharing a source WAV."""
     y_true = np.asarray(y_true, dtype=float).ravel()
@@ -105,15 +84,6 @@ class EnsembleManager:
             normalize_strategy_plan(self.resolved_config)
             if self.resolved_config["enabled"] else []
         )
-        self.primary_strategy_name = self.resolved_config.get("primary_strategy")
-        self.primary_result_key = next(
-            (
-                item["result_key"]
-                for item in self.strategy_plan
-                if item["name"] == self.primary_strategy_name
-            ),
-            None,
-        )
 
     @property
     def enabled(self):
@@ -132,10 +102,6 @@ class EnsembleManager:
         return float(self.resolved_config["inner_holdout_frac"])
 
     @property
-    def inner_holdout_aggregation(self):
-        return str(self.resolved_config["inner_holdout_aggregation"])
-
-    @property
     def has_leaky_strategy(self):
         return any(not item["claim_safe"] for item in self.strategy_plan)
 
@@ -149,11 +115,6 @@ class EnsembleManager:
         model_keys = [spec["key"] for spec in enabled_specs]
         if len(model_keys) < 2:
             return
-        if self.primary_result_key is None:
-            raise ValueError(
-                "ensemble.primary_strategy_name must name one enabled strategy; got "
-                f"{self.primary_strategy_name!r}."
-            )
         if self.reference_model not in model_keys:
             raise ValueError(
                 "The ensemble catalog reference model must be active; got "
@@ -164,10 +125,6 @@ class EnsembleManager:
         if strategy_plan_requires_inner_holdout(self.strategy_plan) and not (
                 0 < self.inner_holdout_frac < 1):
             raise ValueError("Ensemble inner_holdout_frac must be between 0 and 1.")
-        if self.inner_holdout_aggregation not in {"mean", "median"}:
-            raise ValueError(
-                "Ensemble inner_holdout_aggregation must be 'mean' or 'median'."
-            )
         crossfit = [item for item in self.strategy_plan if item["strategy"] in CROSSFIT_STRATEGIES]
         if crossfit:
             if self.combine != "mean":
@@ -187,7 +144,7 @@ class EnsembleManager:
     def description(self):
         return (
             f"strategies={self.selected_strategy_names} | "
-            f"primary={self.primary_strategy_name} | combine={self.combine}"
+            f"combine={self.combine}"
         )
 
     def create_run(self, run_specs):
@@ -225,10 +182,6 @@ class EnsembleRun:
         return {item["result_key"]: item["label"] for item in self.strategy_plan}
 
     @property
-    def primary_result_key(self):
-        return self.manager.primary_result_key if self.enabled else None
-
-    @property
     def strategy_tag(self):
         if len(self.strategy_plan) > 1:
             return "strategy_loop"
@@ -248,7 +201,6 @@ class EnsembleRun:
             return "ensemble_strategies=[] (single-model tuning run)"
         return (
             f"ensemble_strategies={self.manager.selected_strategy_names}, "
-            f"primary={self.manager.primary_strategy_name}, "
             f"combine={self.manager.combine}"
         )
 
@@ -282,7 +234,6 @@ class EnsembleRun:
             fraction=self.manager.inner_holdout_frac,
             random_state=self.manager.random_seed + int(fold),
         )
-        inner_groups = groups[inner_index]
         x_inner_fit, x_inner = x_train[inner_fit_index], x_train[inner_index]
         y_inner_fit, y_inner = y_train[inner_fit_index], y_train[inner_index]
         inner_scaler = MinMaxScaler()
@@ -323,15 +274,7 @@ class EnsembleRun:
                 x_inner_pca,
                 inner_scaler,
             )
-            grouped_y, grouped_prediction = _aggregate_predictions_by_group(
-                y_inner,
-                inner_pred,
-                inner_groups,
-                aggregation=self.manager.inner_holdout_aggregation,
-            )
-            errors[spec["key"]] = 1.0 - r2_score(
-                grouped_y, grouped_prediction
-            )
+            errors[spec["key"]] = 1.0 - r2_score(y_inner, inner_pred)
             del inner_model, inner_history, inner_pred
             K.clear_session()
             gc.collect()

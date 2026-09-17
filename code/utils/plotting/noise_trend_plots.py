@@ -74,21 +74,16 @@ def ordered_noise_values(values):
 
 
 def collect_noise_trend_rows(run_paths, *, noise_order, model_keys,
-                             ensemble_strategy_names="primary", metrics=("r2", "roc_auc_cont"),
-                             evaluation_units=("chunk", "wav"), wav_aggregation="median",
+                             ensemble_strategy_names="all", metrics=("r2", "roc_auc_cont"),
                              expected_run_hash=None):
-    """同一実験・周波数・学習設定の保存結果を、評価単位を分けて集める。
+    """同一実験・周波数・学習設定のchunk指標を集める。
 
-    chunkは従来のfold平均と標準誤差、WAVは全OOFを集めた集約値を使う。
-    WAVの一点推定へchunkの標準誤差を付けることはしない。
+    指標はfold平均と標準誤差を使う。
     未実行条件はNaNとして残し、欠測箇所を線で結ばない。
     """
     unknown_metrics = set(metrics) - set(METRIC_LABELS)
-    unknown_units = set(evaluation_units) - {"chunk", "wav"}
-    if unknown_metrics or unknown_units:
-        raise ValueError(f"未対応の作図設定です: metrics={unknown_metrics}, units={unknown_units}")
-    if wav_aggregation not in ("mean", "median", "p90"):
-        raise ValueError(f"未対応のWAV集約方法です: {wav_aggregation}")
+    if unknown_metrics:
+        raise ValueError(f"未対応の作図指標です: {unknown_metrics}")
     noise_values = ordered_noise_values(noise_order)
     loaded = {}
     reference = None
@@ -137,15 +132,12 @@ def collect_noise_trend_rows(run_paths, *, noise_order, model_keys,
     plans = ensemble.get("resolved_strategy_plan", [])
     supported = set(available_ensemble_strategy_names())
     available = {plan["name"]: plan for plan in plans if plan["name"] in supported}
-    if ensemble_strategy_names == "primary":
-        primary = ensemble.get("primary_strategy")
-        selected = [primary] if primary in available else list(available)[:1]
-    elif ensemble_strategy_names == "all":
+    if ensemble_strategy_names == "all":
         selected = list(available)
     elif isinstance(ensemble_strategy_names, (list, tuple)):
         selected = list(ensemble_strategy_names)
     else:
-        raise ValueError("ensemble_strategy_namesはprimary、all、または方式名のリストです。")
+        raise ValueError("ensemble_strategy_namesはallまたは方式名のリストです。")
     selected = [name for name in selected if name is not None]
     if set(selected) - set(available):
         raise ValueError(f"実行されていないアンサンブル方式です: {set(selected) - set(available)}")
@@ -160,16 +152,10 @@ def collect_noise_trend_rows(run_paths, *, noise_order, model_keys,
     for noise, (directory, run_manifest) in loaded.items():
         snr = str(run_manifest["dataset"]["snr_value"])
         chunk_path = directory / f"metrics_summary_{snr}.csv"
-        wav_path = directory / "wav_eval" / f"wav_metrics_{snr}.csv"
-        eval_path = directory / "wav_eval" / f"evaluation_manifest_{snr}.json"
         cached[noise] = {
             "chunk": {row["model"]: row for row in _csv(chunk_path)} if chunk_path.is_file() else {},
-            "wav": {row["model_key"]: row for row in _csv(wav_path)
-                    if row["aggregation"] == wav_aggregation} if wav_path.is_file() else {},
             "chunk_path": chunk_path,
-            "wav_path": wav_path,
             "chunk_threshold": run_manifest["dataset"].get("threshold"),
-            "wav_threshold": _json(eval_path).get("threshold") if eval_path.is_file() else None,
         }
 
     rows = []
@@ -177,38 +163,39 @@ def collect_noise_trend_rows(run_paths, *, noise_order, model_keys,
         keys = list(model_keys)
         if strategy is not None:
             keys.append(available[strategy]["result_key"])
-        for unit in evaluation_units:
-            # WAV評価を無効にした実行では、空のWAVグラフを作らない。
-            if not any(data[unit] for data in cached.values()):
-                continue
-            thresholds = {data[f"{unit}_threshold"] for data in cached.values() if data[unit]}
-            if len(thresholds) > 1:
-                raise ValueError(f"{unit}評価のONB閾値がノイズ条件間で一致しません。")
-            for metric in metrics:
-                for key in keys:
-                    for noise in noise_values:
-                        data = cached.get(noise, {})
-                        record = data.get(unit, {}).get(labels[key] if unit == "chunk" else key, {})
-                        value = _number(record.get(f"{metric}_mean" if unit == "chunk" else metric))
-                        se = _number(record.get(f"{metric}_se")) if unit == "chunk" and not held_out_day else float("nan")
-                        rows.append({
-                            "experiment": manifest["dataset"]["experiment_name"],
-                            "maxfreq": manifest["dataset"]["max_freq_hz"],
-                            "run_hash": manifest.get("run_hash", ""),
-                            "split_mode": policy["split_mode"],
-                            "training_noise": policy["training_noise"],
-                            "strategy": strategy or "single_models",
-                            "evaluation_unit": unit,
-                            "aggregation": ("held_out_day" if held_out_day else "fold_mean") if unit == "chunk" else wav_aggregation,
-                            "metric": metric, "model_key": key,
-                            "model_label": MODEL_LABELS.get(key, "Ensemble" if key.startswith("ensemble__") else labels[key]),
-                            "noise": noise, "value": value, "standard_error": se,
-                            "error_bar_definition": "fold_standard_error" if unit == "chunk" and not held_out_day else "not_estimated",
-                            "threshold": data.get(f"{unit}_threshold", ""),
-                            "n_wavs": record.get("n_wavs", "") if unit == "wav" else "",
-                            "claim_safe": record.get("claim_safe", "") if unit == "wav" else "",
-                            "source_csv": str(data.get(f"{unit}_path", "")),
-                        })
+        thresholds = {
+            data["chunk_threshold"] for data in cached.values() if data["chunk"]
+        }
+        if len(thresholds) > 1:
+            raise ValueError("chunk評価のONB閾値がノイズ条件間で一致しません。")
+        for metric in metrics:
+            for key in keys:
+                for noise in noise_values:
+                    data = cached.get(noise, {})
+                    record = data.get("chunk", {}).get(labels[key], {})
+                    rows.append({
+                        "experiment": manifest["dataset"]["experiment_name"],
+                        "maxfreq": manifest["dataset"]["max_freq_hz"],
+                        "run_hash": manifest.get("run_hash", ""),
+                        "split_mode": policy["split_mode"],
+                        "training_noise": policy["training_noise"],
+                        "strategy": strategy or "single_models",
+                        "evaluation_unit": "chunk",
+                        "aggregation": "held_out_day" if held_out_day else "fold_mean",
+                        "metric": metric, "model_key": key,
+                        "model_label": MODEL_LABELS.get(key, "Ensemble" if key.startswith("ensemble__") else labels[key]),
+                        "noise": noise,
+                        "value": _number(record.get(f"{metric}_mean")),
+                        "standard_error": (
+                            _number(record.get(f"{metric}_se"))
+                            if not held_out_day else float("nan")
+                        ),
+                        "error_bar_definition": (
+                            "fold_standard_error" if not held_out_day else "not_estimated"
+                        ),
+                        "threshold": data.get("chunk_threshold", ""),
+                        "source_csv": str(data.get("chunk_path", "")),
+                    })
     return rows
 
 
@@ -250,16 +237,16 @@ def plot_noise_trends_from_runs(run_paths, output_dir, *, formats=("png", "pdf")
                     errors = np.asarray([by_noise[noise]["standard_error"] for noise in noises])
                     color, marker, line = styles[index % len(styles)]
                     ax.errorbar(np.arange(len(noises)), values,
-                                yerr=errors if unit == "chunk" and np.any(np.isfinite(errors)) else None,
+                                yerr=errors if np.any(np.isfinite(errors)) else None,
                                 color=color, marker=marker, linestyle=line, markersize=4,
                                 linewidth=1.5, capsize=3, label=by_noise[noises[0]]["model_label"])
                 ax.set_xticks(np.arange(len(noises)))
                 ax.set_xticklabels(["No_noise" if noise == "no_noise" else noise for noise in noises])
                 ax.set_xlabel("Noise level (reference SNR [dB])")
                 ax.set_ylabel(METRIC_LABELS[metric])
-                unit_label = "Chunk: fold mean ± SE" if unit == "chunk" else f"WAV: pooled OOF {group[0]['aggregation']}"
+                unit_label = "Chunk: fold mean ± SE"
                 if group[0]["split_mode"] == "leave_one_day_out":
-                    unit_label = "Chunk: held-out day" if unit == "chunk" else f"WAV: held-out day {group[0]['aggregation']}"
+                    unit_label = "Chunk: held-out day"
                 ensemble_label = STRATEGY_LABELS.get(strategy, strategy)
                 policy_label = "clean train" if group[0]["training_noise"] == "clean_only" else "matched-noise train"
                 ax.set_title(f"{group[0]['experiment']} | {group[0]['maxfreq']} | {policy_label}\n{unit_label} | {ensemble_label}", fontsize=10)

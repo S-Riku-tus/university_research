@@ -31,18 +31,14 @@ conditions:
 
 ensemble:
   enabled_strategy_names: [simple_equal, inner_holdout]
-  primary_strategy_name: inner_holdout
   weight_fit_scope: source_wav_disjoint_inner_holdout
 
 evaluation:
-  primary_unit: source_wav
-  primary_aggregation: median
-  pooling: pooled_out_of_fold
-  primary_metrics: [r2, rmse_all, mae_all]
+  unit: one_second_chunk
+  regression_metrics: [r2, rmse_all, mae_all, r2_high, rmse_high, mae_high, rmse_onb, mae_onb]
   detection_metrics: [recall, precision, f1, roc_auc_cont, pr_auc_cont]
   onb_threshold_source: code/utils/experiment/onb_thresholds.py
   onb_band_frac: 0.10  # 暫定。近傍の実WAV数も記録する。
-  transition_unit: operating_point_and_heat_flux
   synchronized_time_ground_truth: false
 
 explainability:

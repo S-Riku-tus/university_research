@@ -2,7 +2,7 @@
 
 The main run script should contain the experimental choices that are expected
 to change between runs.  Fixed acoustic-selection mechanics, output mechanics,
-evaluation conventions, XAI diagnostics, and the model registry live here so
+XAI diagnostics, and the model registry live here so
 they do not obscure those choices.  Resolved defaults are still written to
 every run manifest.
 """
@@ -83,7 +83,6 @@ def default_output_config(now=None):
             "enabled": True,
             "ensemble_strategy_names": "all",
             "metrics": ["r2", "roc_auc_cont", "auc_binary"],
-            "evaluation_units": ["chunk", "wav"],
             "formats": ["png", "pdf"],
         },
     }
@@ -98,15 +97,6 @@ DEFAULT_ACOUSTIC_SELECTION_CONFIG = {
     "peak_height_threshold": None,
     "peak_height_threshold_by_experiment": {},
     "apply_max_heat_flux_by_experiment": {},
-}
-
-
-DEFAULT_EVALUATION_CONFIG = {
-    "wav_level_enabled": True,
-    "wav_aggregations": ["mean", "median", "p90"],
-    "primary_wav_aggregation": "median",
-    "onb_transition_persistence_wavs": [1, 2],
-    "predicted_event_summary_enabled": True,
 }
 
 
@@ -139,8 +129,6 @@ DEFAULT_EXPLAINABILITY_CONFIG = {
     "time_groups": 4,
     "time_extent_seconds": 1.0,
     "onb_band_frac": 0.10,
-    "performance_evaluation_unit": "source_wav",
-    "performance_wav_aggregation": "median",
     "baseline_value": 0.0,
     "curve_fractions": [0.0, 0.05, 0.10, 0.20, 0.30, 0.50, 1.0],
     "stability": {
@@ -174,7 +162,6 @@ def apply_onb_defaults(config, now=None):
     defaults = {
         "acoustic_selection": deepcopy(DEFAULT_ACOUSTIC_SELECTION_CONFIG),
         "output": default_output_config(now),
-        "evaluation": deepcopy(DEFAULT_EVALUATION_CONFIG),
         "explainability": deepcopy(DEFAULT_EXPLAINABILITY_CONFIG),
     }
     resolved = _merge_dict(defaults, deepcopy(config))

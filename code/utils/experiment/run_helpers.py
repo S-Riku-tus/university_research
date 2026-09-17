@@ -3,7 +3,6 @@ import hashlib
 import json
 import os
 import random
-from copy import deepcopy
 from datetime import datetime
 from pathlib import Path
 
@@ -145,16 +144,8 @@ def run_dir_name(epoch_num, param_tag, model_tag, ensemble_enabled, weight_strat
 
 
 def saved_run_matches_execution(manifest, validation_config, parameter_set, run_specs, model_tag, save_fold_predictions):
-    """主方式の表示選択だけが変わった場合、既に全方式を評価した結果を再利用する。"""
-    config = deepcopy(validation_config)
-    saved_ensemble = manifest.get("validation_config", {}).get("ensemble", {})
-    ensemble = config.get("ensemble", {})
-    # 学習や重み決定に使わない主方式の選択だけを、保存時の値で照合する。
-    if "primary_strategy" in saved_ensemble:
-        ensemble["primary_strategy"] = saved_ensemble["primary_strategy"]
-    if "primary_strategy_name" in saved_ensemble.get("selection", {}):
-        ensemble.setdefault("selection", {})["primary_strategy_name"] = saved_ensemble["selection"]["primary_strategy_name"]
-    candidate = run_config_digest(config, parameter_set, run_specs, model_tag, save_fold_predictions)
+    """保存済みrunが現在の実行条件と一致するか確認する。"""
+    candidate = run_config_digest(validation_config, parameter_set, run_specs, model_tag, save_fold_predictions)
     return candidate in {manifest.get("run_hash"), manifest.get("execution_config_hash")}
 
 

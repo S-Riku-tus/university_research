@@ -4,9 +4,9 @@
 実験条件はVALIDATION_CONFIGで指定する。主な処理は以下のとおり。
 1. 元WAVを分離する交差検証、または実験日全体を除外する分割で学習する。
 2. 同じ検証予測から、各単体モデルと指定したアンサンブル方式を評価する。
-3. chunk単位と元WAV単位の両評価を、同じ学習外予測から保存する。
+3. 1秒chunk単位の通常指標を、同じ学習外予測から保存する。
 4. R²、連続予測のROC-AUC、二値化後AUCを区別して記録する。
-5. ONB遷移、説明性、予測散布図、モデル比較図を保存する。
+5. 説明性、予測散布図、モデル比較図を保存する。
 
 学習・評価・統合・作図はutils配下の共通処理を呼び出す。
 旧実行コードは再現用に保持し、通常の実験には本ファイルを使う。
@@ -54,16 +54,16 @@ from utils.experiment.run_helpers import set_global_seed
 #######################################################################
 # 実験条件を変更するときは、まずVALIDATION_CONFIGを編集する。
 # 実験ごとに変更する条件をここにまとめる。
-# 固定的な出力・評価・説明性とモデル対応表はutils/config/onb_defaults.py。
+# 固定的な出力・説明性とモデル対応表はutils/config/onb_defaults.py。
 #
 # 現在の設定の読み方:
 # ・目的: 同じ検証予測から単体モデルと各アンサンブル方式を比較する。
 # ・データ: explicit_daysでは学習日とテスト日の和集合、他の分割ではexperiment_namesを使う。
 # ・モデル: RF、CNN＋Transformer、AlexNet。
-# ・統合方式: ensembleに列挙した方式を実行し、主方式を別途指定する。
+# ・統合方式: ensembleに列挙した全方式を実行・評価する。
 # ・説明性: 有効なデータ条件・モデル・foldについて指定手法を実行する。
 #
-# ensembleには方式名と主方式を指定する。
+# ensembleには実行する方式名を指定する。
 # 重みの計算や予測の統合処理はutils/ensemble/で管理する。
 
 VALIDATION_CONFIG = apply_onb_defaults({
@@ -179,13 +179,7 @@ VALIDATION_CONFIG = apply_onb_defaults({
             # "performance_kfold",  # learning_policy.internal_validation単位のOOF単体性能で重み付け
             # "simple_equal",  # 等しい重みで平均
             "inner_holdout",  # 学習データの約20%を、元WAVが重ならないように一度だけ取り分ける
-            # 次の3方式は同じ元WAV分離inner OOFを共有するため、3倍の追加学習にはならない。
-            # "subset_equal_cv",  # 使うモデルの組合せを選び、選んだモデルを等重みで平均
-            # "crossfit_wav_stack",  # WAV単位の予測誤差が小さくなる重みを直接求める
-            # "crossfit_shrinkage_stack",  # 極端な重みを避け、等重みに近づける制約を加える
         ],
-        # 有効にした方式の中から主図・散布図に用いる方式を指定する。
-        "primary_strategy_name": "inner_holdout",
     },
     "features": {
         "pca_components": 100,
@@ -267,15 +261,6 @@ if not re.fullmatch(r"\d{6}", RUN_INSTANCE_ID):
 # 同じRUN_IDを明示した再実行では、同じ保存先を参照して完了判定する。
 EXECUTION_ID = RUN_INSTANCE_ID
 FOLD_PREDICTIONS_DIR_NAME = "fold_pred"
-WAV_LEVEL_EVALUATION_ENABLED = _cfg("evaluation", "wav_level_enabled")
-WAV_AGGREGATIONS = tuple(_cfg("evaluation", "wav_aggregations"))
-PRIMARY_WAV_AGGREGATION = _cfg("evaluation", "primary_wav_aggregation")
-ONB_TRANSITION_PERSISTENCE_WAVS = tuple(
-    _cfg("evaluation", "onb_transition_persistence_wavs")
-)
-PREDICTED_EVENT_SUMMARY_ENABLED = _cfg(
-    "evaluation", "predicted_event_summary_enabled"
-)
 EXPLAINABILITY_CONFIG = resolve_explainability_scope(
     VALIDATION_CONFIG.get("explainability", {}),
     experiment_names=EXPERIMENT_DIR_NAMES,
@@ -383,14 +368,6 @@ def validation_config_snapshot():
             "resume_completed_runs": RESUME_COMPLETED_RUNS,
             "noise_trend_plots": dict(NOISE_TREND_CONFIG),
         },
-        "evaluation": {
-            "wav_level_enabled": WAV_LEVEL_EVALUATION_ENABLED,
-            "wav_aggregations": WAV_AGGREGATIONS,
-            "primary_wav_aggregation": PRIMARY_WAV_AGGREGATION,
-            "onb_transition_persistence_wavs": ONB_TRANSITION_PERSISTENCE_WAVS,
-            "predicted_event_summary_enabled": PREDICTED_EVENT_SUMMARY_ENABLED,
-            "event_ground_truth_status": "not_annotated",
-        },
         "explainability": EXPLAINABILITY_CONFIG,
     }
 
@@ -413,14 +390,8 @@ def update_noise_trend_plots(plotter, job, run_dir, run_hash, model_keys):
         output_dir,
         noise_order=NOISE_DIR_NAMES,
         model_keys=model_keys,
-        ensemble_strategy_names=(
-            [ENSEMBLE_MANAGER.primary_strategy_name]
-            if NOISE_TREND_CONFIG["ensemble_strategy_names"] == "primary" and ENSEMBLE_ENABLED
-            else NOISE_TREND_CONFIG["ensemble_strategy_names"]
-        ),
+        ensemble_strategy_names=NOISE_TREND_CONFIG["ensemble_strategy_names"],
         metrics=NOISE_TREND_CONFIG["metrics"],
-        evaluation_units=NOISE_TREND_CONFIG["evaluation_units"],
-        wav_aggregation=PRIMARY_WAV_AGGREGATION,
         expected_run_hash=run_hash,
         formats=NOISE_TREND_CONFIG["formats"],
     )
@@ -436,12 +407,6 @@ def validate_validation_config(enabled_specs):
         raise ValueError("VALIDATION_CONFIG['models']['parameter_sets'] must not be empty.")
     if int(PCA_COMPONENTS) <= 0:
         raise ValueError("pca_components must be a positive integer.")
-    if WAV_LEVEL_EVALUATION_ENABLED and COLOR_CHANNEL != 1:
-        raise ValueError(
-            "WAV-level evaluation currently requires NPY input metadata "
-            "(run.color_channel=1)."
-        )
-
     model_keys = [spec["key"] for spec in enabled_specs]
     if len(model_keys) != len(set(model_keys)):
         raise ValueError(f"Duplicate active model keys: {model_keys}")
@@ -457,52 +422,6 @@ def validate_validation_config(enabled_specs):
     if (LEARNING_POLICY != {"split_mode": "within_day", "training_noise": "matched"}
             and len(enabled_specs) > 1 and ENSEMBLE_MANAGER.has_leaky_strategy):
         raise ValueError("一般化評価では評価ラベルで重みを決めるval_fold_legacyを使用できません。")
-
-    allowed_wav_aggregations = {"mean", "median", "p90", "p95"}
-    unknown_wav_aggregations = set(WAV_AGGREGATIONS) - allowed_wav_aggregations
-    if unknown_wav_aggregations:
-        raise ValueError(
-            "Unknown evaluation.wav_aggregations: "
-            f"{sorted(unknown_wav_aggregations)}"
-        )
-    if WAV_LEVEL_EVALUATION_ENABLED and not WAV_AGGREGATIONS:
-        raise ValueError("evaluation.wav_aggregations must not be empty.")
-    if PRIMARY_WAV_AGGREGATION not in WAV_AGGREGATIONS:
-        raise ValueError(
-            "evaluation.primary_wav_aggregation must be included in "
-            "evaluation.wav_aggregations."
-        )
-    if (
-        not ONB_TRANSITION_PERSISTENCE_WAVS
-        or any(int(value) <= 0 for value in ONB_TRANSITION_PERSISTENCE_WAVS)
-    ):
-        raise ValueError(
-            "evaluation.onb_transition_persistence_wavs must contain "
-            "positive integers."
-        )
-
-    if EXPLAINABILITY_CONFIG.get("enabled", False):
-        xai_evaluation_unit = str(
-            EXPLAINABILITY_CONFIG.get("performance_evaluation_unit", "chunk")
-        ).lower()
-        xai_wav_aggregation = str(
-            EXPLAINABILITY_CONFIG.get("performance_wav_aggregation", "median")
-        ).lower()
-        if xai_evaluation_unit not in {"source_wav", "chunk"}:
-            raise ValueError(
-                "explainability.performance_evaluation_unit must be "
-                "'source_wav' or 'chunk'."
-            )
-        if xai_wav_aggregation not in {"mean", "median"}:
-            raise ValueError(
-                "explainability.performance_wav_aggregation must be "
-                "'mean' or 'median'."
-            )
-        if xai_evaluation_unit == "source_wav" and COLOR_CHANNEL != 1:
-            raise ValueError(
-                "source-WAV XAI performance evaluation requires NPY metadata "
-                "(run.color_channel=1)."
-            )
 
     if REQUIRE_EXPERIMENT_THRESHOLD:
         missing_thresholds = [

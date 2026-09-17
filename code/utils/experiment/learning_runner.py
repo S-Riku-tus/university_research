@@ -12,9 +12,9 @@ from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras import backend as K
 
 from utils.calculation.regression_detection_metrics import RegressionDetectionMetrics
-from utils.calculation.wav_event_metrics import (
+from utils.calculation.prediction_records import (
     build_fold_prediction_rows, load_sample_metadata_without_arrays,
-    save_wav_event_evaluation, write_fold_prediction_csv,
+    write_fold_prediction_csv,
 )
 from utils.config.parameter_sets import parameter_set_tag, resolve_parameter_set
 from utils.dataloading.dataloading_and_conversion import DataLoadingConversion
@@ -88,15 +88,8 @@ class ResultRecorder:
         self.metrics = RegressionDetectionMetrics()
         self.store = {key: defaultdict(list) for key in self.all_keys}
         self.train_meta = {key: defaultdict(list) for key in self.keys}
-        self.oof_rows, self.split_records = [], []
+        self.split_records = []
         self.band = config["thresholds"]["onb_band_frac"]
-        self.claim_safe = {key: True for key in self.keys}
-        self.claim_note = {key: context["generalization_scope"] for key in self.keys}
-        for strategy in ensemble.strategy_plan:
-            key = strategy["result_key"]
-            self.claim_safe[key] = bool(strategy["claim_safe"])
-            self.claim_note[key] = ("no_outer_validation_labels_used_for_weights" if strategy["claim_safe"]
-                                    else "outer_validation_labels_used_for_weights")
 
     def start(self):
         makedirs(self.path)
@@ -127,7 +120,6 @@ class ResultRecorder:
         self.ensemble.save_crossfit_fit(self.path, fold, crossfit_fit)
         predictions = self.ensemble.merge_predictions(single_predictions, outputs)
         rows = build_fold_prediction_rows(indices, y_true, predictions, metadata, fold)
-        self.oof_rows.extend(rows)
         if self.config["output"]["save_fold_predictions"]:
             directory = self.path / "fold_pred"
             makedirs(directory)
@@ -141,11 +133,17 @@ class ResultRecorder:
                 for metric, value in result.items():
                     self.store[key][metric].append(value)
         self.ensemble.record_diagnostics(fold, y_true, single_predictions, outputs, self.threshold, self.band)
-        if self.ensemble.enabled and has_threshold(self.threshold):
-            key = self.ensemble.primary_result_key
-            fold_metrics = {metric: values[-1] for metric, values in self.store[key].items()}
-            plotter.plot_regression_scatter(y_true, predictions[key], targets_from_metadata(metadata),
-                                            fold_metrics, self.threshold, self.path, self.snr, fold)
+        if has_threshold(self.threshold):
+            for key in self.all_keys:
+                fold_metrics = {
+                    metric: values[-1]
+                    for metric, values in self.store[key].items()
+                }
+                plotter.plot_regression_scatter(
+                    y_true, predictions[key], targets_from_metadata(metadata),
+                    fold_metrics, self.threshold, self.path, self.snr, fold,
+                    model_key=key, model_label=self.labels[key],
+                )
         self.split_records.append({
             "fold": fold, "fit_id": fit_id,
             "training_wav_groups": sorted(set(training_groups)),
@@ -164,22 +162,10 @@ class ResultRecorder:
                     f"{metric}={self.store[key][metric][-1]:.6g}" for metric in SUMMARY_METRICS) + "\n")
 
     def finish(self, plotter, update_noise_trends):
-        evaluation = self.config["evaluation"]
         context = self.job["learning_context"]
-        if evaluation["wav_level_enabled"]:
-            save_wav_event_evaluation(
-                self.path, self.snr, self.oof_rows, self.all_keys, self.threshold, self.band,
-                aggregations=evaluation["wav_aggregations"],
-                primary_aggregation=evaluation["primary_wav_aggregation"],
-                save_predicted_event_summary=evaluation["predicted_event_summary_enabled"],
-                onb_transition_persistence_wavs=evaluation["onb_transition_persistence_wavs"],
-                claim_safe_by_model=self.claim_safe, claim_note_by_model=self.claim_note,
-                threshold_provenance=self.config["thresholds"]["provenance_by_experiment"].get(self.job["experiment_name"]),
-                learning_context=context,
-            )
         aggregate_group_mask_comparison(self.path, self.config["explainability"], self.keys,
                                         context["outer_folds_per_evaluation_day"])
-        plot_keys = self.keys + ([self.ensemble.primary_result_key] if self.ensemble.enabled else [])
+        plot_keys = self.all_keys
         for title, metric in (("R2 Score", "r2"), ("AUC (binary legacy)", "auc_binary")):
             if metric == "auc_binary" and not has_threshold(self.threshold):
                 continue
@@ -201,7 +187,6 @@ class ResultRecorder:
                 for metric in SUMMARY_METRICS:
                     mean, se = self.metrics.mean_se(self.store[key][metric])
                     output.write(f"  {metric}: {mean:.6f} ± {se:.6f}\n")
-            output.write("元WAV単位の指標・ONB遷移はwav_eval内に保存。\n")
         base = Path(self.job["save_base_path"])
         summary = base / "tuning_summary.csv"
         if self.config["output"]["save_tuning_summary"]:
@@ -407,8 +392,8 @@ def run_learning_experiments(jobs, policy, config, enabled_specs, parameter_sets
                         recorder.record_history(spec, history, fold, plotter)
                         maybe_explain_trained_model(spec, model, scaler, x_eval, y_eval, prediction,
                             recorder.threshold, recorder.path, fold, job["max_freq_hz"], config["explainability"],
-                            pca=pca, experiment_name=job["experiment_name"], noise_dir_name=job["noise_dir_name"],
-                            source_wav_groups=wav_groups(metadata)[indices])
+                            pca=pca, experiment_name=job["experiment_name"],
+                            noise_dir_name=job["noise_dir_name"])
                         del x_eval, y_eval, x_eval_pca
                     del model, history
                     K.clear_session()

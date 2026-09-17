@@ -9,6 +9,7 @@ import unittest
 from unittest.mock import patch
 
 import numpy as np
+from sklearn.metrics import r2_score
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "code"))
 from test_learning_policy import fixture, ObservedTrainer, SilentPlotter
@@ -50,20 +51,13 @@ class DaySelectionTest(unittest.TestCase):
                 shared.append({rows[i]["source_wav_id"] for i in fit} & {rows[i]["source_wav_id"] for i in held})
             self.assertEqual(any(shared), mode == "chunk_kfold")
 
-    def test_wav_kfold_weights_use_one_median_prediction_per_wav(self):
+    def test_wav_kfold_weights_score_each_held_out_chunk(self):
         targets = np.repeat([0.0, 10.0, 20.0, 30.0], 3)
-        groups = np.repeat(["a", "b", "c", "d"], 3)
         prediction = targets + np.tile([0.0, 0.0, 100.0], 4)
-        wav_errors, unit = _validation_errors(
-            targets, {"model": prediction}, groups, "wav_kfold"
-        )
-        chunk_errors, chunk_unit = _validation_errors(
-            targets, {"model": prediction}, groups, "chunk_kfold"
-        )
-        self.assertEqual(unit, "source_wav_median_oof_R2")
-        self.assertEqual(chunk_unit, "pooled_chunk_oof_R2")
-        self.assertAlmostEqual(wav_errors["model"], 0.0)
-        self.assertGreater(chunk_errors["model"], 1.0)
+        errors, unit = _validation_errors(targets, {"model": prediction})
+        self.assertEqual(unit, "pooled_chunk_oof_R2")
+        self.assertAlmostEqual(errors["model"], 1.0 - r2_score(targets, prediction))
+        self.assertGreater(errors["model"], 1.0)
 
     def test_selection_kfold_training_and_full_test_end_to_end(self):
         self.run_selection_pipeline("background_quantile")
@@ -113,8 +107,10 @@ class DaySelectionTest(unittest.TestCase):
             if mode == "peak_height":
                 config["acoustic_selection"].update(mode=mode, feature="peak_2100_2500_psd", peak_height_threshold=1e-9)
             strategy_names = strategy_names or ["performance_kfold"]
-            manager = EnsembleManager({"enabled_strategy_names": strategy_names,
-                                       "primary_strategy_name": strategy_names[0]}, [s["key"] for s in specs])
+            manager = EnsembleManager(
+                {"enabled_strategy_names": strategy_names},
+                [s["key"] for s in specs],
+            )
             config["ensemble"] = manager.snapshot()
             trainer = ObservedTrainer()
             with contextlib.redirect_stdout(io.StringIO()), patch("gc.collect"), patch("tensorflow.keras.backend.clear_session"):

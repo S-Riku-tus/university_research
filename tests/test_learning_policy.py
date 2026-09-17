@@ -83,8 +83,10 @@ def fixture(root, policy, evaluated_noises=("heatflux_no_noise", "heatflux_refer
                              "threshold": 35 + day_number,
                              "save_base_path": root / day / policy_result_date_dir("results", policy)})
     specs = [{"key": key, "label": key, "kind": "sklearn"} for key in ("randomforest", "second")]
-    manager = EnsembleManager({"enabled_strategy_names": ["simple_equal", "inner_holdout"],
-                               "primary_strategy_name": "inner_holdout"}, [s["key"] for s in specs])
+    manager = EnsembleManager(
+        {"enabled_strategy_names": ["simple_equal", "inner_holdout"]},
+        [s["key"] for s in specs],
+    )
     config = {
         "learning_policy": policy,
         "run": {"smoke_test": False, "epochs": 1, "folds": 3, "random_seed": 42, "loop_parameter_sets": True},
@@ -93,9 +95,6 @@ def fixture(root, policy, evaluated_noises=("heatflux_no_noise", "heatflux_refer
         "thresholds": {"onb_band_frac": 0.1, "provenance_by_experiment": {}},
         "output": {"save_fold_predictions": True, "save_tuning_summary": True,
                    "resume_completed_runs": True, "run_instance_id": "test-instance"},
-        "evaluation": {"wav_level_enabled": True, "wav_aggregations": ["mean", "median", "p90"],
-                       "primary_wav_aggregation": "median", "predicted_event_summary_enabled": True,
-                       "onb_transition_persistence_wavs": [1, 2]},
         "explainability": {"enabled": False},
     }
     return jobs, specs, manager, config
@@ -254,13 +253,8 @@ class LearningPolicyTest(unittest.TestCase):
                             if split == "leave_one_day_out":
                                 self.assertNotIn(job["experiment_name"], {json.loads(group)[0] for group in training})
                         self.assertEqual(sorted(seen), list(range(12)))
-                        manifest = json.loads((directory / "wav_eval" / f"evaluation_manifest_{job['snr_value']}.json").read_text(encoding="utf-8"))
-                        self.assertEqual(manifest["n_wavs"], 6)
-                        self.assertEqual(manifest["threshold"], job["threshold"])
-                        self.assertEqual(manifest["learning_context"]["split_mode"], split)
-                        with (directory / "wav_eval" / f"wav_metrics_{job['snr_value']}.csv").open(encoding="utf-8") as source:
-                            self.assertEqual(len(list(csv.DictReader(source))), 12)
                         self.assertTrue((directory / f"metrics_summary_{job['snr_value']}.csv").is_file())
+                        self.assertFalse((directory / "wav_eval").exists())
                         by_day.setdefault(job["experiment_name"], []).append(directory)
                     for directories in by_day.values():
                         rows = collect_noise_trend_rows(directories, noise_order=["no_noise", "-20"],
@@ -284,8 +278,8 @@ class LearningPolicyTest(unittest.TestCase):
                       "builder": lambda mm: keras.Sequential([
                           keras.layers.Input(shape=(2, 2, 1)), keras.layers.Flatten(), keras.layers.Dense(1)])}]
             parameter_sets = [{"name": "tiny", "default_keras": {"lr": 0.000001, "batch_size": 4, "fit_verbose": 0}}]
-            manager = EnsembleManager({"enabled_strategy_names": ["simple_equal"],
-                                       "primary_strategy_name": "simple_equal"}, ["tiny"])
+            manager = EnsembleManager(
+                {"enabled_strategy_names": ["simple_equal"]}, ["tiny"])
             config["ensemble"] = manager.snapshot()
             trainer = ModelTrainer()
             with contextlib.redirect_stdout(io.StringIO()), patch.object(trainer, "train_one_model", wraps=trainer.train_one_model) as fit:
