@@ -68,7 +68,7 @@ def main():
         assert sorted(seen) == list(range(1860))
         predictions = read_csv(directory / "fold_pred/pred_f1_no_noise.csv")
         assert len(predictions) == 1080
-        keys = ["rf", "cnntf_v2_gap", "alexnet", "ensemble__performance_kfold"]
+        keys = ["randomforest", "conformer", "alexnet", "ensemble__performance_kfold"]
         assert all(np.isfinite(float(row[key])) for row in predictions for key in keys)
         weights = read_csv(directory / "ensemble_weights_no_noise.csv")[0]
         expected_weights = np.asarray([1 / max(internal["individual_errors"][key], 1e-6) for key in keys[:3]])

@@ -1279,8 +1279,8 @@ def aggregate_group_mask_comparison(save_path, config, model_keys, fold_count):
 def _plot_group_mask_comparisons(root, rows, model_keys, metric_names):
     """Save large-font cross-model masking figures for presentation use."""
     model_aliases = {
-        "rf": "RF",
-        "cnntf_v2_gap": "CNN+Tf v2 GAP",
+        "randomforest": "RandomForest",
+        "conformer": "Conformer",
         "alexnet": "AlexNet",
     }
     metric_labels = {
@@ -1427,7 +1427,7 @@ def explainability_outputs_complete(save_path, config, model_keys, fold_count,
                 for value in stability.get("methods", ["integrated_gradients"])
             }
             if (
-                model_key != "rf"
+                model_key != "randomforest"
                 and stability.get("enabled", False)
                 and bool(methods & stability_methods)
             ):
@@ -1438,7 +1438,7 @@ def explainability_outputs_complete(save_path, config, model_keys, fold_count,
                 for value in sanity.get("methods", ["integrated_gradients"])
             }
             if (
-                model_key != "rf"
+                model_key != "randomforest"
                 and sanity.get("enabled", False)
                 and bool(methods & sanity_methods)
             ):

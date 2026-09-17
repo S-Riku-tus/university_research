@@ -10,7 +10,7 @@
 | 読込 | [dataloading_and_conversion.py](../code/utils/dataloading/dataloading_and_conversion.py) | 時間×周波数×channelのx、熱流束y、元WAV/chunk情報 |
 | 条件・分割 | [dataset_jobs.py](../code/utils/experiment/dataset_jobs.py)、[learning_policy.py](../code/utils/experiment/learning_policy.py) | 実験日/ノイズ方針、元WAV分離、ノイズ間の対応検査 |
 | 学習・評価実行 | [learning_runner.py](../code/utils/experiment/learning_runner.py) | 分割・ノイズ方針ごとの学習・予測・XAI・指標・保存をまとめる |
-| モデル | [base_regression.py](../code/utils/models/regression/base_regression.py)、[onb_defaults.py](../code/utils/config/onb_defaults.py) | RF=XGBRF、log-power AlexNet、log-power CNN＋Transformer。固定registryと出力・評価・XAI既定値 |
+| モデル | [base_regression.py](../code/utils/models/regression/base_regression.py)、[onb_defaults.py](../code/utils/config/onb_defaults.py) | RandomForest=XGBRF、Conformer、log-power AlexNet。固定registryと出力・評価・XAI既定値 |
 | 学習器 | [model_training.py](../code/utils/training/model_training.py) | 学習側PCA、Keras/RF学習、元スケールへの予測復元 |
 | 統合 | [strategy_catalog.py](../code/utils/ensemble/strategy_catalog.py)、[ensemble_runtime.py](../code/utils/ensemble/ensemble_runtime.py)、[ensemble_weighting.py](../code/utils/ensemble/ensemble_weighting.py) | 選択式の統合、元WAV非重複inner holdout、WAV medianでの重み用誤差 |
 | 回帰・二値指標 | [regression_detection_metrics.py](../code/utils/calculation/regression_detection_metrics.py) | R²/RMSE/MAE、連続ROC/PR-AUC、二値分類指標 |
@@ -24,7 +24,7 @@
 
 主実行の`VALIDATION_CONFIG`にはデータ、学習条件、モデル別parameter grid、統合など実験ごとに変える項目を置く。`acoustic_selection`はピーク高さ閾値だけを置き、`None`なら選別なしとする。特徴CSV・帯域・対象範囲など通常固定する条件と、output/evaluation/explainability、モデルregistryは[onb_defaults.py](../code/utils/config/onb_defaults.py)で補完し、解決後の全設定をmanifestへ保存する。`configs/`のYAMLは条件記録で、現在は自動読込しない。現在の`explicit_days`では`learning_policy.train_experiments`と`test_experiments`の和集合からデータ対象日を自動決定し、`data.experiment_names`は指定しない。旧`within_day / leave_one_day_out`へ切り替える場合のみ`data.experiment_names`に対象日を指定する。[日付指定の監査](../experiments/2026-09-16_onb_experiment_day_audit/README.md)。
 
-現行の有効3モデルは`rf / cnntf_v2_gap / alexnet`。主設定で有効な統合方式は`inner_holdout`で、これを主表示にも使う。`performance_kfold`へ戻す場合は現在の`wav_kfold`とWAV中央値OOF R²を使う。`subset_equal_cv / crossfit_wav_stack / crossfit_shrinkage_stack`の固定ピーク選別との併用も実装済みだが、現在は無効。[重み学習の実装](../code/utils/ensemble/crossfit_stacking.py)、[診断と修正](../experiments/2026-09-16_onb_result_diagnosis/README.md)、[5方式の手法と数式](ensemble_methods.md)。`prediction_max`は削除済み。`val_fold_legacy`は再現・診断用で主張不可。
+現行の有効3モデルは`randomforest / conformer / alexnet`。主設定で有効な統合方式は`inner_holdout`で、これを主表示にも使う。`performance_kfold`へ戻す場合は現在の`wav_kfold`とWAV中央値OOF R²を使う。`subset_equal_cv / crossfit_wav_stack / crossfit_shrinkage_stack`の固定ピーク選別との併用も実装済みだが、現在は無効。[重み学習の実装](../code/utils/ensemble/crossfit_stacking.py)、[診断と修正](../experiments/2026-09-16_onb_result_diagnosis/README.md)、[5方式の手法と数式](ensemble_methods.md)。`prediction_max`は削除済み。`val_fold_legacy`は再現・診断用で主張不可。
 
 `within_day / leave_one_day_out / explicit_days`と`matched / clean_only`を組み合わせる。clean_onlyは同じモデル・PCA・scaler・重みをノイズ間で共有する。明示分割では学習専用日は学習に要るノイズだけを探索する。一般化評価の[実装・制約](research_plan/2026-09-14_result_layout_and_generalization.md)も確認する。
 

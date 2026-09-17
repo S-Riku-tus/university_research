@@ -82,7 +82,7 @@ def fixture(root, policy, evaluated_noises=("heatflux_no_noise", "heatflux_refer
                              "noise_dir_name": noise, "snr_value": "no_noise" if noise_number == 0 else "-20",
                              "threshold": 35 + day_number,
                              "save_base_path": root / day / policy_result_date_dir("results", policy)})
-    specs = [{"key": key, "label": key, "kind": "sklearn"} for key in ("rf", "second")]
+    specs = [{"key": key, "label": key, "kind": "sklearn"} for key in ("randomforest", "second")]
     manager = EnsembleManager({"enabled_strategy_names": ["simple_equal", "inner_holdout"],
                                "primary_strategy_name": "inner_holdout"}, [s["key"] for s in specs])
     config = {
@@ -181,24 +181,24 @@ class LearningPolicyTest(unittest.TestCase):
         )
         first_hash = run_config_digest(
             {"models": {}, "output": {}, "learning_policy": {**policy, "train_experiments": ["day-a"]}},
-            {}, [], "rf", True,
+            {}, [], "randomforest", True,
         )
         second_hash = run_config_digest(
             {"models": {}, "output": {}, "learning_policy": {**policy, "train_experiments": ["day-a", "day-b"]}},
-            {}, [], "rf", True,
+            {}, [], "randomforest", True,
         )
         self.assertNotEqual(first_hash, second_hash)
         first_dir = run_dir_name(
-            300, "fixed", "rf", False, "simple", first_hash, "run-a"
+            300, "fixed", "randomforest", False, "simple", first_hash, "run-a"
         )
         second_dir = run_dir_name(
-            300, "fixed", "rf", False, "simple", second_hash, "run-a"
+            300, "fixed", "randomforest", False, "simple", second_hash, "run-a"
         )
         self.assertNotEqual(first_dir, second_dir)
         self.assertTrue(first_dir.endswith(f"{first_hash}_run-a"))
 
         repeated_condition = run_dir_name(
-            300, "fixed", "rf", False, "simple", first_hash, "run-b"
+            300, "fixed", "randomforest", False, "simple", first_hash, "run-b"
         )
         self.assertNotEqual(first_dir, repeated_condition)
 
@@ -264,7 +264,7 @@ class LearningPolicyTest(unittest.TestCase):
                         by_day.setdefault(job["experiment_name"], []).append(directory)
                     for directories in by_day.values():
                         rows = collect_noise_trend_rows(directories, noise_order=["no_noise", "-20"],
-                                                        model_keys=["rf", "second"])
+                                                        model_keys=["randomforest", "second"])
                         self.assertTrue(rows)
                         if split == "leave_one_day_out":
                             self.assertTrue(all(np.isnan(row["standard_error"]) for row in rows))
@@ -338,10 +338,10 @@ class LearningPolicyTest(unittest.TestCase):
 
     def test_default_hash_is_compatible_and_other_policies_change_hash(self):
         config = {"models": {}, "output": {}}
-        old = run_config_digest(config, {}, [], "rf", True)
+        old = run_config_digest(config, {}, [], "randomforest", True)
         default = {"split_mode": "within_day", "training_noise": "matched"}
-        self.assertEqual(old, run_config_digest({**config, "learning_policy": default}, {}, [], "rf", True))
-        self.assertNotEqual(old, run_config_digest({**config, "learning_policy": {**default, "training_noise": "clean_only"}}, {}, [], "rf", True))
+        self.assertEqual(old, run_config_digest({**config, "learning_policy": default}, {}, [], "randomforest", True))
+        self.assertNotEqual(old, run_config_digest({**config, "learning_policy": {**default, "training_noise": "clean_only"}}, {}, [], "randomforest", True))
 
     def test_new_and_legacy_paths_and_resume_hash(self):
         with tempfile.TemporaryDirectory() as temp:
@@ -352,7 +352,7 @@ class LearningPolicyTest(unittest.TestCase):
             current = result_run_path(job, "run")
             current.mkdir(parents=True)
             self.assertEqual(existing_result_run_path(job, "run"), current)
-            (current / "metrics_summary_no_noise.csv").write_text("model,r2_mean\nrf,0.9\n")
+            (current / "metrics_summary_no_noise.csv").write_text("model,r2_mean\nrandomforest,0.9\n")
             manifest = {"run_dir": "run", "run_hash": "a", "dataset": {"snr_value": "no_noise"}, "execution_schema_version": 2}
             (current / "run_manifest.json").write_text(json.dumps(manifest))
             check = lambda h: is_completed_run(Path(temp) / "summary.csv", "run", current, "no_noise", True, False, h)
@@ -385,7 +385,7 @@ class LearningPolicyTest(unittest.TestCase):
             old = root / "heatflux_no_noise" / "maxfreq=3kHz"
             run = old / "run"
             run.mkdir(parents=True)
-            content = b"model,r2_mean\nrf,0.9\n"
+            content = b"model,r2_mean\nrandomforest,0.9\n"
             (run / "metrics_summary_no_noise.csv").write_bytes(content)
             (root / "tuning_summary.csv").write_text(str(run), encoding="utf-8")
             self.assertFalse(migrate_results(root)["applied"])

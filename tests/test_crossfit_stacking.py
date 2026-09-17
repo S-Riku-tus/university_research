@@ -120,12 +120,12 @@ class CrossfitStackingTest(unittest.TestCase):
     def test_legacy_config_has_no_new_settings_or_extra_fitting(self):
         selection = {"enabled_strategy_names": ["simple_equal", "inner_holdout"],
                      "primary_strategy_name": "inner_holdout"}
-        manager = EnsembleManager(selection, ["rf", "second"])
+        manager = EnsembleManager(selection, ["randomforest", "second"])
         self.assertNotIn("crossfit", str(manager.snapshot()))
-        run = manager.create_run([{"key": "rf"}, {"key": "second"}])
+        run = manager.create_run([{"key": "randomforest"}, {"key": "second"}])
         self.assertIsNone(run.fit_crossfit_weights(None, None, None, None, None, None, None, 1, 3))
-        predictions = {"rf": np.asarray([2., 4.]), "second": np.asarray([8., 12.])}
-        result = run.combine_predictions(predictions, {"rf": 1., "second": 3.}, 1)
+        predictions = {"randomforest": np.asarray([2., 4.]), "second": np.asarray([8., 12.])}
+        result = run.combine_predictions(predictions, {"randomforest": 1., "second": 3.}, 1)
         np.testing.assert_array_equal(result["ensemble__simple_equal"]["prediction"], [5, 8])
         np.testing.assert_array_equal(result["ensemble__inner_holdout"]["prediction"], [3.5, 6])
 
@@ -201,7 +201,7 @@ class CrossfitPipelineTest(unittest.TestCase):
                                 rows = list(csv.DictReader(source))
                             for row in rows:
                                 for name in NAMES:
-                                    expected = sum(audit["weights"][name][key] * float(row[key]) for key in ("rf", "second"))
+                                    expected = sum(audit["weights"][name][key] * float(row[key]) for key in ("randomforest", "second"))
                                     self.assertAlmostEqual(float(row["ensemble__" + name]), expected)
                             legacy_predictions[(job["experiment_name"], job["snr_value"], number)] = rows
                         by_day.setdefault(job["experiment_name"], []).append(audits)
@@ -226,14 +226,14 @@ class CrossfitPipelineTest(unittest.TestCase):
                                 rows = list(csv.DictReader(source))
                             previous = legacy_predictions[(job["experiment_name"], job["snr_value"], number)]
                             for old, new in zip(rows, previous):
-                                for key in ("rf", "second", "ensemble__simple_equal", "ensemble__inner_holdout"):
+                                for key in ("randomforest", "second", "ensemble__simple_equal", "ensemble__inner_holdout"):
                                     self.assertEqual(old[key], new[key])
 
 
 def collect_trends(directory):
     from utils.plotting.noise_trend_plots import collect_noise_trend_rows
     return collect_noise_trend_rows([directory], noise_order=["no_noise", "-20"],
-                                   model_keys=["rf", "second"], ensemble_strategy_names="all")
+                                   model_keys=["randomforest", "second"], ensemble_strategy_names="all")
 
 
 if __name__ == "__main__":

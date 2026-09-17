@@ -142,14 +142,14 @@ VALIDATION_CONFIG = apply_onb_defaults({
         "onb_band_frac": 0.10,
     },
     "models": {
-        "active_model_keys": ["rf", "cnntf_v2_gap", "alexnet"],
+        "active_model_keys": ["randomforest", "conformer", "alexnet"],
         # active_model_keysに指定したモデルだけを学習する。
         # 各候補リストが1要素なら固定条件、複数要素なら組み合わせを比較する。
         # 無効なモデルの候補設定は実行に影響しない。
         "parameter_sets": {
             "type": "active_model_grid",
             "model_grids": {
-                "rf": {
+                "randomforest": {
                     # RFの木の数・深さを設定する。
                     # サンプルと特徴の抽出率もここで指定する。
                     "n_estimators": [300],
@@ -157,7 +157,7 @@ VALIDATION_CONFIG = apply_onb_defaults({
                     "subsample": [0.6],
                     "colsample_bynode": [0.6],
                 },
-                "cnntf_v2_gap": {
+                "conformer": {
                     "lr": [0.001],
                     "batch_size": [12],
                 },
@@ -165,6 +165,7 @@ VALIDATION_CONFIG = apply_onb_defaults({
                     "lr": [0.001],
                     "batch_size": [12],
                 },
+            },
             "default_keras": {
                 # KerasのTTY依存バーではなく、全実行環境で残る共通進捗行を使う。
                 "fit_verbose": 0,
@@ -244,8 +245,8 @@ ENSEMBLE_MANAGER = EnsembleManager(
 ENSEMBLE_ENABLED = ENSEMBLE_MANAGER.enabled and len(ACTIVE_MODEL_KEYS) >= 2
 RESULT_MODEL_GROUP = (
     "ensemble" if ENSEMBLE_ENABLED
-    else "rf" if ACTIVE_MODEL_KEYS == ["rf"]
-    else "cnntf_v2_gap" if ACTIVE_MODEL_KEYS == ["cnntf_v2_gap"]
+    else "randomforest" if ACTIVE_MODEL_KEYS == ["randomforest"]
+    else "conformer" if ACTIVE_MODEL_KEYS == ["conformer"]
     else "alexnet" if ACTIVE_MODEL_KEYS == ["alexnet"]
     else "single_model"
 )

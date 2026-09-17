@@ -47,7 +47,7 @@ class OnbDefaultsTest(unittest.TestCase):
         first[0]["label"] = "changed"
         self.assertEqual(second[0]["label"], "RandomForest")
         self.assertEqual([item["key"] for item in second], [
-            "rf", "cnntf_v2_gap", "alexnet"
+            "randomforest", "conformer", "alexnet"
         ])
         self.assertTrue(all(callable(item["builder"]) for item in second))
 

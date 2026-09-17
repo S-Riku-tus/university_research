@@ -116,7 +116,7 @@ def main():
         assert all(d["threshold_psd"] == 1e-9 for d in fold["selection"]["by_experiment"].values())
         assert set(fold["selection"]["by_experiment"]) == TRAIN
     predictions = read_csv(directory / "fold_pred/pred_f1_no_noise.csv")
-    model_keys = ["rf", "cnntf_v2_gap", "alexnet"]
+    model_keys = ["randomforest", "conformer", "alexnet"]
     assert len(predictions) == 1080
     assert all(np.isfinite(float(row[key])) for row in predictions for key in model_keys + ["ensemble__performance_kfold"])
     weights = read_csv(directory / "ensemble_weights_no_noise.csv")[0]

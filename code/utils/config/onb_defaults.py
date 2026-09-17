@@ -27,13 +27,13 @@ def onb_model_specs():
     """Return a fresh registry for the fixed production model structures."""
     return [
         {
-            "key": "rf",
+            "key": "randomforest",
             "label": "RandomForest",
             "kind": "sklearn",
             "builder": _build_random_forest,
         },
         {
-            "key": "cnntf_v2_gap",
+            "key": "conformer",
             "label": "Conformer",
             "kind": "keras",
             "builder": _build_cnn_transformer,
@@ -120,8 +120,8 @@ DEFAULT_EXPLAINABILITY_CONFIG = {
     "ig_atol": 1e-6,
     "ig_map_rtol": 1e-2,
     "methods_by_model": {
-        "rf": ["tree_shap_pca", "group_occlusion"],
-        "cnntf_v2_gap": ["integrated_gradients", "group_occlusion"],
+        "randomforest": ["tree_shap_pca", "group_occlusion"],
+        "conformer": ["integrated_gradients", "group_occlusion"],
         "alexnet": [
             "integrated_gradients", "grad_cam", "group_occlusion"
         ],

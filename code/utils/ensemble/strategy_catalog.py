@@ -43,7 +43,7 @@ ENSEMBLE_STRATEGY_CATALOG = {
 # These mechanics are shared by experiments and are deliberately not exposed in
 # the ONB run configuration. The resolved values are still saved in manifests.
 ENSEMBLE_RUNTIME_DEFAULTS = {
-    "reference_model": "rf",
+    "reference_model": "randomforest",
     "inner_holdout_frac": 0.20,
     # Model weights target the same source-WAV unit used by the primary
     # evaluation.  Median is robust to isolated impulsive chunks.

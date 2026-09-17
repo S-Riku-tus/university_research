@@ -26,8 +26,8 @@ KERAS_TRAINING_PARAM_KEYS = {
 
 
 MODEL_TAG_ALIASES = {
-    "rf": "rf",
-    "cnntf_v2_gap": "ctf",
+    "randomforest": "rf",
+    "conformer": "ctf",
     "alexnet": "alex",
 }
 

@@ -7,7 +7,7 @@ from matplotlib.ticker import ScalarFormatter
 def _safe_stem(text, max_len=32):
     """Return a short Windows-friendly file stem."""
     aliases = {
-        "RandomForest": "rf",
+        "RandomForest": "randomforest",
         "AlexNet": "alexnet",
         "Conformer": "conformer",
         "ROC-AUC (continuous)": "roc_auc_cont",

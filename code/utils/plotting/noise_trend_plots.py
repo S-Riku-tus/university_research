@@ -18,8 +18,8 @@ METRIC_LABELS = {
     "auc_binary": "AUC (binary prediction)",
 }
 MODEL_LABELS = {
-    "rf": "RandomForest",
-    "cnntf_v2_gap": "CNN+Transformer",
+    "randomforest": "RandomForest",
+    "conformer": "Conformer",
     "alexnet": "AlexNet",
 }
 STRATEGY_LABELS = {

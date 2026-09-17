@@ -25,7 +25,7 @@ import pandas as pd
 from utils.ensemble.strategy_catalog import is_supported_result_key
 
 
-SINGLE_MODEL_KEYS = ("rf", "cnntf_v2_gap", "alexnet")
+SINGLE_MODEL_KEYS = ("randomforest", "conformer", "alexnet")
 SAFE_ENSEMBLE_KEYS = (
     "ensemble__simple_equal",
     "ensemble__inner_holdout",

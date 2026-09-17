@@ -15,7 +15,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "code"))
 from utils.plotting.noise_trend_plots import collect_noise_trend_rows, plot_noise_trends_from_runs
 
 
-MODELS = {"rf": "RandomForest", "cnntf_v2_gap": "CNN+Tf v2 GAP", "alexnet": "AlexNet"}
+MODELS = {"randomforest": "RandomForest", "conformer": "Conformer", "alexnet": "AlexNet"}
 ENSEMBLE = "ensemble__simple_equal"
 
 
@@ -66,7 +66,7 @@ class NoiseTrendPlotsTest(unittest.TestCase):
             rows = collect_noise_trend_rows(
                 paths, noise_order=["-20", "0", "no_noise"], model_keys=list(MODELS),
                 metrics=["r2", "roc_auc_cont", "auc_binary"])
-            chunk = [r for r in rows if r["model_key"] == "rf" and r["evaluation_unit"] == "chunk" and r["metric"] == "r2"]
+            chunk = [r for r in rows if r["model_key"] == "randomforest" and r["evaluation_unit"] == "chunk" and r["metric"] == "r2"]
             self.assertEqual([r["noise"] for r in chunk], ["no_noise", "0", "-20"])
             self.assertEqual(chunk[0]["value"], -0.2)
             self.assertTrue(math.isnan(chunk[1]["value"]))
