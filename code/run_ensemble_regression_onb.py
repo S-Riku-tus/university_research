@@ -110,14 +110,14 @@ VALIDATION_CONFIG = apply_onb_defaults({
         # data.experiment_namesに評価対象日を指定する。
         "split_mode": "explicit_days",
         "train_experiments": [
-            "2025.06.11_0.3_2",
-            # "2025.07.09_0.3_1",
-            # "2025.06.18_0.3_3",
-            ],
-        "test_experiments": [
             # "2025.06.11_0.3_2",
             # "2025.07.09_0.3_1",
             "2025.06.18_0.3_3",
+            ],
+        "test_experiments": [
+            "2025.06.11_0.3_2",
+            # "2025.07.09_0.3_1",
+            # "2025.06.18_0.3_3",
             ],
         # 重み決定でも同じ元WAVの1秒区間を学習・検証へ分けない。
         # 内部fold数はrun.folds。chunk_kfoldは旧比較の再現時だけ使う。
