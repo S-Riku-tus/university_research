@@ -381,8 +381,7 @@ def grad_cam_regression(model, sample, conv_layer_name=None):
     return cam
 
 
-def make_axis_groups(height, width, max_freq_hz, frequency_bands_hz=None,
-                     time_groups=4, time_extent_seconds=1.0):
+def make_frequency_groups(height, width, max_freq_hz, frequency_bands_hz=None):
     if frequency_bands_hz is None:
         frequency_bands_hz = [
             (0, 256),
@@ -422,27 +421,6 @@ def make_axis_groups(height, width, max_freq_hz, frequency_bands_hz=None,
             "mask": mask,
         })
 
-    time_groups = int(time_groups)
-    if time_groups <= 0:
-        return groups
-
-    edges = np.linspace(0, height, time_groups + 1, dtype=int)
-    for i in range(len(edges) - 1):
-        low_frame, high_frame = int(edges[i]), int(edges[i + 1])
-        low_seconds = float(time_extent_seconds) * low_frame / height
-        high_seconds = float(time_extent_seconds) * high_frame / height
-        mask = np.zeros((height, width), dtype=bool)
-        mask[low_frame:high_frame, :] = True
-        groups.append({
-            "group": f"time_{i + 1}",
-            "axis": "time",
-            "low": low_seconds,
-            "high": high_seconds,
-            "unit": "s",
-            "low_index": low_frame,
-            "high_index": high_frame,
-            "mask": mask,
-        })
     return groups
 
 
@@ -553,13 +531,11 @@ def insertion_curve(predict_fn, sample, importance, fractions=None, baseline_val
     return rows
 
 
-def summarize_map_by_axis(values, max_freq_hz):
+def summarize_map_by_frequency(values, max_freq_hz):
     arr = np.asarray(values, dtype=np.float32)
     freq_profile = arr.mean(axis=0)
-    time_profile = arr.mean(axis=1)
     freq_rows = []
     for i, value in enumerate(freq_profile):
         freq_hz = max_freq_hz * (i + 0.5) / len(freq_profile)
         freq_rows.append([i, freq_hz, float(value)])
-    time_rows = [[i, float(v)] for i, v in enumerate(time_profile)]
-    return freq_rows, time_rows
+    return freq_rows

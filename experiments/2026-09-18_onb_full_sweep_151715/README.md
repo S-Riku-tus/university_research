@@ -37,16 +37,25 @@
 
 ## 確認事実：説明性出力
 
-全35条件で、各単体モデルの全1080秒に対する周波数帯・時間帯ゼロマスクのR²低下、ONB近傍RMSE増加、Recall低下が保存されている。統合モデル自体のマスク評価ではない。
+全35条件で、各単体モデルの全1080秒に対する周波数帯ゼロマスクのR²低下、ONB近傍RMSE増加、Recall低下などが保存されている。統合モデル自体のマスク評価ではない。このrunには変更前の時間区間マスク出力も残るが、本人の9/18の方針により考察・発表対象から外した。現行コードは時間区間マスク、時間感度profile、最大感度時刻を生成しない。スペクトログラム画像の横軸としての1秒表示は残す。
 
 - 周波数帯ゼロマスクによるR²低下の最大帯域は、RFが全35条件で2–5 kHz（3 kHz入力では2–3 kHz）。Conformerは1–2 kHzが17/35、5–10 kHzが6/35など条件で変わる。AlexNetは1–2 kHzが15/35、2–5 kHzが9/35、3 kHz入力の2–3 kHzが7/35など。22 kHz・無雑音ではRF 2–5 kHz（ΔR² .462）、Conformer 5–10 kHz（1.224）、AlexNet 1–2 kHz（16.091）。前回runのConformer最大15–22 kHzとは異なる。
-- 時間帯ゼロマスクによるR²低下が最大の1秒内区間は、RF 0–.25秒が23/35、Conformer .5–.75秒が27/35、AlexNet .25–.5秒が30/35。22 kHz・無雑音では順にΔR² .041、.435、2.924。これは1秒入力窓の位置であり、実験中の沸騰開始時刻ではない。
+- 22 kHz・無雑音でR²低下が最大の帯域はRF 2–5 kHz、Conformer 5–10 kHz、AlexNet 1–2 kHz。ONB近傍RMSE増加も同じ3帯域がそれぞれ最大だが、Recall低下の最大帯域はRF 2–5 kHz、Conformer 15–22 kHz、AlexNetは低下する帯域なし。指標ごとに読み方が異なる。
+- とくにAlexNetの1–2 kHzマスクではR²が.891→−15.200、ONB近傍RMSEが150.3→600.3 kW/m²、Recallが.798→1.000、F1が.888→.714。ONB陽性600/1080秒をすべて陽性予測したときのF1=.714と一致する。Recall上昇だけを改善と扱わない。Conformerの5–10 kHzマスクでもRecallは.842→1.000だがF1は.913→.714、R²は.899→−.325となる。ゼロ置換による予測シフトを伴う。
 - Integrated Gradientsの数値収束はConformer 91/175例、AlexNet 89/175例。22 kHz・無雑音ではConformer 1/5、AlexNet 0/5。局所IGマップを主な物理的根拠にしない。Grad-CAMも代表例の可視化であり、全域の安定性の根拠ではない。RFのTreeSHAPはPCA成分空間で、周波数帯を直接表すものではない。
 - 入力に各試料の標準偏差の1%の微小雑音を加えたIG絶対値マップのPearson相関は、全350組でConformer平均.376、AlexNet平均.411。元・摂動後の両方が数値収束した組に限っても、それぞれ79組で平均.477、68組で平均.483。上位出力層のランダム化後とのマップ相関は全175例で平均.292/.438。これらは局所マップの安定性とモデル依存を調べる診断であり、物理帯域の検証とは別である。
 - ゼロマスクは実測とは異なる入力を作る。とくにAlexNetのΔR²が16を超える条件は大きな分布外変化を含む可能性がある。重要帯域の推定と、気泡由来の音という物理的同定は区別する。選別用の2.1–2.5 kHzと、RFの2–5 kHzマスク帯域も同一ではない。
+
+### マスク以外のモデル別確認
+
+- **RandomForest**: TreeSHAPは全35条件・代表175試料でPCA成分空間の寄与を保存し、状態は35/35条件で`complete`。予測再構成誤差の絶対値は中央値0.078 W/m²、22 kHz・無雑音5試料でも最大0.523 W/m²。数値整合は良い。ただしPCA成分の大きなSHAP値は実周波数に直接対応しないため、周波数の物理解釈は帯域マスクで述べる。
+- **Conformer**: IGは代表175試料中91試料で数値収束。22 kHz・無雑音は5試料中1試料のみ収束し、ONB直上試料`near_onb_above_val0420`は未収束。入力標準偏差の1%の雑音を加えたIG絶対値画像の画素Pearson相関は350組平均.376（22 kHz・無雑音10組平均.695）。この代表画像を物理的な注目位置の確定証拠には使えない。
+- **AlexNet**: IGは175試料中89試料で数値収束、22 kHz・無雑音は0/5。Grad-CAM画像は175試料分あるが、IGとGrad-CAMの正規化された同一試料画像の画素Pearson相関は175組平均−.120、22 kHz・無雑音の5組も全て負。両手法は異なる量を示し、しかも当該5例のIGは未収束なので、「AlexNetはこの位置を見ている」と単一画像で断定できない。1%入力雑音でのIG相関は350組平均.411。
+- 22 kHz・参照SNR 0 dBのONB直上試料`near_onb_above_val0420`では、ConformerとAlexNetのIGがともに数値収束している。同じ入力のIG絶対値画像の画素Pearson相関は.050。時間平均した画像強度が最大の周波数binはConformer 13.70 kHz、AlexNet .737 kHzで、モデルごとに分布が違う。これは1試料のモデル差を示す例であり、全条件の有効帯域の判定は周波数帯マスクを優先する。両画像の色はそれぞれ正規化され、寄与の絶対量は比較できない。
+- CNNの出力層をランダム化した後のIG絶対値画像との画素Pearson相関は、Conformer 175例平均.292、AlexNet 175例平均.438。入力摂動や重み変更で画像がどう変わるかを示す診断で、物理的妥当性の検証ではない。IGの相対completeness誤差が小さい例も、別の収束条件を満たさない場合がある。
 
 ## 原因仮説と次の識別比較
 
 確認できたのは、全域で統合が最良となる条件があり、ONB近傍と雑音下では最良単体を下回る条件が多いこと。異符号の残差と領域ごとの得意モデルの違いが22 kHz・無雑音の改善と整合するが、これだけで統合方式が常に有効とは言えない。次は同じ選別・分割・評価秒を固定し、22 kHz・無雑音を単独実行と全条件実行で再現し、複数seedでモデルと重みの変動を調べる。選別あり／なしは別比較とし、6/18テストの成績を見て学習設定を選ばない。説明性は入力分布の変化を点検し、必要な帯域について除去後再学習と独立日で検証する。
 
-発表用の既存図は同runの `maxfreq=22kHz/noise_trends/inner_holdout/chunk_fold_mean_r2.png`、`chunk_fold_mean_roc_auc_cont.png`、`maxfreq=22kHz/heatflux_no_noise/bar/ensemble_improvement_no_noise.png`、同leafの `explainability/group_mask_comparison_frequency_r2_drop.png` と `group_mask_comparison_time_r2_drop.png`。散布図の緑線はコード上の「100% Classification Threshold」であり、今回の主発表では扱わない。AUCは連続予測の順位分離を示し、その緑線の推定とは別である。追加作図・PPTX編集はしていない。
+発表用の既存図は同runの `maxfreq=22kHz/noise_trends/inner_holdout/chunk_fold_mean_r2.png`、`chunk_fold_mean_roc_auc_cont.png`、`maxfreq=22kHz/heatflux_no_noise/explainability/group_mask_comparison_frequency_r2_drop.png` と `group_mask_comparison_frequency_rmse_onb_increase.png`。モデル別の説明例には`maxfreq=22kHz/heatflux_reference_SNR=0/explainability/fold1/conformer/near_onb_above_val0420/integrated_gradients_magnitude.png`と、同階層の`alexnet/near_onb_above_val0420/integrated_gradients_magnitude.png`が使える。両者ともこの1試料では数値収束済みだが、全体では約半数しか収束していない点を添える。時間区間マスク図は使わない。散布図の緑線はコード上の「100% Classification Threshold」であり、今回の主発表では扱わない。AUCは連続予測の順位分離を示し、その緑線の推定とは別である。追加作図・PPTX編集はしていない。

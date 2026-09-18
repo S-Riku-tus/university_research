@@ -126,7 +126,6 @@ DEFAULT_EXPLAINABILITY_CONFIG = {
         [10000, 15000],
         [15000, 22000],
     ],
-    "time_groups": 4,
     "time_extent_seconds": 1.0,
     "onb_band_frac": 0.10,
     "baseline_value": 0.0,

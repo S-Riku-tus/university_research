@@ -12,14 +12,14 @@ from utils.explainability.spectrogram_explainers import (
     grad_cam_regression,
     insertion_curve,
     integrated_gradients,
-    make_axis_groups,
+    make_frequency_groups,
     normalize_map,
     normalize_magnitude,
     occlusion_importance,
     save_array_and_png,
     save_input_spectrogram_png,
     save_signed_array_and_png,
-    summarize_map_by_axis,
+    summarize_map_by_frequency,
     windows_long_path,
     write_csv,
 )
@@ -45,8 +45,6 @@ SUMMARY_HEADER = [
     "insertion_area_between_curve",
     "top_frequency_bin",
     "top_frequency_hz",
-    "top_time_frame",
-    "top_time_s",
     "ig_numerical_converged",
     "ig_nodes",
 ]
@@ -208,14 +206,12 @@ def _frequency_bands(config):
     return [(float(low), float(high)) for low, high in bands]
 
 
-def _axis_groups(x_val, max_freq_hz, config):
-    return make_axis_groups(
+def _frequency_groups(x_val, max_freq_hz, config):
+    return make_frequency_groups(
         x_val.shape[1],
         x_val.shape[2],
         max_freq_hz,
         frequency_bands_hz=_frequency_bands(config),
-        time_groups=int(config.get("time_groups", 4)),
-        time_extent_seconds=float(config.get("time_extent_seconds", 1.0)),
     )
 
 
@@ -354,17 +350,12 @@ def _group_mask_performance(predict_fn, x_val, y_val, base_pred, groups,
     return rows
 
 
-def _top_axis_bins(values, max_freq_hz, time_extent_seconds):
+def _top_frequency_bin(values, max_freq_hz):
     arr = np.asarray(values, dtype=np.float32)
     freq_profile = arr.mean(axis=0)
-    time_profile = arr.mean(axis=1)
     top_freq_bin = int(np.argmax(freq_profile))
-    top_time_frame = int(np.argmax(time_profile))
     top_freq_hz = float(max_freq_hz * (top_freq_bin + 0.5) / len(freq_profile))
-    top_time_s = float(
-        time_extent_seconds * (top_time_frame + 0.5) / len(time_profile)
-    )
-    return top_freq_bin, top_freq_hz, top_time_frame, top_time_s
+    return top_freq_bin, top_freq_hz
 
 
 def _write_attribution_outputs(
@@ -466,44 +457,18 @@ def _write_attribution_outputs(
         deletion_metrics = [float("nan")] * 3
         insertion_metrics = [float("nan")] * 3
 
-    freq_rows, time_rows = summarize_map_by_axis(importance, max_freq_hz)
+    freq_rows = summarize_map_by_frequency(importance, max_freq_hz)
     write_csv(os.path.join(sample_dir, f"{method}_frequency_profile.csv"),
               ["frequency_bin", "frequency_hz", "importance"], freq_rows)
-    time_frame_count = max(1, len(time_rows))
-    write_csv(
-        os.path.join(sample_dir, f"{method}_time_profile.csv"),
-        ["time_frame", "time_center_s", "importance"],
-        [
-            [
-                int(row[0]),
-                time_extent_seconds * (int(row[0]) + 0.5) / time_frame_count,
-                float(row[1]),
-            ]
-            for row in time_rows
-        ],
-    )
 
     if signed:
         signed_frequency = np.sum(raw_values, axis=0)
-        signed_time = np.sum(raw_values, axis=1)
         write_csv(
             os.path.join(sample_dir, f"{method}_signed_frequency_profile.csv"),
             ["frequency_bin", "frequency_hz", f"contribution_{units}"],
             [
                 [i, max_freq_hz * (i + 0.5) / len(signed_frequency), float(value)]
                 for i, value in enumerate(signed_frequency)
-            ],
-        )
-        write_csv(
-            os.path.join(sample_dir, f"{method}_signed_time_profile.csv"),
-            ["time_frame", "time_center_s", f"contribution_{units}"],
-            [
-                [
-                    i,
-                    time_extent_seconds * (i + 0.5) / len(signed_time),
-                    float(value),
-                ]
-                for i, value in enumerate(signed_time)
             ],
         )
 
@@ -514,8 +479,7 @@ def _write_attribution_outputs(
         abs(completeness_error) / (abs(output_delta) + 1e-12)
         if signed else float("nan")
     )
-    top_freq_bin, top_freq_hz, top_time_frame, top_time_s = _top_axis_bins(
-        importance, max_freq_hz, time_extent_seconds)
+    top_freq_bin, top_freq_hz = _top_frequency_bin(importance, max_freq_hz)
     return [
         sample_id,
         int(local_idx),
@@ -532,8 +496,6 @@ def _write_attribution_outputs(
         *insertion_metrics,
         top_freq_bin,
         top_freq_hz,
-        top_time_frame,
-        top_time_s,
         numerical_diagnostics['converged'] if numerical_diagnostics is not None else '',
         numerical_diagnostics['nodes'] if numerical_diagnostics is not None else '',
     ]
@@ -798,7 +760,7 @@ def explain_keras_model(model_key, model, scaler, x_val, y_val, pred, threshold,
                         out_dir, max_freq_hz, config):
     methods = _methods_for_model(config, model_key)
     max_samples = int(config.get("max_samples_per_fold", 5))
-    groups = _axis_groups(x_val, max_freq_hz, config)
+    groups = _frequency_groups(x_val, max_freq_hz, config)
     predict_fn = keras_predict_fn(model, scaler)
     selected_samples = selected_sample_indices(
         y_val, pred, threshold, max_samples)
@@ -970,7 +932,7 @@ def explain_sklearn_model(model_key, model, pca, scaler, x_val, y_val, pred, thr
                   ["pca_component", "importance"], rows)
 
     max_samples = int(config.get("max_samples_per_fold", 5))
-    groups = _axis_groups(x_val, max_freq_hz, config)
+    groups = _frequency_groups(x_val, max_freq_hz, config)
     predict_fn = sklearn_predict_fn(model, pca, scaler)
     selected_samples = selected_sample_indices(
         y_val, pred, threshold, max_samples)
@@ -1118,6 +1080,8 @@ def aggregate_group_mask_comparison(save_path, config, model_keys, fold_count):
             with open(windows_long_path(path), "r", newline="", encoding="utf-8") as f:
                 rows = list(csv.DictReader(f))
             for row in rows:
+                if row.get("axis") != "frequency":
+                    continue
                 row["fold"] = fold
                 row["model_key"] = model_key
                 collected.append(row)
@@ -1128,28 +1092,25 @@ def aggregate_group_mask_comparison(save_path, config, model_keys, fold_count):
     rank_metrics = ["r2_drop", "rmse_onb_increase", "recall_drop"]
     for fold in folds:
         for model_key in model_keys:
-            for axis in ("frequency", "time"):
-                subset = [
-                    row for row in collected
-                    if int(row["fold"]) == fold
-                    and row["model_key"] == model_key
-                    and row["axis"] == axis
-                ]
-                for metric_name in rank_metrics:
-                    def score(row):
-                        try:
-                            value = float(row[metric_name])
-                        except (TypeError, ValueError):
-                            return float("-inf")
-                        return value if np.isfinite(value) else float("-inf")
+            subset = [
+                row for row in collected
+                if int(row["fold"]) == fold and row["model_key"] == model_key
+            ]
+            for metric_name in rank_metrics:
+                def score(row):
+                    try:
+                        value = float(row[metric_name])
+                    except (TypeError, ValueError):
+                        return float("-inf")
+                    return value if np.isfinite(value) else float("-inf")
 
-                    ordered = sorted(
-                        [row for row in subset if score(row) > float("-inf")],
-                        key=score,
-                        reverse=True,
-                    )
-                    for rank, row in enumerate(ordered, start=1):
-                        row[f"{metric_name}_rank"] = rank
+                ordered = sorted(
+                    [row for row in subset if score(row) > float("-inf")],
+                    key=score,
+                    reverse=True,
+                )
+                for rank, row in enumerate(ordered, start=1):
+                    row[f"{metric_name}_rank"] = rank
 
     original_header = list(collected[0].keys())
     prefix = ["fold", "model_key"]
@@ -1173,32 +1134,29 @@ def aggregate_group_mask_comparison(save_path, config, model_keys, fold_count):
     top_rows = []
     for fold in folds:
         for model_key in model_keys:
-            for axis in ("frequency", "time"):
-                subset = [
-                    row for row in collected
-                    if int(row["fold"]) == fold
-                    and row["model_key"] == model_key
-                    and row["axis"] == axis
+            subset = [
+                row for row in collected
+                if int(row["fold"]) == fold and row["model_key"] == model_key
+            ]
+            for metric_name in rank_metrics:
+                ranked = [
+                    row for row in subset
+                    if row.get(f"{metric_name}_rank") == 1
                 ]
-                for metric_name in rank_metrics:
-                    ranked = [
-                        row for row in subset
-                        if row.get(f"{metric_name}_rank") == 1
-                    ]
-                    if not ranked:
-                        continue
-                    row = ranked[0]
-                    top_rows.append([
-                        fold,
-                        model_key,
-                        axis,
-                        metric_name,
-                        row.get("group", ""),
-                        row.get("low", ""),
-                        row.get("high", ""),
-                        row.get("unit", ""),
-                        row.get(metric_name, ""),
-                    ])
+                if not ranked:
+                    continue
+                row = ranked[0]
+                top_rows.append([
+                    fold,
+                    model_key,
+                    "frequency",
+                    metric_name,
+                    row.get("group", ""),
+                    row.get("low", ""),
+                    row.get("high", ""),
+                    row.get("unit", ""),
+                    row.get(metric_name, ""),
+                ])
     write_csv(
         os.path.join(root, "top_groups_by_model.csv"),
         [
@@ -1224,110 +1182,103 @@ def _plot_group_mask_comparisons(root, rows, model_keys, metric_names):
         "recall_drop": "Decrease in Recall after masking",
     }
 
-    for axis in ("frequency", "time"):
-        axis_rows = [row for row in rows if row.get("axis") == axis]
-        group_meta = {}
-        for row in axis_rows:
+    group_meta = {}
+    for row in rows:
+        if row.get("axis") == "frequency":
             group_meta[row["group"]] = (
                 float(row["low"]),
                 float(row["high"]),
                 row.get("unit", ""),
             )
-        groups = sorted(group_meta, key=lambda name: group_meta[name][0])
-        if not groups:
+    groups = sorted(group_meta, key=lambda name: group_meta[name][0])
+    if not groups:
+        return
+
+    group_labels = []
+    for group in groups:
+        low, high, unit = group_meta[group]
+        group_labels.append(f"{low:g}–{high:g}\n{unit}")
+
+    for metric_name in metric_names:
+        matrix = np.full((len(model_keys), len(groups)), np.nan, dtype=float)
+        for model_index, model_key in enumerate(model_keys):
+            for group_index, group in enumerate(groups):
+                values = []
+                for row in rows:
+                    if row.get("model_key") != model_key or row.get("group") != group:
+                        continue
+                    try:
+                        value = float(row[metric_name])
+                    except (KeyError, TypeError, ValueError):
+                        continue
+                    if np.isfinite(value):
+                        values.append(value)
+                if values:
+                    matrix[model_index, group_index] = float(np.mean(values))
+
+        finite = np.abs(matrix[np.isfinite(matrix)])
+        if not finite.size:
             continue
-
-        group_labels = []
-        for group in groups:
-            low, high, unit = group_meta[group]
-            if axis == "frequency":
-                group_labels.append(f"{low:g}–{high:g}\n{unit}")
-            else:
-                group_labels.append(f"{low:g}–{high:g} {unit}")
-
-        for metric_name in metric_names:
-            matrix = np.full((len(model_keys), len(groups)), np.nan, dtype=float)
-            for model_index, model_key in enumerate(model_keys):
-                for group_index, group in enumerate(groups):
-                    values = []
-                    for row in axis_rows:
-                        if row.get("model_key") != model_key or row.get("group") != group:
-                            continue
-                        try:
-                            value = float(row[metric_name])
-                        except (KeyError, TypeError, ValueError):
-                            continue
-                        if np.isfinite(value):
-                            values.append(value)
-                    if values:
-                        matrix[model_index, group_index] = float(np.mean(values))
-
-            finite = np.abs(matrix[np.isfinite(matrix)])
-            if not finite.size:
-                continue
-            limit = max(float(np.max(finite)), 1e-12)
-            cmap = plt.get_cmap("coolwarm").copy()
-            cmap.set_bad("#e8e8e8")
-            figure_width = max(11.0, 1.35 * len(groups) + 4.0)
-            figure_height = max(5.5, 1.15 * len(model_keys) + 2.5)
-            with plt.rc_context({"font.family": "Times New Roman"}):
-                fig, ax = plt.subplots(figsize=(figure_width, figure_height))
-                image = ax.imshow(
-                    np.ma.masked_invalid(matrix),
-                    aspect="auto",
-                    cmap=cmap,
-                    vmin=-limit,
-                    vmax=limit,
-                )
-                ax.set_xticks(
-                    np.arange(len(groups)), labels=group_labels,
-                    fontsize=15, rotation=35, ha="right",
-                )
-                ax.set_yticks(
-                    np.arange(len(model_keys)),
-                    labels=[model_aliases.get(key, key) for key in model_keys],
-                    fontsize=17,
-                )
-                ax.set_xlabel(
-                    "Frequency band" if axis == "frequency" else "Time interval",
-                    fontsize=20,
-                )
-                ax.set_ylabel("Model", fontsize=20)
-                ax.set_title(
-                    f"{axis.capitalize()}-group masking: "
-                    f"{metric_labels[metric_name]}",
-                    fontsize=21,
-                    pad=12,
-                )
-                for row_index in range(matrix.shape[0]):
-                    for column_index in range(matrix.shape[1]):
-                        value = matrix[row_index, column_index]
-                        if not np.isfinite(value):
-                            continue
-                        color = "white" if abs(value) >= limit * 0.55 else "black"
-                        ax.text(
-                            column_index,
-                            row_index,
-                            f"{value:.3g}",
-                            ha="center",
-                            va="center",
-                            fontsize=13,
-                            color=color,
-                        )
-                colorbar = fig.colorbar(image, ax=ax, pad=0.025)
-                colorbar.set_label(metric_labels[metric_name], fontsize=17)
-                colorbar.ax.tick_params(labelsize=14, direction="in")
-                fig.tight_layout()
-                fig.savefig(
-                    windows_long_path(os.path.join(
-                        root,
-                        f"group_mask_comparison_{axis}_{metric_name}.png",
-                    )),
-                    dpi=200,
-                    bbox_inches="tight",
-                    pad_inches=0.05,
-                )
-                plt.close(fig)
+        limit = max(float(np.max(finite)), 1e-12)
+        cmap = plt.get_cmap("coolwarm").copy()
+        cmap.set_bad("#e8e8e8")
+        figure_width = max(11.0, 1.35 * len(groups) + 4.0)
+        figure_height = max(5.5, 1.15 * len(model_keys) + 2.5)
+        with plt.rc_context({"font.family": "Times New Roman"}):
+            fig, ax = plt.subplots(figsize=(figure_width, figure_height))
+            image = ax.imshow(
+                np.ma.masked_invalid(matrix),
+                aspect="auto",
+                cmap=cmap,
+                vmin=-limit,
+                vmax=limit,
+            )
+            ax.set_xticks(
+                np.arange(len(groups)), labels=group_labels,
+                fontsize=15, rotation=35, ha="right",
+            )
+            ax.set_yticks(
+                np.arange(len(model_keys)),
+                labels=[model_aliases.get(key, key) for key in model_keys],
+                fontsize=17,
+            )
+            ax.set_xlabel("Frequency band", fontsize=20)
+            ax.set_ylabel("Model", fontsize=20)
+            ax.set_title(
+                "Frequency-group masking: "
+                f"{metric_labels[metric_name]}",
+                fontsize=21,
+                pad=12,
+            )
+            for row_index in range(matrix.shape[0]):
+                for column_index in range(matrix.shape[1]):
+                    value = matrix[row_index, column_index]
+                    if not np.isfinite(value):
+                        continue
+                    color = "white" if abs(value) >= limit * 0.55 else "black"
+                    ax.text(
+                        column_index,
+                        row_index,
+                        f"{value:.3g}",
+                        ha="center",
+                        va="center",
+                        fontsize=13,
+                        color=color,
+                    )
+            colorbar = fig.colorbar(image, ax=ax, pad=0.025)
+            colorbar.set_label(metric_labels[metric_name], fontsize=17)
+            colorbar.ax.tick_params(labelsize=14, direction="in")
+            fig.tight_layout()
+            fig.savefig(
+                windows_long_path(os.path.join(
+                    root,
+                    f"group_mask_comparison_frequency_{metric_name}.png",
+                )),
+                dpi=200,
+                bbox_inches="tight",
+                pad_inches=0.05,
+            )
+            plt.close(fig)
 
 
 def explainability_outputs_complete(save_path, config, model_keys, fold_count,
@@ -1447,7 +1398,6 @@ def maybe_explain_trained_model(spec, model, scaler, x_val, y_val, pred, thresho
             ["ig_atol_model_units", config.get("ig_atol", 1e-6)],
             ["ig_map_rtol", config.get("ig_map_rtol", 1e-2)],
             ["baseline_value", config.get("baseline_value", 0.0)],
-            ["time_groups", config.get("time_groups", "")],
             ["time_extent_seconds", config.get("time_extent_seconds", "")],
             ["frequency_bands_hz", config.get("frequency_bands_hz", "")],
             ["curve_fractions", config.get("curve_fractions", "")],
