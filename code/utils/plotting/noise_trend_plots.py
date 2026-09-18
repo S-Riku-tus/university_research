@@ -218,7 +218,7 @@ def plot_noise_trends_from_runs(run_paths, output_dir, *, formats=("png", "pdf")
         for (strategy, unit, metric), group in groups.items():
             if not any(math.isfinite(row["value"]) for row in group):
                 continue
-            directory = _path(output_dir) / strategy
+            directory = _path(output_dir) / strategy / group[0]["maxfreq"]
             directory.mkdir(parents=True, exist_ok=True)
             stem = f"{unit}_{group[0]['aggregation']}_{metric}"
             csv_path = directory / f"{stem}.csv"

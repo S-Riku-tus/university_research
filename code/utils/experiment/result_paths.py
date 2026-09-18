@@ -140,4 +140,4 @@ def existing_result_run_path(job, run_dir):
 
 
 def noise_trend_path(job, run_dir):
-    return Path(job["save_base_path"]) / job["max_freq_hz"] / "noise_trends" / run_dir
+    return Path(job["save_base_path"]) / "noise_trends" / run_dir

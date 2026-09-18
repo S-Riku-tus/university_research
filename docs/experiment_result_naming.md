@@ -1,6 +1,6 @@
 # 結果の保存階層と識別
 
-更新日: 2026-09-17。実装の正本は [result_paths.py](../code/utils/experiment/result_paths.py) と [run_helpers.py](../code/utils/experiment/run_helpers.py)。
+更新日: 2026-09-18。実装の正本は [result_paths.py](../code/utils/experiment/result_paths.py) と [run_helpers.py](../code/utils/experiment/run_helpers.py)。
 
 ## 現行の保存階層
 
@@ -15,7 +15,7 @@ Pool_boiling/Subcooling_20_degrees/0.3/<収録実験日>/
           completed.json
           fold_pred/
           explainability/
-        noise_trends/<統合方式>/
+      noise_trends/<統合方式>/<周波数上限>/
       tuning_summary.csv
       ensemble_presentation_summary.csv
 ```

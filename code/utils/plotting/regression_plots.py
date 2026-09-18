@@ -11,6 +11,7 @@ def _safe_stem(text, max_len=32):
         "AlexNet": "alexnet",
         "Conformer": "conformer",
         "ROC-AUC (continuous)": "roc_auc_cont",
+        "PR-AUC (continuous)": "pr_auc_cont",
         "R2 Score": "r2",
     }
     text = aliases.get(text, str(text))
@@ -85,17 +86,8 @@ class RegressionPlotter:
         display_metric_name = metric_name
         if metric_name == "R2 Score":
             display_metric_name = "R\u00b2 Score"
-            ylabel_size = 23
-            xtick_size = 20
-        elif metric_name.startswith("AUC"):
-            display_metric_name = "AUC"
-            ylabel_size = 20
-            xtick_size = 19
-        else:
-            ylabel_size = 20
-            xtick_size = 19
-        plt.ylabel(display_metric_name, fontsize=ylabel_size)
-        plt.xticks(fontsize=xtick_size)
+        plt.ylabel(display_metric_name, fontsize=23)
+        plt.xticks(fontsize=20)
         plt.yticks(fontsize=18)
         for i, v in enumerate(values):
             if not np.isnan(v):

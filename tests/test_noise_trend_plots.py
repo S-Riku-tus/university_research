@@ -13,6 +13,7 @@ matplotlib.use("Agg")
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "code"))
 from utils.plotting.noise_trend_plots import collect_noise_trend_rows, plot_noise_trends_from_runs
+from utils.experiment.result_paths import noise_trend_path
 
 
 MODELS = {"randomforest": "RandomForest", "conformer": "Conformer", "alexnet": "AlexNet"}
@@ -100,6 +101,25 @@ class NoiseTrendPlotsTest(unittest.TestCase):
                 rows = list(csv.DictReader(source))
             self.assertEqual(len(rows), 8)
             self.assertTrue(all(math.isfinite(float(r["value"])) for r in rows))
+
+    def test_each_frequency_has_its_own_strategy_directory(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            output_job = {"save_base_path": root, "max_freq_hz": "maxfreq=3kHz"}
+            output_dir = noise_trend_path(output_job, "")
+            self.assertEqual(output_dir, root / "noise_trends")
+            options = dict(noise_order=["no_noise"], model_keys=list(MODELS),
+                           metrics=["r2", "roc_auc_cont"], formats=["png"])
+            for frequency in ("maxfreq=3kHz", "maxfreq=22kHz"):
+                run = make_run(root / "runs" / frequency, "no_noise", frequency=frequency)
+                artifacts = plot_noise_trends_from_runs([run], output_dir, **options)
+                self.assertEqual({item["metric"] for item in artifacts}, {"r2", "roc_auc_cont"})
+                for artifact in artifacts:
+                    self.assertEqual(Path(artifact["csv"]).parent.parts[-3:],
+                                     ("noise_trends", "simple_equal", frequency))
+                    self.assertTrue(Path(artifact["figures"][0]).is_file())
+            for frequency in ("maxfreq=3kHz", "maxfreq=22kHz"):
+                self.assertTrue((output_dir / "simple_equal" / frequency / "chunk_fold_mean_r2.csv").is_file())
 
 if __name__ == "__main__":
     unittest.main()

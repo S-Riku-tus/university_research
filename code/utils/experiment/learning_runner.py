@@ -169,6 +169,13 @@ class ResultRecorder:
         means, errors = zip(*(self.metrics.mean_se(self.store[key]["r2"]) for key in plot_keys))
         plotter.plot_bar("R2 Score", [self.labels[key] for key in plot_keys], means, errors,
                          self.config["run"]["epochs"], self.path, self.snr)
+        for metric, title in (
+            ("roc_auc_cont", "ROC-AUC (continuous)"),
+            ("pr_auc_cont", "PR-AUC (continuous)"),
+        ):
+            means, errors = zip(*(self.metrics.mean_se(self.store[key][metric]) for key in plot_keys))
+            plotter.plot_bar(title, [self.labels[key] for key in plot_keys], means, errors,
+                             self.config["run"]["epochs"], self.path, self.snr)
         with open_text(self.path / f"metrics_summary_{self.snr}.csv", "w", encoding="utf-8", newline="") as output:
             writer = csv.writer(output)
             writer.writerow(["model"] + [f"{metric}_mean" for metric in SUMMARY_METRICS]
