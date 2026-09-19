@@ -4,6 +4,10 @@
 
 ## 2026-09-19 9/18発表完了と教授との議論・今後の計画を記録
 
+- [説明性手法の再検証](notes/2026-09-19_explainability_method_selection.md)：共通帯域マスク・TreeSHAP・IG・Grad-CAMの採用理由を原論文・現行実装と照合し、旧メモの時間マスク・IG・評価単位の混同を訂正。
+- 同日追記：[モデル内の代替手法比較](notes/2026-09-19_explainability_method_selection.md)でGrad-CAM++・Score-CAM・LayerCAM、木の重要度・KernelSHAP、深層の勾配・SmoothGrad・attention等と比較。通常版が最良と実証済みとは扱わない。[着手用の小タスク](research_plan/2026-09-19_next_small_tasks.md)は未実施作業を入力・成果物・分岐で列挙。
+- [ノイズ曲線の追加監査](../experiments/2026-09-19_noise_recovery_review/README.md)：22 kHz・run151715の7条件の保存予測を同じ1080秒で再計算。谷型は等重みでも残り、重みだけを原因とできない。現行データの旧振幅shortcut再発を裏付ける証拠なし。`clean_only`による固定モデル対照を原因識別の次候補とした。
+
 - 本人の発表完了報告を受け、[教授との議論](research_plan/2026-09-18_professor_discussion.md)に原メモ、修論目的との対応、説明性の活用と限界を整理。
 - 本人が指定した[最終スライドの計画](research_plan/2026-09-18_presented_master_plan.md)を現行PPTXからテキスト化。9月〜翌2月の工程を優先し、「アンサンブル手法の検証」へ名称変更。正式日程は未確認。
 - [次工程と達成条件](research_plan/2026-09-19_research_actions.md)をAI提案として分離。既存予測と学習状態の診断→選別対照→固定モデルの雑音評価、必要時のみ方式・帯域を追加。研究完了と手法の優位を別の条件として定義した。

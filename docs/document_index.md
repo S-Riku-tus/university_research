@@ -10,6 +10,9 @@
 | 9/18発表後の議論を確認する | [教授との議論・修論との接続](research_plan/2026-09-18_professor_discussion.md) | 原メモ、解釈、確認事実、次の識別比較を分離 |
 | 本人指定の今後の計画を確認する | [最終スライドの計画](research_plan/2026-09-18_presented_master_plan.md) | 9月〜翌2月の工程をテキスト化。名称を「アンサンブル手法の検証」へ |
 | 発表後の優先順位・達成条件を確認する | [今後すべきことの提案](research_plan/2026-09-19_research_actions.md) | AI提案。手法の採否、着手・終了条件、修論の最低達成条件 |
+| 説明性手法の採用理由を確認する | [XAI手法選択の再検証](notes/2026-09-19_explainability_method_selection.md) | 共通帯域マスク・TreeSHAP・IG・Grad-CAMの利点、他候補、現行runの限界 |
+| 次の研究作業を小タスクから始める | [9/18発表後の小タスク](research_plan/2026-09-19_next_small_tasks.md) | 保存予測診断→固定モデルのノイズ試験→選別対照→説明性・執筆。各タスクの入力と終了条件 |
+| ノイズ曲線の谷型・回復を確認する | [9/19保存予測監査](../experiments/2026-09-19_noise_recovery_review/README.md) | 22 kHz・7条件の対応標本・等重み・WAV別誤差と、原因識別の順序 |
 | 完成スライドと次工程を確認する | [9/18 PPTXレビュー](../experiments/2026-09-18_final_slides_review/README.md) | 全8枚の表示・原図照合、必要訂正、現在地と次の対照・再現性・独立検証の提案 |
 | 9/18完了のONB全35条件を確認する | [run 151715の解析](../experiments/2026-09-18_onb_full_sweep_151715/README.md) | 3–22 kHz・7雑音条件の性能、単体と統合の差、説明性と発表用の原図を固定 |
 | 9/17の6/11学習→6/18評価と内部OOFを確認する | [9/17別日結果の解析](../experiments/2026-09-17_onb_crossday_result_analysis/README.md) | WAV単位MSEの定義、crossfit重み、3 kHz性能、ONB誤り、説明性、22 kHz未完了を固定 |
