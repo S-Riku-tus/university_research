@@ -1255,14 +1255,22 @@ def _plot_group_mask_comparisons(root, rows, model_keys, metric_names):
                     value = matrix[row_index, column_index]
                     if not np.isfinite(value):
                         continue
-                    color = "white" if abs(value) >= limit * 0.55 else "black"
+                    rgb = np.asarray(image.cmap(image.norm(value))[:3])
+                    linear_rgb = np.where(
+                        rgb <= 0.04045,
+                        rgb / 12.92,
+                        ((rgb + 0.055) / 1.055) ** 2.4,
+                    )
+                    luminance = float(np.dot(linear_rgb, [0.2126, 0.7152, 0.0722]))
+                    color = "white" if luminance < 0.18 else "black"
                     ax.text(
                         column_index,
                         row_index,
                         f"{value:.3g}",
                         ha="center",
                         va="center",
-                        fontsize=13,
+                        fontsize=20,
+                        fontweight="bold",
                         color=color,
                     )
             colorbar = fig.colorbar(image, ax=ax, pad=0.025)
