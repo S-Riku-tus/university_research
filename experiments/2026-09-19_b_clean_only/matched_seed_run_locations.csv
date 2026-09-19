@@ -1,0 +1,4 @@
+﻿seed,run,run_hash,fit_id_minus8,fit_id_minus16
+42,Pool_boiling\Subcooling_20_degrees\0.3\2025.06.18_0.3_3\regression_result\npy\ensemble\20260919\b_matched_s4_xd-t0611-v0618_iw3-nm_s1e-9_e200_165646,b4366c59,37f7ea5d8e42,225cc7599092
+43,Pool_boiling\Subcooling_20_degrees\0.3\2025.06.18_0.3_3\regression_result\npy\ensemble\20260919\b_matched_s4_xd-t0611-v0618_iw3-nm_s1e-9_e200_205955,09cc9cf3,8a0000f01600,2b4d1778f12e
+44,Pool_boiling\Subcooling_20_degrees\0.3\2025.06.18_0.3_3\regression_result\npy\ensemble\20260919\b_matched_s4_xd-t0611-v0618_iw3-nm_s1e-9_e200_213458,fdf152da,7fe15ed3b6a3,920509af4f69

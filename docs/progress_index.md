@@ -4,6 +4,8 @@
 
 ## 2026-09-19 9/18発表完了と教授との議論・今後の計画を記録
 
+- [B1〜B7の適用判定と実験記録](../experiments/2026-09-19_b_clean_only/README.md)：既存matched runの学習済み状態は未保存。cleanを1回学習した固定モデルでは無雑音→−8→−16→−20 dBの統合R²が.918→.737→.442→.152と悪化し、谷型は消失。matched −8/−16 dBの3 seed対応比較では統合R²差が+.0305、−.0188、+.0147と揃わず、ONB以上の二乗誤差は全seedで悪化。training lossだけでは最良epochを判断できない。B7は開始条件不成立。次は学習日内の元WAV分離validationを設ける。
+- [A1〜A7の保存予測診断](../experiments/2026-09-19_noise_recovery_review/A1_A7_saved_prediction_diagnosis.md)：無雑音・−8 dBの秒別対応、重み付き誤差分解、ONB領域・WAV別の得失を固定。−8→−16/−20 dBの回復は一部WAVへ集中。runのONB閾値と出典テキストの不一致を記録。既存監査の二乗誤差減少量の桁を訂正。
 - [説明性手法の再検証](notes/2026-09-19_explainability_method_selection.md)：共通帯域マスク・TreeSHAP・IG・Grad-CAMの採用理由を原論文・現行実装と照合し、旧メモの時間マスク・IG・評価単位の混同を訂正。
 - 同日追記：[モデル内の代替手法比較](notes/2026-09-19_explainability_method_selection.md)でGrad-CAM++・Score-CAM・LayerCAM、木の重要度・KernelSHAP、深層の勾配・SmoothGrad・attention等と比較。通常版が最良と実証済みとは扱わない。[着手用の小タスク](research_plan/2026-09-19_next_small_tasks.md)は未実施作業を入力・成果物・分岐で列挙。
 - [ノイズ曲線の追加監査](../experiments/2026-09-19_noise_recovery_review/README.md)：22 kHz・run151715の7条件の保存予測を同じ1080秒で再計算。谷型は等重みでも残り、重みだけを原因とできない。現行データの旧振幅shortcut再発を裏付ける証拠なし。`clean_only`による固定モデル対照を原因識別の次候補とした。

@@ -1,0 +1,39 @@
+{
+  "purpose": "B6 exploratory seed variation of matched -8 versus -16 dB after clean-only valley disappeared",
+  "selection_time": "After B4, before B6 execution",
+  "replicate_seeds": [42, 43, 44],
+  "comparison_rule": "At each seed, train RF, Conformer, AlexNet, PCA, scaler, and inner-holdout weights independently for -8 and -16 dB. Use the same 6/11 training and 6/18 full 1080-chunk evaluation. Compare paired seed differences and WAV-level changes. The two SNRs were chosen from prior matched results and are exploratory.",
+  "evaluation_unit": "1 second chunk, grouped by 18 source WAVs; do not treat chunks or the two conditions as independent experimental repetitions",
+  "onb_threshold_w_m2": 271677.6816,
+  "near_onb_fraction": 0.1,
+  "metrics": ["r2", "rmse", "mae", "near_onb_rmse", "misses", "false_alarms", "paired_wav_sse"],
+  "validation_override": {
+    "run": {"smoke_test": false, "epochs": 200, "folds": 3, "loop_parameter_sets": true},
+    "data": {
+      "experiment_names": ["2025.06.11_0.3_2", "2025.06.18_0.3_3"],
+      "max_freq_hz_list": ["maxfreq=22kHz"],
+      "noise_dir_names": ["heatflux_reference_SNR=-8", "heatflux_reference_SNR=-16"],
+      "data_source_dir_by_experiment": {
+        "2025.06.11_0.3_2": "waterflow_20260817_1s",
+        "2025.06.18_0.3_3": "waterflow_20260817_1s"
+      },
+      "skip_missing_datasets": false
+    },
+    "learning_policy": {
+      "split_mode": "explicit_days",
+      "train_experiments": ["2025.06.11_0.3_2"],
+      "test_experiments": ["2025.06.18_0.3_3"],
+      "internal_validation": "wav_kfold",
+      "training_noise": "matched"
+    },
+    "acoustic_selection": {"peak_height_threshold": 1e-9},
+    "output": {
+      "save_date": "20260919",
+      "result_date_dir": "20260919/b_matched",
+      "save_fold_predictions": true,
+      "save_tuning_summary": true,
+      "noise_trend_plots": {"enabled": false}
+    },
+    "explainability": {"enabled": false}
+  }
+}
