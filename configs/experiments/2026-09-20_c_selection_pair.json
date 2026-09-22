@@ -1,0 +1,45 @@
+{
+  "purpose": "C1/C2 paired comparison of peak selection off versus fixed 1e-9 on clean 22 kHz",
+  "selection_time": "Before any C2 training or evaluation",
+  "replicate_seeds": [42, 43, 44],
+  "evaluation_unit": "All 1080 one-second chunks of 18 source WAVs on 2025.06.18_0.3_3; WAVs are the grouping unit",
+  "question": "Does the fixed training-only peak-height selection improve held-out-day regression and ONB decisions compared with no selection?",
+  "arms": {
+    "off": {"enabled": false, "peak_height_threshold": null},
+    "on": {"enabled": true, "peak_height_threshold": 1e-9}
+  },
+  "comparison_rule": "At each seed, all other settings, full training budget, evaluation samples and preprocessing are common. Each arm refits RF, Conformer, AlexNet, scaler, PCA and inner-holdout weights on 6/11 only. The 6/18 labels are never used for fitting, epoch choice, or weight choice. Compare paired seed and WAV differences, not 1080 independent repetitions.",
+  "training_budget": "200 epochs for both CNNs per full fit and inner-holdout fit; batch size 12. Record n retained, n removed and ceil(n/12)*200 nominal full-fit minibatch updates for each arm. Actual optimizer updates depend on OOM fallback and final partial batch; inspect run logs.",
+  "selection_provenance": "Fixed peak_2100_2500_psd >= 1e-9 from 2026-09-16 training-day acoustic review; 6/18 evaluation was not used to choose the threshold. Only training chunks at or above the configured 6/11 ONB threshold are eligible for removal.",
+  "onb_rule": "Use run-config threshold 271677.6816 W/m2 for 6/18 and +/-10% near band to retain comparability with A/B. Source text states 376000 W/m2; report ONB metrics as conditional on the run threshold and compute a 376000 sensitivity analysis before physical ONB claims.",
+  "decision_rule": "Compare full R2/MAE/RMSE, near-ONB RMSE, misses/false alarms, and paired WAV SSE for all models and the existing weighted ensemble. Improvement must be directionally stable across seeds and not trade away ONB behavior. If selection helps, run an equal-count random-removal control to separate sample-count from acoustic choice. If mixed, mark unconfirmed rather than tune threshold on 6/18.",
+  "validation_rule": "The existing inner_holdout uses source-WAV-disjoint groups to fit weights. Epoch is fixed at 200 in both arms; no 6/18-based best-epoch selection. A separate 6/11 WAV-disjoint epoch-curve diagnosis may be added after the paired comparison but is not used to select C2 results retroactively.",
+  "validation_override": {
+    "run": {"smoke_test": false, "epochs": 200, "folds": 3, "loop_parameter_sets": true},
+    "data": {
+      "experiment_names": ["2025.06.11_0.3_2", "2025.06.18_0.3_3"],
+      "max_freq_hz_list": ["maxfreq=22kHz"],
+      "noise_dir_names": ["heatflux_no_noise"],
+      "data_source_dir_by_experiment": {
+        "2025.06.11_0.3_2": "waterflow_20260817_1s",
+        "2025.06.18_0.3_3": "waterflow_20260817_1s"
+      },
+      "skip_missing_datasets": false
+    },
+    "learning_policy": {
+      "split_mode": "explicit_days",
+      "train_experiments": ["2025.06.11_0.3_2"],
+      "test_experiments": ["2025.06.18_0.3_3"],
+      "internal_validation": "wav_kfold",
+      "training_noise": "clean_only"
+    },
+    "output": {
+      "save_date": "20260920",
+      "result_date_dir": "20260920/c_selection",
+      "save_fold_predictions": true,
+      "save_tuning_summary": true,
+      "noise_trend_plots": {"enabled": false}
+    },
+    "explainability": {"enabled": false}
+  }
+}

@@ -1,6 +1,6 @@
 # 研究の現在地と次にすること
 
-更新日: **2026-09-19（A・Bの診断結果まで反映）**。分位点ルール時点の状態は[変更前の記録](../experiments/2026-09-16_peak_height_selection/previous_documents/research_status.md)に保存した。
+更新日: **2026-09-20（A〜Cの診断結果まで反映）**。分位点ルール時点の状態は[変更前の記録](../experiments/2026-09-16_peak_height_selection/previous_documents/research_status.md)に保存した。
 
 ## 9/18発表後の現在方針
 
@@ -15,6 +15,8 @@
 **A1〜A7完了（同日追記）**：[保存予測の標本別診断](../experiments/2026-09-19_noise_recovery_review/A1_A7_saved_prediction_diagnosis.md)で無雑音・−8 dBの2160秒を対応付け、重み、残差、ONB誤り、領域・WAV別の得失、等重みを記録した。−8 dBの統合悪化にはCNN＋TransformerとAlexNetのONB前・近傍誤差が寄与し、−8→−16 dBの回復は一部WAVに集中する。次の識別比較は`clean_only`固定モデル。原実験テキストのONB値とrun閾値の不一致は未解決。再学習なし。従前監査READMEの二乗誤差減少量は`10^9`から元CSVに合う`10^12`へ訂正した。
 
 **B1〜B6完了（同日追記）**：[固定モデル・複数seedの診断](../experiments/2026-09-19_b_clean_only/README.md)でclean学習1回の4条件転送とmatched −8/−16 dBの3 seed再学習を実施。固定モデルで谷は消失し、matched統合の回復はseedで符号が変わった。B7は開始条件不成立。次は学習日内の元WAV分離validationと、選別の有無を問うCの対応比較。
+
+**C1〜C3完了（9/20追記）**：[選別なし／ありの3 seed対応比較](../experiments/2026-09-20_c_selection/README.md)を6/11学習→6/18全1080秒評価、22 kHz・無雑音・200 epochsで実施。1e-9選別は1080→986秒とし、run閾値のONB前誤差は全seedで改善したが、近傍1 WAV・近傍外ONB以上の誤差は全seedで悪化。全域R²差は−.0035、+.0025、+.0016と一貫せず、**この条件の基準には選別を採用しない**。学習側の`inner_holdout`重みを運用上の基準として維持し、等重みは固定対照。C4では本人確認で追加の未使用独立日と同期映像は現時点でない。教授への取得可否・ONB閾値定義の確認は未了。
 
 **9/17の評価方針更新**：現行実行コードから元WAVへの予測集約・ONB遷移の追加評価と「主評価」の選択を外し、1秒chunkの通常指標を全モデル・有効な統合方式について確認する。元WAV情報は学習/検証の分割で同じ録音を跨がせないために使う。現行`inner_holdout`と`performance_kfold`の重み用内部スコアもchunk単位へ変更した。以下のWAV中央値・crossfit成績は変更前に保存した過去runの記録であり、新実行の評価定義とは混同しない。
 
@@ -69,7 +71,7 @@
 
 2026-09-16に[実験日指定を整理](../experiments/2026-09-16_onb_experiment_day_audit/README.md)。現在の`explicit_days`は学習日・テスト日から対象3日を自動算出する。設定変更と単体テストの記録であり、300 epochs本比較の実行・性能検証ではない。
 
-**直近の提案は[発表後の次工程](research_plan/2026-09-19_research_actions.md)を参照する。** [A1〜A7の保存予測診断](../experiments/2026-09-19_noise_recovery_review/A1_A7_saved_prediction_diagnosis.md)と[B1〜B6の固定モデル・複数seed診断](../experiments/2026-09-19_b_clean_only/README.md)を実施済み。22 kHz・無雑音・200 epochsを基準候補に、次は学習日内の元WAV分離validationを設け、選別なし／ありをCの対応比較として設計する。以前の3 kHz・300 epochs、7/9追加、crossfit 3方式の同時比較は当時の案で、現在の必須作業へ自動追加しない。6/18を見て選ぶ作業は原因診断であり、最終的な一般化主張には新しい独立日を必要とする。
+**直近の判断は[選別なし／ありの対応比較](../experiments/2026-09-20_c_selection/README.md)を参照する。** A・B診断に加えてC1〜C3を実施済み。次は教授とONB閾値の定義を確かめ、6/11内の元WAV分離validationでepoch別未知WAV誤差・ONB誤りを記録する。新しい独立日と音声同期映像の取得可否も確認する。以前の3 kHz・300 epochs、7/9追加、crossfit 3方式の同時比較は当時の案で、現在の必須作業へ自動追加しない。6/18は既に研究判断に使っており、最終的な一般化主張には新しい独立日を必要とする。
 
 ### 2026-09-19 ノイズ谷の原因識別で確認した範囲
 
