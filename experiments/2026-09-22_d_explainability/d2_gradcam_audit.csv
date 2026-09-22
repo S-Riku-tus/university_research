@@ -1,0 +1,11 @@
+﻿snr,sample_id,val_local_index,target_layer,native_map_shape,saved_resized_shape,relu_positive_only,saved_min,saved_max,positive_pixel_fraction,mean_positive_value
+no_noise,near_onb_below_val0300,300,alex_conv5 (last Conv2D selected by code),12x12,224x224,True,0.0,1.0,0.7266820790816326,0.2002226859331131
+no_noise,near_onb_above_val0420,420,alex_conv5 (last Conv2D selected by code),12x12,224x224,True,0.0,1.0,0.8561463647959183,0.1561470776796341
+no_noise,false_negative_val0424,424,alex_conv5 (last Conv2D selected by code),12x12,224x224,True,0.0,1.0,0.7629743303571429,0.14967338740825653
+no_noise,low_heatflux_val0000,0,alex_conv5 (last Conv2D selected by code),12x12,224x224,True,0.0,1.0,0.7217992665816326,0.23830220103263855
+no_noise,high_heatflux_val1020,1020,alex_conv5 (last Conv2D selected by code),12x12,224x224,True,0.0,1.0,0.9917490433673469,0.254082590341568
+-8,near_onb_below_val0300,300,alex_conv5 (last Conv2D selected by code),12x12,224x224,True,0.0,1.0,0.5792410714285714,0.09696783125400543
+-8,near_onb_above_val0420,420,alex_conv5 (last Conv2D selected by code),12x12,224x224,True,0.0,1.0,0.508430325255102,0.15178366005420685
+-8,false_negative_val0573,573,alex_conv5 (last Conv2D selected by code),12x12,224x224,True,0.0,1.0,0.43301578443877553,0.16379764676094055
+-8,low_heatflux_val0000,0,alex_conv5 (last Conv2D selected by code),12x12,224x224,True,0.0,1.0,0.47829639668367346,0.12713973224163055
+-8,high_heatflux_val1020,1020,alex_conv5 (last Conv2D selected by code),12x12,224x224,True,0.0,1.0,0.9999800701530612,0.25197672843933105

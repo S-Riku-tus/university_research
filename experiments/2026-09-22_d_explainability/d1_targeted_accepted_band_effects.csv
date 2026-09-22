@@ -1,0 +1,17 @@
+﻿model,sample_id,source_wav_id,chunk_index,ensemble_case,band,base_residual_w_m2,masked_prediction_w_m2,prediction_change_masked_minus_base_w_m2,abs_error_change_masked_minus_base_w_m2
+randomforest,a_success_index8_chunk54_val0354,index=8.225704,54,success_vs_best_single,freq_0_256Hz,-167983.49695625,57721.46484375,0.0,0.0
+randomforest,a_success_index8_chunk54_val0354,index=8.225704,54,success_vs_best_single,freq_256_512Hz,-167983.49695625,57721.46484375,0.0,0.0
+randomforest,a_success_index8_chunk54_val0354,index=8.225704,54,success_vs_best_single,freq_512_1000Hz,-167983.49695625,57721.46484375,0.0,0.0
+randomforest,a_success_index8_chunk54_val0354,index=8.225704,54,success_vs_best_single,freq_1000_2000Hz,-167983.49695625,57721.46484375,0.0,0.0
+randomforest,a_success_index8_chunk54_val0354,index=8.225704,54,success_vs_best_single,freq_2000_5000Hz,-167983.49695625,55567.78125,-2153.68359375,2153.68359375
+randomforest,a_success_index8_chunk54_val0354,index=8.225704,54,success_vs_best_single,freq_5000_10000Hz,-167983.49695625,57721.46484375,0.0,0.0
+randomforest,a_success_index8_chunk54_val0354,index=8.225704,54,success_vs_best_single,freq_10000_15000Hz,-167983.49695625,57721.46484375,0.0,0.0
+randomforest,a_success_index8_chunk54_val0354,index=8.225704,54,success_vs_best_single,freq_15000_22000Hz,-167983.49695625,57721.46484375,0.0,0.0
+randomforest,a_failure_index1_chunk54_val0054,index=1.0,54,failure_vs_best_single,freq_0_256Hz,57922.09765767,57922.09765625,0.0,0.0
+randomforest,a_failure_index1_chunk54_val0054,index=1.0,54,failure_vs_best_single,freq_256_512Hz,57922.09765767,57922.09765625,0.0,0.0
+randomforest,a_failure_index1_chunk54_val0054,index=1.0,54,failure_vs_best_single,freq_512_1000Hz,57922.09765767,64750.91796875,6828.8203125,6828.8203125
+randomforest,a_failure_index1_chunk54_val0054,index=1.0,54,failure_vs_best_single,freq_1000_2000Hz,57922.09765767,65703.2734375,7781.17578125,7781.175781250007
+randomforest,a_failure_index1_chunk54_val0054,index=1.0,54,failure_vs_best_single,freq_2000_5000Hz,57922.09765767,64676.0,6753.90234375,6753.90234375
+randomforest,a_failure_index1_chunk54_val0054,index=1.0,54,failure_vs_best_single,freq_5000_10000Hz,57922.09765767,57922.09765625,0.0,0.0
+randomforest,a_failure_index1_chunk54_val0054,index=1.0,54,failure_vs_best_single,freq_10000_15000Hz,57922.09765767,57922.09765625,0.0,0.0
+randomforest,a_failure_index1_chunk54_val0054,index=1.0,54,failure_vs_best_single,freq_15000_22000Hz,57922.09765767,57922.09765625,0.0,0.0

@@ -1,0 +1,7 @@
+﻿model,sample_id,source_wav_id,chunk_index,original_prediction_w_m2,refit_prediction_w_m2,refit_minus_original_w_m2,accepted_for_original_run_explanation
+randomforest,a_success_index8_chunk54_val0354,index=8.225704,54,57721.46484375,57721.46484375,0.0,True
+randomforest,a_failure_index1_chunk54_val0054,index=1.0,54,57922.09765625,57922.09765625,0.0,True
+conformer,a_success_index8_chunk54_val0354,index=8.225704,54,332508.21875,255340.84375,-77167.375,False
+conformer,a_failure_index1_chunk54_val0054,index=1.0,54,224554.5,166836.9375,-57717.5625,False
+alexnet,a_success_index8_chunk54_val0354,index=8.225704,54,126379.7578125,95785.4921875,-30594.265625,False
+alexnet,a_failure_index1_chunk54_val0054,index=1.0,54,147360.609375,83096.859375,-64263.75,False

@@ -1,6 +1,6 @@
 # 文書案内と更新ルール
 
-更新日: 2026-09-20。**現在の状態は一か所で更新し、過去の数値と判断は日付付き記録に残す。**
+更新日: 2026-09-22。**現在の状態は一か所で更新し、過去の数値と判断は日付付き記録に残す。**
 
 ## 読む順序と各文書の役割
 
@@ -12,6 +12,9 @@
 | 発表後の優先順位・達成条件を確認する | [今後すべきことの提案](research_plan/2026-09-19_research_actions.md) | AI提案。手法の採否、着手・終了条件、修論の最低達成条件 |
 | 説明性手法の採用理由を確認する | [XAI手法選択の再検証](notes/2026-09-19_explainability_method_selection.md) | 共通帯域マスク・TreeSHAP・IG・Grad-CAMの利点、他候補、現行runの限界 |
 | 次の研究作業を小タスクから始める | [9/18発表後の小タスク](research_plan/2026-09-19_next_small_tasks.md) | 保存予測診断→固定モデルのノイズ試験→選別対照→説明性・執筆。各タスクの入力と終了条件 |
+| A〜D後の最新方針と実行順を見る | [A〜D後の解釈と今後の研究方針](research_plan/2026-09-22_after_A-D_interpretation_and_next_steps.md) | 本人見解と確認事実を分離。Bを最優先に、固定clean、matched原因診断、統合方式、C・Dの分岐を段階化 |
+| 説明性の採否と帯域改善判断を見る | [9/22 Dの説明性監査](../experiments/2026-09-22_d_explainability/README.md) | 残差とマスク、TreeSHAP再構成、IG収束・baseline不足、Grad-CAMの層・粗さ、帯域再学習の不採用 |
+| 修論本文へ移す作業稿を見る | [背景・方法・A〜D結果の作業稿](thesis/2026-09-22_working_draft_background_methods_results.md) | 背景、実験条件、評価設計、手法選択、結果・限界、主張と根拠の対応 |
 | ピーク選別の採否と残る問題を見る | [9/20 Cの対応比較](../experiments/2026-09-20_c_selection/README.md) | 2条件×3 seed、1080評価秒、WAV別・ONB領域別の得失、閾値定義と独立日の限界 |
 | ノイズ曲線の谷型・回復を確認する | [9/19保存予測監査](../experiments/2026-09-19_noise_recovery_review/README.md) | 22 kHz・7条件の対応標本・等重み・WAV別誤差と、原因識別の順序 |
 | 完成スライドと次工程を確認する | [9/18 PPTXレビュー](../experiments/2026-09-18_final_slides_review/README.md) | 全8枚の表示・原図照合、必要訂正、現在地と次の対照・再現性・独立検証の提案 |
