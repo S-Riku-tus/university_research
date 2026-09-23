@@ -4,6 +4,8 @@
 
 判断の根拠は、[Aの保存予測診断](../../experiments/2026-09-19_noise_recovery_review/A1_A7_saved_prediction_diagnosis.md)、[Bの固定clean・matched比較](../../experiments/2026-09-19_b_clean_only/README.md)、[Cのピーク選別比較](../../experiments/2026-09-20_c_selection/README.md)、[Dの説明性監査](../../experiments/2026-09-22_d_explainability/README.md)に固定されている。統合方式の候補と数式は[アンサンブル手法の整理](../ensemble_methods.md)、原因解釈の原則は[解析手順](../analysis_workflow.md)を参照する。
 
+**2026-09-23更新**：追加の実験日・同期映像はなく、独立水流ノイズも当面用意しない。実行順2〜7のうち保存結果だけで可能な部分は[再学習なし監査](../../experiments/2026-09-23_steps2-7_readonly_audit/README.md)まで実施した。matchedのR²差の符号は重み固定後もseed間で変わるため、重みより単体モデル再学習差が主因である。残る2〜4、5の学習側診断、6のcrossfit方式、7-DはONB主コードの学習・推論runを要するため、本人の開始指示まで保留する。ONB閾値の定義は未解決のままである。
+
 ## 1. 全体の結論
 
 A〜Dは、次のように位置付ける。
