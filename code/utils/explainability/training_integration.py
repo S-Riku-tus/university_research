@@ -23,6 +23,7 @@ from utils.explainability.spectrogram_explainers import (
     windows_long_path,
     write_csv,
 )
+from utils.training.model_training import stable_pca_transform
 
 
 SUMMARY_HEADER = [
@@ -159,8 +160,7 @@ def keras_predict_fn(model, scaler):
 
 def sklearn_predict_fn(model, pca, scaler):
     def predict(batch):
-        flat = batch.reshape(batch.shape[0], -1)
-        pred_scaled = model.predict(pca.transform(flat)).reshape(-1, 1)
+        pred_scaled = model.predict(stable_pca_transform(pca, batch)).reshape(-1, 1)
         return scaler.inverse_transform(pred_scaled).ravel()
     return predict
 
@@ -526,8 +526,7 @@ def _write_tree_shap_pca(model, pca, scaler, x_val, selected_samples, out_dir):
         from xgboost import DMatrix
 
         local_indices = [int(local_idx) for _, local_idx in selected_samples]
-        flat = x_val[local_indices].reshape(len(local_indices), -1)
-        x_pca = pca.transform(flat)
+        x_pca = stable_pca_transform(pca, x_val[local_indices])
         contributions = np.asarray(
             model.get_booster().predict(
                 DMatrix(x_pca), pred_contribs=True, approx_contribs=False),

@@ -62,7 +62,8 @@ def fit_individual_performance_cv(trainer, specs, x, y, metadata, selector,
             inner_spec = {**spec, "fit_verbose": 0}
             print(f"Internal {mode} {fold}/{folds}: {spec['key']}", flush=True)
             model, history = trainer.train_one_model(inner_spec, RegressionModelMaker(tuple(x.shape[1:])),
-                                                     x_fit, scaled, x_pca, epochs)
+                                                     x_fit, scaled, x_pca,
+                                                     epochs[spec["key"]] if isinstance(epochs, dict) else epochs)
             predictions[spec["key"]][held] = trainer.predict_one_model(inner_spec, model, x_held, held_pca, scaler)
             del model, history
             K.clear_session()

@@ -4,7 +4,7 @@
 
 ## 現行コードとの関係
 
-2026-09-15時点の実行設定の正本は [run_ensemble_regression_onb.py](../code/run_ensemble_regression_onb.py) の `VALIDATION_CONFIG`。このフォルダのYAMLは記録用で、編集するだけでは実行設定に反映されない。5〜6月の日付付きYAMLは当時の条件例として保持する。
+現行設定の既定値は[run_ensemble_regression_onb.py](../code/run_ensemble_regression_onb.py)の`VALIDATION_CONFIG`。`configs/experiments/`のJSONは、[`run_from_condition.py`](../experiments/2026-09-19_b_clean_only/run_from_condition.py)へ`--condition`で渡した場合に既定値へ上書きして実行できる。YAMLは記録用のものがあり、編集だけでは実行設定に反映されない。
 
 新しい条件の記録には[実験テンプレート](experiments/experiment_template.yaml)を使う。モデル・分割・評価単位・要求/実際の学習条件を残し、run manifestと照合する。現在の選択条件と予定は[現在地](../docs/research_status.md)を参照する。
 

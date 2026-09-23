@@ -116,9 +116,13 @@ def run_config_digest(validation_config, parameter_set, run_specs, model_tag, sa
     # a new grid value does not invalidate already completed, unchanged runs.
     models_config.pop("parameter_sets", None)
     config["models"] = models_config
-    config["output"] = {
-        "save_fold_predictions": save_fold_predictions,
-    }
+    output_digest = {"save_fold_predictions": save_fold_predictions}
+    if config.get("output", {}).get("save_fitted_artifacts", False):
+        output_digest["save_fitted_artifacts"] = True
+        output_digest["verify_reloaded_artifacts"] = bool(
+            config.get("output", {}).get("verify_reloaded_artifacts", True)
+        )
+    config["output"] = output_digest
     return short_digest({
         "validation_config": config,
         "parameter_set": parameter_set,
@@ -255,13 +259,33 @@ def join_unique(values):
     return "|".join(dict.fromkeys(clean))
 
 
-def set_global_seed(seed):
+_LAST_GLOBAL_SEED = None
+
+
+def set_global_seed(seed, deterministic_ops=False):
     """Keep KFold, sklearn, and Keras runs as reproducible as practical."""
     import tensorflow as tf
 
+    global _LAST_GLOBAL_SEED
+    _LAST_GLOBAL_SEED = int(seed)
     random.seed(seed)
     np.random.seed(seed)
-    tf.random.set_seed(seed)
+    if hasattr(tf.keras.utils, "set_random_seed"):
+        tf.keras.utils.set_random_seed(seed)
+    else:
+        tf.random.set_seed(seed)
+    if deterministic_ops:
+        tf.config.experimental.enable_op_determinism()
+
+
+def reapply_global_seed():
+    """Restore the latest seed after Keras clears its backend session."""
+    if _LAST_GLOBAL_SEED is not None:
+        set_global_seed(_LAST_GLOBAL_SEED, deterministic_ops=False)
+
+
+def current_global_seed(default=None):
+    return default if _LAST_GLOBAL_SEED is None else int(_LAST_GLOBAL_SEED)
 
 
 def append_tuning_summary(

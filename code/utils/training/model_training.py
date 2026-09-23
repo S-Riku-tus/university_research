@@ -7,6 +7,21 @@ from tensorflow.keras import backend as K
 from tensorflow.keras.callbacks import Callback
 from tensorflow.keras.optimizers import SGD
 
+from utils.experiment.run_helpers import current_global_seed, reapply_global_seed
+
+
+# XGBoost trees may change branches when a PCA feature lands extremely close
+# to a split threshold. BLAS can otherwise introduce a few 1e-9 of variation
+# when the same transform is evaluated in a different process or batch.
+PCA_FEATURE_DECIMALS = 6
+
+
+def stable_pca_transform(pca, x):
+    """Flatten x and quantize transform-level numerical BLAS noise."""
+    array = np.asarray(x)
+    flat = np.ascontiguousarray(array.reshape(array.shape[0], -1))
+    return np.round(pca.transform(flat), decimals=PCA_FEATURE_DECIMALS)
+
 
 class LightweightHistory(Callback):
     """Keep only the small loss history needed for plotting."""
@@ -21,6 +36,28 @@ class LightweightHistory(Callback):
         logs = logs or {}
         self.epochs_completed = epoch + 1
         self.history["loss"].append(float(logs.get("loss", np.nan)))
+        if "val_loss" in logs:
+            self.history.setdefault("val_loss", []).append(float(logs["val_loss"]))
+
+
+class EpochPredictionRecorder(Callback):
+    """Record held-out predictions at predeclared epochs in original units."""
+
+    def __init__(self, x_validation, scaler, checkpoint_epochs):
+        super().__init__()
+        self.x_validation = x_validation
+        self.scaler = scaler
+        self.checkpoint_epochs = {int(value) for value in checkpoint_epochs}
+        self.predictions = {}
+
+    def on_epoch_end(self, epoch, logs=None):
+        completed = epoch + 1
+        if completed not in self.checkpoint_epochs:
+            return
+        scaled = self.model.predict(self.x_validation, verbose=0)
+        self.predictions[completed] = self.scaler.inverse_transform(
+            np.asarray(scaled).reshape(-1, 1)
+        ).ravel()
 
 
 class TrainingProgress(Callback):
@@ -87,104 +124,170 @@ class ModelTrainer:
 
     def make_pca(self, x_fit, x_other_list, n_components, return_pca=False):
         """sklearn 系モデル用に平坦化 + PCA。学習データのみで fit する。"""
-        x_fit_flat = x_fit.reshape(x_fit.shape[0], -1)
+        x_fit_flat = np.ascontiguousarray(
+            np.asarray(x_fit).reshape(x_fit.shape[0], -1)
+        )
         pca = PCA(n_components=min(n_components, x_fit_flat.shape[0], x_fit_flat.shape[1]),
                   random_state=self.random_seed)
-        x_fit_pca = pca.fit_transform(x_fit_flat)
+        # Keep fitting and inference on the same numerical transform path.
+        pca.fit(x_fit_flat)
+        x_fit_pca = stable_pca_transform(pca, x_fit)
         others = []
         for x_other in x_other_list:
             if x_other is None:
                 others.append(None)
             else:
-                others.append(pca.transform(x_other.reshape(x_other.shape[0], -1)))
+                others.append(stable_pca_transform(pca, x_other))
         if return_pca:
             return x_fit_pca, others, pca
         return x_fit_pca, others
+
+    def transform_pca(self, pca, x):
+        return stable_pca_transform(pca, x)
+
+    def _train_keras_model(
+        self,
+        spec,
+        mm,
+        x_fit,
+        y_fit_scaled,
+        epochs,
+        validation_data=None,
+        callback_factory=None,
+    ):
+        if "lr" not in spec or "batch_size" not in spec:
+            raise ValueError(
+                f"Keras model '{spec.get('key', spec.get('label'))}' needs "
+                "resolved 'lr' and 'batch_size'. Check PARAMETER_SETS."
+            )
+        lr = spec["lr"]
+        requested_batch_size = int(spec["batch_size"])
+        fit_verbose = int(spec.get("fit_verbose", 0))
+        progress_interval = int(spec.get("progress_interval_epochs", 10))
+        min_batch_size = int(spec.get("min_batch_size", 1))
+        accept_partial_min_epochs = int(spec.get("accept_partial_min_epochs", 100))
+        batch_size = requested_batch_size
+        last_oom = None
+
+        while batch_size >= min_batch_size:
+            K.clear_session()
+            reapply_global_seed()
+            gc.collect()
+            model = spec["builder"](mm, **spec.get("builder_params", {}))
+            model.compile(
+                optimizer=SGD(learning_rate=lr, momentum=0.9, clipnorm=1.0),
+                loss="mean_squared_error",
+            )
+            lightweight_history = LightweightHistory()
+            extra_callbacks = list(callback_factory() if callback_factory else [])
+            callbacks = [
+                lightweight_history,
+                TrainingProgress(
+                    spec.get("label", spec.get("key", "Keras model")),
+                    epochs,
+                    progress_interval,
+                ),
+                *extra_callbacks,
+            ]
+            try:
+                history = model.fit(
+                    x_fit,
+                    y_fit_scaled,
+                    batch_size=batch_size,
+                    epochs=epochs,
+                    verbose=fit_verbose,
+                    callbacks=callbacks,
+                    validation_data=validation_data,
+                )
+                history.history = lightweight_history.history
+                history.params["requested_batch_size"] = requested_batch_size
+                history.params["actual_batch_size"] = batch_size
+                history.params["epochs_completed"] = lightweight_history.epochs_completed
+                return model, history, extra_callbacks
+            except Exception as exc:
+                if not _is_memory_error(exc):
+                    raise
+                last_oom = exc
+                if lightweight_history.epochs_completed >= accept_partial_min_epochs:
+                    lightweight_history.params["requested_batch_size"] = requested_batch_size
+                    lightweight_history.params["actual_batch_size"] = batch_size
+                    lightweight_history.params["epochs_completed"] = lightweight_history.epochs_completed
+                    lightweight_history.params["stopped_by_memory_error"] = True
+                    print(
+                        f"[OOM accepted] {spec.get('key', spec.get('label'))}: "
+                        f"{lightweight_history.epochs_completed} epochs completed; "
+                        "current weights will be used."
+                    )
+                    return model, lightweight_history, extra_callbacks
+                print(
+                    f"[OOM retry] {spec.get('key', spec.get('label'))}: "
+                    f"batch_size={batch_size} でメモリ不足。"
+                )
+                del model
+                K.clear_session()
+                gc.collect()
+                next_batch_size = batch_size // 2
+                if next_batch_size < min_batch_size:
+                    break
+                batch_size = next_batch_size
+        raise last_oom
 
     def train_one_model(self, spec, mm, x_fit, y_fit_scaled,
                         x_fit_pca, epochs):
         """1 モデルを学習して返す。kind に応じて入力形態を変える。"""
         if spec["kind"] == "keras":
-            if "lr" not in spec or "batch_size" not in spec:
-                raise ValueError(
-                    f"Keras model '{spec.get('key', spec.get('label'))}' needs "
-                    "resolved 'lr' and 'batch_size'. Check PARAMETER_SETS."
+            model, history, _ = self._train_keras_model(
+                spec, mm, x_fit, y_fit_scaled, epochs
             )
-            lr = spec["lr"]
-            requested_batch_size = int(spec["batch_size"])
-            # ``verbose=1`` uses Keras's redraw-on-one-line progress bar,
-            # which is not reliably shown outside an interactive terminal.
-            # Keep it opt-in; TrainingProgress below is the standard display.
-            fit_verbose = int(spec.get("fit_verbose", 0))
-            progress_interval = int(spec.get("progress_interval_epochs", 10))
-            min_batch_size = int(spec.get("min_batch_size", 1))
-            accept_partial_min_epochs = int(spec.get("accept_partial_min_epochs", 100))
-            batch_size = requested_batch_size
-            last_oom = None
-
-            while batch_size >= min_batch_size:
-                K.clear_session()
-                gc.collect()
-                model = spec["builder"](mm, **spec.get("builder_params", {}))
-                model.compile(optimizer=SGD(learning_rate=lr, momentum=0.9, clipnorm=1.0),
-                              loss='mean_squared_error')
-                lightweight_history = LightweightHistory()
-                callbacks = [
-                    lightweight_history,
-                    TrainingProgress(
-                        spec.get("label", spec.get("key", "Keras model")),
-                        epochs,
-                        progress_interval,
-                    ),
-                ]
-                try:
-                    history = model.fit(
-                        x_fit, y_fit_scaled,
-                        batch_size=batch_size,
-                        epochs=epochs,
-                        verbose=fit_verbose,
-                        callbacks=callbacks,
-                    )
-                    history.history = lightweight_history.history
-                    history.params["requested_batch_size"] = requested_batch_size
-                    history.params["actual_batch_size"] = batch_size
-                    history.params["epochs_completed"] = lightweight_history.epochs_completed
-                    return model, history
-                except Exception as exc:
-                    if not _is_memory_error(exc):
-                        raise
-                    last_oom = exc
-                    if lightweight_history.epochs_completed >= accept_partial_min_epochs:
-                        lightweight_history.params["requested_batch_size"] = requested_batch_size
-                        lightweight_history.params["actual_batch_size"] = batch_size
-                        lightweight_history.params["epochs_completed"] = lightweight_history.epochs_completed
-                        lightweight_history.params["stopped_by_memory_error"] = True
-                        print(
-                            f"[OOM accepted] {spec.get('key', spec.get('label'))}: "
-                            f"{lightweight_history.epochs_completed} epochs completed; "
-                            "current weights will be used."
-                        )
-                        return model, lightweight_history
-                    print(
-                        f"[OOM retry] {spec.get('key', spec.get('label'))}: "
-                        f"batch_size={batch_size} でメモリ不足。"
-                    )
-                    del model
-                    K.clear_session()
-                    gc.collect()
-                    next_batch_size = batch_size // 2
-                    if next_batch_size < min_batch_size:
-                        break
-                    batch_size = next_batch_size
-
-            raise last_oom
+            return model, history
         else:  # sklearn / xgboost
-            model = spec["builder"](mm, **spec.get("builder_params", {}))
+            builder_params = dict(spec.get("builder_params", {}))
+            if spec.get("random_state_from_run", False):
+                builder_params.setdefault(
+                    "random_state", current_global_seed(self.random_seed)
+                )
+            model = spec["builder"](mm, **builder_params)
             label = spec.get("label", spec.get("key", "sklearn model"))
             print(f"[training] {label}: [--------------------] 0/1", flush=True)
             model.fit(x_fit_pca, y_fit_scaled.ravel())
             print(f"[training] {label}: [####################] 1/1 (100%)", flush=True)
             return model, None
+
+    def train_one_model_with_epoch_validation(
+        self,
+        spec,
+        mm,
+        x_fit,
+        y_fit_scaled,
+        x_fit_pca,
+        epochs,
+        x_validation,
+        _x_validation_pca,
+        y_validation,
+        scaler,
+        checkpoints,
+    ):
+        """Train a Keras model and retain held-out predictions at checkpoints."""
+        if spec["kind"] != "keras":
+            raise ValueError("Epoch checkpoint validation is only defined for Keras models.")
+        y_validation_scaled = scaler.transform(
+            np.asarray(y_validation, dtype=float).reshape(-1, 1)
+        )
+
+        def callback_factory():
+            return [EpochPredictionRecorder(x_validation, scaler, checkpoints)]
+
+        model, history, callbacks = self._train_keras_model(
+            spec,
+            mm,
+            x_fit,
+            y_fit_scaled,
+            epochs,
+            validation_data=(x_validation, y_validation_scaled),
+            callback_factory=callback_factory,
+        )
+        recorder, = callbacks
+        return model, history, dict(recorder.predictions)
 
     def predict_one_model(self, spec, model, x, x_pca, scaler):
         """学習済みモデルで予測し、元スケールの熱流束に戻して返す。"""

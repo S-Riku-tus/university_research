@@ -2,6 +2,12 @@
 
 このページは**日付ごとの履歴**。各節の「現在」「次にやること」は当時の記録であり、現在の未完了作業とは限らない。最新の状態は[研究の現在地](research_status.md)、更新関係は[文書案内](document_index.md)を読む。
 
+## 2026-09-23 実行順2の実装・再現性スモーク
+
+- [学習状態保存・元WAV分離epoch validation](../experiments/2026-09-23_step2_training_state/README.md)を実装。モデル3種、PCA、scaler、統合重み、seed、環境、分割、epoch別の全域・ONB領域別指標を保存し、再読込予測を検証する。
+- PCAの微小演算差、RFの固定seed、TensorFlow GPUの非決定性を実データで検出して修正。同一seedの1 epochスモーク2回は、3単体と等重みの6/18全1080予測が完全一致。各保存モデルの再読込差も0 W/m²。
+- 同じclean fitを6/18の7 SNRへ適用する配線と、等重み・現行重み・subset equal・shrinkage stackの実データ配線も完了。ただし1 epoch結果は性能結論に使わない。200 epochs×3 seedの本実験、4方式の本比較、保存モデルIGは計算時間が大きいため未実行。
+
 ## 2026-09-23 実行順2〜7の再学習なし監査
 
 - [既存成果物だけの監査](../experiments/2026-09-23_steps2-7_readonly_audit/README.md)を実施。ONB主コード、モデル学習・推論、IGは実行していない。

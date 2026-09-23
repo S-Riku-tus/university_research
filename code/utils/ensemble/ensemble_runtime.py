@@ -265,7 +265,7 @@ class EnsembleRun:
                 x_inner_fit,
                 y_inner_fit_scaled,
                 x_inner_fit_pca,
-                epochs,
+                epochs[spec["key"]] if isinstance(epochs, dict) else epochs,
             )
             inner_pred = trainer.predict_one_model(
                 inner_spec,
@@ -327,7 +327,8 @@ class EnsembleRun:
                 model = history = None
                 try:
                     model, history = trainer.train_one_model(
-                        inner_spec, RegressionModelMaker(input_shape), x_fit, y_scaled, x_fit_pca, epochs)
+                        inner_spec, RegressionModelMaker(input_shape), x_fit, y_scaled, x_fit_pca,
+                        epochs[spec["key"]] if isinstance(epochs, dict) else epochs)
                     prediction = np.asarray(trainer.predict_one_model(
                         inner_spec, model, x_held, x_held_pca, scaler), dtype=float).ravel()
                     if len(prediction) != len(held_index) or not np.isfinite(prediction).all():

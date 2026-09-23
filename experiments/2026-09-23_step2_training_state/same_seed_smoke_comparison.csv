@@ -1,0 +1,5 @@
+model,max_abs_prediction_difference_w_m2,mean_abs_prediction_difference_w_m2,array_identical
+randomforest,0,0,true
+conformer,0,0,true
+alexnet,0,0,true
+ensemble__simple_equal,0,0,true

@@ -3,7 +3,7 @@ from tensorflow.keras.layers import (GlobalAveragePooling2D, Conv2D,
                                      BatchNormalization, MaxPooling2D, Dropout, 
                                      Flatten, Dense, Activation, Input, Permute, Reshape, 
                                      Bidirectional, GRU, GlobalAveragePooling1D,
-                                     MultiHeadAttention, LayerNormalization, Layer, Embedding,
+                                     MultiHeadAttention, LayerNormalization, Layer,
                                      TimeDistributed)
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.applications import ResNet50, MobileNetV2, VGG16, EfficientNetB0
@@ -39,17 +39,24 @@ def transformer_encoder(inputs, head_size, num_heads, ff_dim, dropout=0):
 class PositionalEmbedding(Layer):
     def __init__(self, sequence_length, output_dim, **kwargs):
         super().__init__(**kwargs)
-        self.position_embeddings = Embedding(
-            input_dim=sequence_length, output_dim=output_dim
+        self.sequence_length = int(sequence_length)
+        self.output_dim = int(output_dim)
+
+    def build(self, input_shape):
+        # Every fixed-length position is used on every forward pass. Keeping
+        # the table as a dense weight is mathematically equivalent to an
+        # Embedding lookup here, and avoids a nondeterministic sparse GPU
+        # gradient (UnsortedSegmentSum) in TensorFlow 2.9.
+        self.position_embeddings = self.add_weight(
+            name="embeddings",
+            shape=(self.sequence_length, self.output_dim),
+            initializer=tf.keras.initializers.RandomUniform(-0.05, 0.05),
+            trainable=True,
         )
-        self.sequence_length = sequence_length
-        self.output_dim = output_dim
+        super().build(input_shape)
 
     def call(self, inputs):
-        length = tf.shape(inputs)[1]
-        positions = tf.range(start=0, limit=length, delta=1)
-        embedded_positions = self.position_embeddings(positions)
-        return inputs + embedded_positions
+        return inputs + self.position_embeddings[tf.newaxis, :, :]
 
 class LogPowerCompression(Layer):
     """Compress raw non-negative spectrogram power without per-sample scaling."""

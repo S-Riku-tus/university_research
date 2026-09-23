@@ -14,6 +14,7 @@
 | 次の研究作業を小タスクから始める | [9/18発表後の小タスク](research_plan/2026-09-19_next_small_tasks.md) | 保存予測診断→固定モデルのノイズ試験→選別対照→説明性・執筆。各タスクの入力と終了条件 |
 | A〜D後の最新方針と実行順を見る | [A〜D後の解釈と今後の研究方針](research_plan/2026-09-22_after_A-D_interpretation_and_next_steps.md) | 本人見解と確認事実を分離。Bを最優先に、固定clean、matched原因診断、統合方式、C・Dの分岐を段階化 |
 | 実行順2〜7のうち再学習なしで進めた範囲を見る | [9/23の再学習なし監査](../experiments/2026-09-23_steps2-7_readonly_audit/README.md) | 主コード未実行。matchedの重み反実仮想、Cの除外94秒、残る作業の学習・推論要否を固定 |
+| 実行順2の保存・epoch validation実装を見る | [9/23の学習状態保存・再現性スモーク](../experiments/2026-09-23_step2_training_state/README.md) | 元WAV分離epoch曲線、3モデル/PCA/scaler/重み保存、再読込検証、決定論修正、全SNR配線確認 |
 | 説明性の採否と帯域改善判断を見る | [9/22 Dの説明性監査](../experiments/2026-09-22_d_explainability/README.md) | 残差とマスク、TreeSHAP再構成、IG収束・baseline不足、Grad-CAMの層・粗さ、帯域再学習の不採用 |
 | 修論本文へ移す作業稿を見る | [背景・方法・A〜D結果の作業稿](thesis/2026-09-22_working_draft_background_methods_results.md) | 背景、実験条件、評価設計、手法選択、結果・限界、主張と根拠の対応 |
 | ピーク選別の採否と残る問題を見る | [9/20 Cの対応比較](../experiments/2026-09-20_c_selection/README.md) | 2条件×3 seed、1080評価秒、WAV別・ONB領域別の得失、閾値定義と独立日の限界 |

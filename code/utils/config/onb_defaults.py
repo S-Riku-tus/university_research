@@ -31,6 +31,7 @@ def onb_model_specs():
             "label": "RandomForest",
             "kind": "sklearn",
             "builder": _build_random_forest,
+            "random_state_from_run": True,
         },
         {
             "key": "conformer",
@@ -78,6 +79,10 @@ def default_output_config(now=None):
         "result_date_dir": f"{save_date}/onb",
         "save_fold_predictions": True,
         "save_tuning_summary": True,
+        # Final fitted state is large (especially AlexNet), so historical runs
+        # keep the previous lightweight behavior unless a condition opts in.
+        "save_fitted_artifacts": False,
+        "verify_reloaded_artifacts": True,
         "resume_completed_runs": True,
         "noise_trend_plots": {
             "enabled": True,
@@ -97,6 +102,20 @@ DEFAULT_ACOUSTIC_SELECTION_CONFIG = {
     "peak_height_threshold": None,
     "peak_height_threshold_by_experiment": {},
     "apply_max_heat_flux_by_experiment": {},
+}
+
+
+DEFAULT_TRAINING_VALIDATION_CONFIG = {
+    # Training-day-only, source-WAV-disjoint epoch diagnosis.  This is kept
+    # separate from ensemble inner_holdout because it selects training length,
+    # whereas inner_holdout estimates ensemble weights.
+    "enabled": False,
+    "mode": "wav_kfold",
+    "folds": 3,
+    "checkpoint_interval_epochs": 10,
+    "minimum_epoch": 1,
+    "selection_metric": "rmse_all",
+    "select_epochs": True,
 }
 
 
@@ -160,6 +179,7 @@ def apply_onb_defaults(config, now=None):
     """Resolve stable defaults while allowing explicit, local overrides."""
     defaults = {
         "acoustic_selection": deepcopy(DEFAULT_ACOUSTIC_SELECTION_CONFIG),
+        "training_validation": deepcopy(DEFAULT_TRAINING_VALIDATION_CONFIG),
         "output": default_output_config(now),
         "explainability": deepcopy(DEFAULT_EXPLAINABILITY_CONFIG),
     }

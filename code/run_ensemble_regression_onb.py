@@ -21,6 +21,11 @@ from pprint import pformat
 # 学習前のGPUメモリ一括確保を避け、必要な分だけ順次確保する。
 # Windowsでメモリ不足が起きた際、バッチサイズを下げた再試行を可能にする。
 os.environ.setdefault("TF_FORCE_GPU_ALLOW_GROWTH", "true")
+# Research runs compare small differences across repeated fits. Request
+# deterministic TensorFlow/CUDA kernels before TensorFlow is imported.
+os.environ.setdefault("TF_CUDNN_DETERMINISTIC", "1")
+os.environ.setdefault("TF_DETERMINISTIC_OPS", "1")
+os.environ.setdefault("CUBLAS_WORKSPACE_CONFIG", ":4096:8")
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -204,6 +209,7 @@ EPOCH_NUM = _cfg("run", "smoke_epochs" if SMOKE_TEST else "epochs")
 DIVISIONS = _cfg("run", "smoke_folds" if SMOKE_TEST else "folds")
 COLOR_CHANNEL = _cfg("run", "color_channel")
 RANDOM_SEED = _cfg("run", "random_seed")
+DETERMINISTIC_OPS = True
 FLG_ROOP = _cfg("run", "loop_parameter_sets")
 
 NOISE_SOURCE_PREFIX = _noise_source_prefix(_cfg("data", "noise_source"))
@@ -246,11 +252,16 @@ RESULT_MODEL_GROUP = (
 )
 
 PCA_COMPONENTS = _cfg("features", "pca_components")
+TRAINING_VALIDATION_CONFIG = dict(
+    VALIDATION_CONFIG.get("training_validation", {})
+)
 
 SAVE_DATE = _cfg("output", "save_date")
 RESULT_DATE_DIR = _cfg("output", "result_date_dir") or SAVE_DATE
 SAVE_FOLD_PREDICTIONS = _cfg("output", "save_fold_predictions")
 SAVE_TUNING_SUMMARY = _cfg("output", "save_tuning_summary")
+SAVE_FITTED_ARTIFACTS = _cfg("output", "save_fitted_artifacts")
+VERIFY_RELOADED_ARTIFACTS = _cfg("output", "verify_reloaded_artifacts")
 RESUME_COMPLETED_RUNS = _cfg("output", "resume_completed_runs")
 NOISE_TREND_CONFIG = _cfg("output", "noise_trend_plots")
 # 日付は上位フォルダにあるため、実行IDは時分秒の6桁だけにする。
@@ -330,6 +341,7 @@ def validation_config_snapshot():
             "folds": DIVISIONS,
             "color_channel": COLOR_CHANNEL,
             "random_seed": RANDOM_SEED,
+            "deterministic_ops": DETERMINISTIC_OPS,
             "loop_parameter_sets": FLG_ROOP,
         },
         "data": {
@@ -357,6 +369,7 @@ def validation_config_snapshot():
         "features": {
             "pca_components": PCA_COMPONENTS,
         },
+        "training_validation": dict(TRAINING_VALIDATION_CONFIG),
         "output": {
             "save_date": SAVE_DATE,
             "result_date_dir": RESULT_DATE_DIR,
@@ -365,6 +378,8 @@ def validation_config_snapshot():
             "run_scoped_result_dir": True,
             "save_fold_predictions": SAVE_FOLD_PREDICTIONS,
             "save_tuning_summary": SAVE_TUNING_SUMMARY,
+            "save_fitted_artifacts": SAVE_FITTED_ARTIFACTS,
+            "verify_reloaded_artifacts": VERIFY_RELOADED_ARTIFACTS,
             "resume_completed_runs": RESUME_COMPLETED_RUNS,
             "noise_trend_plots": dict(NOISE_TREND_CONFIG),
         },
@@ -407,6 +422,24 @@ def validate_validation_config(enabled_specs):
         raise ValueError("VALIDATION_CONFIG['models']['parameter_sets'] must not be empty.")
     if int(PCA_COMPONENTS) <= 0:
         raise ValueError("pca_components must be a positive integer.")
+    if TRAINING_VALIDATION_CONFIG.get("enabled", False):
+        if TRAINING_VALIDATION_CONFIG.get("mode") != "wav_kfold":
+            raise ValueError("training_validation.mode must be 'wav_kfold'.")
+        if int(TRAINING_VALIDATION_CONFIG.get("folds", 0)) < 2:
+            raise ValueError("training_validation.folds must be at least 2.")
+        if int(TRAINING_VALIDATION_CONFIG.get("checkpoint_interval_epochs", 0)) < 1:
+            raise ValueError(
+                "training_validation.checkpoint_interval_epochs must be positive."
+            )
+        minimum_epoch = int(TRAINING_VALIDATION_CONFIG.get("minimum_epoch", 1))
+        if not 1 <= minimum_epoch <= int(EPOCH_NUM):
+            raise ValueError(
+                "training_validation.minimum_epoch must be within the run epochs."
+            )
+        if TRAINING_VALIDATION_CONFIG.get("selection_metric") != "rmse_all":
+            raise ValueError(
+                "training_validation.selection_metric currently supports rmse_all only."
+            )
     model_keys = [spec["key"] for spec in enabled_specs]
     if len(model_keys) != len(set(model_keys)):
         raise ValueError(f"Duplicate active model keys: {model_keys}")
@@ -541,7 +574,7 @@ def validate_validation_config(enabled_specs):
                 f"experiment: {sorted(missing_xai_thresholds)}")
 
 def main():
-    set_global_seed(RANDOM_SEED)
+    set_global_seed(RANDOM_SEED, deterministic_ops=DETERMINISTIC_OPS)
     # 指標計算、学習、統合、作図の共通処理を用意する。
     trainer = ModelTrainer(random_seed=RANDOM_SEED)
     plotter = RegressionPlotter()

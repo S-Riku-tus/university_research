@@ -36,6 +36,12 @@ from utils.experiment.run_helpers import (
 from utils.models.regression.base_regression import RegressionModelMaker
 from utils.experiment.acoustic_selection import AcousticTrainingSelector
 from utils.training.internal_validation import fit_individual_performance_cv
+from utils.training.epoch_validation import (
+    fit_epoch_validation_cv, model_epochs, save_epoch_validation_outputs,
+)
+from utils.training.fitted_artifacts import (
+    begin_fitted_state, finish_fitted_state, save_and_verify_model,
+)
 
 
 SUMMARY_METRICS = [
@@ -113,7 +119,8 @@ class ResultRecorder:
                                   fold, self.path, self.snr)
 
     def record_fold(self, fold, indices, metadata, y_true, single_predictions, inner_errors,
-                    training_groups, fit_id, plotter, crossfit_fit=None):
+                    training_groups, fit_id, plotter, crossfit_fit=None,
+                    selected_epochs=None):
         for key, prediction in single_predictions.items():
             self.ensemble.record_validation_error(key, y_true, prediction)
         outputs = self.ensemble.combine_predictions(single_predictions, inner_errors, fold, crossfit_fit)
@@ -151,6 +158,7 @@ class ResultRecorder:
             "evaluation_sample_indices": indices.tolist(),
             "n_training_chunks": len(training_groups), "n_evaluation_chunks": len(indices),
             "inner_holdout_errors": inner_errors,
+            "selected_epochs": selected_epochs or {},
         })
         write_json(self.path / "split_manifest.json", {
             "learning_context": self.job["learning_context"], "folds": self.split_records})
@@ -160,6 +168,7 @@ class ResultRecorder:
             for key in self.all_keys:
                 output.write(f"  [{self.labels[key]}] " + " | ".join(
                     f"{metric}={self.store[key][metric][-1]:.6g}" for metric in SUMMARY_METRICS) + "\n")
+        return outputs
 
     def finish(self, plotter, update_noise_trends):
         context = self.job["learning_context"]
@@ -349,12 +358,41 @@ def run_learning_experiments(jobs, policy, config, enabled_specs, parameter_sets
                                        "instance": config["output"]["run_instance_id"],
                                        "fit_session": fit_session_id}, length=12)
                 set_global_seed(config["run"]["random_seed"] + fold)
+                training_validation = config.get("training_validation", {})
+                selected_epochs = {}
+                if training_validation.get("enabled", False):
+                    selected_epochs, validation_rows, validation_audit = fit_epoch_validation_cv(
+                        trainer,
+                        specs,
+                        x_fit,
+                        y_fit,
+                        [train_metadata[i] for i in fit_indices],
+                        selector,
+                        config["run"]["folds"],
+                        config["run"]["random_seed"],
+                        training_validation.get("mode", "wav_kfold"),
+                        config["features"]["pca_components"],
+                        config["run"]["epochs"],
+                        training_validation,
+                        config["thresholds"]["by_experiment"],
+                        config["thresholds"]["onb_band_frac"],
+                    )
+                    for recorder in recorders:
+                        save_epoch_validation_outputs(
+                            recorder.path, fold, validation_rows, validation_audit
+                        )
+                resolved_epochs = {
+                    spec["key"]: model_epochs(
+                        config["run"]["epochs"], selected_epochs, spec
+                    )
+                    for spec in specs
+                }
                 if performance_cv:
                     inner_errors, internal_audit = fit_individual_performance_cv(
                         trainer, specs, x_fit, y_fit, [train_metadata[i] for i in fit_indices], selector,
                         config["run"]["folds"], config["run"]["random_seed"],
                         policy.get("internal_validation", "chunk_kfold"),
-                        config["features"]["pca_components"], config["run"]["epochs"])
+                        config["features"]["pca_components"], resolved_epochs)
                     for recorder in recorders:
                         write_json(recorder.path / f"internal_validation_fold{fold}.json", internal_audit)
                 retained, selection_audit = selector.select([train_metadata[i] for i in fit_indices])
@@ -365,20 +403,55 @@ def run_learning_experiments(jobs, policy, config, enabled_specs, parameter_sets
                 if not performance_cv:
                     inner_errors = ensemble.fit_inner_holdout_errors(
                         trainer, x_fit, y_fit, groups[fit_indices], config["features"]["pca_components"],
-                        tuple(x.shape[1:]), config["run"]["epochs"], fold, fold_count)
+                        tuple(x.shape[1:]), resolved_epochs, fold, fold_count)
                 crossfit_fit = ensemble.fit_crossfit_weights(
                     trainer, x_fit, y_fit, groups[fit_indices], config["features"]["pca_components"],
-                    tuple(x.shape[1:]), config["run"]["epochs"], fold, fold_count)
+                    tuple(x.shape[1:]), resolved_epochs, fold, fold_count)
                 scaler = MinMaxScaler()
                 y_scaled = scaler.fit_transform(y_fit.reshape(-1, 1))
                 pca, x_fit_pca = None, None
                 if any(spec["kind"] == "sklearn" for spec in specs):
                     x_fit_pca, _, pca = trainer.make_pca(x_fit, [], config["features"]["pca_components"], return_pca=True)
+                artifact_directory = artifact_manifest = None
+                if config["output"].get("save_fitted_artifacts", False):
+                    artifact_directory = recorders[0].path / "fitted_state" / f"fold{fold}"
+                    artifact_manifest = begin_fitted_state(
+                        artifact_directory,
+                        fit_id,
+                        fold,
+                        config["run"]["random_seed"] + fold,
+                        groups[fit_indices],
+                        selected_epochs,
+                        pca,
+                        scaler,
+                        deterministic_ops=config["run"].get("deterministic_ops", True),
+                    )
+                    for recorder in recorders:
+                        write_json(
+                            recorder.path / f"fitted_state_reference_f{fold}.json",
+                            {
+                                "fit_id": fit_id,
+                                "canonical_directory": str(artifact_directory.resolve()),
+                            },
+                        )
                 predictions = {recorder.snr: {} for recorder in recorders}
                 for spec in specs:
                     set_global_seed(config["run"]["random_seed"] + fold)
                     model, history = trainer.train_one_model(spec, RegressionModelMaker(tuple(x.shape[1:])),
-                                        x_fit, y_scaled, x_fit_pca, config["run"]["epochs"])
+                                        x_fit, y_scaled, x_fit_pca, resolved_epochs[spec["key"]])
+                    if artifact_directory is not None:
+                        save_and_verify_model(
+                            artifact_directory,
+                            artifact_manifest,
+                            spec,
+                            model,
+                            RegressionModelMaker(tuple(x.shape[1:])),
+                            trainer,
+                            x_fit[: min(8, len(x_fit))],
+                            scaler,
+                            pca,
+                            verify=config["output"].get("verify_reloaded_artifacts", True),
+                        )
                     for recorder in recorders:
                         job = recorder.job
                         indices = splits_by_noise[job["noise_dir_name"]][fold - 1][1]
@@ -389,7 +462,7 @@ def run_learning_experiments(jobs, policy, config, enabled_specs, parameter_sets
                             x_eval, y_eval = loader.load_npy_data(job["data_path"], sample_indices=indices)
                         if x_eval.shape[1:] != x_fit.shape[1:]:
                             raise ValueError("学習入力と評価入力の形状が一致しません。")
-                        x_eval_pca = (pca.transform(x_eval.reshape(len(x_eval), -1))
+                        x_eval_pca = (trainer.transform_pca(pca, x_eval)
                                       if pca is not None and spec["kind"] == "sklearn" else None)
                         prediction = trainer.predict_one_model(spec, model, x_eval, x_eval_pca, scaler)
                         predictions[recorder.snr][spec["key"]] = prediction
@@ -402,12 +475,21 @@ def run_learning_experiments(jobs, policy, config, enabled_specs, parameter_sets
                     del model, history
                     K.clear_session()
                     gc.collect()
-                for recorder in recorders:
+                artifact_outputs = None
+                for recorder_i, recorder in enumerate(recorders):
                     metadata = metadata_by_noise[recorder.job["noise_dir_name"]]
                     indices = splits_by_noise[recorder.job["noise_dir_name"]][fold - 1][1]
-                    recorder.record_fold(fold, indices, metadata, targets_from_metadata(metadata)[indices],
-                                          predictions[recorder.snr], inner_errors, groups[fit_indices], fit_id, plotter,
-                                          crossfit_fit=crossfit_fit)
+                    outputs = recorder.record_fold(
+                        fold, indices, metadata, targets_from_metadata(metadata)[indices],
+                        predictions[recorder.snr], inner_errors, groups[fit_indices], fit_id, plotter,
+                        crossfit_fit=crossfit_fit, selected_epochs=selected_epochs,
+                    )
+                    if recorder_i == 0:
+                        artifact_outputs = outputs
+                if artifact_directory is not None:
+                    finish_fitted_state(
+                        artifact_directory, artifact_manifest, artifact_outputs
+                    )
                 del x_fit, y_fit, y_scaled, x_fit_pca, pca, predictions, crossfit_fit
                 gc.collect()
             for recorder in recorders:
