@@ -1,6 +1,8 @@
 # 研究の現在地と次にすること
 
-更新日: **2026-09-24（ONB・選別閾値・IG追跡監査まで反映）**。分位点ルール時点の状態は[変更前の記録](../experiments/2026-09-16_peak_height_selection/previous_documents/research_status.md)に保存した。
+更新日: **2026-09-24（clean学習・固定noise推論3 seed本比較まで反映）**。分位点ルール時点の状態は[変更前の記録](../experiments/2026-09-16_peak_height_selection/previous_documents/research_status.md)に保存した。
+
+**clean学習・固定noise推論本比較完了**：[3 seed本比較](../experiments/2026-09-24_clean_train_noise_inference/README.md)で、6/11 clean学習済みの同じモデルを6/18の7 SNRへ適用した。全runで7/7条件完了、seed内fit ID同一、再読込予測差0。等重み・inner holdoutのR²は全seedでノイズ強度に伴い単調低下し、matchedで見えた谷は消失した。cleanでは両統合がRFを3/3 seedで上回ったが、ノイズあり6 SNR×3 seedではRFが全18条件で最良。平均R²はRFがclean〜−16 dBで.876〜.879、−20 dBで.766、等重みは.918→.457、inner holdoutは.915→.282。inner重みはRF .129〜.202に対し深層合計.798〜.871で、深層2モデルの残差相関はclean .882から−20 dB .987へ上がり、ONB前の同方向過大予測が統合悪化を生んだ。6/18上の0.01刻み診断では全21 seed×SNRでRFより悪化しない固定凸結合はRF単体だけだったが、これは事後診断で採用重みではない。次は6/11元WAV非共有OOFだけで全SNR頑健重みを決め、RF単体へ収束するかを確認する。収束する場合、重み探索を終え、単一の混合ノイズ学習モデルによる深層頑健化を検討する。
 
 **9/24追跡監査（本人確認を反映）**：[ONB・選別・アンサンブル・IGの照合](../experiments/2026-09-24_selection_onb_ig_review/README.md)で、現行コード値（6/11=221,505、6/18=271,678、7/9=571,694 W/m²）を正しいONBとして確定した。0番ノートブックがONBと記した368,978／376,320／442,169 W/m²は抵抗―熱流束の自動直線性喪失候補であり、ONBではない。誤値txt 3本を削除し、ノートブックは今後この候補をONBと呼ばず別名の診断txtへ出すよう修正した。現行ONBで再集計すると`1e-9`選別は6/11のONB以降94/660秒を除き、意図どおりONB以降だけを対象とする。CのONB前改善は、弱音のONB以降境界標本を削ったことで共有回帰関数が低値側へ動いた結果と整合し、近傍RMSEは全モデルで悪化した。次の閾値識別は既存`1e-9`に`1e-8`と同数ランダム除外を加える。最大記録熱流束はCHFではない。追加実験・同期映像は取得不可。IGはlog-power経路で数値誤差を改善したが、本学習モデル・複数baselineでの採否は未確認。
 
@@ -28,7 +30,7 @@
 
 **実行順2の実装・スモーク確認（9/23追記）**：[実装・検証記録](../experiments/2026-09-23_step2_training_state/README.md)のとおり、6/11内の元WAV非共有epoch validation、モデル・PCA・scaler・統合重み・seed・環境の保存、再読込予測検証を現行主コードへ追加した。TensorFlowの厳密決定論を妨げていた位置埋め込みの疎更新を同値な密更新へ変え、RFの固定seedとPCA微小演算差も修正。6/11 clean学習→6/18 clean評価の1 epochスモーク2回は3単体・等重みの全1080予測が完全一致し、保存後再読込差も0。clean fitを6/18の7 SNRへ流す配線と、実行順6の4方式アンサンブルも1 epochで完了した。ただし全て動作確認であり、200 epochs×3 seedの実行順3・4、5の学習側診断、6の本比較、7-Dは未実行。本実験設定は[`2026-09-23_steps2-4_full.json`](../configs/experiments/2026-09-23_steps2-4_full.json)に固定した。
 
-**次の本実験（9/24確定）**：[`2026-09-24_clean_train_noise_inference.json`](../configs/experiments/2026-09-24_clean_train_noise_inference.json)で、音響選別なし、6/11 clean学習、6/18の7 SNR推論、元WAV非共有validation、200 epochs、seed 42/43/44を固定した。単体3モデル、等重み、現行`inner_holdout`重みを比較する。本runはまだ未実行であり、まずseed 42の成果物・再読込一致・曲線を確認してから43/44へ進む。
+**本実験条件（9/24、完了）**：[`2026-09-24_clean_train_noise_inference.json`](../configs/experiments/2026-09-24_clean_train_noise_inference.json)で、音響選別なし、6/11 clean学習、6/18の7 SNR推論、元WAV非共有validation、200 epochs、seed 42/43/44を実行済み。結果は本ページ冒頭と[実験記録](../experiments/2026-09-24_clean_train_noise_inference/README.md)を参照する。
 
 **9/17の評価方針更新**：現行実行コードから元WAVへの予測集約・ONB遷移の追加評価と「主評価」の選択を外し、1秒chunkの通常指標を全モデル・有効な統合方式について確認する。元WAV情報は学習/検証の分割で同じ録音を跨がせないために使う。現行`inner_holdout`と`performance_kfold`の重み用内部スコアもchunk単位へ変更した。以下のWAV中央値・crossfit成績は変更前に保存した過去runの記録であり、新実行の評価定義とは混同しない。
 
