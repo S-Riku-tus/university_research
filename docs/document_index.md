@@ -8,7 +8,7 @@
 |---|---|---|
 | 次の作業を始める | [研究の現在地](research_status.md) | 状態・本人の希望・次の一手を更新する唯一の入口 |
 | アンサンブル研究の目的・成功基準・次の検証を確認する | [アンサンブル研究の位置づけと次の検証](research_plan/2026-09-24_ensemble_research_position_and_next_steps.md) | 本人の意図、現行重みの数式、評価基準、matchedのnoise別重み比較から方式改善への分岐を固定 |
-| matchedで重みがnoise別か確認し、次回条件を実行する | [matchedノイズ別重みの監査と条件](../experiments/2026-09-24_matched_noise_specific_weights/README.md) | 保存済み3 seedのfit ID・重み、manifest監査、7 SNR本比較設定とコマンド |
+| matchedのnoise別重み本比較と次の方式比較を確認する | [matched 7 SNR×3 seed本比較](../experiments/2026-09-24_matched_noise_specific_weights/README.md) | 21条件の完了性、clean-only対応比較、領域別性能、重み順位の別日移送失敗、subset・shrinkage比較への根拠 |
 | ONB値・選別閾値・アンサンブル原因・IG修正を確認する | [9/24追跡監査](../experiments/2026-09-24_selection_onb_ig_review/README.md) | 確定ONB、3日分ピーク分布、Cの再解釈、fixed clean統合、log-power IGを固定 |
 | clean学習モデルのノイズ転送と統合効果を確認する | [9/24 clean固定モデル3 seed本比較](../experiments/2026-09-24_clean_train_noise_inference/README.md) | 完了性、全SNR性能、領域別誤差、残差相関、次の頑健重み診断を固定 |
 | 9/18発表後の議論を確認する | [教授との議論・修論との接続](research_plan/2026-09-18_professor_discussion.md) | 原メモ、解釈、確認事実、次の識別比較を分離 |

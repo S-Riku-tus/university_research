@@ -1,12 +1,12 @@
 # 実験結果・実装記録の入口
 
-更新日: 2026-09-24。現在の研究状態は[研究の現在地](../docs/research_status.md)。ここには、その判断の根拠となる**日付付きの結果・検証記録**を置く。
+更新日: 2026-09-25。現在の研究状態は[研究の現在地](../docs/research_status.md)。ここには、その判断の根拠となる**日付付きの結果・検証記録**を置く。
 
 ## 直近の結果と使い分け
 
 | 記録 | 範囲・用途 |
 |---|---|
-| [9/24 matchedノイズ別重み監査](2026-09-24_matched_noise_specific_weights/README.md) | matchedがnoiseごとにモデル・重みを再fitするコード／保存結果の確認、scope監査追加、次の7 SNR×3 seed条件とコマンド |
+| [9/24–25 matchedノイズ別重み本比較](2026-09-24_matched_noise_specific_weights/README.md) | noise別再fitの21条件監査、clean-only対応比較、領域別性能、現行innerの順位移送失敗、次のsubset・shrinkage比較 |
 | [9/24 clean固定モデル3 seed本比較](2026-09-24_clean_train_noise_inference/README.md) | cleanモデル・重みを7 SNRへ固定転送した結果、谷の消失、noise下の残差相関とONB前過大予測 |
 | [9/23・学習状態保存とepoch validation](2026-09-23_step2_training_state/README.md) | 実行順2の実装。元WAV非共有epoch validation、3モデル/PCA/scaler/統合重み保存、再読込一致、同一seed再現性と全SNR配線のスモーク確認。本性能は未実行 |
 | [9/23・実行順2〜7の再学習なし監査](2026-09-23_steps2-7_readonly_audit/README.md) | matched重み反実仮想、C除外94秒の全件監査、再学習が必要な残作業の識別 |

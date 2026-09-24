@@ -2,6 +2,13 @@
 
 このページは**日付ごとの履歴**。各節の「現在」「次にやること」は当時の記録であり、現在の未完了作業とは限らない。最新の状態は[研究の現在地](research_status.md)、更新関係は[文書案内](document_index.md)を読む。
 
+## 2026-09-25 matched・noise別重み7 SNR×3 seed本比較
+
+- [本比較と診断](../experiments/2026-09-24_matched_noise_specific_weights/README.md)を完了。3 seed×7 SNRの全21条件で、noise別の別`fit_id`、学習noiseと評価noiseの一致、`per_training_noise` scope、学習日だけのepoch選択を確認した。
+- 7 SNR平均RMSEはRF 96.17、等重み93.54、inner 94.45 kW/m²。ただしnoiseありだけではRF 96.24、等重み96.11、inner 96.98で、cleanを除く優位は安定しない。最良単体2%以内は両方式11/21で暫定14/21基準に未達。
+- matchedはclean-onlyに比べ強noiseの全域RMSEを大幅に改善したが、改善の中心はONB前の過大予測抑制で、ONB近傍・以降は過小予測と見逃しが増える。matched内のRF比では統合が近傍・以降RMSEを改善する一方、ONB前RMSEと見逃しは悪化するため、回帰と閾値検知を分けて評価する。
+- noiseありでは最大重みモデルと評価日の最良単体が18条件中6条件しか一致せず、順位相関は平均0。現行innerの課題を、単一4-WAV holdout、単体逆MSE相当で相関を扱わないこと、有害モデルを0にできないことへ絞った。次は同じmatched条件で`subset_equal_cv`と`crossfit_shrinkage_stack`を比較し、一方式固定後に6/11+6/18学習→7/9評価で別日確認する。
+
 ## 2026-09-24 アンサンブル研究の判断基準を更新
 
 - [本人の研究上の意図と次の検証](research_plan/2026-09-24_ensemble_research_position_and_next_steps.md)を記録。全条件で最良は要求せず、平均性能、21セル中の最良／実質同等割合、最悪時悪化、ONB前誤報を結果前に固定して評価する。

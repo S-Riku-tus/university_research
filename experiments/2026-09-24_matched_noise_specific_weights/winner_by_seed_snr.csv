@@ -1,0 +1,22 @@
+seed,snr,winner_key,winner,winner_rmse,runner_up_key,runner_up,runner_up_rmse
+42,-12,randomforest,RandomForest,96513.95695,ensemble__simple_equal,Equal ensemble,99002.820356
+42,-16,randomforest,RandomForest,96813.400358,ensemble__simple_equal,Equal ensemble,97684.580078
+42,-20,conformer,Conformer,89235.496645,ensemble__simple_equal,Equal ensemble,90739.164911
+42,-4,ensemble__simple_equal,Equal ensemble,90379.82835,ensemble__inner_holdout,Inner-holdout ensemble,91218.628166
+42,-8,randomforest,RandomForest,95535.456768,ensemble__simple_equal,Equal ensemble,99228.835096
+42,0,ensemble__inner_holdout,Inner-holdout ensemble,90614.677676,ensemble__simple_equal,Equal ensemble,91873.539708
+42,clean,conformer,Conformer,73458.513028,ensemble__inner_holdout,Inner-holdout ensemble,76236.084724
+43,-12,randomforest,RandomForest,96895.230298,ensemble__inner_holdout,Inner-holdout ensemble,98476.525469
+43,-16,alexnet,AlexNet,83495.21867,ensemble__inner_holdout,Inner-holdout ensemble,85236.364519
+43,-20,conformer,Conformer,90447.959277,ensemble__simple_equal,Equal ensemble,92592.195171
+43,-4,ensemble__simple_equal,Equal ensemble,89548.432189,ensemble__inner_holdout,Inner-holdout ensemble,92287.455326
+43,-8,randomforest,RandomForest,95858.604684,conformer,Conformer,96856.247559
+43,0,randomforest,RandomForest,95299.795284,ensemble__simple_equal,Equal ensemble,96528.170815
+43,clean,ensemble__simple_equal,Equal ensemble,79943.602177,ensemble__inner_holdout,Inner-holdout ensemble,84259.427551
+44,-12,ensemble__inner_holdout,Inner-holdout ensemble,93730.50951,ensemble__simple_equal,Equal ensemble,94422.431386
+44,-16,ensemble__inner_holdout,Inner-holdout ensemble,95011.510939,ensemble__simple_equal,Equal ensemble,95643.106158
+44,-20,ensemble__inner_holdout,Inner-holdout ensemble,97246.891852,randomforest,RandomForest,97328.853887
+44,-4,randomforest,RandomForest,95609.620192,ensemble__inner_holdout,Inner-holdout ensemble,105603.892073
+44,-8,randomforest,RandomForest,95851.794118,ensemble__inner_holdout,Inner-holdout ensemble,103384.089068
+44,0,ensemble__inner_holdout,Inner-holdout ensemble,94165.259599,randomforest,RandomForest,95085.396692
+44,clean,ensemble__simple_equal,Equal ensemble,75646.027994,ensemble__inner_holdout,Inner-holdout ensemble,77365.544619

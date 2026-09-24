@@ -1,10 +1,12 @@
 # 研究の現在地と次にすること
 
-更新日: **2026-09-24（matchedのnoise別重み監査と次回条件まで反映）**。分位点ルール時点の状態は[変更前の記録](../experiments/2026-09-16_peak_height_selection/previous_documents/research_status.md)に保存した。
+更新日: **2026-09-25（matched 7 SNR×3 seed本比較の解析まで反映）**。分位点ルール時点の状態は[変更前の記録](../experiments/2026-09-16_peak_height_selection/previous_documents/research_status.md)に保存した。
+
+**matched・noise別重み本比較完了**：[3 seed本比較と重み移送診断](../experiments/2026-09-24_matched_noise_specific_weights/README.md)で、6/11学習→6/18評価、音響選別なし、22 kHz、7 SNRを確認した。3 runとも7/7条件完了、seed内7 `fit_id`は全て別で、`training_noise_dir`と評価noiseが一致し、重みscopeは`per_training_noise`である。7 SNR平均RMSEはRF 96.17、等重み93.54、inner 94.45 kW/m²で両統合が良いが、noiseありだけではRF 96.24、等重み96.11、inner 96.98で、等重みは実質同等、innerは悪化した。最良単体2%以内は両方式11/21で暫定14/21基準に未達。最大重みモデルと評価日の最良単体は全21条件中9、noiseあり18条件中6しか一致せず、noiseありの重み順位と評価日順位の平均相関は0であった。単一4-WAV holdoutの順位推定、残差相関を扱わない逆MSE相当式、有害モデルを0にできないことが現行innerの主要制約である。次は同じmatched条件で`subset_equal_cv`と`crossfit_shrinkage_stack`を既存2方式へ追加し、6/18を方式開発日に限定して一方式を固定する。その後6/11+6/18学習→7/9評価で別日確認する。追加実験・同期映像は取得不可である。
 
 **clean学習・固定noise推論本比較完了**：[3 seed本比較](../experiments/2026-09-24_clean_train_noise_inference/README.md)で、6/11 clean学習済みの同じモデルを6/18の7 SNRへ適用した。全runで7/7条件完了、seed内fit ID同一、再読込予測差0。等重み・inner holdoutのR²は全seedでノイズ強度に伴い単調低下し、matchedで見えた谷は消失した。cleanでは両統合がRFを3/3 seedで上回ったが、ノイズあり6 SNR×3 seedではRFが全18条件で最良。平均R²はRFがclean〜−16 dBで.876〜.879、−20 dBで.766、等重みは.918→.457、inner holdoutは.915→.282。inner重みはRF .129〜.202に対し深層合計.798〜.871で、深層2モデルの残差相関はclean .882から−20 dB .987へ上がり、ONB前の同方向過大予測が統合悪化を生んだ。6/18上の0.01刻み診断では全21 seed×SNRでRFより悪化しない固定凸結合はRF単体だけだったが、これは事後診断で採用重みではない。これは固定clean耐性の診断結果であり、matchedでも同じ重みを共有すべきという結論ではない。
 
-**アンサンブル研究の判断方針（本人の最新見解を反映）**：[位置づけ・評価基準・次の検証](research_plan/2026-09-24_ensemble_research_position_and_next_steps.md)に固定した。重みは将来入力へ共通する定数にせず、学習実験データから毎回求める。コード監査と[保存済みmatched 3 seedの確認](../experiments/2026-09-24_matched_noise_specific_weights/README.md)では、`matched`は既にnoise別familyでモデル・PCA・scaler・epoch・重みを独立fitし、`clean_only`だけがcleanの状態を評価noise間で共有していた。誤動作修正は不要だったが、manifestへ`ensemble_weight_scope`を追加し、将来matchedでnoise間共有が起きれば停止する検査とテストを追加した。全SNR共通の固定頑健重み案は取り下げ、次は音響選別なしのmatched 7 SNR×3 seed本比較を行う。設定は[`2026-09-24_matched_noise_specific_weights.json`](../configs/experiments/2026-09-24_matched_noise_specific_weights.json)。
+**アンサンブル研究の判断方針（本人の最新見解を反映）**：[位置づけ・評価基準・次の検証](research_plan/2026-09-24_ensemble_research_position_and_next_steps.md)に固定した。重みは将来入力へ共通する定数にせず、学習実験データから毎回求める。`matched`はnoise別familyでモデル・PCA・scaler・epoch・重みを独立fitし、`clean_only`だけがcleanの状態を評価noise間で共有する。manifestの`ensemble_weight_scope`と検査により、将来matchedでnoise間共有が起きれば停止する。全SNR共通の固定頑健重み案は不採用。上段の本比較により、次の問題はnoise別再計算の有無ではなく、学習日内の単体順位が評価日へ移らない場合にも安定する重み推定へ絞られた。
 
 **9/24追跡監査（本人確認を反映）**：[ONB・選別・アンサンブル・IGの照合](../experiments/2026-09-24_selection_onb_ig_review/README.md)で、現行コード値（6/11=221,505、6/18=271,678、7/9=571,694 W/m²）を正しいONBとして確定した。0番ノートブックがONBと記した368,978／376,320／442,169 W/m²は抵抗―熱流束の自動直線性喪失候補であり、ONBではない。誤値txt 3本を削除し、ノートブックは今後この候補をONBと呼ばず別名の診断txtへ出すよう修正した。現行ONBで再集計すると`1e-9`選別は6/11のONB以降94/660秒を除き、意図どおりONB以降だけを対象とする。CのONB前改善は、弱音のONB以降境界標本を削ったことで共有回帰関数が低値側へ動いた結果と整合し、近傍RMSEは全モデルで悪化した。次の閾値識別は既存`1e-9`に`1e-8`と同数ランダム除外を加える。最大記録熱流束はCHFではない。追加実験・同期映像は取得不可。IGはlog-power経路で数値誤差を改善したが、本学習モデル・複数baselineでの採否は未確認。
 
@@ -83,7 +85,7 @@
 
 ## 現行設定と次の一手
 
-[ONB実行コード](../code/run_ensemble_regression_onb.py)の learning_policy / acoustic_selection / ensemble を使用する。現行configは学習6/11のみ、テスト6/18、22 kHz、無雑音、200 epochs、`inner_holdout`のみ有効。6/11+7/9や3 kHzの比較・過去runとは区別する。`acoustic_selection`はピーク高さ閾値だけを指定し、`None`なら選別なし。固定的な選別条件・output/explainability・モデルregistryは`utils/config/onb_defaults.py`へ置く。元WAV集約の評価設定は削除済み。保存先は`<解析日>/onb_<学習・評価日>_<内部検証・学習ノイズ>_<選別閾値>_<epoch>_[parameter番号_]<HHMMSS>/...`とし、日付直下を最大52文字に制限しながら主要条件と実行時刻を読めるようにしている。
+[ONB実行コード](../code/run_ensemble_regression_onb.py)の learning_policy / acoustic_selection / ensemble を使用する。現行の主コード既定値は学習6/11+6/18、テスト7/9であるが、本比較の再現条件は各`configs/experiments/*.json`を正とする。`acoustic_selection`はピーク高さ閾値だけを指定し、`None`なら選別なし。固定的な選別条件・output/explainability・モデルregistryは`utils/config/onb_defaults.py`へ置く。元WAV集約の評価設定は削除済み。保存先は`<解析日>/onb_<学習・評価日>_<内部検証・学習ノイズ>_<選別閾値>_<epoch>_[parameter番号_]<HHMMSS>/...`とし、日付直下を最大52文字に制限しながら主要条件と実行時刻を読めるようにしている。
 
 2026-09-16に[実験日指定を整理](../experiments/2026-09-16_onb_experiment_day_audit/README.md)。現在の`explicit_days`は学習日・テスト日から対象3日を自動算出する。設定変更と単体テストの記録であり、300 epochs本比較の実行・性能検証ではない。
 
