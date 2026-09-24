@@ -6,6 +6,8 @@
 
 現行設定の既定値は[run_ensemble_regression_onb.py](../code/run_ensemble_regression_onb.py)の`VALIDATION_CONFIG`。`configs/experiments/`のJSONは、[`run_from_condition.py`](../experiments/2026-09-19_b_clean_only/run_from_condition.py)へ`--condition`で渡した場合に既定値へ上書きして実行できる。YAMLは記録用のものがあり、編集だけでは実行設定に反映されない。
 
+`learning_policy.training_noise="matched"`ではnoiseごとにモデル・前処理・epoch・アンサンブル重みを再fitする。`"clean_only"`ではcleanでfitした同じ状態を全評価noiseへ共有する。別の実験データへ切り替える場合は、`train_experiments`と`test_experiments`を変更し、過去の重みを手作業で移植しない。
+
 新しい条件の記録には[実験テンプレート](experiments/experiment_template.yaml)を使う。モデル・分割・評価単位・要求/実際の学習条件を残し、run manifestと照合する。現在の選択条件と予定は[現在地](../docs/research_status.md)を参照する。
 
 ## 使い方

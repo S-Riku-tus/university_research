@@ -17,8 +17,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "code"))
 
 from utils.ensemble.ensemble_runtime import EnsembleManager
 from utils.experiment.learning_policy import (
-    aligned_indices, checked_metadata, normalize_learning_policy, outer_splits,
-    policy_result_date_dir,
+    aligned_indices, build_learning_families, checked_metadata,
+    normalize_learning_policy, outer_splits, policy_result_date_dir,
 )
 from utils.experiment.learning_runner import run_learning_experiments
 from utils.experiment.result_paths import existing_result_run_path, result_run_path, scoped_result_job
@@ -101,6 +101,45 @@ def fixture(root, policy, evaluated_noises=("heatflux_no_noise", "heatflux_refer
 
 
 class LearningPolicyTest(unittest.TestCase):
+    def test_weight_scope_is_per_noise_for_matched_and_shared_for_clean_only(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            days = ("day-a", "day-b")
+
+            matched = {"split_mode": "explicit_days", "training_noise": "matched",
+                       "train_experiments": ["day-a"], "test_experiments": ["day-b"]}
+            jobs, _, _, _ = fixture(root / "matched", matched, days=days)
+            families = build_learning_families(jobs, matched, list(days))
+            self.assertEqual(len(families), 2)
+            for family in families:
+                context = family["context"]
+                evaluation_noises = {job["noise_dir_name"] for job in family["evaluation_jobs"]}
+                self.assertEqual(context["ensemble_weight_scope"], "per_training_noise")
+                self.assertEqual(evaluation_noises, {context["training_noise_dir"]})
+                self.assertEqual(
+                    {job["noise_dir_name"] for job in family["training_jobs"]},
+                    evaluation_noises,
+                )
+
+            clean_only = {"split_mode": "explicit_days", "training_noise": "clean_only",
+                          "train_experiments": ["day-a"], "test_experiments": ["day-b"]}
+            jobs, _, _, _ = fixture(root / "clean_only", clean_only, days=days)
+            families = build_learning_families(jobs, clean_only, list(days))
+            self.assertEqual(len(families), 1)
+            family = families[0]
+            self.assertEqual(
+                family["context"]["ensemble_weight_scope"],
+                "shared_clean_across_evaluation_noises",
+            )
+            self.assertEqual(
+                {job["noise_dir_name"] for job in family["training_jobs"]},
+                {"heatflux_no_noise"},
+            )
+            self.assertEqual(
+                {job["noise_dir_name"] for job in family["evaluation_jobs"]},
+                {"heatflux_no_noise", "heatflux_reference_SNR=-20"},
+            )
+
     def test_scoped_result_directory_separates_executions_and_parameters(self):
         job = {"save_base_path": Path("ensemble/20260917/onb__days_matched"),
                "experiment_name": "2025.06.18_0.3_3",
@@ -243,6 +282,18 @@ class LearningPolicyTest(unittest.TestCase):
                         directories = list((job["save_base_path"] / job["max_freq_hz"] / job["noise_dir_name"]).iterdir())
                         self.assertEqual(len(directories), 1)
                         directory = directories[0]
+                        manifest = json.loads(
+                            (directory / "run_manifest.json").read_text(encoding="utf-8")
+                        )
+                        expected_scope = (
+                            "per_training_noise"
+                            if noise == "matched"
+                            else "shared_clean_across_evaluation_noises"
+                        )
+                        self.assertEqual(
+                            manifest["learning_context"]["ensemble_weight_scope"],
+                            expected_scope,
+                        )
                         split_data = json.loads((directory / "split_manifest.json").read_text(encoding="utf-8"))
                         self.assertEqual(len(split_data["folds"]), folds)
                         seen = []

@@ -127,8 +127,10 @@ VALIDATION_CONFIG = apply_onb_defaults({
         # 重み決定でも同じ元WAVの1秒区間を学習・検証へ分けない。
         # 内部fold数はrun.folds。chunk_kfoldは旧比較の再現時だけ使う。
         "internal_validation": "wav_kfold",
-        # matched: 各ノイズ条件で学習し、その条件で評価する（現在の方式）。
-        # clean_only: 無雑音だけで学習し、同じモデルで全評価ノイズを予測する。
+        # matched: ノイズ条件ごとに独立して学習し、PCA・scaler・epoch・
+        #          アンサンブル重みもそのノイズの学習データから毎回求める。
+        # clean_only: 無雑音だけで学習し、同じモデル・前処理・重みで
+        #             全評価ノイズを予測する固定clean診断。
         # 評価ノイズ一覧から無雑音を外しても、学習には無雑音を読み込む。
         "training_noise": "matched",
     },

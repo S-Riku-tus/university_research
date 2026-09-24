@@ -1,6 +1,6 @@
 # コード地図
 
-更新日: 2026-09-16。現在の設定・完了runは[研究の現在地](research_status.md)。通常の主実行は[run_ensemble_regression_onb.py](../code/run_ensemble_regression_onb.py)。
+更新日: 2026-09-24。現在の設定・完了runは[研究の現在地](research_status.md)。通常の主実行は[run_ensemble_regression_onb.py](../code/run_ensemble_regression_onb.py)。
 
 ## 主経路と入出力
 
@@ -12,7 +12,7 @@
 | 学習・評価実行 | [learning_runner.py](../code/utils/experiment/learning_runner.py) | 分割・ノイズ方針ごとの学習・予測・XAI・指標・保存をまとめる |
 | モデル | [base_regression.py](../code/utils/models/regression/base_regression.py)、[onb_defaults.py](../code/utils/config/onb_defaults.py) | RandomForest=XGBRF、Conformer、log-power AlexNet。固定registryと出力・評価・XAI既定値 |
 | 学習器 | [model_training.py](../code/utils/training/model_training.py) | 学習側PCA、Keras/RF学習、元スケールへの予測復元 |
-| 統合 | [strategy_catalog.py](../code/utils/ensemble/strategy_catalog.py)、[ensemble_runtime.py](../code/utils/ensemble/ensemble_runtime.py)、[ensemble_weighting.py](../code/utils/ensemble/ensemble_weighting.py) | 選択式の統合、元WAV非重複inner holdout、重み決定 |
+| 統合 | [strategy_catalog.py](../code/utils/ensemble/strategy_catalog.py)、[ensemble_runtime.py](../code/utils/ensemble/ensemble_runtime.py)、[ensemble_weighting.py](../code/utils/ensemble/ensemble_weighting.py) | 選択式の統合、元WAV非重複inner holdout、現行innerのchunk R²逆誤差重み、crossfitのWAV目的 |
 | 回帰・二値指標 | [regression_detection_metrics.py](../code/utils/calculation/regression_detection_metrics.py) | R²/RMSE/MAE、連続ROC/PR-AUC、二値分類指標 |
 | chunk予測記録 | [prediction_records.py](../code/utils/calculation/prediction_records.py) | foldごとの1秒予測と元WAV・時刻情報をCSVへ保存 |
 | ONB閾値 | [onb_thresholds.py](../code/utils/experiment/onb_thresholds.py) | 3日分の正確な閾値と原資料の出典 |
@@ -26,7 +26,7 @@
 
 現行の有効3モデルは`randomforest / conformer / alexnet`。有効な統合方式は`inner_holdout`で、単体モデルと有効な全統合方式に同じ通常指標を出す。`performance_kfold`、`subset_equal_cv / crossfit_wav_stack / crossfit_shrinkage_stack`も実装済みだが、現在は無効。[重み学習の実装](../code/utils/ensemble/crossfit_stacking.py)、[診断と修正](../experiments/2026-09-16_onb_result_diagnosis/README.md)、[5方式の手法と数式](ensemble_methods.md)。`prediction_max`は削除済み。`val_fold_legacy`は再現・診断用で主張不可。
 
-`within_day / leave_one_day_out / explicit_days`と`matched / clean_only`を組み合わせる。clean_onlyは同じモデル・PCA・scaler・重みをノイズ間で共有する。明示分割では学習専用日は学習に要るノイズだけを探索する。一般化評価の[実装・制約](research_plan/2026-09-14_result_layout_and_generalization.md)も確認する。
+`within_day / leave_one_day_out / explicit_days`と`matched / clean_only`を組み合わせる。matchedはnoiseごとに別familyを作り、モデル・PCA・scaler・epoch・重みをそのnoiseの学習データから再fitする。clean_onlyは同じcleanモデル・PCA・scaler・epoch・重みを評価noise間で共有する。明示分割では学習専用日は学習に要るノイズだけを探索する。一般化評価の[実装・制約](research_plan/2026-09-14_result_layout_and_generalization.md)も確認する。
 
 通常の学習は要求epochまで行い、validation lossによるearly stoppingは現行主経路にない。OOM時にbatchを減らす再試行や、一定epoch以上の途中学習を受け入れる処理があるため、`tuning_summary.csv`等の実際のepoch/batchも確認する。要求300という名前だけで全モデルが必ず300完走したと断定しない。
 

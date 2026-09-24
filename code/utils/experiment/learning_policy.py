@@ -86,7 +86,13 @@ def policy_result_date_dir(result_date_dir, policy):
 
 
 def build_learning_families(jobs, policy, experiment_names):
-    """clean_onlyでは複数の評価ノイズを一つの学習処理にまとめる。"""
+    """Build the independent fit/weight scope for each evaluation family.
+
+    matched creates one family per noise, so models and ensemble weights are
+    fitted again from that noise's training data.  clean_only deliberately
+    creates one clean family and shares that fitted state across evaluation
+    noises.
+    """
     policy = normalize_learning_policy(policy, experiment_names)
     lookup = {(j["experiment_name"], j["max_freq_hz"]): j for j in jobs}
     grouped = {}
@@ -111,11 +117,23 @@ def build_learning_families(jobs, policy, experiment_names):
             if not has_input_files(data_path, 1):
                 raise FileNotFoundError(f"学習に必要なノイズ条件がありません: {data_path}")
             training_jobs.append({**template, "data_path": data_path, "noise_dir_name": train_noise})
+        evaluation_noises = {job["noise_dir_name"] for job in evaluation_jobs}
+        if policy["training_noise"] == "matched":
+            if evaluation_noises != {train_noise}:
+                raise RuntimeError(
+                    "matched must create one independent training/weight family per noise."
+                )
+            ensemble_weight_scope = "per_training_noise"
+        else:
+            if train_noise != CLEAN_NOISE:
+                raise RuntimeError("clean_only must fit models and weights from clean data.")
+            ensemble_weight_scope = "shared_clean_across_evaluation_noises"
         context = {
             **policy,
             "training_experiments": train_days,
             "evaluation_experiments": [test_day],
             "training_noise_dir": train_noise,
+            "ensemble_weight_scope": ensemble_weight_scope,
             "generalization_scope": ("within_experiment_source_wav_oof"
                                      if policy["split_mode"] == "within_day"
                                      else "held_out_experiment_day"),

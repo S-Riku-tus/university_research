@@ -2,12 +2,18 @@
 
 このページは**日付ごとの履歴**。各節の「現在」「次にやること」は当時の記録であり、現在の未完了作業とは限らない。最新の状態は[研究の現在地](research_status.md)、更新関係は[文書案内](document_index.md)を読む。
 
+## 2026-09-24 アンサンブル研究の判断基準を更新
+
+- [本人の研究上の意図と次の検証](research_plan/2026-09-24_ensemble_research_position_and_next_steps.md)を記録。全条件で最良は要求せず、平均性能、21セル中の最良／実質同等割合、最悪時悪化、ONB前誤報を結果前に固定して評価する。
+- 現行`inner_holdout`はclean学習日の元WAV非共有20% holdoutに対するchunk R²から`1/(1-R²)`を計算する。これは同じ標本上では逆MSE重みと等価で、epoch選択用3-fold `rmse_all`とは別処理。
+- 本人の追加方針により、全SNR共通の固定頑健重み案は不採用。コードと保存済みmatched 3 seedを監査し、matchedでは既にnoise別にモデル・epoch・重みを再fitしていることを確認した。[監査と次回条件](../experiments/2026-09-24_matched_noise_specific_weights/README.md)を固定し、manifestへ重みscopeを追加した。次は同条件の7 SNR×3 seed matched本比較を行う。
+
 ## 2026-09-24 clean学習・固定noise推論3 seed本比較
 
 - [本比較](../experiments/2026-09-24_clean_train_noise_inference/README.md)を完了。6/11 clean学習の同じ保存モデルを6/18の7 SNRへ適用し、3 seedともfit ID固定・再読込差0を確認。
 - 等重みとinner holdoutのノイズ曲線は全seedで単調低下し、matchedの谷は消失。cleanでは統合がRFを3/3 seedで上回るが、ノイズあり18条件ではRFが全て最良。
 - inner重みは深層2モデルへ80〜87%を配分し、ノイズ下では深層残差相関が最大.987へ上昇。ONB前の同方向過大予測により、Recall改善と同時に誤報が最大480/480秒となる。
-- 次は6/11の元WAV非共有OOFだけで全SNR頑健重みを決める。RF単体へ収束すれば重み探索を閉じ、必要な場合だけ単一の混合ノイズ学習で深層モデル自体を頑健化する。
+- 当初は全SNR共通の頑健重みを次案としたが、同日後続の本人方針により不採用。現在の次工程は本ページ冒頭のnoise別matched比較。
 
 ## 2026-09-24 ONB・音響選別・アンサンブル・IG追跡監査
 

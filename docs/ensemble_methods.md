@@ -1,10 +1,12 @@
-# ONB回帰のアンサンブル手法と現行の内部KFold重み
+# ONB回帰のアンサンブル手法と現行の重み決定
 
-更新日: 2026-09-16。
+更新日: 2026-09-24。
 
-**9/16後半の新方針**：当面の基準は `performance_kfold`。学習日の1秒配列を通常KFoldで分割し、各単体の全内部OOFに対するR²から `normalize(1 / max(1-R², 1e-6))` で重みを決め、学習2日で最終再学習後に別日テストへ適用する。テストラベルは重み決定に使わない。従来の `inner_holdout` が一度の元WAV分離holdoutのWAV中央値R²を使う点とは区別する。[設定と監査](../experiments/2026-09-16_day_split_spectral_selection/README.md)。
+**現行定義**：9/24本比較の`inner_holdout`は、学習日の元WAV非共有holdoutに対する**1秒chunk R²**から `normalize(1 / max(1-R², 1e-6))` で重みを決める。旧版にあった「WAV中央値R²」は9/17以前の定義であり、現行コードには該当しない。深層モデルのepochを選ぶ元WAV非共有3-fold `rmse_all` validationとは別処理である。詳細は[研究方針と次の検証](research_plan/2026-09-24_ensemble_research_position_and_next_steps.md)を参照する。
 
-下記5方式は保持するが、新方式比較は別日分割・音響選別の本検証を読んでから再開する。このページは全方式を直近に実行する指示ではない。
+重みは全実験共通の定数ではない。`matched`ではnoiseごとの学習familyから毎回求め、`clean_only`だけはcleanで求めた重みを複数の評価noiseへ共有する。別の学習実験日を指定すれば、そのデータから重みを再計算する。
+
+下記5方式は実装済みだが、9/24本比較で実行したのは`simple_equal`と`inner_holdout`である。このページは全方式を直近に実行する指示ではない。別に`performance_kfold`と再現用`val_fold_legacy`も実装されている。
 
 本書は、熱流束回帰に用いる3モデル、Random Forest系モデル（RF）、CNN＋Transformer、AlexNetを、5つの方法でどのように統合するかを数式とともに整理する。対象は次の5方式である。
 
@@ -45,7 +47,7 @@ $$
 
 したがって統合値は、そのchunkに対する3モデルの予測値の最小値と最大値の間に入る。負の重みを使った外挿は行わない。
 
-現行研究の主なWAV予測は、chunkを統合した後にWAV内中央値を取る。
+現行runの通常性能評価は1秒chunk単位であり、式のchunk統合値をそのまま評価する。一方、後述する3つのcrossfit方式は、**重みをfitする内部目的だけ**でchunk統合後のWAV内中央値を使う。
 
 $$
 \hat y^{\mathrm{ens}}_{i}(\mathbf w)
@@ -73,7 +75,7 @@ $$
 \tag{2}
 $$
 
-新しい3方式は式(1)そのものを用いて候補や重みを評価する。既存の`inner_holdout`は、先にモデル別WAV中央値を計算して単体R²を求め、そのR²から重みを決めるため、重み評価時と最終統合時の順序が厳密には異なる。
+新しい3方式は式(1)を内部の重みfitに用いる。現行`inner_holdout`はWAV中央値を使わず、holdoutの全chunkに対するモデル別R²から重みを決める。
 
 ## 2. `simple_equal`: 単純等重み平均
 
@@ -109,7 +111,7 @@ $$
 }{3}
 $$
 
-となる。WAV予測は、このchunk統合値のWAV内中央値である。
+となる。crossfit方式の内部目的でWAV値が必要な場合は、このchunk統合値のWAV内中央値を用いる。
 
 $$
 \hat y^{\mathrm{equal}}_{i}
@@ -136,26 +138,16 @@ $$
 
 現行条件ではholdout割合を20%とする。例えば外側学習集合が12 WAVなら、9 WAVで重み算出用の一時モデルを学習し、残り3 WAVで各モデルのR²を求める。この3 WAVは元WAV単位で分離され、9 WAV側とchunkを共有しない。
 
-重み決定用holdoutに含まれるWAV集合を $H$ とする。まずモデル $m$ のchunk予測をWAV内中央値へ集約する。
-
-$$
-\tilde y_{im}
-=
-\operatorname{median}_{c\in C_i}
-\hat y_{imc},
-\qquad i\in H.
-$$
-
-モデル $m$ のholdout上の決定係数を、
+重み決定用holdoutに含まれる全chunkの集合を $H$ とする。モデル $m$ のholdout上の決定係数を、
 
 $$
 R_m^2
 =
 1-
 \frac{
-\sum_{i\in H}(y_i-\tilde y_{im})^2
+\sum_{(i,c)\in H}(y_i-\hat y_{imc})^2
 }{
-\sum_{i\in H}(y_i-\bar y_H)^2
+\sum_{(i,c)\in H}(y_i-\bar y_H)^2
 },
 $$
 
@@ -163,7 +155,7 @@ $$
 \bar y_H
 =
 \frac{1}{|H|}
-\sum_{i\in H}y_i
+\sum_{(i,c)\in H}y_i
 $$
 
 として求める。
@@ -188,7 +180,7 @@ w_m
 \frac{a_m}{\sum_{j=1}^{M}a_j}
 $$
 
-となる。
+となる。同じholdout標本では $1-R_m^2=\mathrm{SSE}_m/\mathrm{SST}$ なので、この方式は正規化後には逆MSE重みと同じである。
 
 例えば $R^2=(0.90,0.80,0.50)$ なら、
 
@@ -230,7 +222,7 @@ $$
 
 ### 長所と弱点
 
-等重みよりも条件ごとの単体性能を反映でき、仕組みも比較的単純である。一方、少数のholdout WAVから求めたR²は変動しやすい。また、単体性能を個別に重みへ変換する方式であり、統合後のMSEを直接最小化してはいない。
+等重みよりも学習日clean holdoutでの単体性能を反映でき、仕組みも比較的単純である。一方、一度の少数holdout WAVから求めたR²は変動しやすい。また、単体性能を個別に重みへ変換する方式であり、統合後のMSE、モデル間残差相関、noise下の性能順位変化を直接扱わない。
 
 ## 4. 新しい3方式で共通するcrossfit予測
 
@@ -560,7 +552,7 @@ $$
 | 方式 | 重みを決める情報 | 許される重み | 最小化・選択する量 | 誤差の補完を直接評価 |
 |---|---|---|---|---|
 | `simple_equal` | なし | $(1/3,1/3,1/3)$ 固定 | なし | しない |
-| `inner_holdout` | holdoutの各単体WAV R² | 非負・合計1 | 各単体の $1-R^2$ を逆数化 | しない |
+| `inner_holdout` | 元WAV非共有holdoutの各単体chunk R² | 非負・合計1 | 各単体の $1-R^2$ を逆数化（逆MSE相当） | しない |
 | `subset_equal_cv` | inner OOFの統合予測 | 単体または部分集合内の等重み | 7候補のWAV MSE | 候補の範囲で評価 |
 | `crossfit_wav_stack` | inner OOFの統合予測 | simplex上の連続重み | 統合後WAV MSE | する |
 | `crossfit_shrinkage_stack` | inner OOFの統合予測 | simplex上の連続重み | 正規化WAV MSE＋等重み距離 | する |
