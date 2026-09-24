@@ -11,7 +11,10 @@ from sklearn.preprocessing import MinMaxScaler
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]/'code'))
 from utils.models.regression.base_regression import LogPowerCompression
-from utils.explainability.spectrogram_explainers import integrated_gradients
+from utils.explainability.spectrogram_explainers import (
+    integrated_gradients,
+    integrated_gradients_log_power,
+)
 from utils.explainability.training_integration import (
     _keras_attribution, _write_attribution_outputs, SUMMARY_HEADER,
     explain_keras_model,
@@ -56,6 +59,20 @@ class IntegratedGradientsTest(unittest.TestCase):
         expected=np.array([1,-2,3])*(np.log1p(x.ravel().astype(float)/1e-12)-np.log1p(b.ravel().astype(float)/1e-12))
         np.testing.assert_allclose(result.ravel(),expected,rtol=3e-5,atol=1e-5)
         self.assertTrue(d['converged'])
+
+    def test_log_power_path_is_complete_and_records_distinct_semantics(self):
+        inputs=tf.keras.Input((1,2,1))
+        z=LogPowerCompression()(inputs)
+        model=tf.keras.Model(inputs,(z[:,0,0,0]*z[:,0,1,0])[:,None])
+        x=np.array([1e-6,1e-9],np.float32).reshape(1,2,1)
+        a,d=integrated_gradients_log_power(model,x,steps=8,max_steps=64,
+                                           return_diagnostics=True)
+        z_value=np.log1p(x.ravel().astype(float)/1e-12)
+        np.testing.assert_allclose(a.ravel(),np.prod(z_value)/2,rtol=2e-5)
+        self.assertTrue(d['converged'])
+        self.assertEqual(d['path_space'],'log_power')
+        self.assertEqual(
+            d['algorithm'],'log_power_straight_line_ig_gauss_legendre_v1')
 
     def test_linear_channels_and_batch_invariance(self):
         inputs=tf.keras.Input((2,2,2))

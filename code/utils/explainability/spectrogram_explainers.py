@@ -358,6 +358,72 @@ def integrated_gradients(model, sample, baseline=None, steps=64, *,
     return (result, diagnostics) if return_diagnostics else result
 
 
+def integrated_gradients_log_power(model, sample, baseline=None, steps=64, *,
+                                   max_steps=4096, batch_size=8, rtol=1e-3,
+                                   atol=1e-6, map_rtol=1e-2,
+                                   return_diagnostics=False):
+    """Compute IG on the model's actual log-power feature input.
+
+    The selected neural regressors begin with ``LogPowerCompression``.  A
+    straight line from zero in raw-power space passes through its extremely
+    steep region near zero and can require thousands of quadrature nodes.
+    This variant transforms both endpoints once, then integrates through the
+    remaining network along a straight line in log-power space.  The returned
+    map still has the input spectrogram resolution, but its path and feature
+    meaning are log-power rather than raw-power.
+    """
+    x = np.asarray(sample, dtype=np.float32)
+    baseline = (
+        np.zeros_like(x, dtype=np.float32)
+        if baseline is None
+        else np.asarray(baseline, dtype=np.float32)
+    )
+    if baseline.shape != x.shape:
+        raise ValueError(
+            f"baseline shape {baseline.shape} does not match sample shape {x.shape}."
+        )
+    layers = [
+        layer for layer in model.layers
+        if not isinstance(layer, tf.keras.layers.InputLayer)
+    ]
+    if not layers or type(layers[0]).__name__ != "LogPowerCompression":
+        raise ValueError(
+            "log-power IG requires LogPowerCompression as the first model layer."
+        )
+    transform = layers[0]
+    transformed = np.asarray(
+        transform(tf.convert_to_tensor(np.stack([baseline, x])), training=False)
+    )
+    if transformed.shape[0] != 2 or not np.isfinite(transformed).all():
+        raise ValueError("Log-power IG produced nonfinite transformed endpoints.")
+    tail_model = tf.keras.Model(
+        inputs=transform.output,
+        outputs=model.output,
+        name=f"{model.name}_after_{transform.name}",
+    )
+    result, diagnostics = integrated_gradients(
+        tail_model,
+        transformed[1],
+        baseline=transformed[0],
+        steps=steps,
+        max_steps=max_steps,
+        batch_size=batch_size,
+        rtol=rtol,
+        atol=atol,
+        map_rtol=map_rtol,
+        return_diagnostics=True,
+    )
+    diagnostics.update({
+        "algorithm": "log_power_straight_line_ig_gauss_legendre_v1",
+        "path_space": "log_power",
+        "transform_layer": transform.name,
+        "transform_scale": float(transform.scale),
+        "raw_baseline_min": float(np.min(baseline)),
+        "raw_baseline_max": float(np.max(baseline)),
+    })
+    return (result, diagnostics) if return_diagnostics else result
+
+
 def grad_cam_regression(model, sample, conv_layer_name=None):
     """Grad-CAM for a scalar regression output."""
     x = np.asarray(sample, dtype=np.float32)

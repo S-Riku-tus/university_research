@@ -125,6 +125,11 @@ DEFAULT_EXPLAINABILITY_CONFIG = {
     "ig_steps": 64,
     "ig_max_steps": 4096,
     "ig_batch_size": 8,
+    # The neural models learn after LogPowerCompression.  Integrating in that
+    # feature space avoids the near-zero raw-power singularity while retaining
+    # an input-resolution attribution map.  raw_power remains available for
+    # reproducing historical outputs.
+    "ig_path_space": "log_power",
     "ig_rtol": 1e-3,
     "ig_atol": 1e-6,
     "ig_map_rtol": 1e-2,

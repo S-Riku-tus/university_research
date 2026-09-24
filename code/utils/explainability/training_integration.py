@@ -12,6 +12,7 @@ from utils.explainability.spectrogram_explainers import (
     grad_cam_regression,
     insertion_curve,
     integrated_gradients,
+    integrated_gradients_log_power,
     make_frequency_groups,
     normalize_map,
     normalize_magnitude,
@@ -623,7 +624,16 @@ def _keras_attribution(method, model, sample, scaler, config, return_diagnostics
     if method == "integrated_gradients":
         baseline = np.full_like(
             sample, _baseline_value(config), dtype=np.float32)
-        values_scaled, diagnostics = integrated_gradients(
+        path_space = str(config.get("ig_path_space", "log_power")).lower()
+        if path_space == "log_power":
+            ig_function = integrated_gradients_log_power
+        elif path_space == "raw_power":
+            ig_function = integrated_gradients
+        else:
+            raise ValueError(
+                "explainability.ig_path_space must be 'log_power' or 'raw_power'."
+            )
+        values_scaled, diagnostics = ig_function(
             model, sample, baseline=baseline,
             steps=int(config.get("ig_steps", 64)),
             max_steps=int(config.get("ig_max_steps", 4096)),
@@ -1357,7 +1367,12 @@ def explainability_outputs_complete(save_path, config, model_keys, fold_count,
                                                        'integrated_gradients_diagnostics.json')
                         with open(windows_long_path(diagnostic_path), encoding='utf-8') as stream:
                             diagnostic = json.load(stream)
-                        if diagnostic.get('algorithm') != 'raw_straight_line_ig_gauss_legendre_v2':
+                        expected_algorithm = (
+                            'log_power_straight_line_ig_gauss_legendre_v1'
+                            if str(config.get('ig_path_space', 'log_power')).lower() == 'log_power'
+                            else 'raw_straight_line_ig_gauss_legendre_v2'
+                        )
+                        if diagnostic.get('algorithm') != expected_algorithm:
                             return False
                 except (OSError, ValueError, KeyError, TypeError):
                     return False
@@ -1398,7 +1413,12 @@ def maybe_explain_trained_model(spec, model, scaler, x_val, y_val, pred, thresho
             ["methods", "|".join(sorted(_methods_for_model(config, model_key)))],
             ["max_samples_per_fold", config.get("max_samples_per_fold", "")],
             ["ig_steps", config.get("ig_steps", "")],
-            ["ig_algorithm", "raw_straight_line_ig_gauss_legendre_v2"],
+            ["ig_path_space", config.get("ig_path_space", "log_power")],
+            ["ig_algorithm", (
+                "log_power_straight_line_ig_gauss_legendre_v1"
+                if str(config.get("ig_path_space", "log_power")).lower() == "log_power"
+                else "raw_straight_line_ig_gauss_legendre_v2"
+            )],
             ["ig_max_steps", config.get("ig_max_steps", 4096)],
             ["ig_batch_size", config.get("ig_batch_size", 8)],
             ["ig_rtol", config.get("ig_rtol", 1e-3)],
