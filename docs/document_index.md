@@ -7,7 +7,7 @@
 | 目的 | 読む文書 | 更新方法 |
 |---|---|---|
 | 次の作業を始める | [研究の現在地](research_status.md) | 状態・本人の希望・次の一手を更新する唯一の入口 |
-| ONB値・選別閾値・アンサンブル原因・IG修正を確認する | [9/24追跡監査](../experiments/2026-09-24_selection_onb_ig_review/README.md) | 原記録とコードONBの不一致、3日分ピーク分布、Cの解釈、fixed clean統合、log-power IGを固定 |
+| ONB値・選別閾値・アンサンブル原因・IG修正を確認する | [9/24追跡監査](../experiments/2026-09-24_selection_onb_ig_review/README.md) | 確定ONB、3日分ピーク分布、Cの再解釈、fixed clean統合、log-power IGを固定 |
 | 9/18発表後の議論を確認する | [教授との議論・修論との接続](research_plan/2026-09-18_professor_discussion.md) | 原メモ、解釈、確認事実、次の識別比較を分離 |
 | 本人指定の今後の計画を確認する | [最終スライドの計画](research_plan/2026-09-18_presented_master_plan.md) | 9月〜翌2月の工程をテキスト化。名称を「アンサンブル手法の検証」へ |
 | 発表後の優先順位・達成条件を確認する | [今後すべきことの提案](research_plan/2026-09-19_research_actions.md) | AI提案。手法の採否、着手・終了条件、修論の最低達成条件 |

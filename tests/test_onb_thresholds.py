@@ -13,7 +13,7 @@ from utils.experiment.onb_thresholds import (  # noqa: E402
 
 
 class OnbThresholdRegistryTest(unittest.TestCase):
-    def test_registry_uses_first_onb_measurement_not_preceding_level(self):
+    def test_registry_uses_confirmed_current_run_values(self):
         self.assertEqual(
             onb_threshold_by_experiment(),
             {
@@ -23,14 +23,14 @@ class OnbThresholdRegistryTest(unittest.TestCase):
             },
         )
 
-    def test_every_threshold_has_line_level_provenance(self):
+    def test_every_threshold_has_decision_record_provenance(self):
         for experiment_name, record in ONB_THRESHOLD_RECORDS.items():
             with self.subTest(experiment_name=experiment_name):
                 self.assertEqual(
                     record["definition"],
-                    "first measured heat-flux level identified as ONB",
+                    "experiment-specific ONB confirmed for the current run",
                 )
-                self.assertTrue(record["source"].endswith(".txt:3"))
+                self.assertIn("2026-09-24_selection_onb_ig_review", record["source"])
                 self.assertGreater(record["threshold"], 0)
 
 

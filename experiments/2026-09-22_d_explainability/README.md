@@ -1,6 +1,8 @@
 # D1〜D3：残差と説明性の対応・信頼性監査
 
-実施日：2026-09-22。対象はrun `151715`（hash `0c97c52d`）の22 kHz、無雑音／matched −8 dB、6/11学習→6/18評価、seed 42、200 epochs、1e-9学習選別である。ONB判定はrun閾値271,677.6816 W/m²を再現した値で、原記録の376,000 W/m²との不一致は未解決である。
+**2026-09-24訂正**：対象runのONB 271,677.6816 W/m²が正しい。旧txtの376,000 W/m²は自動直線性喪失候補でONBではない。
+
+実施日：2026-09-22。対象はrun `151715`（hash `0c97c52d`）の22 kHz、無雑音／matched −8 dB、6/11学習→6/18評価、seed 42、200 epochs、1e-9学習選別である。ONB判定は正しいrun閾値271,677.6816 W/m²を用いる。
 
 解析は[`analyze_d.py`](analyze_d.py)で行い、元runを変更していない。Aの秒別残差は[A1〜A7診断](../2026-09-19_noise_recovery_review/A1_A7_saved_prediction_diagnosis.md)、手法の役割は[説明性手法の選択メモ](../../docs/notes/2026-09-19_explainability_method_selection.md)に従った。
 

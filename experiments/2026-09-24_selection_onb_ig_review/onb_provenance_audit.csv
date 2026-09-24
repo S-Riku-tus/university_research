@@ -1,4 +1,4 @@
-experiment_name,raw_record_onb_w_m2,current_code_onb_w_m2,raw_record_heat_flux_level_w_m2,current_code_matches_raw_record
-2025.06.11_0.3_2,368978.1050,221505.1102,368978.1050,False
-2025.06.18_0.3_3,376320.1201,271677.6816,376320.1201,False
-2025.07.09_0.3_1,442169.292432,571694.252491167,442169.292432,False
+experiment_name,confirmed_current_run_onb_w_m2,old_automatic_linearity_loss_candidate_w_m2,authoritative_onb_source,old_candidate_status
+2025.06.11_0.3_2,221505.1102,368978.1050,current run plus user confirmation,not ONB
+2025.06.18_0.3_3,271677.6816,376320.1201,current run plus user confirmation,not ONB
+2025.07.09_0.3_1,571694.252491167,442169.292432,current run plus user confirmation,not ONB

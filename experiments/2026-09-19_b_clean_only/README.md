@@ -1,5 +1,7 @@
 # B：固定cleanモデルによるノイズ谷の識別
 
+**2026-09-24訂正**：当時留保したONB不一致は、現行run値271,677.6816 W/m²を正として解消した。旧txt値はONBではない。
+
 ## B1 実行可否監査（実行前、2026-09-19）
 
 | 項目 | 完了run 151715での保存状態 | 今回の処理 |
@@ -25,7 +27,7 @@
 
 ### B4 固定モデルの結果
 
-[再計算スクリプト](analyze_fixed_predictions.py)、[全モデル指標](fixed_metrics.csv)、[領域別指標](fixed_region_metrics.csv)、[WAV別二乗誤差差](fixed_paired_wav_sse.csv)。等重みは保存3単体からの事後計算。ONB閾値はこのrunの271,677.6816 W/m²、近傍は±10%。原記録との閾値不一致は[A監査](../2026-09-19_noise_recovery_review/A1_A7_saved_prediction_diagnosis.md)に留保済み。
+[再計算スクリプト](analyze_fixed_predictions.py)、[全モデル指標](fixed_metrics.csv)、[領域別指標](fixed_region_metrics.csv)、[WAV別二乗誤差差](fixed_paired_wav_sse.csv)。等重みは保存3単体からの事後計算。ONB閾値は正しいrun値271,677.6816 W/m²、近傍は±10%。
 
 | 指標・モデル | 無雑音 | −8 dB | −16 dB | −20 dB |
 |---|---:|---:|---:|---:|

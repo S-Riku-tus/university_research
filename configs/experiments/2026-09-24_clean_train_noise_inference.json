@@ -1,0 +1,69 @@
+{
+  "purpose": "Clean-only training with fixed saved models evaluated on seven noise levels; compare single models, equal ensemble, and current inner-holdout ensemble",
+  "replicate_seeds": [42, 43, 44],
+  "validation_override": {
+    "run": {
+      "smoke_test": false,
+      "epochs": 200,
+      "folds": 3,
+      "random_seed": 42,
+      "loop_parameter_sets": true
+    },
+    "data": {
+      "experiment_names": ["2025.06.11_0.3_2", "2025.06.18_0.3_3"],
+      "max_freq_hz_list": ["maxfreq=22kHz"],
+      "noise_dir_names": [
+        "heatflux_no_noise",
+        "heatflux_reference_SNR=0",
+        "heatflux_reference_SNR=-4",
+        "heatflux_reference_SNR=-8",
+        "heatflux_reference_SNR=-12",
+        "heatflux_reference_SNR=-16",
+        "heatflux_reference_SNR=-20"
+      ],
+      "data_source_dir_by_experiment": {
+        "2025.06.11_0.3_2": "waterflow_20260817_1s",
+        "2025.06.18_0.3_3": "waterflow_20260817_1s"
+      },
+      "skip_missing_datasets": false
+    },
+    "learning_policy": {
+      "split_mode": "explicit_days",
+      "train_experiments": ["2025.06.11_0.3_2"],
+      "test_experiments": ["2025.06.18_0.3_3"],
+      "internal_validation": "wav_kfold",
+      "training_noise": "clean_only"
+    },
+    "acoustic_selection": {
+      "enabled": false,
+      "peak_height_threshold": null
+    },
+    "training_validation": {
+      "enabled": true,
+      "mode": "wav_kfold",
+      "folds": 3,
+      "checkpoint_interval_epochs": 10,
+      "minimum_epoch": 10,
+      "selection_metric": "rmse_all",
+      "select_epochs": true
+    },
+    "ensemble": {
+      "enabled_strategy_names": ["simple_equal", "inner_holdout"]
+    },
+    "output": {
+      "save_date": "20260924",
+      "result_date_dir": "20260924/clean_train_noise_inference",
+      "save_fold_predictions": true,
+      "save_tuning_summary": true,
+      "save_fitted_artifacts": true,
+      "verify_reloaded_artifacts": true,
+      "noise_trend_plots": {
+        "enabled": true,
+        "ensemble_strategy_names": ["simple_equal", "inner_holdout"],
+        "metrics": ["r2", "roc_auc_cont"],
+        "formats": ["png", "pdf"]
+      }
+    },
+    "explainability": {"enabled": false}
+  }
+}
