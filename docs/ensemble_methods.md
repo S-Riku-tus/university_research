@@ -1,20 +1,38 @@
 # ONB回帰のアンサンブル手法と現行の重み決定
 
-更新日: 2026-09-24。
+更新日: 2026-09-25。
 
-**現行定義**：9/24本比較の`inner_holdout`は、学習日の元WAV非共有holdoutに対する**1秒chunk R²**から `normalize(1 / max(1-R², 1e-6))` で重みを決める。旧版にあった「WAV中央値R²」は9/17以前の定義であり、現行コードには該当しない。深層モデルのepochを選ぶ元WAV非共有3-fold `rmse_all` validationとは別処理である。詳細は[研究方針と次の検証](research_plan/2026-09-24_ensemble_research_position_and_next_steps.md)を参照する。
+**今後の主方式**：`performance_kfold`を用いる。学習日の全WAVを元WAV非共有K-foldで一度ずつ検証側へ回し、結合したOOF予測の**1秒chunk R²**から `normalize(1 / max(1-R², 1e-6))` で1組の重みを決める。主設定は5-fold、深層モデルは200 epoch固定である。
+
+9/24本比較で使用した`inner_holdout`は、学習日の約20%を一度だけ取り分け、holdoutの1秒chunk R²から同じ式で重みを決める方式だった。過去runの再現用に実装は残すが、今後の主設定からは外す。旧版にあった「WAV中央値R²」は9/17以前の定義であり、現行`inner_holdout`にも`performance_kfold`にも該当しない。
 
 重みは全実験共通の定数ではない。`matched`ではnoiseごとの学習familyから毎回求め、`clean_only`だけはcleanで求めた重みを複数の評価noiseへ共有する。別の学習実験日を指定すれば、そのデータから重みを再計算する。
 
-下記5方式は実装済みだが、9/24本比較で実行したのは`simple_equal`と`inner_holdout`である。このページは全方式を直近に実行する指示ではない。別に`performance_kfold`と再現用`val_fold_legacy`も実装されている。
+### 現行コードで混同しやすい3種類の分割
 
-本書は、熱流束回帰に用いる3モデル、Random Forest系モデル（RF）、CNN＋Transformer、AlexNetを、5つの方法でどのように統合するかを数式とともに整理する。対象は次の5方式である。
+6/11学習→6/18評価の`explicit_days`条件では、次の分割は互いに別処理である。
+
+| 分割 | 現行回数 | 用途 | 重みへの利用 |
+|---|---:|---|---|
+| 外側の実験日分割 | 1 | 6/11で最終学習し6/18を評価 | 6/18は重み計算に使わない |
+| `training_validation`の元WAV K-fold | 0（主設定では無効） | 有効時だけConformer・AlexNetのepoch選択 | 重み計算には使わない |
+| `performance_kfold` | 5 | 18 WAVを14/15 WAV学習・3/4 WAV検証に分け、全WAVのOOF単体R²を得る | 結合OOFから1組の重みを作る |
+| `inner_holdout` | 0（過去比較のみ） | 18 WAV中14 WAVで一時学習、別4 WAVの単体R²から重みを計算 | 単一holdoutから1組の重みを作る |
+
+`run.epochs=200`は、`training_validation.enabled=false`ならConformer・AlexNetの内部K-fold学習と最終学習の両方で固定使用する。有効にした場合だけ、`run.epochs`を上限としてcheckpoint候補からモデル別epochを選ぶ。これは重み用K-foldとは独立した処理である。
+
+別日分割では`run.folds`を5へ変更しても外側評価は1回のままであり、`performance_kfold`の内部fold数だけが5になる。`training_validation.folds`はepoch選択だけ、crossfit 3方式の`inner_folds`は共通OOFだけを制御する。
+
+本書は、熱流束回帰に用いる3モデル、Random Forest系モデル（RF）、CNN＋Transformer、AlexNetを、6つの方法でどのように統合するかを数式とともに整理する。対象は次の6方式である。
 
 1. `simple_equal`: 単純等重み平均
-2. `inner_holdout`: inner holdoutの単体R²に基づく逆誤差重み
-3. `subset_equal_cv`: crossfit予測による部分集合選択＋等重み平均
-4. `crossfit_wav_stack`: crossfit予測によるWAV単位制約付きstacking
-5. `crossfit_shrinkage_stack`: 等重みへの縮小を加えたWAV単位stacking
+2. `performance_kfold`: 全学習WAVのOOF単体R²に基づく逆誤差重み（今後の主方式）
+3. `inner_holdout`: 単一holdoutの単体R²に基づく逆誤差重み（過去run再現用）
+4. `subset_equal_cv`: crossfit予測による部分集合選択＋等重み平均
+5. `crossfit_wav_stack`: crossfit予測によるWAV単位制約付きstacking
+6. `crossfit_shrinkage_stack`: 等重みへの縮小を加えたWAV単位stacking
+
+このほかに`val_fold_legacy`が実装されているが、評価対象foldの正解を重み決定にも使うため、過去コード再現以外の研究主張には使用しない。
 
 ## 1. 共通する記号と最終的な統合式
 
@@ -29,7 +47,7 @@
 - $\hat y_{imc}$: モデル $m$ がWAV $i$ のchunk $c$ に出した予測
 - $w_m$: モデル $m$ の統合重み
 
-5方式とも、各chunkの統合予測は次式で求める。
+6方式とも、各chunkの統合予測は次式で求める。
 
 $$
 \hat y^{\mathrm{ens}}_{ic}(\mathbf w)
@@ -75,7 +93,7 @@ $$
 \tag{2}
 $$
 
-新しい3方式は式(1)を内部の重みfitに用いる。現行`inner_holdout`はWAV中央値を使わず、holdoutの全chunkに対するモデル別R²から重みを決める。
+新しい3方式は式(1)を内部の重みfitに用いる。`inner_holdout`と`performance_kfold`はWAV中央値を使わず、全対象chunkに対するモデル別R²から重みを決める。
 
 ## 2. `simple_equal`: 単純等重み平均
 
@@ -224,11 +242,42 @@ $$
 
 等重みよりも学習日clean holdoutでの単体性能を反映でき、仕組みも比較的単純である。一方、一度の少数holdout WAVから求めたR²は変動しやすい。また、単体性能を個別に重みへ変換する方式であり、統合後のMSE、モデル間残差相関、noise下の性能順位変化を直接扱わない。
 
-## 4. 新しい3方式で共通するcrossfit予測
+## 4. `performance_kfold`: 全学習WAVのOOF単体性能による重み
+
+### 基本的な考え方
+
+外側学習集合の全WAVを元WAV単位のK-foldへ分ける。各foldで、検証WAVを除いたデータだけで3モデルを一時学習し、学習に含めなかったWAVを予測する。これをK回繰り返し、全学習WAVに対してOOF予測を1回ずつ得る。
+
+6/11の18 WAVを5-foldにする主設定では、検証側が4、4、4、3、3 WAV、学習側が14、14、14、15、15 WAVになる。foldごとの重みを5組作って平均するのではなく、全foldのOOF予測を元の18 WAV順に結合してから、モデルごとに1個のR²を計算する。
+
+モデル $m$ の全OOF chunkに対する決定係数を $R_{m,\mathrm{OOF}}^2$ とすると、
+
+$$
+e_m=1-R_{m,\mathrm{OOF}}^2,
+$$
+
+$$
+w_m
+=
+\frac{1/\max(e_m,\varepsilon)}
+{\sum_j 1/\max(e_j,\varepsilon)}
+$$
+
+とする。$\varepsilon=10^{-6}$である。重みを求めた後は、3モデルを外側学習集合の全WAVで再学習し、この1組の重みを外側評価日へ適用する。
+
+### `inner_holdout`との違い
+
+重み式は同じだが、性能推定に使う予測が異なる。`inner_holdout`は一度選んだ約20%だけを重み推定へ使う。`performance_kfold`は全学習WAVを一度ずつ検証側に回すため、特定4 WAVだけから順位を決める偏りを減らせる。
+
+ただし、モデル別の単体R²だけから重みを作る点は変わらない。このため、残差の相関・相殺を直接扱わず、有害なモデルを厳密に0重みにする仕組みもない。また、現行実装は全OOF chunkをまとめてR²を計算するため、WAVごとのchunk数が異なる場合はchunk数の多いWAVの影響が大きくなる。現在の対象データでは各WAVの秒数を監査し、差がある場合はWAV等重み方式との違いを明記する。
+
+## 5. 新しい3方式で共通するcrossfit予測
 
 `subset_equal_cv`、`crossfit_wav_stack`、`crossfit_shrinkage_stack`は、重み決定用の予測としてcrossfit、すなわちinner OOF予測を使用する。
 
 現行方式は元WAV単位のinner 4-foldである。外側学習集合が12 WAVなら、「9 WAVで学習し、学習に使わなかった3 WAVを予測する」処理を4回行う。これにより12 WAVすべてについて、自分自身を学習に含めていない予測を得る。3つの新方式はこの同じOOF予測を使い、以降の重みの選び方だけが異なる。
+
+したがって「K-foldでOOF予測を作るところまでは同じで、その後の結合規則を変える」という理解は、この3方式の間では正しい。`performance_kfold`も概念上は同じOOF型だが、現行コードでは`run.folds`による別のOOF処理を行い、全chunkの単体R²を使う。crossfit 3方式は共通`inner_folds=4`のOOFを共有し、chunk統合後のWAV MSEを使う。このため両系統を同時選択すると、一時モデル学習は共有されず重複する。
 
 重み学習対象の各WAV $i$ について、そのWAVを学習に含めずにモデル $m$ が出したchunk予測を、
 
@@ -266,7 +315,7 @@ $$
 
 である。各WAVを1標本として平均するため、1本のWAVから多数のchunkが得られても、そのWAVが他のWAVより大きな重みを持つことはない。
 
-## 5. `subset_equal_cv`: 部分集合選択＋集合内等重み
+## 6. `subset_equal_cv`: 部分集合選択＋集合内等重み
 
 ### 基本的な考え方
 
@@ -341,7 +390,7 @@ $$
 
 推定するのは集合の選択だけなので、小標本でも重みの自由度を抑えやすい。大きく悪化したモデルの重みを完全にゼロにできる。一方、選んだ集合内は必ず等重みであり、RF 0.2、CNN 0.8のような細かな性能差や補完関係は表現できない。
 
-## 6. `crossfit_wav_stack`: WAV損失を直接最小化するstacking
+## 7. `crossfit_wav_stack`: WAV損失を直接最小化するstacking
 
 ### 基本的な考え方
 
@@ -430,7 +479,7 @@ $$
 
 部分集合方式より自由度が高く、連続的な重みで補完関係を利用できる。反面、独立WAV数が少ないと、inner OOFに偶然よく適合する極端な重みを推定する可能性がある。また、式(7)は中央値を含む区分的で非凸な目的関数であるため、数値的に得られた解を数学的な大域最適解とはみなさない。
 
-## 7. `crossfit_shrinkage_stack`: 等重みへ縮小するstacking
+## 8. `crossfit_shrinkage_stack`: 等重みへ縮小するstacking
 
 ### 基本的な考え方
 
@@ -547,11 +596,12 @@ $$
 
 連続重みの柔軟性を残しながら、少数WAVによる極端な重みを抑えられる可能性がある。一方、実際には除外すべきモデルにも重みを残すことがあり、$\lambda=0.1$ があらゆる周波数・ノイズ条件で最適であるとは限らない。
 
-## 8. 5方式の数理的な違い
+## 9. 6方式の数理的な違い
 
 | 方式 | 重みを決める情報 | 許される重み | 最小化・選択する量 | 誤差の補完を直接評価 |
 |---|---|---|---|---|
 | `simple_equal` | なし | $(1/3,1/3,1/3)$ 固定 | なし | しない |
+| `performance_kfold` | 全学習WAVの元WAV非共有OOFにおける各単体chunk R² | 非負・合計1 | 各単体の $1-R^2$ を逆数化（逆MSE相当） | しない |
 | `inner_holdout` | 元WAV非共有holdoutの各単体chunk R² | 非負・合計1 | 各単体の $1-R^2$ を逆数化（逆MSE相当） | しない |
 | `subset_equal_cv` | inner OOFの統合予測 | 単体または部分集合内の等重み | 7候補のWAV MSE | 候補の範囲で評価 |
 | `crossfit_wav_stack` | inner OOFの統合予測 | simplex上の連続重み | 統合後WAV MSE | する |
@@ -569,11 +619,13 @@ $$
 
 一方、小標本での重みの安定性は一般に逆方向の関係を持ちやすい。`crossfit_shrinkage_stack`は、連続stackingの自由度を保ちながら等重み側へ制約することで、この両者の中間を狙う。
 
-## 9. 「単体より悪化する」現象に対する各方式の位置づけ
+## 10. 「単体より悪化する」現象に対する各方式の位置づけ
 
 `simple_equal`は、悪いモデルにも必ず重みを与えるため、単体より悪化し得る。
 
 `inner_holdout`は、単体性能が悪いモデルの重みを下げられる。ただし、少数holdoutでのR²推定誤差と、モデル間誤差相関を扱わないことが弱点となる。
+
+`performance_kfold`は、全学習WAVのOOF予測を使うことで`inner_holdout`の単一分割依存を減らす。ただし、逆R²重みという式は同じなので、残差相関を扱わない点と、学習日内の単体順位が評価日へ移る必要がある点は残る。
 
 `subset_equal_cv`は、悪化原因となるモデルを完全に除外できる。また単体候補を含むため、inner OOFのWAV MSE上では、候補に含まれる最良単体より悪い重みを選ばない。ただし、この性質は重み学習集合内のものであり、未知の外側WAVに対する保証ではない。
 

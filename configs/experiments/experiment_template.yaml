@@ -30,8 +30,13 @@ conditions:
   target_scaler_fit_scope: training_only
 
 ensemble:
-  enabled_strategy_names: [simple_equal, inner_holdout]
-  weight_fit_scope: source_wav_disjoint_inner_holdout
+  enabled_strategy_names: [performance_kfold, simple_equal]
+  weight_fit_scope: source_wav_disjoint_kfold_oof
+  weight_folds: null
+
+training_validation:
+  enabled: false
+  role: epoch_selection_only_not_ensemble_weighting
 
 evaluation:
   unit: one_second_chunk

@@ -2,12 +2,19 @@
 
 このページは**日付ごとの履歴**。各節の「現在」「次にやること」は当時の記録であり、現在の未完了作業とは限らない。最新の状態は[研究の現在地](research_status.md)、更新関係は[文書案内](document_index.md)を読む。
 
+## 2026-09-25 performance_kfoldを今後の主方式へ変更
+
+- 本人の理解とコードを照合し、直近runの`training_validation` 3-foldは深層2モデルのepoch選択だけ、`inner_holdout`は18 WAV中4 WAVを使う単一分割だったことを確認した。
+- 希望する「全WAVを一度ずつ検証側へ回し、全OOF予測を通して1組の重みを決める」方法は`performance_kfold`と一致する。今後の主設定を`performance_kfold`へ変更し、`inner_holdout`は過去run再現用にだけ残した。
+- [次条件](../experiments/2026-09-25_matched_performance_kfold/README.md)ではepoch選択を無効にして200 epoch固定、元WAV非共有5-foldとする。18 WAVは検証4・4・4・3・3本、学習14・14・14・15・15本となる。`simple_equal`を対照に残す。条件作成まで完了し、本実行は未着手。
+- `subset_equal_cv`、`crossfit_wav_stack`、`crossfit_shrinkage_stack`は共通4-fold OOFを共有し、その後の結合規則だけが異なる。一方、現行`performance_kfold`は別OOF処理なので、主方式の結果確認後に必要なら同一OOF共有へ整理する。
+
 ## 2026-09-25 matched・noise別重み7 SNR×3 seed本比較
 
 - [本比較と診断](../experiments/2026-09-24_matched_noise_specific_weights/README.md)を完了。3 seed×7 SNRの全21条件で、noise別の別`fit_id`、学習noiseと評価noiseの一致、`per_training_noise` scope、学習日だけのepoch選択を確認した。
 - 7 SNR平均RMSEはRF 96.17、等重み93.54、inner 94.45 kW/m²。ただしnoiseありだけではRF 96.24、等重み96.11、inner 96.98で、cleanを除く優位は安定しない。最良単体2%以内は両方式11/21で暫定14/21基準に未達。
 - matchedはclean-onlyに比べ強noiseの全域RMSEを大幅に改善したが、改善の中心はONB前の過大予測抑制で、ONB近傍・以降は過小予測と見逃しが増える。matched内のRF比では統合が近傍・以降RMSEを改善する一方、ONB前RMSEと見逃しは悪化するため、回帰と閾値検知を分けて評価する。
-- noiseありでは最大重みモデルと評価日の最良単体が18条件中6条件しか一致せず、順位相関は平均0。現行innerの課題を、単一4-WAV holdout、単体逆MSE相当で相関を扱わないこと、有害モデルを0にできないことへ絞った。次は同じmatched条件で`subset_equal_cv`と`crossfit_shrinkage_stack`を比較し、一方式固定後に6/11+6/18学習→7/9評価で別日確認する。
+- noiseありでは最大重みモデルと評価日の最良単体が18条件中6条件しか一致せず、順位相関は平均0。現行innerの課題を、単一4-WAV holdout、単体逆MSE相当で相関を扱わないこと、有害モデルを0にできないことへ絞った。当時の次案はsubset・shrinkage比較だったが、同日後続の本人判断により、現在は上段の`performance_kfold`比較を優先する。
 
 ## 2026-09-24 アンサンブル研究の判断基準を更新
 

@@ -1,12 +1,13 @@
 # 文書案内と更新ルール
 
-更新日: 2026-09-24。**現在の状態は一か所で更新し、過去の数値と判断は日付付き記録に残す。**
+更新日: 2026-09-25。**現在の状態は一か所で更新し、過去の数値と判断は日付付き記録に残す。**
 
 ## 読む順序と各文書の役割
 
 | 目的 | 読む文書 | 更新方法 |
 |---|---|---|
 | 次の作業を始める | [研究の現在地](research_status.md) | 状態・本人の希望・次の一手を更新する唯一の入口 |
+| performance_kfoldの次条件・手順を確認する | [主方式・固定200 epoch比較](../experiments/2026-09-25_matched_performance_kfold/README.md) | 5-fold OOF、固定epoch、実行コマンド、実行後監査。条件作成済み・未実行 |
 | アンサンブル研究の目的・成功基準・次の検証を確認する | [アンサンブル研究の位置づけと次の検証](research_plan/2026-09-24_ensemble_research_position_and_next_steps.md) | 本人の意図、現行重みの数式、評価基準、matchedのnoise別重み比較から方式改善への分岐を固定 |
 | matchedのnoise別重み本比較と次の方式比較を確認する | [matched 7 SNR×3 seed本比較](../experiments/2026-09-24_matched_noise_specific_weights/README.md) | 21条件の完了性、clean-only対応比較、領域別性能、重み順位の別日移送失敗、subset・shrinkage比較への根拠 |
 | ONB値・選別閾値・アンサンブル原因・IG修正を確認する | [9/24追跡監査](../experiments/2026-09-24_selection_onb_ig_review/README.md) | 確定ONB、3日分ピーク分布、Cの再解釈、fixed clean統合、log-power IGを固定 |
@@ -40,7 +41,7 @@
 | 今週の報告を作る | [SOAP下書き](progress/2026-09-18_weekly_progress_draft.md) | 9/16新方針の実装・解析と後期計画。旧草稿を保存した上で更新 |
 | 追加結果を解析する | [解析手順](analysis_workflow.md) | 対象固定→性能→原因候補→XAI→次の比較の判定基準 |
 | Cursor内のCodexを効率よく使う | [Codex利用枠の節約運用](codex_token_efficiency.md) | サイドバーでのモデル選択、段階昇格、スレッド分割、対象を絞った探索・確認 |
-| 5つのアンサンブル手法を確認する | [5方式の手法と数式](ensemble_methods.md) | 既存2方式と追加3方式の重み、目的関数、性質を同じ記号で比較 |
+| 6つのアンサンブル手法を確認する | [6方式の手法と数式](ensemble_methods.md) | 主方式performance K-fold、過去inner、等重み、crossfit 3方式の重み、目的関数、性質を同じ記号で比較 |
 | 原資料の位置づけを確認する | [原資料と現在方針の対応](original_document_guide.md) | 学部からの連続性、旧計画・説明手法・原本の扱い |
 | 22 kHz単独解析時点を確認する | [9/15・22 kHz解析](../experiments/2026-09-15_onb_22khz_noise_sweep/analysis.md) | 先行結果は保持。発表草稿は現行2帯域へ更新 |
 | 数値・コード変更・解釈の根拠 | [experiments](../experiments/README.md) | 日付付きで固定。訂正理由と後継を追記する |

@@ -74,8 +74,11 @@ from utils.experiment.run_helpers import set_global_seed
 VALIDATION_CONFIG = apply_onb_defaults({
     "run": {
         "smoke_test": False,
+        # training_validationを無効にした場合、深層2モデルの全fitでこの値を固定使用する。
         "epochs": 200,
-        "folds": 3,
+        # performance_kfoldでは、学習日の元WAVをこのfold数でOOF予測する。
+        # 18 WAVの5-foldは、各回14/15 WAVで学習し3/4 WAVを検証する。
+        "folds": 5,
         "smoke_epochs": 2,
         "smoke_folds": 2,
         "color_channel": 1,
@@ -180,12 +183,17 @@ VALIDATION_CONFIG = apply_onb_defaults({
             },
         },
     },
+    "training_validation": {
+        # epoch自体を研究変数にするときだけ有効化する。Falseならrun.epochsを固定使用する。
+        # これはアンサンブル重み用K-foldとは別処理である。
+        "enabled": False,
+    },
     "ensemble": {
-        # 実行するアンサンブル方式
+        # 主方式は、全学習WAVを一度ずつ検証側に回したOOF単体性能から重みを求める。
+        # simple_equalは追加学習不要の対照。inner_holdoutは過去run再現用に実装を残す。
         "enabled_strategy_names": [
-            # "performance_kfold",  # learning_policy.internal_validation単位のOOF単体性能で重み付け
-            # "simple_equal",  # 等しい重みで平均
-            "inner_holdout",  # 学習データの約20%を、元WAVが重ならないように一度だけ取り分ける
+            "performance_kfold",
+            # "simple_equal",
         ],
     },
     "features": {

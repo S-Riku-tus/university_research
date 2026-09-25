@@ -2,7 +2,7 @@
 
 更新日: 2026-09-25。
 
-> **9/25結果更新**：第1段階のmatched・7 SNR・3 seed本比較は完了した。[結果・監査・次の識別比較](../../experiments/2026-09-24_matched_noise_specific_weights/README.md)を参照。両統合は7 SNR平均と最悪10%基準を満たしたが、最良単体2%以内は11/21で暫定14/21基準に未達。noiseあり平均は等重みがRFと実質同等、innerは悪化した。次は本書第3段階のうち`subset_equal_cv`と`crossfit_shrinkage_stack`を既存2方式と比較する。
+> **9/25方針更新**：第1段階のmatched・7 SNR・3 seed本比較は完了した。[結果・監査](../../experiments/2026-09-24_matched_noise_specific_weights/README.md)を参照。両統合は7 SNR平均と最悪10%基準を満たしたが、最良単体2%以内は11/21で暫定14/21基準に未達。noiseあり平均は等重みがRFと実質同等、innerは悪化した。本人判断により、単一holdoutの`inner_holdout`は今後の主方式から外す。次はepoch選択を無効にして200 epochへ固定し、全18 WAVの元WAV非共有5-fold OOFを使う`performance_kfold`を`simple_equal`・単体モデルと比較する。[新条件](../../experiments/2026-09-25_matched_performance_kfold/README.md)は作成済み、未実行である。
 
 ## 1. 本人の研究上の意図
 
@@ -160,6 +160,16 @@ $$
 3. **現行モデル集合では不成立**：学習日内で頑健化してもRF単体へ収束し、評価日でも統合利得がない。この場合は重みだけでなく単体モデルの頑健化へ進む。
 
 ## 7. 次に行う検証
+
+### 9/25時点の優先順
+
+以下の段階1～3は9/24本比較を設計した時点の記録として残す。現在の次工程は次の順である。
+
+1. `training_validation.enabled=false`として深層2モデルを200 epoch固定にする。
+2. 6/11の全18 WAVを元WAV非共有5-foldで一度ずつ検証側へ回す。
+3. 全OOF chunkを結合したモデル別R²から`performance_kfold`重みを1組だけ求める。
+4. 全18 WAVで最終学習し、6/18へ一度適用する。比較は3単体、`simple_equal`、`performance_kfold`とする。
+5. 結果確認後に必要なら、同一OOFを共有して`subset_equal_cv`と`crossfit_shrinkage_stack`を比較できるよう実装を整理する。
 
 ### 段階1：matched・7 SNR・3 seed本比較
 

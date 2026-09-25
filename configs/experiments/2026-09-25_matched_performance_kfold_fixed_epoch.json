@@ -1,0 +1,70 @@
+{
+  "purpose": "Make performance_kfold the primary ensemble method: fixed 200-epoch matched-noise training, source-WAV-disjoint 5-fold OOF weight fitting, and 6/18 evaluation without using evaluation labels for weights",
+  "replicate_seeds": [42, 43, 44],
+  "comparison_rule": "For each seed and SNR, split the 18 training WAVs into five source-WAV-disjoint folds. Pool one OOF prediction for every training chunk, compute one R2 and inverse-(1-R2) weight per model from all pooled OOF predictions, refit each model on all 18 training WAVs for 200 epochs, and evaluate once on the matching 6/18 noise data. Keep simple_equal as the no-extra-fit reference. Do not use inner_holdout or evaluation-day labels for weight fitting.",
+  "validation_override": {
+    "run": {
+      "smoke_test": false,
+      "epochs": 200,
+      "folds": 5,
+      "random_seed": 42,
+      "loop_parameter_sets": true
+    },
+    "data": {
+      "experiment_names": null,
+      "max_freq_hz_list": ["maxfreq=22kHz"],
+      "noise_dir_names": [
+        "heatflux_no_noise",
+        "heatflux_reference_SNR=0",
+        "heatflux_reference_SNR=-4",
+        "heatflux_reference_SNR=-8",
+        "heatflux_reference_SNR=-12",
+        "heatflux_reference_SNR=-16",
+        "heatflux_reference_SNR=-20"
+      ],
+      "data_source_dir_by_experiment": {
+        "2025.06.11_0.3_2": "waterflow_20260817_1s",
+        "2025.06.18_0.3_3": "waterflow_20260817_1s"
+      },
+      "skip_missing_datasets": false
+    },
+    "learning_policy": {
+      "split_mode": "explicit_days",
+      "train_experiments": ["2025.06.11_0.3_2"],
+      "test_experiments": ["2025.06.18_0.3_3"],
+      "internal_validation": "wav_kfold",
+      "training_noise": "matched"
+    },
+    "acoustic_selection": {
+      "enabled": false,
+      "peak_height_threshold": null
+    },
+    "training_validation": {
+      "enabled": false,
+      "mode": "wav_kfold",
+      "folds": 3,
+      "checkpoint_interval_epochs": 10,
+      "minimum_epoch": 10,
+      "selection_metric": "rmse_all",
+      "select_epochs": false
+    },
+    "ensemble": {
+      "enabled_strategy_names": ["performance_kfold", "simple_equal"]
+    },
+    "output": {
+      "save_date": "20260925",
+      "result_date_dir": "20260925/matched_performance_kfold_fixed_epoch",
+      "save_fold_predictions": true,
+      "save_tuning_summary": true,
+      "save_fitted_artifacts": false,
+      "verify_reloaded_artifacts": false,
+      "noise_trend_plots": {
+        "enabled": true,
+        "ensemble_strategy_names": ["performance_kfold", "simple_equal"],
+        "metrics": ["r2", "roc_auc_cont"],
+        "formats": ["png", "pdf"]
+      }
+    },
+    "explainability": {"enabled": false}
+  }
+}
