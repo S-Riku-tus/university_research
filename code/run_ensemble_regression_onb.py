@@ -190,6 +190,9 @@ VALIDATION_CONFIG = apply_onb_defaults({
     "features": {
         "pca_components": 100,
     },
+    "explainability": {
+        "enabled": False,
+    },
 })
 
 
