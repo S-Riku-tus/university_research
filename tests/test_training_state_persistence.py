@@ -13,15 +13,9 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "code"))
 
 from utils.ensemble.ensemble_runtime import EnsembleManager  # noqa: E402
-from utils.config.onb_defaults import onb_model_specs  # noqa: E402
-from utils.experiment.acoustic_selection import AcousticTrainingSelector  # noqa: E402
+from utils.config.onb_defaults import apply_onb_defaults, onb_model_specs  # noqa: E402
 from utils.experiment.run_helpers import set_global_seed  # noqa: E402
 from utils.models.regression.base_regression import RegressionModelMaker  # noqa: E402
-from utils.training.epoch_validation import (  # noqa: E402
-    checkpoint_epochs,
-    fit_epoch_validation_cv,
-    save_epoch_validation_outputs,
-)
 from utils.training.fitted_artifacts import (  # noqa: E402
     begin_fitted_state,
     finish_fitted_state,
@@ -45,8 +39,8 @@ class TrainingStatePersistenceTest(unittest.TestCase):
     def setUp(self):
         keras.utils.set_random_seed(42)
 
-    def test_checkpoint_epochs_include_start_interval_and_end(self):
-        self.assertEqual(checkpoint_epochs(23, 10), [1, 10, 20, 23])
+    def test_defaults_do_not_add_epoch_selection_validation(self):
+        self.assertNotIn("training_validation", apply_onb_defaults({}))
 
     def test_production_randomforest_uses_current_run_seed(self):
         rng = np.random.default_rng(5)
@@ -71,64 +65,6 @@ class TrainingStatePersistenceTest(unittest.TestCase):
             [trainer.transform_pca(pca, x[:5]), trainer.transform_pca(pca, x[5:])]
         )
         np.testing.assert_array_equal(whole, in_parts)
-
-    def test_wav_validation_selects_epoch_and_saves_audit(self):
-        rng = np.random.default_rng(42)
-        x = rng.normal(size=(16, 2, 2, 1)).astype(np.float32)
-        y = np.repeat(np.arange(8, dtype=float) * 10 + 10, 2)
-        metadata = [
-            {
-                "experiment_name": "train-day",
-                "source_wav_id": f"wav-{index // 2}",
-                "chunk_index": index % 2,
-            }
-            for index in range(16)
-        ]
-        specs = [
-            {
-                "key": "tiny",
-                "label": "Tiny",
-                "kind": "keras",
-                "builder": tiny_builder,
-                "lr": 1e-3,
-                "batch_size": 4,
-                "fit_verbose": 0,
-                "progress_interval_epochs": 2,
-            }
-        ]
-        trainer = ModelTrainer(42)
-        selector = AcousticTrainingSelector({"enabled": False}, {"train-day": 45.0})
-        selected, rows, audit = fit_epoch_validation_cv(
-            trainer,
-            specs,
-            x,
-            y,
-            metadata,
-            selector,
-            folds=2,
-            seed=42,
-            mode="wav_kfold",
-            pca_components=2,
-            epochs=2,
-            config={
-                "folds": 2,
-                "checkpoint_interval_epochs": 1,
-                "minimum_epoch": 1,
-                "selection_metric": "rmse_all",
-                "select_epochs": True,
-            },
-            thresholds_by_experiment={"train-day": 45.0},
-            onb_band_frac=0.1,
-        )
-        self.assertIn(selected["tiny"], {1, 2})
-        self.assertEqual([row["epoch"] for row in rows], [1, 2])
-        self.assertTrue(all(split["shared_source_wavs"] == 0 for split in audit["splits"]))
-        self.assertFalse(audit["test_used"])
-        with tempfile.TemporaryDirectory() as temp:
-            save_epoch_validation_outputs(Path(temp), 1, rows, audit)
-            self.assertTrue((Path(temp) / "training_validation_curve_f1.csv").is_file())
-            saved = json.loads((Path(temp) / "training_validation_f1.json").read_text())
-            self.assertEqual(saved["selected_epochs"], selected)
 
     def test_keras_and_randomforest_state_reload_predictions(self):
         rng = np.random.default_rng(7)
@@ -201,6 +137,7 @@ class TrainingStatePersistenceTest(unittest.TestCase):
             self.assertEqual(set(saved["models"]), {"tiny", "randomforest"})
             self.assertIn("ensemble__simple_equal", saved["ensemble_weights"])
             self.assertEqual(saved["training_wav_groups"], ["wav-a", "wav-b"])
+            self.assertEqual(saved["model_epochs"], {"tiny": 1})
             self.assertEqual(saved["pca_feature_decimals"], 6)
 
 

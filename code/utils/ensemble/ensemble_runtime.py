@@ -102,10 +102,6 @@ class EnsembleManager:
         return float(self.resolved_config["inner_holdout_frac"])
 
     @property
-    def has_leaky_strategy(self):
-        return any(not item["claim_safe"] for item in self.strategy_plan)
-
-    @property
     def selected_strategy_names(self):
         return [item["name"] for item in self.strategy_plan]
 
@@ -164,7 +160,6 @@ class EnsembleRun:
             and manager.reference_model in self.model_keys
         )
         self.weighting = EnsembleWeighting()
-        self.legacy_errors = {}
         self.weight_log = []
         self.correction_log = []
         self.diversity_log = []
@@ -188,13 +183,6 @@ class EnsembleRun:
         if self.strategy_plan:
             return self.strategy_plan[0]["strategy"]
         return "simple"
-
-    @property
-    def needs_legacy_errors(self):
-        return any(
-            item["strategy"] == "val_fold_legacy"
-            for item in self.strategy_plan
-        )
 
     def description(self):
         if not self.enabled:
@@ -279,11 +267,6 @@ class EnsembleRun:
             K.clear_session()
             gc.collect()
         return errors
-
-    def record_validation_error(self, model_key, y_true, prediction):
-        """Record outer-fold errors only for the explicitly selected legacy mode."""
-        if self.needs_legacy_errors:
-            self.legacy_errors[model_key] = 1.0 - r2_score(y_true, prediction)
 
     def fit_crossfit_weights(
         self, trainer, x_train, y_train, groups, pca_components,
@@ -390,7 +373,6 @@ class EnsembleRun:
             val_preds,
             self.manager.combine,
             inner_errors=inner_errors,
-            legacy_errors=self.legacy_errors,
             fitted_weights=crossfit_fit["weights"] if crossfit_fit is not None else None,
         )
         for output in outputs.values():

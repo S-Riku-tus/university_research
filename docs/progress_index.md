@@ -6,7 +6,7 @@
 
 - 本人の理解とコードを照合し、直近runの`training_validation` 3-foldは深層2モデルのepoch選択だけ、`inner_holdout`は18 WAV中4 WAVを使う単一分割だったことを確認した。
 - 希望する「全WAVを一度ずつ検証側へ回し、全OOF予測を通して1組の重みを決める」方法は`performance_kfold`と一致する。今後の主設定を`performance_kfold`へ変更し、`inner_holdout`は過去run再現用にだけ残した。
-- [次条件](../experiments/2026-09-25_matched_performance_kfold/README.md)ではepoch選択を無効にして200 epoch固定、元WAV非共有5-foldとする。18 WAVは検証4・4・4・3・3本、学習14・14・14・15・15本となる。`simple_equal`を対照に残す。条件作成まで完了し、本実行は未着手。
+- [次条件](../experiments/2026-09-25_matched_performance_kfold/README.md)では`run.epochs=200`を全fitで固定使用し、元WAV非共有5-foldとする。18 WAVは検証4・4・4・3・3本、学習14・14・14・15・15本となる。別validationによるepoch選択機能と`val_fold_legacy`は実装から削除し、主コードには残る5方式を短い説明付きコメントで保持した。条件作成まで完了し、本実行は未着手。
 - `subset_equal_cv`、`crossfit_wav_stack`、`crossfit_shrinkage_stack`は共通4-fold OOFを共有し、その後の結合規則だけが異なる。一方、現行`performance_kfold`は別OOF処理なので、主方式の結果確認後に必要なら同一OOF共有へ整理する。
 
 ## 2026-09-25 matched・noise別重み7 SNR×3 seed本比較

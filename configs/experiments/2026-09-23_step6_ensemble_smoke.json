@@ -4,7 +4,7 @@
   "validation_override": {
     "run": {
       "smoke_test": true,
-      "smoke_epochs": 1,
+      "epochs": 1,
       "smoke_folds": 2,
       "random_seed": 42,
       "loop_parameter_sets": true

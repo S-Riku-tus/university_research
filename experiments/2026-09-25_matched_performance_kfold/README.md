@@ -6,7 +6,7 @@
 
 `inner_holdout`を今後の主方式から外し、6/11の全18 WAVを重み決定に使う`performance_kfold`を主方式とする。過去runの再現性を保つため、`inner_holdout`の実装と過去条件ファイルは削除しない。
 
-直近の9/24本比較では、深層モデルのepochを学習日内3-foldで選んでいた。今回はアンサンブル重みの決め方だけを明確にするため、このepoch選択を無効にし、ConformerとAlexNetの全fitを`run.epochs=200`に固定する。
+直近の9/24本比較では、深層モデルのepochを学習日内3-foldで選んでいた。9/25の本人判断によりこの機能は実装から削除し、今後はConformerとAlexNetの全fitで常に`run.epochs`を使用する。今回の値は200である。
 
 ## 5-foldでの重み決定
 
@@ -39,7 +39,7 @@
 - 学習noise: `matched`。各SNRでモデル・前処理・重みを独立fitする
 - noise: clean、0、−4、−8、−12、−16、−20 dB
 - 音響選別: なし
-- epoch: 200固定。`training_validation.enabled=false`
+- epoch: `run.epochs=200`を全fitで固定使用
 - 重み用内部検証: 元WAV非共有5-fold
 - seed: 42、43、44
 - 評価日ラベルによるepoch・重み・方式選択: なし
@@ -62,6 +62,6 @@ python experiments/2026-09-19_b_clean_only/run_from_condition.py --condition con
 - 全内部foldで`shared_source_wavs=0`である。
 - OOFの全chunkがちょうど一度だけ予測され、評価日データが内部検証へ入っていない。
 - `ensemble_weights_*.csv`に`performance_kfold`と`simple_equal`の重みが保存される。
-- manifest上で`training_validation.enabled=false`、最終深層fitが200 epochである。
+- manifestと学習履歴上で、内部K-fold・最終学習とも深層fitが200 epochである。
 
 性能判断は、単体・等重みとの全域RMSE、ONB前・近傍・以降、誤報・見逃し、SNR別の悪化、seed間の重み安定性を分けて行う。

@@ -7,7 +7,7 @@ from utils.ensemble.crossfit_stacking import CROSSFIT_STRATEGIES, validate_cross
 
 
 VALID_STRATEGIES = {
-    "simple", "inner_holdout", "performance_kfold", "val_fold_legacy",
+    "simple", "inner_holdout", "performance_kfold",
 } | CROSSFIT_STRATEGIES
 HIGHER_IS_BETTER = {
     "r2", "r2_high", "roc_auc_cont", "pr_auc_cont",
@@ -24,12 +24,7 @@ def _safe_name(value):
 
 
 def normalize_strategy_plan(config):
-    """Normalize configured ensemble strategies without touching model training.
-
-    Disabled entries are retained in the configuration file for discoverability
-    but are not returned.  Validation-fold weighting is rejected unless it is
-    explicitly unlocked as a reproduction-only diagnostic.
-    """
+    """Normalize configured ensemble strategies without touching model training."""
     configured = config.get("strategies")
     if not configured:
         configured = [{
@@ -37,7 +32,6 @@ def normalize_strategy_plan(config):
             "strategy": config.get("weight_strategy", "simple"),
         }]
 
-    allow_leaky = bool(config.get("allow_leaky_strategies", False))
     plan = []
     names = set()
     result_keys = set()
@@ -53,12 +47,6 @@ def normalize_strategy_plan(config):
                 f"Unknown ensemble strategy {strategy!r}; expected one of "
                 f"{sorted(VALID_STRATEGIES)}."
             )
-        if strategy == "val_fold_legacy" and not allow_leaky:
-            raise ValueError(
-                "val_fold_legacy uses outer validation labels and is disabled. "
-                "Set allow_leaky_strategies=True only for reproduction diagnostics."
-            )
-
         name = _safe_name(raw.get("name") or f"{strategy}_{index}")
         result_key = f"ensemble__{name}"
         if name in names or result_key in result_keys:
@@ -69,7 +57,7 @@ def normalize_strategy_plan(config):
             "result_key": result_key,
             "label": str(raw.get("label") or f"Ensemble {name}"),
             "strategy": strategy,
-            "claim_safe": strategy != "val_fold_legacy",
+            "claim_safe": True,
         }
         if strategy in CROSSFIT_STRATEGIES:
             item["crossfit"] = dict(raw["crossfit"])
@@ -94,12 +82,10 @@ def compute_strategy_outputs(
     val_preds,
     combine,
     inner_errors=None,
-    legacy_errors=None,
     fitted_weights=None,
 ):
     outputs = {}
     inner_errors = inner_errors or {}
-    legacy_errors = legacy_errors or {}
     for item in strategy_plan:
         strategy = item["strategy"]
         if strategy in {"inner_holdout", "performance_kfold"}:
@@ -107,8 +93,6 @@ def compute_strategy_outputs(
             if strategy == "performance_kfold" and any(
                     not np.isfinite(errors.get(spec["key"], np.nan)) for spec in run_specs):
                 raise ValueError("performance_kfold requires finite training-only CV errors for every model")
-        elif strategy == "val_fold_legacy":
-            errors = legacy_errors
         else:
             errors = {}
         if strategy in CROSSFIT_STRATEGIES:

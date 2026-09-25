@@ -33,10 +33,6 @@ ENSEMBLE_STRATEGY_CATALOG = {
         "strategy": "crossfit_shrinkage_stack",
         "crossfit": {**CROSSFIT_DEFAULTS, "regularization": 0.1},
     },
-    "val_fold_legacy": {
-        "label": "Ensemble validation-fold legacy",
-        "strategy": "val_fold_legacy",
-    },
 }
 
 
@@ -91,6 +87,4 @@ def resolve_ensemble_selection(selection_config):
         "strategies": strategies,
         **deepcopy(ENSEMBLE_RUNTIME_DEFAULTS),
     }
-    # Selecting the explicitly named legacy diagnostic is itself the opt-in.
-    resolved["allow_leaky_strategies"] = "val_fold_legacy" in selected_names
     return resolved

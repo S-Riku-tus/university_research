@@ -40,26 +40,6 @@ class LightweightHistory(Callback):
             self.history.setdefault("val_loss", []).append(float(logs["val_loss"]))
 
 
-class EpochPredictionRecorder(Callback):
-    """Record held-out predictions at predeclared epochs in original units."""
-
-    def __init__(self, x_validation, scaler, checkpoint_epochs):
-        super().__init__()
-        self.x_validation = x_validation
-        self.scaler = scaler
-        self.checkpoint_epochs = {int(value) for value in checkpoint_epochs}
-        self.predictions = {}
-
-    def on_epoch_end(self, epoch, logs=None):
-        completed = epoch + 1
-        if completed not in self.checkpoint_epochs:
-            return
-        scaled = self.model.predict(self.x_validation, verbose=0)
-        self.predictions[completed] = self.scaler.inverse_transform(
-            np.asarray(scaled).reshape(-1, 1)
-        ).ravel()
-
-
 class TrainingProgress(Callback):
     """Emit a log-safe progress bar without relying on an interactive TTY.
 
@@ -252,42 +232,6 @@ class ModelTrainer:
             model.fit(x_fit_pca, y_fit_scaled.ravel())
             print(f"[training] {label}: [####################] 1/1 (100%)", flush=True)
             return model, None
-
-    def train_one_model_with_epoch_validation(
-        self,
-        spec,
-        mm,
-        x_fit,
-        y_fit_scaled,
-        x_fit_pca,
-        epochs,
-        x_validation,
-        _x_validation_pca,
-        y_validation,
-        scaler,
-        checkpoints,
-    ):
-        """Train a Keras model and retain held-out predictions at checkpoints."""
-        if spec["kind"] != "keras":
-            raise ValueError("Epoch checkpoint validation is only defined for Keras models.")
-        y_validation_scaled = scaler.transform(
-            np.asarray(y_validation, dtype=float).reshape(-1, 1)
-        )
-
-        def callback_factory():
-            return [EpochPredictionRecorder(x_validation, scaler, checkpoints)]
-
-        model, history, callbacks = self._train_keras_model(
-            spec,
-            mm,
-            x_fit,
-            y_fit_scaled,
-            epochs,
-            validation_data=(x_validation, y_validation_scaled),
-            callback_factory=callback_factory,
-        )
-        recorder, = callbacks
-        return model, history, dict(recorder.predictions)
 
     def predict_one_model(self, spec, model, x, x_pca, scaler):
         """学習済みモデルで予測し、元スケールの熱流束に戻して返す。"""

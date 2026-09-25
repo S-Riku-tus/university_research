@@ -8,7 +8,7 @@
 
 `learning_policy.training_noise="matched"`ではnoiseごとにモデル・前処理・epoch・アンサンブル重みを再fitする。`"clean_only"`ではcleanでfitした同じ状態を全評価noiseへ共有する。別の実験データへ切り替える場合は、`train_experiments`と`test_experiments`を変更し、過去の重みを手作業で移植しない。
 
-今後の主方式は`performance_kfold`。次の条件は[`2026-09-25_matched_performance_kfold_fixed_epoch.json`](experiments/2026-09-25_matched_performance_kfold_fixed_epoch.json)で、元WAV非共有5-fold、200 epoch固定、`simple_equal`対照とする。`training_validation.folds`はepoch選択用、`run.folds`は`performance_kfold`の重み用内部K-foldであり、別設定である。
+今後の主方式は`performance_kfold`。次の条件は[`2026-09-25_matched_performance_kfold_fixed_epoch.json`](experiments/2026-09-25_matched_performance_kfold_fixed_epoch.json)で、元WAV非共有5-fold、200 epoch固定とする。深層モデルは常に`run.epochs`の値を使用し、`run.folds`は`performance_kfold`の重み用内部K-fold数である。
 
 新しい条件の記録には[実験テンプレート](experiments/experiment_template.yaml)を使う。モデル・分割・評価単位・要求/実際の学習条件を残し、run manifestと照合する。現在の選択条件と予定は[現在地](../docs/research_status.md)を参照する。
 

@@ -24,7 +24,6 @@ MODEL_LABELS = {
 STRATEGY_LABELS = {
     "simple_equal": "equal mean",
     "inner_holdout": "inner holdout",
-    "val_fold_legacy": "validation-fold legacy",
 }
 
 

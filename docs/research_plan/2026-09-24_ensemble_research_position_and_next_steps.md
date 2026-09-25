@@ -165,7 +165,7 @@ $$
 
 以下の段階1～3は9/24本比較を設計した時点の記録として残す。現在の次工程は次の順である。
 
-1. `training_validation.enabled=false`として深層2モデルを200 epoch固定にする。
+1. 深層2モデルは`run.epochs=200`を全fitで固定使用する。
 2. 6/11の全18 WAVを元WAV非共有5-foldで一度ずつ検証側へ回す。
 3. 全OOF chunkを結合したモデル別R²から`performance_kfold`重みを1組だけ求める。
 4. 全18 WAVで最終学習し、6/18へ一度適用する。比較は3単体、`simple_equal`、`performance_kfold`とする。

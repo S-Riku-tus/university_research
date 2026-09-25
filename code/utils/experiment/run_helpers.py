@@ -12,7 +12,6 @@ import numpy as np
 WEIGHT_STRATEGY_TAGS = {
     "simple": "simp",
     "inner_holdout": "ih",
-    "val_fold_legacy": "vleg",
     "strategy_loop": "cmp",
 }
 

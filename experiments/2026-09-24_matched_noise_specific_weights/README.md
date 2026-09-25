@@ -132,7 +132,7 @@ seed別のnoiseあり平均でも、等重みのRF比は−1.19%、−2.47%、+3
 
 9/25の本人判断により、単一4-WAV holdoutを使う`inner_holdout`は今後の主方式から外し、全18 WAVのOOF予測を使う`performance_kfold`を先に確認する。過去runの再現性を保つため、`inner_holdout`の実装と本結果は削除しない。
 
-1. `training_validation`を無効にし、深層2モデルを200 epoch固定にする。
+1. 深層2モデルは`run.epochs=200`を全fitで固定使用する。
 2. 6/11の18 WAVを元WAV非共有5-foldとし、全OOF予測を結合してモデル別R²を1個ずつ求め、`performance_kfold`の1組の重みを作る。
 3. `performance_kfold`、`simple_equal`、3単体モデルを同一run内で比較する。`inner_holdout`は新runへ入れない。
 4. noiseあり平均RMSE、最良単体2%以内の割合、最悪SNR、ONB前・近傍・以降、誤報・見逃し、seed間の重み安定性を確認する。

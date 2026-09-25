@@ -34,10 +34,6 @@ ensemble:
   weight_fit_scope: source_wav_disjoint_kfold_oof
   weight_folds: null
 
-training_validation:
-  enabled: false
-  role: epoch_selection_only_not_ensemble_weighting
-
 evaluation:
   unit: one_second_chunk
   regression_metrics: [r2, rmse_all, mae_all, r2_high, rmse_high, mae_high, rmse_onb, mae_onb]

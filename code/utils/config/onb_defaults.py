@@ -105,20 +105,6 @@ DEFAULT_ACOUSTIC_SELECTION_CONFIG = {
 }
 
 
-DEFAULT_TRAINING_VALIDATION_CONFIG = {
-    # Training-day-only, source-WAV-disjoint epoch diagnosis.  This is kept
-    # separate from ensemble inner_holdout because it selects training length,
-    # whereas inner_holdout estimates ensemble weights.
-    "enabled": False,
-    "mode": "wav_kfold",
-    "folds": 3,
-    "checkpoint_interval_epochs": 10,
-    "minimum_epoch": 1,
-    "selection_metric": "rmse_all",
-    "select_epochs": True,
-}
-
-
 DEFAULT_EXPLAINABILITY_CONFIG = {
     "enabled": True,
     "max_samples_per_fold": 5,
@@ -184,7 +170,6 @@ def apply_onb_defaults(config, now=None):
     """Resolve stable defaults while allowing explicit, local overrides."""
     defaults = {
         "acoustic_selection": deepcopy(DEFAULT_ACOUSTIC_SELECTION_CONFIG),
-        "training_validation": deepcopy(DEFAULT_TRAINING_VALIDATION_CONFIG),
         "output": default_output_config(now),
         "explainability": deepcopy(DEFAULT_EXPLAINABILITY_CONFIG),
     }

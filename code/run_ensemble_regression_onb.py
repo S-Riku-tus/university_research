@@ -74,12 +74,11 @@ from utils.experiment.run_helpers import set_global_seed
 VALIDATION_CONFIG = apply_onb_defaults({
     "run": {
         "smoke_test": False,
-        # training_validationを無効にした場合、深層2モデルの全fitでこの値を固定使用する。
+        # 深層モデルの全fitで常にこの値を使用する。
         "epochs": 200,
         # performance_kfoldでは、学習日の元WAVをこのfold数でOOF予測する。
         # 18 WAVの5-foldは、各回14/15 WAVで学習し3/4 WAVを検証する。
         "folds": 5,
-        "smoke_epochs": 2,
         "smoke_folds": 2,
         "color_channel": 1,
         "random_seed": 42,
@@ -183,17 +182,15 @@ VALIDATION_CONFIG = apply_onb_defaults({
             },
         },
     },
-    "training_validation": {
-        # epoch自体を研究変数にするときだけ有効化する。Falseならrun.epochsを固定使用する。
-        # これはアンサンブル重み用K-foldとは別処理である。
-        "enabled": False,
-    },
     "ensemble": {
-        # 主方式は、全学習WAVを一度ずつ検証側に回したOOF単体性能から重みを求める。
-        # simple_equalは追加学習不要の対照。inner_holdoutは過去run再現用に実装を残す。
+        # 実装済み方式をここへ残し、使用する方式だけコメントを外す。
         "enabled_strategy_names": [
-            "performance_kfold",
-            # "simple_equal",
+            "performance_kfold",  # 元WAV非共有K-foldの全OOF単体R²から逆誤差重みを求める主方式
+            # "simple_equal",  # 全モデルを同じ重みで平均する固定対照
+            # "inner_holdout",  # 学習WAVの約20%を一度だけ分離し単体R²から重みを求める旧方式
+            # "subset_equal_cv",  # OOF上で単体を含む全モデル部分集合から等重みの最良候補を選ぶ
+            # "crossfit_wav_stack",  # OOFの統合後WAV誤差を最小化する非負連続重みstacking
+            # "crossfit_shrinkage_stack",  # stacking重みを等重み側へ縮小して極端化を抑える
         ],
     },
     "features": {
@@ -215,7 +212,7 @@ def _noise_source_prefix(noise_source):
 
 
 SMOKE_TEST = _cfg("run", "smoke_test")
-EPOCH_NUM = _cfg("run", "smoke_epochs" if SMOKE_TEST else "epochs")
+EPOCH_NUM = _cfg("run", "epochs")
 DIVISIONS = _cfg("run", "smoke_folds" if SMOKE_TEST else "folds")
 COLOR_CHANNEL = _cfg("run", "color_channel")
 RANDOM_SEED = _cfg("run", "random_seed")
@@ -262,9 +259,6 @@ RESULT_MODEL_GROUP = (
 )
 
 PCA_COMPONENTS = _cfg("features", "pca_components")
-TRAINING_VALIDATION_CONFIG = dict(
-    VALIDATION_CONFIG.get("training_validation", {})
-)
 
 SAVE_DATE = _cfg("output", "save_date")
 RESULT_DATE_DIR = _cfg("output", "result_date_dir") or SAVE_DATE
@@ -379,7 +373,6 @@ def validation_config_snapshot():
         "features": {
             "pca_components": PCA_COMPONENTS,
         },
-        "training_validation": dict(TRAINING_VALIDATION_CONFIG),
         "output": {
             "save_date": SAVE_DATE,
             "result_date_dir": RESULT_DATE_DIR,
@@ -426,30 +419,16 @@ def update_noise_trend_plots(plotter, job, run_dir, run_hash, model_keys):
 
 
 def validate_validation_config(enabled_specs):
+    if "training_validation" in VALIDATION_CONFIG:
+        raise ValueError(
+            "training_validationは廃止しました。学習epochはrun.epochsに指定してください。"
+        )
     if (LEARNING_POLICY["split_mode"] == "within_day" or "performance_kfold" in ENSEMBLE_MANAGER.selected_strategy_names) and DIVISIONS < 2:
         raise ValueError("folds must be at least 2.")
     if not PARAMETER_SETS:
         raise ValueError("VALIDATION_CONFIG['models']['parameter_sets'] must not be empty.")
     if int(PCA_COMPONENTS) <= 0:
         raise ValueError("pca_components must be a positive integer.")
-    if TRAINING_VALIDATION_CONFIG.get("enabled", False):
-        if TRAINING_VALIDATION_CONFIG.get("mode") != "wav_kfold":
-            raise ValueError("training_validation.mode must be 'wav_kfold'.")
-        if int(TRAINING_VALIDATION_CONFIG.get("folds", 0)) < 2:
-            raise ValueError("training_validation.folds must be at least 2.")
-        if int(TRAINING_VALIDATION_CONFIG.get("checkpoint_interval_epochs", 0)) < 1:
-            raise ValueError(
-                "training_validation.checkpoint_interval_epochs must be positive."
-            )
-        minimum_epoch = int(TRAINING_VALIDATION_CONFIG.get("minimum_epoch", 1))
-        if not 1 <= minimum_epoch <= int(EPOCH_NUM):
-            raise ValueError(
-                "training_validation.minimum_epoch must be within the run epochs."
-            )
-        if TRAINING_VALIDATION_CONFIG.get("selection_metric") != "rmse_all":
-            raise ValueError(
-                "training_validation.selection_metric currently supports rmse_all only."
-            )
     model_keys = [spec["key"] for spec in enabled_specs]
     if len(model_keys) != len(set(model_keys)):
         raise ValueError(f"Duplicate active model keys: {model_keys}")
@@ -462,9 +441,6 @@ def validate_validation_config(enabled_specs):
         resolve_parameter_set(enabled_specs, parameter_set)
 
     ENSEMBLE_MANAGER.validate(enabled_specs)
-    if (LEARNING_POLICY != {"split_mode": "within_day", "training_noise": "matched"}
-            and len(enabled_specs) > 1 and ENSEMBLE_MANAGER.has_leaky_strategy):
-        raise ValueError("一般化評価では評価ラベルで重みを決めるval_fold_legacyを使用できません。")
 
     if REQUIRE_EXPERIMENT_THRESHOLD:
         missing_thresholds = [
@@ -642,8 +618,6 @@ def main():
     )
     print("validation_config:")
     print(validation_config_text())
-    if not single_model_run and ENSEMBLE_MANAGER.has_leaky_strategy:
-        print("WARNING: val_fold_legacy uses validation-fold labels for weights; use only for reproduction.")
     print("#" * 60)
 
     dataset_jobs = build_dataset_jobs()

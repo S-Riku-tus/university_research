@@ -15,13 +15,12 @@
 | 分割 | 現行回数 | 用途 | 重みへの利用 |
 |---|---:|---|---|
 | 外側の実験日分割 | 1 | 6/11で最終学習し6/18を評価 | 6/18は重み計算に使わない |
-| `training_validation`の元WAV K-fold | 0（主設定では無効） | 有効時だけConformer・AlexNetのepoch選択 | 重み計算には使わない |
 | `performance_kfold` | 5 | 18 WAVを14/15 WAV学習・3/4 WAV検証に分け、全WAVのOOF単体R²を得る | 結合OOFから1組の重みを作る |
 | `inner_holdout` | 0（過去比較のみ） | 18 WAV中14 WAVで一時学習、別4 WAVの単体R²から重みを計算 | 単一holdoutから1組の重みを作る |
 
-`run.epochs=200`は、`training_validation.enabled=false`ならConformer・AlexNetの内部K-fold学習と最終学習の両方で固定使用する。有効にした場合だけ、`run.epochs`を上限としてcheckpoint候補からモデル別epochを選ぶ。これは重み用K-foldとは独立した処理である。
+ConformerとAlexNetは、内部K-fold学習と最終学習の両方で常に`run.epochs`の値を使用する。epochを別validationで選ぶ機能は9/25に削除した。
 
-別日分割では`run.folds`を5へ変更しても外側評価は1回のままであり、`performance_kfold`の内部fold数だけが5になる。`training_validation.folds`はepoch選択だけ、crossfit 3方式の`inner_folds`は共通OOFだけを制御する。
+別日分割では`run.folds`を5へ変更しても外側評価は1回のままであり、`performance_kfold`の内部fold数だけが5になる。crossfit 3方式の`inner_folds`は別の共通OOFを制御する。
 
 本書は、熱流束回帰に用いる3モデル、Random Forest系モデル（RF）、CNN＋Transformer、AlexNetを、6つの方法でどのように統合するかを数式とともに整理する。対象は次の6方式である。
 
@@ -32,7 +31,9 @@
 5. `crossfit_wav_stack`: crossfit予測によるWAV単位制約付きstacking
 6. `crossfit_shrinkage_stack`: 等重みへの縮小を加えたWAV単位stacking
 
-このほかに`val_fold_legacy`が実装されているが、評価対象foldの正解を重み決定にも使うため、過去コード再現以外の研究主張には使用しない。
+### 9/25に削除した`val_fold_legacy`との違い
+
+旧`val_fold_legacy`は、外側の評価foldに対する3モデルの予測と正解から単体R²を計算し、その同じ評価foldを統合して性能を出していた。すなわち、重み決定と性能評価に同じ正解を使うためデータリークになる。`performance_kfold`は学習集合の内部OOFだけで重みを決め、重みを固定してから外側評価データへ適用する。研究で必要なのは後者だけであるため、`val_fold_legacy`の実行経路は削除した。過去の結果ファイル・実験記録は当時の履歴として保持する。
 
 ## 1. 共通する記号と最終的な統合式
 

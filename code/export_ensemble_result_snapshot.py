@@ -29,8 +29,11 @@ SINGLE_MODEL_KEYS = ("randomforest", "conformer", "alexnet")
 SAFE_ENSEMBLE_KEYS = (
     "ensemble__simple_equal",
     "ensemble__inner_holdout",
+    "ensemble__performance_kfold",
+    "ensemble__subset_equal_cv",
+    "ensemble__crossfit_wav_stack",
+    "ensemble__crossfit_shrinkage_stack",
 )
-LEGACY_ENSEMBLE_KEY = "ensemble__val_fold_legacy"
 
 IDENTITY_COLUMNS = [
     "created_at",
@@ -109,10 +112,6 @@ def sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
-def claim_safe(model_key: str) -> bool:
-    return model_key != LEGACY_ENSEMBLE_KEY
-
-
 def load_summaries(result_roots: list[Path]) -> tuple[pd.DataFrame, list[dict]]:
     frames = []
     sources = []
@@ -182,7 +181,7 @@ def write_ensemble_comparison(data: pd.DataFrame, output_dir: Path) -> None:
         }
     )
 
-    ensemble_keys = set(SAFE_ENSEMBLE_KEYS) | {LEGACY_ENSEMBLE_KEY}
+    ensemble_keys = set(SAFE_ENSEMBLE_KEYS)
     comparison = data[data["model_key"].isin(ensemble_keys)].merge(
         best, on=condition_keys, how="left"
     )
@@ -355,7 +354,6 @@ def main() -> None:
         "completed_condition_count": condition_count,
         "single_model_keys": list(SINGLE_MODEL_KEYS),
         "safe_ensemble_keys": list(SAFE_ENSEMBLE_KEYS),
-        "legacy_not_claim_safe": LEGACY_ENSEMBLE_KEY,
         "xai_source_file_count": xai_source_file_count,
         "generated_files": [
             "completion.csv",
