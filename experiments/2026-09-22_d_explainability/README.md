@@ -28,7 +28,7 @@ A〜Cは、提案した手法がすべて成功したという結果ではない
 
 Aで固定した無雑音の代表成功秒`index=8.225704, chunk 54`と代表失敗秒`index=1.0, chunk 54`を明示して、元runと同じ条件の補完runを[`run_targeted_masks.py`](run_targeted_masks.py)で実行した。条件は[事前記録](../../configs/experiments/2026-09-22_d_targeted_masks.json)に保存した。
 
-補完run出力は`Pool_boiling/.../regression_result/npy/ensemble/20260922/d_targeted_m_xd-t0611-v0618_iw3-nm_s1e-9_e200_123340/`で、`completed.json`と3モデルの対象2秒×8帯域の出力を確認した。実行ログは[`targeted_no_noise.log`](targeted_no_noise.log)。
+補完run出力は`Pool_boiling/.../regression_result/npy/ensemble/202609/22/d_targeted_m_xd-t0611-v0618_iw3-nm_s1e-9_e200_123340/`で、`completed.json`と3モデルの対象2秒×8帯域の出力を確認した。実行ログは[`targeted_no_noise.log`](targeted_no_noise.log)。
 
 RF予測は両秒とも元runと完全一致した。成功秒では2–5 kHzマスクがRFの過小予測を2.15 kW/m²悪化させ、失敗秒では512–1000 Hz、1–2 kHz、2–5 kHzがRFの過大予測を6.83、7.78、6.75 kW/m²悪化させた。少なくともこのRF対では、帯域マスクは統合の成功を説明する改善要因にならない。
 

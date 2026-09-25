@@ -5,7 +5,7 @@
 - 対象run: `onb_xd-t0611-v0618_iw3-nm_s1e-9_e200_123711`、run hash `56fc786f`。
 - 6/11のみ学習、6/18を別日評価。22 kHz、ノイズなし、200 epochs、1秒chunk、評価fold 1。
 - ONB熱流束の設定値（W/m²）: 6/11 `221505.1102`、6/18 `271677.6816`、7/9 `571694.252491167`。7/9はこのrunの学習・評価には含まれない。
-- 根拠: `Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260917/onb_xd-t0611-v0618_iw3-nm_s1e-9_e200_123711/maxfreq=22kHz/heatflux_no_noise/` の `run_manifest.json`、`training_selection_fold1.json`、`metrics_summary_no_noise.csv`、`ensemble_correction_summary_no_noise.csv`。
+- 根拠: `Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/202609/17/onb_xd-t0611-v0618_iw3-nm_s1e-9_e200_123711/maxfreq=22kHz/heatflux_no_noise/` の `run_manifest.json`、`training_selection_fold1.json`、`metrics_summary_no_noise.csv`、`ensemble_correction_summary_no_noise.csv`。
 
 ## 確認事実
 

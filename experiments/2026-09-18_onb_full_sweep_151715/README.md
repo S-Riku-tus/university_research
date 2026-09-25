@@ -2,7 +2,7 @@
 
 ## 対象と条件
 
-- 原出力: `Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260917/onb_xd-t0611-v0618_iw3-nm_s1e-9_e200_151715/`
+- 原出力: `Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/202609/17/onb_xd-t0611-v0618_iw3-nm_s1e-9_e200_151715/`
 - `run_instance_id=151715`、`run_hash=0c97c52d`。6/11の無雑音または各SNR音を学習し、対応する6/18の全音を評価する `matched` 設定。最大周波数3/5/10/15/22 kHz、無雑音および参照SNR 0/−4/−8/−12/−16/−20 dBの35条件。各条件200 epochs、単一fold、seed 42。3モデルと `inner_holdout` 統合の140行が `tuning_summary.csv` にあり、メモリエラー0。
 - 学習側6/11は1080秒から986秒へ選別。ONB以上660秒中94秒を除外。テスト側6/18は18 WAV・1080秒を全保持。閾値は学習選別のPSD `1e-9` と、評価ラベルのONB熱流束 `271677.6816 W/m²` を区別する。評価単位は1秒chunk。各SNRは対応する雑音条件で学習し直しているため、1つの固定モデルの耐雑音試験ではない。
 - 図の `fold mean ± SE` のSEが0と表示されるのは評価foldが1つだからであり、再現性や統計的有意性を表さない。35条件は同じ学習日・評価日を使う条件違いで、独立した35実験ではない。

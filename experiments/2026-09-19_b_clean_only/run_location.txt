@@ -1,1 +1,1 @@
-Pool_boiling\Subcooling_20_degrees\0.3\2025.06.18_0.3_3\regression_result\npy\ensemble\20260919\b_clean_only_xd-t0611-v0618_iw3-nc_s1e-9_e200_163926
+Pool_boiling\Subcooling_20_degrees\0.3\2025.06.18_0.3_3\regression_result\npy\ensemble\202609\19\b_clean_only_xd-t0611-v0618_iw3-nc_s1e-9_e200_163926

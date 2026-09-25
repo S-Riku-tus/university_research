@@ -2,6 +2,8 @@
 
 更新日: **2026-09-25（matched 7 SNR×3 seed本比較の解析まで反映）**。分位点ルール時点の状態は[変更前の記録](../experiments/2026-09-16_peak_height_selection/previous_documents/research_status.md)に保存した。
 
+**ensemble結果の保存日付階層を整理**：[9/25保存日付階層整理](../experiments/2026-09-25_ensemble_date_layout/README.md)で、今後のONB結果を`regression_result/npy/ensemble/YYYYMM/DD/条件/`へ保存するよう変更した。日付付き既存55系列（389,580ファイル、約34.27 GB）も同形式へ移動し、全系列で移動前後のファイル数・総byte数が一致した。日付情報のない旧系列は推測で移動していない。
+
 **決定論GPUでのIG停止を修正**：[9/25 IG決定論GPU修正](../experiments/2026-09-25_ig_deterministic_gpu_fix/README.md)で、TensorFlow 2.9.1の決定論GPUに推論モードFused BatchNormの逆伝播がないため、ConformerのIGで本runが停止する問題を修正した。IG時だけBatchNormalizationを非fusedカーネルへ一時切替し、切替前後の端点予測を照合して必ず元へ復元する。別の未実装GPU演算時だけCPUへ自動fallbackする。学習・通常予測・重み・IGのbaseline／経路／積分／収束判定は変更していない。現行Conformer・AlexNetの224×224決定論GPUスモークで両方完走し、端点予測差・IG前後の通常予測差はいずれも0、全75テスト成功。これはIGの実行可能性の修正であり、本run各標本の数値収束を保証するものではない。9/25 13:15開始の失敗runはfold予測確定前でモデル保存もなく、完成結果として使用・再開しない。
 
 **9/25進捗報告後の判断保留**：本人作成の9/25 SOAPでは、意図する主方式`performance_kfold`の本結果を見る前にアンサンブルの結論を書かない方針とした。教授向け文書では過去`inner_holdout`をコード不具合とは表現せず、目的とする方式と異なる過去比較として扱う。次の全条件runの前に、主研究質問をclean学習固定モデルの未知noise耐性（`clean_only`）とするか、noise別学習による既知条件への適応（`matched`）とするかを固定する。前者を主とする場合は、作成済みmatched条件を先に実行せず、同条件のclean-only比較を主とする。ピーク選別、アンサンブル方式、学習noise方針は同時に変更しない。詳細は[9/25報告レビューと段階的研究方針](research_plan/2026-09-25_weekly_report_review_and_next_steps.md)。

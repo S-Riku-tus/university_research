@@ -6,7 +6,7 @@
 
 Analyzed completed full-grid result:
 
-`Pool_boiling/Subcooling_20_degrees/0.3/<experiment>/regression_result/npy/ensemble/20260706_fixed_ensemble_full_grid/tuning_summary.csv`
+`Pool_boiling/Subcooling_20_degrees/0.3/<experiment>/regression_result/npy/ensemble/202607/06/fixed_ensemble_full_grid/tuning_summary.csv`
 
 Models analyzed:
 

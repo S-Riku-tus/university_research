@@ -24,8 +24,13 @@ regression_result/npy/ensemble/YYYYMM/DD/<実行条件>/
 
 ## 移行記録
 
-- dry-run: 未実施
-- 本移行: 未実施
+- dry-run: 55系列、移動先衝突なし
+- 本移行: 完了
+- 照合対象: 389,580ファイル、34,271,354,409 bytes
+- 移動前後の件数・総byte数不一致: 0系列
+- 移動結果内の旧パス参照更新: 3,498ファイル
+- `docs/`・`experiments/`内の保存先参照更新: 57ファイル
+- 再dry-runの未移行対象: 0系列
 - 詳細対応表: `migration_report.json`
 
 移行後も日付情報のない`heatflux_no_noise`等の旧系列はそのまま残す。それらを新しい解析日へ推測配置しない。

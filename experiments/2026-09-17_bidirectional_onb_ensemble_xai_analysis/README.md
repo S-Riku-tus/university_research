@@ -6,8 +6,8 @@
 
 | 方向 | run hash | 出力 |
 |---|---|---|
-| 6/11学習→6/18評価 | `56fc786f` | `Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260917/onb_xd-t0611-v0618_iw3-nm_s1e-9_e200_123711/maxfreq=22kHz/heatflux_no_noise/` |
-| 6/18学習→6/11評価 | `f13bce3a` | `Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260917/onb_xd-t0618-v0611_iw3-nm_s1e-9_e200_131515/maxfreq=22kHz/heatflux_no_noise/` |
+| 6/11学習→6/18評価 | `56fc786f` | `Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/202609/17/onb_xd-t0611-v0618_iw3-nm_s1e-9_e200_123711/maxfreq=22kHz/heatflux_no_noise/` |
+| 6/18学習→6/11評価 | `f13bce3a` | `Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/202609/17/onb_xd-t0618-v0611_iw3-nm_s1e-9_e200_131515/maxfreq=22kHz/heatflux_no_noise/` |
 
 各出力の `run_manifest.json`、`training_selection_fold1.json`、`metrics_summary_no_noise.csv`、`ensemble_weights_no_noise.csv`、`fold_pred/pred_f1_no_noise.csv` を照合。説明性は `explainability/fold1/*/group_mask_performance.csv` とIG診断を確認。
 

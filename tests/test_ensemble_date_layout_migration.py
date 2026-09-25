@@ -7,7 +7,11 @@ import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "code"))
 
-from migrate_ensemble_date_layout import migrate_ensemble_dates, migration_plan
+from migrate_ensemble_date_layout import (
+    migrate_ensemble_dates,
+    migration_plan,
+    rewrite_references_from_report,
+)
 
 
 class EnsembleDateLayoutMigrationTest(unittest.TestCase):
@@ -62,6 +66,30 @@ class EnsembleDateLayoutMigrationTest(unittest.TestCase):
             with self.assertRaises(FileExistsError):
                 migration_plan(root)
             self.assertTrue((ensemble / "20260924").is_dir())
+
+    def test_external_rewrite_changes_paths_but_not_standalone_run_ids(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            source = root / "experiment" / "regression_result" / "npy" / "ensemble" / "20260924"
+            target = root / "experiment" / "regression_result" / "npy" / "ensemble" / "202609" / "24"
+            report = root / "migration_report.json"
+            report.write_text(json.dumps({
+                "status": "complete",
+                "moves": [{"from": str(source), "to": str(target)}],
+            }), encoding="utf-8")
+            document = root / "note.md"
+            document.write_text(
+                "run_id=20260924\npath=ensemble/20260924/onb\n",
+                encoding="utf-8",
+            )
+
+            rewritten = rewrite_references_from_report(report, [document])
+
+            self.assertEqual(len(rewritten), 1)
+            self.assertEqual(
+                document.read_text(encoding="utf-8"),
+                "run_id=20260924\npath=ensemble/202609/24/onb\n",
+            )
 
 
 if __name__ == "__main__":

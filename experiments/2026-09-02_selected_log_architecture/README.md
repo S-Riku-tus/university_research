@@ -67,8 +67,8 @@ RFの周波数帯マスクでは、06.18と07.09の全完了条件で2--5 kHz帯
 
 ```powershell
 python code/export_ensemble_result_snapshot.py `
-  --result-root "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260902_selected_log_architecture" `
-  --result-root "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260902_selected_log_architecture" `
+  --result-root "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/202609/02_selected_log_architecture" `
+  --result-root "Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/202609/02_selected_log_architecture" `
   --output-dir "experiments/2026-09-02_selected_log_architecture"
 ```
 

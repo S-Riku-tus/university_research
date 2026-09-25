@@ -2,7 +2,7 @@
 
 日付: 2026-09-16。対象は次の完了runであり、後から設定だけ変更した状態と区別する。
 
-- 保存先: `2025.06.18_0.3_3/regression_result/npy/ensemble/20260916_selected_log_architecture__days_matched`
+- 保存先: `2025.06.18_0.3_3/regression_result/npy/ensemble/202609/16_selected_log_architecture__days_matched`
 - run instance/hash: `211859 / c18d6d`
 - 条件: 学習6/11+7/9、テスト6/18、無雑音、3/22 kHz、3モデル、300 epochs、ピーク高さ選別あり
 - 統合: 当該runは`performance_kfold`。今回修正後の主設定は新crossfit 3方式であり、当該runの成績を再計算したものではない。

@@ -6,7 +6,7 @@
 
 Completed result directory:
 
-`Pool_boiling/Subcooling_20_degrees/0.3/<experiment>/regression_result/npy/ensemble/20260706_fixed_ensemble_full_grid`
+`Pool_boiling/Subcooling_20_degrees/0.3/<experiment>/regression_result/npy/ensemble/202607/06/fixed_ensemble_full_grid`
 
 Although the current script date would now generate `20260709_fixed_ensemble_full_grid`,
 the completed files analyzed here are under `20260706_fixed_ensemble_full_grid`.

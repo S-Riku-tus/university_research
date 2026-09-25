@@ -213,6 +213,64 @@ def _write_report(path, report):
     )
 
 
+def rewrite_references_from_report(report_path, reference_roots):
+    """移行対象外の文書にある、ensemble以下の旧パス表記だけを更新する。"""
+    report_path = Path(report_path).resolve()
+    report = json.loads(report_path.read_text(encoding="utf-8"))
+    if report.get("status") != "complete":
+        raise ValueError("complete状態の移行レポートだけを参照更新に使用できます。")
+    replacements = []
+    for record in report["moves"]:
+        source = Path(record["from"])
+        target = Path(record["to"])
+        try:
+            ensemble_index = [part.lower() for part in source.parts].index("ensemble")
+        except ValueError as error:
+            raise ValueError(f"ensembleを含まない移行元です: {source}") from error
+        old_relative = Path(*source.parts[ensemble_index:])
+        new_relative = Path(*target.parts[ensemble_index:])
+        values = [
+            (str(source), str(target)),
+            (source.as_posix(), target.as_posix()),
+            (str(old_relative), str(new_relative)),
+            (old_relative.as_posix(), new_relative.as_posix()),
+        ]
+        for before, after in values:
+            for old, new in (
+                (before, after),
+                (
+                    json.dumps(before, ensure_ascii=False)[1:-1],
+                    json.dumps(after, ensure_ascii=False)[1:-1],
+                ),
+            ):
+                pair = (old.encode("utf-8"), new.encode("utf-8"))
+                if pair not in replacements:
+                    replacements.append(pair)
+    replacements.sort(key=lambda pair: len(pair[0]), reverse=True)
+
+    rewritten = []
+    for reference_root in reference_roots:
+        reference_root = Path(reference_root).resolve()
+        if not reference_root.exists():
+            raise FileNotFoundError(reference_root)
+        candidates = [reference_root] if reference_root.is_file() else reference_root.rglob("*")
+        for path in candidates:
+            if (
+                not path.is_file()
+                or path.resolve() == report_path
+                or path.suffix.lower() not in TEXT_SUFFIXES
+            ):
+                continue
+            original = path.read_bytes()
+            updated = original
+            for before, after in replacements:
+                updated = updated.replace(before, after)
+            if updated != original:
+                path.write_bytes(updated)
+                rewritten.append(_normal_path(path))
+    return rewritten
+
+
 def migrate_ensemble_dates(search_root, apply=False, report_path=None):
     search_root = Path(search_root).resolve()
     moves = migration_plan(search_root)
@@ -261,13 +319,23 @@ def migrate_ensemble_dates(search_root, apply=False, report_path=None):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--search-root", type=Path, required=True)
+    parser.add_argument("--search-root", type=Path)
     parser.add_argument("--apply", action="store_true")
     parser.add_argument("--report", type=Path)
+    parser.add_argument("--rewrite-from-report", action="store_true")
+    parser.add_argument("--reference-root", type=Path, action="append", default=[])
     args = parser.parse_args()
-    result = migrate_ensemble_dates(
-        args.search_root,
-        apply=args.apply,
-        report_path=args.report,
-    )
+    if args.rewrite_from_report:
+        if args.report is None or not args.reference_root:
+            parser.error("--rewrite-from-reportには--reportと--reference-rootが必要です。")
+        rewritten = rewrite_references_from_report(args.report, args.reference_root)
+        result = {"reference_files_updated": len(rewritten), "files": rewritten}
+    else:
+        if args.search_root is None:
+            parser.error("--search-rootが必要です。")
+        result = migrate_ensemble_dates(
+            args.search_root,
+            apply=args.apply,
+            report_path=args.report,
+        )
     print(json.dumps(result, ensure_ascii=False, indent=2))

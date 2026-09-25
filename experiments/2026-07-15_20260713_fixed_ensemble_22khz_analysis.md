@@ -6,7 +6,7 @@
 
 7/13に実行された現行 `code/run_ensemble_regression_onb.py` の出力を分析した。
 
-- result: `Pool_boiling/Subcooling_20_degrees/0.3/<experiment>/regression_result/npy/ensemble/20260713_fixed_ensemble`
+- result: `Pool_boiling/Subcooling_20_degrees/0.3/<experiment>/regression_result/npy/ensemble/202607/13/fixed_ensemble`
 - experiments: `2025.06.18_0.3_3`, `2025.07.09_0.3_1`, `2025.06.11_0.3_2`
 - frequency: `maxfreq=22kHz`
 - noise: `heatflux_no_noise`, `SNR=0/-4/-8/-12/-16/-20`

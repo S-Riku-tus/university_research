@@ -146,7 +146,7 @@ class LearningPolicyTest(unittest.TestCase):
             )
 
     def test_scoped_result_directory_separates_executions_and_parameters(self):
-        job = {"save_base_path": Path("ensemble/20260917/onb__days_matched"),
+        job = {"save_base_path": Path("ensemble/202609/17/onb__days_matched"),
                "experiment_name": "2025.06.18_0.3_3",
                "max_freq_hz": "maxfreq=3kHz", "noise_dir_name": "heatflux_no_noise"}
         config = {"learning_policy": {"split_mode": "explicit_days", "training_noise": "matched",

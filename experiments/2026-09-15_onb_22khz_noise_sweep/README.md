@@ -16,7 +16,7 @@
 - 学習: 元WAVを分離した日内3-fold、seed 42、要求300 epochs。各ノイズ条件で学習・評価する `within_day + matched`。
 - モデル: RF、CNN＋Transformer、AlexNet。統合: `simple_equal`、`inner_holdout`。
 - 主評価: 学習外予測を元WAVごとの中央値に集約。説明性も有効。
-- 保存先: `Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/20260915_selected_log_architecture/maxfreq=22kHz/`。確認したrun hashは `2b4cef`。実際の条件は各 `run_manifest.json` で再確認する。
+- 保存先: `Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/regression_result/npy/ensemble/202609/15_selected_log_architecture/maxfreq=22kHz/`。確認したrun hashは `2b4cef`。実際の条件は各 `run_manifest.json` で再確認する。
 
 実験日と周波数上限を固定してノイズ強度ごとの性能・説明を整理するため、9月18日の説明性発表に向けた最初のまとまりとして妥当。7条件は同じ元WAVを加工した比較で、7回の独立実験ではない。今回の結果が示すのは各ノイズ条件に合わせて学習した場合の性能であり、未知ノイズへの転送性能や別日への一般化は別途検証する。
 

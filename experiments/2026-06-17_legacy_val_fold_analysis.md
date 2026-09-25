@@ -4,7 +4,7 @@
 
 ## Scope
 
-- Result path: `Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/20260617/heatflux_no_noise/maxfreq=22kHz/ep500_legacy_val_fold_legacy_3m`
+- Result path: `Pool_boiling/Subcooling_20_degrees/0.3/2025.07.09_0.3_1/regression_result/npy/ensemble/202606/17/heatflux_no_noise/maxfreq=22kHz/ep500_legacy_val_fold_legacy_3m`
 - Data: `2025.07.09_0.3_1`, `heatflux_no_noise`, `maxfreq=22kHz`
 - Threshold: `275174.6641`
 - Models: `RandomForest`, `CNN+Tf (AttnPool)`, `AlexNet`, `Ensemble`

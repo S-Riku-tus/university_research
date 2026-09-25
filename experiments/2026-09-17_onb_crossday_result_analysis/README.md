@@ -6,7 +6,7 @@
 
 対象は、6/18実験フォルダ内の次のrunである。
 
-- 保存先: `Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260917/selected_log_architecture__days_matched/maxfreq=3kHz/heatflux_no_noise/e150_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp_af1ea408`
+- 保存先: `Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/202609/17/selected_log_architecture__days_matched/maxfreq=3kHz/heatflux_no_noise/e150_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp_af1ea408`
 - run instance/hash: `000410 / af1ea408`
 - 完了状態: 3 kHzは`completed.json`、予測、WAV評価、説明性出力まで存在する。
 - 22 kHzは`completed.json`と性能・予測CSVがなく、途中出力として今回の性能比較から除外する。
@@ -15,9 +15,9 @@
 
 根拠:
 
-- [run manifest](../../Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260917/selected_log_architecture__days_matched/maxfreq=3kHz/heatflux_no_noise/e150_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp_af1ea408/run_manifest.json)
-- [学習選別記録](../../Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260917/selected_log_architecture__days_matched/maxfreq=3kHz/heatflux_no_noise/e150_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp_af1ea408/training_selection_fold1.json)
-- [完了印](../../Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260917/selected_log_architecture__days_matched/maxfreq=3kHz/heatflux_no_noise/e150_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp_af1ea408/completed.json)
+- [run manifest](../../Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/202609/17/selected_log_architecture__days_matched/maxfreq=3kHz/heatflux_no_noise/e150_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp_af1ea408/run_manifest.json)
+- [学習選別記録](../../Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/202609/17/selected_log_architecture__days_matched/maxfreq=3kHz/heatflux_no_noise/e150_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp_af1ea408/training_selection_fold1.json)
+- [完了印](../../Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/202609/17/selected_log_architecture__days_matched/maxfreq=3kHz/heatflux_no_noise/e150_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp_af1ea408/completed.json)
 
 ## 2. 「学習日6/11の内部OOFのWAV平均二乗誤差」とは何か
 
@@ -97,8 +97,8 @@ MSEは二乗単位で直感的に読みにくいため、平方根を取ったRM
 
 根拠:
 
-- [内部OOF予測](../../Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260917/selected_log_architecture__days_matched/maxfreq=3kHz/heatflux_no_noise/e150_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp_af1ea408/ensemble_inner_oof_f1.csv)
-- [crossfit重み・診断](../../Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260917/selected_log_architecture__days_matched/maxfreq=3kHz/heatflux_no_noise/e150_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp_af1ea408/ensemble_crossfit_fit_f1.json)
+- [内部OOF予測](../../Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/202609/17/selected_log_architecture__days_matched/maxfreq=3kHz/heatflux_no_noise/e150_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp_af1ea408/ensemble_inner_oof_f1.csv)
+- [crossfit重み・診断](../../Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/202609/17/selected_log_architecture__days_matched/maxfreq=3kHz/heatflux_no_noise/e150_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp_af1ea408/ensemble_crossfit_fit_f1.json)
 
 ## 4. 6/18別日評価の結果
 
@@ -119,8 +119,8 @@ shrinkage統合はCNN単体に対してRMSEを約7.7%、MAEを約9.0%改善し�
 
 根拠:
 
-- [WAV指標](../../Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260917/selected_log_architecture__days_matched/maxfreq=3kHz/heatflux_no_noise/e150_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp_af1ea408/wav_eval/wav_metrics_no_noise.csv)
-- [WAV予測](../../Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260917/selected_log_architecture__days_matched/maxfreq=3kHz/heatflux_no_noise/e150_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp_af1ea408/wav_eval/wav_predictions_no_noise.csv)
+- [WAV指標](../../Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/202609/17/selected_log_architecture__days_matched/maxfreq=3kHz/heatflux_no_noise/e150_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp_af1ea408/wav_eval/wav_metrics_no_noise.csv)
+- [WAV予測](../../Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/202609/17/selected_log_architecture__days_matched/maxfreq=3kHz/heatflux_no_noise/e150_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp_af1ea408/wav_eval/wav_predictions_no_noise.csv)
 
 ## 5. 誤差の構造
 
@@ -153,7 +153,7 @@ WAV中央値では、RF/AlexNetはONB前誤警報がない代わりに、最初�
 
 RF、AlexNet、shrinkageのWAV連続ROC-AUCは1.0である。これは、ONB前後の順位分離はできている一方、予測熱流束へ物理閾値を直接適用したときの校正がずれていることを示す。R²、ROC-AUC、固定閾値での見逃し・誤警報は別々に判断する必要がある。
 
-根拠: [ONB遷移評価](../../Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/20260917/selected_log_architecture__days_matched/maxfreq=3kHz/heatflux_no_noise/e150_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp_af1ea408/wav_eval/onb_transition_summary_no_noise.csv)
+根拠: [ONB遷移評価](../../Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/regression_result/npy/ensemble/202609/17/selected_log_architecture__days_matched/maxfreq=3kHz/heatflux_no_noise/e150_active_rf-ctf-alex_ed198_rf-cnntf_v2__cmp_af1ea408/wav_eval/onb_transition_summary_no_noise.csv)
 
 ## 7. 周波数・説明性との対応
 
