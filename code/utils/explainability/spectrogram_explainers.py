@@ -18,6 +18,17 @@ PLOT_COLORBAR_LABEL_FONTSIZE = 20
 PLOT_COLORBAR_TICK_FONTSIZE = 16
 
 
+class BatchNormalizationEndpointMismatchError(RuntimeError):
+    """Signal that the temporary non-fused BN kernel changed predictions."""
+
+    def __init__(self, max_abs_difference):
+        self.max_abs_difference = float(max_abs_difference)
+        super().__init__(
+            "Non-fused BatchNormalization changed IG endpoint predictions; "
+            f"maximum absolute difference={self.max_abs_difference:.6g}."
+        )
+
+
 def _canonical_tf_device(device):
     """Return an explicit TensorFlow device or ``None`` for normal placement."""
     if device is None:
@@ -364,9 +375,8 @@ def integrated_gradients(model, sample, baseline=None, steps=64, *,
         if not np.allclose(
                 attribution_endpoints, reference_endpoints,
                 rtol=1e-5, atol=1e-6):
-            raise RuntimeError(
-                "Non-fused BatchNormalization changed IG endpoint predictions; "
-                f"maximum absolute difference={endpoint_kernel_max_abs_difference:.6g}."
+            raise BatchNormalizationEndpointMismatchError(
+                endpoint_kernel_max_abs_difference
             )
         while True:
             if ratio > 1:

@@ -8,6 +8,7 @@ import tensorflow as tf
 from sklearn.metrics import f1_score, r2_score, recall_score
 
 from utils.explainability.spectrogram_explainers import (
+    BatchNormalizationEndpointMismatchError,
     deletion_curve,
     ensure_dir,
     grad_cam_regression,
@@ -650,22 +651,36 @@ def _keras_attribution(method, model, sample, scaler, config, return_diagnostics
         }
         cpu_fallback_used = False
         gpu_error = None
+        endpoint_mismatch_error = None
+        cpu_fallback_reason = None
         try:
             values_scaled, diagnostics = ig_function(
                 model, sample, **ig_kwargs
             )
-        except tf.errors.UnimplementedError as exc:
+        except (tf.errors.UnimplementedError,
+                BatchNormalizationEndpointMismatchError) as exc:
             if not config.get("ig_cpu_fallback", True):
                 raise
-            gpu_error = repr(exc)
+            if isinstance(exc, tf.errors.UnimplementedError):
+                gpu_error = repr(exc)
+                cpu_fallback_reason = "gpu_unimplemented_error"
+            else:
+                endpoint_mismatch_error = repr(exc)
+                cpu_fallback_reason = "nonfused_batchnorm_endpoint_mismatch"
             cpu_fallback_used = True
+            # Keep the fitted model and its original fused setting untouched.
+            # CPU provides the deterministic fused-BN gradient unavailable on
+            # this TensorFlow/CUDA combination and avoids accepting even a
+            # small prediction drift from the temporary non-fused GPU kernel.
             ig_kwargs["device"] = "/CPU:0"
             ig_kwargs["nonfused_batchnorm"] = False
             values_scaled, diagnostics = ig_function(
                 model, sample, **ig_kwargs
             )
         diagnostics["cpu_fallback_used"] = cpu_fallback_used
+        diagnostics["cpu_fallback_reason"] = cpu_fallback_reason
         diagnostics["gpu_unimplemented_error"] = gpu_error
+        diagnostics["nonfused_endpoint_mismatch_error"] = endpoint_mismatch_error
         inverse_scale = _inverse_output_scale(scaler)
         diagnostics['inverse_output_scale'] = inverse_scale
         diagnostics['completeness_error_heat_flux'] = diagnostics['completeness_error_model_units']*inverse_scale

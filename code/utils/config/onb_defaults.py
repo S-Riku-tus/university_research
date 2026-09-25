@@ -115,7 +115,9 @@ DEFAULT_EXPLAINABILITY_CONFIG = {
     # TensorFlow 2.9 lacks a deterministic GPU gradient for fused inference
     # BatchNormalization. IG temporarily uses the mathematically equivalent
     # non-fused kernel and restores the fitted model immediately afterwards.
-    # CPU is retained as a last-resort fallback for other unsupported kernels.
+    # CPU is retained as a last-resort fallback for unsupported kernels or
+    # when the non-fused GPU kernel changes endpoint predictions beyond the
+    # strict equivalence tolerance.
     "ig_device": "auto",
     "ig_nonfused_batchnorm": True,
     "ig_cpu_fallback": True,

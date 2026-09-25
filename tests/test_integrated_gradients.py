@@ -4,6 +4,7 @@ import sys
 import tempfile
 import json
 import unittest
+from unittest import mock
 from pathlib import Path
 import numpy as np
 import tensorflow as tf
@@ -12,9 +13,11 @@ from sklearn.preprocessing import MinMaxScaler
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]/'code'))
 from utils.models.regression.base_regression import LogPowerCompression
 from utils.explainability.spectrogram_explainers import (
+    BatchNormalizationEndpointMismatchError,
     integrated_gradients,
     integrated_gradients_log_power,
 )
+import utils.explainability.training_integration as training_integration
 from utils.explainability.training_integration import (
     _keras_attribution, _write_attribution_outputs, SUMMARY_HEADER,
     explain_keras_model,
@@ -63,6 +66,48 @@ class IntegratedGradientsTest(unittest.TestCase):
             diagnostics["endpoint_kernel_max_abs_difference"], 1e-6
         )
         self.assertTrue(np.isfinite(result).all())
+
+    def test_endpoint_mismatch_retries_original_batchnorm_on_cpu(self):
+        model = log_model([1, -2])
+        sample = np.array([1e-7, 1e-5], np.float32).reshape(1, 2, 1)
+        scaler = MinMaxScaler().fit(np.array([[100000.], [900000.]]))
+        calls = []
+
+        def fake_ig(_model, _sample, **kwargs):
+            calls.append(kwargs.copy())
+            if len(calls) == 1:
+                raise BatchNormalizationEndpointMismatchError(1.3113e-5)
+            return np.zeros(_sample.shape[:-1]), {
+                "completeness_error_model_units": 0.0,
+                "nonfused_batchnorm_for_gradients": False,
+            }
+
+        config = {
+            "ig_path_space": "raw_power",
+            "ig_device": "auto",
+            "ig_nonfused_batchnorm": True,
+            "ig_cpu_fallback": True,
+        }
+        with mock.patch.object(
+                training_integration, "integrated_gradients",
+                side_effect=fake_ig):
+            _, _, _, diagnostics = _keras_attribution(
+                "integrated_gradients", model, sample, scaler, config, True
+            )
+
+        self.assertEqual(len(calls), 2)
+        self.assertTrue(calls[0]["nonfused_batchnorm"])
+        self.assertEqual(calls[1]["device"], "/CPU:0")
+        self.assertFalse(calls[1]["nonfused_batchnorm"])
+        self.assertTrue(diagnostics["cpu_fallback_used"])
+        self.assertEqual(
+            diagnostics["cpu_fallback_reason"],
+            "nonfused_batchnorm_endpoint_mismatch",
+        )
+        self.assertIn(
+            "1.3113e-05", diagnostics["nonfused_endpoint_mismatch_error"]
+        )
+        self.assertIsNone(diagnostics["gpu_unimplemented_error"])
 
     def test_log_dynamic_range_matches_each_analytic_signed_contribution(self):
         x=np.array([1e-12,1e-9,1e-6,1e-4],np.float32).reshape(1,4,1)
