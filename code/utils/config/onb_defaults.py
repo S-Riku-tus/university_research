@@ -73,10 +73,11 @@ def default_output_config(now=None):
     save_date = now.strftime("%Y%m%d")
     return {
         "save_date": save_date,
-        # Group every analysis performed on the same day without mixing the
-        # date into the study name. The final onb_* name is derived later.
+        # Group runs by month and then day so the ensemble root does not fill
+        # with one YYYYMMDD directory per execution day. The final onb_* name
+        # is derived later.
         # 実行条件を表す短い系列名はscoped_result_job()でonb_*として付ける。
-        "result_date_dir": f"{save_date}/onb",
+        "result_date_dir": f"{save_date[:6]}/{save_date[6:]}/onb",
         "save_fold_predictions": True,
         "save_tuning_summary": True,
         # Final fitted state is large (especially AlexNet), so historical runs
@@ -111,6 +112,13 @@ DEFAULT_EXPLAINABILITY_CONFIG = {
     "ig_steps": 64,
     "ig_max_steps": 4096,
     "ig_batch_size": 8,
+    # TensorFlow 2.9 lacks a deterministic GPU gradient for fused inference
+    # BatchNormalization. IG temporarily uses the mathematically equivalent
+    # non-fused kernel and restores the fitted model immediately afterwards.
+    # CPU is retained as a last-resort fallback for other unsupported kernels.
+    "ig_device": "auto",
+    "ig_nonfused_batchnorm": True,
+    "ig_cpu_fallback": True,
     # The neural models learn after LogPowerCompression.  Integrating in that
     # feature space avoids the near-zero raw-power singularity while retaining
     # an input-resolution attribution map.  raw_power remains available for

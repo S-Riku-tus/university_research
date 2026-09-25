@@ -44,7 +44,7 @@
     },
     "output": {
       "save_date": "20260924",
-      "result_date_dir": "20260924/matched_noise_specific_weights",
+      "result_date_dir": "202609/24/matched_noise_specific_weights",
       "save_fold_predictions": true,
       "save_tuning_summary": true,
       "save_fitted_artifacts": false,

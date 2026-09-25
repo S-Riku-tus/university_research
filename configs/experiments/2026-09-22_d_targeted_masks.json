@@ -45,7 +45,7 @@
     },
     "output": {
       "save_date": "20260922",
-      "result_date_dir": "20260922/d_targeted_masks",
+      "result_date_dir": "202609/22/d_targeted_masks",
       "save_fold_predictions": true,
       "save_tuning_summary": true,
       "noise_trend_plots": {"enabled": false}

@@ -4,6 +4,7 @@ import os
 
 import matplotlib.pyplot as plt
 import numpy as np
+import tensorflow as tf
 from sklearn.metrics import f1_score, r2_score, recall_score
 
 from utils.explainability.spectrogram_explainers import (
@@ -633,16 +634,38 @@ def _keras_attribution(method, model, sample, scaler, config, return_diagnostics
             raise ValueError(
                 "explainability.ig_path_space must be 'log_power' or 'raw_power'."
             )
-        values_scaled, diagnostics = ig_function(
-            model, sample, baseline=baseline,
-            steps=int(config.get("ig_steps", 64)),
-            max_steps=int(config.get("ig_max_steps", 4096)),
-            batch_size=int(config.get("ig_batch_size", 8)),
-            rtol=float(config.get("ig_rtol", 1e-3)),
-            atol=float(config.get("ig_atol", 1e-6)),
-            map_rtol=float(config.get("ig_map_rtol", 1e-2)),
-            return_diagnostics=True,
-        )
+        ig_kwargs = {
+            "baseline": baseline,
+            "steps": int(config.get("ig_steps", 64)),
+            "max_steps": int(config.get("ig_max_steps", 4096)),
+            "batch_size": int(config.get("ig_batch_size", 8)),
+            "rtol": float(config.get("ig_rtol", 1e-3)),
+            "atol": float(config.get("ig_atol", 1e-6)),
+            "map_rtol": float(config.get("ig_map_rtol", 1e-2)),
+            "return_diagnostics": True,
+            "device": config.get("ig_device", "auto"),
+            "nonfused_batchnorm": bool(
+                config.get("ig_nonfused_batchnorm", True)
+            ),
+        }
+        cpu_fallback_used = False
+        gpu_error = None
+        try:
+            values_scaled, diagnostics = ig_function(
+                model, sample, **ig_kwargs
+            )
+        except tf.errors.UnimplementedError as exc:
+            if not config.get("ig_cpu_fallback", True):
+                raise
+            gpu_error = repr(exc)
+            cpu_fallback_used = True
+            ig_kwargs["device"] = "/CPU:0"
+            ig_kwargs["nonfused_batchnorm"] = False
+            values_scaled, diagnostics = ig_function(
+                model, sample, **ig_kwargs
+            )
+        diagnostics["cpu_fallback_used"] = cpu_fallback_used
+        diagnostics["gpu_unimplemented_error"] = gpu_error
         inverse_scale = _inverse_output_scale(scaler)
         diagnostics['inverse_output_scale'] = inverse_scale
         diagnostics['completeness_error_heat_flux'] = diagnostics['completeness_error_model_units']*inverse_scale
@@ -1421,6 +1444,9 @@ def maybe_explain_trained_model(spec, model, scaler, x_val, y_val, pred, thresho
             )],
             ["ig_max_steps", config.get("ig_max_steps", 4096)],
             ["ig_batch_size", config.get("ig_batch_size", 8)],
+            ["ig_device", config.get("ig_device", "auto")],
+            ["ig_nonfused_batchnorm", config.get("ig_nonfused_batchnorm", True)],
+            ["ig_cpu_fallback", config.get("ig_cpu_fallback", True)],
             ["ig_rtol", config.get("ig_rtol", 1e-3)],
             ["ig_atol_model_units", config.get("ig_atol", 1e-6)],
             ["ig_map_rtol", config.get("ig_map_rtol", 1e-2)],

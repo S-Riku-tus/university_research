@@ -43,7 +43,7 @@
     },
     "output": {
       "save_date": "20260923",
-      "result_date_dir": "20260923/step4_noise_curve_smoke",
+      "result_date_dir": "202609/23/step4_noise_curve_smoke",
       "save_fold_predictions": true,
       "save_tuning_summary": true,
       "save_fitted_artifacts": true,

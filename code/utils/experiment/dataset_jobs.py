@@ -1,6 +1,7 @@
 from pathlib import Path
 
 from utils.experiment.run_helpers import snr_value_from_noise_dir
+from utils.experiment.result_paths import normalize_result_date_dir
 
 
 def chunk_tag(chunk_seconds):
@@ -52,6 +53,7 @@ def build_dataset_jobs(
     jobs = []
     missing = []
     root = Path(experiment_root)
+    result_date_dir = normalize_result_date_dir(result_date_dir)
     policy = learning_policy or {}
     explicit_days = policy.get("split_mode") == "explicit_days"
     test_days = set(policy["test_experiments"]) if explicit_days else set(experiment_names)

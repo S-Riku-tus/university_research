@@ -21,7 +21,12 @@ from utils.experiment.learning_policy import (
     normalize_learning_policy, outer_splits, policy_result_date_dir,
 )
 from utils.experiment.learning_runner import run_learning_experiments
-from utils.experiment.result_paths import existing_result_run_path, result_run_path, scoped_result_job
+from utils.experiment.result_paths import (
+    existing_result_run_path,
+    normalize_result_date_dir,
+    result_run_path,
+    scoped_result_job,
+)
 from utils.experiment.result_paths import MAX_STUDY_DIR_LENGTH, result_scope_dir_name
 from utils.experiment.run_helpers import is_completed_run, run_config_digest, run_dir_name
 from utils.plotting.noise_trend_plots import collect_noise_trend_rows
@@ -214,8 +219,20 @@ class LearningPolicyTest(unittest.TestCase):
     def test_nested_analysis_date_path_and_config_scoped_run_name(self):
         policy = {"split_mode": "explicit_days", "training_noise": "matched"}
         self.assertEqual(
-            policy_result_date_dir("20260916/selected_log_architecture", policy),
-            "20260916/selected_log_architecture__days_matched",
+            normalize_result_date_dir("20260916/selected_log_architecture"),
+            "202609/16/selected_log_architecture",
+        )
+        self.assertEqual(
+            normalize_result_date_dir("20260626_cf3m"),
+            "202606/26/cf3m",
+        )
+        self.assertEqual(
+            normalize_result_date_dir("202609/16/selected_log_architecture"),
+            "202609/16/selected_log_architecture",
+        )
+        self.assertEqual(
+            policy_result_date_dir("202609/16/selected_log_architecture", policy),
+            "202609/16/selected_log_architecture__days_matched",
         )
         first_hash = run_config_digest(
             {"models": {}, "output": {}, "learning_policy": {**policy, "train_experiments": ["day-a"]}},

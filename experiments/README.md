@@ -6,6 +6,7 @@
 
 | 記録 | 範囲・用途 |
 |---|---|
+| [9/25 ensemble保存日付階層整理](2026-09-25_ensemble_date_layout/README.md) | 保存先を`YYYYMM/DD/条件`へ統一し、日付付き既存結果を衝突検査・件数照合付きで移行 |
 | [9/25 performance_kfold主方式・固定epoch条件](2026-09-25_matched_performance_kfold/README.md) | 全18 WAVの5-fold OOF、200 epoch固定、simple equal対照、実行コマンドと監査項目。条件作成済み・未実行 |
 | [9/24–25 matchedノイズ別重み本比較](2026-09-24_matched_noise_specific_weights/README.md) | noise別再fitの21条件監査、clean-only対応比較、領域別性能、innerの単一holdout制約、後継performance K-fold比較の根拠 |
 | [9/24 clean固定モデル3 seed本比較](2026-09-24_clean_train_noise_inference/README.md) | cleanモデル・重みを7 SNRへ固定転送した結果、谷の消失、noise下の残差相関とONB前過大予測 |

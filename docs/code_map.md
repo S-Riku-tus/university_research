@@ -34,7 +34,7 @@
 
 各runは`fold_pred/`の1秒chunk予測、`explainability/`、損失/散布図/通常指標、manifestを持つ。新実行経路は`split_manifest.json`と完了時の`completed.json`も保存する。
 
-主実行の保存先は各実験日の`regression_result/npy/<モデル群>/<実行日>/onb_<主要条件>_[p番号_]<HHMMSS>/<周波数>/<ノイズ>/`。日付直下は最大52文字で、学習・評価日、WAV/chunk内部検証、学習ノイズ、音響選別閾値、epochを短く表示し、末尾6桁は日付を含まない実行時刻とする。1起動内で複数parameter setを比較するときだけ`p01`等を付ける。実際の全条件と設定hashは`run_manifest.json`に記録する。`tuning_summary.csv`は条件フォルダの直下、ノイズ比較図はその下の`noise_trends/<統合方式>/<周波数>/`に置く。`RUN_ID`を明示して同じ条件で再実行した場合は同じフォルダを参照して完了判定する。2026-09-17に既存19系列も同じ日付／条件名階層へ移行済み。
+主実行の保存先は各実験日の`regression_result/npy/<モデル群>/<YYYYMM>/<DD>/onb_<主要条件>_[p番号_]<HHMMSS>/<周波数>/<ノイズ>/`。解析年月と日を分け、月単位で結果を探せるようにする。日付直下は最大52文字で、学習・評価日、WAV/chunk内部検証、学習ノイズ、音響選別閾値、epochを短く表示し、末尾6桁は日付を含まない実行時刻とする。1起動内で複数parameter setを比較するときだけ`p01`等を付ける。実際の全条件と設定hashは`run_manifest.json`に記録する。`tuning_summary.csv`は条件フォルダの直下、ノイズ比較図はその下の`noise_trends/<統合方式>/<周波数>/`に置く。`RUN_ID`を明示して同じ条件で再実行した場合は同じフォルダを参照して完了判定する。2026-09-25に日付付き既存系列を`YYYYMM/DD`へ移行した。日付のない旧系列は元の場所に残す。
 
 通常runはモデル本体を永続保存しない。保存済み予測からの後処理と、モデルを必要とするIG再計算・新マスク推論は区別する。clean_onlyの一部ノイズだけ未完了の場合は、同じ学習モデルを揃えるため関連ノイズ一式を再計算する仕様。
 
@@ -44,6 +44,7 @@
 - [export_waterflow_dataset_snapshot.py](../code/export_waterflow_dataset_snapshot.py): 現行データの件数・manifest・ノイズ条件を監査。
 - [9/14結果の数値採取スクリプト](../experiments/2026-09-15_research_status_snapshot/collect_snapshot.py): 9/14の保存結果の検算・固定と9月のrun一覧。
 - [reorganize_onb_results.py](../code/reorganize_onb_results.py): 指定runの保存階層移行。読取だけの確認と`--apply`による移動を区別する。
+- [migrate_ensemble_date_layout.py](../code/migrate_ensemble_date_layout.py): `ensemble`直下の日付付き既存系列を`YYYYMM/DD`へ移す。既定はdry-runで、衝突検査後に`--apply`を指定する。
 - [run_controlled_noise_curve_diagnostics.py](../code/run_controlled_noise_curve_diagnostics.py): 固定ノイズの診断。過去資料の別診断スクリプト名は現在存在しないものもある。
 
 - [9/15・2帯域解析スクリプト](../experiments/2026-09-15_onb_frequency_comparison/analysis.md): 完了runの抽出、WAV/chunk指標の検算、卒論比較、54区間の帯域SNR。学習なしの後処理。

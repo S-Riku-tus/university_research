@@ -34,6 +34,8 @@
 | 12/24までの後期タスク | [後期計画・WBS](research_plan/2026-09-16_second_semester_plan.md) | 大項目・中項目・小項目、時期、終了条件、判断点 |
 | 修論の目次と論理 | [7章の構成案](research_plan/2026-09-16_master_thesis_outline.md) | 研究課題→章→必要な根拠→執筆時期を対応 |
 | IGの不一致とコード修正を確認する | [9/16 IG数値修正](../experiments/2026-09-16_ig_numerical_fix/README.md) | 数値計算の修正・診断と、旧学習済みモデルの再計算を区別する |
+| 決定論GPUでIGがBatchNorm逆伝播により停止した修正を確認する | [9/25 IG決定論GPU修正](../experiments/2026-09-25_ig_deterministic_gpu_fix/README.md) | IG時だけ非fused BNを使用して復元し、未実装時はCPUへfallback。学習・通常予測・IG数式は不変 |
+| ensemble結果の年月・日階層と既存結果の移行を確認する | [9/25 保存日付階層整理](../experiments/2026-09-25_ensemble_date_layout/README.md) | `YYYYMM/DD/条件`への正規化、衝突防止、既存結果の移動対応表 |
 | 本人指定の9/14結果から学部との差を調べる | [9/14限定の原因分析](../experiments/2026-09-16_sep14_cause_analysis/analysis.md) | 9/16追加。6条件の共通残差、重み、統合誤差分解、端点依存、説明性。9/15の7条件と混ぜない |
 | 年間計画・理想と現実的な成果 | [2026年度計画](research_plan/2026_annual_plan.md) | 締切・実験可能期間・研究判断が変わったとき |
 | 長期の研究目的・用語 | [研究コンテキスト](research_context.md) | 目的・定義が変わったとき。毎runの成績は置かない |

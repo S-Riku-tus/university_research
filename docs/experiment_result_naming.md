@@ -1,12 +1,12 @@
 # 結果の保存階層と識別
 
-更新日: 2026-09-18。実装の正本は [result_paths.py](../code/utils/experiment/result_paths.py) と [run_helpers.py](../code/utils/experiment/run_helpers.py)。
+更新日: 2026-09-25。実装の正本は [result_paths.py](../code/utils/experiment/result_paths.py) と [run_helpers.py](../code/utils/experiment/run_helpers.py)。
 
 ## 現行の保存階層
 
 ```text
 Pool_boiling/Subcooling_20_degrees/0.3/<収録実験日>/
-  regression_result/npy/ensemble/<解析実行日>/
+  regression_result/npy/ensemble/<解析年月YYYYMM>/<日DD>/
     onb_<主要条件>_[parameter番号_]<HHMMSS>/
       <周波数上限>/
         <ノイズ条件>/
@@ -20,7 +20,7 @@ Pool_boiling/Subcooling_20_degrees/0.3/<収録実験日>/
       ensemble_presentation_summary.csv
 ```
 
-解析日と収録日を区別する。日付直下の名前は最大52文字で、典型例は次のとおり。
+解析日と収録日を区別する。解析日は、日付フォルダが増えすぎないよう月と日に分ける。例えば2026年9月24日の結果は`202609/24/`へ保存する。日付直下の名前は最大52文字で、典型例は次のとおり。
 
 ```text
 onb_xd-t0611+0709-v0618_iw3-nm_s1e-9_e300_093015
@@ -37,7 +37,7 @@ onb_xd-t0611+0709-v0618_iw3-nm_s1e-9_e300_093015
 
 フォルダ名は比較時に重要な条件を優先して示す。モデル詳細、seed、全データ名、全ハイパーパラメータと設定hashは、長文化を避けるため`run_manifest.json`で確定する。同一条件の別起動は秒単位の実行時刻で分離する。
 
-旧runにはノイズ/周波数の順の階層や、完了印・分割manifestのない世代がある。[9/14の移行記録](research_plan/2026-09-14_result_layout_and_generalization.md)を参照し、古い階層を欠落と即断しない。
+`YYYYMMDD/`および`YYYYMMDD_系列名/`だった既存の解析日フォルダは、2026-09-25に`YYYYMM/DD/`および`YYYYMM/DD/系列名/`へ移行した。日付情報のない古い系列は推測で分類せず元の場所に残す。旧runにはノイズ/周波数の順の階層や、完了印・分割manifestのない世代もある。[9/14の移行記録](research_plan/2026-09-14_result_layout_and_generalization.md)も参照し、古い階層を欠落と即断しない。
 
 ## run名と実行条件
 

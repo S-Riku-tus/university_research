@@ -35,7 +35,7 @@
     },
     "output": {
       "save_date": "20260920",
-      "result_date_dir": "20260920/c_selection",
+      "result_date_dir": "202609/20/c_selection",
       "save_fold_predictions": true,
       "save_tuning_summary": true,
       "noise_trend_plots": {"enabled": false}

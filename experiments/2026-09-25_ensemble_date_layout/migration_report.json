@@ -1,0 +1,669 @@
+{
+  "search_root": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling",
+  "applied": true,
+  "status": "complete",
+  "move_count": 55,
+  "moves": [
+    {
+      "from": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260706_fixed_ensemble_full_grid",
+      "to": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\202607\\06\\fixed_ensemble_full_grid",
+      "before": {
+        "files": 757,
+        "bytes": 35668832
+      },
+      "after": {
+        "files": 757,
+        "bytes": 35668832
+      }
+    },
+    {
+      "from": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260713_fixed_ensemble",
+      "to": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\202607\\13\\fixed_ensemble",
+      "before": {
+        "files": 127,
+        "bytes": 5984818
+      },
+      "after": {
+        "files": 127,
+        "bytes": 5984818
+      }
+    },
+    {
+      "from": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260717_fixed_ensemble",
+      "to": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\202607\\17\\fixed_ensemble",
+      "before": {
+        "files": 561,
+        "bytes": 27985627
+      },
+      "after": {
+        "files": 561,
+        "bytes": 27985627
+      }
+    },
+    {
+      "from": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260720_ensemble_strategy_comparison",
+      "to": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\202607\\20\\ensemble_strategy_comparison",
+      "before": {
+        "files": 688,
+        "bytes": 51306640
+      },
+      "after": {
+        "files": 688,
+        "bytes": 51306640
+      }
+    },
+    {
+      "from": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260723_ensemble_strategy_comparison",
+      "to": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\202607\\23\\ensemble_strategy_comparison",
+      "before": {
+        "files": 656,
+        "bytes": 49297530
+      },
+      "after": {
+        "files": 656,
+        "bytes": 49297530
+      }
+    },
+    {
+      "from": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260825_ensemble_strategy_comparison",
+      "to": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\202608\\25\\ensemble_strategy_comparison",
+      "before": {
+        "files": 886,
+        "bytes": 59988421
+      },
+      "after": {
+        "files": 886,
+        "bytes": 59988421
+      }
+    },
+    {
+      "from": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260826_ensemble_strategy_comparison",
+      "to": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\202608\\26\\ensemble_strategy_comparison",
+      "before": {
+        "files": 8470,
+        "bytes": 624475945
+      },
+      "after": {
+        "files": 8470,
+        "bytes": 624475945
+      }
+    },
+    {
+      "from": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260831",
+      "to": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\202608\\31",
+      "before": {
+        "files": 24607,
+        "bytes": 1953727536
+      },
+      "after": {
+        "files": 24607,
+        "bytes": 1953727536
+      }
+    },
+    {
+      "from": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260903",
+      "to": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\202609\\03",
+      "before": {
+        "files": 29962,
+        "bytes": 2396372503
+      },
+      "after": {
+        "files": 29962,
+        "bytes": 2396372503
+      }
+    },
+    {
+      "from": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260908",
+      "to": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\202609\\08",
+      "before": {
+        "files": 858,
+        "bytes": 69354226
+      },
+      "after": {
+        "files": 858,
+        "bytes": 69354226
+      }
+    },
+    {
+      "from": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260914",
+      "to": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\202609\\14",
+      "before": {
+        "files": 5247,
+        "bytes": 417755557
+      },
+      "after": {
+        "files": 5247,
+        "bytes": 417755557
+      }
+    },
+    {
+      "from": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260915",
+      "to": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\202609\\15",
+      "before": {
+        "files": 42296,
+        "bytes": 3350815222
+      },
+      "after": {
+        "files": 42296,
+        "bytes": 3350815222
+      }
+    },
+    {
+      "from": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260917",
+      "to": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\202609\\17",
+      "before": {
+        "files": 323,
+        "bytes": 33344352
+      },
+      "after": {
+        "files": 323,
+        "bytes": 33344352
+      }
+    },
+    {
+      "from": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\20260918",
+      "to": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\202609\\18",
+      "before": {
+        "files": 9482,
+        "bytes": 1111632078
+      },
+      "after": {
+        "files": 9482,
+        "bytes": 1111632078
+      }
+    },
+    {
+      "from": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\ensemble\\20260622",
+      "to": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\ensemble\\202606\\22",
+      "before": {
+        "files": 2,
+        "bytes": 40121
+      },
+      "after": {
+        "files": 2,
+        "bytes": 40121
+      }
+    },
+    {
+      "from": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\ensemble\\20260626",
+      "to": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\ensemble\\202606\\26",
+      "before": {
+        "files": 649,
+        "bytes": 17222394
+      },
+      "after": {
+        "files": 649,
+        "bytes": 17222394
+      }
+    },
+    {
+      "from": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\ensemble\\20260626_cf3m",
+      "to": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\ensemble\\202606\\26\\cf3m",
+      "before": {
+        "files": 589,
+        "bytes": 17483110
+      },
+      "after": {
+        "files": 589,
+        "bytes": 17483110
+      }
+    },
+    {
+      "from": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\ensemble\\20260706_fixed_ensemble_full_grid",
+      "to": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\ensemble\\202607\\06\\fixed_ensemble_full_grid",
+      "before": {
+        "files": 757,
+        "bytes": 36121462
+      },
+      "after": {
+        "files": 757,
+        "bytes": 36121462
+      }
+    },
+    {
+      "from": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\ensemble\\20260713_fixed_ensemble",
+      "to": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\ensemble\\202607\\13\\fixed_ensemble",
+      "before": {
+        "files": 127,
+        "bytes": 6037004
+      },
+      "after": {
+        "files": 127,
+        "bytes": 6037004
+      }
+    },
+    {
+      "from": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\ensemble\\20260715_fixed_ensemble",
+      "to": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\ensemble\\202607\\15\\fixed_ensemble",
+      "before": {
+        "files": 5240,
+        "bytes": 213018118
+      },
+      "after": {
+        "files": 5240,
+        "bytes": 213018118
+      }
+    },
+    {
+      "from": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\ensemble\\20260717_fixed_ensemble",
+      "to": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\ensemble\\202607\\17\\fixed_ensemble",
+      "before": {
+        "files": 561,
+        "bytes": 27828875
+      },
+      "after": {
+        "files": 561,
+        "bytes": 27828875
+      }
+    },
+    {
+      "from": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\ensemble\\20260720_ensemble_strategy_comparison",
+      "to": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\ensemble\\202607\\20\\ensemble_strategy_comparison",
+      "before": {
+        "files": 688,
+        "bytes": 51129916
+      },
+      "after": {
+        "files": 688,
+        "bytes": 51129916
+      }
+    },
+    {
+      "from": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\ensemble\\20260723_ensemble_strategy_comparison",
+      "to": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\ensemble\\202607\\23\\ensemble_strategy_comparison",
+      "before": {
+        "files": 656,
+        "bytes": 48764364
+      },
+      "after": {
+        "files": 656,
+        "bytes": 48764364
+      }
+    },
+    {
+      "from": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\ensemble\\20260825_ensemble_strategy_comparison",
+      "to": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\ensemble\\202608\\25\\ensemble_strategy_comparison",
+      "before": {
+        "files": 886,
+        "bytes": 59379829
+      },
+      "after": {
+        "files": 886,
+        "bytes": 59379829
+      }
+    },
+    {
+      "from": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\ensemble\\20260826_ensemble_strategy_comparison",
+      "to": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\ensemble\\202608\\26\\ensemble_strategy_comparison",
+      "before": {
+        "files": 8470,
+        "bytes": 619239250
+      },
+      "after": {
+        "files": 8470,
+        "bytes": 619239250
+      }
+    },
+    {
+      "from": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\ensemble\\20260828_ensemble_strategy_comparison",
+      "to": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\ensemble\\202608\\28\\ensemble_strategy_comparison",
+      "before": {
+        "files": 4366,
+        "bytes": 339898274
+      },
+      "after": {
+        "files": 4366,
+        "bytes": 339898274
+      }
+    },
+    {
+      "from": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\ensemble\\20260831",
+      "to": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\ensemble\\202608\\31",
+      "before": {
+        "files": 24607,
+        "bytes": 1950125482
+      },
+      "after": {
+        "files": 24607,
+        "bytes": 1950125482
+      }
+    },
+    {
+      "from": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\ensemble\\20260901",
+      "to": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\ensemble\\202609\\01",
+      "before": {
+        "files": 8376,
+        "bytes": 674629892
+      },
+      "after": {
+        "files": 8376,
+        "bytes": 674629892
+      }
+    },
+    {
+      "from": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\ensemble\\20260902",
+      "to": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\ensemble\\202609\\02",
+      "before": {
+        "files": 29752,
+        "bytes": 2375509153
+      },
+      "after": {
+        "files": 29752,
+        "bytes": 2375509153
+      }
+    },
+    {
+      "from": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\ensemble\\20260903",
+      "to": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\ensemble\\202609\\03",
+      "before": {
+        "files": 29962,
+        "bytes": 2387901600
+      },
+      "after": {
+        "files": 29962,
+        "bytes": 2387901600
+      }
+    },
+    {
+      "from": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\ensemble\\20260908",
+      "to": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\ensemble\\202609\\08",
+      "before": {
+        "files": 858,
+        "bytes": 69089938
+      },
+      "after": {
+        "files": 858,
+        "bytes": 69089938
+      }
+    },
+    {
+      "from": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\ensemble\\20260915",
+      "to": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\ensemble\\202609\\15",
+      "before": {
+        "files": 30212,
+        "bytes": 2387947553
+      },
+      "after": {
+        "files": 30212,
+        "bytes": 2387947553
+      }
+    },
+    {
+      "from": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\ensemble\\20260916",
+      "to": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\ensemble\\202609\\16",
+      "before": {
+        "files": 670,
+        "bytes": 69014425
+      },
+      "after": {
+        "files": 670,
+        "bytes": 69014425
+      }
+    },
+    {
+      "from": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\ensemble\\20260917",
+      "to": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\ensemble\\202609\\17",
+      "before": {
+        "files": 13199,
+        "bytes": 1360187436
+      },
+      "after": {
+        "files": 13199,
+        "bytes": 1360187436
+      }
+    },
+    {
+      "from": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\ensemble\\20260919",
+      "to": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\ensemble\\202609\\19",
+      "before": {
+        "files": 228,
+        "bytes": 13891935
+      },
+      "after": {
+        "files": 228,
+        "bytes": 13891935
+      }
+    },
+    {
+      "from": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\ensemble\\20260920",
+      "to": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\ensemble\\202609\\20",
+      "before": {
+        "files": 144,
+        "bytes": 7594064
+      },
+      "after": {
+        "files": 144,
+        "bytes": 7594064
+      }
+    },
+    {
+      "from": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\ensemble\\20260922",
+      "to": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\ensemble\\202609\\22",
+      "before": {
+        "files": 87,
+        "bytes": 8235749
+      },
+      "after": {
+        "files": 87,
+        "bytes": 8235749
+      }
+    },
+    {
+      "from": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\ensemble\\20260923",
+      "to": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\ensemble\\202609\\23",
+      "before": {
+        "files": 640,
+        "bytes": 2323387097
+      },
+      "after": {
+        "files": 640,
+        "bytes": 2323387097
+      }
+    },
+    {
+      "from": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\ensemble\\20260924",
+      "to": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\ensemble\\202609\\24",
+      "before": {
+        "files": 1176,
+        "bytes": 733238837
+      },
+      "after": {
+        "files": 1176,
+        "bytes": 733238837
+      }
+    },
+    {
+      "from": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\regression_result\\npy\\ensemble\\20260616",
+      "to": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\regression_result\\npy\\ensemble\\202606\\16",
+      "before": {
+        "files": 578,
+        "bytes": 26695209
+      },
+      "after": {
+        "files": 578,
+        "bytes": 26695209
+      }
+    },
+    {
+      "from": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\regression_result\\npy\\ensemble\\20260617",
+      "to": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\regression_result\\npy\\ensemble\\202606\\17",
+      "before": {
+        "files": 1479,
+        "bytes": 67559778
+      },
+      "after": {
+        "files": 1479,
+        "bytes": 67559778
+      }
+    },
+    {
+      "from": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\regression_result\\npy\\ensemble\\20260618",
+      "to": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\regression_result\\npy\\ensemble\\202606\\18",
+      "before": {
+        "files": 630,
+        "bytes": 29555026
+      },
+      "after": {
+        "files": 630,
+        "bytes": 29555026
+      }
+    },
+    {
+      "from": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\regression_result\\npy\\ensemble\\20260706_fixed_ensemble_full_grid",
+      "to": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\regression_result\\npy\\ensemble\\202607\\06\\fixed_ensemble_full_grid",
+      "before": {
+        "files": 757,
+        "bytes": 35334243
+      },
+      "after": {
+        "files": 757,
+        "bytes": 35334243
+      }
+    },
+    {
+      "from": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\regression_result\\npy\\ensemble\\20260713_fixed_ensemble",
+      "to": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\regression_result\\npy\\ensemble\\202607\\13\\fixed_ensemble",
+      "before": {
+        "files": 127,
+        "bytes": 5926865
+      },
+      "after": {
+        "files": 127,
+        "bytes": 5926865
+      }
+    },
+    {
+      "from": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\regression_result\\npy\\ensemble\\20260717_fixed_ensemble",
+      "to": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\regression_result\\npy\\ensemble\\202607\\17\\fixed_ensemble",
+      "before": {
+        "files": 561,
+        "bytes": 27789693
+      },
+      "after": {
+        "files": 561,
+        "bytes": 27789693
+      }
+    },
+    {
+      "from": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\regression_result\\npy\\ensemble\\20260720_ensemble_strategy_comparison",
+      "to": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\regression_result\\npy\\ensemble\\202607\\20\\ensemble_strategy_comparison",
+      "before": {
+        "files": 688,
+        "bytes": 50839623
+      },
+      "after": {
+        "files": 688,
+        "bytes": 50839623
+      }
+    },
+    {
+      "from": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\regression_result\\npy\\ensemble\\20260723_ensemble_strategy_comparison",
+      "to": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\regression_result\\npy\\ensemble\\202607\\23\\ensemble_strategy_comparison",
+      "before": {
+        "files": 656,
+        "bytes": 48758401
+      },
+      "after": {
+        "files": 656,
+        "bytes": 48758401
+      }
+    },
+    {
+      "from": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\regression_result\\npy\\ensemble\\20260825_ensemble_strategy_comparison",
+      "to": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\regression_result\\npy\\ensemble\\202608\\25\\ensemble_strategy_comparison",
+      "before": {
+        "files": 886,
+        "bytes": 59356999
+      },
+      "after": {
+        "files": 886,
+        "bytes": 59356999
+      }
+    },
+    {
+      "from": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\regression_result\\npy\\ensemble\\20260826_ensemble_strategy_comparison",
+      "to": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\regression_result\\npy\\ensemble\\202608\\26\\ensemble_strategy_comparison",
+      "before": {
+        "files": 8470,
+        "bytes": 611779981
+      },
+      "after": {
+        "files": 8470,
+        "bytes": 611779981
+      }
+    },
+    {
+      "from": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\regression_result\\npy\\ensemble\\20260831",
+      "to": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\regression_result\\npy\\ensemble\\202608\\31",
+      "before": {
+        "files": 24607,
+        "bytes": 1956967201
+      },
+      "after": {
+        "files": 24607,
+        "bytes": 1956967201
+      }
+    },
+    {
+      "from": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\regression_result\\npy\\ensemble\\20260902",
+      "to": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\regression_result\\npy\\ensemble\\202609\\02",
+      "before": {
+        "files": 18252,
+        "bytes": 1484994385
+      },
+      "after": {
+        "files": 18252,
+        "bytes": 1484994385
+      }
+    },
+    {
+      "from": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\regression_result\\npy\\ensemble\\20260903",
+      "to": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\regression_result\\npy\\ensemble\\202609\\03",
+      "before": {
+        "files": 29928,
+        "bytes": 2394026365
+      },
+      "after": {
+        "files": 29928,
+        "bytes": 2394026365
+      }
+    },
+    {
+      "from": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\regression_result\\npy\\ensemble\\20260908",
+      "to": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\regression_result\\npy\\ensemble\\202609\\08",
+      "before": {
+        "files": 858,
+        "bytes": 68059531
+      },
+      "after": {
+        "files": 858,
+        "bytes": 68059531
+      }
+    },
+    {
+      "from": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\regression_result\\npy\\ensemble\\20260915",
+      "to": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\regression_result\\npy\\ensemble\\202609\\15",
+      "before": {
+        "files": 3799,
+        "bytes": 309455396
+      },
+      "after": {
+        "files": 3799,
+        "bytes": 309455396
+      }
+    },
+    {
+      "from": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\regression_result\\npy\\ensemble\\20260919",
+      "to": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\regression_result\\npy\\ensemble\\202609\\19",
+      "before": {
+        "files": 9482,
+        "bytes": 1109630548
+      },
+      "after": {
+        "files": 9482,
+        "bytes": 1109630548
+      }
+    }
+  ],
+  "reference_files_updated": 3498
+}

@@ -33,6 +33,37 @@ def log_model(weights):
 
 
 class IntegratedGradientsTest(unittest.TestCase):
+    def test_nonfused_batchnorm_gradient_restores_model_and_predictions(self):
+        inputs = tf.keras.Input((2, 2, 1))
+        batch_norm = tf.keras.layers.BatchNormalization(fused=True)
+        z = batch_norm(inputs)
+        outputs = tf.keras.layers.Dense(
+            1,
+            use_bias=False,
+            kernel_initializer="ones",
+        )(tf.keras.layers.Flatten()(z))
+        model = tf.keras.Model(inputs, outputs)
+        sample = np.arange(1, 5, dtype=np.float32).reshape(2, 2, 1)
+        before = model(sample[None], training=False).numpy()
+
+        result, diagnostics = integrated_gradients(
+            model,
+            sample,
+            steps=4,
+            max_steps=16,
+            nonfused_batchnorm=True,
+            return_diagnostics=True,
+        )
+
+        after = model(sample[None], training=False).numpy()
+        np.testing.assert_allclose(before, after, rtol=0, atol=0)
+        self.assertTrue(batch_norm.fused)
+        self.assertEqual(diagnostics["nonfused_batchnorm_layer_count"], 1)
+        self.assertLessEqual(
+            diagnostics["endpoint_kernel_max_abs_difference"], 1e-6
+        )
+        self.assertTrue(np.isfinite(result).all())
+
     def test_log_dynamic_range_matches_each_analytic_signed_contribution(self):
         x=np.array([1e-12,1e-9,1e-6,1e-4],np.float32).reshape(1,4,1)
         weights=np.array([1,-2,3,-.5])
@@ -127,6 +158,8 @@ class IntegratedGradientsTest(unittest.TestCase):
         scaler=MinMaxScaler().fit(np.array([[100000.],[900000.]]))
         config={'save_maps':False,'ig_steps':32,'ig_max_steps':256}
         values,signed,units,d=_keras_attribution('integrated_gradients',model,x,scaler,config,True)
+        self.assertFalse(d['cpu_fallback_used'])
+        self.assertTrue(d['nonfused_batchnorm_for_gradients'])
         def predict(z):
             return scaler.inverse_transform(model(z,training=False).numpy()).ravel()
         yp=float(predict(x[None])[0])

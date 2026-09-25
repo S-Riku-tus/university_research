@@ -1,12 +1,41 @@
 """周波数／ノイズの保存階層と、旧階層の結果参照を一元管理する。"""
 
 import re
+from datetime import datetime
 from pathlib import Path
 
 from utils.experiment.run_helpers import path_exists, safe_tag
 
 
 MAX_STUDY_DIR_LENGTH = 52
+
+
+def normalize_result_date_dir(result_date_dir):
+    """解析日を ``YYYYMM/DD`` に分け、既存の相対パス指定も保つ。
+
+    ``YYYYMMDD/study`` と旧来の ``YYYYMMDD_study`` の両方を受け付ける。
+    すでに ``YYYYMM/DD/study`` なら何も変えない。日付で始まらない旧系列名は
+    推測で分類せず、そのまま返す。
+    """
+    value = str(result_date_dir).strip()
+    if not value:
+        raise ValueError("result_date_dir must not be empty")
+    parts = list(Path(value).parts)
+    if not parts:
+        raise ValueError("result_date_dir must not be empty")
+    match = re.fullmatch(r"(\d{8})(?:_(.+))?", parts[0])
+    if match:
+        date_value, suffix = match.groups()
+        try:
+            datetime.strptime(date_value, "%Y%m%d")
+        except ValueError:
+            return Path(*parts).as_posix()
+        normalized = [date_value[:6], date_value[6:]]
+        if suffix:
+            normalized.append(suffix)
+        normalized.extend(parts[1:])
+        return Path(*normalized).as_posix()
+    return Path(*parts).as_posix()
 
 
 def _compact_day(day):

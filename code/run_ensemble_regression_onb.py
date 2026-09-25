@@ -46,7 +46,11 @@ from utils.experiment.learning_policy import (
     normalize_learning_policy, policy_result_date_dir, resolve_experiment_names,
 )
 from utils.experiment.learning_runner import run_learning_experiments
-from utils.experiment.result_paths import existing_result_run_path, noise_trend_path
+from utils.experiment.result_paths import (
+    existing_result_run_path,
+    noise_trend_path,
+    normalize_result_date_dir,
+)
 from utils.experiment.onb_thresholds import (
     onb_threshold_by_experiment,
     onb_threshold_provenance_by_experiment,
@@ -256,7 +260,9 @@ RESULT_MODEL_GROUP = (
 PCA_COMPONENTS = _cfg("features", "pca_components")
 
 SAVE_DATE = _cfg("output", "save_date")
-RESULT_DATE_DIR = _cfg("output", "result_date_dir") or SAVE_DATE
+RESULT_DATE_DIR = normalize_result_date_dir(
+    _cfg("output", "result_date_dir") or SAVE_DATE
+)
 SAVE_FOLD_PREDICTIONS = _cfg("output", "save_fold_predictions")
 SAVE_TUNING_SUMMARY = _cfg("output", "save_tuning_summary")
 SAVE_FITTED_ARTIFACTS = _cfg("output", "save_fitted_artifacts")

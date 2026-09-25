@@ -44,7 +44,7 @@
     },
     "output": {
       "save_date": "20260925",
-      "result_date_dir": "20260925/matched_performance_kfold_fixed_epoch",
+      "result_date_dir": "202609/25/matched_performance_kfold_fixed_epoch",
       "save_fold_predictions": true,
       "save_tuning_summary": true,
       "save_fitted_artifacts": false,

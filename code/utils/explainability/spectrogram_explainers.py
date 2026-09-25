@@ -1,6 +1,7 @@
 import csv
 import os
 import warnings
+from contextlib import contextmanager, nullcontext
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -15,6 +16,52 @@ PLOT_TICK_FONTSIZE = 20
 PLOT_TITLE_FONTSIZE = 20
 PLOT_COLORBAR_LABEL_FONTSIZE = 20
 PLOT_COLORBAR_TICK_FONTSIZE = 16
+
+
+def _canonical_tf_device(device):
+    """Return an explicit TensorFlow device or ``None`` for normal placement."""
+    if device is None:
+        return None
+    value = str(device).strip()
+    if not value or value.lower() in {"auto", "default", "none"}:
+        return None
+    if value.lower() == "cpu":
+        return "/CPU:0"
+    if value.lower() == "gpu":
+        return "/GPU:0"
+    return value
+
+
+def _tf_device_scope(device):
+    resolved = _canonical_tf_device(device)
+    return nullcontext() if resolved is None else tf.device(resolved)
+
+
+@contextmanager
+def _temporary_nonfused_batchnorm(model, enabled=False):
+    """Use deterministic BN gradients without changing fitted model state.
+
+    TensorFlow 2.9 does not provide a deterministic GPU gradient for fused
+    inference-mode BatchNormalization. The non-fused graph is mathematically
+    equivalent in inference mode and uses the same moving statistics and
+    learned weights. Only the layer execution flag is changed temporarily;
+    it is restored even when attribution raises an exception.
+    """
+    changed = []
+    if enabled:
+        layers = getattr(model, "submodules", model.layers)
+        for layer in layers:
+            if not isinstance(layer, tf.keras.layers.BatchNormalization):
+                continue
+            fused = getattr(layer, "fused", None)
+            if fused is True:
+                changed.append((layer, fused))
+                layer.fused = False
+    try:
+        yield len(changed)
+    finally:
+        for layer, fused in changed:
+            layer.fused = fused
 
 
 def windows_long_path(path):
@@ -253,7 +300,8 @@ def last_conv2d_layer_name(model):
 
 def integrated_gradients(model, sample, baseline=None, steps=64, *,
                          max_steps=4096, batch_size=8, rtol=1e-3,
-                         atol=1e-6, map_rtol=1e-2, return_diagnostics=False):
+                         atol=1e-6, map_rtol=1e-2, return_diagnostics=False,
+                         device=None, nonfused_batchnorm=False):
     """Return signed input-resolution attributions for a scalar regression model.
 
     Raw-input straight-line IG with adaptive Gauss-Legendre quadrature.
@@ -283,10 +331,16 @@ def integrated_gradients(model, sample, baseline=None, steps=64, *,
     if not np.isfinite(x).all() or not np.isfinite(baseline).all():
         raise ValueError("IG input and baseline must be finite.")
     difference = x.astype(np.float64) - baseline.astype(np.float64)
-    endpoints = np.asarray(model(np.stack([baseline, x]), training=False))
-    if endpoints.size != 2 or not np.isfinite(endpoints).all():
+    endpoint_inputs = np.stack([baseline, x])
+    with _tf_device_scope(device):
+        reference_endpoints = np.asarray(
+            model(endpoint_inputs, training=False)
+        )
+    if (reference_endpoints.size != 2
+            or not np.isfinite(reference_endpoints).all()):
         raise ValueError("IG requires one finite scalar output per sample.")
-    delta = float(endpoints.reshape(-1)[1]) - float(endpoints.reshape(-1)[0])
+    delta = (float(reference_endpoints.reshape(-1)[1])
+             - float(reference_endpoints.reshape(-1)[0]))
     ratio = 0.0
     layers = [layer for layer in model.layers
               if not isinstance(layer, tf.keras.layers.InputLayer)]
@@ -296,53 +350,92 @@ def integrated_gradients(model, sample, baseline=None, steps=64, *,
                      (float(layers[0].scale) + np.minimum(x, baseline).astype(np.float64))))
     history, previous = [], None
     n = int(steps)
-    while True:
-        if ratio > 1:
-            # Integrate each half separately. Mirroring handles decreasing
-            # features/nonzero baselines too, without changing the path.
-            nodes, w = np.polynomial.legendre.leggauss(n//2)
-            t, w = (nodes+1)/2, w/2
-            log_ratio = np.log1p(ratio)
-            left = 0.5*np.expm1(t*log_ratio)/ratio
-            jacobian = 0.5*log_ratio*np.exp(t*log_ratio)/ratio
-            alpha = np.concatenate([left, 1-left])
-            weights = np.concatenate([w*jacobian, w*jacobian])
-        else:
-            nodes, w = np.polynomial.legendre.leggauss(n)
-            alpha, weights = (nodes+1)/2, w/2
-        integral = np.zeros_like(difference, dtype=np.float64)
-        for offset in range(0, len(alpha), int(batch_size)):
-            sl = slice(offset, offset + int(batch_size))
-            points = baseline[None, ...] + alpha[sl, None, None, None]*difference[None, ...]
-            inputs = tf.convert_to_tensor(points, dtype=tf.float32)
-            with tf.GradientTape() as tape:
-                tape.watch(inputs)
-                target = model(inputs, training=False)
-            grads = tape.gradient(target, inputs)
-            if grads is None:
-                raise RuntimeError("Integrated Gradients could not compute input gradients.")
-            values = np.asarray(grads, dtype=np.float64)
-            if not np.isfinite(values).all():
-                raise FloatingPointError("Nonfinite IG gradients; attribution is invalid.")
-            integral += np.sum(values*weights[sl, None, None, None], axis=0)
-        attrs = difference*integral
-        error = float(np.sum(attrs, dtype=np.float64)-delta)
-        map_change = (float(np.sum(np.abs(attrs-previous)) /
-                            max(np.sum(np.abs(attrs)), atol, 1e-30))
-                      if previous is not None else None)
-        complete = abs(error) <= atol + rtol*abs(delta)
-        converged = bool(complete and map_change is not None and map_change <= map_rtol)
-        history.append({'nodes': len(alpha), 'completeness_error': error,
-                        'map_relative_l1_change': map_change})
-        if converged or n >= int(max_steps):
-            break
-        previous = attrs
-        n = min(2*n, int(max_steps))
+    gradient_device = None
+    with _temporary_nonfused_batchnorm(
+            model, enabled=bool(nonfused_batchnorm)) as changed_bn_count:
+        with _tf_device_scope(device):
+            attribution_endpoints = np.asarray(
+                model(endpoint_inputs, training=False)
+            )
+        endpoint_kernel_max_abs_difference = float(np.max(np.abs(
+            attribution_endpoints.astype(np.float64)
+            - reference_endpoints.astype(np.float64)
+        )))
+        if not np.allclose(
+                attribution_endpoints, reference_endpoints,
+                rtol=1e-5, atol=1e-6):
+            raise RuntimeError(
+                "Non-fused BatchNormalization changed IG endpoint predictions; "
+                f"maximum absolute difference={endpoint_kernel_max_abs_difference:.6g}."
+            )
+        while True:
+            if ratio > 1:
+                # Integrate each half separately. Mirroring handles decreasing
+                # features/nonzero baselines too, without changing the path.
+                nodes, w = np.polynomial.legendre.leggauss(n//2)
+                t, w = (nodes+1)/2, w/2
+                log_ratio = np.log1p(ratio)
+                left = 0.5*np.expm1(t*log_ratio)/ratio
+                jacobian = 0.5*log_ratio*np.exp(t*log_ratio)/ratio
+                alpha = np.concatenate([left, 1-left])
+                weights = np.concatenate([w*jacobian, w*jacobian])
+            else:
+                nodes, w = np.polynomial.legendre.leggauss(n)
+                alpha, weights = (nodes+1)/2, w/2
+            integral = np.zeros_like(difference, dtype=np.float64)
+            for offset in range(0, len(alpha), int(batch_size)):
+                sl = slice(offset, offset + int(batch_size))
+                points = (baseline[None, ...]
+                          + alpha[sl, None, None, None]*difference[None, ...])
+                with _tf_device_scope(device):
+                    inputs = tf.convert_to_tensor(points, dtype=tf.float32)
+                    with tf.GradientTape() as tape:
+                        tape.watch(inputs)
+                        target = model(inputs, training=False)
+                    grads = tape.gradient(target, inputs)
+                if grads is None:
+                    raise RuntimeError(
+                        "Integrated Gradients could not compute input gradients."
+                    )
+                if gradient_device is None:
+                    gradient_device = str(grads.device)
+                values = np.asarray(grads, dtype=np.float64)
+                if not np.isfinite(values).all():
+                    raise FloatingPointError(
+                        "Nonfinite IG gradients; attribution is invalid."
+                    )
+                integral += np.sum(
+                    values*weights[sl, None, None, None], axis=0)
+            attrs = difference*integral
+            error = float(np.sum(attrs, dtype=np.float64)-delta)
+            map_change = (float(np.sum(np.abs(attrs-previous)) /
+                                max(np.sum(np.abs(attrs)), atol, 1e-30))
+                          if previous is not None else None)
+            complete = abs(error) <= atol + rtol*abs(delta)
+            converged = bool(
+                complete and map_change is not None and map_change <= map_rtol
+            )
+            history.append({
+                'nodes': len(alpha),
+                'completeness_error': error,
+                'map_relative_l1_change': map_change,
+            })
+            if converged or n >= int(max_steps):
+                break
+            previous = attrs
+            n = min(2*n, int(max_steps))
     diagnostics = {
         'algorithm': 'raw_straight_line_ig_gauss_legendre_v2',
         'sampling': 'symmetric_log_alpha' if ratio > 1 else 'uniform_alpha',
         'alpha_ratio': ratio, 'nodes': len(alpha),
         'gradient_batch_size': int(batch_size),
+        'gradient_device_requested': (
+            _canonical_tf_device(device) or 'automatic'
+        ),
+        'gradient_device_actual': gradient_device,
+        'nonfused_batchnorm_for_gradients': bool(nonfused_batchnorm),
+        'nonfused_batchnorm_layer_count': int(changed_bn_count),
+        'endpoint_kernel_max_abs_difference': endpoint_kernel_max_abs_difference,
         'rtol': rtol, 'atol_model_output': atol, 'map_rtol': map_rtol,
         'output_delta_model_units': delta,
         'attribution_sum_model_units': float(np.sum(attrs, dtype=np.float64)),
@@ -361,7 +454,8 @@ def integrated_gradients(model, sample, baseline=None, steps=64, *,
 def integrated_gradients_log_power(model, sample, baseline=None, steps=64, *,
                                    max_steps=4096, batch_size=8, rtol=1e-3,
                                    atol=1e-6, map_rtol=1e-2,
-                                   return_diagnostics=False):
+                                   return_diagnostics=False, device=None,
+                                   nonfused_batchnorm=False):
     """Compute IG on the model's actual log-power feature input.
 
     The selected neural regressors begin with ``LogPowerCompression``.  A
@@ -391,9 +485,13 @@ def integrated_gradients_log_power(model, sample, baseline=None, steps=64, *,
             "log-power IG requires LogPowerCompression as the first model layer."
         )
     transform = layers[0]
-    transformed = np.asarray(
-        transform(tf.convert_to_tensor(np.stack([baseline, x])), training=False)
-    )
+    with _tf_device_scope(device):
+        transformed = np.asarray(
+            transform(
+                tf.convert_to_tensor(np.stack([baseline, x])),
+                training=False,
+            )
+        )
     if transformed.shape[0] != 2 or not np.isfinite(transformed).all():
         raise ValueError("Log-power IG produced nonfinite transformed endpoints.")
     tail_model = tf.keras.Model(
@@ -412,6 +510,8 @@ def integrated_gradients_log_power(model, sample, baseline=None, steps=64, *,
         atol=atol,
         map_rtol=map_rtol,
         return_diagnostics=True,
+        device=device,
+        nonfused_batchnorm=nonfused_batchnorm,
     )
     diagnostics.update({
         "algorithm": "log_power_straight_line_ig_gauss_legendre_v1",

@@ -22,7 +22,7 @@ class OnbDefaultsTest(unittest.TestCase):
         self.assertEqual(resolved["output"]["save_date"], "20260916")
         self.assertEqual(
             resolved["output"]["result_date_dir"],
-            "20260916/onb",
+            "202609/16/onb",
         )
         self.assertFalse(resolved["acoustic_selection"]["enabled"])
 

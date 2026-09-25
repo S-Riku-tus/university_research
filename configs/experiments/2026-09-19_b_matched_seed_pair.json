@@ -29,7 +29,7 @@
     "acoustic_selection": {"peak_height_threshold": 1e-9},
     "output": {
       "save_date": "20260919",
-      "result_date_dir": "20260919/b_matched",
+      "result_date_dir": "202609/19/b_matched",
       "save_fold_predictions": true,
       "save_tuning_summary": true,
       "noise_trend_plots": {"enabled": false}
