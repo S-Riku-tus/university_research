@@ -26,7 +26,7 @@ def main():
         noise_source_prefix=settings["NOISE_SOURCE_PREFIX"], chunk_seconds=settings["CHUNK"],
         threshold_by_experiment=settings["THRESHOLD_BY_EXPERIMENT"],
         result_model_group="ensemble", result_date_dir="metadata_check_only",
-        color_channel=1, require_experiment_threshold=True, skip_missing_datasets=False,
+        color_channel=1, require_experiment_threshold=True,
     )
     cache = {str(job["data_path"]): checked_metadata(load_sample_metadata_without_arrays(job["data_path"]),
               job["experiment_name"]) for job in jobs}

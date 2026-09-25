@@ -66,7 +66,6 @@ class ExperimentDayResolutionTest(unittest.TestCase):
                 threshold_by_experiment={day: 100 for day in self.days},
                 result_model_group="ensemble", result_date_dir="test",
                 color_channel=1, require_experiment_threshold=True,
-                skip_missing_datasets=False,
             )
             clean_policy = normalize_learning_policy({**self.policy, "training_noise": "clean_only"}, self.days)
             jobs = build_dataset_jobs(**args, learning_policy=clean_policy)

@@ -106,7 +106,6 @@ VALIDATION_CONFIG = apply_onb_defaults({
             "2025.06.18_0.3_3": "waterflow_20260817_1s",
             "2025.07.09_0.3_1": "waterflow_20260817_1s",
         },
-        "skip_missing_datasets": False,
     },
     "learning_policy": {
         # 学習日・テスト日を明示指定。テスト日は重み・PCA・選別閾値のfitに使わない。
@@ -223,7 +222,6 @@ EXPERIMENT_DIR_NAMES = resolve_experiment_names(
 MAX_FREQ_HZ_LIST = _cfg("data", "max_freq_hz_list")
 NOISE_DIR_NAMES = _cfg("data", "noise_dir_names")
 DATA_SOURCE_DIR_BY_EXPERIMENT = _cfg("data", "data_source_dir_by_experiment")
-SKIP_MISSING_DATASETS = _cfg("data", "skip_missing_datasets")
 LEARNING_POLICY = normalize_learning_policy(
     VALIDATION_CONFIG["learning_policy"], EXPERIMENT_DIR_NAMES, COLOR_CHANNEL)
 EVALUATION_FOLDS = DIVISIONS if LEARNING_POLICY["split_mode"] == "within_day" else 1
@@ -327,7 +325,6 @@ def build_dataset_jobs():
         result_date_dir=policy_result_date_dir(RESULT_DATE_DIR, LEARNING_POLICY),
         color_channel=COLOR_CHANNEL,
         require_experiment_threshold=REQUIRE_EXPERIMENT_THRESHOLD,
-        skip_missing_datasets=SKIP_MISSING_DATASETS,
         learning_policy=LEARNING_POLICY,
     )
 
@@ -354,7 +351,6 @@ def validation_config_snapshot():
             "max_freq_hz_list": MAX_FREQ_HZ_LIST,
             "noise_dir_names": NOISE_DIR_NAMES,
             "data_source_dir_by_experiment": DATA_SOURCE_DIR_BY_EXPERIMENT,
-            "skip_missing_datasets": SKIP_MISSING_DATASETS,
         },
         "thresholds": {
             "by_experiment": THRESHOLD_BY_EXPERIMENT,

@@ -47,7 +47,6 @@ def build_dataset_jobs(
     result_date_dir,
     color_channel,
     require_experiment_threshold,
-    skip_missing_datasets,
     learning_policy=None,
 ):
     jobs = []
@@ -106,6 +105,5 @@ def build_dataset_jobs(
             missing_path = job["data_path"] if job["data_path"] is not None else job["experiment_root"] / "data" / "npy"
             reason = job.get("missing_reason", "data")
             print(f"  - {reason} | {job['experiment_name']} | {job['max_freq_hz']} | {job['noise_dir_name']} | {missing_path}")
-        if not skip_missing_datasets:
-            raise FileNotFoundError("Some intended datasets are missing. Set SKIP_MISSING_DATASETS=True to continue.")
+        raise FileNotFoundError("Some intended datasets are missing.")
     return jobs
