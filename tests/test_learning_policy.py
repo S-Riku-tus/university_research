@@ -18,7 +18,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "code"))
 from utils.ensemble.ensemble_runtime import EnsembleManager
 from utils.experiment.learning_policy import (
     aligned_indices, build_learning_families, checked_metadata,
-    normalize_learning_policy, outer_splits, policy_result_date_dir,
+    experiment_split_kind, normalize_learning_policy, outer_splits,
+    policy_result_date_dir,
 )
 from utils.experiment.learning_runner import run_learning_experiments
 from utils.experiment.result_paths import (
@@ -111,7 +112,7 @@ class LearningPolicyTest(unittest.TestCase):
             root = Path(temp)
             days = ("day-a", "day-b")
 
-            matched = {"split_mode": "explicit_days", "training_noise": "matched",
+            matched = {"training_noise": "matched",
                        "train_experiments": ["day-a"], "test_experiments": ["day-b"]}
             jobs, _, _, _ = fixture(root / "matched", matched, days=days)
             families = build_learning_families(jobs, matched, list(days))
@@ -126,7 +127,7 @@ class LearningPolicyTest(unittest.TestCase):
                     evaluation_noises,
                 )
 
-            clean_only = {"split_mode": "explicit_days", "training_noise": "clean_only",
+            clean_only = {"training_noise": "clean_only",
                           "train_experiments": ["day-a"], "test_experiments": ["day-b"]}
             jobs, _, _, _ = fixture(root / "clean_only", clean_only, days=days)
             families = build_learning_families(jobs, clean_only, list(days))
@@ -149,8 +150,7 @@ class LearningPolicyTest(unittest.TestCase):
         job = {"save_base_path": Path("ensemble/202609/17/onb__days_matched"),
                "experiment_name": "2025.06.18_0.3_3",
                "max_freq_hz": "maxfreq=3kHz", "noise_dir_name": "heatflux_no_noise"}
-        config = {"learning_policy": {"split_mode": "explicit_days", "training_noise": "matched",
-                                      "internal_validation": "wav_kfold",
+        config = {"learning_policy": {"training_noise": "matched",
                                       "train_experiments": ["2025.06.11_0.3_2"],
                                       "test_experiments": ["2025.06.18_0.3_3"]},
                   "data": {"experiment_names": ["2025.06.11_0.3_2", "2025.06.18_0.3_3"]},
@@ -192,7 +192,8 @@ class LearningPolicyTest(unittest.TestCase):
     def test_scoped_result_layout_writes_directly_below_noise(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
-            policy = {"split_mode": "within_day", "training_noise": "matched"}
+            policy = {"training_noise": "matched",
+                      "train_experiments": ["day-a"], "test_experiments": ["day-a"]}
             jobs, specs, manager, config = fixture(root, policy,
                                                     evaluated_noises=("heatflux_no_noise",), days=("day-a",))
             config["output"].update(run_scoped_result_dir=True, execution_id="execution-a")
@@ -203,7 +204,7 @@ class LearningPolicyTest(unittest.TestCase):
                     run_learning_experiments(jobs, policy, config, specs, [{"name": "test"}],
                                              manager, trainer, SilentPlotter(), lambda *args: None)
             base = jobs[0]["save_base_path"]
-            scoped = sorted(base.parent.glob(base.name + "_*"))
+            scoped = sorted(base.parent.glob("results_*"))
             self.assertEqual(len(scoped), 2)
             for directory in scoped:
                 result = directory / "maxfreq=3kHz" / "heatflux_no_noise"
@@ -217,7 +218,8 @@ class LearningPolicyTest(unittest.TestCase):
                 self.assertFalse(any(path.name.startswith("e1_") for path in result.iterdir()))
 
     def test_nested_analysis_date_path_and_config_scoped_run_name(self):
-        policy = {"split_mode": "explicit_days", "training_noise": "matched"}
+        policy = {"training_noise": "matched",
+                  "train_experiments": ["day-a"], "test_experiments": ["day-b"]}
         self.assertEqual(
             normalize_result_date_dir("20260916/selected_log_architecture"),
             "202609/16/selected_log_architecture",
@@ -257,9 +259,9 @@ class LearningPolicyTest(unittest.TestCase):
         )
         self.assertNotEqual(first_dir, repeated_condition)
 
-    def run_fixture(self, root, policy, evaluated_noises=None):
+    def run_fixture(self, root, policy, evaluated_noises=None, days=("day-a", "day-b")):
         args = {} if evaluated_noises is None else {"evaluated_noises": evaluated_noises}
-        jobs, specs, manager, config = fixture(root, policy, **args)
+        jobs, specs, manager, config = fixture(root, policy, days=days, **args)
         trainer = ObservedTrainer()
         call = lambda: run_learning_experiments(jobs, policy, config, specs, [{"name": "test"}],
                                                 manager, trainer, SilentPlotter(), lambda *args: None)
@@ -275,11 +277,13 @@ class LearningPolicyTest(unittest.TestCase):
             for noise in ("matched", "clean_only"):
                 with self.subTest(split=split, noise=noise), tempfile.TemporaryDirectory() as temp:
                     root = Path(temp)
-                    policy = {"split_mode": split, "training_noise": noise}
-                    jobs, trainer, config, _ = self.run_fixture(root, policy)
+                    days = ("day-a",) if split == "within_day" else ("day-a", "day-b")
+                    policy = {"training_noise": noise,
+                              "train_experiments": list(days), "test_experiments": list(days)}
+                    jobs, trainer, config, _ = self.run_fixture(root, policy, days=days)
                     folds = 3 if split == "within_day" else 1
-                    # 2日 × 学習ノイズ数 × fold × 2モデル × 内部/最終学習。
-                    expected = 2 * (2 if noise == "matched" else 1) * folds * 2 * 2
+                    # 評価日数 × 学習ノイズ数 × fold × 2モデル × 内部/最終学習。
+                    expected = len(days) * (2 if noise == "matched" else 1) * folds * 2 * 2
                     self.assertEqual(len(trainer.fits), expected)
                     self.assertEqual(len(trainer.pca_fits), expected // 2)
                     if noise == "clean_only":
@@ -289,7 +293,7 @@ class LearningPolicyTest(unittest.TestCase):
                         for model_id, x, minimum, maximum in trainer.predictions:
                             used.setdefault(model_id, []).append((np.max(x[:, 0, 0, 0]) >= 1000, minimum, maximum))
                         shared = [items for items in used.values() if len(items) == 2]
-                        self.assertEqual(len(shared), 2 * folds * 2)
+                        self.assertEqual(len(shared), len(days) * folds * 2)
                         for first, second in shared:
                             self.assertNotEqual(first[0], second[0])
                             np.testing.assert_array_equal(first[1], second[1])
@@ -333,14 +337,18 @@ class LearningPolicyTest(unittest.TestCase):
 
     def test_clean_training_does_not_require_clean_in_evaluation_list(self):
         with tempfile.TemporaryDirectory() as temp:
-            _, trainer, _, _ = self.run_fixture(Path(temp), {"split_mode": "within_day", "training_noise": "clean_only"},
-                                                 ["heatflux_reference_SNR=-20"])
+            policy = {"training_noise": "clean_only",
+                      "train_experiments": ["day-a"], "test_experiments": ["day-a"]}
+            _, trainer, _, _ = self.run_fixture(
+                Path(temp), policy, ["heatflux_reference_SNR=-20"], days=("day-a",))
             self.assertTrue(all(np.max(x[:, 0, 0, 0]) < 1000 for x in trainer.fits))
 
     def test_actual_keras_trainer_reuses_one_fit_per_held_out_day(self):
         from tensorflow import keras
         with tempfile.TemporaryDirectory() as temp:
-            policy = {"split_mode": "leave_one_day_out", "training_noise": "clean_only"}
+            policy = {"training_noise": "clean_only",
+                      "train_experiments": ["day-a", "day-b"],
+                      "test_experiments": ["day-a", "day-b"]}
             jobs, _, _, config = fixture(Path(temp), policy)
             specs = [{"key": "tiny", "label": "Tiny Keras", "kind": "keras",
                       "builder": lambda mm: keras.Sequential([
@@ -361,15 +369,22 @@ class LearningPolicyTest(unittest.TestCase):
                 self.assertEqual(len(rows), 12)
                 self.assertTrue(all(np.isfinite(float(row["tiny"])) for row in rows))
 
-    def test_single_day_leave_out_and_typo_are_rejected(self):
+    def test_ambiguous_day_lists_and_typo_are_rejected(self):
         with self.assertRaises(ValueError):
-            normalize_learning_policy({"split_mode": "leave_one_day_out"}, ["day-a"])
+            normalize_learning_policy({"training_noise": "matched",
+                                       "train_experiments": ["day-a", "day-b"],
+                                       "test_experiments": ["day-b", "day-c"]},
+                                      ["day-a", "day-b", "day-c"])
         with self.assertRaises(ValueError):
-            normalize_learning_policy({"training_noise": "clean"}, ["day-a"])
+            normalize_learning_policy({"training_noise": "clean",
+                                       "train_experiments": ["day-a"],
+                                       "test_experiments": ["day-a"]}, ["day-a"])
 
     def test_three_day_leave_out_pools_two_training_days_without_id_collision(self):
         with tempfile.TemporaryDirectory() as temp:
-            policy = {"split_mode": "leave_one_day_out", "training_noise": "clean_only"}
+            policy = {"training_noise": "clean_only",
+                      "train_experiments": ["day-a", "day-b", "day-c"],
+                      "test_experiments": ["day-a", "day-b", "day-c"]}
             jobs, specs, manager, config = fixture(Path(temp), policy, days=["day-a", "day-b", "day-c"])
             trainer = ObservedTrainer()
             with contextlib.redirect_stdout(io.StringIO()), patch("gc.collect"), patch("tensorflow.keras.backend.clear_session"):
@@ -389,20 +404,21 @@ class LearningPolicyTest(unittest.TestCase):
                                  for i in range(4)], "a")
         other = list(reversed(rows))
         np.testing.assert_array_equal(aligned_indices(rows, other), [3, 2, 1, 0])
-        for train, test in outer_splits(rows, other, "within_day", 2):
+        for train, test in outer_splits(rows, other, 2):
             self.assertFalse({rows[i]["source_wav_id"] for i in train} & {other[i]["source_wav_id"] for i in test})
         with self.assertRaises(ValueError):
             aligned_indices(rows, other[:-1])
         with self.assertRaises(ValueError):
             aligned_indices(rows, [{**other[0], "sample_filename": "999_x.npy"}] + other[1:])
         with self.assertRaises(ValueError):
-            outer_splits(rows, rows, "leave_one_day_out", 2)
+            outer_splits(rows, [{**row, "experiment_name": "b"} for row in rows[:2]] + rows[2:], 2)
 
-    def test_default_hash_is_compatible_and_other_policies_change_hash(self):
+    def test_day_lists_and_training_noise_change_hash(self):
         config = {"models": {}, "output": {}}
         old = run_config_digest(config, {}, [], "randomforest", True)
-        default = {"split_mode": "within_day", "training_noise": "matched"}
-        self.assertEqual(old, run_config_digest({**config, "learning_policy": default}, {}, [], "randomforest", True))
+        default = {"training_noise": "matched", "train_experiments": ["day-a"],
+                   "test_experiments": ["day-a"]}
+        self.assertNotEqual(old, run_config_digest({**config, "learning_policy": default}, {}, [], "randomforest", True))
         self.assertNotEqual(old, run_config_digest({**config, "learning_policy": {**default, "training_noise": "clean_only"}}, {}, [], "randomforest", True))
 
     def test_new_and_legacy_paths_and_resume_hash(self):
@@ -426,7 +442,9 @@ class LearningPolicyTest(unittest.TestCase):
     def test_partial_clean_resume_recomputes_one_family_with_shared_models(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
-            jobs, trainer, config, call = self.run_fixture(root, {"split_mode": "within_day", "training_noise": "clean_only"})
+            policy = {"training_noise": "clean_only", "train_experiments": ["day-a"],
+                      "test_experiments": ["day-a"]}
+            jobs, trainer, config, call = self.run_fixture(root, policy, days=("day-a",))
             target = next((jobs[0]["save_base_path"] / jobs[0]["max_freq_hz"] / jobs[0]["noise_dir_name"]).iterdir())
             (target / "completed.json").unlink()
             # 同じ実行IDを指定した場合だけ、中断した保存先を再開する。

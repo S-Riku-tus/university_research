@@ -107,7 +107,7 @@ def collect_noise_trend_rows(run_paths, *, noise_order, model_keys,
             continue
         context = manifest.get("learning_context", {})
         policy = manifest["validation_config"].get("learning_policy", {
-            "split_mode": "within_day", "training_noise": "matched"})
+            "training_noise": "matched"})
         signature = (dataset["experiment_name"], dataset["max_freq_hz"],
                      manifest.get("run_hash"), manifest["run_dir"],
                      json.dumps(policy, sort_keys=True), tuple(context.get("training_experiments", [])),
@@ -124,8 +124,13 @@ def collect_noise_trend_rows(run_paths, *, noise_order, model_keys,
 
     manifest = reference[1]
     policy = manifest["validation_config"].get("learning_policy", {
-        "split_mode": "within_day", "training_noise": "matched"})
-    held_out_day = policy["split_mode"] == "leave_one_day_out"
+        "training_noise": "matched"})
+    context = manifest.get("learning_context", {})
+    evaluation_scheme = context.get("evaluation_scheme")
+    if evaluation_scheme is None:
+        scope = context.get("generalization_scope")
+        evaluation_scheme = "cross_day" if scope == "held_out_experiment_day" else "within_day"
+    held_out_day = evaluation_scheme != "within_day"
     ensemble = manifest["validation_config"].get("ensemble", {})
     plans = ensemble.get("resolved_strategy_plan", [])
     supported = set(available_ensemble_strategy_names())
@@ -175,7 +180,7 @@ def collect_noise_trend_rows(run_paths, *, noise_order, model_keys,
                         "experiment": manifest["dataset"]["experiment_name"],
                         "maxfreq": manifest["dataset"]["max_freq_hz"],
                         "run_hash": manifest.get("run_hash", ""),
-                        "split_mode": policy["split_mode"],
+                        "evaluation_scheme": evaluation_scheme,
                         "training_noise": policy["training_noise"],
                         "strategy": strategy or "single_models",
                         "evaluation_unit": "chunk",
@@ -243,7 +248,7 @@ def plot_noise_trends_from_runs(run_paths, output_dir, *, formats=("png", "pdf")
                 ax.set_xlabel("Noise level (reference SNR [dB])")
                 ax.set_ylabel(METRIC_LABELS[metric])
                 unit_label = "Chunk: fold mean ± SE"
-                if group[0]["split_mode"] == "leave_one_day_out":
+                if group[0]["evaluation_scheme"] != "within_day":
                     unit_label = "Chunk: held-out day"
                 ensemble_label = STRATEGY_LABELS.get(strategy, strategy)
                 policy_label = "clean train" if group[0]["training_noise"] == "clean_only" else "matched-noise train"

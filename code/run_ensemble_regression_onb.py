@@ -43,7 +43,8 @@ from utils.explainability.training_integration import (
 )
 from utils.experiment.dataset_jobs import build_dataset_jobs as make_dataset_jobs
 from utils.experiment.learning_policy import (
-    normalize_learning_policy, policy_result_date_dir, resolve_experiment_names,
+    experiment_split_kind, normalize_learning_policy, policy_result_date_dir,
+    resolve_experiment_names,
 )
 from utils.experiment.learning_runner import run_learning_experiments
 from utils.experiment.result_paths import (
@@ -90,7 +91,7 @@ VALIDATION_CONFIG = apply_onb_defaults({
         "noise_source": "waterflow",  # 水流音はwaterflow、白色雑音はwhitenoise
         "chunk_seconds": 1,
         "max_freq_hz_list": [
-            "maxfreq=3kHz",
+            # "maxfreq=3kHz",
             # "maxfreq=5kHz",
             # "maxfreq=10kHz",
             # "maxfreq=15kHz",
@@ -98,12 +99,12 @@ VALIDATION_CONFIG = apply_onb_defaults({
         ],
         "noise_dir_names": [
             "heatflux_no_noise",
-            # "heatflux_reference_SNR=0",
-            # "heatflux_reference_SNR=-4",
-            # "heatflux_reference_SNR=-8",
-            # "heatflux_reference_SNR=-12",
-            # "heatflux_reference_SNR=-16",
-            # "heatflux_reference_SNR=-20",
+            "heatflux_reference_SNR=0",
+            "heatflux_reference_SNR=-4",
+            "heatflux_reference_SNR=-8",
+            "heatflux_reference_SNR=-12",
+            "heatflux_reference_SNR=-16",
+            "heatflux_reference_SNR=-20",
         ],
         "data_source_dir_by_experiment": {
             "2025.06.11_0.3_2": "waterflow_20260817_1s",
@@ -112,10 +113,6 @@ VALIDATION_CONFIG = apply_onb_defaults({
         },
     },
     "learning_policy": {
-        # 学習日・テスト日を明示指定。テスト日は重み・PCA・選別閾値のfitに使わない。
-        # 旧within_day / leave_one_day_outでは下記のtrain/test指定を外し、
-        # data.experiment_namesに評価対象日を指定する。
-        "split_mode": "explicit_days",
         "train_experiments": [
             "2025.06.11_0.3_2",
             # "2025.07.09_0.3_1",
@@ -126,9 +123,6 @@ VALIDATION_CONFIG = apply_onb_defaults({
             # "2025.07.09_0.3_1",
             "2025.06.18_0.3_3",
             ],
-        # 重み決定でも同じ元WAVの1秒区間を学習・検証へ分けない。
-        # 内部fold数はrun.folds。chunk_kfoldは旧比較の再現時だけ使う。
-        "internal_validation": "wav_kfold",
         # matched: ノイズ条件ごとに独立して学習し、PCA・scaler・epoch・
         #          アンサンブル重みもそのノイズの学習データから毎回求める。
         # clean_only: 無雑音だけで学習し、同じモデル・前処理・重みで
@@ -140,7 +134,7 @@ VALIDATION_CONFIG = apply_onb_defaults({
         # スペクトルの縦軸に引く横線。図の「×10^-9」表示で高さ1に相当。
         # 0.3e-9なら弱い秒も含む。3e-9 / 10e-9なら大きいピークの秒に絞る。
         # Noneなら選別なし。特徴量・対象範囲などの固定条件はonb_defaults.pyで管理する。
-        "peak_height_threshold": 1.0e-9,
+        "peak_height_threshold": None,  # 1.0e-9
     },
     "thresholds": {
         # ONBと確認された最初の測定点の熱流束と、その出典を一元管理する。
@@ -228,7 +222,7 @@ NOISE_DIR_NAMES = _cfg("data", "noise_dir_names")
 DATA_SOURCE_DIR_BY_EXPERIMENT = _cfg("data", "data_source_dir_by_experiment")
 LEARNING_POLICY = normalize_learning_policy(
     VALIDATION_CONFIG["learning_policy"], EXPERIMENT_DIR_NAMES, COLOR_CHANNEL)
-EVALUATION_FOLDS = DIVISIONS if LEARNING_POLICY["split_mode"] == "within_day" else 1
+EVALUATION_FOLDS = DIVISIONS if experiment_split_kind(LEARNING_POLICY) == "within_day" else 1
 
 THRESHOLD_BY_EXPERIMENT = _cfg("thresholds", "by_experiment")
 THRESHOLD_PROVENANCE_BY_EXPERIMENT = _cfg(
@@ -418,7 +412,8 @@ def update_noise_trend_plots(plotter, job, run_dir, run_hash, model_keys):
 
 
 def validate_validation_config(enabled_specs):
-    if (LEARNING_POLICY["split_mode"] == "within_day" or "performance_kfold" in ENSEMBLE_MANAGER.selected_strategy_names) and DIVISIONS < 2:
+    if (experiment_split_kind(LEARNING_POLICY) == "within_day"
+            or "performance_kfold" in ENSEMBLE_MANAGER.selected_strategy_names) and DIVISIONS < 2:
         raise ValueError("folds must be at least 2.")
     if not PARAMETER_SETS:
         raise ValueError("VALIDATION_CONFIG['models']['parameter_sets'] must not be empty.")

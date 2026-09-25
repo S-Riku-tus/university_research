@@ -106,9 +106,6 @@ def serializable_run_specs(run_specs):
 
 def run_config_digest(validation_config, parameter_set, run_specs, model_tag, save_fold_predictions):
     config = dict(validation_config)
-    # 既定方式は従来と同じ意味なので、既存の完了結果のhashを維持する。
-    if config.get("learning_policy") == {"split_mode": "within_day", "training_noise": "matched"}:
-        config.pop("learning_policy")
     models_config = dict(config.get("models", {}))
     # The current parameter set and fully resolved model parameters are hashed
     # separately below. Excluding the complete candidate list means that adding

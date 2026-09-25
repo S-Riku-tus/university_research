@@ -7,6 +7,8 @@
 | 目的 | 読む文書 | 更新方法 |
 |---|---|---|
 | 次の作業を始める | [研究の現在地](research_status.md) | 状態・本人の希望・次の一手を更新する唯一の入口 |
+| 現行の日付分割とperformance_kfold内部検証を確認する | [WAV固定内部検証と日付リスト分割](../experiments/2026-09-25_wav_kfold_and_inferred_day_split/README.md) | 旧2設定の削除、自動判定3規則、部分重複拒否、検証範囲を固定 |
+| 9/25完了のperformance_kfold予備runを確認する | [run 143020の解析](../experiments/2026-09-25_onb_run_143020_analysis/README.md) | 3/22 kHz clean、選別あり・3-fold・1 seedの性能、ONBとのトレードオフ、XAI品質、本比較との差を固定 |
 | 9/25進捗報告の修正点と次の研究順序を確認する | [9/25報告レビューと段階的研究方針](research_plan/2026-09-25_weekly_report_review_and_next_steps.md) | Aの不足、事実と解釈、clean-only/matchedの研究質問、performance_kfold→選別→説明性の順序を整理 |
 | performance_kfoldの次条件・手順を確認する | [主方式・固定200 epoch比較](../experiments/2026-09-25_matched_performance_kfold/README.md) | 5-fold OOF、固定epoch、実行コマンド、実行後監査。条件作成済み・未実行 |
 | アンサンブル研究の目的・成功基準・次の検証を確認する | [アンサンブル研究の位置づけと次の検証](research_plan/2026-09-24_ensemble_research_position_and_next_steps.md) | 本人の意図、現行重みの数式、評価基準、matchedのnoise別重み比較から方式改善への分岐を固定 |

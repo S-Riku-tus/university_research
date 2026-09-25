@@ -55,8 +55,7 @@ def build_dataset_jobs(
     root = Path(experiment_root)
     result_date_dir = normalize_result_date_dir(result_date_dir)
     policy = learning_policy or {}
-    explicit_days = policy.get("split_mode") == "explicit_days"
-    test_days = set(policy["test_experiments"]) if explicit_days else set(experiment_names)
+    test_days = set(policy.get("test_experiments", experiment_names))
     intended = 0
     for experiment_name in experiment_names:
         exp_root = root / experiment_name

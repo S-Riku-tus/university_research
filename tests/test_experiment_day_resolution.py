@@ -10,6 +10,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "code"))
 from utils.experiment.dataset_jobs import build_dataset_jobs
 from utils.experiment.learning_policy import (
     build_learning_families,
+    experiment_split_kind,
     normalize_learning_policy,
     resolve_experiment_names,
 )
@@ -18,7 +19,6 @@ from utils.experiment.learning_policy import (
 class ExperimentDayResolutionTest(unittest.TestCase):
     def setUp(self):
         self.policy = {
-            "split_mode": "explicit_days",
             "train_experiments": ["2025.06.11_0.3_2", "2025.07.09_0.3_1"],
             "test_experiments": ["2025.06.18_0.3_3"],
             "training_noise": "matched",
@@ -38,14 +38,17 @@ class ExperimentDayResolutionTest(unittest.TestCase):
             normalize_learning_policy(self.policy, self.days + ["unused"])
         with self.assertRaisesRegex(ValueError, "test_experiments"):
             resolve_experiment_names({}, {**self.policy, "test_experiments": []})
-        with self.assertRaisesRegex(ValueError, "分離"):
+        with self.assertRaisesRegex(ValueError, "未使用"):
             normalize_learning_policy({**self.policy, "test_experiments": [self.days[0]]}, self.days)
 
-    def test_older_split_modes_still_require_experiment_names(self):
-        for mode in ("within_day", "leave_one_day_out"):
-            with self.subTest(mode=mode), self.assertRaisesRegex(ValueError, "experiment_names"):
-                resolve_experiment_names({}, {"split_mode": mode})
-            self.assertEqual(resolve_experiment_names({"experiment_names": self.days}, {"split_mode": mode}), self.days)
+    def test_day_lists_determine_the_evaluation_scheme(self):
+        self.assertEqual(experiment_split_kind({
+            "train_experiments": [self.days[0]], "test_experiments": [self.days[0]]
+        }), "within_day")
+        self.assertEqual(experiment_split_kind({
+            "train_experiments": self.days, "test_experiments": self.days
+        }), "leave_one_day_out")
+        self.assertEqual(experiment_split_kind(self.policy), "cross_day")
 
     def test_clean_only_requires_only_clean_training_days(self):
         with tempfile.TemporaryDirectory() as tmp:

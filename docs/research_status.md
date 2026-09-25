@@ -1,6 +1,10 @@
 # 研究の現在地と次にすること
 
-更新日: **2026-09-25（matched 7 SNR×3 seed本比較の解析まで反映）**。分位点ルール時点の状態は[変更前の記録](../experiments/2026-09-16_peak_height_selection/previous_documents/research_status.md)に保存した。
+更新日: **2026-09-25（WAV固定内部検証・日付リスト分割まで反映）**。分位点ルール時点の状態は[変更前の記録](../experiments/2026-09-16_peak_height_selection/previous_documents/research_status.md)に保存した。
+
+**検証・分割設定を単純化**：[9/25実装記録](../experiments/2026-09-25_wav_kfold_and_inferred_day_split/README.md)で、`performance_kfold`の内部検証を常に元WAV非共有K-foldへ固定し、設定から`internal_validation`を削除した。`split_mode`も削除し、学習日・評価日のリスト関係から、同一1日=`within_day`、同一複数日=`leave_one_day_out`、完全分離=`cross_day`を導出する。一部重複は曖昧さとリーク防止のため停止する。現行6/11学習→6/18評価は`cross_day`・外側1-foldとして読込確認済み。本学習は起動していない。
+
+**performance_kfold予備run完了**：[run 143020の解析](../experiments/2026-09-25_onb_run_143020_analysis/README.md)で、6/11学習→6/18評価、3/22 kHz clean、seed 42を確認した。3 kHzでは統合が全域RMSEを最良単体より9.2 kW/m²改善した一方、ONB RMSEは最良Conformerより45.4 kW/m²悪化した。22 kHzの全域改善はAlexNet比0.35 kW/m²に留まり、ONB RMSEは33.4 kW/m²悪化した。全域の正負bias相殺には有効だが、全域R²重みはONBを保護しない。IGは3 kHzで主10例全収束、22 kHz Conformerは3/5のみ収束、Grad-CAMは10/10失敗した。今回のrunは選別`1e-9`あり、内部3-fold、cleanのみ、1 seed、等重みなしであり、作成済みの選別なし・5-fold・7 SNR・3 seed本比較とは異なるため予備結果として扱う。次はclean-only/matchedの主従を固定し、XAIを外した本比較をseed 42で監査してから残りseedへ進む。
 
 **ensemble結果の保存日付階層を整理**：[9/25保存日付階層整理](../experiments/2026-09-25_ensemble_date_layout/README.md)で、今後のONB結果を`regression_result/npy/ensemble/YYYYMM/DD/条件/`へ保存するよう変更した。日付付き既存55系列（389,580ファイル、約34.27 GB）も同形式へ移動し、全系列で移動前後のファイル数・総byte数が一致した。日付情報のない旧系列は推測で移動していない。
 

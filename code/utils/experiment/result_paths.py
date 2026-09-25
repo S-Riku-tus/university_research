@@ -51,16 +51,16 @@ def _day_list(days):
 
 
 def _policy_segment(job, config, compact=False):
+    from utils.experiment.learning_policy import experiment_split_kind
     policy = config.get("learning_policy", {})
-    split_mode = policy.get("split_mode", "within_day")
-    all_days = list(config.get("data", {}).get("experiment_names", []))
+    split_kind = experiment_split_kind(policy)
     test_day = job.get("experiment_name")
-    if split_mode == "explicit_days":
+    if split_kind == "cross_day":
         train_days = list(policy.get("train_experiments", []))
         test_days = list(policy.get("test_experiments", []))
         code = "xd"
-    elif split_mode == "leave_one_day_out":
-        train_days = [day for day in all_days if day != test_day]
+    elif split_kind == "leave_one_day_out":
+        train_days = [day for day in policy["train_experiments"] if day != test_day]
         test_days = [test_day]
         code = "lo"
     else:
@@ -103,8 +103,7 @@ def result_scope_dir_name(
     if not 1 <= parameter_index <= parameter_count:
         raise ValueError("parameter_index must be within parameter_count")
     policy = config.get("learning_policy", {})
-    validation = "iw" if policy.get("internal_validation", "chunk_kfold") == "wav_kfold" else "ic"
-    validation += str(config.get("run", {}).get("folds", "x"))
+    validation = "iw" + str(config.get("run", {}).get("folds", "x"))
     noise = "nc" if policy.get("training_noise") == "clean_only" else "nm"
     epochs = config.get("run", {}).get("epochs", "x")
     prefix = safe_tag(str(base_name).split("__", 1)[0], max_len=12)

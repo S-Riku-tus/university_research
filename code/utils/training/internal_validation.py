@@ -1,4 +1,4 @@
-"""Ordinary KFold on training days; estimate individual-performance weights."""
+"""Source-WAV-disjoint KFold on training days for performance weights."""
 import gc
 
 import numpy as np
@@ -12,16 +12,12 @@ from utils.experiment.run_helpers import set_global_seed
 from utils.models.regression.base_regression import RegressionModelMaker
 
 
-def internal_splits(metadata, folds, seed, mode="chunk_kfold"):
+def internal_splits(metadata, folds, seed):
     splitter = KFold(n_splits=folds, shuffle=True, random_state=seed)
-    if mode == "chunk_kfold":
-        return list(splitter.split(np.arange(len(metadata))))
-    if mode == "wav_kfold":
-        groups = wav_groups(metadata)
-        unique = np.unique(groups)
-        return [(np.flatnonzero(np.isin(groups, unique[fit])), np.flatnonzero(np.isin(groups, unique[held])))
-                for fit, held in splitter.split(unique)]
-    raise ValueError(f"Unknown internal validation: {mode}")
+    groups = wav_groups(metadata)
+    unique = np.unique(groups)
+    return [(np.flatnonzero(np.isin(groups, unique[fit])), np.flatnonzero(np.isin(groups, unique[held])))
+            for fit, held in splitter.split(unique)]
 
 
 def _validation_errors(y, predictions):
@@ -33,7 +29,7 @@ def _validation_errors(y, predictions):
 
 
 def fit_individual_performance_cv(trainer, specs, x, y, metadata, selector,
-                                  folds, seed, mode, pca_components, epochs):
+                                  folds, seed, pca_components, epochs):
     """Test data never enter this API. Apply selection to inner-fit only.
 
     Peak-height selection is fixed by config; the legacy quantile estimator and
@@ -43,11 +39,11 @@ def fit_individual_performance_cv(trainer, specs, x, y, metadata, selector,
     groups = wav_groups(metadata)
     records, coverage = [], np.zeros(len(y), dtype=int)
     print(
-        f"[internal validation] {mode}, folds={folds}; "
+        f"[internal validation] wav_kfold, folds={folds}; "
         "inner epoch progress is hidden and each fold/model is reported.",
         flush=True,
     )
-    for fold, (fit, held) in enumerate(internal_splits(metadata, folds, seed, mode), 1):
+    for fold, (fit, held) in enumerate(internal_splits(metadata, folds, seed), 1):
         selected, selection = selector.select([metadata[i] for i in fit])
         fit = fit[selected]
         scaler = MinMaxScaler()
@@ -60,7 +56,7 @@ def fit_individual_performance_cv(trainer, specs, x, y, metadata, selector,
         for spec in specs:
             set_global_seed(seed + fold)
             inner_spec = {**spec, "fit_verbose": 0}
-            print(f"Internal {mode} {fold}/{folds}: {spec['key']}", flush=True)
+            print(f"Internal wav_kfold {fold}/{folds}: {spec['key']}", flush=True)
             model, history = trainer.train_one_model(inner_spec, RegressionModelMaker(tuple(x.shape[1:])),
                                                      x_fit, scaled, x_pca,
                                                      epochs[spec["key"]] if isinstance(epochs, dict) else epochs)
@@ -76,7 +72,7 @@ def fit_individual_performance_cv(trainer, specs, x, y, metadata, selector,
     if np.var(y) == 0:
         raise ValueError("Internal performance weighting requires varying heat flux")
     errors, score_unit = _validation_errors(y, predictions)
-    audit = {"method": mode, "shuffle": True, "random_state": seed, "folds": records,
+    audit = {"method": "wav_kfold", "shuffle": True, "random_state": seed, "folds": records,
              "weight_formula": f"normalize(1 / max(1 - {score_unit}, 1e-6))",
              "score_unit": score_unit,
              "internal_score_scope": "training-day model selection only; not unknown-recording performance",

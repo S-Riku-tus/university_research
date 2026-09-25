@@ -20,10 +20,8 @@
       "skip_missing_datasets": false
     },
     "learning_policy": {
-      "split_mode": "explicit_days",
       "train_experiments": ["2025.06.11_0.3_2"],
       "test_experiments": ["2025.06.18_0.3_3"],
-      "internal_validation": "wav_kfold",
       "training_noise": "matched"
     },
     "acoustic_selection": {"peak_height_threshold": 1e-9},

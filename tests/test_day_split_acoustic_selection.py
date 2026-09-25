@@ -29,9 +29,8 @@ class DaySelectionTest(unittest.TestCase):
         self.assertEqual(result, {"a": .5, "b": .5})
 
     def policy(self):
-        return {"split_mode": "explicit_days", "training_noise": "clean_only",
-                "train_experiments": ["day-a", "day-c"], "test_experiments": ["day-b"],
-                "internal_validation": "chunk_kfold"}
+        return {"training_noise": "clean_only",
+                "train_experiments": ["day-a", "day-c"], "test_experiments": ["day-b"]}
 
     def test_bad_day_selection_rejected(self):
         for updates in ({"test_experiments": ["day-a"]}, {"train_experiments": []},
@@ -39,17 +38,17 @@ class DaySelectionTest(unittest.TestCase):
             with self.subTest(updates=updates), self.assertRaises(ValueError):
                 normalize_learning_policy({**self.policy(), **updates}, ["day-a", "day-b", "day-c"])
 
-    def test_ordinary_kfold_modes_cover_once(self):
+    def test_wav_kfold_covers_once_without_recording_leakage(self):
         rows = [{"experiment_name": "a", "source_wav_id": f"wav-{i // 4}", "chunk_index": i % 4}
                 for i in range(24)]
-        for mode in ("chunk_kfold", "wav_kfold"):
-            splits = internal_splits(rows, 3, 42, mode)
-            self.assertEqual(sorted(np.concatenate([held for _, held in splits]).tolist()), list(range(24)))
-            shared = []
-            for fit, held in splits:
-                self.assertFalse(set(fit) & set(held))
-                shared.append({rows[i]["source_wav_id"] for i in fit} & {rows[i]["source_wav_id"] for i in held})
-            self.assertEqual(any(shared), mode == "chunk_kfold")
+        splits = internal_splits(rows, 3, 42)
+        self.assertEqual(sorted(np.concatenate([held for _, held in splits]).tolist()), list(range(24)))
+        for fit, held in splits:
+            self.assertFalse(set(fit) & set(held))
+            self.assertFalse(
+                {rows[i]["source_wav_id"] for i in fit}
+                & {rows[i]["source_wav_id"] for i in held}
+            )
 
     def test_wav_kfold_weights_score_each_held_out_chunk(self):
         targets = np.repeat([0.0, 10.0, 20.0, 30.0], 3)
@@ -138,7 +137,7 @@ class DaySelectionTest(unittest.TestCase):
                 if "performance_kfold" in strategy_names:
                     internal = json.loads((directory / "internal_validation_fold1.json").read_text())
                     self.assertEqual(len(internal["samples"]), 24)
-                    self.assertTrue(all(f["shared_source_wavs"] > 0 for f in internal["folds"]))
+                    self.assertTrue(all(f["shared_source_wavs"] == 0 for f in internal["folds"]))
                 else:
                     crossfit = json.loads((directory / "ensemble_crossfit_fit_f1.json").read_text())
                     self.assertEqual(len(crossfit["splits"]), 4)

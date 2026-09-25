@@ -154,8 +154,10 @@ class CrossfitPipelineTest(unittest.TestCase):
         for split in ("within_day", "leave_one_day_out"):
             for noise in ("matched", "clean_only"):
                 with self.subTest(split=split, noise=noise), tempfile.TemporaryDirectory() as temp:
-                    policy = {"split_mode": split, "training_noise": noise}
-                    jobs, specs, baseline, config = fixture(Path(temp), policy)
+                    days = ["day-a"] if split == "within_day" else ["day-a", "day-b"]
+                    policy = {"training_noise": noise,
+                              "train_experiments": days, "test_experiments": days}
+                    jobs, specs, baseline, config = fixture(Path(temp), policy, days=days)
                     manager = EnsembleManager(
                         {"enabled_strategy_names": ["simple_equal", "inner_holdout", *NAMES]},
                         [s["key"] for s in specs],
@@ -173,7 +175,7 @@ class CrossfitPipelineTest(unittest.TestCase):
                         call()
                     self.assertEqual(len(trainer.fits), count)
                     folds = 3 if split == "within_day" else 1
-                    families = 2 * (2 if noise == "matched" else 1)
+                    families = len(days) * (2 if noise == "matched" else 1)
                     self.assertEqual(count, families * folds * 2 * 6)  # holdout + 4 shared OOF + outer
                     if noise == "clean_only":
                         self.assertTrue(all(np.max(x[:, 0, 0, 0]) < 1000 for x in trainer.fits + trainer.pca_fits))

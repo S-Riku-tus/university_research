@@ -17,7 +17,9 @@ conditions:
   max_frequency_hz: []
   evaluation_noise: []
   reference_snr_definition: fixed_global_rms
-  split_mode: within_day
+  train_experiments: []
+  test_experiments: []
+  evaluation_scheme: ""  # 日付リストから導出: within_day / leave_one_day_out / cross_day
   training_noise: matched
   outer_group: experiment_and_source_wav
   folds: null

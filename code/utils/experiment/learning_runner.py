@@ -24,7 +24,7 @@ from utils.explainability.training_integration import (
 )
 from utils.experiment.learning_policy import (
     aligned_indices, build_learning_families, checked_metadata, outer_splits,
-    targets_from_metadata, wav_groups,
+    experiment_split_kind, targets_from_metadata, wav_groups,
 )
 from utils.experiment.result_paths import existing_result_run_path, result_run_path, scoped_result_job
 from utils.experiment.run_helpers import (
@@ -244,7 +244,8 @@ def run_learning_experiments(jobs, policy, config, enabled_specs, parameter_sets
     )
     if performance_cv and "inner_holdout" in ensemble_manager.selected_strategy_names:
         raise ValueError("performance_kfoldとinner_holdoutは重み推定が異なるため同時選択できません。")
-    if selector.enabled and policy["split_mode"] == "within_day":
+    split_kind = experiment_split_kind(policy)
+    if selector.enabled and split_kind == "within_day":
         raise ValueError("学習選別は実験日を分離した評価で使用してください。")
     if (selector.enabled and not performance_cv and selector.mode != "peak_height"
             and (crossfit_cv or "inner_holdout" in ensemble_manager.selected_strategy_names)):
@@ -256,7 +257,7 @@ def run_learning_experiments(jobs, policy, config, enabled_specs, parameter_sets
     reference_metadata = {}
     for family_i, family in enumerate(families, 1):
         context = dict(family["context"])
-        fold_count = config["run"]["folds"] if policy["split_mode"] == "within_day" else 1
+        fold_count = config["run"]["folds"] if split_kind == "within_day" else 1
         context["outer_folds_per_evaluation_day"] = fold_count
         context["training_datasets"] = [{key: str(job[key]) for key in
                                         ("experiment_name", "data_path", "noise_dir_name", "max_freq_hz")}
@@ -345,7 +346,7 @@ def run_learning_experiments(jobs, policy, config, enabled_specs, parameter_sets
                     reference_metadata[identity] = metadata
                 metadata_by_noise[job["noise_dir_name"]] = metadata
                 splits_by_noise[job["noise_dir_name"]] = outer_splits(
-                    train_metadata, metadata, policy["split_mode"], fold_count)
+                    train_metadata, metadata, fold_count)
             for fold in range(1, fold_count + 1):
                 fit_indices = next(iter(splits_by_noise.values()))[fold - 1][0]
                 x_fit, y_fit = x[fit_indices], y[fit_indices]
@@ -361,7 +362,6 @@ def run_learning_experiments(jobs, policy, config, enabled_specs, parameter_sets
                     inner_errors, internal_audit = fit_individual_performance_cv(
                         trainer, specs, x_fit, y_fit, [train_metadata[i] for i in fit_indices], selector,
                         config["run"]["folds"], config["run"]["random_seed"],
-                        policy.get("internal_validation", "chunk_kfold"),
                         config["features"]["pca_components"], model_epochs)
                     for recorder in recorders:
                         write_json(recorder.path / f"internal_validation_fold{fold}.json", internal_audit)
