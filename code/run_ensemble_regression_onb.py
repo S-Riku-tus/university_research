@@ -79,7 +79,7 @@ from utils.experiment.run_helpers import set_global_seed
 VALIDATION_CONFIG = apply_onb_defaults({
     "run": {
         "smoke_test": False,
-        "epochs": 200,
+        "epochs": 150,
         "folds": 3,
         "smoke_folds": 2,
         "color_channel": 1,
@@ -180,7 +180,7 @@ VALIDATION_CONFIG = apply_onb_defaults({
         # 実装済み方式をここへ残し、使用する方式だけコメントを外す。
         "enabled_strategy_names": [
             "performance_kfold",  # 元WAV非共有K-foldの全OOF単体R²から逆誤差重みを求める主方式
-            # "simple_equal",  # 全モデルを同じ重みで平均する固定対照
+            "simple_equal",  # 全モデルを同じ重みで平均する固定対照
             # "inner_holdout",  # 学習WAVの約20%を一度だけ分離し単体R²から重みを求める旧方式
             # "subset_equal_cv",  # OOF上で単体を含む全モデル部分集合から等重みの最良候補を選ぶ
             # "crossfit_wav_stack",  # OOFの統合後WAV誤差を最小化する非負連続重みstacking
