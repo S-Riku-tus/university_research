@@ -74,10 +74,7 @@ from utils.experiment.run_helpers import set_global_seed
 VALIDATION_CONFIG = apply_onb_defaults({
     "run": {
         "smoke_test": False,
-        # 深層モデルの全fitで常にこの値を使用する。
         "epochs": 200,
-        # performance_kfoldでは、学習日の元WAVをこのfold数でOOF予測する。
-        # 18 WAVの5-foldは、各回14/15 WAVで学習し3/4 WAVを検証する。
         "folds": 5,
         "smoke_folds": 2,
         "color_channel": 1,
@@ -119,12 +116,12 @@ VALIDATION_CONFIG = apply_onb_defaults({
         "train_experiments": [
             "2025.06.11_0.3_2",
             # "2025.07.09_0.3_1",
-            "2025.06.18_0.3_3",
+            # "2025.06.18_0.3_3",
             ],
         "test_experiments": [
             # "2025.06.11_0.3_2",
-            "2025.07.09_0.3_1",
-            # "2025.06.18_0.3_3",
+            # "2025.07.09_0.3_1",
+            "2025.06.18_0.3_3",
             ],
         # 重み決定でも同じ元WAVの1秒区間を学習・検証へ分けない。
         # 内部fold数はrun.folds。chunk_kfoldは旧比較の再現時だけ使う。
