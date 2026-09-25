@@ -39,15 +39,6 @@
       "enabled": false,
       "peak_height_threshold": null
     },
-    "training_validation": {
-      "enabled": true,
-      "mode": "wav_kfold",
-      "folds": 3,
-      "checkpoint_interval_epochs": 10,
-      "minimum_epoch": 10,
-      "selection_metric": "rmse_all",
-      "select_epochs": true
-    },
     "ensemble": {
       "enabled_strategy_names": ["simple_equal", "inner_holdout"]
     },

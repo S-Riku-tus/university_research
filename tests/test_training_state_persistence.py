@@ -13,7 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "code"))
 
 from utils.ensemble.ensemble_runtime import EnsembleManager  # noqa: E402
-from utils.config.onb_defaults import apply_onb_defaults, onb_model_specs  # noqa: E402
+from utils.config.onb_defaults import onb_model_specs  # noqa: E402
 from utils.experiment.run_helpers import set_global_seed  # noqa: E402
 from utils.models.regression.base_regression import RegressionModelMaker  # noqa: E402
 from utils.training.fitted_artifacts import (  # noqa: E402
@@ -38,9 +38,6 @@ def tiny_builder(model_maker):
 class TrainingStatePersistenceTest(unittest.TestCase):
     def setUp(self):
         keras.utils.set_random_seed(42)
-
-    def test_defaults_do_not_add_epoch_selection_validation(self):
-        self.assertNotIn("training_validation", apply_onb_defaults({}))
 
     def test_production_randomforest_uses_current_run_seed(self):
         rng = np.random.default_rng(5)

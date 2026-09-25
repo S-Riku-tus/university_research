@@ -31,10 +31,6 @@ ConformerとAlexNetは、内部K-fold学習と最終学習の両方で常に`run
 5. `crossfit_wav_stack`: crossfit予測によるWAV単位制約付きstacking
 6. `crossfit_shrinkage_stack`: 等重みへの縮小を加えたWAV単位stacking
 
-### 9/25に削除した`val_fold_legacy`との違い
-
-旧`val_fold_legacy`は、外側の評価foldに対する3モデルの予測と正解から単体R²を計算し、その同じ評価foldを統合して性能を出していた。すなわち、重み決定と性能評価に同じ正解を使うためデータリークになる。`performance_kfold`は学習集合の内部OOFだけで重みを決め、重みを固定してから外側評価データへ適用する。研究で必要なのは後者だけであるため、`val_fold_legacy`の実行経路は削除した。過去の結果ファイル・実験記録は当時の履歴として保持する。
-
 ## 1. 共通する記号と最終的な統合式
 
 モデル数を $M=3$ とし、モデルを $m=1,2,3$ で表す。

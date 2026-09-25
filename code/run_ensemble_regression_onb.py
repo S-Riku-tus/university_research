@@ -419,10 +419,6 @@ def update_noise_trend_plots(plotter, job, run_dir, run_hash, model_keys):
 
 
 def validate_validation_config(enabled_specs):
-    if "training_validation" in VALIDATION_CONFIG:
-        raise ValueError(
-            "training_validationは廃止しました。学習epochはrun.epochsに指定してください。"
-        )
     if (LEARNING_POLICY["split_mode"] == "within_day" or "performance_kfold" in ENSEMBLE_MANAGER.selected_strategy_names) and DIVISIONS < 2:
         raise ValueError("folds must be at least 2.")
     if not PARAMETER_SETS:
