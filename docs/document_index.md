@@ -7,6 +7,8 @@
 | 目的 | 読む文書 | 更新方法 |
 |---|---|---|
 | 次の作業を始める | [研究の現在地](research_status.md) | 状態・本人の希望・次の一手を更新する唯一の入口 |
+| clean_only・matchedの3 seed結論と次の実験を確認する | [performance_kfold 3 seed比較](../experiments/2026-09-26_clean_matched_performance_kfold_3seed/README.md) | 6 run・42条件、seed安定性、重み順位移送、採否基準、追加方式の事後診断を固定 |
+| 9/25～26完成のclean_only・matched結果を比較する | [clean_only・matched比較解析](../experiments/2026-09-26_clean_only_vs_matched_analysis/README.md) | 同一6/11学習のnoise方針、performance重み、ONB誤報、7/9追加悪化を分離して記録 |
 | 現行の日付分割とperformance_kfold内部検証を確認する | [WAV固定内部検証と日付リスト分割](../experiments/2026-09-25_wav_kfold_and_inferred_day_split/README.md) | 旧2設定の削除、自動判定3規則、部分重複拒否、検証範囲を固定 |
 | 9/25完了のperformance_kfold予備runを確認する | [run 143020の解析](../experiments/2026-09-25_onb_run_143020_analysis/README.md) | 3/22 kHz clean、選別あり・3-fold・1 seedの性能、ONBとのトレードオフ、XAI品質、本比較との差を固定 |
 | 9/25進捗報告の修正点と次の研究順序を確認する | [9/25報告レビューと段階的研究方針](research_plan/2026-09-25_weekly_report_review_and_next_steps.md) | Aの不足、事実と解釈、clean-only/matchedの研究質問、performance_kfold→選別→説明性の順序を整理 |

@@ -2,6 +2,14 @@
 
 このページは**日付ごとの履歴**。各節の「現在」「次にやること」は当時の記録であり、現在の未完了作業とは限らない。最新の状態は[研究の現在地](research_status.md)、更新関係は[文書案内](document_index.md)を読む。
 
+## 2026-09-26 clean_only・matched・performance_kfold 3 seed比較
+
+- [3 seed比較](../experiments/2026-09-26_clean_matched_performance_kfold_3seed/README.md)で、6/11学習→6/18評価、22 kHz、選別なし、150 epochsのmatched／clean_only計6 run・42条件を監査した。
+- noiseあり平均RMSEはmatchedでRF 96.24±0.24、performance 97.73±2.29、等重み97.66±1.33 kW/m²。seed 42で見えたperformanceのRF比改善はseed 43・44で安定せず、最良単体2%以内も11/21で基準未達。
+- clean_onlyではRFがnoiseあり18/18条件で全域最良。deep・統合のONB近傍RMSE低下は正biasと誤報増加を伴い、強noiseでは全陽性化した。
+- 内部最大重みモデルと別日全域最良単体の一致は9/21、順位相関は平均.214。ONB近傍は7/21、.048であり、全域OOF重みはONBと日間順位移送を解決しない。
+- 保存済みOOFを用いた追加3方式の事後診断も既存performance・等重み・RFを上回らず、本学習は後順位。次はclean・seed 42・無雑音だけで残るheld-out day方向を揃え、日別校正差を診断する。
+
 ## 2026-09-25 performance_kfoldを今後の主方式へ変更
 
 - 本人の理解とコードを照合し、直近runの3-foldは深層2モデルのepoch選択だけ、`inner_holdout`は18 WAV中4 WAVを使う単一分割だったことを確認した。

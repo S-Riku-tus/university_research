@@ -83,7 +83,7 @@ VALIDATION_CONFIG = apply_onb_defaults({
         "folds": 3,
         "smoke_folds": 2,
         "color_channel": 1,
-        "random_seed": 42,
+        "random_seed": 44,
         "loop_parameter_sets": True,
     },
     "data": {
@@ -128,7 +128,7 @@ VALIDATION_CONFIG = apply_onb_defaults({
         # clean_only: 無雑音だけで学習し、同じモデル・前処理・重みで
         #             全評価ノイズを予測する固定clean診断。
         # 評価ノイズ一覧から無雑音を外しても、学習には無雑音を読み込む。
-        "training_noise": "matched",
+        "training_noise": "clean_only",
     },
     "acoustic_selection": {
         # スペクトルの縦軸に引く横線。図の「×10^-9」表示で高さ1に相当。

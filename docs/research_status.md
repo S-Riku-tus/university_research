@@ -1,6 +1,10 @@
 # 研究の現在地と次にすること
 
-更新日: **2026-09-25（WAV固定内部検証・日付リスト分割まで反映）**。分位点ルール時点の状態は[変更前の記録](../experiments/2026-09-16_peak_height_selection/previous_documents/research_status.md)に保存した。
+更新日: **2026-09-26（clean_only・matched 3 seed比較まで反映）**。分位点ルール時点の状態は[変更前の記録](../experiments/2026-09-16_peak_height_selection/previous_documents/research_status.md)に保存した。
+
+**clean_only・matched 3 seed比較完了**：[3 seed解析](../experiments/2026-09-26_clean_matched_performance_kfold_3seed/README.md)で、6/11学習→6/18評価、22 kHz、選別なし、150 epochs、seed 42/43/44の計6 run・42条件を確認した。noiseあり平均RMSEはmatchedでRF 96.24±0.24、performance 97.73±2.29、等重み97.66±1.33 kW/m²となり、seed 42で見えたperformanceのRF比改善は安定しなかった。最良単体2%以内はperformance・等重みとも11/21で暫定14/21基準に未達、ONB近傍の最良単体超えは両方式0/21。clean_onlyではRFがnoiseあり18/18条件で全域最良、deep・統合は強noiseで誤報が急増した。内部最大重みと6/18全域最良単体の一致は9/21、平均順位相関.214で、順位移送が主な制約。保存OOFによる追加3方式の事後診断にも改善の見込みがなく、本学習は後順位とした。次は追加noise学習ではなく、clean・seed 42だけで残る2つの日方向を評価し、既存の6/11＋7/9→6/18と合わせて日間移送を診断する。
+
+**clean_only・matched新run解析**：[9/26比較解析](../experiments/2026-09-26_clean_only_vs_matched_analysis/README.md)で、22 kHz・選別なし・150 epochs・seed 42の3系列を確認した。同じ6/11学習ではclean予測が完全一致し、noiseあり平均RMSEはperformance統合がmatched 95.09、clean_only 145.26 kW/m²。matchedのRF比改善は0.87 kW/m²と小さく、ONB近傍では7/7条件で最良単体を超えなかった。clean_onlyはRFがnoiseあり6/6条件で全域最良で、deep・統合は強noiseで全陽性化した。6/11＋7/9 clean学習は全モデルの全域性能を悪化させ、内部重みがRFを.076まで下げた一方、6/18ではRFが7/7条件で最良だった。次は6/11→6/18のmatched/clean_onlyをseed 43・44で再現確認し、7/9追加seedより日別校正差の診断を優先する。
 
 **検証・分割設定を単純化**：[9/25実装記録](../experiments/2026-09-25_wav_kfold_and_inferred_day_split/README.md)で、`performance_kfold`の内部検証を常に元WAV非共有K-foldへ固定し、設定から`internal_validation`を削除した。`split_mode`も削除し、学習日・評価日のリスト関係から、同一1日=`within_day`、同一複数日=`leave_one_day_out`、完全分離=`cross_day`を導出する。一部重複は曖昧さとリーク防止のため停止する。現行6/11学習→6/18評価は`cross_day`・外側1-foldとして読込確認済み。本学習は起動していない。
 
