@@ -83,7 +83,7 @@ VALIDATION_CONFIG = apply_onb_defaults({
         "folds": 3,
         "smoke_folds": 2,
         "color_channel": 1,
-        "random_seed": 44,
+        "random_seed": 42,
         "loop_parameter_sets": True,
     },
     "data": {
@@ -116,12 +116,12 @@ VALIDATION_CONFIG = apply_onb_defaults({
         "train_experiments": [
             "2025.06.11_0.3_2",
             # "2025.07.09_0.3_1",
-            # "2025.06.18_0.3_3",
+            "2025.06.18_0.3_3",
             ],
         "test_experiments": [
             # "2025.06.11_0.3_2",
-            # "2025.07.09_0.3_1",
-            "2025.06.18_0.3_3",
+            "2025.07.09_0.3_1",
+            # "2025.06.18_0.3_3",
             ],
         # matched: ノイズ条件ごとに独立して学習し、PCA・scaler・epoch・
         #          アンサンブル重みもそのノイズの学習データから毎回求める。
