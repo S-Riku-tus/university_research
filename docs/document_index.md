@@ -1,12 +1,15 @@
 # 文書案内と更新ルール
 
-更新日: 2026-09-25。**現在の状態は一か所で更新し、過去の数値と判断は日付付き記録に残す。**
+更新日: 2026-09-27。**現在の状態は一か所で更新し、過去の数値と判断は日付付き記録に残す。**
 
 ## 読む順序と各文書の役割
 
 | 目的 | 読む文書 | 更新方法 |
 |---|---|---|
 | 次の作業を始める | [研究の現在地](research_status.md) | 状態・本人の希望・次の一手を更新する唯一の入口 |
+| 逆方向5周波数×3 seed結果を見る | [6/18→6/11・5周波数解析](../experiments/2026-09-28_two_day_reverse_5freq_3seed/README.md) | 3–5 kHzのnoise耐性、3 kHz統合の成立範囲、22 kHz崩壊、重み移転、次の方向再現を固定 |
+| 6/11・6/18だけの双方向結果を見る | [2日双方向clean学習解析](../experiments/2026-09-27_two_day_bidirectional_clean_analysis/README.md) | clean転送、noise方向差、bias相殺、重み移転、次のseed再現を固定 |
+| 3日leave-one-day-outと7/9の崩れを確認する | [clean学習・3方向解析](../experiments/2026-09-27_leave_one_day_out_clean_analysis/README.md) | clean転送性能、内部―外部順位、7/9の予測・2.1–2.5 kHzピーク同時変化、次の原因識別を固定 |
 | clean_only・matchedの3 seed結論と次の実験を確認する | [performance_kfold 3 seed比較](../experiments/2026-09-26_clean_matched_performance_kfold_3seed/README.md) | 6 run・42条件、seed安定性、重み順位移送、採否基準、追加方式の事後診断を固定 |
 | 9/25～26完成のclean_only・matched結果を比較する | [clean_only・matched比較解析](../experiments/2026-09-26_clean_only_vs_matched_analysis/README.md) | 同一6/11学習のnoise方針、performance重み、ONB誤報、7/9追加悪化を分離して記録 |
 | 現行の日付分割とperformance_kfold内部検証を確認する | [WAV固定内部検証と日付リスト分割](../experiments/2026-09-25_wav_kfold_and_inferred_day_split/README.md) | 旧2設定の削除、自動判定3規則、部分重複拒否、検証範囲を固定 |

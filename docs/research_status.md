@@ -1,6 +1,12 @@
 # 研究の現在地と次にすること
 
-更新日: **2026-09-26（clean_only・matched 3 seed比較まで反映）**。分位点ルール時点の状態は[変更前の記録](../experiments/2026-09-16_peak_height_selection/previous_documents/research_status.md)に保存した。
+更新日: **2026-09-28（逆方向5周波数×3 seedまで反映）**。分位点ルール時点の状態は[変更前の記録](../experiments/2026-09-16_peak_height_selection/previous_documents/research_status.md)に保存した。
+
+**6/18 clean学習→6/11評価・5周波数×3 seed完了**：[5周波数解析](../experiments/2026-09-28_two_day_reverse_5freq_3seed/README.md)で、seed 42/43/44、3/5/10/15/22 kHz、各7 noiseの105条件を監査した。noiseあり平均RMSEは5 kHz RF 90.5±1.5が全方式中最小、3 kHzはAlexNet 91.1±6.7、performance 91.1±3.1、等重み92.0±3.0 kW/m²で近かった。22 kHzはRF 128.8±5.9に対しperformance 246.5±20.6、等重み216.3±6.8で、seed 42の高帯域noise崩壊が再現した。3 kHz等重みはRFを20/21条件で上回るが、最良単体勝利11/21・2%以内12/21で暫定14/21基準に未達。SNR 0・−4では3/3 seedで最良単体を上回る一方、−16・−20では0/3でAlexNet単体が優位。内部OOF最良と外部clean最良単体は15周波数×seed cell中0一致、平均順位相関−.700で、performanceを主方式にしない。次は順方向6/11→6/18の3・5 kHzをseed 42で確認し、低周波優位の方向再現後に追加seedと説明性へ進む。
+
+**6/11・6/18のみの双方向転送を確認**：[双方向解析](../experiments/2026-09-27_two_day_bidirectional_clean_analysis/README.md)で、今回の6/18 clean学習→6/11評価seed 42と、既存の6/11→6/18 seed 42を対応比較した。clean最良RMSEは順方向Conformer 75.2、逆方向RF 75.5 kW/m²で、2日限定の日付間転送は成立した。等重みは正負biasを相殺し、両方向でperformanceより良かった。内部OOF最大重みは両方向AlexNetだが外部最良はConformer・RFで一致0/2。noiseあり6条件平均RMSEは順方向RF 101.1・等重み137.1、逆方向RF 135.6・等重み215.8 kW/m²。逆方向ではSNR 0 dBから深層2モデル・両統合のONB前FPRが1となり、深層残差相関もclean .894から−20 dB .997へ上昇した。主対象を6月2日に限定可能だが、clean転送成立と未知noise耐性を分け、後者はRFが基準となる。次は逆方向clean_onlyを同じ7条件のままseed 43・44で再現する。
+
+**clean学習・3日leave-one-day-out完了**：[3方向解析](../experiments/2026-09-27_leave_one_day_out_clean_analysis/README.md)で、2日学習→残る1日評価をseed 42、22 kHz、選別なし、150 epochsで揃えた。clean全域RMSEは、6/18評価でRF 115.1・performance 120.5・等重み108.9、7/9評価でRF 274.4・performance 371.7・等重み353.2、6/11評価でRF 115.2・performance 116.3・等重み105.2 kW/m²だった。6/11・6/18への転送は成立したが、7/9では全モデルが大きく負bias化した。7/9の2.1–2.5 kHzピークと全モデル予測は720.7 kW/m²で同時に急変し、確定ONB 571.7 kW/m²より後まで低出力状態として扱われた。内部OOF最大重みは3方向すべてConformer、外部最良単体はRF・RF・AlexNetで一致0/3、performanceは3/3方向で等重みより悪かった。次はseed・fold追加ではなく、7/9の571.7・643.5・720.7 kW/m²を中心に波形・スペクトログラム・帯域PSD、録音条件、帯域除去/保持時の予測差を確認し、日付ドメインシフトの原因を識別する。
 
 **clean_only・matched 3 seed比較完了**：[3 seed解析](../experiments/2026-09-26_clean_matched_performance_kfold_3seed/README.md)で、6/11学習→6/18評価、22 kHz、選別なし、150 epochs、seed 42/43/44の計6 run・42条件を確認した。noiseあり平均RMSEはmatchedでRF 96.24±0.24、performance 97.73±2.29、等重み97.66±1.33 kW/m²となり、seed 42で見えたperformanceのRF比改善は安定しなかった。最良単体2%以内はperformance・等重みとも11/21で暫定14/21基準に未達、ONB近傍の最良単体超えは両方式0/21。clean_onlyではRFがnoiseあり18/18条件で全域最良、deep・統合は強noiseで誤報が急増した。内部最大重みと6/18全域最良単体の一致は9/21、平均順位相関.214で、順位移送が主な制約。保存OOFによる追加3方式の事後診断にも改善の見込みがなく、本学習は後順位とした。次は追加noise学習ではなく、clean・seed 42だけで残る2つの日方向を評価し、既存の6/11＋7/9→6/18と合わせて日間移送を診断する。
 

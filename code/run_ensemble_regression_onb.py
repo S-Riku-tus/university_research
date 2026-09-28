@@ -83,7 +83,7 @@ VALIDATION_CONFIG = apply_onb_defaults({
         "folds": 3,
         "smoke_folds": 2,
         "color_channel": 1,
-        "random_seed": 42,
+        "random_seed": 44,
         "loop_parameter_sets": True,
     },
     "data": {
@@ -91,10 +91,10 @@ VALIDATION_CONFIG = apply_onb_defaults({
         "noise_source": "waterflow",  # 水流音はwaterflow、白色雑音はwhitenoise
         "chunk_seconds": 1,
         "max_freq_hz_list": [
-            # "maxfreq=3kHz",
-            # "maxfreq=5kHz",
-            # "maxfreq=10kHz",
-            # "maxfreq=15kHz",
+            "maxfreq=3kHz",
+            "maxfreq=5kHz",
+            "maxfreq=10kHz",
+            "maxfreq=15kHz",
             "maxfreq=22kHz",
         ],
         "noise_dir_names": [
@@ -114,13 +114,13 @@ VALIDATION_CONFIG = apply_onb_defaults({
     },
     "learning_policy": {
         "train_experiments": [
-            "2025.06.11_0.3_2",
+            # "2025.06.11_0.3_2",
             # "2025.07.09_0.3_1",
             "2025.06.18_0.3_3",
             ],
         "test_experiments": [
-            # "2025.06.11_0.3_2",
-            "2025.07.09_0.3_1",
+            "2025.06.11_0.3_2",
+            # "2025.07.09_0.3_1",
             # "2025.06.18_0.3_3",
             ],
         # matched: ノイズ条件ごとに独立して学習し、PCA・scaler・epoch・
@@ -128,7 +128,7 @@ VALIDATION_CONFIG = apply_onb_defaults({
         # clean_only: 無雑音だけで学習し、同じモデル・前処理・重みで
         #             全評価ノイズを予測する固定clean診断。
         # 評価ノイズ一覧から無雑音を外しても、学習には無雑音を読み込む。
-        "training_noise": "clean_only",
+        "training_noise": "matched",
     },
     "acoustic_selection": {
         # スペクトルの縦軸に引く横線。図の「×10^-9」表示で高さ1に相当。

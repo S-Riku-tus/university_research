@@ -1,0 +1,3 @@
+direction,cells,best_model_match_count,best_model_match_rate,mean_spearman_rank,sd_spearman_rank
+0618_to_0611,15,0,0.0,-0.7,0.25354627641855504
+0611_to_0618,3,1,0.3333333333333333,0.3333333333333333,0.7637626158259733

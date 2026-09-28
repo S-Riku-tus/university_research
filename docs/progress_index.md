@@ -2,6 +2,30 @@
 
 このページは**日付ごとの履歴**。各節の「現在」「次にやること」は当時の記録であり、現在の未完了作業とは限らない。最新の状態は[研究の現在地](research_status.md)、更新関係は[文書案内](document_index.md)を読む。
 
+## 2026-09-28 6/18→6/11・5周波数×3 seed
+
+- [5周波数解析](../experiments/2026-09-28_two_day_reverse_5freq_3seed/README.md)で、seed 42/43/44、3/5/10/15/22 kHz、各7 noiseの105条件を確認した。
+- noise平均RMSEは5 kHz RF 90.5±1.5が最小。3 kHzではAlexNet・performance 91.1、等重み92.0 kW/m²で、15/22 kHzより大幅に安定した。
+- 3 kHz等重みはRFを20/21条件で上回るが、最良単体勝利11/21・2%以内12/21。moderate noiseでは有効、−16・−20 dBではAlexNet単体が優位だった。
+- 22 kHzのnoise平均はRF 128.8、performance 246.5、等重み216.3 kW/m²で、高帯域deep・統合の正biasと全陽性化が3 seedで再現した。
+- 内部OOF最良と外部clean最良単体は0/15、平均順位相関−.700。次は順方向の3・5 kHz seed 42で低周波優位を再現確認する。
+
+## 2026-09-27 6/11・6/18のみの双方向clean学習
+
+- [双方向解析](../experiments/2026-09-27_two_day_bidirectional_clean_analysis/README.md)で、6/18 clean学習→6/11評価seed 42の完了性と、既存の逆方向を比較した。
+- clean最良RMSEは6/11→6/18でConformer 75.2、6/18→6/11でRF 75.5 kW/m²。2日限定の転送は成立した。
+- 等重みはcleanの正負biasを相殺して両方向でperformanceを上回ったが、noiseでは全モデルが同方向へ誤り、RFが両方向で最良となった。
+- 逆方向noiseあり平均はRF 135.6、等重み215.8 kW/m²。深層2モデル・両統合はSNR 0 dBからONB前FPR 1となった。
+- 内部OOF最大重みは両方向AlexNetだが、外部最良単体との一致は0/2。次は逆方向seed 43・44を同条件で再現する。
+
+## 2026-09-27 clean学習・3日leave-one-day-out
+
+- [3方向解析](../experiments/2026-09-27_leave_one_day_out_clean_analysis/README.md)で、6/11・6/18・7/9のうち2日をclean学習、残る1日を外部評価する比較を揃えた。
+- 6/11・6/18評価は転送できたが、7/9評価は最良RFでもR² .105、RMSE 274.4 kW/m²、bias −195.6 kW/m²となり、日付依存が支配的だった。
+- 7/9では2.1–2.5 kHzピークと全モデル予測が720.7 kW/m²で同時に急変した。確定ONB 571.7 kW/m²から643.5 kW/m²までは低出力状態として予測された。
+- 内部OOF最大重みは3方向ともConformerだが、外部最良単体との一致は0/3。performanceは全3方向で等重みより悪く、最終方式には採用しない。
+- 次は追加seedより先に、7/9の波形・スペクトログラム、録音条件、帯域保持/除去による予測差を診断する。
+
 ## 2026-09-26 clean_only・matched・performance_kfold 3 seed比較
 
 - [3 seed比較](../experiments/2026-09-26_clean_matched_performance_kfold_3seed/README.md)で、6/11学習→6/18評価、22 kHz、選別なし、150 epochsのmatched／clean_only計6 run・42条件を監査した。
