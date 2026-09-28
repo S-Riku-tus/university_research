@@ -2,6 +2,14 @@
 
 このページは**日付ごとの履歴**。各節の「現在」「次にやること」は当時の記録であり、現在の未完了作業とは限らない。最新の状態は[研究の現在地](research_status.md)、更新関係は[文書案内](document_index.md)を読む。
 
+## 2026-09-28 3 kHz matched双方向・seed 42
+
+- [matched双方向解析](../experiments/2026-09-28_3khz_matched_bidirectional_seed42/README.md)で、2方向×7 noiseの14/14条件と各noiseの独立fitを確認した。
+- performanceのnoise平均RMSEは順方向でclean_only 92.6→matched 97.5と悪化、逆方向で93.8→76.2と改善し、効果が方向で反転した。
+- 双方向matchedはRF 86.8、performance 86.9、等重み86.5 kW/m²。performance固有の上積みは未確認。
+- performanceはFPR .113→.001、F1 .885→.912へ改善したが、ONB近傍RMSE 91.2→123.1、ROC-AUC .931→.927。逆方向強noiseのONB前過大予測を抑える校正効果が中心だった。
+- matched内部OOF最良と外部最良単体はnoise 12 cell中2一致、平均順位相関−.333。次は両日の日内固定holdoutでclean_only/matchedを比較してからチューニングへ進む。
+
 ## 2026-09-28 6/11・6/18双方向、3/5 kHz、3 seed
 
 後続の本人指示で、主方式はperformance_kfoldを継続し、3 kHzに集中する。日内固定テストの切替を実装し関連39テスト成功。[最新方針・matched比較・チューニング設計](research_plan/2026-09-28_3khz_matched_tuning_and_evaluation.md)、[実装記録](../experiments/2026-09-28_within_day_holdout/README.md)。以下は当初の解析時点の推奨を保持する。

@@ -1,0 +1,11 @@
+direction,model,max_abs_prediction_difference
+0611_to_0618,RandomForest,0.0
+0611_to_0618,Conformer,0.0
+0611_to_0618,AlexNet,0.0
+0611_to_0618,performance_kfold,0.0
+0611_to_0618,simple_equal,0.0
+0618_to_0611,RandomForest,0.0
+0618_to_0611,Conformer,0.0
+0618_to_0611,AlexNet,0.0
+0618_to_0611,performance_kfold,0.0
+0618_to_0611,simple_equal,0.0

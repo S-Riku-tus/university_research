@@ -1,0 +1,13 @@
+direction_scope,policy,condition_scope,cells,best_match,mean_spearman
+0611_to_0618,matched,all,7,1,-0.14285714285714285
+0611_to_0618,matched,noise,6,1,-0.08333333333333333
+0611_to_0618,clean_only,all,7,4,0.0
+0611_to_0618,clean_only,noise,6,4,0.08333333333333333
+0618_to_0611,matched,all,7,1,-0.5714285714285714
+0618_to_0611,matched,noise,6,1,-0.5833333333333334
+0618_to_0611,clean_only,all,7,1,0.0
+0618_to_0611,clean_only,noise,6,1,0.08333333333333333
+both,matched,all,14,2,-0.35714285714285715
+both,matched,noise,12,2,-0.3333333333333333
+both,clean_only,all,14,5,0.0
+both,clean_only,noise,12,5,0.08333333333333333
