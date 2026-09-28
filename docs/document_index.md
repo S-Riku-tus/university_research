@@ -7,6 +7,9 @@
 | 目的 | 読む文書 | 更新方法 |
 |---|---|---|
 | 次の作業を始める | [研究の現在地](research_status.md) | 状態・本人の希望・次の一手を更新する唯一の入口 |
+| 3 kHz固定、matched追加、チューニング、日内/別日評価を進める | [9/28本人方針と評価設計](research_plan/2026-09-28_3khz_matched_tuning_and_evaluation.md) | performance継続、WAV固定holdoutの設定、チューニング候補と学習側選択、次の6条件を記録 |
+| 6/11・6/18双方向、3/5 kHz、3 seedの結論を見る | [双方向低周波3 seed解析](../experiments/2026-09-28_bidirectional_lowfreq_3seed/README.md) | 84条件、方向別性能、3 kHz等重みの採用根拠、performance重み移転、次の帯域遮蔽を固定 |
+| 順方向3/5 kHz seed 42結果を見る | [6/11→6/18低周波解析](../experiments/2026-09-28_forward_lowfreq_seed42/README.md) | 低周波優位の方向再現、noiseによるbias相殺、統合の成立範囲、次のseedを固定 |
 | 逆方向5周波数×3 seed結果を見る | [6/18→6/11・5周波数解析](../experiments/2026-09-28_two_day_reverse_5freq_3seed/README.md) | 3–5 kHzのnoise耐性、3 kHz統合の成立範囲、22 kHz崩壊、重み移転、次の方向再現を固定 |
 | 6/11・6/18だけの双方向結果を見る | [2日双方向clean学習解析](../experiments/2026-09-27_two_day_bidirectional_clean_analysis/README.md) | clean転送、noise方向差、bias相殺、重み移転、次のseed再現を固定 |
 | 3日leave-one-day-outと7/9の崩れを確認する | [clean学習・3方向解析](../experiments/2026-09-27_leave_one_day_out_clean_analysis/README.md) | clean転送性能、内部―外部順位、7/9の予測・2.1–2.5 kHzピーク同時変化、次の原因識別を固定 |

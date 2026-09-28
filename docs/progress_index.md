@@ -2,6 +2,24 @@
 
 このページは**日付ごとの履歴**。各節の「現在」「次にやること」は当時の記録であり、現在の未完了作業とは限らない。最新の状態は[研究の現在地](research_status.md)、更新関係は[文書案内](document_index.md)を読む。
 
+## 2026-09-28 6/11・6/18双方向、3/5 kHz、3 seed
+
+後続の本人指示で、主方式はperformance_kfoldを継続し、3 kHzに集中する。日内固定テストの切替を実装し関連39テスト成功。[最新方針・matched比較・チューニング設計](research_plan/2026-09-28_3khz_matched_tuning_and_evaluation.md)、[実装記録](../experiments/2026-09-28_within_day_holdout/README.md)。以下は当初の解析時点の推奨を保持する。
+
+- [双方向低周波3 seed解析](../experiments/2026-09-28_bidirectional_lowfreq_3seed/README.md)で、2方向×3 seed×2周波数×7条件の84条件を揃えた。
+- noiseあり双方向平均RMSEは3 kHz performance 91.5±2.8、等重み92.4±2.4 kW/m²。3 kHz等重みはRFを37/42条件で上回り、方向間で最も安定した主候補となった。
+- 5 kHz等重みは順方向で最良単体に14/21条件で勝ったが、逆方向では3/21。順方向だけの成功で最終方式にしない。
+- 内部OOF最良と外部clean最良単体は0/12、平均順位相関−.667。`performance_kfold`は主方式でなく比較・診断方式とする。
+- 順方向のnoise改善はclean正biasの相殺を含む。次は追加seedでなく、3 kHz固定で2.1–2.5 kHz帯と隣接帯域の同幅遮蔽を行い、低周波優位の原因を識別する。
+
+## 2026-09-28 6/11→6/18・3/5 kHz seed 42
+
+- [順方向低周波解析](../experiments/2026-09-28_forward_lowfreq_seed42/README.md)で14/14条件を確認し、3/5 kHzの低周波優位が逆方向だけでないことを予備確認した。
+- noise平均RMSEは3 kHz performance 92.6・等重み92.9、5 kHz AlexNet 94.4・等重み96.7 kW/m²で、22 kHz統合137～145より良かった。
+- 5 kHz等重みはRFに6/7、最良単体に4/7で勝利。−20 dBではAlexNet単体が統合より良く、moderate noiseまでという境界は逆方向と整合した。
+- 3/5 kHz deep modelはcleanの正biasをnoiseが相殺してRMSEが改善した。単純なnoise不変性とは解釈しない。
+- 次は同条件のseed 43・44を実行し、双方向×3 seedで周波数・方式を判断する。
+
 ## 2026-09-28 6/18→6/11・5周波数×3 seed
 
 - [5周波数解析](../experiments/2026-09-28_two_day_reverse_5freq_3seed/README.md)で、seed 42/43/44、3/5/10/15/22 kHz、各7 noiseの105条件を確認した。

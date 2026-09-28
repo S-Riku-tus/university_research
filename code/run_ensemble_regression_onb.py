@@ -68,7 +68,7 @@ from utils.experiment.run_helpers import set_global_seed
 #
 # 現在の設定の読み方:
 # ・目的: 同じ検証予測から単体モデルと各アンサンブル方式を比較する。
-# ・データ: explicit_daysでは学習日とテスト日の和集合、他の分割ではexperiment_namesを使う。
+# ・評価: cross_dayは別日テスト、within_dayは指定した1日の元WAV固定holdout。
 # ・モデル: RF、CNN＋Transformer、AlexNet。
 # ・統合方式: ensembleに列挙した全方式を実行・評価する。
 # ・説明性: 有効なデータ条件・モデル・foldについて指定手法を実行する。
@@ -83,7 +83,7 @@ VALIDATION_CONFIG = apply_onb_defaults({
         "folds": 3,
         "smoke_folds": 2,
         "color_channel": 1,
-        "random_seed": 44,
+        "random_seed": 42,
         "loop_parameter_sets": True,
     },
     "data": {
@@ -92,10 +92,10 @@ VALIDATION_CONFIG = apply_onb_defaults({
         "chunk_seconds": 1,
         "max_freq_hz_list": [
             "maxfreq=3kHz",
-            "maxfreq=5kHz",
-            "maxfreq=10kHz",
-            "maxfreq=15kHz",
-            "maxfreq=22kHz",
+            # "maxfreq=5kHz",
+            # "maxfreq=10kHz",
+            # "maxfreq=15kHz",
+            # "maxfreq=22kHz",
         ],
         "noise_dir_names": [
             "heatflux_no_noise",
@@ -113,15 +113,23 @@ VALIDATION_CONFIG = apply_onb_defaults({
         },
     },
     "learning_policy": {
+        # cross_day: 下のtrain/test_experimentsを使用（実験日は完全分離）。
+        # within_day: within_day_experimentだけを使用し、下の2リストは参照しない。
+        # 元WAVを一度だけ分離し、残りのWAV内でrun.foldsの内部検証を行う。
+        "evaluation_mode": "cross_day",
+        "within_day_experiment": "2025.06.11_0.3_2",
+        "test_fraction": 0.25,  # 元WAV数の25%（端数切上げ）をテスト専用にする。
+        "test_split_seed": 42,  # 学習seedを変えてもテストWAVを固定する。
+        "test_stratify": "onb",  # ONB前／以上のWAV比率を保つ。noneなら単純ランダム。
         "train_experiments": [
-            # "2025.06.11_0.3_2",
-            # "2025.07.09_0.3_1",
-            "2025.06.18_0.3_3",
-            ],
-        "test_experiments": [
             "2025.06.11_0.3_2",
             # "2025.07.09_0.3_1",
             # "2025.06.18_0.3_3",
+            ],
+        "test_experiments": [
+            # "2025.06.11_0.3_2",
+            # "2025.07.09_0.3_1",
+            "2025.06.18_0.3_3",
             ],
         # matched: ノイズ条件ごとに独立して学習し、PCA・scaler・epoch・
         #          アンサンブル重みもそのノイズの学習データから毎回求める。
@@ -415,7 +423,7 @@ def update_noise_trend_plots(plotter, job, run_dir, run_hash, model_keys):
 
 
 def validate_validation_config(enabled_specs):
-    if (experiment_split_kind(LEARNING_POLICY) == "within_day"
+    if (experiment_split_kind(LEARNING_POLICY) in {"within_day", "within_day_holdout"}
             or "performance_kfold" in ENSEMBLE_MANAGER.selected_strategy_names) and DIVISIONS < 2:
         raise ValueError("folds must be at least 2.")
     if not PARAMETER_SETS:

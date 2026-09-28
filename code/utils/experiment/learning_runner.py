@@ -152,6 +152,11 @@ class ResultRecorder:
             "evaluation_wav_groups": sorted(set(wav_groups(metadata)[indices])),
             "evaluation_sample_indices": indices.tolist(),
             "n_training_chunks": len(training_groups), "n_evaluation_chunks": len(indices),
+            "evaluation_region_counts": ({
+                "pre_onb": int(np.sum(y_true < self.threshold)),
+                "post_onb": int(np.sum(y_true >= self.threshold)),
+                "onb_band": int(np.sum(np.abs(y_true - self.threshold) <= abs(self.threshold) * self.band)),
+            } if has_threshold(self.threshold) else {}),
             "inner_holdout_errors": inner_errors,
             "model_epochs": model_epochs or {},
         })
@@ -245,7 +250,7 @@ def run_learning_experiments(jobs, policy, config, enabled_specs, parameter_sets
     if performance_cv and "inner_holdout" in ensemble_manager.selected_strategy_names:
         raise ValueError("performance_kfoldとinner_holdoutは重み推定が異なるため同時選択できません。")
     split_kind = experiment_split_kind(policy)
-    if selector.enabled and split_kind == "within_day":
+    if selector.enabled and split_kind in {"within_day", "within_day_holdout"}:
         raise ValueError("学習選別は実験日を分離した評価で使用してください。")
     if (selector.enabled and not performance_cv and selector.mode != "peak_height"
             and (crossfit_cv or "inner_holdout" in ensemble_manager.selected_strategy_names)):
@@ -346,9 +351,11 @@ def run_learning_experiments(jobs, policy, config, enabled_specs, parameter_sets
                     reference_metadata[identity] = metadata
                 metadata_by_noise[job["noise_dir_name"]] = metadata
                 splits_by_noise[job["noise_dir_name"]] = outer_splits(
-                    train_metadata, metadata, fold_count)
+                    train_metadata, metadata, fold_count, policy=policy, threshold=job["threshold"])
             for fold in range(1, fold_count + 1):
                 fit_indices = next(iter(splits_by_noise.values()))[fold - 1][0]
+                if performance_cv and len(set(groups[fit_indices])) < config["run"]["folds"]:
+                    raise ValueError("外側テスト分離後の学習WAV数が内部fold数より少ないため検証できません。")
                 x_fit, y_fit = x[fit_indices], y[fit_indices]
                 fit_id = short_digest({"run_hash": run_hash, "context": context, "fold": fold,
                                        "instance": config["output"]["run_instance_id"],

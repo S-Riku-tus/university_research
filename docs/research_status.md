@@ -1,6 +1,10 @@
 # 研究の現在地と次にすること
 
-更新日: **2026-09-28（逆方向5周波数×3 seedまで反映）**。分位点ルール時点の状態は[変更前の記録](../experiments/2026-09-16_peak_height_selection/previous_documents/research_status.md)に保存した。
+更新日: **2026-09-28（6/11・6/18双方向、3/5 kHz、3 seedまで反映）**。分位点ルール時点の状態は[変更前の記録](../experiments/2026-09-16_peak_height_selection/previous_documents/research_status.md)に保存した。
+
+**9/28本人方針・評価切替実装（最新）**：主入力は3 kHz、主方式は本人希望の`performance_kfold`を継続し、等重みを対照に残す。下段の「等重みを主方式にする」というAI提案は採用しない。日内固定テストを`evaluation_mode="within_day"`で選択可能にした。指定1日の元WAVをONB前後で層化し25%を取り置き、残りで内部WAV 3-foldと最終学習を行う。`cross_day`は従来の別日評価。新旧分割・内部リーク防止・保存/再開の関連39テスト成功、実データ各7 noiseの分割照合済み。本学習は未実行。次は既存パラメータの3 kHz matchedを双方向seed 42、続いて日内clean_only/matchedを両日で比較する。その後、学習側だけで候補を選ぶ再チューニングへ進む。現行候補ループの外側テスト指標からパラメータを選ばない。[判断と操作](research_plan/2026-09-28_3khz_matched_tuning_and_evaluation.md)、[実装記録](../experiments/2026-09-28_within_day_holdout/README.md)。
+
+**6/11・6/18双方向、3/5 kHz、3 seed完了**：[双方向低周波3 seed解析](../experiments/2026-09-28_bidirectional_lowfreq_3seed/README.md)で84/84条件を揃えた。noiseあり双方向平均RMSEは3 kHz performance 91.5±2.8、等重み92.4±2.4 kW/m²で、等重みはRFを37/42条件で上回った。5 kHz等重みは順方向で最良単体に14/21条件で勝ったが、逆方向では3/21であり方向依存だった。内部OOF最良と外部clean最良単体は12 cell中0一致、平均順位相関−.667のため、`performance_kfold`を主方式とせず、3 kHz等重みを主候補、performanceを比較方式、3 kHz RFを同一入力の単体基準とする。順方向deep modelのnoise改善はclean正biasの相殺を含むためnoise不変とは解釈しない。次は追加seedでなく、clean・−4・強noiseを対象に2.1–2.5 kHz帯と隣接帯域の同幅遮蔽を行い、3 kHz優位の原因と予測変化を識別する。
 
 **6/18 clean学習→6/11評価・5周波数×3 seed完了**：[5周波数解析](../experiments/2026-09-28_two_day_reverse_5freq_3seed/README.md)で、seed 42/43/44、3/5/10/15/22 kHz、各7 noiseの105条件を監査した。noiseあり平均RMSEは5 kHz RF 90.5±1.5が全方式中最小、3 kHzはAlexNet 91.1±6.7、performance 91.1±3.1、等重み92.0±3.0 kW/m²で近かった。22 kHzはRF 128.8±5.9に対しperformance 246.5±20.6、等重み216.3±6.8で、seed 42の高帯域noise崩壊が再現した。3 kHz等重みはRFを20/21条件で上回るが、最良単体勝利11/21・2%以内12/21で暫定14/21基準に未達。SNR 0・−4では3/3 seedで最良単体を上回る一方、−16・−20では0/3でAlexNet単体が優位。内部OOF最良と外部clean最良単体は15周波数×seed cell中0一致、平均順位相関−.700で、performanceを主方式にしない。次は順方向6/11→6/18の3・5 kHzをseed 42で確認し、低周波優位の方向再現後に追加seedと説明性へ進む。
 

@@ -66,7 +66,7 @@ def _policy_segment(job, config, compact=False):
     else:
         train_days = [test_day]
         test_days = [test_day]
-        code = "wd"
+        code = "wh" if split_kind == "within_day_holdout" else "wd"
     if compact:
         train = f"{len(train_days)}d"
         test = _compact_day(test_days[0]) if len(test_days) == 1 else f"{len(test_days)}d"

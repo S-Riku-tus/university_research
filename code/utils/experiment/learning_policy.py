@@ -4,13 +4,29 @@ import json
 from pathlib import Path
 
 import numpy as np
-from sklearn.model_selection import GroupKFold
+from sklearn.model_selection import GroupKFold, GroupShuffleSplit, StratifiedShuffleSplit
 
 from utils.experiment.dataset_jobs import has_input_files
 
 
 DEFAULT_POLICY = {"training_noise": "matched"}
 CLEAN_NOISE = "heatflux_no_noise"
+
+
+def _resolved_day_policy(policy):
+    """明示した評価方式の実効日付を解決する。省略時は従来の日付推論。"""
+    policy = dict(policy or {})
+    mode = policy.get("evaluation_mode", "auto")
+    if mode not in {"auto", "cross_day", "within_day"}:
+        raise ValueError("evaluation_modeはcross_day、within_day、autoです。")
+    if mode == "within_day":
+        day = policy.get("within_day_experiment")
+        if not isinstance(day, str) or not day.strip():
+            raise ValueError("within_day_experimentに日内評価する実験日を指定してください。")
+        # cross_day用リストを編集せず、1個の実験日指定だけで切替可能にする。
+        policy["train_experiments"] = [day]
+        policy["test_experiments"] = [day]
+    return policy
 
 
 def _day_list(policy, key):
@@ -25,10 +41,15 @@ def _day_list(policy, key):
 
 
 def experiment_split_kind(policy):
-    """日付リストだけから評価方式を一意に決める。"""
+    """明示方式を優先し、省略時は従来どおり日付リストから決める。"""
+    policy = _resolved_day_policy(policy)
     train_days = _day_list(policy, "train_experiments")
     test_days = _day_list(policy, "test_experiments")
     train_set, test_set = set(train_days), set(test_days)
+    if policy.get("evaluation_mode") == "within_day":
+        return "within_day_holdout"
+    if policy.get("evaluation_mode") == "cross_day" and not train_set.isdisjoint(test_set):
+        raise ValueError("cross_dayでは学習日とテスト日を完全に分離してください。")
     if train_set.isdisjoint(test_set):
         return "cross_day"
     if train_set == test_set:
@@ -41,7 +62,7 @@ def experiment_split_kind(policy):
 
 def resolve_experiment_names(data_config, policy):
     """実行対象日を学習日とテスト日の和集合から一元化する。"""
-    policy = policy or {}
+    policy = _resolved_day_policy(policy)
     configured = data_config.get("experiment_names")
     if configured is not None and (
         not isinstance(configured, (list, tuple))
@@ -59,12 +80,22 @@ def resolve_experiment_names(data_config, policy):
 
 
 def normalize_learning_policy(policy, experiment_names, color_channel=1):
-    resolved = {**DEFAULT_POLICY, **(policy or {})}
-    extra_keys = {"train_experiments", "test_experiments"}
+    resolved = {**DEFAULT_POLICY, **_resolved_day_policy(policy)}
+    extra_keys = {"train_experiments", "test_experiments", "evaluation_mode",
+                  "within_day_experiment", "test_fraction", "test_split_seed", "test_stratify"}
     if set(resolved) - set(DEFAULT_POLICY) - extra_keys:
         raise ValueError(f"未知のlearning_policy設定です: {set(resolved) - set(DEFAULT_POLICY)}")
     if resolved["training_noise"] not in {"matched", "clean_only"}:
         raise ValueError("training_noiseはmatchedまたはclean_onlyです。")
+    if resolved.get("evaluation_mode") == "within_day":
+        fraction = resolved.setdefault("test_fraction", 0.25)
+        seed = resolved.setdefault("test_split_seed", 42)
+        if resolved.setdefault("test_stratify", "none") not in {"none", "onb"}:
+            raise ValueError("test_stratifyはonbまたはnoneです。")
+        if isinstance(fraction, bool) or not isinstance(fraction, (int, float)) or not 0 < fraction < 1:
+            raise ValueError("test_fractionは0より大きく1より小さい元WAV数の割合です。")
+        if isinstance(seed, bool) or not isinstance(seed, int) or not 0 <= seed < 2**32:
+            raise ValueError("test_split_seedは0以上2**32未満の整数です。")
     if len(set(experiment_names)) != len(experiment_names):
         raise ValueError("experiment_namesに同じ実験日を重複指定できません。")
     for key in ("train_experiments", "test_experiments"):
@@ -82,7 +113,8 @@ def normalize_learning_policy(policy, experiment_names, color_channel=1):
 
 def policy_result_date_dir(result_date_dir, policy):
     """保存系列パスの末尾へ学習・評価方針を付け、結果を分離する。"""
-    day = {"within_day": "wd", "leave_one_day_out": "lodo", "cross_day": "days"}[
+    day = {"within_day": "wd", "within_day_holdout": "wh",
+           "leave_one_day_out": "lodo", "cross_day": "days"}[
         experiment_split_kind(policy)
     ]
     noise = "clean" if policy["training_noise"] == "clean_only" else "matched"
@@ -109,7 +141,7 @@ def build_learning_families(jobs, policy, experiment_names):
         grouped.setdefault(key, []).append(job)
     families = []
     for (test_day, frequency, train_noise), evaluation_jobs in grouped.items():
-        if split_kind == "within_day":
+        if split_kind in {"within_day", "within_day_holdout"}:
             train_days = [test_day]
         elif split_kind == "leave_one_day_out":
             train_days = [day for day in policy["train_experiments"] if day != test_day]
@@ -144,6 +176,8 @@ def build_learning_families(jobs, policy, experiment_names):
             "evaluation_scheme": split_kind,
             "generalization_scope": ("within_experiment_source_wav_oof"
                                      if split_kind == "within_day"
+                                     else "within_experiment_source_wav_holdout"
+                                     if split_kind == "within_day_holdout"
                                      else "held_out_experiment_day"),
             "outer_folds_per_evaluation_day": None if split_kind == "within_day" else 1,
         }
@@ -203,7 +237,7 @@ def aligned_indices(reference, other):
     return indices
 
 
-def outer_splits(training_metadata, evaluation_metadata, folds):
+def outer_splits(training_metadata, evaluation_metadata, folds, policy=None, threshold=None):
     """学習側と評価側の添字を返し、元WAV・実験日の重複を検出する。"""
     train_groups = wav_groups(training_metadata)
     test_groups = wav_groups(evaluation_metadata)
@@ -211,9 +245,38 @@ def outer_splits(training_metadata, evaluation_metadata, folds):
     test_days = {row["experiment_name"] for row in evaluation_metadata}
     if training_days == test_days and len(training_days) == 1:
         alignment = aligned_indices(training_metadata, evaluation_metadata)
-        splitter = GroupKFold(n_splits=folds)
-        splits = [(fit, alignment[test]) for fit, test in
-                  splitter.split(np.zeros(len(train_groups)), groups=train_groups)]
+        if policy and experiment_split_kind(policy) == "within_day_holdout":
+            policy = normalize_learning_policy(policy, sorted(training_days))
+            if policy["test_stratify"] == "onb":
+                if threshold is None or not np.isfinite(threshold):
+                    raise ValueError("ONB層化分割には実験日の有限なONB閾値が必要です。")
+                unique = np.unique(train_groups)
+                targets = targets_from_metadata(training_metadata)
+                # 同じWAVの全chunkをまとめ、ONB前／以上の構成を保つ。
+                labels = []
+                for group in unique:
+                    group_labels = np.unique(targets[train_groups == group] >= threshold)
+                    if len(group_labels) != 1:
+                        raise ValueError("同じ元WAV内でONB前後が混在しているため層化できません。")
+                    labels.append(group_labels[0])
+                _, counts = np.unique(labels, return_counts=True)
+                if len(counts) != 2 or min(counts) < 2:
+                    raise ValueError("ONB層化にはONB前・以上それぞれ2本以上の元WAVが必要です。")
+                splitter = StratifiedShuffleSplit(n_splits=1, test_size=policy["test_fraction"],
+                                                 random_state=policy["test_split_seed"])
+                group_fit, group_test = next(splitter.split(unique, labels))
+                fit = np.flatnonzero(np.isin(train_groups, unique[group_fit]))
+                test = np.flatnonzero(np.isin(train_groups, unique[group_test]))
+                splits = [(fit, alignment[test])]
+            else:
+                splitter = GroupShuffleSplit(n_splits=1, test_size=policy["test_fraction"],
+                                             random_state=policy["test_split_seed"])
+                splits = [(fit, alignment[test]) for fit, test in
+                          splitter.split(np.zeros(len(train_groups)), groups=train_groups)]
+        else:
+            splitter = GroupKFold(n_splits=folds)
+            splits = [(fit, alignment[test]) for fit, test in
+                      splitter.split(np.zeros(len(train_groups)), groups=train_groups)]
     elif training_days.isdisjoint(test_days):
         splits = [(np.arange(len(train_groups)), np.arange(len(test_groups)))]
     else:

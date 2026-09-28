@@ -1,0 +1,43 @@
+{
+  "status": "planned_not_executed",
+  "purpose": "Separate noise adaptation and same-day versus cross-day evaluation at 3 kHz before tuning",
+  "usage": "Condition record; copy the scenario settings into VALIDATION_CONFIG. The ONB entrypoint does not automatically load this file.",
+  "common": {
+    "max_freq_hz_list": ["maxfreq=3kHz"],
+    "noise_dir_names": ["heatflux_no_noise", "heatflux_reference_SNR=0", "heatflux_reference_SNR=-4", "heatflux_reference_SNR=-8", "heatflux_reference_SNR=-12", "heatflux_reference_SNR=-16", "heatflux_reference_SNR=-20"],
+    "epochs": 150,
+    "folds": 3,
+    "random_seed": 42,
+    "peak_height_threshold": null,
+    "enabled_strategy_names": ["performance_kfold", "simple_equal"],
+    "pca_components": 100,
+    "explainability_enabled": false,
+    "test_fraction": 0.25,
+    "test_split_seed": 42,
+    "test_stratify": "onb",
+    "model_parameters": {
+      "randomforest": {"n_estimators": 300, "max_depth": 4, "subsample": 0.6, "colsample_bynode": 0.6},
+      "conformer": {"lr": 0.001, "batch_size": 12},
+      "alexnet": {"lr": 0.001, "batch_size": 12}
+    }
+  },
+  "scenarios_in_order": [
+    {"evaluation_mode": "cross_day", "training_noise": "matched", "train_experiments": ["2025.06.11_0.3_2"], "test_experiments": ["2025.06.18_0.3_3"]},
+    {"evaluation_mode": "cross_day", "training_noise": "matched", "train_experiments": ["2025.06.18_0.3_3"], "test_experiments": ["2025.06.11_0.3_2"]},
+    {"evaluation_mode": "within_day", "training_noise": "clean_only", "within_day_experiment": "2025.06.11_0.3_2"},
+    {"evaluation_mode": "within_day", "training_noise": "clean_only", "within_day_experiment": "2025.06.18_0.3_3"},
+    {"evaluation_mode": "within_day", "training_noise": "matched", "within_day_experiment": "2025.06.11_0.3_2"},
+    {"evaluation_mode": "within_day", "training_noise": "matched", "within_day_experiment": "2025.06.18_0.3_3"}
+  ],
+  "tuning_proposal_not_active": {
+    "selection_scope": "outer-training WAVs only; never select candidates using tuning_summary.csv outer-test scores",
+    "initial_objective": "clean pooled chunk OOF RMSE; within 2% choose lower FPR then higher recall",
+    "search_independently_per_model": true,
+    "candidates": {
+      "randomforest": {"n_estimators": [100, 300], "max_depth": [3, 4, 8]},
+      "conformer": {"lr": [0.0001, 0.0003, 0.001], "batch_size": [6, 12]},
+      "alexnet": {"lr": [0.0001, 0.0003, 0.001], "batch_size": [6, 12]}
+    },
+    "second_stage_epochs": [100, 150, 200]
+  }
+}
