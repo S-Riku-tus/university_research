@@ -2,6 +2,13 @@
 
 このページは**日付ごとの履歴**。各節の「現在」「次にやること」は当時の記録であり、現在の未完了作業とは限らない。最新の状態は[研究の現在地](research_status.md)、更新関係は[文書案内](document_index.md)を読む。
 
+## 2026-09-29 7/9対照と次の0.5秒比較
+
+- [7/9解析](../experiments/2026-09-29_within_wav_chunk_0709_analysis/README.md)で7/7条件、13 WAV、学習585／テスト195 chunk、clean_onlyの1 fit共有を確認した。
+- performanceはclean 103.29から−12 dB 239.66 kW/m²まで悪化後−20で219.06へ見かけ上回復したが、負biasの相殺であり6月と同じ単調trendではない。q100は全noiseで720.691 kW/m²、Recallはclean .667、−20 .600だった。
+- 571.7～643.5 kW/m²の大幅過小予測と720.7 kW/m²での急変が同日学習でも残り、7/9は6月pool・チューニングへ混ぜない補助対照とした。
+- [評価範囲と順序](research_plan/2026-09-29_scope_chunk_length_and_tuning.md)で未知WAV・未知日は直近優先から外し、次は6月統合0.5秒を1秒と対応時間区間で比較してから、採用chunk長だけをチューニングする方針を記録した。
+
 ## 2026-09-29 6/11＋6/18統合within_wav_chunk結果
 
 - [対応解析](../experiments/2026-09-29_within_wav_chunk_combined_analysis/README.md)で7/7条件、clean_onlyの1 fit、学習1,620／テスト540 chunk、単日runとの両日270/270対応を確認した。

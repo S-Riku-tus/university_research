@@ -1,0 +1,30 @@
+{
+  "run": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.07.09_0.3_1\\regression_result\\npy\\ensemble\\202609\\29\\onb_wc-t0709-v0709_iw3-nc_s0_e150_165729",
+  "threshold": 571694.252491167,
+  "conditions": {
+    "chunk_seconds": 1,
+    "max_frequency_khz": 3,
+    "training_noise": "clean_only",
+    "training_seed": 42,
+    "outer_split_seed": 42,
+    "epochs": 150,
+    "inner_wav_group_folds": 3,
+    "acoustic_selection": null,
+    "explainability": false
+  },
+  "completion": {
+    "conditions": 7,
+    "unique_fit_ids": [
+      "534b425f091a"
+    ],
+    "training_chunks": [
+      585
+    ],
+    "evaluation_chunks": [
+      195
+    ],
+    "source_wavs": [
+      13
+    ]
+  }
+}
