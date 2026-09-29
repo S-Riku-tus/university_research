@@ -2,6 +2,13 @@
 
 このページは**日付ごとの履歴**。各節の「現在」「次にやること」は当時の記録であり、現在の未完了作業とは限らない。最新の状態は[研究の現在地](research_status.md)、更新関係は[文書案内](document_index.md)を読む。
 
+## 2026-09-29 6/11・6/18単日within_wav_chunk解析
+
+- [解析記録](../experiments/2026-09-29_within_wav_chunk_single_day_analysis/README.md)で2 run・14/14条件、各WAV 45学習／15テスト、同一chunk重複0を確認した。
+- 従来WAV holdoutとの共通75 chunkではclean RMSEが6/11で7.59、6/18で7.98 kW/m²改善したが、同一WAVの別chunkを学習する既知WAV補間の利得を含む。
+- 6/18 −20 dBはRMSEとFPRが改善した一方Recallが1.000→.689へ低下し、低熱流束の誤報とONB以上の見逃しのトレードオフが残った。
+- performanceは等重みを平均で上回ったが、最良単体への勝利は6/11で5/7、6/18で0/7。統合分割を出典日ごとのseed 42へ修正し、単日runとのテストchunk一致を両日270/270にした。主コードは統合1秒・3 kHz・clean_onlyを次に実行する設定へ変更済み。
+
 ## 2026-09-29 6/11＋6/18統合データとWAV内chunk holdout
 
 - [実装記録](../experiments/2026-09-29_within_wav_chunk_combined/README.md)のとおり、全WAVから同率のchunkを外側テストへ分ける`within_wav_chunk`を追加した。変更前の`within_day`はWAV丸ごとholdoutであり、別目的の方式として保持する。

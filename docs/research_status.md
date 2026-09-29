@@ -1,6 +1,8 @@
 # 研究の現在地と次にすること
 
-更新日: **2026-09-29（6/11＋6/18統合データとWAV内chunk holdoutまで反映）**。分位点ルール時点の状態は[変更前の記録](../experiments/2026-09-16_peak_height_selection/previous_documents/research_status.md)に保存した。
+更新日: **2026-09-29（統合within_wav_chunkの対応分割・実行設定まで反映）**。分位点ルール時点の状態は[変更前の記録](../experiments/2026-09-16_peak_height_selection/previous_documents/research_status.md)に保存した。
+
+**6/11・6/18単日within_wav_chunk完了（最新）**：[解析記録](../experiments/2026-09-29_within_wav_chunk_single_day_analysis/README.md)で2 run・14/14条件、各日810学習／270テストchunk、18 WAVを両側で共有、同一chunk重複0、clean_onlyの1 fit共有を確認した。performanceのclean／noise平均RMSEは6/11が42.22／64.35、6/18が36.73／83.81 kW/m²。従来WAV holdoutと共通の75 chunkではcleanが両日とも約8 kW/m²改善したが、これは評価WAVの別45 chunkと同じラベルを学習した既知WAV補間の効果を含む。6/18 −20 dBはRMSE 107.66→86.75、FPR .700→.033に改善する一方、Recall 1.000→.689へ低下した。低熱流束の正biasは残り、全域ではclean→−20 dBが6/11で42.22→85.65、6/18で36.73→116.94。performanceは等重みより平均0.53／1.47 kW/m²良いが、外側最良単体への勝利は5/7／0/7だった。統合時は出典日ごとにseed 42を独立適用するよう修正し、単日runとのテストchunk一致を両日270/270にした。主コードは6/11＋6/18統合・1秒・3 kHz・clean_only・seed 42へ設定済みである。0.5秒、matched、追加seedは同時に変えない。
 
 **6/11＋6/18統合データとWAV内chunk holdoutを実装（最新）**：[実装記録](../experiments/2026-09-29_within_wav_chunk_combined/README.md)のとおり、変更前の`within_day`が元WAV丸ごとholdoutだったことを確認し、本人の想定どおり全WAVのchunkを学習・テストへ分ける`within_wav_chunk`を別方式として追加した。同一chunkの重複はないが、同じWAV固有の録音条件は両側で共有するため、これは未知WAV一般化ではなく既知WAV内の未使用時間区間への評価である。6/11＋6/18の0.5秒151,200 NPYと1秒75,600 NPY（合計226,800、約42.42 GiB）、元名WAV 36本、熱流束名付きWAV 36本、測定メタデータ6件を出典情報付きで新しい統合実験フォルダへコピーした。`learning_policy`は`evaluation_mode`を先に選び、`evaluation_settings`の同名欄だけを編集する構成へ整理した。統合ONBは本人指定により両日確定値の平均246.591 kW/m²。現行設定は1秒、3 kHz、7 noise、clean_only、各WAV 45学習／15テストchunk、外側seed 42、内部3-fold WAV GroupKFold、150 epochである。1秒実データ上で学習1,620／テスト540、36 WAVすべてが両側、同一chunk重複0を確認した。学習runはまだ開始していない。初回はこのclean_only設定を実行し、平均ONBによる統合値に加えて日別FPR・ONB近傍誤差も後処理で確認する。
 

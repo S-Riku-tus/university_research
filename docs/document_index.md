@@ -7,6 +7,7 @@
 | 目的 | 読む文書 | 更新方法 |
 |---|---|---|
 | 次の作業を始める | [研究の現在地](research_status.md) | 状態・本人の希望・次の一手を更新する唯一の入口 |
+| 6/11・6/18単日within_wav_chunkの結果を見る | [単日within_wav_chunk解析](../experiments/2026-09-29_within_wav_chunk_single_day_analysis/README.md) | 完了性、noise劣化、共通75 chunkでのWAV holdout比較、重み、q100、次の統合runを固定 |
 | 6/11＋6/18統合データと各WAV内chunk分割を確認する | [統合データとWAV内chunk holdout](../experiments/2026-09-29_within_wav_chunk_combined/README.md) | 旧方式との違い、データ来歴、平均ONB、分割検証、実行条件を固定 |
 | 現在の研究問題・改善対象・実験の重複を確認する | [9/29問題定義と次の優先順位](research_plan/2026-09-29_problem_definition_and_next_priority.md) | clean_only／matchedの主従、改善指標、split追加を後順位にした理由、チューニングの目的を整理 |
 | 100%分類可能熱流束と当初の6/11＋6/18 pool案を確認する | [q100監査とpooled holdout設計](../experiments/2026-09-29_q100_and_pooled_holdout/README.md) | 現行140 cellの再集計、FPRとの役割分担、後続方針に置換された当初案を記録 |

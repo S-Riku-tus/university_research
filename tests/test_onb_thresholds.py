@@ -19,6 +19,7 @@ class OnbThresholdRegistryTest(unittest.TestCase):
             {
                 "2025.06.11_0.3_2": 221505.1102,
                 "2025.06.18_0.3_3": 271677.6816,
+                "2025.06.11_0.3_2_6.18_0.3_3": 246591.3959,
                 "2025.07.09_0.3_1": 571694.252491167,
             },
         )
@@ -26,11 +27,9 @@ class OnbThresholdRegistryTest(unittest.TestCase):
     def test_every_threshold_has_decision_record_provenance(self):
         for experiment_name, record in ONB_THRESHOLD_RECORDS.items():
             with self.subTest(experiment_name=experiment_name):
-                self.assertEqual(
-                    record["definition"],
-                    "experiment-specific ONB confirmed for the current run",
-                )
-                self.assertIn("2026-09-24_selection_onb_ig_review", record["source"])
+                self.assertTrue(record["definition"])
+                source_path = record["source"].split("#", 1)[0]
+                self.assertTrue((REPO_ROOT / source_path).is_file())
                 self.assertGreater(record["threshold"], 0)
 
 

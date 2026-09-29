@@ -1,0 +1,40 @@
+{
+  "runs": {
+    "2025.06.11_0.3_2": {
+      "threshold": 221505.1102,
+      "within_wav_chunk": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\202609\\29\\onb_wc-t0611-v0611_iw3-nc_s0_e150_152011",
+      "within_day_wav_holdout": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\202609\\28\\onb_wh-t0611-v0611_iw3-nc_s0_e150_221833"
+    },
+    "2025.06.18_0.3_3": {
+      "threshold": 271677.6816,
+      "within_wav_chunk": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\ensemble\\202609\\29\\onb_wc-t0618-v0618_iw3-nc_s0_e150_152911",
+      "within_day_wav_holdout": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\ensemble\\202609\\29\\onb_wh-t0618-v0618_iw3-nc_s0_e150_094511"
+    }
+  },
+  "current_scheme": {
+    "completed_conditions_each_day": 7,
+    "fit_chunks_each_day": 810,
+    "test_chunks_each_day": 270,
+    "source_wavs_each_side": 18,
+    "fit_chunks_per_wav": 45,
+    "test_chunks_per_wav": 15,
+    "exact_chunk_overlap": 0
+  },
+  "common_comparison_chunks_each_day_noise": 75,
+  "pooled_split_preview": [
+    {
+      "experiment": "2025.06.11_0.3_2",
+      "single_day_test_chunks": 270,
+      "current_pooled_test_chunks": 270,
+      "same_test_chunks": 270,
+      "same_fraction": 1.0
+    },
+    {
+      "experiment": "2025.06.18_0.3_3",
+      "single_day_test_chunks": 270,
+      "current_pooled_test_chunks": 270,
+      "same_test_chunks": 270,
+      "same_fraction": 1.0
+    }
+  ]
+}

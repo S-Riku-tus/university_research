@@ -334,22 +334,72 @@ def outer_splits(training_metadata, evaluation_metadata, folds, policy=None, thr
                           splitter.split(np.zeros(len(train_groups)), groups=train_groups)]
         elif split_kind == "within_wav_chunk_holdout":
             policy = normalize_learning_policy(policy, sorted(training_days))
-            rng = np.random.RandomState(policy["test_split_seed"])
-            selected = []
-            for group in sorted(set(train_groups)):
-                group_indices = np.flatnonzero(train_groups == group)
-                group_indices = np.asarray(sorted(
-                    group_indices,
-                    key=lambda index: sample_key(training_metadata[int(index)]),
-                ), dtype=int)
-                if len(group_indices) < 2:
+            unique_groups = sorted(set(train_groups))
+            has_provenance = [
+                bool(str(row.get("source_experiment_name", "")).strip())
+                or bool(str(row.get("original_source_wav_id", "")).strip())
+                for row in training_metadata
+            ]
+            if any(has_provenance):
+                if not all(has_provenance):
                     raise ValueError(
-                        "within_wav_chunkには各元WAVにつき2 chunk以上必要です。"
+                        "統合データの出典情報は全chunkに指定してください。"
                     )
-                n_test = max(1, int(np.ceil(len(group_indices) * policy["test_fraction"])))
-                n_test = min(n_test, len(group_indices) - 1)
-                positions = np.sort(rng.choice(len(group_indices), size=n_test, replace=False))
-                selected.extend(group_indices[positions].tolist())
+                provenance_groups = {}
+                seen_original_groups = set()
+                for group in unique_groups:
+                    rows = [
+                        training_metadata[int(index)]
+                        for index in np.flatnonzero(train_groups == group)
+                    ]
+                    source_days = {
+                        str(row.get("source_experiment_name", "")).strip()
+                        for row in rows
+                    }
+                    original_wavs = {
+                        str(row.get("original_source_wav_id", "")).strip()
+                        for row in rows
+                    }
+                    if (len(source_days) != 1 or "" in source_days
+                            or len(original_wavs) != 1 or "" in original_wavs):
+                        raise ValueError(
+                            "同じ元WAV内で統合データの出典日または元WAV IDが一致しません。"
+                        )
+                    source_day = next(iter(source_days))
+                    original_wav = next(iter(original_wavs))
+                    original_key = (source_day, original_wav)
+                    if original_key in seen_original_groups:
+                        raise ValueError(
+                            "統合データ内で出典日・元WAV IDが重複しています: "
+                            f"{original_key}"
+                        )
+                    seen_original_groups.add(original_key)
+                    provenance_groups.setdefault(source_day, []).append((original_wav, group))
+                # 単日runと同じ乱数列を各出典日に独立して適用する。これにより、
+                # 統合runでも各日の同じchunkを外側テストとして再利用できる。
+                group_pools = [
+                    [group for _, group in sorted(provenance_groups[source_day])]
+                    for source_day in sorted(provenance_groups)
+                ]
+            else:
+                group_pools = [unique_groups]
+            selected = []
+            for groups in group_pools:
+                rng = np.random.RandomState(policy["test_split_seed"])
+                for group in groups:
+                    group_indices = np.flatnonzero(train_groups == group)
+                    group_indices = np.asarray(sorted(
+                        group_indices,
+                        key=lambda index: sample_key(training_metadata[int(index)]),
+                    ), dtype=int)
+                    if len(group_indices) < 2:
+                        raise ValueError(
+                            "within_wav_chunkには各元WAVにつき2 chunk以上必要です。"
+                        )
+                    n_test = max(1, int(np.ceil(len(group_indices) * policy["test_fraction"])))
+                    n_test = min(n_test, len(group_indices) - 1)
+                    positions = np.sort(rng.choice(len(group_indices), size=n_test, replace=False))
+                    selected.extend(group_indices[positions].tolist())
             test_reference = np.asarray(sorted(selected), dtype=int)
             fit = np.setdiff1d(
                 np.arange(len(training_metadata), dtype=int), test_reference,

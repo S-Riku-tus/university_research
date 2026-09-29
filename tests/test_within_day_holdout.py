@@ -149,6 +149,60 @@ class WithinDayHoldoutTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "test_stratifyはnone"):
             normalize_learning_policy({**self.chunk_policy(), "test_stratify": "onb"}, ["day-a"])
 
+    def test_combined_within_wav_chunk_reuses_each_source_days_single_day_test_chunks(self):
+        def single_day_metadata(day):
+            return checked_metadata([
+                {
+                    "source_wav_id": f"wav-{wav:02d}",
+                    "chunk_index": chunk,
+                    "sample_filename": f"{wav * 10}_{wav}_{chunk}.npy",
+                }
+                for wav in range(18) for chunk in range(60)
+            ], day)
+
+        expected = set()
+        for day in ("day-a", "day-b"):
+            metadata = single_day_metadata(day)
+            day_policy = {**self.chunk_policy(), "within_day_experiment": day}
+            _, test = outer_splits(metadata, metadata, 1, day_policy)[0]
+            selected = {
+                (day, metadata[index]["source_wav_id"], int(metadata[index]["chunk_index"]))
+                for index in test
+            }
+            self.assertEqual(len(selected), 270)
+            expected.update(selected)
+
+        combined_name = "day-a_day-b"
+        combined = checked_metadata([
+            {
+                "source_wav_id": f"{day}::{wav_id}",
+                "chunk_index": row["chunk_index"],
+                "sample_filename": row["sample_filename"],
+                "source_experiment_name": day,
+                "original_source_wav_id": wav_id,
+            }
+            for day in ("day-a", "day-b")
+            for row in single_day_metadata(day)
+            for wav_id in [row["source_wav_id"]]
+        ], combined_name)
+        combined_policy = {
+            **self.chunk_policy(),
+            "within_day_experiment": combined_name,
+        }
+        _, combined_test = outer_splits(combined, combined, 1, combined_policy)[0]
+        actual = {
+            (
+                combined[index]["source_experiment_name"],
+                combined[index]["original_source_wav_id"],
+                int(combined[index]["chunk_index"]),
+            )
+            for index in combined_test
+        }
+        self.assertEqual(len(actual), 540)
+        self.assertEqual(actual, expected)
+        for day in ("day-a", "day-b"):
+            self.assertEqual(sum(key[0] == day for key in actual), 270)
+
     def test_runner_within_wav_chunk_keeps_all_wavs_on_both_outer_sides(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
