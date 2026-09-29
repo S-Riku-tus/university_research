@@ -1,0 +1,11 @@
+﻿run,scope,source_day,enabled,n_before,n_after,n_removed,n_protected
+baseline,outer_fit,all,0,1620,1620,0,0
+baseline,inner_fit_1,all,0,1080,1080,0,0
+baseline,inner_fit_2,all,0,1080,1080,0,0
+baseline,inner_fit_3,all,0,1080,1080,0,0
+selected,outer_fit,all,1,1620,1556,64,90
+selected,outer_fit,2025.06.11_0.3_2,1,,,27,45
+selected,outer_fit,2025.06.18_0.3_3,1,,,37,45
+selected,inner_fit_1,all,1,1080,1036,44,0
+selected,inner_fit_2,all,1,1080,1056,24,90
+selected,inner_fit_3,all,1,1080,1020,60,90

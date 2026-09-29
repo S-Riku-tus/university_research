@@ -7,6 +7,7 @@
 | 目的 | 読む文書 | 更新方法 |
 |---|---|---|
 | 次の作業を始める | [研究の現在地](research_status.md) | 状態・本人の希望・次の一手を更新する唯一の入口 |
+| ONB保護付きピーク選別の本結果と採否を見る | [選別結果解析](../experiments/2026-09-29_onb_protected_selection_analysis/README.md) | 選別なしとの対応比較、日別ONB指標、q100、WAV別誤差、採否判断を固定 |
 | ONBを残せるピーク閾値と限界を見る | [ONB保持制約の閾値監査](../experiments/2026-09-29_peak_threshold_preservation/README.md) | 外側学習だけの分布、共通・日別閾値の不成立、ONB保護＋上側1e-9案を固定 |
 | 統合データのピーク選別と学習側OOFチューニング実装を見る | [選別・チューニング実装記録](../experiments/2026-09-29_within_wav_selection_and_oof_tuning/README.md) | 元実験日への特徴対応、選別数の分母、外側テスト非使用の18候補探索、実行順を固定 |
 | 0.5秒と1秒の比較結果・採用判断を見る | [0.5秒対照解析](../experiments/2026-09-29_within_wav_chunk_05s_analysis/README.md) | 完了性、全域・ONB指標、時間位置の非対応、対応小標本、1秒採用と次工程を固定 |

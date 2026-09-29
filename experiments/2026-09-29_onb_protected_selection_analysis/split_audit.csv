@@ -1,0 +1,15 @@
+﻿run,noise,n,same_ordered_samples_as_reference,max_target_abs_difference,n_0611,n_0618
+baseline,clean,540,1,0.0,270,270
+baseline,0,540,1,0.0,270,270
+baseline,-4,540,1,0.0,270,270
+baseline,-8,540,1,0.0,270,270
+baseline,-12,540,1,0.0,270,270
+baseline,-16,540,1,0.0,270,270
+baseline,-20,540,1,0.0,270,270
+selected,clean,540,1,0.0,270,270
+selected,0,540,1,0.0,270,270
+selected,-4,540,1,0.0,270,270
+selected,-8,540,1,0.0,270,270
+selected,-12,540,1,0.0,270,270
+selected,-16,540,1,0.0,270,270
+selected,-20,540,1,0.0,270,270

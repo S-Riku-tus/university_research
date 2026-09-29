@@ -1,0 +1,3 @@
+﻿run,fold,strategy_name,strategy_type,claim_safe,randomforest,conformer,alexnet
+baseline,1,performance_kfold,performance_kfold,1,0.21741764943662564,0.4384418756016409,0.34414047496173344
+selected,1,performance_kfold,performance_kfold,1,0.23629864982817764,0.4571452127198695,0.3065561374519528

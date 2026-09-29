@@ -153,7 +153,7 @@ VALIDATION_CONFIG = apply_onb_defaults({
         # スペクトルの縦軸に引く横線。図の「×10^-9」表示で高さ1に相当。
         # 日別ONBの+10%以内はピークに関係なく保持し、それより上だけを選別する。
         # Noneなら選別なし。特徴量などの固定条件はonb_defaults.pyで管理する。
-        "peak_height_threshold": 1.0e-9,  # Noneで選別なし
+        "peak_height_threshold": None,  # 1.0e-9
         "protect_onb_band_frac": 0.10,
     },
     "thresholds": {
