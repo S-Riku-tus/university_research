@@ -2,6 +2,20 @@
 
 このページは**日付ごとの履歴**。各節の「現在」「次にやること」は当時の記録であり、現在の未完了作業とは限らない。最新の状態は[研究の現在地](research_status.md)、更新関係は[文書案内](document_index.md)を読む。
 
+## 2026-09-29 6/11＋6/18統合データとWAV内chunk holdout
+
+- [実装記録](../experiments/2026-09-29_within_wav_chunk_combined/README.md)のとおり、全WAVから同率のchunkを外側テストへ分ける`within_wav_chunk`を追加した。変更前の`within_day`はWAV丸ごとholdoutであり、別目的の方式として保持する。
+- 6/11＋6/18の全35条件75,600 NPY、元名WAV 36本、熱流束名付きWAV 36本、測定メタデータ6件を、出典を保持して統合実験フォルダへコピーした。統合ONBは両日の算術平均246,591.3959 W/m²。
+- seed 42・test 25%では各WAV 45学習／15テストchunk、全体1,620／540、同一chunk重複0。内部`performance_kfold`は学習側だけのWAV GroupKFoldを維持する。
+- この評価は同一chunkを再利用しないが、同じWAVの録音条件を共有する。既知WAV内の未使用区間への性能であり、未知WAV・未知日一般化とは区別する。現行初回設定は3 kHz・7 noise・clean_only・150 epochで、学習runは未開始。
+
+## 2026-09-29 q100監査と6/11＋6/18 pool設計
+
+- [q100監査とpooled holdout設計](../experiments/2026-09-29_q100_and_pooled_holdout/README.md)で、現行scatterの100%分類可能熱流束を日内4 runの保存予測から数値化した。
+- `q100`は6/11の全70 cellで427.276 kW/m²、6/18の全70 cellで434.018 kW/m²となり、モデル・noise・学習方針を識別しなかった。100%条件と測定熱流束間隔の影響である。
+- 6/11 clean_only −20 dBのFPRはRF .492、performance .008、6/18はRF .933、performance .775であり、アンサンブルの誤報抑制は`q100`でなくFPRに現れた。`q100/g100`は卒論との接続を示す補助指標、FPRを未知noise劣化の主指標とする。
+- この時点では物理コピーしない`pooled_holdout`を設計したが、後続の本人指示で採用せず、上段の物理統合＋`within_wav_chunk`へ更新した。
+
 ## 2026-09-29 3 kHz日内holdout・clean_only／matched
 
 - [日内4 run解析](../experiments/2026-09-29_within_day_clean_matched_seed42/README.md)で4 run・28/28条件、同一テストWAV、clean予測差0、clean_onlyの1 fit共有／matchedの7 fitを確認した。

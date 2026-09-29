@@ -2,7 +2,7 @@
 
 巨大なデータ本体はGitで管理せず、このファイルで場所・意味・条件を管理する。
 
-更新日: 2026-09-15。現行の研究状態は[現在地](research_status.md)。下の容量は今回の棚卸し、データ件数の整合性は別途行われたデータ監査の結果として区別する。
+更新日: 2026-09-29。現行の研究状態は[現在地](research_status.md)。下のトップレベル容量は9/15時点の棚卸し、データ件数の整合性は個別のデータ監査結果として区別する。
 
 ## トップレベル概要
 
@@ -43,6 +43,20 @@
 ```
 
 ## 現行データと過去データ
+
+### 2025.06.11＋2025.06.18統合実験（2026-09-29作成）
+
+- 場所: `Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3`
+- 元データ: 下記`waterflow_20260817_1s`の6/11・6/18。元フォルダは変更せず独立コピー。
+- NPY: 75,600ファイル、約14.14 GiB。5周波数×7 noiseの35条件、各条件2,160 chunk。
+- 音響: `録音データ/<source_experiment>/`に元名36 WAV、`録音データ_熱流束/<source_experiment>/`に熱流束名付き36 WAV。出典日別に保持。
+- メタデータ: `source_metadata/<source_experiment>/`に計6ファイル。
+- provenance: 各`chunk_manifest.csv`へ出典実験、元NPY名、元WAV ID・名前を追加。統合概要は`combined_dataset_manifest.json`。
+- ONB: 6/11の221,505.1102と6/18の271,677.6816 W/m²を算術平均し、246,591.3959 W/m²を今回の統合値とする。
+- 生成スクリプト: `code/build_combined_0611_0618_dataset.py`。既存コピーはbyte数を照合して再利用する。
+- 初回評価: 各WAVの60 chunkを45学習／15テストへ分ける`within_wav_chunk`。同じchunkは重複しないが同一WAVは両側に入る。
+- Git管理用設定: `configs/datasets/2026-09-29_combined_0611_0618.yaml`。
+- 実装・検証記録: `experiments/2026-09-29_within_wav_chunk_combined/README.md`。
 
 ### waterflow_20260817_1s（現行データ）
 

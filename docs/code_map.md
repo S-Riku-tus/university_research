@@ -1,12 +1,13 @@
 # コード地図
 
-更新日: 2026-09-25。現在の設定・完了runは[研究の現在地](research_status.md)。通常の主実行は[run_ensemble_regression_onb.py](../code/run_ensemble_regression_onb.py)。
+更新日: 2026-09-29。現在の設定・完了runは[研究の現在地](research_status.md)。通常の主実行は[run_ensemble_regression_onb.py](../code/run_ensemble_regression_onb.py)。
 
 ## 主経路と入出力
 
 | 段階 | 主なコード | 入出力・役割 |
 |---|---|---|
 | 前処理 | [水流音STFT生成](../code/2.run_npy_waterflow_2つhighpass.py)、[waterflow_preprocessing.py](../code/utils/dataloading/waterflow_preprocessing.py) | 元WAV→固定基準ノイズ・STFT power→224×224 NPY、manifest |
+| 統合データ | [build_combined_0611_0618_dataset.py](../code/build_combined_0611_0618_dataset.py) | 6/11・6/18の既存NPY・元名／熱流束名付きWAV・測定メタデータを、出典を保持して独立コピー |
 | 読込 | [dataloading_and_conversion.py](../code/utils/dataloading/dataloading_and_conversion.py) | 時間×周波数×channelのx、熱流束y、元WAV/chunk情報 |
 | 条件・分割 | [dataset_jobs.py](../code/utils/experiment/dataset_jobs.py)、[learning_policy.py](../code/utils/experiment/learning_policy.py) | 実験日/ノイズ方針、元WAV分離、ノイズ間の対応検査 |
 | 学習・評価実行 | [learning_runner.py](../code/utils/experiment/learning_runner.py) | 分割・ノイズ方針ごとの学習・予測・XAI・指標・保存をまとめる |
@@ -26,7 +27,7 @@
 
 現行の有効3モデルは`randomforest / conformer / alexnet`。主設定の統合方式は`performance_kfold`である。`simple_equal / inner_holdout / subset_equal_cv / crossfit_wav_stack / crossfit_shrinkage_stack`も実装済みで、主コードの`ensemble.enabled_strategy_names`に短い説明付きのコメントとして残している。[重み学習の実装](../code/utils/ensemble/crossfit_stacking.py)、[次条件](../experiments/2026-09-25_matched_performance_kfold/README.md)、[6方式の手法と数式](ensemble_methods.md)。
 
-`within_day / leave_one_day_out / explicit_days`と`matched / clean_only`を組み合わせる。matchedはnoiseごとに別familyを作り、モデル・PCA・scaler・epoch・重みをそのnoiseの学習データから再fitする。clean_onlyは同じcleanモデル・PCA・scaler・epoch・重みを評価noise間で共有する。明示分割では学習専用日は学習に要るノイズだけを探索する。一般化評価の[実装・制約](research_plan/2026-09-14_result_layout_and_generalization.md)も確認する。
+外側評価は、別日`cross_day`、同一実験内でWAVを丸ごと分ける`within_day`、全WAVのchunkをそれぞれ分ける`within_wav_chunk`を明示選択できる。`within_wav_chunk`は同一chunkを共有しないが同じWAVを両側で共有するため、既知WAV内の未使用区間評価であり未知WAV評価ではない。内部`performance_kfold`はどの外側方式でも学習側だけのWAV GroupKFoldを使う。これらと`matched / clean_only`を組み合わせる。matchedはnoiseごとに別familyを作り、モデル・PCA・scaler・epoch・重みをそのnoiseの学習データから再fitする。clean_onlyは同じcleanモデル・PCA・scaler・epoch・重みを評価noise間で共有する。明示分割では学習専用日は学習に要るノイズだけを探索する。一般化評価の[実装・制約](research_plan/2026-09-14_result_layout_and_generalization.md)も確認する。
 
 通常の学習は`run.epochs`で指定した回数まで行い、別validationによるepoch選択とvalidation lossによるearly stoppingはない。OOM時にbatchを減らす再試行や、一定epoch以上の途中学習を受け入れる処理があるため、`tuning_summary.csv`等の実際のepoch/batchも確認する。要求epochの設定値だけで全モデルが必ず完走したと断定しない。
 

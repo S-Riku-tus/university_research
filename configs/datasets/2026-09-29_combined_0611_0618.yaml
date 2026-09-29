@@ -1,0 +1,59 @@
+schema_version: 1
+dataset_name: waterflow_20260817_1s_combined_0611_0618
+status: copied_and_split_validated
+created_on: 2026-09-29
+
+purpose: >-
+  6/11と6/18の既存データを同一母集団へ統合し、各元WAVの未使用1秒chunkを
+  外側テストとする学部時代に近い評価を、出典情報を保持して実施する。
+
+source:
+  experiments:
+    - 2025.06.11_0.3_2
+    - 2025.06.18_0.3_3
+  dataset_name: waterflow_20260817_1s
+
+storage:
+  local_path: >-
+    Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3
+  copy_mode: independent_file_copy
+  tracked_in_git: false
+  npy_files: 75600
+  approximate_npy_size_gib: 14.14
+  condition_count: 35
+  original_name_wav_files: 36
+  heatflux_named_wav_files: 36
+  metadata_files: 6
+
+provenance:
+  builder: code/build_combined_0611_0618_dataset.py
+  summary_manifest: combined_dataset_manifest.json
+  source_experiment_preserved: true
+  original_sample_filename_preserved: true
+  original_source_wav_id_preserved: true
+
+onb:
+  aggregation: arithmetic_mean_of_confirmed_source_thresholds
+  source_thresholds_w_m2:
+    2025.06.11_0.3_2: 221505.1102
+    2025.06.18_0.3_3: 271677.6816
+  combined_threshold_w_m2: 246591.3959
+
+initial_evaluation:
+  mode: within_wav_chunk
+  test_fraction_per_wav: 0.25
+  test_split_seed: 42
+  chunks_per_wav: 60
+  fit_chunks_per_wav: 45
+  test_chunks_per_wav: 15
+  exact_chunk_overlap: 0
+  source_wav_count: 36
+  training_noise: clean_only
+  max_frequency_hz: 3000
+  internal_validation: source_wav_group_kfold
+
+interpretation: >-
+  同一chunkは重複しないが、同じ元WAVが学習側とテスト側へ入るため、既知WAV内の
+  未使用時間区間への性能を測る。未知WAVまたは未知実験日への一般化結果とは扱わない。
+
+record: experiments/2026-09-29_within_wav_chunk_combined/README.md

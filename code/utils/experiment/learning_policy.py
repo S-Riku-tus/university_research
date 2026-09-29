@@ -1,4 +1,4 @@
-"""学習日・学習ノイズの選択と、元WAVを共有しない評価分割を組み立てる。"""
+"""学習日・学習ノイズの選択と、明示した単位の評価分割を組み立てる。"""
 
 import json
 from pathlib import Path
@@ -17,12 +17,16 @@ def _resolved_day_policy(policy):
     """明示した評価方式の実効日付を解決する。省略時は従来の日付推論。"""
     policy = dict(policy or {})
     mode = policy.get("evaluation_mode", "auto")
-    if mode not in {"auto", "cross_day", "within_day"}:
-        raise ValueError("evaluation_modeはcross_day、within_day、autoです。")
-    if mode == "within_day":
+    if mode not in {"auto", "cross_day", "within_day", "within_wav_chunk"}:
+        raise ValueError(
+            "evaluation_modeはcross_day、within_day、within_wav_chunk、autoです。"
+        )
+    if mode in {"within_day", "within_wav_chunk"}:
         day = policy.get("within_day_experiment")
         if not isinstance(day, str) or not day.strip():
-            raise ValueError("within_day_experimentに日内評価する実験日を指定してください。")
+            raise ValueError(
+                "within_day_experimentに同一実験内で評価する実験名を指定してください。"
+            )
         # cross_day用リストを編集せず、1個の実験日指定だけで切替可能にする。
         policy["train_experiments"] = [day]
         policy["test_experiments"] = [day]
@@ -48,6 +52,8 @@ def experiment_split_kind(policy):
     train_set, test_set = set(train_days), set(test_days)
     if policy.get("evaluation_mode") == "within_day":
         return "within_day_holdout"
+    if policy.get("evaluation_mode") == "within_wav_chunk":
+        return "within_wav_chunk_holdout"
     if policy.get("evaluation_mode") == "cross_day" and not train_set.isdisjoint(test_set):
         raise ValueError("cross_dayでは学習日とテスト日を完全に分離してください。")
     if train_set.isdisjoint(test_set):
@@ -87,15 +93,22 @@ def normalize_learning_policy(policy, experiment_names, color_channel=1):
         raise ValueError(f"未知のlearning_policy設定です: {set(resolved) - set(DEFAULT_POLICY)}")
     if resolved["training_noise"] not in {"matched", "clean_only"}:
         raise ValueError("training_noiseはmatchedまたはclean_onlyです。")
-    if resolved.get("evaluation_mode") == "within_day":
+    if resolved.get("evaluation_mode") in {"within_day", "within_wav_chunk"}:
         fraction = resolved.setdefault("test_fraction", 0.25)
         seed = resolved.setdefault("test_split_seed", 42)
         if resolved.setdefault("test_stratify", "none") not in {"none", "onb"}:
             raise ValueError("test_stratifyはonbまたはnoneです。")
         if isinstance(fraction, bool) or not isinstance(fraction, (int, float)) or not 0 < fraction < 1:
-            raise ValueError("test_fractionは0より大きく1より小さい元WAV数の割合です。")
+            unit = "chunk数" if resolved.get("evaluation_mode") == "within_wav_chunk" else "元WAV数"
+            raise ValueError(f"test_fractionは0より大きく1より小さい{unit}の割合です。")
         if isinstance(seed, bool) or not isinstance(seed, int) or not 0 <= seed < 2**32:
             raise ValueError("test_split_seedは0以上2**32未満の整数です。")
+        if (resolved.get("evaluation_mode") == "within_wav_chunk"
+                and resolved["test_stratify"] != "none"):
+            raise ValueError(
+                "within_wav_chunkでは全WAVから同じ割合を抽出するため、"
+                "test_stratifyはnoneにしてください。"
+            )
     if len(set(experiment_names)) != len(experiment_names):
         raise ValueError("experiment_namesに同じ実験日を重複指定できません。")
     for key in ("train_experiments", "test_experiments"):
@@ -114,6 +127,7 @@ def normalize_learning_policy(policy, experiment_names, color_channel=1):
 def policy_result_date_dir(result_date_dir, policy):
     """保存系列パスの末尾へ学習・評価方針を付け、結果を分離する。"""
     day = {"within_day": "wd", "within_day_holdout": "wh",
+           "within_wav_chunk_holdout": "wc",
            "leave_one_day_out": "lodo", "cross_day": "days"}[
         experiment_split_kind(policy)
     ]
@@ -141,7 +155,7 @@ def build_learning_families(jobs, policy, experiment_names):
         grouped.setdefault(key, []).append(job)
     families = []
     for (test_day, frequency, train_noise), evaluation_jobs in grouped.items():
-        if split_kind in {"within_day", "within_day_holdout"}:
+        if split_kind in {"within_day", "within_day_holdout", "within_wav_chunk_holdout"}:
             train_days = [test_day]
         elif split_kind == "leave_one_day_out":
             train_days = [day for day in policy["train_experiments"] if day != test_day]
@@ -178,6 +192,8 @@ def build_learning_families(jobs, policy, experiment_names):
                                      if split_kind == "within_day"
                                      else "within_experiment_source_wav_holdout"
                                      if split_kind == "within_day_holdout"
+                                     else "within_known_source_wav_unseen_chunk_holdout"
+                                     if split_kind == "within_wav_chunk_holdout"
                                      else "held_out_experiment_day"),
             "outer_folds_per_evaluation_day": None if split_kind == "within_day" else 1,
         }
@@ -243,9 +259,10 @@ def outer_splits(training_metadata, evaluation_metadata, folds, policy=None, thr
     test_groups = wav_groups(evaluation_metadata)
     training_days = {row["experiment_name"] for row in training_metadata}
     test_days = {row["experiment_name"] for row in evaluation_metadata}
+    split_kind = experiment_split_kind(policy) if policy else None
     if training_days == test_days and len(training_days) == 1:
         alignment = aligned_indices(training_metadata, evaluation_metadata)
-        if policy and experiment_split_kind(policy) == "within_day_holdout":
+        if split_kind == "within_day_holdout":
             policy = normalize_learning_policy(policy, sorted(training_days))
             if policy["test_stratify"] == "onb":
                 if threshold is None or not np.isfinite(threshold):
@@ -273,6 +290,30 @@ def outer_splits(training_metadata, evaluation_metadata, folds, policy=None, thr
                                              random_state=policy["test_split_seed"])
                 splits = [(fit, alignment[test]) for fit, test in
                           splitter.split(np.zeros(len(train_groups)), groups=train_groups)]
+        elif split_kind == "within_wav_chunk_holdout":
+            policy = normalize_learning_policy(policy, sorted(training_days))
+            rng = np.random.RandomState(policy["test_split_seed"])
+            selected = []
+            for group in sorted(set(train_groups)):
+                group_indices = np.flatnonzero(train_groups == group)
+                group_indices = np.asarray(sorted(
+                    group_indices,
+                    key=lambda index: sample_key(training_metadata[int(index)]),
+                ), dtype=int)
+                if len(group_indices) < 2:
+                    raise ValueError(
+                        "within_wav_chunkには各元WAVにつき2 chunk以上必要です。"
+                    )
+                n_test = max(1, int(np.ceil(len(group_indices) * policy["test_fraction"])))
+                n_test = min(n_test, len(group_indices) - 1)
+                positions = np.sort(rng.choice(len(group_indices), size=n_test, replace=False))
+                selected.extend(group_indices[positions].tolist())
+            test_reference = np.asarray(sorted(selected), dtype=int)
+            fit = np.setdiff1d(
+                np.arange(len(training_metadata), dtype=int), test_reference,
+                assume_unique=True,
+            )
+            splits = [(fit, alignment[test_reference])]
         else:
             splitter = GroupKFold(n_splits=folds)
             splits = [(fit, alignment[test]) for fit, test in
@@ -282,6 +323,13 @@ def outer_splits(training_metadata, evaluation_metadata, folds, policy=None, thr
     else:
         raise ValueError("学習日と評価日は、同一の1日または完全に分離した日集合である必要があります。")
     for fit, test in splits:
-        if set(train_groups[fit]) & set(test_groups[test]):
+        if split_kind == "within_wav_chunk_holdout":
+            fit_keys = {sample_key(training_metadata[int(index)]) for index in fit}
+            test_keys = {sample_key(evaluation_metadata[int(index)]) for index in test}
+            if fit_keys & test_keys:
+                raise ValueError("学習側と評価側で同じchunkが重複しています。")
+            if set(train_groups[fit]) != set(test_groups[test]):
+                raise ValueError("within_wav_chunkでは全元WAVを学習側と評価側へ含めます。")
+        elif set(train_groups[fit]) & set(test_groups[test]):
             raise ValueError("学習側と評価側で元WAVが重複しています。")
     return splits

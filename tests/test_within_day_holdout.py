@@ -34,6 +34,18 @@ class WithinDayHoldoutTest(unittest.TestCase):
             for wav in range(8) for chunk in range(2)
         ], "day-a")
 
+    def chunk_policy(self, noise="clean_only"):
+        return {
+            "evaluation_mode": "within_wav_chunk",
+            "within_day_experiment": "day-a",
+            "train_experiments": ["unused-a"],
+            "test_experiments": ["unused-b"],
+            "test_fraction": 0.25,
+            "test_split_seed": 42,
+            "test_stratify": "none",
+            "training_noise": noise,
+        }
+
     def test_explicit_modes_resolve_days_and_reject_invalid_config(self):
         self.assertEqual(resolve_experiment_names({}, self.policy()), ["day-a"])
         normalized = normalize_learning_policy(self.policy(), ["day-a"])
@@ -62,6 +74,69 @@ class WithinDayHoldoutTest(unittest.TestCase):
         self.assertEqual(set(groups[fit]), set(wav_groups(reversed_metadata)[fit2]))
         _, aligned_test = outer_splits(metadata, reversed_metadata, 1, self.policy())[0]
         self.assertEqual(set(groups[test]), set(wav_groups(reversed_metadata)[aligned_test]))
+
+    def test_within_wav_chunk_selects_every_wav_without_reusing_a_chunk(self):
+        metadata = checked_metadata([
+            {"source_wav_id": f"wav-{wav}", "chunk_index": chunk,
+             "sample_filename": f"{wav * 10}_{wav}_{chunk}.npy"}
+            for wav in range(4) for chunk in range(8)
+        ], "day-a")
+        policy = normalize_learning_policy(self.chunk_policy(), ["day-a"])
+        self.assertEqual(experiment_split_kind(policy), "within_wav_chunk_holdout")
+        fit, test = outer_splits(metadata, metadata, 1, policy)[0]
+        groups = wav_groups(metadata)
+        self.assertEqual(len(fit), 24)
+        self.assertEqual(len(test), 8)
+        self.assertEqual(set(groups[fit]), set(groups[test]))
+        fit_keys = {(metadata[i]["source_wav_id"], metadata[i]["chunk_index"]) for i in fit}
+        test_keys = {(metadata[i]["source_wav_id"], metadata[i]["chunk_index"]) for i in test}
+        self.assertFalse(fit_keys & test_keys)
+        for group in set(groups):
+            self.assertEqual(np.sum(groups[test] == group), 2)
+            self.assertEqual(np.sum(groups[fit] == group), 6)
+
+        reversed_metadata = list(reversed(metadata))
+        fit2, test2 = outer_splits(metadata, reversed_metadata, 5, policy)[0]
+        self.assertEqual(
+            test_keys,
+            {(reversed_metadata[i]["source_wav_id"], reversed_metadata[i]["chunk_index"])
+             for i in test2},
+        )
+        with self.assertRaisesRegex(ValueError, "test_stratifyはnone"):
+            normalize_learning_policy({**self.chunk_policy(), "test_stratify": "onb"}, ["day-a"])
+
+    def test_runner_within_wav_chunk_keeps_all_wavs_on_both_outer_sides(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            policy = normalize_learning_policy(self.chunk_policy(), ["day-a"])
+            jobs, specs, _, config = fixture(
+                root, policy, evaluated_noises=("heatflux_no_noise",), days=("day-a",)
+            )
+            manager = EnsembleManager(
+                {"enabled_strategy_names": ["performance_kfold", "simple_equal"]},
+                [s["key"] for s in specs],
+            )
+            config["ensemble"] = manager.snapshot()
+            trainer = ObservedTrainer()
+            with contextlib.redirect_stdout(io.StringIO()), patch("gc.collect"), patch("tensorflow.keras.backend.clear_session"):
+                run_learning_experiments(
+                    jobs, policy, config, specs, [{"name": "test"}], manager,
+                    trainer, SilentPlotter(), lambda *args: None,
+                )
+            job = jobs[0]
+            directory = next(
+                (job["save_base_path"] / job["max_freq_hz"] / job["noise_dir_name"]).iterdir()
+            )
+            saved = json.loads((directory / "split_manifest.json").read_text(encoding="utf-8"))
+            self.assertEqual(
+                saved["learning_context"]["evaluation_scheme"],
+                "within_wav_chunk_holdout",
+            )
+            fold = saved["folds"][0]
+            self.assertEqual(len(fold["training_wav_groups"]), 6)
+            self.assertEqual(fold["training_wav_groups"], fold["evaluation_wav_groups"])
+            self.assertEqual(fold["n_training_chunks"], 6)
+            self.assertEqual(fold["n_evaluation_chunks"], 6)
 
     def test_onb_stratification_keeps_both_classes_and_requires_valid_groups(self):
         metadata = self.metadata()

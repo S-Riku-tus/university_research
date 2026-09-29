@@ -68,7 +68,8 @@ from utils.experiment.run_helpers import set_global_seed
 #
 # 現在の設定の読み方:
 # ・目的: 同じ検証予測から単体モデルと各アンサンブル方式を比較する。
-# ・評価: cross_dayは別日テスト、within_dayは指定した1日の元WAV固定holdout。
+# ・評価: cross_dayは別日、within_dayは元WAV固定holdout、
+#         within_wav_chunkは各WAV内の未使用chunkをテストする。
 # ・モデル: RF、CNN＋Transformer、AlexNet。
 # ・統合方式: ensembleに列挙した全方式を実行・評価する。
 # ・説明性: 有効なデータ条件・モデル・foldについて指定手法を実行する。
@@ -109,18 +110,20 @@ VALIDATION_CONFIG = apply_onb_defaults({
         "data_source_dir_by_experiment": {
             "2025.06.11_0.3_2": "waterflow_20260817_1s",
             "2025.06.18_0.3_3": "waterflow_20260817_1s",
+            "2025.06.11_0.3_2_6.18_0.3_3": "waterflow_20260817_1s",
             "2025.07.09_0.3_1": "waterflow_20260817_1s",
         },
     },
     "learning_policy": {
         # cross_day: 下のtrain/test_experimentsを使用（実験日は完全分離）。
-        # within_day: within_day_experimentだけを使用し、下の2リストは参照しない。
-        # 元WAVを一度だけ分離し、残りのWAV内でrun.foldsの内部検証を行う。
-        "evaluation_mode": "within_day",
-        "within_day_experiment": "2025.06.18_0.3_3",
-        "test_fraction": 0.25,  # 元WAV数の25%（端数切上げ）をテスト専用にする。
-        "test_split_seed": 42,  # 学習seedを変えてもテストWAVを固定する。
-        "test_stratify": "onb",  # ONB前／以上のWAV比率を保つ。noneなら単純ランダム。
+        # within_day: 指定した実験内で元WAVを丸ごとテストへ分離する。
+        # within_wav_chunk: 各WAVのchunkを同じ割合でテストへ分離する。
+        # どちらも残りの学習側データ内では、run.foldsのWAV単位内部検証を行う。
+        "evaluation_mode": "within_wav_chunk",
+        "within_day_experiment": "2025.06.11_0.3_2_6.18_0.3_3",
+        "test_fraction": 0.25,  # 各WAVの1秒chunkの25%をテスト専用にする。
+        "test_split_seed": 42,  # 学習seedを変えても各WAVのテストchunkを固定する。
+        "test_stratify": "none",  # 全WAVから同率抽出するためnone固定。
         "train_experiments": [
             # "2025.06.11_0.3_2",
             # "2025.07.09_0.3_1",
@@ -136,7 +139,7 @@ VALIDATION_CONFIG = apply_onb_defaults({
         # clean_only: 無雑音だけで学習し、同じモデル・前処理・重みで
         #             全評価ノイズを予測する固定clean診断。
         # 評価ノイズ一覧から無雑音を外しても、学習には無雑音を読み込む。
-        "training_noise": "matched",
+        "training_noise": "clean_only",
     },
     "acoustic_selection": {
         # スペクトルの縦軸に引く横線。図の「×10^-9」表示で高さ1に相当。
@@ -423,7 +426,8 @@ def update_noise_trend_plots(plotter, job, run_dir, run_hash, model_keys):
 
 
 def validate_validation_config(enabled_specs):
-    if (experiment_split_kind(LEARNING_POLICY) in {"within_day", "within_day_holdout"}
+    if (experiment_split_kind(LEARNING_POLICY) in {
+            "within_day", "within_day_holdout", "within_wav_chunk_holdout"}
             or "performance_kfold" in ENSEMBLE_MANAGER.selected_strategy_names) and DIVISIONS < 2:
         raise ValueError("folds must be at least 2.")
     if not PARAMETER_SETS:
