@@ -30,6 +30,10 @@ from utils.experiment.run_helpers import json_default, safe_tag, set_global_seed
 from utils.training.internal_validation import fit_individual_performance_cv
 
 
+SELECTION_METRIC = "rmse_all"
+RELATIVE_TOLERANCE = 0.02
+
+
 def _write_json(path, value):
     with Path(path).open("w", encoding="utf-8") as output:
         json.dump(value, output, ensure_ascii=False, indent=2, default=json_default)
@@ -98,10 +102,9 @@ def oof_regression_metrics(y, prediction, metadata, thresholds, onb_band_frac):
     return result
 
 
-def _output_directory(family, config):
-    configured = config["tuning"].get("output_dir")
-    if configured:
-        path = Path(configured)
+def _output_directory(family, config, configured_output_dir=None):
+    if configured_output_dir:
+        path = Path(configured_output_dir)
         if not path.is_absolute():
             path = Path(__file__).resolve().parents[3] / path
         return path
@@ -135,10 +138,11 @@ def _write_csv(path, rows):
         writer.writerows(rows)
 
 
-def run_training_oof_tuning(jobs, policy, config, enabled_specs, parameter_sets, trainer):
+def run_training_oof_tuning(
+        jobs, policy, config, enabled_specs, parameter_sets, trainer,
+        output_dir=None, selection_metric=SELECTION_METRIC,
+        relative_tolerance=RELATIVE_TOLERANCE):
     """Rank independent model candidates without scoring the outer test set."""
-    if config["tuning"].get("mode") != "training_oof":
-        raise ValueError("Only tuning.mode='training_oof' is supported.")
     if policy["training_noise"] != "clean_only":
         raise ValueError(
             "training_oof tuning currently requires clean_only so one candidate ranking "
@@ -189,12 +193,12 @@ def run_training_oof_tuning(jobs, policy, config, enabled_specs, parameter_sets,
         config.get("acoustic_selection"),
         config["thresholds"].get("by_experiment", {}),
     )
-    output_dir = _output_directory(family, config)
+    output_dir = _output_directory(family, config, output_dir)
     output_dir.mkdir(parents=True, exist_ok=False)
     audit_dir = output_dir / "candidate_audits"
     audit_dir.mkdir()
 
-    metric_name = config["tuning"].get("selection_metric", "rmse_all")
+    metric_name = str(selection_metric)
     allowed_metrics = {"rmse_all", "mae_all", "rmse_onb"}
     if metric_name not in allowed_metrics:
         raise ValueError(f"selection_metric must be one of {sorted(allowed_metrics)}")
@@ -202,12 +206,11 @@ def run_training_oof_tuning(jobs, policy, config, enabled_specs, parameter_sets,
     all_rows, day_rows = [], []
     spec_by_key = {spec["key"]: spec for spec in enabled_specs}
     for candidate_index, parameter_set in enumerate(parameter_sets, 1):
-        requested = list(parameter_set.get("active_model_keys") or [])
-        if len(requested) != 1:
+        model_key = parameter_set.get("model_key")
+        if not model_key:
             raise ValueError(
-                "Each training_oof candidate must select exactly one model via active_model_keys."
+                "Each training_oof candidate must select exactly one model via model_key."
             )
-        model_key = requested[0]
         if model_key not in spec_by_key:
             raise ValueError(f"Tuning candidate selects inactive model: {model_key}")
         specs = resolve_parameter_set(enabled_specs, parameter_set)
@@ -273,9 +276,9 @@ def run_training_oof_tuning(jobs, policy, config, enabled_specs, parameter_sets,
 
     _write_csv(output_dir / "candidate_metrics.csv", all_rows)
     _write_csv(output_dir / "candidate_metrics_by_source_day.csv", day_rows)
-    tolerance = float(config["tuning"].get("relative_tolerance", 0.02))
+    tolerance = float(relative_tolerance)
     if not 0 <= tolerance < 1:
-        raise ValueError("tuning.relative_tolerance must be between 0 and 1.")
+        raise ValueError("relative_tolerance must be between 0 and 1.")
     selected = {}
     for model_key in sorted({row["model_key"] for row in all_rows}):
         candidates = [row for row in all_rows if row["model_key"] == model_key]
@@ -305,11 +308,12 @@ def run_training_oof_tuning(jobs, policy, config, enabled_specs, parameter_sets,
         "selected": selected,
         "normal_run_unchanged": True,
         "next_step": (
-            "Copy the chosen parameters into models.parameter_sets, set tuning.enabled=False, "
-            "and run the normal pipeline once for the untouched outer test."
+            "Copy the chosen parameters into models.parameter_sets, leave exactly one value "
+            "in every candidate list, and run the normal pipeline once for the untouched "
+            "outer test."
         ),
     }
-    _write_json(output_dir / "tuning_config.json", config)
+    _write_json(output_dir / "parameter_search_config.json", config)
     _write_json(output_dir / "selected_candidates.json", summary)
     _write_json(output_dir / "completed.json", {"completed": True, **summary})
     print(f"training-only OOF tuning results saved: {output_dir}", flush=True)

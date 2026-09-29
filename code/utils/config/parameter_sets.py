@@ -199,7 +199,7 @@ def build_independent_model_grid_parameter_sets(model_grids, default_keras=None)
             parameter_set = {
                 "name": name,
                 "tag": tag,
-                "active_model_keys": [model_key],
+                "model_key": model_key,
                 "models": {model_key: params},
             }
             if default_keras:
@@ -283,25 +283,75 @@ def expand_parameter_sets(parameter_sets_config, active_model_keys=None):
     raise ValueError(f"Unknown parameter_sets config type: {config_type}")
 
 
+def build_parameter_execution_plan(parameter_sets_config, active_model_keys):
+    """Choose a fixed run or model-wise search from the candidate-list lengths.
+
+    ``active_model_grid`` is the single user-facing configuration for both
+    modes.  When every active-model candidate list is a singleton, one joint
+    parameter set is returned for the normal ONB experiment.  As soon as any
+    list creates more than one joint combination, candidates are instead
+    expanded independently per model for training-only OOF selection.  This
+    avoids multiplying RF, Conformer, and AlexNet candidates together.
+    """
+    if not isinstance(parameter_sets_config, dict):
+        raise TypeError(
+            "Automatic parameter execution requires parameter_sets to be a config dict."
+        )
+    if parameter_sets_config.get("type") != "active_model_grid":
+        raise ValueError(
+            "Automatic parameter execution requires "
+            "parameter_sets.type='active_model_grid'."
+        )
+
+    active_model_keys = list(active_model_keys or [])
+    if not active_model_keys:
+        raise ValueError("active_model_keys must select at least one model.")
+    if len(active_model_keys) != len(set(active_model_keys)):
+        raise ValueError(f"active_model_keys contains duplicates: {active_model_keys}")
+    model_grids = parameter_sets_config["model_grids"]
+    missing_grids = [key for key in active_model_keys if key not in model_grids]
+    if missing_grids:
+        raise ValueError(
+            "model_grids must define every active model; missing "
+            f"{missing_grids}."
+        )
+    active_model_grids = {
+        model_key: model_grids[model_key]
+        for model_key in active_model_keys
+    }
+    search_config = {
+        "type": "independent_model_grid",
+        "model_grids": active_model_grids,
+    }
+    if parameter_sets_config.get("default_keras"):
+        search_config["default_keras"] = dict(
+            parameter_sets_config["default_keras"]
+        )
+    independent_parameter_sets = expand_parameter_sets(search_config)
+    search_enabled = len(independent_parameter_sets) > len(active_model_keys)
+    if search_enabled:
+        return independent_parameter_sets, True
+    return expand_parameter_sets(
+        parameter_sets_config,
+        active_model_keys=active_model_keys,
+    ), False
+
+
 def resolve_parameter_set(enabled_specs, parameter_set):
     resolved = []
     default_keras = parameter_set.get("default_keras", {})
     per_model = parameter_set.get("models", {})
-    requested_keys = parameter_set.get("active_model_keys")
-    if requested_keys is None:
+    requested_key = parameter_set.get("model_key")
+    if requested_key is None:
         selected_specs = list(enabled_specs)
     else:
-        requested_keys = list(requested_keys)
-        if not requested_keys or len(requested_keys) != len(set(requested_keys)):
-            raise ValueError("parameter_set.active_model_keys must be non-empty and unique.")
         spec_by_key = {spec["key"]: spec for spec in enabled_specs}
-        unknown = [key for key in requested_keys if key not in spec_by_key]
-        if unknown:
+        if requested_key not in spec_by_key:
             raise ValueError(
-                "parameter_set.active_model_keys contains inactive/unknown models: "
-                f"{unknown}"
+                "parameter_set.model_key contains an unknown model: "
+                f"{requested_key}"
             )
-        selected_specs = [spec_by_key[key] for key in requested_keys]
+        selected_specs = [spec_by_key[requested_key]]
     for spec in selected_specs:
         resolved_spec = dict(spec)
         if resolved_spec["kind"] == "keras":

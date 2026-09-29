@@ -86,6 +86,25 @@ class PeakHeightSelectionTest(unittest.TestCase):
             with self.assertRaises(ValueError):
                 AcousticTrainingSelector(selector.config, {"a": 10})
 
+    def test_onb_band_is_protected_before_peak_selection(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            selector, rows = self.fixture(tmp, protect_onb_band_frac=0.10)
+            kept, audit = selector.select(rows[:5])
+            # q=10 is the ONB point and is retained even with a weak peak.
+            # q=20 is above the protected band and its weak peak is excluded.
+            np.testing.assert_array_equal(kept, [0, 1, 2, 3])
+            details = audit["by_experiment"]["a"]
+            self.assertEqual(details["protected_chunks"], 3)
+            self.assertEqual(details["eligible_chunks"], 1)
+            self.assertEqual(details["excluded_chunks"], 1)
+            self.assertEqual(details["protected_upper_heat_flux"], 11)
+            self.assertTrue(audit["decisions"][1]["protected_onb_band"])
+            self.assertFalse(audit["decisions"][1]["selection_eligible"])
+            self.assertTrue(audit["decisions"][4]["selection_eligible"])
+            for value in (-0.1, float("nan"), float("inf")):
+                with self.assertRaises(ValueError):
+                    self.fixture(tmp, protect_onb_band_frac=value)
+
     def test_merged_manifest_uses_original_day_and_wav_for_selection(self):
         with tempfile.TemporaryDirectory() as tmp:
             selector, rows = self.fixture(tmp)

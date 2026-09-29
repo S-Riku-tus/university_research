@@ -23,7 +23,7 @@ def main():
     parser.add_argument("--selection", choices=["both", "baseline", "selected"], default="both")
     args = parser.parse_args()
     all_jobs = onb.build_dataset_jobs()
-    specs = [s for s in onb.MODEL_SPECS if s["key"] in onb.ACTIVE_MODEL_KEYS]
+    specs = list(onb.MODEL_SPECS)
     for enabled in (False, True):
         if args.selection != "both" and enabled != (args.selection == "selected"):
             continue

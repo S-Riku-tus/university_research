@@ -85,7 +85,12 @@ def _selection_segment(config):
         return "s0"
     value = format(float(threshold), ".3g").replace("+", "")
     value = re.sub(r"e(-?)0+(\d+)$", r"e\1\2", value)
-    return "s" + value
+    segment = "s" + value
+    protected = float(selection.get("protect_onb_band_frac", 0.0))
+    if protected > 0:
+        percent = format(protected * 100, ".3g").replace(".", "p")
+        segment += "b" + percent
+    return segment
 
 
 def _chunk_segment(config):

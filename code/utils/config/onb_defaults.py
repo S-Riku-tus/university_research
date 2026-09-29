@@ -95,13 +95,16 @@ def default_output_config(now=None):
 
 
 DEFAULT_ACOUSTIC_SELECTION_CONFIG = {
-    # Only peak_height_threshold is an experiment-by-experiment choice in the
-    # main script.  None means that selection is disabled.
+    # The main script chooses the peak-height line and optional ONB protection
+    # band. None for the peak threshold means that selection is disabled.
     "mode": "peak_height",
     "features_csv": "experiments/2026-09-16_peak_height_selection/peak_features.csv",
     "feature": "peak_2100_2500_psd",
     "peak_height_threshold": None,
     "peak_height_threshold_by_experiment": {},
+    # Zero preserves the historical y >= ONB behavior.  A positive fraction
+    # keeps ONB through ONB * (1 + fraction) out of the training selector.
+    "protect_onb_band_frac": 0.0,
     "apply_max_heat_flux_by_experiment": {},
 }
 

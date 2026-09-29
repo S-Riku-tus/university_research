@@ -51,6 +51,12 @@ class AcousticTrainingSelector:
         if self.mode not in {"background_quantile", "peak_height"}:
             raise ValueError(f"Unknown acoustic selection mode: {self.mode}")
         self.feature = self.config["feature"]
+        self.protect_onb_band_frac = float(
+            self.config.get("protect_onb_band_frac", 0.0)
+        )
+        if (not np.isfinite(self.protect_onb_band_frac)
+                or self.protect_onb_band_frac < 0):
+            raise ValueError("protect_onb_band_frac must be finite and nonnegative")
         if self.mode == "peak_height":
             if not self.feature.startswith("peak_") or not self.feature.endswith("_psd"):
                 raise ValueError("peak_height requires a linear peak PSD feature")
@@ -106,6 +112,8 @@ class AcousticTrainingSelector:
         # not to the synthetic directory that merges multiple experiments.
         days = np.asarray([_source_experiment_name(row) for row in metadata])
         keep = np.ones(len(metadata), dtype=bool)
+        selection_eligible = np.zeros(len(metadata), dtype=bool)
+        protected_onb_band = np.zeros(len(metadata), dtype=bool)
         details = {}
         decisions = []
         for day in sorted(set(days)):
@@ -123,14 +131,25 @@ class AcousticTrainingSelector:
                 threshold = float(np.quantile(values[background], self.config.get("background_quantile", 0.99))
                                   + self.config.get("margin_db", 0.0))
             upper = self.config.get("apply_max_heat_flux_by_experiment", {}).get(day)
-            eligible = day_mask & (y >= onb)
+            protected_upper = onb + abs(onb) * self.protect_onb_band_frac
+            if self.protect_onb_band_frac > 0:
+                protected = day_mask & (y >= onb) & (y <= protected_upper)
+                eligible = day_mask & (y > protected_upper)
+            else:
+                protected = np.zeros(len(metadata), dtype=bool)
+                eligible = day_mask & (y >= onb)
             if upper is not None:
                 if float(upper) < onb:
                     raise ValueError("Selection upper heat flux cannot be below ONB")
                 eligible &= y <= float(upper)
+            selection_eligible |= eligible
+            protected_onb_band |= protected
             below = values < threshold if self.mode == "peak_height" else values <= threshold
             keep[eligible & below] = False
             details[day] = {"onb_heat_flux": onb,
+                            "protect_onb_band_frac": self.protect_onb_band_frac,
+                            "protected_upper_heat_flux": protected_upper,
+                            "protected_chunks": int(protected.sum()),
                             ("threshold_psd" if self.mode == "peak_height" else "threshold_db"): threshold,
                             "background_chunks": int(background.sum()) if self.mode == "background_quantile" else 0,
                             "eligible_chunks": int(eligible.sum()), "excluded_chunks": int((day_mask & ~keep).sum())}
@@ -141,6 +160,8 @@ class AcousticTrainingSelector:
                               "original_source_wav_id": _original_source_wav_id(row),
                               "chunk_index": int(row["chunk_index"]), "heat_flux": float(y[i]),
                               ("peak_height_psd" if self.mode == "peak_height" else "feature_db"): float(values[i]),
+                              "selection_eligible": bool(selection_eligible[i]),
+                              "protected_onb_band": bool(protected_onb_band[i]),
                               "keep": bool(keep[i])})
         if not keep.any():
             raise ValueError("Acoustic selection removed all training data")

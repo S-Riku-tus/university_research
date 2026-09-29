@@ -177,6 +177,17 @@ class LearningPolicyTest(unittest.TestCase):
             first["save_base_path"].name,
             "onb_xd-t0611-v0618_iw3-nm_c1s_s1e-9_e150_010203",
         )
+        protected_config = {
+            **config,
+            "acoustic_selection": {
+                **config["acoustic_selection"],
+                "protect_onb_band_frac": 0.10,
+            },
+        }
+        protected_name = result_scope_dir_name(
+            "onb", job, protected_config, "010203", "config-protected")
+        self.assertIn("_s1e-9b10_", protected_name)
+        self.assertNotEqual(first["save_base_path"].name, protected_name)
         self.assertLessEqual(len(first["save_base_path"].name), MAX_STUDY_DIR_LENGTH)
         self.assertEqual(result_run_path(first, ""), first["save_base_path"] / "maxfreq=3kHz" / "heatflux_no_noise")
 

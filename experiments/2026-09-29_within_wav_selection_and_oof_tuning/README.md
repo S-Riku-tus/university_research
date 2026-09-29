@@ -2,6 +2,8 @@
 
 更新日: 2026-09-29。これは実装・事前検算の記録であり、ピーク選別ありの本学習結果やチューニング結果ではない。
 
+**同日追記**：生の`1e-9`はONBちょうどを90秒中86秒除外するため実行せず、[ONB保持制約の監査と実装](../2026-09-29_peak_threshold_preservation/README.md)により、日別ONB +10%以内を保護してその上だけ`1e-9`を適用する条件へ更新した。以下の生`1e-9`事前計算は変更理由を示す履歴として保持する。
+
 ## 今回答える問い
 
 1. 6/11＋6/18統合データの`within_wav_chunk`でも、2.1–2.5 kHzピークによる学習データ選別を、外側テストを変更せずに実行できるか。
@@ -12,10 +14,11 @@
 
 - 統合manifestの`source_experiment_name`と`original_source_wav_id`を使い、元実験日のピーク特徴・ONB閾値へ対応付けるようにした。通常の単日manifestは従来のキーへフォールバックする。
 - 固定`peak_height`選別を`within_wav_chunk`で許可した。選別は外側学習部分と内部OOFの各inner-fitだけに適用し、inner-validationと外側テストは全chunkを保持する。fold内で推定する旧`background_quantile`は日内方式では引き続き禁止する。
-- 主コードの現行通常実行を、1秒・3 kHz・6/11＋6/18統合・clean_only・seed 42・`peak_height_threshold=1e-9`へ設定した。`tuning.enabled=False`なので、次の通常実行は固定パラメータの選別あり比較である。
-- `tuning.enabled=True`のときだけ通常の外側評価を止め、外側学習部分の3-fold WAV非共有OOFで候補を個別評価する専用モードを追加した。外側テストは配列を読み込まず、指標も算出しない。
-- 探索候補はRF 6、Conformer 6、AlexNet 6の計18候補。3モデル候補の直積216通りではなく、各モデルを独立に選ぶ。主順位はOOF全域RMSEで、最良値2%以内の候補と、日別ONB近傍・ONB前FPR・Recallも保存する。
-- 出力は`regression_result/npy/tuning/<年月>/<日>/tuning_<主要条件>_<HHMMSS>/`に分離し、`candidate_metrics.csv`、日別CSV、候補別内部監査、`selected_candidates.json`を保存する。選んだ値を通常設定へ移し、`tuning.enabled=False`に戻して初めて外側テストを1回評価する。
+- モデル選択configを廃止し、RandomForest・Conformer・AlexNetの3モデルを常に実行するよう固定した。通常runでは3モデルすべてを学習し、探索runでは各モデルの候補を独立に評価する。
+- 主コードの現行通常実行を、1秒・3 kHz・6/11＋6/18統合・clean_only・seed 42・`peak_height_threshold=1e-9`へ設定した。現在は`models.parameter_sets.model_grids`の全候補リストが1要素なので、固定パラメータの選別あり通常比較になる。
+- チューニング専用configと有効／無効フラグを廃止した。`model_grids`のどれかのリストに複数値を入れると、通常の外側評価を止め、外側学習部分の3-fold WAV非共有OOFで候補を個別評価するモードへ自動切替する。外側テストは配列を読み込まず、指標も算出しない。
+- 同一モデル内では候補を組み合わせるが、3モデル間の直積にはせず各モデルを独立に選ぶ。例えばRF 6、Conformer 6、AlexNet 6なら216通りではなく計18候補となる。主順位はOOF全域RMSEで、最良値2%以内の候補と、日別ONB近傍・ONB前FPR・Recallも保存する。
+- 出力は`regression_result/npy/tuning/<年月>/<日>/tuning_<主要条件>_<HHMMSS>/`に分離し、`candidate_metrics.csv`、日別CSV、候補別内部監査、`selected_candidates.json`を保存する。選んだ値を各リストの1要素だけに戻した次の実行で、通常モードへ自動的に戻り、外側テストを1回評価する。
 
 ## `1e-9`除外数の再検算
 
@@ -34,14 +37,14 @@
 ## 検証
 
 - 実データの事前判定: 全2160秒、外側学習1620、外側テスト540、選別後1470。出典日別のONBとピーク特徴を使用した。
-- 全92単体テスト成功。統合manifestの選別キー、候補ごとのモデル限定、出典日別ONB指標、外側学習6／外側テスト6の小型OOFチューニングを追加検証した。
+- 全95単体テスト成功。統合manifestの選別キー、候補数による自動切替、モデル間の直積を作らない独立候補、出典日別ONB指標、外側学習6／外側テスト6の小型OOFチューニングを検証した。
 - TensorFlowのテスト時にGPUが見えない旨のログは出たが、CPUへフォールバックして全テストは成功した。本学習結果の検証ではない。
 
 ## 次の順序
 
-1. 現在の`peak_height_threshold=1e-9`、`tuning.enabled=False`で通常実行し、既存の選別なし1秒runと同じ外側540秒で比較する。
+1. `peak_height_threshold=1e-9`、`protect_onb_band_frac=0.10`、全パラメータ候補リスト1要素で通常実行し、既存の選別なし1秒runと同じ外側540秒で比較する。
 2. 全域RMSEだけでなく、日別ONB前bias/FPR、日別ONB近傍RMSE、Recall、q100を読む。過去の別日比較では選別がONB前誤報を減らす一方、ONB近傍を悪化させたため、同じトレードオフが統合within-WAV条件でも出るかを確認する。
-3. 選別の採否を決めた後、採用する選別条件を固定して`tuning.enabled=True`にする。18候補を外側学習OOFだけで順位付けする。
-4. 各モデルの採用候補を通常の`models.parameter_sets`へ写し、チューニングを無効に戻す。 untouchedな外側540秒×7 noiseを一度だけ評価する。
+3. 選別の採否を決めた後、採用する選別条件を固定し、`models.parameter_sets.model_grids`の各リストへ探索候補を入れる。これにより18候補を外側学習OOFだけで自動的に順位付けする。
+4. 各モデルの採用値だけをリストに残す。次の実行は自動で通常モードとなり、untouchedな外側540秒×7 noiseを一度だけ評価する。
 
 選別ありとチューニングを同時に実行して効果を混同しない。今回の次runは選別だけを変えた比較とする。

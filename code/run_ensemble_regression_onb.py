@@ -34,7 +34,7 @@ from utils.training.model_training import ModelTrainer
 from utils.ensemble.ensemble_runtime import EnsembleManager
 from utils.plotting.regression_plots import RegressionPlotter
 from utils.config.parameter_sets import (
-    expand_parameter_sets,
+    build_parameter_execution_plan,
     resolve_parameter_set,
 )
 from utils.config.onb_defaults import apply_onb_defaults, onb_model_specs
@@ -151,9 +151,10 @@ VALIDATION_CONFIG = apply_onb_defaults({
     },
     "acoustic_selection": {
         # スペクトルの縦軸に引く横線。図の「×10^-9」表示で高さ1に相当。
-        # 0.3e-9なら弱い秒も含む。3e-9 / 10e-9なら大きいピークの秒に絞る。
-        # Noneなら選別なし。特徴量・対象範囲などの固定条件はonb_defaults.pyで管理する。
+        # 日別ONBの+10%以内はピークに関係なく保持し、それより上だけを選別する。
+        # Noneなら選別なし。特徴量などの固定条件はonb_defaults.pyで管理する。
         "peak_height_threshold": 1.0e-9,  # Noneで選別なし
+        "protect_onb_band_frac": 0.10,
     },
     "thresholds": {
         # ONBと確認された最初の測定点の熱流束と、その出典を一元管理する。
@@ -164,10 +165,7 @@ VALIDATION_CONFIG = apply_onb_defaults({
         "onb_band_frac": 0.10,
     },
     "models": {
-        "active_model_keys": ["randomforest", "conformer", "alexnet"],
-        # active_model_keysに指定したモデルだけを学習する。
-        # 各候補リストが1要素なら固定条件、複数要素なら組み合わせを比較する。
-        # 無効なモデルの候補設定は実行に影響しない。
+        # RandomForest・Conformer・AlexNetの3モデルは常にすべて実行する。
         "parameter_sets": {
             "type": "active_model_grid",
             "model_grids": {
@@ -190,39 +188,6 @@ VALIDATION_CONFIG = apply_onb_defaults({
             },
             "default_keras": {
                 # KerasのTTY依存バーではなく、全実行環境で残る共通進捗行を使う。
-                "fit_verbose": 0,
-                "progress_interval_epochs": 10,
-            },
-        },
-    },
-    "tuning": {
-        # Falseなら従来どおり、上の固定パラメータで通常の学習・テストを行う。
-        # Trueなら通常実行を一時停止し、外側学習データ内のWAV非共有OOFだけで
-        # 各モデルを個別に探索する。外側テストの配列・指標は候補選択に使わない。
-        "enabled": False,
-        "mode": "training_oof",
-        "selection_metric": "rmse_all",
-        # 最良値との差が2%以内の候補も、ONB指標を確認する候補として記録する。
-        "relative_tolerance": 0.02,
-        "parameter_sets": {
-            "type": "independent_model_grid",
-            "model_grids": {
-                "randomforest": {
-                    "n_estimators": [100, 300],
-                    "max_depth": [3, 4, 8],
-                    "subsample": [0.6],
-                    "colsample_bynode": [0.6],
-                },
-                "conformer": {
-                    "lr": [0.0001, 0.0003, 0.001],
-                    "batch_size": [6, 12],
-                },
-                "alexnet": {
-                    "lr": [0.0001, 0.0003, 0.001],
-                    "batch_size": [6, 12],
-                },
-            },
-            "default_keras": {
                 "fit_verbose": 0,
                 "progress_interval_epochs": 10,
             },
@@ -286,32 +251,24 @@ THRESHOLD_PROVENANCE_BY_EXPERIMENT = _cfg(
 REQUIRE_EXPERIMENT_THRESHOLD = _cfg("thresholds", "require_experiment_threshold")
 ONB_BAND_FRAC = _cfg("thresholds", "onb_band_frac")
 
-ACTIVE_MODEL_KEYS = _cfg("models", "active_model_keys")
-PARAMETER_SETS = expand_parameter_sets(
+MODEL_SPECS = onb_model_specs()
+MODEL_KEYS = [spec["key"] for spec in MODEL_SPECS]
+PARAMETER_SETS, PARAMETER_SEARCH_ENABLED = build_parameter_execution_plan(
     _cfg("models", "parameter_sets"),
-    active_model_keys=ACTIVE_MODEL_KEYS,
-)
-TUNING_CONFIG = dict(VALIDATION_CONFIG.get("tuning", {}))
-TUNING_ENABLED = bool(TUNING_CONFIG.get("enabled", False))
-TUNING_PARAMETER_SETS = (
-    expand_parameter_sets(
-        TUNING_CONFIG["parameter_sets"],
-        active_model_keys=ACTIVE_MODEL_KEYS,
-    )
-    if TUNING_ENABLED else []
+    MODEL_KEYS,
 )
 
 ENSEMBLE_MANAGER = EnsembleManager(
     VALIDATION_CONFIG.get("ensemble", {}),
-    ACTIVE_MODEL_KEYS,
+    MODEL_KEYS,
     random_seed=RANDOM_SEED,
 )
-ENSEMBLE_ENABLED = ENSEMBLE_MANAGER.enabled and len(ACTIVE_MODEL_KEYS) >= 2
+ENSEMBLE_ENABLED = ENSEMBLE_MANAGER.enabled and len(MODEL_KEYS) >= 2
 RESULT_MODEL_GROUP = (
     "ensemble" if ENSEMBLE_ENABLED
-    else "randomforest" if ACTIVE_MODEL_KEYS == ["randomforest"]
-    else "conformer" if ACTIVE_MODEL_KEYS == ["conformer"]
-    else "alexnet" if ACTIVE_MODEL_KEYS == ["alexnet"]
+    else "randomforest" if MODEL_KEYS == ["randomforest"]
+    else "conformer" if MODEL_KEYS == ["conformer"]
+    else "alexnet" if MODEL_KEYS == ["alexnet"]
     else "single_model"
 )
 
@@ -340,7 +297,7 @@ EXPLAINABILITY_CONFIG = resolve_explainability_scope(
     experiment_names=EXPERIMENT_DIR_NAMES,
     max_freq_hz_list=MAX_FREQ_HZ_LIST,
     noise_dir_names=NOISE_DIR_NAMES,
-    model_keys=ACTIVE_MODEL_KEYS,
+    model_keys=MODEL_KEYS,
     fold_count=EVALUATION_FOLDS,
 )
 EXPLAINABILITY_ENABLED = EXPLAINABILITY_CONFIG.get("enabled", False)
@@ -354,12 +311,6 @@ EXPLAINABILITY_ENABLED = EXPLAINABILITY_CONFIG.get("enabled", False)
 # 学習モデルと表示ラベルを一致させるために使用する。
 # モデル構造は各構築関数内に固定している。
 # 学習率とバッチサイズなどは上のparameter_setsで指定する。
-
-
-MODEL_SPECS = onb_model_specs()
-
-
-
 
 # データフォルダの設定
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -423,12 +374,9 @@ def validation_config_snapshot():
             "onb_band_frac": ONB_BAND_FRAC,
         },
         "models": {
-            "active_model_keys": ACTIVE_MODEL_KEYS,
+            "fixed_model_keys": MODEL_KEYS,
             "parameter_sets": PARAMETER_SETS,
-        },
-        "tuning": {
-            **TUNING_CONFIG,
-            "expanded_parameter_sets": TUNING_PARAMETER_SETS,
+            "parameter_search_enabled": PARAMETER_SEARCH_ENABLED,
         },
         "ensemble": ENSEMBLE_MANAGER.snapshot(),
         "features": {
@@ -490,26 +438,20 @@ def validate_validation_config(enabled_specs):
         raise ValueError("pca_components must be a positive integer.")
     model_keys = [spec["key"] for spec in enabled_specs]
     if len(model_keys) != len(set(model_keys)):
-        raise ValueError(f"Duplicate active model keys: {model_keys}")
+        raise ValueError(f"Duplicate fixed model keys: {model_keys}")
 
     for parameter_set in PARAMETER_SETS:
         if not isinstance(parameter_set, dict):
             raise TypeError("Each expanded parameter set must be a dict.")
-        # 有効な深層モデルすべてに学習率とバッチサイズが設定されているか確認する。
-        # 無効なモデルにだけ属するパラメータは無視する。
+        # 固定3モデルの深層モデルに学習率とバッチサイズがあるか確認する。
         resolve_parameter_set(enabled_specs, parameter_set)
 
-    if TUNING_ENABLED:
-        if TUNING_CONFIG.get("mode") != "training_oof":
-            raise ValueError("VALIDATION_CONFIG['tuning']['mode'] must be 'training_oof'.")
-        if not TUNING_PARAMETER_SETS:
-            raise ValueError("tuning.parameter_sets must expand to at least one candidate.")
-        for parameter_set in TUNING_PARAMETER_SETS:
-            if len(parameter_set.get("active_model_keys", [])) != 1:
+    if PARAMETER_SEARCH_ENABLED:
+        for parameter_set in PARAMETER_SETS:
+            if parameter_set.get("model_key") not in MODEL_KEYS:
                 raise ValueError(
-                    "training_oof tuning requires independent_model_grid candidates."
+                    "Automatic parameter search requires one-model candidates."
                 )
-            resolve_parameter_set(enabled_specs, parameter_set)
 
     ENSEMBLE_MANAGER.validate(enabled_specs)
 
@@ -636,22 +578,14 @@ def main():
     trainer = ModelTrainer(random_seed=RANDOM_SEED)
     plotter = RegressionPlotter()
 
-    # 設定欄で指定したモデルの定義を取得する。
-    spec_by_key = {s["key"]: s for s in MODEL_SPECS}
-    unknown = [k for k in ACTIVE_MODEL_KEYS if k not in spec_by_key]
-    if unknown:
-        raise ValueError(f"ACTIVE_MODEL_KEYS has unknown keys: {unknown} "
-                         f"(defined: {list(spec_by_key)})")
-    enabled_specs = [spec_by_key[k] for k in ACTIVE_MODEL_KEYS]
-    if not enabled_specs:
-        raise ValueError("ACTIVE_MODEL_KEYS must select at least one model.")
+    # ONB研究で固定した3モデルを常にすべて使用する。
+    enabled_specs = list(MODEL_SPECS)
 
     # Windowsのパス長制限を考慮し、結果フォルダ名を短くする。
     validate_validation_config(enabled_specs)
 
     configured_model_keys = [s["key"] for s in enabled_specs]
     configured_model_tag = "-".join(configured_model_keys)
-    single_model_run = len(configured_model_keys) == 1
 
     print("#" * 60)
     if SMOKE_TEST:
@@ -665,28 +599,23 @@ def main():
         f"(model_tag={configured_model_tag})"
     )
     parameter_mode = (
-        "fixed parameters (one expanded set)"
-        if len(PARAMETER_SETS) == 1
-        else f"grid tuning ({len(PARAMETER_SETS)} expanded sets)"
+        f"training-only OOF search ({len(PARAMETER_SETS)} model-wise candidates)"
+        if PARAMETER_SEARCH_ENABLED
+        else "fixed parameters (all candidate lists are singletons)"
     )
     print(f"parameter mode: {parameter_mode}")
-    if TUNING_ENABLED:
+    if PARAMETER_SEARCH_ENABLED:
         print(
-            "execution mode: training-only OOF hyperparameter tuning "
-            f"({len(TUNING_PARAMETER_SETS)} independent candidates); outer test is not scored"
-        )
-    elif single_model_run:
-        print(
-            "execution mode: single active model; ensemble strategies are skipped "
-            f"| epoch={EPOCH_NUM} | fold={DIVISIONS}"
+            "execution mode: candidate lists triggered training-only OOF search; "
+            "outer test is not scored"
         )
     else:
         print(
             f"ensemble: {ENSEMBLE_MANAGER.description()} "
             f"| epoch={EPOCH_NUM} | fold={DIVISIONS}"
         )
-    if TUNING_ENABLED:
-        print("explainability: skipped in training-only tuning mode")
+    if PARAMETER_SEARCH_ENABLED:
+        print("explainability: skipped in training-only parameter-search mode")
     else:
         print(
             "explainability: "
@@ -703,13 +632,13 @@ def main():
     if not dataset_jobs:
         raise FileNotFoundError("No datasets were found for the requested experiment/maxfreq/noise plan.")
 
-    if TUNING_ENABLED:
+    if PARAMETER_SEARCH_ENABLED:
         run_training_oof_tuning(
             dataset_jobs,
             LEARNING_POLICY,
             validation_config_snapshot(),
             enabled_specs,
-            TUNING_PARAMETER_SETS,
+            PARAMETER_SETS,
             trainer,
         )
         return
