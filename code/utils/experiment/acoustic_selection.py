@@ -11,10 +11,28 @@ from pathlib import Path
 
 import numpy as np
 
-from utils.experiment.learning_policy import sample_key, targets_from_metadata
+from utils.experiment.learning_policy import targets_from_metadata
 from utils.experiment.spectral_peaks import PSD_UNIT, SPECTRUM_METHOD
 
 ROOT = Path(__file__).resolve().parents[3]
+
+
+def _source_experiment_name(row):
+    """Return the physical source day, falling back to the dataset name."""
+    return str(row.get("source_experiment_name") or row["experiment_name"])
+
+
+def _original_source_wav_id(row):
+    """Return the pre-merge WAV id used by the spectral-feature table."""
+    return str(row.get("original_source_wav_id") or row["source_wav_id"])
+
+
+def _acoustic_feature_key(row):
+    return (
+        _source_experiment_name(row),
+        _original_source_wav_id(row),
+        int(row["chunk_index"]),
+    )
 
 
 class AcousticTrainingSelector:
@@ -48,7 +66,9 @@ class AcousticTrainingSelector:
                 raise ValueError("margin_db must be finite")
         with path.open(encoding="utf-8-sig", newline="") as inp:
             for row in csv.DictReader(inp):
-                key = sample_key(row)
+                # The feature table is indexed by the original recording.
+                # A merged dataset keeps that identity in provenance columns.
+                key = _acoustic_feature_key(row)
                 if key in self.rows:
                     raise ValueError(f"Duplicate acoustic feature: {key}")
                 if self.feature not in row or not np.isfinite(float(row[self.feature])):
@@ -68,7 +88,13 @@ class AcousticTrainingSelector:
         y = targets_from_metadata(metadata)
         values = []
         for row, target in zip(metadata, y):
-            feature_row = self.rows[sample_key(row)]  # missing provenance must fail
+            key = _acoustic_feature_key(row)
+            if key not in self.rows:
+                raise KeyError(
+                    "No acoustic feature for source experiment/WAV/chunk: "
+                    f"{key}. Check chunk length and merged-manifest provenance."
+                )
+            feature_row = self.rows[key]  # missing provenance must fail
             if not np.isclose(float(feature_row["heat_flux"]), target, rtol=0, atol=1e-5):
                 raise ValueError("Acoustic feature / target mismatch")
             for field in ("chunk_start_seconds", "chunk_duration_seconds"):
@@ -76,7 +102,9 @@ class AcousticTrainingSelector:
                     raise ValueError(f"Acoustic feature / {field} mismatch")
             values.append(float(feature_row[self.feature]))
         values = np.asarray(values)
-        days = np.asarray([row["experiment_name"] for row in metadata])
+        # ONB and fixed thresholds belong to the physical source experiment,
+        # not to the synthetic directory that merges multiple experiments.
+        days = np.asarray([_source_experiment_name(row) for row in metadata])
         keep = np.ones(len(metadata), dtype=bool)
         details = {}
         decisions = []
@@ -107,7 +135,10 @@ class AcousticTrainingSelector:
                             "background_chunks": int(background.sum()) if self.mode == "background_quantile" else 0,
                             "eligible_chunks": int(eligible.sum()), "excluded_chunks": int((day_mask & ~keep).sum())}
         for i, row in enumerate(metadata):
-            decisions.append({"experiment_name": row["experiment_name"], "source_wav_id": row["source_wav_id"],
+            decisions.append({"experiment_name": row["experiment_name"],
+                              "source_experiment_name": _source_experiment_name(row),
+                              "source_wav_id": row["source_wav_id"],
+                              "original_source_wav_id": _original_source_wav_id(row),
                               "chunk_index": int(row["chunk_index"]), "heat_flux": float(y[i]),
                               ("peak_height_psd" if self.mode == "peak_height" else "feature_db"): float(values[i]),
                               "keep": bool(keep[i])})

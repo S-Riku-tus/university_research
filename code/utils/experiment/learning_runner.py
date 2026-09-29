@@ -250,10 +250,11 @@ def run_learning_experiments(jobs, policy, config, enabled_specs, parameter_sets
     if performance_cv and "inner_holdout" in ensemble_manager.selected_strategy_names:
         raise ValueError("performance_kfoldとinner_holdoutは重み推定が異なるため同時選択できません。")
     split_kind = experiment_split_kind(policy)
-    if selector.enabled and split_kind in {
-        "within_day", "within_day_holdout", "within_wav_chunk_holdout"
-    }:
-        raise ValueError("学習選別は実験日を分離した評価で使用してください。")
+    if (selector.enabled and selector.mode != "peak_height" and split_kind in {
+            "within_day", "within_day_holdout", "within_wav_chunk_holdout"}):
+        raise ValueError(
+            "日内評価で使用できる学習選別は、foldによらない固定peak_heightだけです。"
+        )
     if (selector.enabled and not performance_cv and selector.mode != "peak_height"
             and (crossfit_cv or "inner_holdout" in ensemble_manager.selected_strategy_names)):
         raise ValueError(

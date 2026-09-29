@@ -287,7 +287,22 @@ def resolve_parameter_set(enabled_specs, parameter_set):
     resolved = []
     default_keras = parameter_set.get("default_keras", {})
     per_model = parameter_set.get("models", {})
-    for spec in enabled_specs:
+    requested_keys = parameter_set.get("active_model_keys")
+    if requested_keys is None:
+        selected_specs = list(enabled_specs)
+    else:
+        requested_keys = list(requested_keys)
+        if not requested_keys or len(requested_keys) != len(set(requested_keys)):
+            raise ValueError("parameter_set.active_model_keys must be non-empty and unique.")
+        spec_by_key = {spec["key"]: spec for spec in enabled_specs}
+        unknown = [key for key in requested_keys if key not in spec_by_key]
+        if unknown:
+            raise ValueError(
+                "parameter_set.active_model_keys contains inactive/unknown models: "
+                f"{unknown}"
+            )
+        selected_specs = [spec_by_key[key] for key in requested_keys]
+    for spec in selected_specs:
         resolved_spec = dict(spec)
         if resolved_spec["kind"] == "keras":
             params = dict(default_keras)

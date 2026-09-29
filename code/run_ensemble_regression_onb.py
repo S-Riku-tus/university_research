@@ -47,6 +47,7 @@ from utils.experiment.learning_policy import (
     resolve_experiment_names,
 )
 from utils.experiment.learning_runner import run_learning_experiments
+from utils.experiment.training_oof_tuning import run_training_oof_tuning
 from utils.experiment.result_paths import (
     existing_result_run_path,
     noise_trend_path,
@@ -152,7 +153,7 @@ VALIDATION_CONFIG = apply_onb_defaults({
         # スペクトルの縦軸に引く横線。図の「×10^-9」表示で高さ1に相当。
         # 0.3e-9なら弱い秒も含む。3e-9 / 10e-9なら大きいピークの秒に絞る。
         # Noneなら選別なし。特徴量・対象範囲などの固定条件はonb_defaults.pyで管理する。
-        "peak_height_threshold": None,  # 1.0e-9
+        "peak_height_threshold": 1.0e-9,  # Noneで選別なし
     },
     "thresholds": {
         # ONBと確認された最初の測定点の熱流束と、その出典を一元管理する。
@@ -189,6 +190,39 @@ VALIDATION_CONFIG = apply_onb_defaults({
             },
             "default_keras": {
                 # KerasのTTY依存バーではなく、全実行環境で残る共通進捗行を使う。
+                "fit_verbose": 0,
+                "progress_interval_epochs": 10,
+            },
+        },
+    },
+    "tuning": {
+        # Falseなら従来どおり、上の固定パラメータで通常の学習・テストを行う。
+        # Trueなら通常実行を一時停止し、外側学習データ内のWAV非共有OOFだけで
+        # 各モデルを個別に探索する。外側テストの配列・指標は候補選択に使わない。
+        "enabled": False,
+        "mode": "training_oof",
+        "selection_metric": "rmse_all",
+        # 最良値との差が2%以内の候補も、ONB指標を確認する候補として記録する。
+        "relative_tolerance": 0.02,
+        "parameter_sets": {
+            "type": "independent_model_grid",
+            "model_grids": {
+                "randomforest": {
+                    "n_estimators": [100, 300],
+                    "max_depth": [3, 4, 8],
+                    "subsample": [0.6],
+                    "colsample_bynode": [0.6],
+                },
+                "conformer": {
+                    "lr": [0.0001, 0.0003, 0.001],
+                    "batch_size": [6, 12],
+                },
+                "alexnet": {
+                    "lr": [0.0001, 0.0003, 0.001],
+                    "batch_size": [6, 12],
+                },
+            },
+            "default_keras": {
                 "fit_verbose": 0,
                 "progress_interval_epochs": 10,
             },
@@ -256,6 +290,15 @@ ACTIVE_MODEL_KEYS = _cfg("models", "active_model_keys")
 PARAMETER_SETS = expand_parameter_sets(
     _cfg("models", "parameter_sets"),
     active_model_keys=ACTIVE_MODEL_KEYS,
+)
+TUNING_CONFIG = dict(VALIDATION_CONFIG.get("tuning", {}))
+TUNING_ENABLED = bool(TUNING_CONFIG.get("enabled", False))
+TUNING_PARAMETER_SETS = (
+    expand_parameter_sets(
+        TUNING_CONFIG["parameter_sets"],
+        active_model_keys=ACTIVE_MODEL_KEYS,
+    )
+    if TUNING_ENABLED else []
 )
 
 ENSEMBLE_MANAGER = EnsembleManager(
@@ -383,6 +426,10 @@ def validation_config_snapshot():
             "active_model_keys": ACTIVE_MODEL_KEYS,
             "parameter_sets": PARAMETER_SETS,
         },
+        "tuning": {
+            **TUNING_CONFIG,
+            "expanded_parameter_sets": TUNING_PARAMETER_SETS,
+        },
         "ensemble": ENSEMBLE_MANAGER.snapshot(),
         "features": {
             "pca_components": PCA_COMPONENTS,
@@ -451,6 +498,18 @@ def validate_validation_config(enabled_specs):
         # 有効な深層モデルすべてに学習率とバッチサイズが設定されているか確認する。
         # 無効なモデルにだけ属するパラメータは無視する。
         resolve_parameter_set(enabled_specs, parameter_set)
+
+    if TUNING_ENABLED:
+        if TUNING_CONFIG.get("mode") != "training_oof":
+            raise ValueError("VALIDATION_CONFIG['tuning']['mode'] must be 'training_oof'.")
+        if not TUNING_PARAMETER_SETS:
+            raise ValueError("tuning.parameter_sets must expand to at least one candidate.")
+        for parameter_set in TUNING_PARAMETER_SETS:
+            if len(parameter_set.get("active_model_keys", [])) != 1:
+                raise ValueError(
+                    "training_oof tuning requires independent_model_grid candidates."
+                )
+            resolve_parameter_set(enabled_specs, parameter_set)
 
     ENSEMBLE_MANAGER.validate(enabled_specs)
 
@@ -611,7 +670,12 @@ def main():
         else f"grid tuning ({len(PARAMETER_SETS)} expanded sets)"
     )
     print(f"parameter mode: {parameter_mode}")
-    if single_model_run:
+    if TUNING_ENABLED:
+        print(
+            "execution mode: training-only OOF hyperparameter tuning "
+            f"({len(TUNING_PARAMETER_SETS)} independent candidates); outer test is not scored"
+        )
+    elif single_model_run:
         print(
             "execution mode: single active model; ensemble strategies are skipped "
             f"| epoch={EPOCH_NUM} | fold={DIVISIONS}"
@@ -621,13 +685,16 @@ def main():
             f"ensemble: {ENSEMBLE_MANAGER.description()} "
             f"| epoch={EPOCH_NUM} | fold={DIVISIONS}"
         )
-    print(
-        "explainability: "
-        f"{'enabled' if EXPLAINABILITY_ENABLED else 'disabled'} | "
-        f"target_folds={EXPLAINABILITY_CONFIG.get('target_folds')} | "
-        f"max_samples={EXPLAINABILITY_CONFIG.get('max_samples_per_fold')} | "
-        f"condition_filter={EXPLAINABILITY_CONFIG.get('condition_filter')}"
-    )
+    if TUNING_ENABLED:
+        print("explainability: skipped in training-only tuning mode")
+    else:
+        print(
+            "explainability: "
+            f"{'enabled' if EXPLAINABILITY_ENABLED else 'disabled'} | "
+            f"target_folds={EXPLAINABILITY_CONFIG.get('target_folds')} | "
+            f"max_samples={EXPLAINABILITY_CONFIG.get('max_samples_per_fold')} | "
+            f"condition_filter={EXPLAINABILITY_CONFIG.get('condition_filter')}"
+        )
     print("validation_config:")
     print(validation_config_text())
     print("#" * 60)
@@ -635,6 +702,17 @@ def main():
     dataset_jobs = build_dataset_jobs()
     if not dataset_jobs:
         raise FileNotFoundError("No datasets were found for the requested experiment/maxfreq/noise plan.")
+
+    if TUNING_ENABLED:
+        run_training_oof_tuning(
+            dataset_jobs,
+            LEARNING_POLICY,
+            validation_config_snapshot(),
+            enabled_specs,
+            TUNING_PARAMETER_SETS,
+            trainer,
+        )
+        return
 
     run_learning_experiments(
         dataset_jobs, LEARNING_POLICY, validation_config_snapshot(),

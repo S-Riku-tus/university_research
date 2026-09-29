@@ -86,6 +86,26 @@ class PeakHeightSelectionTest(unittest.TestCase):
             with self.assertRaises(ValueError):
                 AcousticTrainingSelector(selector.config, {"a": 10})
 
+    def test_merged_manifest_uses_original_day_and_wav_for_selection(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            selector, rows = self.fixture(tmp)
+            merged = []
+            for row in rows[:5]:
+                merged.append({
+                    **row,
+                    "experiment_name": "a_merged_with_another_day",
+                    "source_experiment_name": "a",
+                    "source_wav_id": f"a::{row['source_wav_id']}",
+                    "original_source_wav_id": row["source_wav_id"],
+                })
+            kept, audit = selector.select(merged)
+            np.testing.assert_array_equal(kept, [0, 2, 3])
+            self.assertEqual(set(audit["by_experiment"]), {"a"})
+            self.assertEqual(audit["decisions"][0]["experiment_name"],
+                             "a_merged_with_another_day")
+            self.assertEqual(audit["decisions"][0]["source_experiment_name"], "a")
+            self.assertEqual(audit["decisions"][0]["original_source_wav_id"], "w5")
+
 
 if __name__ == "__main__":
     unittest.main()
