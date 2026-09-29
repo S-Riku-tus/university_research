@@ -2,6 +2,14 @@
 
 このページは**日付ごとの履歴**。各節の「現在」「次にやること」は当時の記録であり、現在の未完了作業とは限らない。最新の状態は[研究の現在地](research_status.md)、更新関係は[文書案内](document_index.md)を読む。
 
+## 2026-09-29 3 kHz日内holdout・clean_only／matched
+
+- [日内4 run解析](../experiments/2026-09-29_within_day_clean_matched_seed42/README.md)で4 run・28/28条件、同一テストWAV、clean予測差0、clean_onlyの1 fit共有／matchedの7 fitを確認した。
+- performanceのnoise平均RMSEは6/11で50.76→50.22 kW/m²とほぼ同等、6/18で73.25→64.97へ改善した。matchedの利得は日依存で、6/18を学習元にした既存別日結果とも整合した。
+- 6/18 −20 dBの全域改善110.36→81.33は最低熱流束WAVの改善が中心。ONB近傍は21.04→146.13、ONB以上は32.64→90.78へ悪化し、全域回帰とONB近傍回帰のトレードオフが残った。
+- matchedは強noiseの過大予測を抑え、6/18 −20 dBでFPR .775→0、F1 .756→.827、ROC-AUC .849→.918。ただしONB付近を低く外した。
+- noise平均では両日とも等重みがperformanceを僅かに上回り、6/18 matchedの内部最大重みと外側最良単体は0/7一致。当初は外側split seed追加を次案としたが、旧日内GroupKFoldと目的が重なるため直近優先から外した。[問題定義](research_plan/2026-09-29_problem_definition_and_next_priority.md)では、clean_onlyの未知noise耐性を主問題とし、学習側限定チューニングで現パラメータの不足を確認する案へ更新した。
+
 ## 2026-09-28 3 kHz matched双方向・seed 42
 
 - [matched双方向解析](../experiments/2026-09-28_3khz_matched_bidirectional_seed42/README.md)で、2方向×7 noiseの14/14条件と各noiseの独立fitを確認した。
