@@ -1,6 +1,10 @@
 # 研究の現在地と次にすること
 
-更新日: **2026-09-29（6/11＋6/18統合within_wav_chunk結果まで反映）**。分位点ルール時点の状態は[変更前の記録](../experiments/2026-09-16_peak_height_selection/previous_documents/research_status.md)に保存した。
+更新日: **2026-09-29（7/9対照と修論評価範囲・次の0.5秒比較まで反映）**。分位点ルール時点の状態は[変更前の記録](../experiments/2026-09-16_peak_height_selection/previous_documents/research_status.md)に保存した。
+
+**修論の評価範囲と次工程（本人方針、最新）**：[範囲と実行順](research_plan/2026-09-29_scope_chunk_length_and_tuning.md)のとおり、未知WAV・未知実験日一般化は現時点の必須主張・直近実験から外す。主対象は6/11＋6/18の既知WAV内未使用chunkと、clean学習から未学習の付加水流noiseへの劣化とする。未知WAV・未知日は限界として明記し、新しい実験データを取得できた場合に固定済み最終モデルの独立評価として再開する。次はチューニングより先に、6月統合・0.5秒・3 kHz・clean_only・seed 42を現行パラメータで実行する。1秒テスト15区間と同じ時間を構成する0.5秒2区間を対応させ、raw 0.5秒と2区間平均の1秒相当を比較してchunk長を決め、その後に選んだchunk長だけを学習側OOFで小規模チューニングし、最終候補をseed 42/43/44で確認する。
+
+**7/9単日within_wav_chunk完了（補助対照）**：[解析記録](../experiments/2026-09-29_within_wav_chunk_0709_analysis/README.md)で7/7条件、clean_onlyの1 fit、13 WAV、学習585／テスト195 chunkを確認した。performance RMSEはclean 103.29→−12 dB 239.66まで悪化後、−16 229.72、−20 219.06へ見かけ上回復したが、biasが−129.43→−108.93→−90.75 kW/m²へ戻る相殺であり6月と同じ単調trendではない。cleanでも571.694／643.517 kW/m²を−145.81／−194.56 kW/m²過小予測し、720.691では+22.73へ急変した。q100は全noise 720.691、FPR 0だがRecallはclean .667、−20 .600。performanceは等重み・事後最良単体に各1/7しか勝たず、7/9は6月pool・チューニングへ混ぜず、720.7 kW/m²で音響応答が切り替わる異なる系列の補助結果とする。
 
 **6/11＋6/18統合within_wav_chunk完了（最新）**：[対応解析](../experiments/2026-09-29_within_wav_chunk_combined_analysis/README.md)で7/7条件、clean_onlyの1 fit共有、学習1,620／テスト540 chunk、単日runとの各日270/270一致を確認した。performanceの2日合算RMSEは、各日を別々に学習したモデルに対しclean 39.57→35.33、noise平均74.77→69.64、強noise87.88→78.36 kW/m²へ改善した。利得は6/18の低熱流束と深層モデルに偏り、6/18 −20 dBは全域116.94→90.92、FPR .042→0だが、Recall .833→.773、ONB近傍25.85→85.08へ悪化した。2日強noise全体でもRecall .825→.807、ONB近傍78.42→94.78であり、誤報抑制とONB付近の過小予測がトレードオフになった。q100は6/11で不変、6/18 cleanは376.320→434.018 kW/m²へ遅れた。performanceは等重みを14/14、事後最良単体を9/14条件で上回ったが、−20 dBは両日AlexNetが最良。次は外側split 42を固定して学習seed 43・44を再現し、全域利得とONB悪化が安定か確認する。平均ONBで保存された判定指標ではなく日別確定ONBの後処理を主とし、matched・0.5秒・チューニングを同時に変更しない。
 

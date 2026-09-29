@@ -1,5 +1,6 @@
 """周波数／ノイズの保存階層と、旧階層の結果参照を一元管理する。"""
 
+import math
 import re
 from datetime import datetime
 from pathlib import Path
@@ -87,6 +88,19 @@ def _selection_segment(config):
     return "s" + value
 
 
+def _chunk_segment(config):
+    """Return a compact, visible chunk-duration token such as c1s or c0p5s."""
+    value = config.get("data", {}).get("chunk_seconds")
+    try:
+        seconds = float(value)
+    except (TypeError, ValueError) as exc:
+        raise ValueError("data.chunk_seconds must be a positive number") from exc
+    if not math.isfinite(seconds) or seconds <= 0:
+        raise ValueError("data.chunk_seconds must be a positive number")
+    duration = format(seconds, "g").replace(".", "p").replace("+", "").replace("-", "m")
+    return f"c{duration}s"
+
+
 def result_scope_dir_name(
     base_name,
     job,
@@ -107,12 +121,13 @@ def result_scope_dir_name(
     validation = "iw" + str(config.get("run", {}).get("folds", "x"))
     noise = "nc" if policy.get("training_noise") == "clean_only" else "nm"
     epochs = config.get("run", {}).get("epochs", "x")
+    chunk = _chunk_segment(config)
     prefix = safe_tag(str(base_name).split("__", 1)[0], max_len=12)
     suffix = str(execution_id)
 
     def build(compact_days=False, include_epochs=True):
         parts = [prefix, _policy_segment(job, config, compact=compact_days),
-                 f"{validation}-{noise}", _selection_segment(config)]
+                 f"{validation}-{noise}", chunk, _selection_segment(config)]
         if include_epochs:
             parts.append(f"e{epochs}")
         if parameter_count > 1:
@@ -127,9 +142,11 @@ def result_scope_dir_name(
         name = build(compact_days=True, include_epochs=False)
     if len(name) > MAX_STUDY_DIR_LENGTH:
         # 最後の保険。実行時刻を必ず保持し、不完全なtokenを残さない。
-        semantic_budget = MAX_STUDY_DIR_LENGTH - len(suffix) - 1
-        semantic = safe_tag("_".join(name.split("_")[:-1]), max_len=semantic_budget)
-        name = f"{semantic}_{suffix}"
+        required_tail = f"{chunk}_{suffix}"
+        semantic_parts = [part for part in name.split("_")[:-1] if part != chunk]
+        semantic_budget = MAX_STUDY_DIR_LENGTH - len(required_tail) - 1
+        semantic = safe_tag("_".join(semantic_parts), max_len=semantic_budget)
+        name = f"{semantic}_{required_tail}"
     return name
 
 

@@ -96,7 +96,8 @@ def fixture(root, policy, evaluated_noises=("heatflux_no_noise", "heatflux_refer
     config = {
         "learning_policy": policy,
         "run": {"smoke_test": False, "epochs": 1, "folds": 3, "random_seed": 42, "loop_parameter_sets": True},
-        "data": {"experiment_names": days}, "models": {}, "ensemble": manager.snapshot(),
+        "data": {"experiment_names": days, "chunk_seconds": 1},
+        "models": {}, "ensemble": manager.snapshot(),
         "features": {"pca_components": 2},
         "thresholds": {"onb_band_frac": 0.1, "provenance_by_experiment": {}},
         "output": {"save_fold_predictions": True, "save_tuning_summary": True,
@@ -153,7 +154,8 @@ class LearningPolicyTest(unittest.TestCase):
         config = {"learning_policy": {"training_noise": "matched",
                                       "train_experiments": ["2025.06.11_0.3_2"],
                                       "test_experiments": ["2025.06.18_0.3_3"]},
-                  "data": {"experiment_names": ["2025.06.11_0.3_2", "2025.06.18_0.3_3"]},
+                  "data": {"experiment_names": ["2025.06.11_0.3_2", "2025.06.18_0.3_3"],
+                           "chunk_seconds": 1},
                   "run": {"epochs": 150, "folds": 3},
                   "acoustic_selection": {"enabled": True, "peak_height_threshold": 1e-9}}
         first = scoped_result_job(job, "010203", "config-a", config)
@@ -173,7 +175,7 @@ class LearningPolicyTest(unittest.TestCase):
         self.assertEqual(first["save_base_path"].parent, job["save_base_path"].parent)
         self.assertEqual(
             first["save_base_path"].name,
-            "onb_xd-t0611-v0618_iw3-nm_s1e-9_e150_010203",
+            "onb_xd-t0611-v0618_iw3-nm_c1s_s1e-9_e150_010203",
         )
         self.assertLessEqual(len(first["save_base_path"].name), MAX_STUDY_DIR_LENGTH)
         self.assertEqual(result_run_path(first, ""), first["save_base_path"] / "maxfreq=3kHz" / "heatflux_no_noise")
@@ -184,8 +186,19 @@ class LearningPolicyTest(unittest.TestCase):
         }}
         name = result_scope_dir_name("onb", job, two_day_config, "010203", "config-a")
         self.assertIn("t0611+0709", name)
+        self.assertIn("_c1s_", name)
         self.assertTrue(name.endswith("_010203"))
         self.assertLessEqual(len(name), MAX_STUDY_DIR_LENGTH)
+        half_second_config = {
+            **config,
+            "data": {**config["data"], "chunk_seconds": 0.5},
+        }
+        half_second_name = result_scope_dir_name(
+            "onb", job, half_second_config, "010203", "config-b")
+        self.assertIn("_c1s_", first["save_base_path"].name)
+        self.assertIn("_c0p5s_", half_second_name)
+        self.assertNotEqual(first["save_base_path"].name, half_second_name)
+        self.assertLessEqual(len(half_second_name), MAX_STUDY_DIR_LENGTH)
         with self.assertRaisesRegex(ValueError, "HHMMSS"):
             result_scope_dir_name("onb", job, config, "execution-a", "config-a")
 
