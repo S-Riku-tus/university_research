@@ -134,7 +134,7 @@ VALIDATION_CONFIG = apply_onb_defaults({
                 # この1実験フォルダ内の全WAVが、学習側とテスト側の両方に入る。
                 # 統合フォルダでは出典日ごとにseedを独立適用し、単日runと
                 # 同じテストchunkを6/11・6/18とも270/270再利用する。
-                "experiment": "2025.06.11_0.3_2_6.18_0.3_3",
+                "experiment": "2025.07.09_0.3_1",
                 "test_fraction": 0.25,  # 各WAVのchunk数の25%をテスト専用にする。
                 "test_split_seed": 42,
             },

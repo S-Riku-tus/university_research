@@ -2,6 +2,13 @@
 
 このページは**日付ごとの履歴**。各節の「現在」「次にやること」は当時の記録であり、現在の未完了作業とは限らない。最新の状態は[研究の現在地](research_status.md)、更新関係は[文書案内](document_index.md)を読む。
 
+## 2026-09-29 6/11＋6/18統合within_wav_chunk結果
+
+- [対応解析](../experiments/2026-09-29_within_wav_chunk_combined_analysis/README.md)で7/7条件、clean_onlyの1 fit、学習1,620／テスト540 chunk、単日runとの両日270/270対応を確認した。
+- performanceの2日合算RMSEは単日別モデルに対しclean 39.57→35.33、noise平均74.77→69.64、強noise87.88→78.36 kW/m²へ改善した。
+- 6/18 −20 dBは低熱流束過大予測を抑えて全域116.94→90.92、FPR .042→0となったが、Recall .833→.773、ONB近傍25.85→85.08へ悪化した。q100も早まらず、誤報抑制とONB見逃しのトレードオフが残った。
+- performanceは等重みを14/14条件で上回ったが、−20 dBは両日AlexNetが最良。次は外側split 42を固定した学習seed 43・44で再現性を確認し、matched・0.5秒・チューニングを同時に変えない。
+
 ## 2026-09-29 6/11・6/18単日within_wav_chunk解析
 
 - [解析記録](../experiments/2026-09-29_within_wav_chunk_single_day_analysis/README.md)で2 run・14/14条件、各WAV 45学習／15テスト、同一chunk重複0を確認した。

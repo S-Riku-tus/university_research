@@ -1,6 +1,8 @@
 # 研究の現在地と次にすること
 
-更新日: **2026-09-29（統合within_wav_chunkの対応分割・実行設定まで反映）**。分位点ルール時点の状態は[変更前の記録](../experiments/2026-09-16_peak_height_selection/previous_documents/research_status.md)に保存した。
+更新日: **2026-09-29（6/11＋6/18統合within_wav_chunk結果まで反映）**。分位点ルール時点の状態は[変更前の記録](../experiments/2026-09-16_peak_height_selection/previous_documents/research_status.md)に保存した。
+
+**6/11＋6/18統合within_wav_chunk完了（最新）**：[対応解析](../experiments/2026-09-29_within_wav_chunk_combined_analysis/README.md)で7/7条件、clean_onlyの1 fit共有、学習1,620／テスト540 chunk、単日runとの各日270/270一致を確認した。performanceの2日合算RMSEは、各日を別々に学習したモデルに対しclean 39.57→35.33、noise平均74.77→69.64、強noise87.88→78.36 kW/m²へ改善した。利得は6/18の低熱流束と深層モデルに偏り、6/18 −20 dBは全域116.94→90.92、FPR .042→0だが、Recall .833→.773、ONB近傍25.85→85.08へ悪化した。2日強noise全体でもRecall .825→.807、ONB近傍78.42→94.78であり、誤報抑制とONB付近の過小予測がトレードオフになった。q100は6/11で不変、6/18 cleanは376.320→434.018 kW/m²へ遅れた。performanceは等重みを14/14、事後最良単体を9/14条件で上回ったが、−20 dBは両日AlexNetが最良。次は外側split 42を固定して学習seed 43・44を再現し、全域利得とONB悪化が安定か確認する。平均ONBで保存された判定指標ではなく日別確定ONBの後処理を主とし、matched・0.5秒・チューニングを同時に変更しない。
 
 **6/11・6/18単日within_wav_chunk完了（最新）**：[解析記録](../experiments/2026-09-29_within_wav_chunk_single_day_analysis/README.md)で2 run・14/14条件、各日810学習／270テストchunk、18 WAVを両側で共有、同一chunk重複0、clean_onlyの1 fit共有を確認した。performanceのclean／noise平均RMSEは6/11が42.22／64.35、6/18が36.73／83.81 kW/m²。従来WAV holdoutと共通の75 chunkではcleanが両日とも約8 kW/m²改善したが、これは評価WAVの別45 chunkと同じラベルを学習した既知WAV補間の効果を含む。6/18 −20 dBはRMSE 107.66→86.75、FPR .700→.033に改善する一方、Recall 1.000→.689へ低下した。低熱流束の正biasは残り、全域ではclean→−20 dBが6/11で42.22→85.65、6/18で36.73→116.94。performanceは等重みより平均0.53／1.47 kW/m²良いが、外側最良単体への勝利は5/7／0/7だった。統合時は出典日ごとにseed 42を独立適用するよう修正し、単日runとのテストchunk一致を両日270/270にした。主コードは6/11＋6/18統合・1秒・3 kHz・clean_only・seed 42へ設定済みである。0.5秒、matched、追加seedは同時に変えない。
 

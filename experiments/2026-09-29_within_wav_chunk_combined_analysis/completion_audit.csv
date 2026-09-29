@@ -1,0 +1,8 @@
+﻿noise,completed,run_hash,fit_id,n_fit_ids,n_training_chunks,n_evaluation_chunks,n_training_wavs,n_evaluation_wavs
+clean,1,61b0c5c1,1ceaf64e10c0,1,1620,540,36,36
+0,1,61b0c5c1,1ceaf64e10c0,1,1620,540,36,36
+-4,1,61b0c5c1,1ceaf64e10c0,1,1620,540,36,36
+-8,1,61b0c5c1,1ceaf64e10c0,1,1620,540,36,36
+-12,1,61b0c5c1,1ceaf64e10c0,1,1620,540,36,36
+-16,1,61b0c5c1,1ceaf64e10c0,1,1620,540,36,36
+-20,1,61b0c5c1,1ceaf64e10c0,1,1620,540,36,36

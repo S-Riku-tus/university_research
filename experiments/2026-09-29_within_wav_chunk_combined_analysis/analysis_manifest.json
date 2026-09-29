@@ -1,0 +1,38 @@
+{
+  "combined_run": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202609\\29\\onb_wc-t0611-v0611_iw3-nc_s0_e150_161952",
+  "single_runs": {
+    "2025.06.11_0.3_2": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\regression_result\\npy\\ensemble\\202609\\29\\onb_wc-t0611-v0611_iw3-nc_s0_e150_152011",
+    "2025.06.18_0.3_3": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\regression_result\\npy\\ensemble\\202609\\29\\onb_wc-t0618-v0618_iw3-nc_s0_e150_152911"
+  },
+  "conditions": {
+    "chunk_seconds": 1,
+    "max_frequency_khz": 3,
+    "training_noise": "clean_only",
+    "training_seed": 42,
+    "outer_split_seed": 42,
+    "epochs": 150,
+    "inner_wav_group_folds": 3,
+    "acoustic_selection": null,
+    "explainability": false
+  },
+  "completion": {
+    "conditions": 7,
+    "unique_fit_ids": [
+      "1ceaf64e10c0"
+    ],
+    "training_chunks": [
+      1620
+    ],
+    "evaluation_chunks": [
+      540
+    ]
+  },
+  "paired_test_chunks": {
+    "2025.06.11_0.3_2": [
+      270
+    ],
+    "2025.06.18_0.3_3": [
+      270
+    ]
+  }
+}
