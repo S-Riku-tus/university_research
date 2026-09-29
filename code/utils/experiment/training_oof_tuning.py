@@ -150,9 +150,21 @@ def run_training_oof_tuning(
         )
     families = build_learning_families(jobs, policy, config["data"]["experiment_names"])
     if len(families) != 1:
+        scopes = sorted({
+            (
+                str(job["experiment_name"]),
+                str(job["max_freq_hz"]),
+            )
+            for family in families
+            for job in family["evaluation_jobs"]
+        })
+        scope_text = ", ".join(
+            f"{experiment}/{frequency}" for experiment, frequency in scopes
+        )
         raise ValueError(
-            "training_oof tuning requires exactly one learning family. "
-            "Tune one experiment/frequency scope at a time."
+            "training_oof tuning requires exactly one experiment/frequency scope, "
+            f"but found {len(families)}: {scope_text}. "
+            "Keep exactly one value in data.max_freq_hz_list and tune one scope at a time."
         )
     family = families[0]
     loader = DataLoadingConversion()

@@ -170,20 +170,18 @@ VALIDATION_CONFIG = apply_onb_defaults({
             "type": "active_model_grid",
             "model_grids": {
                 "randomforest": {
-                    # RFの木の数・深さを設定する。
-                    # サンプルと特徴の抽出率もここで指定する。
-                    "n_estimators": [300],
-                    "max_depth": [4],
-                    "subsample": [0.6],
-                    "colsample_bynode": [0.6],
+                    "n_estimators": [100, 300, 600],
+                    "max_depth": [3, 4, 6, 8, 12],
+                    "subsample": [0.6, 0.8, 1.0],
+                    "colsample_bynode": [0.6, 0.8, 1.0],
                 },
                 "conformer": {
-                    "lr": [0.001],
-                    "batch_size": [12],
+                    "lr": [0.0001, 0.0003, 0.001, 0.003, 0.01],
+                    "batch_size": [8, 12, 24, 32, 64],
                 },
                 "alexnet": {
-                    "lr": [0.001],
-                    "batch_size": [12],
+                    "lr": [0.0001, 0.0003, 0.001, 0.003, 0.005, 0.01],
+                    "batch_size": [8, 12, 24, 32, 64],
                 },
             },
             "default_keras": {

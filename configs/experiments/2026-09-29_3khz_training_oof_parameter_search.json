@@ -1,0 +1,44 @@
+{
+  "status": "prepared_not_executed",
+  "purpose": "Tune each production model independently with source-WAV-disjoint OOF predictions from the fixed outer-training partition, without using the outer test or its seven noise-condition scores for candidate selection.",
+  "entrypoint": "code/run_ensemble_regression_onb.py",
+  "common_condition": {
+    "evaluation_mode": "within_wav_chunk",
+    "experiment": "2025.06.11_0.3_2_6.18_0.3_3",
+    "chunk_seconds": 1,
+    "max_frequency": "maxfreq=3kHz",
+    "training_noise": "clean_only",
+    "peak_height_threshold": null,
+    "random_seed": 42,
+    "folds": 3,
+    "epochs": 150,
+    "selection_metric": "rmse_all",
+    "relative_tolerance": 0.02
+  },
+  "model_grids": {
+    "randomforest": {
+      "n_estimators": [100, 300, 600],
+      "max_depth": [3, 4, 6, 8, 12],
+      "subsample": [0.6, 0.8, 1.0],
+      "colsample_bynode": [0.6, 0.8, 1.0],
+      "candidate_count": 135
+    },
+    "conformer": {
+      "lr": [0.0001, 0.0003, 0.001, 0.003, 0.01],
+      "batch_size": [8, 12, 24, 32, 64],
+      "candidate_count": 25
+    },
+    "alexnet": {
+      "lr": [0.0001, 0.0003, 0.001, 0.003, 0.005, 0.01],
+      "batch_size": [8, 12, 24, 32, 64],
+      "candidate_count": 30
+    }
+  },
+  "execution_size": {
+    "total_candidates": 190,
+    "fits_per_candidate": 3,
+    "total_inner_fits": 570,
+    "note": "Candidates are summed across models; the three model grids are not multiplied together."
+  },
+  "after_search": "Review candidates within 2% of each model's best OOF rmse_all together with daily rmse_onb, recall, and false_positive_rate. Then replace every list with one adopted value and run the untouched outer test once."
+}

@@ -1,6 +1,8 @@
 # 研究の現在地と次にすること
 
-更新日: **2026-09-29（ONB保護付きピーク選別の本結果解析まで反映）**。分位点ルール時点の状態は[変更前の記録](../experiments/2026-09-16_peak_height_selection/previous_documents/research_status.md)に保存した。
+更新日: **2026-09-29（選別なし学習側OOFパラメータ探索の準備まで反映）**。分位点ルール時点の状態は[変更前の記録](../experiments/2026-09-16_peak_height_selection/previous_documents/research_status.md)に保存した。
+
+**選別なし3 kHz主条件の学習側OOFパラメータ探索を準備（未実行、最新）**：[条件記録](../configs/experiments/2026-09-29_3khz_training_oof_parameter_search.json)のとおり、1秒・統合6/11＋6/18・clean_only・within_wav_chunk・seed 42・選別なしを固定した。候補はRandomForest 135、Conformer 25、AlexNet 30の計190条件で、3モデル間の直積にはしない。3-foldの合計は570 fit。候補選択は外側テスト540 chunkと7 noiseの成績を使わず、外側学習内の元WAV非共有OOF `rmse_all`だけで行う。実行後は最良RMSEの2%以内を対象に、日別ONB近傍RMSE・Recall・FPRも確認して採用値を決め、各リストを1値へ戻して外側テストを一度だけ評価する。
 
 **ONB保護付き2.1–2.5 kHzピーク選別は主条件へ採用しない（最新）**：[対応解析](../experiments/2026-09-29_onb_protected_selection_analysis/README.md)で、選別なしと`ONB +10%保護＋上側1e-9`を同じ外側540 chunk・seed 42で比較した。performanceの−20 dB全域RMSEは88.20→77.69 kW/m²へ改善したが、cleanは35.33→44.20、強noise平均ONB近傍は94.78→116.38、ONB以降は59.71→67.90へ悪化した。強noise平均FPRは両方0、Recallは.807→.808、q100は日別14/14セルで不変。除外64 chunkは保護帯直後の4測定点だけで、改善は低熱流束強noise、悪化はONB近傍・直後へ集中した。この選別は帯域ピーク依存を示すアブレーションとして保持し、主条件は選別なし1秒へ戻す。次は選別なし条件だけで学習側OOFパラメータ探索を行い、全域RMSE 2%以内の候補からONB指標も見て選ぶ。
 
