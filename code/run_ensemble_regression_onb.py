@@ -116,8 +116,8 @@ VALIDATION_CONFIG = apply_onb_defaults({
         # cross_day: 下のtrain/test_experimentsを使用（実験日は完全分離）。
         # within_day: within_day_experimentだけを使用し、下の2リストは参照しない。
         # 元WAVを一度だけ分離し、残りのWAV内でrun.foldsの内部検証を行う。
-        "evaluation_mode": "cross_day",
-        "within_day_experiment": "2025.06.11_0.3_2",
+        "evaluation_mode": "within_day",
+        "within_day_experiment": "2025.06.18_0.3_3",
         "test_fraction": 0.25,  # 元WAV数の25%（端数切上げ）をテスト専用にする。
         "test_split_seed": 42,  # 学習seedを変えてもテストWAVを固定する。
         "test_stratify": "onb",  # ONB前／以上のWAV比率を保つ。noneなら単純ランダム。
@@ -136,7 +136,7 @@ VALIDATION_CONFIG = apply_onb_defaults({
         # clean_only: 無雑音だけで学習し、同じモデル・前処理・重みで
         #             全評価ノイズを予測する固定clean診断。
         # 評価ノイズ一覧から無雑音を外しても、学習には無雑音を読み込む。
-        "training_noise": "matched",
+        "training_noise": "clean_only",
     },
     "acoustic_selection": {
         # スペクトルの縦軸に引く横線。図の「×10^-9」表示で高さ1に相当。
