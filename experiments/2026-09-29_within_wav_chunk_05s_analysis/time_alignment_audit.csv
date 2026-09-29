@@ -1,0 +1,4 @@
+﻿scope,half_second_test_chunks,one_second_test_intervals,one_second_intervals_with_both_halves,one_second_intervals_with_one_half,one_second_intervals_with_no_halves,half_chunks_inside_selected_one_second_intervals,complete_pairs_in_half_second_test,complete_pairs_also_in_one_second_test,common_fraction_of_one_second_test
+2025.06.11_0.3_2,540,270,11,89,170,111,74,11,0.040740740740740744
+2025.06.18_0.3_3,540,270,11,89,170,111,74,11,0.040740740740740744
+both_days,1080,540,22,178,340,222,148,22,0.040740740740740744

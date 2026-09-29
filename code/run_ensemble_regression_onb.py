@@ -90,7 +90,7 @@ VALIDATION_CONFIG = apply_onb_defaults({
     "data": {
         "experiment_root_parts": ["Pool_boiling", "Subcooling_20_degrees", "0.3"],
         "noise_source": "waterflow",  # 水流音はwaterflow、白色雑音はwhitenoise
-        "chunk_seconds": 0.5,
+        "chunk_seconds": 1,
         "max_freq_hz_list": [
             "maxfreq=3kHz",
             # "maxfreq=5kHz",
@@ -135,9 +135,7 @@ VALIDATION_CONFIG = apply_onb_defaults({
                 "test_stratify": "onb",  # onbならONB前／以上のWAV比率を保つ。
             },
             "within_wav_chunk": {
-                # この1実験フォルダ内の全WAVが、学習側とテスト側の両方に入る。
-                # 統合フォルダでは出典日ごとにseedを独立適用し、単日runと
-                # 同じテストchunkを6/11・6/18とも270/270再利用する。
+                # 1実験フォルダ内の全WAVが、学習側とテスト側の両方に入る。
                 "experiment": "2025.06.11_0.3_2_6.18_0.3_3",
                 "test_fraction": 0.25,  # 各WAVのchunk数の25%をテスト専用にする。
                 "test_split_seed": 42,

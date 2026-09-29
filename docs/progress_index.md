@@ -2,6 +2,13 @@
 
 このページは**日付ごとの履歴**。各節の「現在」「次にやること」は当時の記録であり、現在の未完了作業とは限らない。最新の状態は[研究の現在地](research_status.md)、更新関係は[文書案内](document_index.md)を読む。
 
+## 2026-09-29 0.5秒対照完了・1秒採用
+
+- [0.5秒対照解析](../experiments/2026-09-29_within_wav_chunk_05s_analysis/README.md)で7/7条件、学習3,240／テスト1,080 chunk、36 WAV、clean_onlyの1 fit共有を確認した。
+- performanceの2日合算RMSEは0.5秒対1秒でclean 40.27対35.33、noise平均80.71対69.64、強noise92.49対78.36、−20 dB 98.65対88.20 kW/m²。日別14/14 noiseセルで0.5秒が悪かった。
+- 0.5秒は−20 dBのONB近傍RMSEとRecallを改善したが、ONB前biasとFPRを増やした。q100は両入力長・全noiseで不変であり、早期確実判定の改善はなかった。
+- 現行splitは入力長間で時間非対応で、完全共通区間は540中22。小標本の2区間平均比較でも強noiseは0.5秒が悪かった。入力長比較を中心主張にする場合だけ対応splitを再実行し、通常は1秒を固定して学習側OOFチューニングへ進む。
+
 ## 2026-09-29 7/9対照と次の0.5秒比較
 
 - [7/9解析](../experiments/2026-09-29_within_wav_chunk_0709_analysis/README.md)で7/7条件、13 WAV、学習585／テスト195 chunk、clean_onlyの1 fit共有を確認した。

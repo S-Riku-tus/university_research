@@ -7,6 +7,7 @@
 | 目的 | 読む文書 | 更新方法 |
 |---|---|---|
 | 次の作業を始める | [研究の現在地](research_status.md) | 状態・本人の希望・次の一手を更新する唯一の入口 |
+| 0.5秒と1秒の比較結果・採用判断を見る | [0.5秒対照解析](../experiments/2026-09-29_within_wav_chunk_05s_analysis/README.md) | 完了性、全域・ONB指標、時間位置の非対応、対応小標本、1秒採用と次工程を固定 |
 | 修論で主張する評価範囲と0.5秒・チューニングの順序を見る | [評価範囲と次工程](research_plan/2026-09-29_scope_chunk_length_and_tuning.md) | 未知WAV・未知日の後順位化、7/9の補助扱い、対応時間での0.5秒比較、選択後チューニングを固定 |
 | 7/9単日within_wav_chunkの結果を見る | [7/9解析](../experiments/2026-09-29_within_wav_chunk_0709_analysis/README.md) | noise trendの見かけの回復、571.7～720.7 kW/m²の過小予測、q100、統合重み、6月との差を固定 |
 | 6/11＋6/18統合within_wav_chunkの結果を見る | [統合within_wav_chunk解析](../experiments/2026-09-29_within_wav_chunk_combined_analysis/README.md) | 単日runとの対応比較、日別ONB、noise trend、低熱流束とONB近傍のトレードオフ、次のseed再現を固定 |
