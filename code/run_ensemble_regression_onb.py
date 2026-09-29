@@ -108,32 +108,35 @@ VALIDATION_CONFIG = apply_onb_defaults({
             "heatflux_reference_SNR=-20",
         ],
         "data_source_dir_by_experiment": {
-            "2025.06.11_0.3_2": "waterflow_20260817_1s",
-            "2025.06.18_0.3_3": "waterflow_20260817_1s",
-            "2025.06.11_0.3_2_6.18_0.3_3": "waterflow_20260817_1s",
-            "2025.07.09_0.3_1": "waterflow_20260817_1s",
+            "2025.06.11_0.3_2": "waterflow_20260817_{chunk_tag}",
+            "2025.06.18_0.3_3": "waterflow_20260817_{chunk_tag}",
+            "2025.06.11_0.3_2_6.18_0.3_3": "waterflow_20260817_{chunk_tag}",
+            "2025.07.09_0.3_1": "waterflow_20260817_{chunk_tag}",
         },
     },
     "learning_policy": {
-        # cross_day: 下のtrain/test_experimentsを使用（実験日は完全分離）。
-        # within_day: 指定した実験内で元WAVを丸ごとテストへ分離する。
-        # within_wav_chunk: 各WAVのchunkを同じ割合でテストへ分離する。
-        # どちらも残りの学習側データ内では、run.foldsのWAV単位内部検証を行う。
+        #   cross_day       = 学習実験とテスト実験を完全分離
+        #   within_day      = 1実験内で元WAVを丸ごとテストへ分離
+        #   within_wav_chunk= 1実験内の全WAVから同率のchunkをテストへ分離
         "evaluation_mode": "within_wav_chunk",
-        "within_day_experiment": "2025.06.11_0.3_2_6.18_0.3_3",
-        "test_fraction": 0.25,  # 各WAVの1秒chunkの25%をテスト専用にする。
-        "test_split_seed": 42,  # 学習seedを変えても各WAVのテストchunkを固定する。
-        "test_stratify": "none",  # 全WAVから同率抽出するためnone固定。
-        "train_experiments": [
-            # "2025.06.11_0.3_2",
-            # "2025.07.09_0.3_1",
-            "2025.06.18_0.3_3",
-            ],
-        "test_experiments": [
-            "2025.06.11_0.3_2",
-            # "2025.07.09_0.3_1",
-            # "2025.06.18_0.3_3",
-            ],
+        "evaluation_settings": {
+            "cross_day": {
+                "train_experiments": ["2025.06.11_0.3_2"],
+                "test_experiments": ["2025.06.18_0.3_3"],
+            },
+            "within_day": {
+                "experiment": "2025.06.18_0.3_3",
+                "test_fraction": 0.25,  # 元WAV数の25%をテスト専用にする。
+                "test_split_seed": 42,
+                "test_stratify": "onb",  # onbならONB前／以上のWAV比率を保つ。
+            },
+            "within_wav_chunk": {
+                # この1実験フォルダ内の全WAVが、学習側とテスト側の両方に入る。
+                "experiment": "2025.06.11_0.3_2",
+                "test_fraction": 0.25,  # 各WAVのchunk数の25%をテスト専用にする。
+                "test_split_seed": 42,
+            },
+        },
         # matched: ノイズ条件ごとに独立して学習し、PCA・scaler・epoch・
         #          アンサンブル重みもそのノイズの学習データから毎回求める。
         # clean_only: 無雑音だけで学習し、同じモデル・前処理・重みで

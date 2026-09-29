@@ -17,7 +17,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[1]
 EXPERIMENT_ROOT = REPO_ROOT / "Pool_boiling" / "Subcooling_20_degrees" / "0.3"
 TARGET_NAME = "2025.06.11_0.3_2_6.18_0.3_3"
-DATASET_NAME = "waterflow_20260817_1s"
+DATASET_NAMES = ("waterflow_20260817_0.5s", "waterflow_20260817_1s")
 AUDIO_DIRS = ("録音データ", "録音データ_熱流束")
 SOURCES = (
     ("2025.06.11_0.3_2", "20250611", 221505.1102),
@@ -88,13 +88,10 @@ def _condition_manifests(source_root: Path) -> dict[Path, Path]:
     }
 
 
-def build(dry_run: bool = False) -> dict:
-    target_root = EXPERIMENT_ROOT / TARGET_NAME
-    if not _within(target_root, EXPERIMENT_ROOT) or target_root == EXPERIMENT_ROOT:
-        raise ValueError(f"出力先が実験root直下ではありません: {target_root}")
-
+def _merge_dataset(dataset_name: str, target_root: Path, dry_run: bool):
+    """1つのchunk長datasetを結合し、要約とcopy件数を返す。"""
     source_roots = {
-        name: EXPERIMENT_ROOT / name / "data" / "npy" / DATASET_NAME
+        name: EXPERIMENT_ROOT / name / "data" / "npy" / dataset_name
         for name, _, _ in SOURCES
     }
     for name, source_root in source_roots.items():
@@ -107,21 +104,18 @@ def build(dry_run: bool = False) -> dict:
     }
     expected_conditions = set(next(iter(condition_maps.values())))
     if not expected_conditions:
-        raise ValueError("結合対象のcondition manifestがありません。")
+        raise ValueError(f"結合対象のcondition manifestがありません: {dataset_name}")
     for name, conditions in condition_maps.items():
         if set(conditions) != expected_conditions:
             missing = sorted(str(item) for item in expected_conditions - set(conditions))
             extra = sorted(str(item) for item in set(conditions) - expected_conditions)
-            raise ValueError(f"condition集合が一致しません: {name}; missing={missing}; extra={extra}")
-
-    existing_summary = target_root / "combined_dataset_manifest.json"
-    if existing_summary.is_file():
-        saved = json.loads(existing_summary.read_text(encoding="utf-8"))
-        if saved.get("source_experiments") != [item[0] for item in SOURCES]:
-            raise ValueError(f"既存の統合folderは別のsourceを示しています: {existing_summary}")
+            raise ValueError(
+                f"condition集合が一致しません: {dataset_name}: {name}; "
+                f"missing={missing}; extra={extra}"
+            )
 
     total_rows = total_new_files = total_existing_files = 0
-    target_data_root = target_root / "data" / "npy" / DATASET_NAME
+    target_data_root = target_root / "data" / "npy" / dataset_name
     condition_summaries = []
     for relative in sorted(expected_conditions, key=lambda value: value.as_posix()):
         merged_rows: list[dict[str, str]] = []
@@ -182,6 +176,35 @@ def build(dry_run: bool = False) -> dict:
             "rows": len(merged_rows),
             "source_rows": source_counts,
         })
+    return ({
+        "dataset_name": dataset_name,
+        "manifest_rows_total": total_rows,
+        "condition_count": len(condition_summaries),
+        "conditions": condition_summaries,
+    }, total_new_files, total_existing_files)
+
+
+def build(dry_run: bool = False) -> dict:
+    target_root = EXPERIMENT_ROOT / TARGET_NAME
+    if not _within(target_root, EXPERIMENT_ROOT) or target_root == EXPERIMENT_ROOT:
+        raise ValueError(f"出力先が実験root直下ではありません: {target_root}")
+
+    existing_summary = target_root / "combined_dataset_manifest.json"
+    if existing_summary.is_file():
+        saved = json.loads(existing_summary.read_text(encoding="utf-8"))
+        if saved.get("source_experiments") != [item[0] for item in SOURCES]:
+            raise ValueError(f"既存の統合folderは別のsourceを示しています: {existing_summary}")
+
+    dataset_summaries = []
+    total_rows = total_new_files = total_existing_files = 0
+    for dataset_name in DATASET_NAMES:
+        dataset_summary, new_files, existing_files = _merge_dataset(
+            dataset_name, target_root, dry_run
+        )
+        dataset_summaries.append(dataset_summary)
+        total_rows += dataset_summary["manifest_rows_total"]
+        total_new_files += new_files
+        total_existing_files += existing_files
 
     copied_audio = 0
     audio_counts = {directory: 0 for directory in AUDIO_DIRS}
@@ -212,7 +235,7 @@ def build(dry_run: bool = False) -> dict:
         "schema_version": 1,
         "combined_experiment": TARGET_NAME,
         "source_experiments": [item[0] for item in SOURCES],
-        "dataset_name": DATASET_NAME,
+        "dataset_names": list(DATASET_NAMES),
         "copy_mode": "independent_file_copy",
         "created_utc": datetime.now(timezone.utc).isoformat(),
         "onb_threshold_w_m2": sum(threshold_values) / len(threshold_values),
@@ -221,8 +244,8 @@ def build(dry_run: bool = False) -> dict:
             name: threshold for name, _, threshold in SOURCES
         },
         "manifest_rows_total": total_rows,
-        "condition_count": len(condition_summaries),
-        "conditions": condition_summaries,
+        "condition_count_total": sum(item["condition_count"] for item in dataset_summaries),
+        "datasets": dataset_summaries,
         "audio_layouts": [
             f"{directory}/<source_experiment>/*.wav" for directory in AUDIO_DIRS
         ],
@@ -238,7 +261,8 @@ def build(dry_run: bool = False) -> dict:
     print(json.dumps({
         "target": str(target_root),
         "dry_run": dry_run,
-        "conditions": len(condition_summaries),
+        "datasets": list(DATASET_NAMES),
+        "conditions": summary["condition_count_total"],
         "manifest_rows": total_rows,
         "new_npy_files": total_new_files,
         "existing_npy_files": total_existing_files,

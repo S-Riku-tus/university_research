@@ -5,7 +5,8 @@
 ## 2026-09-29 6/11＋6/18統合データとWAV内chunk holdout
 
 - [実装記録](../experiments/2026-09-29_within_wav_chunk_combined/README.md)のとおり、全WAVから同率のchunkを外側テストへ分ける`within_wav_chunk`を追加した。変更前の`within_day`はWAV丸ごとholdoutであり、別目的の方式として保持する。
-- 6/11＋6/18の全35条件75,600 NPY、元名WAV 36本、熱流束名付きWAV 36本、測定メタデータ6件を、出典を保持して統合実験フォルダへコピーした。統合ONBは両日の算術平均246,591.3959 W/m²。
+- 6/11＋6/18の0.5秒151,200 NPYと1秒75,600 NPY（計226,800）、元名WAV 36本、熱流束名付きWAV 36本、測定メタデータ6件を、出典を保持して統合実験フォルダへコピーした。統合ONBは両日の算術平均246,591.3959 W/m²。
+- configは`evaluation_mode`を先に選び、`evaluation_settings`の`cross_day / within_day / within_wav_chunk`のうち同名欄だけを編集する構成へ整理した。
 - seed 42・test 25%では各WAV 45学習／15テストchunk、全体1,620／540、同一chunk重複0。内部`performance_kfold`は学習側だけのWAV GroupKFoldを維持する。
 - この評価は同一chunkを再利用しないが、同じWAVの録音条件を共有する。既知WAV内の未使用区間への性能であり、未知WAV・未知日一般化とは区別する。現行初回設定は3 kHz・7 noise・clean_only・150 epochで、学習runは未開始。
 

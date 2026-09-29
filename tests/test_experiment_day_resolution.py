@@ -7,7 +7,7 @@ import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "code"))
 
-from utils.experiment.dataset_jobs import build_dataset_jobs
+from utils.experiment.dataset_jobs import build_dataset_jobs, find_data_source_dir
 from utils.experiment.learning_policy import (
     build_learning_families,
     experiment_split_kind,
@@ -79,6 +79,23 @@ class ExperimentDayResolutionTest(unittest.TestCase):
             self.assertEqual(len(families[0]["evaluation_jobs"]), 2)
             with self.assertRaises(FileNotFoundError):
                 build_dataset_jobs(**args, learning_policy=self.policy)
+
+    def test_configured_source_template_follows_chunk_seconds(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            experiment_root = Path(tmp)
+            for tag in ("0.5s", "1s"):
+                (experiment_root / "data" / "npy" / f"waterflow_20260817_{tag}").mkdir(
+                    parents=True
+                )
+            configured = {"day-a": "waterflow_20260817_{chunk_tag}"}
+            selected = find_data_source_dir(
+                experiment_root, "day-a", configured, "waterflow", 0.5
+            )
+            self.assertEqual(selected.name, "waterflow_20260817_0.5s")
+            selected = find_data_source_dir(
+                experiment_root, "day-a", configured, "waterflow", 1
+            )
+            self.assertEqual(selected.name, "waterflow_20260817_1s")
 
 
 if __name__ == "__main__":

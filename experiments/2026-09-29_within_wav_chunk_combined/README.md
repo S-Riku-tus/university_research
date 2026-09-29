@@ -20,9 +20,9 @@
 
 - 保存先: `Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3`
 - 元実験: `2025.06.11_0.3_2`, `2025.06.18_0.3_3`
-- NPY: 75,600ファイル、約14.14 GiB
-- 条件: 5周波数×7 noise＝35条件
-- 各条件: 2,160 chunk（各日1,080）
+- NPY合計: 226,800ファイル、約42.42 GiB
+- 0.5秒: 151,200ファイル、約28.28 GiB。5周波数×7 noise＝35条件、各条件4,320 chunk（各日2,160、各WAV 120）
+- 1秒: 75,600ファイル、約14.14 GiB。5周波数×7 noise＝35条件、各条件2,160 chunk（各日1,080、各WAV 60）
 - 元名WAV: 36ファイル、熱流束名付きWAV: 36ファイル。いずれも出典日別のサブフォルダへ保存
 - 測定メタデータ: 6ファイル
 - manifest: 35個。出典実験、元のファイル名、元WAV ID・名前を追加
@@ -52,6 +52,16 @@ NPY名は熱流束の数値prefixを維持し、その直後へ出典日tagを�
 - 内部fold: 3、元WAV単位
 - epoch: 150
 
+主コードの`data.chunk_seconds`は現在1なので、初回runは1秒データを使う。データフォルダ名の`{chunk_tag}`はこの値から自動解決されるため、0.5秒を使う別runでは`chunk_seconds`だけを0.5へ変更する。
+
+`learning_policy`は、最初に`evaluation_mode`を選び、その下の`evaluation_settings`では選択した方式と同名の欄だけを編集する構成にした。
+
+- `cross_day`: `train_experiments`と`test_experiments`
+- `within_day`: `experiment`、WAV単位の`test_fraction`、seed、ONB層化
+- `within_wav_chunk`: `experiment`、各WAV内chunk単位の`test_fraction`、seed
+
+選ばれていない方式の欄は実行に影響しない。`within_wav_chunk`の`experiment`は1つの実験フォルダ名であり、単日フォルダにも今回の統合フォルダにも切り替えられる。
+
 `clean_only`を最初にしたのは、現在の主問題である「clean学習モデルに未知noiseが入ったときの劣化」を測るためである。`matched`は同じ設定の`training_noise`だけを切り替えて、既知noise適応の診断対照として後から実行できる。
 
 ## 作成・実行
@@ -72,11 +82,12 @@ python code/run_ensemble_regression_onb.py
 
 ## 実装・検証結果
 
-- 3 kHz cleanの実データ: 2,160 chunk
+- 1秒・3 kHz cleanの実データ: 2,160 chunk
 - 外側学習: 1,620 chunk、外側テスト: 540 chunk
 - 36/36 WAVが両側に存在
 - 各WAV: 学習45、テスト15 chunk
 - 同一chunkの両側重複: 0
+- 0.5秒: 35/35条件、151,200 NPY、各条件4,320 chunkを統合。3 kHz cleanで学習3,240／テスト1,080、各WAV 90／30、同一chunk重複0を確認
 - 7/7の設定jobが統合実験・平均ONB閾値へ解決
 - 関連テスト: 41件成功
 - 変更Pythonファイルの構文検査: 成功

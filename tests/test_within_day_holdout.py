@@ -61,6 +61,50 @@ class WithinDayHoldoutTest(unittest.TestCase):
             experiment_split_kind({"evaluation_mode": "cross_day",
                                    "train_experiments": ["day-a"], "test_experiments": ["day-a"]})
 
+    def test_mode_specific_settings_only_apply_selected_section(self):
+        settings = {
+            "cross_day": {
+                "train_experiments": ["day-b"],
+                "test_experiments": ["day-c"],
+            },
+            "within_day": {
+                "experiment": "day-b",
+                "test_fraction": 0.5,
+                "test_split_seed": 7,
+                "test_stratify": "none",
+            },
+            "within_wav_chunk": {
+                "experiment": "day-a",
+                "test_fraction": 0.25,
+                "test_split_seed": 42,
+            },
+        }
+        policy = normalize_learning_policy({
+            "evaluation_mode": "within_wav_chunk",
+            "evaluation_settings": settings,
+            "training_noise": "clean_only",
+        }, ["day-a"])
+        self.assertEqual(policy["train_experiments"], ["day-a"])
+        self.assertEqual(policy["test_experiments"], ["day-a"])
+        self.assertEqual(policy["test_fraction"], 0.25)
+        self.assertEqual(policy["test_stratify"], "none")
+        self.assertNotIn("evaluation_settings", policy)
+
+        cross = normalize_learning_policy({
+            "evaluation_mode": "cross_day",
+            "evaluation_settings": settings,
+            "training_noise": "matched",
+        }, ["day-b", "day-c"])
+        self.assertEqual(cross["train_experiments"], ["day-b"])
+        self.assertEqual(cross["test_experiments"], ["day-c"])
+
+        with self.assertRaisesRegex(ValueError, "重複指定"):
+            normalize_learning_policy({
+                "evaluation_mode": "within_day",
+                "evaluation_settings": settings,
+                "within_day_experiment": "day-a",
+            }, ["day-a"])
+
     def test_holdout_is_fixed_across_noise_order_and_inner_fold_count(self):
         metadata = self.metadata()
         fit, test = outer_splits(metadata, metadata, 1, self.policy())[0]

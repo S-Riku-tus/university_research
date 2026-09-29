@@ -25,6 +25,8 @@ def find_data_source_dir(
     npy_root = experiment_root / "data" / "npy"
     configured = data_source_dir_by_experiment.get(experiment_name)
     if configured:
+        # 主configではchunk_secondsだけの変更で0.5s/1sを切り替えられる。
+        configured = str(configured).replace("{chunk_tag}", chunk_tag(chunk_seconds))
         configured_path = npy_root / configured
         if configured_path.is_dir():
             return configured_path

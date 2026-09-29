@@ -21,6 +21,48 @@ def _resolved_day_policy(policy):
         raise ValueError(
             "evaluation_modeはcross_day、within_day、within_wav_chunk、autoです。"
         )
+    settings_by_mode = policy.pop("evaluation_settings", None)
+    if settings_by_mode is not None:
+        if not isinstance(settings_by_mode, dict):
+            raise ValueError("evaluation_settingsは評価方式ごとの辞書にしてください。")
+        unknown_modes = set(settings_by_mode) - {"cross_day", "within_day", "within_wav_chunk"}
+        if unknown_modes:
+            raise ValueError(f"evaluation_settingsに未知の評価方式があります: {unknown_modes}")
+        if mode == "auto":
+            raise ValueError("evaluation_settingsを使う場合はevaluation_modeを明示してください。")
+        selected = settings_by_mode.get(mode)
+        if not isinstance(selected, dict):
+            raise ValueError(f"evaluation_settings.{mode}を辞書で指定してください。")
+        legacy_keys = {
+            "train_experiments", "test_experiments", "within_day_experiment",
+            "test_fraction", "test_split_seed", "test_stratify",
+        }
+        duplicated = set(policy) & legacy_keys
+        if duplicated:
+            raise ValueError(
+                "evaluation_settings使用時は方式別の変数を外側へ重複指定しないでください: "
+                f"{duplicated}"
+            )
+        allowed = (
+            {"train_experiments", "test_experiments"}
+            if mode == "cross_day"
+            else {"experiment", "test_fraction", "test_split_seed", "test_stratify"}
+            if mode == "within_day"
+            else {"experiment", "test_fraction", "test_split_seed"}
+        )
+        unknown = set(selected) - allowed
+        if unknown:
+            raise ValueError(f"evaluation_settings.{mode}に未知の変数があります: {unknown}")
+        if mode == "cross_day":
+            policy["train_experiments"] = selected.get("train_experiments")
+            policy["test_experiments"] = selected.get("test_experiments")
+        else:
+            policy["within_day_experiment"] = selected.get("experiment")
+            for key in ("test_fraction", "test_split_seed", "test_stratify"):
+                if key in selected:
+                    policy[key] = selected[key]
+            if mode == "within_wav_chunk":
+                policy["test_stratify"] = "none"
     if mode in {"within_day", "within_wav_chunk"}:
         day = policy.get("within_day_experiment")
         if not isinstance(day, str) or not day.strip():

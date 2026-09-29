@@ -11,16 +11,31 @@ source:
   experiments:
     - 2025.06.11_0.3_2
     - 2025.06.18_0.3_3
-  dataset_name: waterflow_20260817_1s
+  dataset_names:
+    - waterflow_20260817_0.5s
+    - waterflow_20260817_1s
 
 storage:
   local_path: >-
     Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3
   copy_mode: independent_file_copy
   tracked_in_git: false
-  npy_files: 75600
-  approximate_npy_size_gib: 14.14
-  condition_count: 35
+  npy_files: 226800
+  approximate_npy_size_gib: 42.42
+  dataset_condition_count: 70
+  datasets:
+    waterflow_20260817_0.5s:
+      npy_files: 151200
+      approximate_size_gib: 28.28
+      condition_count: 35
+      chunks_per_condition: 4320
+      chunks_per_wav: 120
+    waterflow_20260817_1s:
+      npy_files: 75600
+      approximate_size_gib: 14.14
+      condition_count: 35
+      chunks_per_condition: 2160
+      chunks_per_wav: 60
   original_name_wav_files: 36
   heatflux_named_wav_files: 36
   metadata_files: 6
