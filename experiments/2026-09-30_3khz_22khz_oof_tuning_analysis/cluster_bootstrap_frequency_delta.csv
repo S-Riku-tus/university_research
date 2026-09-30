@@ -1,0 +1,3 @@
+metric,comparison,point_delta,cluster_bootstrap_replicates,ci95_lower,ci95_upper,probability_22khz_better
+rmse_all,22kHz_minus_3kHz,-11786.795321305253,5000,-20576.666074331224,-2475.4626980918038,0.9942
+rmse_onb,22kHz_minus_3kHz,-2843.479151823274,4365,-23774.701962878746,19524.14565367403,0.6084765177548682

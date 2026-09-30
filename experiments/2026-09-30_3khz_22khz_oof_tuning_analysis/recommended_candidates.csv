@@ -1,0 +1,13 @@
+frequency,model_key,selection_kind,candidate_name,parameters_json,rmse_all,rmse_onb,recall,false_positive_rate
+3kHz,randomforest,strict_rmse_best,randomforest__n_estimators=100__max_depth=12__subsample=0.6__colsample_bynode=0.6,"{""colsample_bynode"": 0.6, ""max_depth"": 12, ""n_estimators"": 100, ""subsample"": 0.6}",91031.51782070463,154406.21960602887,0.8582010582010582,0.0044444444444444444
+3kHz,randomforest,recommended_balanced,randomforest__n_estimators=100__max_depth=12__subsample=0.6__colsample_bynode=0.6,"{""colsample_bynode"": 0.6, ""max_depth"": 12, ""n_estimators"": 100, ""subsample"": 0.6}",91031.51782070463,154406.21960602887,0.8582010582010582,0.0044444444444444444
+3kHz,conformer,strict_rmse_best,conformer__lr=0.0001__batch_size=8,"{""batch_size"": 8, ""lr"": 0.0001}",65005.64186320934,63023.11097025263,0.8687830687830688,0.025185185185185185
+3kHz,conformer,recommended_balanced,conformer__lr=0.001__batch_size=12,"{""batch_size"": 12, ""lr"": 0.001}",65407.67207738458,52437.93925549721,0.8772486772486773,0.008888888888888889
+3kHz,alexnet,strict_rmse_best,alexnet__lr=0.003__batch_size=8,"{""batch_size"": 8, ""lr"": 0.003}",71730.99883351463,62203.61326603122,0.852910052910053,0.02074074074074074
+3kHz,alexnet,recommended_balanced,alexnet__lr=0.001__batch_size=24,"{""batch_size"": 24, ""lr"": 0.001}",72061.6362118327,55765.32412844139,0.8402116402116402,0.011851851851851851
+22kHz,randomforest,strict_rmse_best,randomforest__n_estimators=600__max_depth=6__subsample=0.6__colsample_bynode=0.6,"{""colsample_bynode"": 0.6, ""max_depth"": 6, ""n_estimators"": 600, ""subsample"": 0.6}",89877.17506675402,145712.30415815246,0.8571428571428571,0.002962962962962963
+22kHz,randomforest,recommended_balanced,randomforest__n_estimators=600__max_depth=6__subsample=0.6__colsample_bynode=0.6,"{""colsample_bynode"": 0.6, ""max_depth"": 6, ""n_estimators"": 600, ""subsample"": 0.6}",89877.17506675402,145712.30415815246,0.8571428571428571,0.002962962962962963
+22kHz,conformer,strict_rmse_best,conformer__lr=0.0003__batch_size=8,"{""batch_size"": 8, ""lr"": 0.0003}",56813.56050100473,62841.82936542014,0.8973544973544973,0.002962962962962963
+22kHz,conformer,recommended_balanced,conformer__lr=0.0003__batch_size=8,"{""batch_size"": 8, ""lr"": 0.0003}",56813.56050100473,62841.82936542014,0.8973544973544973,0.002962962962962963
+22kHz,alexnet,strict_rmse_best,alexnet__lr=0.01__batch_size=24,"{""batch_size"": 24, ""lr"": 0.01}",53272.311631722536,62667.60612365687,0.8666666666666667,0.0014814814814814814
+22kHz,alexnet,recommended_balanced,alexnet__lr=0.01__batch_size=24,"{""batch_size"": 24, ""lr"": 0.01}",53272.311631722536,62667.60612365687,0.8666666666666667,0.0014814814814814814

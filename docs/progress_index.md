@@ -2,6 +2,13 @@
 
 このページは**日付ごとの履歴**。各節の「現在」「次にやること」は当時の記録であり、現在の未完了作業とは限らない。最新の状態は[研究の現在地](research_status.md)、更新関係は[文書案内](document_index.md)を読む。
 
+## 2026-09-30 3/22 kHz学習側OOFチューニング完了
+
+- [対応解析](../experiments/2026-09-30_3khz_22khz_oof_tuning_analysis/README.md)で両周波数各190候補、外側テスト未使用、選別なし、同一1620学習chunkを確認した。
+- 推奨performance OOFは22 kHz対3 kHzで全域RMSE 53.50対65.29、ONB近傍65.51対68.35 kW/m²、Recall .866対.859、FPRは両方.0015だった。全域差のWAV cluster bootstrap 95% CIは[−20.58, −2.48] kW/m²、ONB差は[−23.77, 19.52]で、全域優位は支持されたがONB優位は未確定。
+- 3 kHz推奨はRF `100/深さ12/0.6/0.6`、Conformer `0.001/12`、AlexNet `0.003/8`。22 kHz推奨はRF `600/深さ6/0.6/0.6`、Conformer `0.0003/8`、AlexNet `0.01/24`。
+- clean学習側では22 kHzが有望なため、主コードを22 kHz推奨値の各1要素へ固定した。次は外側7 noiseを一度だけ通常評価する。
+
 ## 2026-09-29 ONB保護付きピーク選別の本結果
 
 - [対応解析](../experiments/2026-09-29_onb_protected_selection_analysis/README.md)で、選別なしと`ONB +10%保護＋上側1e-9`の14/14条件、外側540 chunk完全一致、外側学習1620→1556を確認した。

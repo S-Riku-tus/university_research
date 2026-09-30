@@ -1,8 +1,10 @@
 # 研究の現在地と次にすること
 
-更新日: **2026-09-29（選別なし学習側OOFパラメータ探索の準備まで反映）**。分位点ルール時点の状態は[変更前の記録](../experiments/2026-09-16_peak_height_selection/previous_documents/research_status.md)に保存した。
+更新日: **2026-09-30（3/22 kHz学習側OOF探索の解析・推奨値決定まで反映）**。分位点ルール時点の状態は[変更前の記録](../experiments/2026-09-16_peak_height_selection/previous_documents/research_status.md)に保存した。
 
-**選別なし3 kHz主条件の学習側OOFパラメータ探索を準備（未実行、最新）**：[条件記録](../configs/experiments/2026-09-29_3khz_training_oof_parameter_search.json)のとおり、1秒・統合6/11＋6/18・clean_only・within_wav_chunk・seed 42・選別なしを固定した。候補はRandomForest 135、Conformer 25、AlexNet 30の計190条件で、3モデル間の直積にはしない。3-foldの合計は570 fit。候補選択は外側テスト540 chunkと7 noiseの成績を使わず、外側学習内の元WAV非共有OOF `rmse_all`だけで行う。実行後は最良RMSEの2%以内を対象に、日別ONB近傍RMSE・Recall・FPRも確認して採用値を決め、各リストを1値へ戻して外側テストを一度だけ評価する。
+**3/22 kHz学習側OOF探索完了・22 kHz推奨値で通常runを準備済み（最新）**：[対応解析](../experiments/2026-09-30_3khz_22khz_oof_tuning_analysis/README.md)で、両周波数各190候補、外側学習1620 chunk、未使用外側テスト540 chunk、選別なしを監査した。主`performance_kfold`の推奨値は、3 kHzがRF `100/深さ12/0.6/0.6`、Conformer `lr=0.001, batch=12`、AlexNet `lr=0.003, batch=8`、22 kHzがRF `600/深さ6/0.6/0.6`、Conformer `lr=0.0003, batch=8`、AlexNet `lr=0.01, batch=24`。保存OOF統合では22 kHz対3 kHzで全域RMSE 53.50対65.29、ONB近傍65.51対68.35 kW/m²、Recall .866対.859、FPRは両方.0015。全域差のWAV cluster bootstrap 95% CIは[−20.58, −2.48] kW/m²だが、ONB差は[−23.77, 19.52]で未確定。主コードは22 kHzと上記22 kHz推奨値を各1要素へ固定済みで、探索ではなく外側7 noiseの通常runになる。5/10/15 kHz探索はその結果後の必要性で判断する。
+
+**選別なし3 kHz主条件の学習側OOFパラメータ探索を準備（完了済みの条件記録）**：[条件記録](../configs/experiments/2026-09-29_3khz_training_oof_parameter_search.json)のとおり、1秒・統合6/11＋6/18・clean_only・within_wav_chunk・seed 42・選別なしを固定した。候補はRandomForest 135、Conformer 25、AlexNet 30の計190条件で、3モデル間の直積にはしない。結果と採用判断は上記9/30解析へ引き継いだ。
 
 **ONB保護付き2.1–2.5 kHzピーク選別は主条件へ採用しない（最新）**：[対応解析](../experiments/2026-09-29_onb_protected_selection_analysis/README.md)で、選別なしと`ONB +10%保護＋上側1e-9`を同じ外側540 chunk・seed 42で比較した。performanceの−20 dB全域RMSEは88.20→77.69 kW/m²へ改善したが、cleanは35.33→44.20、強noise平均ONB近傍は94.78→116.38、ONB以降は59.71→67.90へ悪化した。強noise平均FPRは両方0、Recallは.807→.808、q100は日別14/14セルで不変。除外64 chunkは保護帯直後の4測定点だけで、改善は低熱流束強noise、悪化はONB近傍・直後へ集中した。この選別は帯域ピーク依存を示すアブレーションとして保持し、主条件は選別なし1秒へ戻す。次は選別なし条件だけで学習側OOFパラメータ探索を行い、全域RMSE 2%以内の候補からONB指標も見て選ぶ。
 

@@ -93,11 +93,11 @@ VALIDATION_CONFIG = apply_onb_defaults({
         "noise_source": "waterflow",  # 水流音はwaterflow、白色雑音はwhitenoise
         "chunk_seconds": 1,
         "max_freq_hz_list": [
-            "maxfreq=3kHz",
+            # "maxfreq=3kHz",
             # "maxfreq=5kHz",
             # "maxfreq=10kHz",
             # "maxfreq=15kHz",
-            # "maxfreq=22kHz",
+            "maxfreq=22kHz",
         ],
         "noise_dir_names": [
             "heatflux_no_noise",
@@ -170,18 +170,20 @@ VALIDATION_CONFIG = apply_onb_defaults({
             "type": "active_model_grid",
             "model_grids": {
                 "randomforest": {
-                    "n_estimators": [100, 300, 600],
-                    "max_depth": [3, 4, 6, 8, 12],
-                    "subsample": [0.6, 0.8, 1.0],
-                    "colsample_bynode": [0.6, 0.8, 1.0],
+                    # 22 kHz・学習側OOF探索の採用値。全リストを1要素に
+                    # することで探索ではなく外側テストの通常runになる。
+                    "n_estimators": [600],
+                    "max_depth": [6],
+                    "subsample": [0.6],
+                    "colsample_bynode": [0.6],
                 },
                 "conformer": {
-                    "lr": [0.0001, 0.0003, 0.001, 0.003, 0.01],
-                    "batch_size": [8, 12, 24, 32, 64],
+                    "lr": [0.0003],
+                    "batch_size": [8],
                 },
                 "alexnet": {
-                    "lr": [0.0001, 0.0003, 0.001, 0.003, 0.005, 0.01],
-                    "batch_size": [8, 12, 24, 32, 64],
+                    "lr": [0.01],
+                    "batch_size": [24],
                 },
             },
             "default_keras": {

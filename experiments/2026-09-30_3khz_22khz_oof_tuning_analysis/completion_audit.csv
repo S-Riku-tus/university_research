@@ -1,0 +1,3 @@
+frequency,completed,outer_test_used,n_outer_training_samples,n_outer_test_samples_not_scored,folds,epochs,selection_enabled,candidate_rows,day_rows,randomforest_candidates,conformer_candidates,alexnet_candidates
+3kHz,True,False,1620,540,3,150,False,190,380,135,25,30
+22kHz,True,False,1620,540,3,150,False,190,380,135,25,30
