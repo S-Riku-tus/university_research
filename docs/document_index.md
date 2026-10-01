@@ -7,6 +7,7 @@
 | 目的 | 読む文書 | 更新方法 |
 |---|---|---|
 | 次の作業を始める | [研究の現在地](research_status.md) | 状態・本人の希望・次の一手を更新する唯一の入口 |
+| 3 kHz採用値の外側結果と22 kHzとの最終比較を見る | [3/22 kHz外側対応比較](../experiments/2026-10-01_3khz_22khz_tuned_outer_comparison/README.md) | 完了性、日別ONB、入力―出力傾向、FPR・Recall・q100、従来3 kHzとの差、3 kHz固定判断を記録 |
 | 最大周波数別パラメータ設定と現在の3 kHz条件を見る | [周波数別config実装](../experiments/2026-10-01_frequency_specific_parameter_config/README.md) | 3/22 kHz採用値、自動通常run／OOF探索切替、複数周波数時の動作、検証結果を固定 |
 | 22 kHz採用値の外側7 noise結果を見る | [22 kHz外側評価](../experiments/2026-10-01_22khz_tuned_outer_analysis/README.md) | 完了性、日別ONB、FPR、Recall、q100、cleanでの統合効果、noise時の正biasと次のmatched比較を固定 |
 | 3/22 kHzのOOFチューニング結果と採用値を見る | [3/22 kHz OOF探索解析](../experiments/2026-09-30_3khz_22khz_oof_tuning_analysis/README.md) | 完了性、2%候補、日別ONB、推奨パラメータ、保存OOF統合、22 kHz外側評価への判断を固定 |

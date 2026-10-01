@@ -2,6 +2,13 @@
 
 このページは**日付ごとの履歴**。各節の「現在」「次にやること」は当時の記録であり、現在の未完了作業とは限らない。最新の状態は[研究の現在地](research_status.md)、更新関係は[文書案内](document_index.md)を読む。
 
+## 2026-10-01 3 kHz採用値の外側評価と22 kHz対応比較
+
+- [対応解析](../experiments/2026-10-01_3khz_22khz_tuned_outer_comparison/README.md)で、3 kHzの外側540 chunk・7 noise・同一fitを監査し、日別確定ONBで22 kHzおよび従来3 kHzと対応比較した。
+- performanceのclean全域RMSEは3 kHz 35.07、22 kHz 29.97 kW/m²だったが、noise平均は69.30対189.55、FPRは.0015対.8911で、主入力を3 kHzに固定する根拠が得られた。
+- 3 kHzの強noiseでは低〜ONB近傍予測が約160 kW/m²へ圧縮され、FPR 0を保つ一方、Recallが−20 dBで.797へ低下した。22 kHzは同領域を約471–483 kW/m²へ過大予測して常時陽性化した。
+- tuned 3 kHzは従来値に対してnoise平均RMSEを69.64→69.30、強noise78.36→77.13と僅かに改善したが、強noise ONB近傍は94.78→103.54へ悪化し、q100は14/14セル不変だった。次は同じ固定条件で`matched`だけを変え、低FPRとONB直後Recallを両立できるか確認する。
+
 ## 2026-10-01 最大周波数別パラメータ設定
 
 - [実装記録](../experiments/2026-10-01_frequency_specific_parameter_config/README.md)のとおり、3 kHzと22 kHzの採用値を`models.parameter_sets.by_max_freq_hz`へ独立登録した。
