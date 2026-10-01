@@ -34,7 +34,7 @@ from utils.training.model_training import ModelTrainer
 from utils.ensemble.ensemble_runtime import EnsembleManager
 from utils.plotting.regression_plots import RegressionPlotter
 from utils.config.parameter_sets import (
-    build_parameter_execution_plan,
+    build_frequency_parameter_execution_plans,
     resolve_parameter_set,
 )
 from utils.config.onb_defaults import apply_onb_defaults, onb_model_specs
@@ -93,11 +93,13 @@ VALIDATION_CONFIG = apply_onb_defaults({
         "noise_source": "waterflow",  # 水流音はwaterflow、白色雑音はwhitenoise
         "chunk_seconds": 1,
         "max_freq_hz_list": [
-            # "maxfreq=3kHz",
+            # 実行する周波数だけを選ぶ。複数選んだ通常runでは、下の
+            # by_max_freq_hzから各周波数専用パラメータを自動的に使う。
+            "maxfreq=3kHz",
             # "maxfreq=5kHz",
             # "maxfreq=10kHz",
             # "maxfreq=15kHz",
-            "maxfreq=22kHz",
+            # "maxfreq=22kHz",
         ],
         "noise_dir_names": [
             "heatflux_no_noise",
@@ -167,23 +169,44 @@ VALIDATION_CONFIG = apply_onb_defaults({
     "models": {
         # RandomForest・Conformer・AlexNetの3モデルは常にすべて実行する。
         "parameter_sets": {
-            "type": "active_model_grid",
-            "model_grids": {
-                "randomforest": {
-                    # 22 kHz・学習側OOF探索の採用値。全リストを1要素に
-                    # することで探索ではなく外側テストの通常runになる。
-                    "n_estimators": [600],
-                    "max_depth": [6],
-                    "subsample": [0.6],
-                    "colsample_bynode": [0.6],
+            # 周波数ごとに独立した候補リストを持つ。選択中の周波数に
+            # 対応する欄だけが使われ、全リストが1要素なら通常run、
+            # どれかを複数要素にすると、その周波数単独のOOF探索になる。
+            "type": "max_freq_active_model_grid",
+            "by_max_freq_hz": {
+                "maxfreq=3kHz": {
+                    # 3 kHz・学習側OOF探索の採用値。
+                    "randomforest": {
+                        "n_estimators": [100],
+                        "max_depth": [12],
+                        "subsample": [0.6],
+                        "colsample_bynode": [0.6],
+                    },
+                    "conformer": {
+                        "lr": [0.001],
+                        "batch_size": [12],
+                    },
+                    "alexnet": {
+                        "lr": [0.003],
+                        "batch_size": [8],
+                    },
                 },
-                "conformer": {
-                    "lr": [0.0003],
-                    "batch_size": [8],
-                },
-                "alexnet": {
-                    "lr": [0.01],
-                    "batch_size": [24],
+                "maxfreq=22kHz": {
+                    # 22 kHz・学習側OOF探索の採用値。
+                    "randomforest": {
+                        "n_estimators": [600],
+                        "max_depth": [6],
+                        "subsample": [0.6],
+                        "colsample_bynode": [0.6],
+                    },
+                    "conformer": {
+                        "lr": [0.0003],
+                        "batch_size": [8],
+                    },
+                    "alexnet": {
+                        "lr": [0.01],
+                        "batch_size": [24],
+                    },
                 },
             },
             "default_keras": {
@@ -253,10 +276,19 @@ ONB_BAND_FRAC = _cfg("thresholds", "onb_band_frac")
 
 MODEL_SPECS = onb_model_specs()
 MODEL_KEYS = [spec["key"] for spec in MODEL_SPECS]
-PARAMETER_SETS, PARAMETER_SEARCH_ENABLED = build_parameter_execution_plan(
+PARAMETER_PLANS_BY_MAX_FREQ = build_frequency_parameter_execution_plans(
     _cfg("models", "parameter_sets"),
     MODEL_KEYS,
+    MAX_FREQ_HZ_LIST,
 )
+PARAMETER_SETS_BY_MAX_FREQ = {
+    max_freq_hz: plan["parameter_sets"]
+    for max_freq_hz, plan in PARAMETER_PLANS_BY_MAX_FREQ.items()
+}
+PARAMETER_SEARCH_ENABLED_BY_MAX_FREQ = {
+    max_freq_hz: plan["parameter_search_enabled"]
+    for max_freq_hz, plan in PARAMETER_PLANS_BY_MAX_FREQ.items()
+}
 
 ENSEMBLE_MANAGER = EnsembleManager(
     VALIDATION_CONFIG.get("ensemble", {}),
@@ -344,7 +376,17 @@ def build_dataset_jobs():
     )
 
 
-def validation_config_snapshot():
+def parameter_plan_for_max_freq(max_freq_hz):
+    try:
+        return PARAMETER_PLANS_BY_MAX_FREQ[max_freq_hz]
+    except KeyError as exc:
+        raise ValueError(
+            f"No parameter plan is configured for max frequency: {max_freq_hz}"
+        ) from exc
+
+
+def validation_config_snapshot(max_freq_hz):
+    plan = parameter_plan_for_max_freq(max_freq_hz)
     return {
         "learning_policy": dict(LEARNING_POLICY),
         "acoustic_selection": dict(VALIDATION_CONFIG.get("acoustic_selection", {})),
@@ -363,7 +405,8 @@ def validation_config_snapshot():
             "noise_source": NOISE_SOURCE_PREFIX,
             "chunk_seconds": CHUNK,
             "experiment_names": EXPERIMENT_DIR_NAMES,
-            "max_freq_hz_list": MAX_FREQ_HZ_LIST,
+            # 実行manifestには、その学習familyで実際に使用した周波数だけを残す。
+            "max_freq_hz_list": [max_freq_hz],
             "noise_dir_names": NOISE_DIR_NAMES,
             "data_source_dir_by_experiment": DATA_SOURCE_DIR_BY_EXPERIMENT,
         },
@@ -375,8 +418,9 @@ def validation_config_snapshot():
         },
         "models": {
             "fixed_model_keys": MODEL_KEYS,
-            "parameter_sets": PARAMETER_SETS,
-            "parameter_search_enabled": PARAMETER_SEARCH_ENABLED,
+            "active_max_freq_hz": max_freq_hz,
+            "parameter_sets": plan["parameter_sets"],
+            "parameter_search_enabled": plan["parameter_search_enabled"],
         },
         "ensemble": ENSEMBLE_MANAGER.snapshot(),
         "features": {
@@ -400,7 +444,11 @@ def validation_config_snapshot():
 
 
 def validation_config_text():
-    return pformat(validation_config_snapshot(), sort_dicts=False)
+    snapshots = {
+        max_freq_hz: validation_config_snapshot(max_freq_hz)
+        for max_freq_hz in MAX_FREQ_HZ_LIST
+    }
+    return pformat(snapshots, sort_dicts=False)
 
 
 def update_noise_trend_plots(plotter, job, run_dir, run_hash, model_keys):
@@ -432,26 +480,44 @@ def validate_validation_config(enabled_specs):
             "within_day", "within_day_holdout", "within_wav_chunk_holdout"}
             or "performance_kfold" in ENSEMBLE_MANAGER.selected_strategy_names) and DIVISIONS < 2:
         raise ValueError("folds must be at least 2.")
-    if not PARAMETER_SETS:
-        raise ValueError("VALIDATION_CONFIG['models']['parameter_sets'] must not be empty.")
     if int(PCA_COMPONENTS) <= 0:
         raise ValueError("pca_components must be a positive integer.")
     model_keys = [spec["key"] for spec in enabled_specs]
     if len(model_keys) != len(set(model_keys)):
         raise ValueError(f"Duplicate fixed model keys: {model_keys}")
 
-    for parameter_set in PARAMETER_SETS:
-        if not isinstance(parameter_set, dict):
-            raise TypeError("Each expanded parameter set must be a dict.")
-        # 固定3モデルの深層モデルに学習率とバッチサイズがあるか確認する。
-        resolve_parameter_set(enabled_specs, parameter_set)
-
-    if PARAMETER_SEARCH_ENABLED:
-        for parameter_set in PARAMETER_SETS:
-            if parameter_set.get("model_key") not in MODEL_KEYS:
-                raise ValueError(
-                    "Automatic parameter search requires one-model candidates."
+    search_frequencies = []
+    for max_freq_hz in MAX_FREQ_HZ_LIST:
+        plan = parameter_plan_for_max_freq(max_freq_hz)
+        parameter_sets = plan["parameter_sets"]
+        if not parameter_sets:
+            raise ValueError(
+                "VALIDATION_CONFIG['models']['parameter_sets'] must not be "
+                f"empty for {max_freq_hz}."
+            )
+        for parameter_set in parameter_sets:
+            if not isinstance(parameter_set, dict):
+                raise TypeError(
+                    f"Each expanded parameter set for {max_freq_hz} must be a dict."
                 )
+            # 固定3モデルの深層モデルに学習率とバッチサイズがあるか確認する。
+            resolve_parameter_set(enabled_specs, parameter_set)
+
+        if plan["parameter_search_enabled"]:
+            search_frequencies.append(max_freq_hz)
+            for parameter_set in parameter_sets:
+                if parameter_set.get("model_key") not in MODEL_KEYS:
+                    raise ValueError(
+                        "Automatic parameter search requires one-model candidates."
+                    )
+
+    if search_frequencies and len(MAX_FREQ_HZ_LIST) != 1:
+        raise ValueError(
+            "Parameter tuning must select exactly one value in "
+            "data.max_freq_hz_list. Multiple frequencies may be selected "
+            "together only when every configured candidate list is a singleton. "
+            f"Tuning was triggered for: {search_frequencies}"
+        )
 
     ENSEMBLE_MANAGER.validate(enabled_specs)
 
@@ -598,23 +664,26 @@ def main():
         f"configured models: {[s['label'] for s in enabled_specs]}  "
         f"(model_tag={configured_model_tag})"
     )
-    parameter_mode = (
-        f"training-only OOF search ({len(PARAMETER_SETS)} model-wise candidates)"
-        if PARAMETER_SEARCH_ENABLED
-        else "fixed parameters (all candidate lists are singletons)"
-    )
-    print(f"parameter mode: {parameter_mode}")
-    if PARAMETER_SEARCH_ENABLED:
+    for max_freq_hz in MAX_FREQ_HZ_LIST:
+        plan = parameter_plan_for_max_freq(max_freq_hz)
+        parameter_mode = (
+            "training-only OOF search "
+            f"({len(plan['parameter_sets'])} model-wise candidates)"
+            if plan["parameter_search_enabled"]
+            else "fixed parameters (all candidate lists are singletons)"
+        )
+        print(f"parameter mode [{max_freq_hz}]: {parameter_mode}")
+    if any(PARAMETER_SEARCH_ENABLED_BY_MAX_FREQ.values()):
         print(
-            "execution mode: candidate lists triggered training-only OOF search; "
-            "outer test is not scored"
+            "execution mode: the selected frequency candidate lists triggered "
+            "training-only OOF search; outer test is not scored"
         )
     else:
         print(
             f"ensemble: {ENSEMBLE_MANAGER.description()} "
             f"| epoch={EPOCH_NUM} | fold={DIVISIONS}"
         )
-    if PARAMETER_SEARCH_ENABLED:
+    if any(PARAMETER_SEARCH_ENABLED_BY_MAX_FREQ.values()):
         print("explainability: skipped in training-only parameter-search mode")
     else:
         print(
@@ -632,22 +701,33 @@ def main():
     if not dataset_jobs:
         raise FileNotFoundError("No datasets were found for the requested experiment/maxfreq/noise plan.")
 
-    if PARAMETER_SEARCH_ENABLED:
-        run_training_oof_tuning(
-            dataset_jobs,
-            LEARNING_POLICY,
-            validation_config_snapshot(),
-            enabled_specs,
-            PARAMETER_SETS,
-            trainer,
-        )
-        return
+    for max_freq_hz in MAX_FREQ_HZ_LIST:
+        frequency_jobs = [
+            job for job in dataset_jobs
+            if job["max_freq_hz"] == max_freq_hz
+        ]
+        if not frequency_jobs:
+            raise FileNotFoundError(
+                f"No datasets were found for selected frequency: {max_freq_hz}"
+            )
+        plan = parameter_plan_for_max_freq(max_freq_hz)
+        frequency_config = validation_config_snapshot(max_freq_hz)
+        if plan["parameter_search_enabled"]:
+            run_training_oof_tuning(
+                frequency_jobs,
+                LEARNING_POLICY,
+                frequency_config,
+                enabled_specs,
+                plan["parameter_sets"],
+                trainer,
+            )
+            continue
 
-    run_learning_experiments(
-        dataset_jobs, LEARNING_POLICY, validation_config_snapshot(),
-        enabled_specs, PARAMETER_SETS, ENSEMBLE_MANAGER, trainer, plotter,
-        update_noise_trend_plots,
-    )
+        run_learning_experiments(
+            frequency_jobs, LEARNING_POLICY, frequency_config,
+            enabled_specs, plan["parameter_sets"], ENSEMBLE_MANAGER,
+            trainer, plotter, update_noise_trend_plots,
+        )
 
 
 if __name__ == '__main__':

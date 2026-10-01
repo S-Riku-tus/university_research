@@ -2,6 +2,12 @@
 
 このページは**日付ごとの履歴**。各節の「現在」「次にやること」は当時の記録であり、現在の未完了作業とは限らない。最新の状態は[研究の現在地](research_status.md)、更新関係は[文書案内](document_index.md)を読む。
 
+## 2026-10-01 最大周波数別パラメータ設定
+
+- [実装記録](../experiments/2026-10-01_frequency_specific_parameter_config/README.md)のとおり、3 kHzと22 kHzの採用値を`models.parameter_sets.by_max_freq_hz`へ独立登録した。
+- 通常runでは複数周波数も各専用値で順番に実行でき、候補リストを増やしたOOF探索では従来どおり1周波数だけを選ぶ。
+- 現在は3 kHzだけを有効にし、RF `100/深さ12/0.6/0.6`、Conformer `0.001/12`、AlexNet `0.003/8`、外側540 chunk・7 noiseの通常runになることをdry runで確認した。
+
 ## 2026-10-01 22 kHz採用パラメータの外側7 noise評価
 
 - [対応解析](../experiments/2026-10-01_22khz_tuned_outer_analysis/README.md)で、外側学習1620／評価540 chunk、6/11・6/18各270、clean_onlyの同一fit、7/7 noise、選別なし、採用済み22 kHzパラメータを確認した。

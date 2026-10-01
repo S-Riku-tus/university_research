@@ -337,6 +337,96 @@ def build_parameter_execution_plan(parameter_sets_config, active_model_keys):
     ), False
 
 
+def build_frequency_parameter_execution_plans(
+    parameter_sets_config,
+    active_model_keys,
+    max_freq_hz_list,
+):
+    """Resolve one fixed-run or tuning plan for each selected max frequency.
+
+    ``max_freq_active_model_grid`` keeps the existing candidate-list behavior,
+    but scopes ``model_grids`` by the input-frequency directory.  Unselected
+    frequency entries may remain in the config, making it possible to switch
+    frequencies only by editing ``data.max_freq_hz_list``.
+
+    The historical ``active_model_grid`` form remains supported and applies
+    the same grid to every selected frequency.
+    """
+    max_freq_hz_list = list(max_freq_hz_list or [])
+    if not max_freq_hz_list:
+        raise ValueError("max_freq_hz_list must select at least one frequency.")
+    if len(max_freq_hz_list) != len(set(max_freq_hz_list)):
+        raise ValueError(
+            f"max_freq_hz_list contains duplicates: {max_freq_hz_list}"
+        )
+    if not isinstance(parameter_sets_config, dict):
+        raise TypeError(
+            "Frequency-aware parameter execution requires parameter_sets "
+            "to be a config dict."
+        )
+
+    config_type = parameter_sets_config.get("type")
+    if config_type == "active_model_grid":
+        parameter_sets, search_enabled = build_parameter_execution_plan(
+            parameter_sets_config,
+            active_model_keys,
+        )
+        return {
+            max_freq_hz: {
+                "parameter_sets": parameter_sets,
+                "parameter_search_enabled": search_enabled,
+            }
+            for max_freq_hz in max_freq_hz_list
+        }
+
+    if config_type != "max_freq_active_model_grid":
+        raise ValueError(
+            "Frequency-aware parameter execution requires parameter_sets.type "
+            "to be 'max_freq_active_model_grid' or 'active_model_grid'."
+        )
+
+    grids_by_frequency = parameter_sets_config.get("by_max_freq_hz")
+    if not isinstance(grids_by_frequency, dict) or not grids_by_frequency:
+        raise ValueError(
+            "parameter_sets.by_max_freq_hz must be a non-empty dict."
+        )
+    missing_frequencies = [
+        max_freq_hz
+        for max_freq_hz in max_freq_hz_list
+        if max_freq_hz not in grids_by_frequency
+    ]
+    if missing_frequencies:
+        raise ValueError(
+            "parameter_sets.by_max_freq_hz is missing selected frequencies: "
+            f"{missing_frequencies}."
+        )
+
+    default_keras = parameter_sets_config.get("default_keras")
+    plans = {}
+    for max_freq_hz in max_freq_hz_list:
+        model_grids = grids_by_frequency[max_freq_hz]
+        if not isinstance(model_grids, dict) or not model_grids:
+            raise ValueError(
+                f"parameter_sets.by_max_freq_hz['{max_freq_hz}'] must be "
+                "a non-empty model-grid dict."
+            )
+        frequency_config = {
+            "type": "active_model_grid",
+            "model_grids": model_grids,
+        }
+        if default_keras:
+            frequency_config["default_keras"] = dict(default_keras)
+        parameter_sets, search_enabled = build_parameter_execution_plan(
+            frequency_config,
+            active_model_keys,
+        )
+        plans[max_freq_hz] = {
+            "parameter_sets": parameter_sets,
+            "parameter_search_enabled": search_enabled,
+        }
+    return plans
+
+
 def resolve_parameter_set(enabled_specs, parameter_set):
     resolved = []
     default_keras = parameter_set.get("default_keras", {})

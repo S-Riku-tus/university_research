@@ -15,6 +15,7 @@ sys.path.insert(0, str(TEST_ROOT.parent / "code"))
 
 from test_learning_policy import ObservedTrainer, fixture
 from utils.config.parameter_sets import (
+    build_frequency_parameter_execution_plans,
     build_parameter_execution_plan,
     expand_parameter_sets,
     resolve_parameter_set,
@@ -27,6 +28,41 @@ from utils.experiment.training_oof_tuning import (
 
 
 class TrainingOofTuningTest(unittest.TestCase):
+    def test_frequency_grids_resolve_independent_fixed_parameters(self):
+        plans = build_frequency_parameter_execution_plans({
+            "type": "max_freq_active_model_grid",
+            "by_max_freq_hz": {
+                "maxfreq=3kHz": {
+                    "randomforest": {"max_depth": [12]},
+                    "conformer": {"lr": [0.001], "batch_size": [12]},
+                },
+                "maxfreq=22kHz": {
+                    "randomforest": {"max_depth": [6]},
+                    "conformer": {"lr": [0.0003], "batch_size": [8]},
+                },
+            },
+        }, ["randomforest", "conformer"], ["maxfreq=3kHz", "maxfreq=22kHz"])
+
+        self.assertFalse(plans["maxfreq=3kHz"]["parameter_search_enabled"])
+        self.assertFalse(plans["maxfreq=22kHz"]["parameter_search_enabled"])
+        params_3k = plans["maxfreq=3kHz"]["parameter_sets"][0]["models"]
+        params_22k = plans["maxfreq=22kHz"]["parameter_sets"][0]["models"]
+        self.assertEqual(params_3k["randomforest"]["max_depth"], 12)
+        self.assertEqual(params_3k["conformer"]["batch_size"], 12)
+        self.assertEqual(params_22k["randomforest"]["max_depth"], 6)
+        self.assertEqual(params_22k["conformer"]["batch_size"], 8)
+
+    def test_frequency_grids_require_every_selected_frequency(self):
+        with self.assertRaisesRegex(ValueError, "maxfreq=22kHz"):
+            build_frequency_parameter_execution_plans({
+                "type": "max_freq_active_model_grid",
+                "by_max_freq_hz": {
+                    "maxfreq=3kHz": {
+                        "randomforest": {"max_depth": [12]},
+                    },
+                },
+            }, ["randomforest"], ["maxfreq=3kHz", "maxfreq=22kHz"])
+
     def test_singleton_active_grid_selects_normal_joint_run(self):
         parameter_sets, search_enabled = build_parameter_execution_plan({
             "type": "active_model_grid",

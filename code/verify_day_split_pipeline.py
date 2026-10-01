@@ -27,9 +27,10 @@ def main():
     for enabled in (False, True):
         if args.selection != "both" and enabled != (args.selection == "selected"):
             continue
-        config = deepcopy(onb.validation_config_snapshot())
+        max_freq_hz = "maxfreq=3kHz"
+        config = deepcopy(onb.validation_config_snapshot(max_freq_hz))
         config["run"].update(epochs=2, folds=3, smoke_test=True)
-        config["data"].update(max_freq_hz_list=["maxfreq=3kHz"], noise_dir_names=["heatflux_no_noise"])
+        config["data"].update(max_freq_hz_list=[max_freq_hz], noise_dir_names=["heatflux_no_noise"])
         config["explainability"] = {"enabled": False}
         config["acoustic_selection"]["enabled"] = enabled
         config["output"]["noise_trend_plots"] = {"enabled": False}
@@ -37,9 +38,10 @@ def main():
         config["output"]["run_instance_id"] = "day_split_integration"
         jobs = []
         for job in all_jobs:
-            if job["max_freq_hz"] == "maxfreq=3kHz" and job["noise_dir_name"] == "heatflux_no_noise":
+            if job["max_freq_hz"] == max_freq_hz and job["noise_dir_name"] == "heatflux_no_noise":
                 jobs.append({**job, "save_base_path": Path(job["experiment_root"]) / "regression_result/npy/day_split_smoke" / config["output"]["result_date_dir"]})
-        run_learning_experiments(jobs, config["learning_policy"], config, specs, onb.PARAMETER_SETS,
+        parameter_sets = onb.parameter_plan_for_max_freq(max_freq_hz)["parameter_sets"]
+        run_learning_experiments(jobs, config["learning_policy"], config, specs, parameter_sets,
                                  onb.ENSEMBLE_MANAGER, ModelTrainer(42), RegressionPlotter(), lambda *a: None)
 
 

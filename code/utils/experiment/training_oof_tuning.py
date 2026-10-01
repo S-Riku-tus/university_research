@@ -320,9 +320,10 @@ def run_training_oof_tuning(
         "selected": selected,
         "normal_run_unchanged": True,
         "next_step": (
-            "Copy the chosen parameters into models.parameter_sets, leave exactly one value "
-            "in every candidate list, and run the normal pipeline once for the untouched "
-            "outer test."
+            "Copy the chosen parameters into models.parameter_sets.by_max_freq_hz"
+            f"['{config.get('models', {}).get('active_max_freq_hz', evaluation_job['max_freq_hz'])}'], "
+            "leave exactly one value in every candidate list, and run the normal pipeline "
+            "once for the untouched outer test."
         ),
     }
     _write_json(output_dir / "parameter_search_config.json", config)
