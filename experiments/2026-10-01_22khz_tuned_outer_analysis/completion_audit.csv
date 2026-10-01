@@ -1,0 +1,8 @@
+﻿noise,noise_order,completed,n_predictions,same_ordered_samples_as_clean,max_target_abs_difference_from_clean,n_0611,n_0618,n_training_chunks,n_evaluation_chunks,n_training_wavs,n_evaluation_wavs,fit_id,same_fit_as_clean,selection_enabled,training_noise,evaluation_scheme
+clean,1,1,540,1,0.0,270,270,1620,540,36,36,48decba34818,1,0,clean_only,within_wav_chunk_holdout
+0,0,1,540,1,0.0,270,270,1620,540,36,36,48decba34818,1,0,clean_only,within_wav_chunk_holdout
+-4,-4,1,540,1,0.0,270,270,1620,540,36,36,48decba34818,1,0,clean_only,within_wav_chunk_holdout
+-8,-8,1,540,1,0.0,270,270,1620,540,36,36,48decba34818,1,0,clean_only,within_wav_chunk_holdout
+-12,-12,1,540,1,0.0,270,270,1620,540,36,36,48decba34818,1,0,clean_only,within_wav_chunk_holdout
+-16,-16,1,540,1,0.0,270,270,1620,540,36,36,48decba34818,1,0,clean_only,within_wav_chunk_holdout
+-20,-20,1,540,1,0.0,270,270,1620,540,36,36,48decba34818,1,0,clean_only,within_wav_chunk_holdout

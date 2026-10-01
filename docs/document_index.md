@@ -1,12 +1,13 @@
 # 文書案内と更新ルール
 
-更新日: 2026-09-30。**現在の状態は一か所で更新し、過去の数値と判断は日付付き記録に残す。**
+更新日: 2026-10-01。**現在の状態は一か所で更新し、過去の数値と判断は日付付き記録に残す。**
 
 ## 読む順序と各文書の役割
 
 | 目的 | 読む文書 | 更新方法 |
 |---|---|---|
 | 次の作業を始める | [研究の現在地](research_status.md) | 状態・本人の希望・次の一手を更新する唯一の入口 |
+| 22 kHz採用値の外側7 noise結果を見る | [22 kHz外側評価](../experiments/2026-10-01_22khz_tuned_outer_analysis/README.md) | 完了性、日別ONB、FPR、Recall、q100、cleanでの統合効果、noise時の正biasと次のmatched比較を固定 |
 | 3/22 kHzのOOFチューニング結果と採用値を見る | [3/22 kHz OOF探索解析](../experiments/2026-09-30_3khz_22khz_oof_tuning_analysis/README.md) | 完了性、2%候補、日別ONB、推奨パラメータ、保存OOF統合、22 kHz外側評価への判断を固定 |
 | ONB保護付きピーク選別の本結果と採否を見る | [選別結果解析](../experiments/2026-09-29_onb_protected_selection_analysis/README.md) | 選別なしとの対応比較、日別ONB指標、q100、WAV別誤差、採否判断を固定 |
 | ONBを残せるピーク閾値と限界を見る | [ONB保持制約の閾値監査](../experiments/2026-09-29_peak_threshold_preservation/README.md) | 外側学習だけの分布、共通・日別閾値の不成立、ONB保護＋上側1e-9案を固定 |

@@ -2,6 +2,13 @@
 
 このページは**日付ごとの履歴**。各節の「現在」「次にやること」は当時の記録であり、現在の未完了作業とは限らない。最新の状態は[研究の現在地](research_status.md)、更新関係は[文書案内](document_index.md)を読む。
 
+## 2026-10-01 22 kHz採用パラメータの外側7 noise評価
+
+- [対応解析](../experiments/2026-10-01_22khz_tuned_outer_analysis/README.md)で、外側学習1620／評価540 chunk、6/11・6/18各270、clean_onlyの同一fit、7/7 noise、選別なし、採用済み22 kHzパラメータを確認した。
+- performanceはclean全域RMSE 29.97 kW/m²で等重み34.54、最良単体Conformer 32.30を下回った。等重みとの差のWAV cluster bootstrap 95% CIは[−7.76, −1.67] kW/m²だった。
+- 0 dBでperformanceのONB前biasは+162.39 kW/m²、FPRは46.67%へ悪化し、−4 dBで88%、−8 dB以下で100%となった。noise平均RMSEはRF 111.36、等重み170.38、performance 189.55 kW/m²で、clean OOF重みはnoise劣化を防がなかった。
+- 強noiseのq100=0は早期検知の改善ではなく常時陽性化なので、q100は日別ONB前FPRと対で報告する。22 kHz採用値は外側結果で選び直さず、次は3 kHzのOOF採用値を固定した同一外側540 chunk・7 noiseを一度実行し、周波数とパラメータ差を分ける。
+
 ## 2026-09-30 3/22 kHz学習側OOFチューニング完了
 
 - [対応解析](../experiments/2026-09-30_3khz_22khz_oof_tuning_analysis/README.md)で両周波数各190候補、外側テスト未使用、選別なし、同一1620学習chunkを確認した。
