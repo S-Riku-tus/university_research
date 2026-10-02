@@ -1,12 +1,16 @@
 # 文書案内と更新ルール
 
-更新日: 2026-10-01。**現在の状態は一か所で更新し、過去の数値と判断は日付付き記録に残す。**
+更新日: 2026-10-02。**現在の状態は一か所で更新し、過去の数値と判断は日付付き記録に残す。**
 
 ## 読む順序と各文書の役割
 
 | 目的 | 読む文書 | 更新方法 |
 |---|---|---|
 | 次の作業を始める | [研究の現在地](research_status.md) | 状態・本人の希望・次の一手を更新する唯一の入口 |
+| 現在の採用条件で誤差・誤判定が多い場所を見る | [10/2採用条件の誤差分解](../experiments/2026-10-02_current_adopted_condition_error_profile/README.md) | 全域とONBの最良の違い、熱流束領域別二乗誤差、段階別陽性数、単体からの訂正/追加、q100不変の意味を記録 |
+| 現行の修論目次と次回相談までの準備を見る | [10/2目次・2週間の計画](research_plan/2026-10-02_master_thesis_outline_and_two_week_plan.md) | 学部論文との接続、7章案、章ごとの材料/不足、追加検証の分岐、仮目標10/16の準備工程を記録 |
+| 修論に使う主張・採否理由・根拠を蓄積する | [10/2主張・根拠・判断台帳](thesis/2026-10-02_claims_evidence_and_decisions.md) | 本人の目標と確認済み結論、主条件の理由、q100と卒論のCHF正規化指標の違い、説明性の役割・未検証部分を記録 |
+| 後期目標・教授の助言・実施状況と現在の優先順位を整理する | [10/2目標・助言・進捗監査](research_plan/2026-10-02_second_semester_goal_progress_and_professor_feedback_audit.md) | 原報告と教授メモの確認範囲、9/18計画の4本柱、noise精度逆転への回答、未完了部分、教授への説明順を記録 |
 | 3 kHz採用値の外側結果と22 kHzとの最終比較を見る | [3/22 kHz外側対応比較](../experiments/2026-10-01_3khz_22khz_tuned_outer_comparison/README.md) | 完了性、日別ONB、入力―出力傾向、FPR・Recall・q100、従来3 kHzとの差、3 kHz固定判断を記録 |
 | 最大周波数別パラメータ設定と現在の3 kHz条件を見る | [周波数別config実装](../experiments/2026-10-01_frequency_specific_parameter_config/README.md) | 3/22 kHz採用値、自動通常run／OOF探索切替、複数周波数時の動作、検証結果を固定 |
 | 22 kHz採用値の外側7 noise結果を見る | [22 kHz外側評価](../experiments/2026-10-01_22khz_tuned_outer_analysis/README.md) | 完了性、日別ONB、FPR、Recall、q100、cleanでの統合効果、noise時の正biasと次のmatched比較を固定 |

@@ -1,0 +1,8 @@
+﻿noise,n,wav_count,same_identities,reference_metrics_match,input
+clean,540,36,True,True,Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/ensemble/202610/01/onb_wc-t0611-v0611_iw3-nc_c1s_s0_e150_170655/maxfreq=3kHz/heatflux_no_noise/fold_pred/pred_f1_no_noise.csv
+0,540,36,True,True,Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/ensemble/202610/01/onb_wc-t0611-v0611_iw3-nc_c1s_s0_e150_170655/maxfreq=3kHz/heatflux_reference_SNR=0/fold_pred/pred_f1_0.csv
+-4,540,36,True,True,Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/ensemble/202610/01/onb_wc-t0611-v0611_iw3-nc_c1s_s0_e150_170655/maxfreq=3kHz/heatflux_reference_SNR=-4/fold_pred/pred_f1_-4.csv
+-8,540,36,True,True,Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/ensemble/202610/01/onb_wc-t0611-v0611_iw3-nc_c1s_s0_e150_170655/maxfreq=3kHz/heatflux_reference_SNR=-8/fold_pred/pred_f1_-8.csv
+-12,540,36,True,True,Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/ensemble/202610/01/onb_wc-t0611-v0611_iw3-nc_c1s_s0_e150_170655/maxfreq=3kHz/heatflux_reference_SNR=-12/fold_pred/pred_f1_-12.csv
+-16,540,36,True,True,Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/ensemble/202610/01/onb_wc-t0611-v0611_iw3-nc_c1s_s0_e150_170655/maxfreq=3kHz/heatflux_reference_SNR=-16/fold_pred/pred_f1_-16.csv
+-20,540,36,True,True,Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/ensemble/202610/01/onb_wc-t0611-v0611_iw3-nc_c1s_s0_e150_170655/maxfreq=3kHz/heatflux_reference_SNR=-20/fold_pred/pred_f1_-20.csv
