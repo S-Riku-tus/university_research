@@ -1,0 +1,16 @@
+﻿scope,noise,region,n,all_three_overpredict,all_three_underpredict,true_value_inside_prediction_range,oracle_lower_bound_rmse_kW_m2,performance_fn,fn_with_some_model_positive,fn_all_models_negative
+outer,clean,all,540,52,177,311,17.993948463882575,43,20,23
+outer,clean,below_60kW,120,22,0,98,13.823801397648637,0,0,0
+outer,clean,60kW_to_ONB,105,3,60,42,14.829683525681352,0,0,0
+outer,clean,ONB_to_1.5ONB,90,7,49,34,29.822435213191394,43,20,23
+outer,clean,at_least_1.5ONB,225,20,68,137,14.723396800840328,0,0,0
+outer,-20,all,540,144,84,312,32.07591412224009,64,64,0
+outer,-20,below_60kW,120,116,0,4,62.88675906923507,0,0,0
+outer,-20,60kW_to_ONB,105,2,0,103,0.23365207597938747,0,0,0
+outer,-20,ONB_to_1.5ONB,90,0,28,62,16.968234747090694,64,64,0
+outer,-20,at_least_1.5ONB,225,26,56,143,15.64874814691767,0,0,0
+training_oof,clean,all,1620,445,549,626,44.222669335043,,,
+training_oof,clean,below_60kW,360,285,0,75,62.959742889125174,,,
+training_oof,clean,60kW_to_ONB,315,2,175,138,24.31301156286315,,,
+training_oof,clean,ONB_to_1.5ONB,270,26,160,84,61.560202571480225,,,
+training_oof,clean,at_least_1.5ONB,675,132,214,329,28.06653835944912,,,

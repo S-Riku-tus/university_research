@@ -2,6 +2,8 @@
 
 作成日：2026-10-02。本人の依頼に基づき、残っている「整理・判断・理由づけ」を修論執筆に使える形で記録する。結果の再解析や新規実験は行わず、確認済みの記録を対応づけた。教授の了承を記録した文書ではない。[目次・2週間の準備計画](../research_plan/2026-10-02_master_thesis_outline_and_two_week_plan.md)と対にして使う。
 
+**2026-10-03追記**：本人の最新希望により、固定cleanを保持しながら現行共通条件のmatchedを追加することと、誤差方向・量・発生領域を統合へ活用する考え方を[次工程](../research_plan/2026-10-03_matched_and_error_aware_ensemble_next_steps.md)へ記録した。採用理由表のclean_onlyは比較の基準であり、matchedを対象外に確定した意味ではない。[保存予測の補完可能性診断](../../experiments/2026-10-03_error_complementarity_feasibility/README.md)を追加したが、新しい統合の有効性や特徴による物理的原因は未検証。以下は10/2時点の台帳として保持する。
+
 ## 1. 目指す結論と、現時点で書ける結論を分ける
 
 本人の希望は[9/15の中心仮説](../research_plan/2026-09-15_master_thesis_hypothesis.md)に残っている。

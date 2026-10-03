@@ -1,0 +1,13 @@
+{
+  "run": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/ensemble/202610/01/onb_wc-t0611-v0611_iw3-nc_c1s_s0_e150_170655/maxfreq=3kHz",
+  "outer_conditions": [
+    "clean",
+    "-20"
+  ],
+  "outer_chunks_each": 540,
+  "training_oof_chunks": 1620,
+  "outer_identity_match": true,
+  "training_outer_chunk_overlap": 0,
+  "internal_shared_source_wavs": 0,
+  "warning": "Gold-dependent oracle is diagnostic, not an implementable selector or measured new-method performance."
+}

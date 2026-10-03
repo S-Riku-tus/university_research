@@ -2,6 +2,13 @@
 
 このページは**日付ごとの履歴**。各節の「現在」「次にやること」は当時の記録であり、現在の未完了作業とは限らない。最新の状態は[研究の現在地](research_status.md)、更新関係は[文書案内](document_index.md)を読む。
 
+## 2026-10-03 matched対照と誤り方を使う統合の判断
+
+- 本人から、現行clean_onlyにmatchedを追加したいこと、10/2輪講の誤り多様性を自研究に活用したいことが共有された。[研究質問と段階的な次工程](research_plan/2026-10-03_matched_and_error_aware_ensemble_next_steps.md)へ記録した。
+- 輪講pptxの関連スライドと原論文§3.2・式8〜10を確認。依存構文解析のsociety entropyを回帰へ直接転用するのでなく、誤差方向・量・領域・同時失敗を学習OOFで扱う考え方を整理した。
+- [保存予測の補完可能性診断](../experiments/2026-10-03_error_complementarity_feasibility/README.md)を実施。外側clean/−20各540、学習OOF1620、外側ID対応・内部WAV共有0・同一chunk重複0を確認。−20低熱流束116/120で全モデル過大、clean見逃し23/43は全モデル陰性だった。
+- 次は共通条件matched→OOFで誤り補完を診断→必要なら一つの単純統合。新方式の有効性・仮想最良・観察上の補完余地を区別した。今回は主コード・config・学習実行を変更していない。修論準備と評価範囲の本人方針は維持。
+
 ## 2026-10-03 外側評価を2方式へ整理
 
 - 本人の方針により、主configの外側方式をwithin_wav_chunkとcross_dayへ整理し、within_dayのWAV holdout・層化・旧日内K-fold経路を削除した。[実装記録](../experiments/2026-10-03_remove_within_day/README.md)。

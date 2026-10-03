@@ -7,6 +7,8 @@
 | 目的 | 読む文書 | 更新方法 |
 |---|---|---|
 | 次の作業を始める | [研究の現在地](research_status.md) | 状態・本人の希望・次の一手を更新する唯一の入口 |
+| matched対照と誤り方を使う統合の次工程を考える | [10/3現在地・次工程](research_plan/2026-10-03_matched_and_error_aware_ensemble_next_steps.md) | 本人の最新希望、輪講論文との接続、共通条件matched、学習OOFでの選択、推論情報・テスト再利用の制約を記録 |
+| 既存モデルで誤りを補完できる可能性と限界を見る | [10/3補完可能性診断](../experiments/2026-10-03_error_complementarity_feasibility/README.md) | 外側2条件・clean OOFの誤差符号、凸結合の仮想下限、ONB見逃しの補完余地、OOF/外側の違いを記録 |
 | 外側評価を2方式に整理した理由と確認を見る | [10/3評価方式整理](../experiments/2026-10-03_remove_within_day/README.md) | 日内WAV分割の廃止、内部WAV検証の維持、旧設定の扱い、実データ540テストID一致と60テストを記録 |
 | 現在の採用条件で誤差・誤判定が多い場所を見る | [10/2採用条件の誤差分解](../experiments/2026-10-02_current_adopted_condition_error_profile/README.md) | 全域とONBの最良の違い、熱流束領域別二乗誤差、段階別陽性数、単体からの訂正/追加、q100不変の意味を記録 |
 | 現行の修論目次と次回相談までの準備を見る | [10/2目次・2週間の計画](research_plan/2026-10-02_master_thesis_outline_and_two_week_plan.md) | 学部論文との接続、7章案、章ごとの材料/不足、追加検証の分岐、仮目標10/16の準備工程を記録 |
