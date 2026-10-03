@@ -1,6 +1,8 @@
 # 研究の現在地と次にすること
 
-更新日: **2026-10-02（後期目標の再整理、修論目次案・判断台帳・次回相談までの準備計画）**。分位点ルール時点の状態は[変更前の記録](../experiments/2026-09-16_peak_height_selection/previous_documents/research_status.md)に保存した。
+更新日: **2026-10-03（外側評価をwithin_wav_chunkとcross_dayへ整理）**。分位点ルール時点の状態は[変更前の記録](../experiments/2026-09-16_peak_height_selection/previous_documents/research_status.md)に保存した。
+
+**外側within_dayを廃止（10/3本人方針）**：[実装・確認記録](../experiments/2026-10-03_remove_within_day/README.md)のとおり、主configの外側選択肢を`within_wav_chunk`と`cross_day`へ整理し、WAV単位日内holdout・ONB層化・旧日内K-foldの実行経路を削除した。現有データは前者、新実験データ等で別日評価を行う場合は後者を使う。内部の学習側WAV GroupKFold、performance重み、OOFチューニングは維持する。関連60テストと実データの分割を確認し、学習1620／テスト540、両日各270のテストIDは10/1保存予測と全件一致した。採用値・学習方針・結果保存先の形式は維持し、本学習は起動していない。過去結果・条件記録は保持。修論準備の優先順位は以下を継続し、未知日評価を新たな必須runとして追加しない。
 
 **採用条件の誤差分布を確認（10/2本人依頼）**：[領域別解析](../experiments/2026-10-02_current_adopted_condition_error_profile/README.md)に、現行3 kHz・1秒・統合・選別なし・clean_only・performanceの誤差を記録した。−20 dBでは二乗誤差の65.48%が60 kW/m²未満へ集中する一方、ONB前誤報は0/225。全7条件の見逃しはONB〜1.5倍の6段階に集中し、clean43/315、−20 dB64/315だった。全域RMSEで最良でも、cleanのRecallはConformer91.11%に対し統合86.35%と低い。「最適」は現行の雑音耐性を含む採用方針であり全指標の最良ではない。今回の特性分析によって、以下の教授への相談・修論準備を別の主問題へ置き換えない。モデル実行・条件変更なし。
 

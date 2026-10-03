@@ -51,6 +51,25 @@ def make_run(root, noise, *, run_hash="same", frequency="maxfreq=22kHz", thresho
 
 
 class NoiseTrendPlotsTest(unittest.TestCase):
+    def test_chunk_holdout_uses_saved_metrics_without_outer_fold_error_bars(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            path = make_run(root, "no_noise")
+            manifest_path = path / "run_manifest.json"
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            manifest["learning_context"] = {
+                "evaluation_scheme": "within_wav_chunk_holdout",
+                "generalization_scope": "within_known_source_wav_unseen_chunk_holdout",
+                "outer_folds_per_evaluation_day": 1,
+            }
+            manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+            rows = collect_noise_trend_rows([path], noise_order=["no_noise"],
+                                            model_keys=list(MODELS), metrics=["r2"])
+            self.assertTrue(all(r["evaluation_scheme"] == "within_wav_chunk_holdout" for r in rows))
+            self.assertTrue(all(r["aggregation"] == "held_out_day" for r in rows))
+            self.assertTrue(all(math.isnan(r["standard_error"]) for r in rows))
+            self.assertTrue(all(r["error_bar_definition"] == "not_estimated" for r in rows))
+
     def test_missing_noise_stays_gap_and_all_chunk_metrics_are_kept(self):
         with tempfile.TemporaryDirectory() as temp:
             paths = [make_run(Path(temp), "-20"), make_run(Path(temp), "no_noise")]

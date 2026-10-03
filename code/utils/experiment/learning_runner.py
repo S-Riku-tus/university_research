@@ -250,8 +250,8 @@ def run_learning_experiments(jobs, policy, config, enabled_specs, parameter_sets
     if performance_cv and "inner_holdout" in ensemble_manager.selected_strategy_names:
         raise ValueError("performance_kfoldとinner_holdoutは重み推定が異なるため同時選択できません。")
     split_kind = experiment_split_kind(policy)
-    if (selector.enabled and selector.mode != "peak_height" and split_kind in {
-            "within_day", "within_day_holdout", "within_wav_chunk_holdout"}):
+    if (selector.enabled and selector.mode != "peak_height"
+            and split_kind == "within_wav_chunk_holdout"):
         raise ValueError(
             "日内評価で使用できる学習選別は、foldによらない固定peak_heightだけです。"
         )
@@ -265,7 +265,7 @@ def run_learning_experiments(jobs, policy, config, enabled_specs, parameter_sets
     reference_metadata = {}
     for family_i, family in enumerate(families, 1):
         context = dict(family["context"])
-        fold_count = config["run"]["folds"] if split_kind == "within_day" else 1
+        fold_count = 1
         context["outer_folds_per_evaluation_day"] = fold_count
         context["training_datasets"] = [{key: str(job[key]) for key in
                                         ("experiment_name", "data_path", "noise_dir_name", "max_freq_hz")}
@@ -354,7 +354,7 @@ def run_learning_experiments(jobs, policy, config, enabled_specs, parameter_sets
                     reference_metadata[identity] = metadata
                 metadata_by_noise[job["noise_dir_name"]] = metadata
                 splits_by_noise[job["noise_dir_name"]] = outer_splits(
-                    train_metadata, metadata, fold_count, policy=policy, threshold=job["threshold"])
+                    train_metadata, metadata, policy=policy)
             for fold in range(1, fold_count + 1):
                 fit_indices = next(iter(splits_by_noise.values()))[fold - 1][0]
                 if performance_cv and len(set(groups[fit_indices])) < config["run"]["folds"]:

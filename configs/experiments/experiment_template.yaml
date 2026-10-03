@@ -19,9 +19,10 @@ conditions:
   reference_snr_definition: fixed_global_rms
   train_experiments: []
   test_experiments: []
-  evaluation_scheme: ""  # 日付リストから導出: within_day / leave_one_day_out / cross_day
+  evaluation_mode: ""  # cross_day / within_wav_chunk
+  evaluation_scheme: ""  # 保存manifestのcross_day / within_wav_chunk_holdout
   training_noise: matched
-  outer_group: experiment_and_source_wav
+  outer_group: ""  # cross_day: experiment / within_wav_chunk: chunk_within_each_wav
   folds: null
   random_seeds: []
   models: [rf, cnntf_v2_gap, alexnet]

@@ -216,8 +216,8 @@ class LearningPolicyTest(unittest.TestCase):
     def test_scoped_result_layout_writes_directly_below_noise(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
-            policy = {"training_noise": "matched",
-                      "train_experiments": ["day-a"], "test_experiments": ["day-a"]}
+            policy = {"training_noise": "matched", "evaluation_mode": "within_wav_chunk",
+                      "within_wav_chunk_experiment": "day-a"}
             jobs, specs, manager, config = fixture(root, policy,
                                                     evaluated_noises=("heatflux_no_noise",), days=("day-a",))
             config["output"].update(run_scoped_result_dir=True, execution_id="execution-a")
@@ -297,17 +297,21 @@ class LearningPolicyTest(unittest.TestCase):
         return jobs, trainer, config, call
 
     def test_all_four_policies_fit_counts_leakage_and_both_evaluations(self):
-        for split in ("within_day", "leave_one_day_out"):
+        for split in ("cross_day", "leave_one_day_out"):
             for noise in ("matched", "clean_only"):
                 with self.subTest(split=split, noise=noise), tempfile.TemporaryDirectory() as temp:
                     root = Path(temp)
-                    days = ("day-a",) if split == "within_day" else ("day-a", "day-b")
+                    days = ("day-a", "day-b")
                     policy = {"training_noise": noise,
                               "train_experiments": list(days), "test_experiments": list(days)}
+                    if split == "cross_day":
+                        policy.update(evaluation_mode="cross_day",
+                                      train_experiments=["day-a"], test_experiments=["day-b"])
                     jobs, trainer, config, _ = self.run_fixture(root, policy, days=days)
-                    folds = 3 if split == "within_day" else 1
+                    folds = 1
                     # 評価日数 × 学習ノイズ数 × fold × 2モデル × 内部/最終学習。
-                    expected = len(days) * (2 if noise == "matched" else 1) * folds * 2 * 2
+                    evaluation_days = 1 if split == "cross_day" else len(days)
+                    expected = evaluation_days * (2 if noise == "matched" else 1) * folds * 2 * 2
                     self.assertEqual(len(trainer.fits), expected)
                     self.assertEqual(len(trainer.pca_fits), expected // 2)
                     if noise == "clean_only":
@@ -317,13 +321,15 @@ class LearningPolicyTest(unittest.TestCase):
                         for model_id, x, minimum, maximum in trainer.predictions:
                             used.setdefault(model_id, []).append((np.max(x[:, 0, 0, 0]) >= 1000, minimum, maximum))
                         shared = [items for items in used.values() if len(items) == 2]
-                        self.assertEqual(len(shared), len(days) * folds * 2)
+                        self.assertEqual(len(shared), evaluation_days * folds * 2)
                         for first, second in shared:
                             self.assertNotEqual(first[0], second[0])
                             np.testing.assert_array_equal(first[1], second[1])
                             np.testing.assert_array_equal(first[2], second[2])
                     by_day = {}
                     for job in jobs:
+                        if job["experiment_name"] not in policy["test_experiments"]:
+                            continue
                         directories = list((job["save_base_path"] / job["max_freq_hz"] / job["noise_dir_name"]).iterdir())
                         self.assertEqual(len(directories), 1)
                         directory = directories[0]
@@ -361,8 +367,8 @@ class LearningPolicyTest(unittest.TestCase):
 
     def test_clean_training_does_not_require_clean_in_evaluation_list(self):
         with tempfile.TemporaryDirectory() as temp:
-            policy = {"training_noise": "clean_only",
-                      "train_experiments": ["day-a"], "test_experiments": ["day-a"]}
+            policy = {"training_noise": "clean_only", "evaluation_mode": "within_wav_chunk",
+                      "within_wav_chunk_experiment": "day-a"}
             _, trainer, _, _ = self.run_fixture(
                 Path(temp), policy, ["heatflux_reference_SNR=-20"], days=("day-a",))
             self.assertTrue(all(np.max(x[:, 0, 0, 0]) < 1000 for x in trainer.fits))
@@ -428,14 +434,18 @@ class LearningPolicyTest(unittest.TestCase):
                                  for i in range(4)], "a")
         other = list(reversed(rows))
         np.testing.assert_array_equal(aligned_indices(rows, other), [3, 2, 1, 0])
-        for train, test in outer_splits(rows, other, 2):
-            self.assertFalse({rows[i]["source_wav_id"] for i in train} & {other[i]["source_wav_id"] for i in test})
+        cross = {"evaluation_mode": "cross_day",
+                 "train_experiments": ["a"], "test_experiments": ["b"]}
+        evaluation = [{**row, "experiment_name": "b"} for row in other]
+        fit, test = outer_splits(rows, evaluation, cross)[0]
+        np.testing.assert_array_equal(fit, np.arange(4))
+        np.testing.assert_array_equal(test, np.arange(4))
         with self.assertRaises(ValueError):
             aligned_indices(rows, other[:-1])
         with self.assertRaises(ValueError):
             aligned_indices(rows, [{**other[0], "sample_filename": "999_x.npy"}] + other[1:])
         with self.assertRaises(ValueError):
-            outer_splits(rows, [{**row, "experiment_name": "b"} for row in rows[:2]] + rows[2:], 2)
+            outer_splits(rows, [{**row, "experiment_name": "b"} for row in rows[:2]] + rows[2:], cross)
 
     def test_day_lists_and_training_noise_change_hash(self):
         config = {"models": {}, "output": {}}
@@ -466,8 +476,8 @@ class LearningPolicyTest(unittest.TestCase):
     def test_partial_clean_resume_recomputes_one_family_with_shared_models(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
-            policy = {"training_noise": "clean_only", "train_experiments": ["day-a"],
-                      "test_experiments": ["day-a"]}
+            policy = {"training_noise": "clean_only", "evaluation_mode": "within_wav_chunk",
+                      "within_wav_chunk_experiment": "day-a"}
             jobs, trainer, config, call = self.run_fixture(root, policy, days=("day-a",))
             target = next((jobs[0]["save_base_path"] / jobs[0]["max_freq_hz"] / jobs[0]["noise_dir_name"]).iterdir())
             (target / "completed.json").unlink()
@@ -475,7 +485,7 @@ class LearningPolicyTest(unittest.TestCase):
             before = len(trainer.fits)
             with contextlib.redirect_stdout(io.StringIO()), patch("gc.collect"), patch("tensorflow.keras.backend.clear_session"):
                 call()
-            self.assertEqual(len(trainer.fits) - before, 3 * 2 * 2)
+            self.assertEqual(len(trainer.fits) - before, 2 * 2)
             markers = [json.loads(path.read_text(encoding="utf-8")) for path in
                        jobs[0]["save_base_path"].rglob("completed.json")]
             self.assertEqual(len(markers), 2)

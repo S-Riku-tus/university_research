@@ -19,9 +19,9 @@ from utils.config.parameter_sets import parameter_set_tag, resolve_parameter_set
 from utils.dataloading.dataloading_and_conversion import DataLoadingConversion
 from utils.experiment.acoustic_selection import AcousticTrainingSelector
 from utils.experiment.learning_policy import (
+    experiment_split_kind,
     build_learning_families,
     checked_metadata,
-    experiment_split_kind,
     outer_splits,
     wav_groups,
 )
@@ -183,18 +183,15 @@ def run_training_oof_tuning(
         evaluation_job["experiment_name"],
     )
     split_kind = experiment_split_kind(policy)
-    outer_fold_count = config["run"]["folds"] if split_kind == "within_day" else 1
     splits = outer_splits(
         train_metadata,
         evaluation_metadata,
-        outer_fold_count,
         policy=policy,
-        threshold=evaluation_job["threshold"],
     )
     if len(splits) != 1:
         raise ValueError(
             "training_oof tuning needs one fixed outer holdout. Use within_wav_chunk, "
-            "within_day holdout, or cross_day; do not rank candidates across outer CV folds."
+            "or cross_day; do not rank candidates across outer CV folds."
         )
     fit_indices = np.asarray(splits[0][0], dtype=int)
     metadata_fit = [train_metadata[int(index)] for index in fit_indices]

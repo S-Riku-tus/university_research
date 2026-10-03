@@ -136,11 +136,10 @@ class TrainingOofTuningTest(unittest.TestCase):
             root = Path(temp)
             policy = normalize_learning_policy({
                 "evaluation_mode": "within_wav_chunk",
-                "within_day_experiment": "day-a",
+                "within_wav_chunk_experiment": "day-a",
                 "training_noise": "clean_only",
                 "test_fraction": 0.5,
                 "test_split_seed": 42,
-                "test_stratify": "none",
             }, ["day-a"])
             jobs, specs, _, config = fixture(
                 root, policy, evaluated_noises=("heatflux_no_noise",), days=("day-a",))

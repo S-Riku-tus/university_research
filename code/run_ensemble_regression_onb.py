@@ -43,7 +43,7 @@ from utils.explainability.training_integration import (
 )
 from utils.experiment.dataset_jobs import build_dataset_jobs as make_dataset_jobs
 from utils.experiment.learning_policy import (
-    experiment_split_kind, normalize_learning_policy, policy_result_date_dir,
+    normalize_learning_policy, policy_result_date_dir,
     resolve_experiment_names,
 )
 from utils.experiment.learning_runner import run_learning_experiments
@@ -69,8 +69,7 @@ from utils.experiment.run_helpers import set_global_seed
 #
 # 現在の設定の読み方:
 # ・目的: 同じ検証予測から単体モデルと各アンサンブル方式を比較する。
-# ・評価: cross_dayは別日、within_dayは元WAV固定holdout、
-#         within_wav_chunkは各WAV内の未使用chunkをテストする。
+# ・評価: cross_dayは別日、within_wav_chunkは各WAV内の未使用chunkをテストする。
 # ・モデル: RF、CNN＋Transformer、AlexNet。
 # ・統合方式: ensembleに列挙した全方式を実行・評価する。
 # ・説明性: 有効なデータ条件・モデル・foldについて指定手法を実行する。
@@ -93,8 +92,6 @@ VALIDATION_CONFIG = apply_onb_defaults({
         "noise_source": "waterflow",  # 水流音はwaterflow、白色雑音はwhitenoise
         "chunk_seconds": 1,
         "max_freq_hz_list": [
-            # 実行する周波数だけを選ぶ。複数選んだ通常runでは、下の
-            # by_max_freq_hzから各周波数専用パラメータを自動的に使う。
             "maxfreq=3kHz",
             # "maxfreq=5kHz",
             # "maxfreq=10kHz",
@@ -119,7 +116,6 @@ VALIDATION_CONFIG = apply_onb_defaults({
     },
     "learning_policy": {
         #   cross_day       = 学習実験とテスト実験を完全分離
-        #   within_day      = 1実験内で元WAVを丸ごとテストへ分離
         #   within_wav_chunk= 1実験内の全WAVから同率のchunkをテストへ分離
         "evaluation_mode": "within_wav_chunk",
         "evaluation_settings": {
@@ -130,12 +126,6 @@ VALIDATION_CONFIG = apply_onb_defaults({
             "cross_day": {
                 "train_experiments": ["2025.06.11_0.3_2"],
                 "test_experiments": ["2025.06.18_0.3_3"],
-            },
-            "within_day": {
-                "experiment": "2025.06.18_0.3_3",
-                "test_fraction": 0.25,  # 元WAV数の25%をテスト専用にする。
-                "test_split_seed": 42,
-                "test_stratify": "onb",  # onbならONB前／以上のWAV比率を保つ。
             },
             "within_wav_chunk": {
                 # 1実験フォルダ内の全WAVが、学習側とテスト側の両方に入る。
@@ -265,7 +255,7 @@ NOISE_DIR_NAMES = _cfg("data", "noise_dir_names")
 DATA_SOURCE_DIR_BY_EXPERIMENT = _cfg("data", "data_source_dir_by_experiment")
 LEARNING_POLICY = normalize_learning_policy(
     VALIDATION_CONFIG["learning_policy"], EXPERIMENT_DIR_NAMES, COLOR_CHANNEL)
-EVALUATION_FOLDS = DIVISIONS if experiment_split_kind(LEARNING_POLICY) == "within_day" else 1
+EVALUATION_FOLDS = 1  # 外側は固定テスト1分割。DIVISIONSは学習側の内部検証用。
 
 THRESHOLD_BY_EXPERIMENT = _cfg("thresholds", "by_experiment")
 THRESHOLD_PROVENANCE_BY_EXPERIMENT = _cfg(
@@ -476,9 +466,7 @@ def update_noise_trend_plots(plotter, job, run_dir, run_hash, model_keys):
 
 
 def validate_validation_config(enabled_specs):
-    if (experiment_split_kind(LEARNING_POLICY) in {
-            "within_day", "within_day_holdout", "within_wav_chunk_holdout"}
-            or "performance_kfold" in ENSEMBLE_MANAGER.selected_strategy_names) and DIVISIONS < 2:
+    if "performance_kfold" in ENSEMBLE_MANAGER.selected_strategy_names and DIVISIONS < 2:
         raise ValueError("folds must be at least 2.")
     if int(PCA_COMPONENTS) <= 0:
         raise ValueError("pca_components must be a positive integer.")

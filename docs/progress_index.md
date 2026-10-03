@@ -2,6 +2,12 @@
 
 このページは**日付ごとの履歴**。各節の「現在」「次にやること」は当時の記録であり、現在の未完了作業とは限らない。最新の状態は[研究の現在地](research_status.md)、更新関係は[文書案内](document_index.md)を読む。
 
+## 2026-10-03 外側評価を2方式へ整理
+
+- 本人の方針により、主configの外側方式をwithin_wav_chunkとcross_dayへ整理し、within_dayのWAV holdout・層化・旧日内K-fold経路を削除した。[実装記録](../experiments/2026-10-03_remove_within_day/README.md)。
+- 内部の学習側WAV GroupKFold、performance重み、OOF候補探索を維持。関連60テストが成功し、実データのテスト540 chunkは10/1の保存予測と全件一致した。
+- 過去結果・提出資料・日付付き条件記録は保持。現行3 kHz・1秒・統合・clean_only・選別なし・採用値は維持し、本学習は起動していない。
+
 ## 2026-10-02 現在の採用条件と誤差・誤判定の分布
 
 - 本人の依頼により、現行3 kHz・1秒・統合・clean_only・選別なし・performanceの保存予測を再集計。[条件・領域別解析](../experiments/2026-10-02_current_adopted_condition_error_profile/README.md)。7条件の540 chunk対応、36 WAV、既存RMSE/FP/FN一致を確認した。

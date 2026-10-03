@@ -7,7 +7,7 @@
 - [utils/](utils/): データ読込、モデル、学習、指標、統合、XAI、作図の共通処理。
 - [check_gpu.py](check_gpu.py): GPU認識の確認。
 
-現在の`explicit_days`では学習日・テスト日を`learning_policy`で指定し、`data.experiment_names`は自動算出する。旧`within_day / leave_one_day_out`では`data.experiment_names`の指定が必要。詳細は[コード地図](../docs/code_map.md)。
+外側評価は`learning_policy.evaluation_mode`で`cross_day`または`within_wav_chunk`を選ぶ。前者は`evaluation_settings.cross_day`の学習日・テスト日リスト、後者は`evaluation_settings.within_wav_chunk`の実験フォルダ・テストchunk割合・seedを編集する。単日または統合フォルダを使え、`data.experiment_names`は自動算出する。内部のWAV単位検証はどちらでも学習側だけで行う。詳細は[コード地図](../docs/code_map.md)。
 
 学習を起動する前に[研究の現在地](../docs/research_status.md)と設定・保存済み結果を照合する。設定済みと実行完了は分ける。通常の主経路はモデル重みを永続保存しないため、過去モデルの推論・XAI再計算を案内するときは実際の重みの有無を確認する。
 

@@ -151,12 +151,15 @@ class CrossfitPipelineTest(unittest.TestCase):
         self.assertTrue(all(np.isfinite(prediction).all() for prediction in result["oof_predictions"].values()))
 
     def test_all_policies_oof_sharing_audit_resume_and_legacy_predictions(self):
-        for split in ("within_day", "leave_one_day_out"):
+        for split in ("cross_day", "leave_one_day_out"):
             for noise in ("matched", "clean_only"):
                 with self.subTest(split=split, noise=noise), tempfile.TemporaryDirectory() as temp:
-                    days = ["day-a"] if split == "within_day" else ["day-a", "day-b"]
+                    days = ["day-a", "day-b"]
                     policy = {"training_noise": noise,
                               "train_experiments": days, "test_experiments": days}
+                    if split == "cross_day":
+                        policy.update(evaluation_mode="cross_day",
+                                      train_experiments=["day-a"], test_experiments=["day-b"])
                     jobs, specs, baseline, config = fixture(Path(temp), policy, days=days)
                     manager = EnsembleManager(
                         {"enabled_strategy_names": ["simple_equal", "inner_holdout", *NAMES]},
@@ -174,14 +177,17 @@ class CrossfitPipelineTest(unittest.TestCase):
                         count = len(trainer.fits)
                         call()
                     self.assertEqual(len(trainer.fits), count)
-                    folds = 3 if split == "within_day" else 1
-                    families = len(days) * (2 if noise == "matched" else 1)
+                    folds = 1
+                    evaluation_days = 1 if split == "cross_day" else len(days)
+                    families = evaluation_days * (2 if noise == "matched" else 1)
                     self.assertEqual(count, families * folds * 2 * 6)  # holdout + 4 shared OOF + outer
                     if noise == "clean_only":
                         self.assertTrue(all(np.max(x[:, 0, 0, 0]) < 1000 for x in trainer.fits + trainer.pca_fits))
                     by_day = {}
                     legacy_predictions = {}
                     for job in jobs:
+                        if job["experiment_name"] not in policy["test_experiments"]:
+                            continue
                         directory = next((job["save_base_path"] / job["max_freq_hz"] / job["noise_dir_name"]).iterdir())
                         outer = json.loads((directory / "split_manifest.json").read_text(encoding="utf-8"))
                         audits = []
@@ -217,11 +223,15 @@ class CrossfitPipelineTest(unittest.TestCase):
                     # Re-run old configuration into a separate directory, comparing all existing prediction columns.
                     config["ensemble"] = baseline.snapshot()
                     for job in jobs:
+                        if job["experiment_name"] not in policy["test_experiments"]:
+                            continue
                         job["save_base_path"] = job["save_base_path"].parent / "baseline_results"
                     with contextlib.redirect_stdout(io.StringIO()), patch("gc.collect"), patch("tensorflow.keras.backend.clear_session"):
                         run_learning_experiments(jobs, policy, config, specs, [{"name": "test"}], baseline,
                                                  ObservedTrainer(), SilentPlotter(), lambda *args: None)
                     for job in jobs:
+                        if job["experiment_name"] not in policy["test_experiments"]:
+                            continue
                         directory = next((job["save_base_path"] / job["max_freq_hz"] / job["noise_dir_name"]).iterdir())
                         for number in range(1, folds + 1):
                             with (directory / "fold_pred" / f"pred_f{number}_{job['snr_value']}.csv").open(encoding="utf-8") as source:

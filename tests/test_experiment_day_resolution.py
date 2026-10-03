@@ -42,9 +42,10 @@ class ExperimentDayResolutionTest(unittest.TestCase):
             normalize_learning_policy({**self.policy, "test_experiments": [self.days[0]]}, self.days)
 
     def test_day_lists_determine_the_evaluation_scheme(self):
-        self.assertEqual(experiment_split_kind({
-            "train_experiments": [self.days[0]], "test_experiments": [self.days[0]]
-        }), "within_day")
+        with self.assertRaisesRegex(ValueError, "明示"):
+            experiment_split_kind({
+                "train_experiments": [self.days[0]], "test_experiments": [self.days[0]]
+            })
         self.assertEqual(experiment_split_kind({
             "train_experiments": self.days, "test_experiments": self.days
         }), "leave_one_day_out")

@@ -129,8 +129,11 @@ def collect_noise_trend_rows(run_paths, *, noise_order, model_keys,
     evaluation_scheme = context.get("evaluation_scheme")
     if evaluation_scheme is None:
         scope = context.get("generalization_scope")
-        evaluation_scheme = "cross_day" if scope == "held_out_experiment_day" else "within_day"
-    held_out_day = evaluation_scheme != "within_day"
+        evaluation_scheme = "cross_day" if scope == "held_out_experiment_day" else "legacy_outer_cv"
+    # 旧結果のfold平均を読み取る場合も、廃止した評価方式名には依存しない。
+    held_out_day = context.get("outer_folds_per_evaluation_day") == 1
+    if not held_out_day:
+        held_out_day = evaluation_scheme in {"cross_day", "leave_one_day_out", "within_wav_chunk_holdout"}
     ensemble = manifest["validation_config"].get("ensemble", {})
     plans = ensemble.get("resolved_strategy_plan", [])
     supported = set(available_ensemble_strategy_names())
@@ -248,8 +251,10 @@ def plot_noise_trends_from_runs(run_paths, output_dir, *, formats=("png", "pdf")
                 ax.set_xlabel("Noise level (reference SNR [dB])")
                 ax.set_ylabel(METRIC_LABELS[metric])
                 unit_label = "Chunk: fold mean ± SE"
-                if group[0]["evaluation_scheme"] != "within_day":
-                    unit_label = "Chunk: held-out day"
+                if group[0]["aggregation"] == "held_out_day":
+                    unit_label = ("Chunk: held-out chunks within known WAVs"
+                                  if group[0]["evaluation_scheme"] == "within_wav_chunk_holdout"
+                                  else "Chunk: held-out day")
                 ensemble_label = STRATEGY_LABELS.get(strategy, strategy)
                 policy_label = "clean train" if group[0]["training_noise"] == "clean_only" else "matched-noise train"
                 ax.set_title(f"{group[0]['experiment']} | {group[0]['maxfreq']} | {policy_label}\n{unit_label} | {ensemble_label}", fontsize=10)
