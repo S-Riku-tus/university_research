@@ -2,6 +2,20 @@
 
 このページは**日付ごとの履歴**。各節の「現在」「次にやること」は当時の記録であり、現在の未完了作業とは限らない。最新の状態は[研究の現在地](research_status.md)、更新関係は[文書案内](document_index.md)を読む。
 
+## 2026-10-04 現行課題と説明性選択と追加モデルの検討
+
+- 本人方針としてclean_onlyと対応matchedを保持し、基本検証はclean_onlyを主軸にする。直近は現行結果と3モデルの説明性手法の選択理由の整理。教授向け相談資料の新規作成は必須にしない。
+- [課題の再評価と段階案](research_plan/2026-10-04_current_challenges_xai_and_model_diversity.md)を作成。cleanの全モデル陰性23/43、clean_only −20 dBの補完余地とRFのFPR96%、matched −20 dBの共通陰性45/49を区別し、追加モデルで役立つ予測を増やすことと、それを統合で利用することを分けた。
+- 現行log-power経路のIG、PCA空間TreeSHAP、補助Grad-CAM、共通Hzマスクの選択理由を整理。9/25別条件のIG収束・摂動不安定性・Grad-CAM失敗を最新主モデルの検証結果と混同しない。最新主runはXAI無効。
+- 第2段階のOOF・特徴診断を追加候補の選択へ接続し、候補追加後に単純統合で利点が移るかを確認する順序へ更新。新規学習、コード/config変更、新モデル・新統合の実装は行っていない。
+
+## 2026-10-03 採用条件matchedの完了とclean_only対応比較
+
+- 本人のmatched実行結果を[対応解析](../experiments/2026-10-03_tuned_within_wav_matched_comparison/README.md)へ保存。14条件の学習1620／評価540 ID・採用値一致、無雑音の5方式完全一致、7別fit・学習側WAV検証・テスト不使用を監査した。
+- performanceはnoise平均RMSE 69.30→63.19 kW/m²、−20 dBの見逃し64→49へ改善。ただし同条件のONB近傍RMSEは85.94→129.87へ悪化し、−20 dBの全域RMSEは82.46→82.65でほぼ不変。q100は14セル中13不変、6/18の−12 dBのみ改善した。
+- −20 dBのmatched RFは全域RMSE 76.17でperformance 82.65を下回る。一方RFのFPは1、performanceは0。統合の見逃し49中45は全3モデル陰性であり、現在の非負重みだけでは訂正できない。
+- clean_onlyとmatchedを別の問いとして保持し、次は単体品質・誤り補完・共通失敗の理由を整理する。新統合や物理的原因は未検証。主コード・config・原出力を変更せず、未知WAV/日の追加評価もしていない。
+
 ## 2026-10-03 matched対照と誤り方を使う統合の判断
 
 - 本人から、現行clean_onlyにmatchedを追加したいこと、10/2輪講の誤り多様性を自研究に活用したいことが共有された。[研究質問と段階的な次工程](research_plan/2026-10-03_matched_and_error_aware_ensemble_next_steps.md)へ記録した。

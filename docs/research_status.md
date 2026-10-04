@@ -1,8 +1,12 @@
 # 研究の現在地と次にすること
 
-更新日: **2026-10-03（評価方式の整理、matched対照と誤り方を活用する統合の次工程）**。分位点ルール時点の状態は[変更前の記録](../experiments/2026-09-16_peak_height_selection/previous_documents/research_status.md)に保存した。
+更新日: **2026-10-04（clean_only主軸・説明性選択と追加モデルの課題整理）**。分位点ルール時点の状態は[変更前の記録](../experiments/2026-09-16_peak_height_selection/previous_documents/research_status.md)に保存した。
 
-**本人の最新希望：matched比較と誤り方の活用**：[現在地と次工程](research_plan/2026-10-03_matched_and_error_aware_ensemble_next_steps.md)に、固定cleanを基準として保持し、同じ3 kHz・1秒・統合・採用値・分割でmatchedを追加する意味を記録した。10/2輪講のError Diversity Mattersのpptx・原論文を確認し、誤差の方向・大きさ・領域を学習側OOFの選択へ移す考え方と、回帰での有効性は未検証という区別を残した。[補完可能性の診断](../experiments/2026-10-03_error_complementarity_feasibility/README.md)では−20 dBの低熱流束120 chunk中116で全3モデルが過大、cleanの見逃し43件中23件で全モデル陰性、−20 dBの見逃し64件には全件で少なくとも1モデルが陽性だった。正解を知る仮想診断であり、新統合の実測性能ではない。次の推奨比較はmatchedのみを変える1系列→学習OOFの誤り方→必要なら単純な新統合の順。今回は計画・保存予測の分析だけを実施し、onbはまだclean_only、matched実行・新方式実装は未実施。修論準備は並行し、未知WAV/日を必須runへ戻さない。以前のmatched後順位化は、その時点の記録として保持する。
+**本人の最新方針と課題整理**：[現行結果・説明性・追加モデルの検討](research_plan/2026-10-04_current_challenges_xai_and_model_diversity.md)に、10/3までの結果を反映した。clean_onlyと対応matchedは両方保持し、基本検証はclean_onlyを主軸とする。直近はclean_only結果と3モデルの説明性手法の選択理由を整理し、教授向け相談資料の新規作成を必須にしない。追加モデルは有用な予測を増やす候補として検討するが、逆方向の出力だけでは不十分。学習OOFの残差・共通失敗と必要な特徴診断から候補を絞り、追加後に予測が統合で活きるか確認する。最新主runのXAIは無効で、旧runのIG収束改善・不安定性・Grad-CAM失敗を最新モデルの検証へ流用しない。現行コード/configはmatched・XAI無効のまま、新規学習・実装は行っていない。
+
+**最新：同条件matchedの実行と分析が完了**：[対応解析](../experiments/2026-10-03_tuned_within_wav_matched_comparison/README.md)で、10/3のmatchedと10/1のclean_onlyを比較した。両系列7/7条件、同じ学習1620／テスト540 chunk、同じ採用値、選別なし、無雑音5方式の予測完全一致、matchedの7別fit・学習側WAV3-foldを確認。performanceのnoise平均RMSEは69.30→63.19 kW/m²、−20 dBのRecallは79.68→84.44%へ改善したが、強noise平均RMSEは77.13→76.69でほぼ不変、ONB近傍は103.54→123.75へ悪化した。日別q100は14セル中13不変、6/18の−12 dBだけ434.02→376.32へ改善。−20 dBのRF単体はRMSE 148.72→76.17、FP 216→1へ改善し、matchedの統合82.65を下回る一方、統合はFPR 0を維持した。残る統合の見逃し49件中45件は全3モデル陰性で、現在の非負平均の重み変更だけでは救えない。単体品質と誤り補完を分ける根拠として記録した。現行configはmatchedであり、今回コード・config・原出力は変更せず、派生解析と文書だけを追加した。
+
+**次は候補選択に必要な補完理由の診断**：clean_onlyは未学習noise耐性、matchedは再学習込みの適応性能として保持する。学習OOFの残差積・共通過大/過小と、代表条件の必要な特徴説明から、追加モデル等の候補を一つ絞る。候補が有用な予測を増やすか、その利点を単純な統合で活かせるかを順に判断し、新統合を自動的な必須実験にしない。現行条件の物理的原因・追加モデル・新統合の有効性は未検証。修論準備は並行し、未知WAV/日を必須runへ戻さない。10/3の段階案は[10/4の後継](research_plan/2026-10-04_current_challenges_xai_and_model_diversity.md)を優先し、それ以前の次工程・設定は当時の記録として読む。
 
 **外側within_dayを廃止（10/3本人方針）**：[実装・確認記録](../experiments/2026-10-03_remove_within_day/README.md)のとおり、主configの外側選択肢を`within_wav_chunk`と`cross_day`へ整理し、WAV単位日内holdout・ONB層化・旧日内K-foldの実行経路を削除した。現有データは前者、新実験データ等で別日評価を行う場合は後者を使う。内部の学習側WAV GroupKFold、performance重み、OOFチューニングは維持する。関連60テストと実データの分割を確認し、学習1620／テスト540、両日各270のテストIDは10/1保存予測と全件一致した。採用値・学習方針・結果保存先の形式は維持し、本学習は起動していない。過去結果・条件記録は保持。修論準備の優先順位は以下を継続し、未知日評価を新たな必須runとして追加しない。
 

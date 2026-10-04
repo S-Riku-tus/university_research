@@ -1,0 +1,15 @@
+﻿policy,noise,completed,n,same_ids_and_targets,n_training,fit_id,parameters_and_method_match
+clean_only,clean,True,540,True,1620,b6bde0ab4ebe,True
+clean_only,0,True,540,True,1620,b6bde0ab4ebe,True
+clean_only,-4,True,540,True,1620,b6bde0ab4ebe,True
+clean_only,-8,True,540,True,1620,b6bde0ab4ebe,True
+clean_only,-12,True,540,True,1620,b6bde0ab4ebe,True
+clean_only,-16,True,540,True,1620,b6bde0ab4ebe,True
+clean_only,-20,True,540,True,1620,b6bde0ab4ebe,True
+matched,clean,True,540,True,1620,7656422d8dd8,True
+matched,0,True,540,True,1620,d8eb860a2d0a,True
+matched,-4,True,540,True,1620,65e98912e5f0,True
+matched,-8,True,540,True,1620,f26e00059c43,True
+matched,-12,True,540,True,1620,f3caaa93e1a2,True
+matched,-16,True,540,True,1620,d936a58d9f2d,True
+matched,-20,True,540,True,1620,b7182277ae55,True

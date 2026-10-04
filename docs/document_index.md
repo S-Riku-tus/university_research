@@ -1,12 +1,14 @@
 # 文書案内と更新ルール
 
-更新日: 2026-10-03。**現在の状態は一か所で更新し、過去の数値と判断は日付付き記録に残す。**
+更新日: 2026-10-04。**現在の状態は一か所で更新し、過去の数値と判断は日付付き記録に残す。**
 
 ## 読む順序と各文書の役割
 
 | 目的 | 読む文書 | 更新方法 |
 |---|---|---|
 | 次の作業を始める | [研究の現在地](research_status.md) | 状態・本人の希望・次の一手を更新する唯一の入口 |
+| 最新課題・説明性の選択理由・追加モデルの役割を確認する | [10/4現行結果と追加モデルの検討](research_plan/2026-10-04_current_challenges_xai_and_model_diversity.md) | clean_only主軸、両系列の共通失敗、逆方向出力と有用な補完の違い、現行log-power IG、XAI品質、追加モデルから統合へ進む条件を整理 |
+| 採用条件matchedとclean_onlyの対応結果を見る | [10/3 matched対応解析](../experiments/2026-10-03_tuned_within_wav_matched_comparison/README.md) | 14条件のID・無雑音一致、全域/ONB/q100、RF適応、共通陰性、OOF重みと外側順位、次の比較を固定 |
 | matched対照と誤り方を使う統合の次工程を考える | [10/3現在地・次工程](research_plan/2026-10-03_matched_and_error_aware_ensemble_next_steps.md) | 本人の最新希望、輪講論文との接続、共通条件matched、学習OOFでの選択、推論情報・テスト再利用の制約を記録 |
 | 既存モデルで誤りを補完できる可能性と限界を見る | [10/3補完可能性診断](../experiments/2026-10-03_error_complementarity_feasibility/README.md) | 外側2条件・clean OOFの誤差符号、凸結合の仮想下限、ONB見逃しの補完余地、OOF/外側の違いを記録 |
 | 外側評価を2方式に整理した理由と確認を見る | [10/3評価方式整理](../experiments/2026-10-03_remove_within_day/README.md) | 日内WAV分割の廃止、内部WAV検証の維持、旧設定の扱い、実データ540テストID一致と60テストを記録 |

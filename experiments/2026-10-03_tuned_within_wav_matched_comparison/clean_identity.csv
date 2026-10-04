@@ -1,0 +1,6 @@
+﻿model,max_clean_prediction_difference
+RF,0.0
+Conformer,0.0
+AlexNet,0.0
+performance,0.0
+equal,0.0
