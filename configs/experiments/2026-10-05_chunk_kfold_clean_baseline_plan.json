@@ -1,0 +1,48 @@
+{
+  "status": "Proposed next experiment; not executed and not automatically applied to the main script",
+  "question": "How do shuffled chunk internal OOF, resulting weights and outer q100 change at the existing fixed model parameters?",
+  "primary_policy": "clean_only",
+  "reference_scope": "experiments/2026-10-03_tuned_within_wav_matched_comparison/run_scope.json",
+  "dataset": {
+    "experiment": "2025.06.11_0.3_2_6.18_0.3_3",
+    "data_version": "waterflow_20260817_1s",
+    "max_frequency_hz": 3000,
+    "chunk_seconds": 1,
+    "acoustic_selection": "none",
+    "outer_training_chunks": 1620,
+    "outer_test_chunks": 540,
+    "outer_test_fraction_per_wav": 0.25,
+    "outer_test_split_seed": 42,
+    "evaluation_noise_conditions": ["clean", "0", "-4", "-8", "-12", "-16", "-20"]
+  },
+  "internal_validation": {"method": "chunk_kfold", "folds": 3, "shuffle": true, "random_seed": 42},
+  "models": {
+    "randomforest": {"implementation": "XGBRFRegressor", "n_estimators": 100, "max_depth": 12, "subsample": 0.6, "colsample_bynode": 0.6},
+    "conformer": {"implementation": "current CNN and time-token Transformer", "lr": 0.001, "batch_size": 12},
+    "alexnet": {"implementation": "current AlexNet regressor", "lr": 0.003, "batch_size": 8}
+  },
+  "epochs": 150,
+  "pca_components": 100,
+  "ensemble_methods": ["performance_kfold", "simple_equal"],
+  "proposed_output_settings": {
+    "save_fold_predictions": true,
+    "save_fitted_artifacts": true,
+    "verify_reloaded_artifacts": true,
+    "explainability_enabled_during_baseline_run": false
+  },
+  "current_live_config_differences": {
+    "learning_policy.training_noise": {"current": "matched", "planned": "clean_only"},
+    "output.save_fitted_artifacts": {"current": false, "planned": true}
+  },
+  "expected_fit_operations": {"internal_models": 9, "final_models": 3, "total": 12},
+  "primary_analysis": ["source-day q100 and g100", "pre-ONB FP and FPR", "last failed heat-flux stage and failing chunk identities"],
+  "secondary_analysis": ["R2, RMSE, MAE, recall, precision, F1, ROC and PR", "ONB-neighborhood error as supporting explanation", "OOF individual errors and ensemble weights"],
+  "diagnostic_comparisons": [
+    "Same outer 540 identities as the fixed old clean_only result",
+    "Separate new individual predictions from the change of ensemble weights",
+    "Optionally apply the new training-derived weights to saved old individual outer predictions as a descriptive decomposition; never choose weights on these outer labels"
+  ],
+  "numeric_false_positive_allowance": null,
+  "next_branch_decision": "Classify remaining last-stage failures using training OOF before selecting a candidate model or new ensemble",
+  "research_accuracy_verified": false
+}

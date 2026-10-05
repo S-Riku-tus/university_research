@@ -2,6 +2,12 @@
 
 このページは**日付ごとの履歴**。各節の「現在」「次にやること」は当時の記録であり、現在の未完了作業とは限らない。最新の状態は[研究の現在地](research_status.md)、更新関係は[文書案内](document_index.md)を読む。
 
+## 2026-10-05 chunk分割実装後の次工程を整理
+
+- 本人の依頼により[段階案](research_plan/2026-10-05_after_chunk_split_next_steps.md)と[基準実験の条件案](../configs/experiments/2026-10-05_chunk_kfold_clean_baseline_plan.json)を作成。最初は既存採用値固定のclean_only基準で、新OOF・重みと同じ外側540のq100/g100・誤報を得る。
+- 最後の陰性を全モデル共通/単体に補完余地ありへ分け、追加モデル・入力表現と重み・統合の優先順を決める。旧WAV分離のSVR/HGB予備結果を新chunk条件で再検討し、モデルの違いと入力の違いを分けて比較する。
+- 基準モデル保存からXAIへ接続し、有用な候補を絞って再現性・別日での適用範囲を確認する。主コードはmatched・モデル非保存のまま。今回の成果は計画文書であり、新学習・新精度結果・設定変更ではない。
+
 ## 2026-10-05 本人指定のシャッフルあり内部chunk KFoldを実装
 
 - 本人が外側・内部のchunk分割を選択。[実装記録](../experiments/2026-10-05_shuffled_chunk_internal_validation/README.md)のとおり、外側各WAVのランダム15/60テストは維持し、内部performance重みと候補探索を全学習chunkの通常3-fold、shuffle=True、seed42へ変更した。
