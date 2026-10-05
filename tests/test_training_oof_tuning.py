@@ -168,6 +168,8 @@ class TrainingOofTuningTest(unittest.TestCase):
             self.assertEqual(result["n_outer_training_samples"], 6)
             self.assertEqual(result["n_outer_test_samples_not_scored"], 6)
             self.assertFalse(result["outer_test_used"])
+            self.assertEqual(result["internal_validation_split"], "chunk_kfold")
+            self.assertIn("chunk_kfold", result["candidate_ranking_scope"])
             self.assertEqual(result["selected"]["randomforest"]["candidate_name"],
                              "rf_depth3")
             saved = json.loads((output_dir / "selected_candidates.json").read_text(
@@ -175,6 +177,9 @@ class TrainingOofTuningTest(unittest.TestCase):
             self.assertFalse(saved["outer_test_used"])
             self.assertTrue((output_dir / "candidate_metrics.csv").is_file())
             self.assertTrue((output_dir / "parameter_search_config.json").is_file())
+            audit = json.loads(next((output_dir / "candidate_audits").glob("*.json")).read_text(encoding="utf-8"))
+            self.assertEqual(audit["internal_validation"]["method"], "chunk_kfold")
+            self.assertTrue(all(f["shared_samples"] == 0 for f in audit["internal_validation"]["folds"]))
 
 
 if __name__ == "__main__":

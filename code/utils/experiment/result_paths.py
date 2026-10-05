@@ -122,7 +122,8 @@ def result_scope_dir_name(
     if not 1 <= parameter_index <= parameter_count:
         raise ValueError("parameter_index must be within parameter_count")
     policy = config.get("learning_policy", {})
-    validation = "iw" + str(config.get("run", {}).get("folds", "x"))
+    internal_method = config.get("run", {}).get("internal_validation_split", "chunk_kfold")
+    validation = ("iw" if internal_method == "wav_kfold" else "ic") + str(config.get("run", {}).get("folds", "x"))
     noise = "nc" if policy.get("training_noise") == "clean_only" else "nm"
     epochs = config.get("run", {}).get("epochs", "x")
     chunk = _chunk_segment(config)

@@ -1,0 +1,27 @@
+{
+  "status": "Implementation and split audit; no research-model training",
+  "user_decision": "Both outer within-WAV holdout and internal performance/tuning validation use shuffled chunk partitions",
+  "outer_validation": {
+    "method": "within_wav_chunk_holdout",
+    "test_fraction": 0.25,
+    "random_seed": 42,
+    "allocation": "Randomly select 15 of each source WAV's 60 chunks; retain the other 45 for training",
+    "implementation_changed": false
+  },
+  "internal_validation": {
+    "config_key": "run.internal_validation_split",
+    "method": "chunk_kfold",
+    "folds": 3,
+    "shuffle": true,
+    "random_seed": 42,
+    "allocation": "Ordinary KFold over all 1620 outer-training chunks; no per-WAV or heat-flux stratification",
+    "applies_to": ["performance_kfold weights", "training_oof parameter tuning"],
+    "pca_scaler_and_acoustic_selection": "Fit on each internal fit subset only",
+    "legacy_control": "wav_kfold is available only when explicitly selected"
+  },
+  "source_reference_scope": "experiments/2026-10-03_tuned_within_wav_matched_comparison/run_scope.json",
+  "source_policy_for_metadata_audit": "clean_only",
+  "cache_and_output": "Effective internal method enters the execution hash; chunk results use ic3, legacy WAV results iw3",
+  "interpretation": "Known-source-WAV unused-chunk evaluation; compare independently with separate-day evaluation",
+  "checks": "Related 46 tests and actual metadata split audit; not evidence of accuracy or q100 improvement"
+}

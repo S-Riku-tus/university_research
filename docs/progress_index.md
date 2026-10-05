@@ -2,6 +2,12 @@
 
 このページは**日付ごとの履歴**。各節の「現在」「次にやること」は当時の記録であり、現在の未完了作業とは限らない。最新の状態は[研究の現在地](research_status.md)、更新関係は[文書案内](document_index.md)を読む。
 
+## 2026-10-05 本人指定のシャッフルあり内部chunk KFoldを実装
+
+- 本人が外側・内部のchunk分割を選択。[実装記録](../experiments/2026-10-05_shuffled_chunk_internal_validation/README.md)のとおり、外側各WAVのランダム15/60テストは維持し、内部performance重みと候補探索を全学習chunkの通常3-fold、shuffle=True、seed42へ変更した。
+- 同じchunk非共有・OOF coverage・fitのみのPCA/学習・外側テスト除外・再開識別等の46テストを通過。実データの外側540 IDは10/1と全件一致し、全内部fitに36 WAV・両日各18段階が残った。
+- 主設定`chunk_kfold`、省略時もchunk。旧WAV結果との条件hashと`ic3`保存tokenを分離。研究モデルの再学習と新しい精度・q100比較は未実施。次は分割変更だけの既存3モデル本比較を基準にする。
+
 ## 2026-10-05 内部foldの支持・q100主評価・追加候補の予備比較
 
 - 本人の主評価を「全chunk陽性へ到達する最小実測熱流束」へ明確化。[分割と候補の検討記録](../experiments/2026-10-05_onb_endpoint_and_grouped_fold_review/README.md)で保存OOFをq100/g100と誤報により再評価し、前回SVR・固定統合のq100不変を確認した。

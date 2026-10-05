@@ -2,9 +2,9 @@
 
 The normal ONB experiment runner evaluates fixed parameters on its outer test
 partition.  This module is a separate mode: candidates are ranked only by
-source-WAV-disjoint out-of-fold predictions made inside the outer-training
-partition.  It deliberately does not load outer-test arrays or produce a test
-score, preventing parameter selection on the final evaluation data.
+shuffled chunk out-of-fold predictions made inside the outer-training
+partition.  Outer-test samples enter neither fitting nor candidate ranking,
+and this module produces no outer-test score.
 """
 
 import csv
@@ -195,8 +195,11 @@ def run_training_oof_tuning(
         )
     fit_indices = np.asarray(splits[0][0], dtype=int)
     metadata_fit = [train_metadata[int(index)] for index in fit_indices]
-    if len(set(wav_groups(metadata_fit))) < int(config["run"]["folds"]):
-        raise ValueError("The outer-training partition has fewer WAV groups than tuning folds.")
+    internal_method = config["run"].get("internal_validation_split", "chunk_kfold")
+    internal_units = (len(set(wav_groups(metadata_fit))) if internal_method == "wav_kfold"
+                      else len(metadata_fit))
+    if internal_units < int(config["run"]["folds"]):
+        raise ValueError("The outer-training partition has fewer split units than tuning folds.")
 
     selector = AcousticTrainingSelector(
         config.get("acoustic_selection"),
@@ -243,6 +246,7 @@ def run_training_oof_tuning(
             config["run"]["random_seed"],
             config["features"]["pca_components"],
             {model_key: epochs},
+            method=internal_method,
         )
         prediction = np.asarray([sample[model_key] for sample in audit["samples"]], dtype=float)
         metrics = oof_regression_metrics(
@@ -307,7 +311,8 @@ def run_training_oof_tuning(
     summary = {
         "mode": "training_oof",
         "outer_test_used": False,
-        "candidate_ranking_scope": "outer-training partition, source-WAV-disjoint OOF",
+        "candidate_ranking_scope": f"outer-training partition, {internal_method} OOF",
+        "internal_validation_split": internal_method,
         "evaluation_scheme": split_kind,
         "n_outer_training_samples": int(len(fit_indices)),
         "n_outer_test_samples_not_scored": int(len(splits[0][1])),

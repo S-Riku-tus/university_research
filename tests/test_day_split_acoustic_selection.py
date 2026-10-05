@@ -10,6 +10,7 @@ from unittest.mock import patch
 
 import numpy as np
 from sklearn.metrics import r2_score
+from sklearn.model_selection import KFold
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "code"))
 from test_learning_policy import fixture, ObservedTrainer, SilentPlotter
@@ -38,25 +39,70 @@ class DaySelectionTest(unittest.TestCase):
             with self.subTest(updates=updates), self.assertRaises(ValueError):
                 normalize_learning_policy({**self.policy(), **updates}, ["day-a", "day-b", "day-c"])
 
-    def test_wav_kfold_covers_once_without_recording_leakage(self):
+    def test_chunk_kfold_covers_once_without_reusing_a_chunk(self):
         rows = [{"experiment_name": "a", "source_wav_id": f"wav-{i // 4}", "chunk_index": i % 4}
                 for i in range(24)]
         splits = internal_splits(rows, 3, 42)
+        expected = list(KFold(n_splits=3, shuffle=True, random_state=42).split(rows))
         self.assertEqual(sorted(np.concatenate([held for _, held in splits]).tolist()), list(range(24)))
-        for fit, held in splits:
+        for (fit, held), (expected_fit, expected_held) in zip(splits, expected):
+            np.testing.assert_array_equal(fit, expected_fit)
+            np.testing.assert_array_equal(held, expected_held)
             self.assertFalse(set(fit) & set(held))
-            self.assertFalse(
+            self.assertTrue(
                 {rows[i]["source_wav_id"] for i in fit}
                 & {rows[i]["source_wav_id"] for i in held}
             )
+        self.assertTrue(any(not np.array_equal(a[1], b[1]) for a, b in
+                            zip(splits, internal_splits(rows, 3, 43))))
 
-    def test_wav_kfold_weights_score_each_held_out_chunk(self):
+    def test_chunk_split_does_not_require_multiple_source_wavs(self):
+        rows = [{"experiment_name": "a", "source_wav_id": "one-wav", "chunk_index": i}
+                for i in range(12)]
+        splits = internal_splits(rows, 3, 42)
+        self.assertEqual([(len(fit), len(held)) for fit, held in splits], [(8, 4)] * 3)
+        with self.assertRaisesRegex(ValueError, "unique source chunk"):
+            internal_splits([*rows, rows[0]], 3, 42)
+        with self.assertRaisesRegex(ValueError, "chunk_kfold or wav_kfold"):
+            internal_splits(rows, 3, 42, method="typo")
+
+    def test_explicit_legacy_wav_split_remains_group_disjoint(self):
+        rows = [{"experiment_name": "a", "source_wav_id": f"wav-{i // 4}", "chunk_index": i % 4}
+                for i in range(24)]
+        for fit, held in internal_splits(rows, 3, 42, method="wav_kfold"):
+            self.assertFalse({rows[i]["source_wav_id"] for i in fit}
+                             & {rows[i]["source_wav_id"] for i in held})
+
+    def test_chunk_kfold_weights_score_each_held_out_chunk(self):
         targets = np.repeat([0.0, 10.0, 20.0, 30.0], 3)
         prediction = targets + np.tile([0.0, 0.0, 100.0], 4)
         errors, unit = _validation_errors(targets, {"model": prediction})
         self.assertEqual(unit, "pooled_chunk_oof_R2")
         self.assertAlmostEqual(errors["model"], 1.0 - r2_score(targets, prediction))
         self.assertGreater(errors["model"], 1.0)
+
+    def test_normal_runner_allows_more_chunk_folds_than_wavs(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            policy = {"training_noise": "clean_only", "train_experiments": ["day-a"],
+                      "test_experiments": ["day-b"]}
+            jobs, specs, _, config = fixture(Path(tmp), policy)
+            config["run"]["folds"] = 7  # 12 training chunks from only 6 source WAVs.
+            manager = EnsembleManager({"enabled_strategy_names": ["performance_kfold", "simple_equal"]},
+                                      [s["key"] for s in specs])
+            config["ensemble"] = manager.snapshot()
+            trainer = ObservedTrainer()
+            with contextlib.redirect_stdout(io.StringIO()), patch("gc.collect"), patch("tensorflow.keras.backend.clear_session"):
+                run_learning_experiments(jobs, policy, config, specs, [{"name": "test"}],
+                                         manager, trainer, SilentPlotter(), lambda *args: None)
+            self.assertEqual(len(trainer.fits), 16)
+            for x in trainer.fits + trainer.pca_fits:
+                self.assertTrue(np.all(x[:, 0, 0, 0] < 200))
+            job = next(j for j in jobs if j["experiment_name"] == "day-b")
+            directory = next((job["save_base_path"] / job["max_freq_hz"] / job["noise_dir_name"]).iterdir())
+            audit = json.loads((directory / "internal_validation_fold1.json").read_text())
+            self.assertEqual(audit["method"], "chunk_kfold")
+            self.assertEqual(len(audit["folds"]), 7)
+            self.assertTrue(all(f["shared_samples"] == 0 for f in audit["folds"]))
 
     def test_selection_kfold_training_and_full_test_end_to_end(self):
         self.run_selection_pipeline("background_quantile")
@@ -137,7 +183,8 @@ class DaySelectionTest(unittest.TestCase):
                 if "performance_kfold" in strategy_names:
                     internal = json.loads((directory / "internal_validation_fold1.json").read_text())
                     self.assertEqual(len(internal["samples"]), 24)
-                    self.assertTrue(all(f["shared_source_wavs"] == 0 for f in internal["folds"]))
+                    self.assertEqual(internal["method"], "chunk_kfold")
+                    self.assertTrue(all(f["shared_samples"] == 0 for f in internal["folds"]))
                 else:
                     crossfit = json.loads((directory / "ensemble_crossfit_fit_f1.json").read_text())
                     self.assertEqual(len(crossfit["splits"]), 4)

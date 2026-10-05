@@ -73,7 +73,7 @@
 - paired design: 同一chunkでは信号間・reference SNR間で同じノイズ断片を使用する。
 - provenance: ファイル名と `chunk_manifest.csv` に元WAV ID、ノイズoffset、実現SNR、各パワーを保存する。
 - 生成スクリプト: `code/2.run_npy_waterflow_2つhighpass.py`。
-- 学習スクリプト: `code/run_ensemble_regression_onb.py`。元WAV ID単位のGroupKFoldを使用する。
+- 学習スクリプト: `code/run_ensemble_regression_onb.py`。外側は各WAV内chunk holdoutまたは別日分離、内部performance/tuningは通常chunk KFold（shuffle=True、10/5本人指定）。元WAV IDは出典・対応管理に使用する。
 - 生成件数: 06.11が37,800、06.18が37,800、07.09が27,300、合計102,900 `.npy`。
 - 整合性: 3実験 × 5周波数 × 7ノイズ条件の全105条件で、`.npy`数と`chunk_manifest.csv`の行数が一致。06.11/06.18は各条件1,080、07.09は各条件780サンプル。
 - Git管理用設定: `configs/datasets/waterflow_20260817_1s.yaml`。

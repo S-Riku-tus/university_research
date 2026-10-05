@@ -29,7 +29,9 @@ from utils.experiment.result_paths import (
     scoped_result_job,
 )
 from utils.experiment.result_paths import MAX_STUDY_DIR_LENGTH, result_scope_dir_name
-from utils.experiment.run_helpers import is_completed_run, run_config_digest, run_dir_name
+from utils.experiment.run_helpers import (
+    is_completed_run, run_config_digest, run_dir_name, short_digest, saved_run_matches_execution,
+)
 from utils.plotting.noise_trend_plots import collect_noise_trend_rows
 from utils.training.model_training import ModelTrainer
 from reorganize_onb_results import migrate_results
@@ -175,7 +177,7 @@ class LearningPolicyTest(unittest.TestCase):
         self.assertEqual(first["save_base_path"].parent, job["save_base_path"].parent)
         self.assertEqual(
             first["save_base_path"].name,
-            "onb_xd-t0611-v0618_iw3-nm_c1s_s1e-9_e150_010203",
+            "onb_xd-t0611-v0618_ic3-nm_c1s_s1e-9_e150_010203",
         )
         protected_config = {
             **config,
@@ -282,6 +284,21 @@ class LearningPolicyTest(unittest.TestCase):
             300, "fixed", "randomforest", False, "simple", first_hash, "run-b"
         )
         self.assertNotEqual(first_dir, repeated_condition)
+
+    def test_chunk_split_hash_cannot_resume_legacy_wav_results(self):
+        config = {"run": {"folds": 3}, "models": {}}
+        legacy_config = {**config, "output": {"save_fold_predictions": True}}
+        legacy_hash = short_digest({"validation_config": legacy_config, "parameter_set": {},
+                                    "model_tag": "models", "model_params": {}}, length=8)
+        chunk_hash = run_config_digest(config, {}, [], "models", True)
+        self.assertNotEqual(legacy_hash, chunk_hash)
+        self.assertFalse(saved_run_matches_execution(
+            {"run_hash": legacy_hash, "execution_config_hash": legacy_hash},
+            config, {}, [], "models", True))
+        explicit_chunk = {**config, "run": {**config["run"], "internal_validation_split": "chunk_kfold"}}
+        explicit_wav = {**config, "run": {**config["run"], "internal_validation_split": "wav_kfold"}}
+        self.assertEqual(chunk_hash, run_config_digest(explicit_chunk, {}, [], "models", True))
+        self.assertNotEqual(chunk_hash, run_config_digest(explicit_wav, {}, [], "models", True))
 
     def run_fixture(self, root, policy, evaluated_noises=None, days=("day-a", "day-b")):
         args = {} if evaluated_noises is None else {"evaluated_noises": evaluated_noises}

@@ -16,6 +16,7 @@ class OnbDefaultsTest(unittest.TestCase):
             now=datetime(2026, 9, 16),
         )
         self.assertEqual(resolved["run"]["epochs"], 3)
+        self.assertEqual(resolved["run"]["internal_validation_split"], "chunk_kfold")
         self.assertFalse(resolved["explainability"]["enabled"])
         self.assertEqual(resolved["explainability"]["ig_max_steps"], 4096)
         self.assertNotIn("evaluation", resolved)

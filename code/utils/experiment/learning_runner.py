@@ -357,8 +357,11 @@ def run_learning_experiments(jobs, policy, config, enabled_specs, parameter_sets
                     train_metadata, metadata, policy=policy)
             for fold in range(1, fold_count + 1):
                 fit_indices = next(iter(splits_by_noise.values()))[fold - 1][0]
-                if performance_cv and len(set(groups[fit_indices])) < config["run"]["folds"]:
-                    raise ValueError("外側テスト分離後の学習WAV数が内部fold数より少ないため検証できません。")
+                internal_method = config["run"].get("internal_validation_split", "chunk_kfold")
+                internal_units = (len(set(groups[fit_indices])) if internal_method == "wav_kfold"
+                                  else len(fit_indices))
+                if performance_cv and internal_units < config["run"]["folds"]:
+                    raise ValueError("外側テスト分離後の学習データ数が内部fold数より少ないため検証できません。")
                 x_fit, y_fit = x[fit_indices], y[fit_indices]
                 fit_id = short_digest({"run_hash": run_hash, "context": context, "fold": fold,
                                        "instance": config["output"]["run_instance_id"],
@@ -372,7 +375,7 @@ def run_learning_experiments(jobs, policy, config, enabled_specs, parameter_sets
                     inner_errors, internal_audit = fit_individual_performance_cv(
                         trainer, specs, x_fit, y_fit, [train_metadata[i] for i in fit_indices], selector,
                         config["run"]["folds"], config["run"]["random_seed"],
-                        config["features"]["pca_components"], model_epochs)
+                        config["features"]["pca_components"], model_epochs, method=internal_method)
                     for recorder in recorders:
                         write_json(recorder.path / f"internal_validation_fold{fold}.json", internal_audit)
                 retained, selection_audit = selector.select([train_metadata[i] for i in fit_indices])

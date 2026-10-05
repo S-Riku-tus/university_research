@@ -1,4 +1,4 @@
-"""Source-WAV-disjoint KFold on training days for performance weights."""
+"""Shuffled training-chunk KFold for performance weights and OOF tuning."""
 import gc
 
 import numpy as np
@@ -7,13 +7,21 @@ from sklearn.model_selection import KFold
 from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras import backend as K
 
-from utils.experiment.learning_policy import wav_groups
+from utils.experiment.learning_policy import sample_key, wav_groups
 from utils.experiment.run_helpers import set_global_seed
 from utils.models.regression.base_regression import RegressionModelMaker
 
 
-def internal_splits(metadata, folds, seed):
+def internal_splits(metadata, folds, seed, method="chunk_kfold"):
+    keys = [sample_key(row) for row in metadata]
+    if len(set(keys)) != len(keys):
+        raise ValueError("Internal validation requires unique source chunk identities")
     splitter = KFold(n_splits=folds, shuffle=True, random_state=seed)
+    if method == "chunk_kfold":
+        return list(splitter.split(np.arange(len(metadata))))
+    if method != "wav_kfold":
+        raise ValueError("internal_validation_split must be chunk_kfold or wav_kfold")
+    # Explicit legacy control; current runs use shuffled chunk KFold.
     groups = wav_groups(metadata)
     unique = np.unique(groups)
     return [(np.flatnonzero(np.isin(groups, unique[fit])), np.flatnonzero(np.isin(groups, unique[held])))
@@ -29,21 +37,23 @@ def _validation_errors(y, predictions):
 
 
 def fit_individual_performance_cv(trainer, specs, x, y, metadata, selector,
-                                  folds, seed, pca_components, epochs):
+                                  folds, seed, pca_components, epochs, method="chunk_kfold"):
     """Test data never enter this API. Apply selection to inner-fit only.
 
     Peak-height selection is fixed by config; the legacy quantile estimator and
     PCA/scaler are fitted on inner-fit only. Validation seconds remain intact.
     """
+    if len(x) != len(y) or len(metadata) != len(y):
+        raise ValueError("Internal validation input, targets and metadata must align")
     predictions = {spec["key"]: np.full(len(y), np.nan) for spec in specs}
     groups = wav_groups(metadata)
     records, coverage = [], np.zeros(len(y), dtype=int)
     print(
-        f"[internal validation] wav_kfold, folds={folds}; "
+        f"[internal validation] {method}, shuffle=True, folds={folds}; "
         "inner epoch progress is hidden and each fold/model is reported.",
         flush=True,
     )
-    for fold, (fit, held) in enumerate(internal_splits(metadata, folds, seed), 1):
+    for fold, (fit, held) in enumerate(internal_splits(metadata, folds, seed, method), 1):
         selected, selection = selector.select([metadata[i] for i in fit])
         fit = fit[selected]
         scaler = MinMaxScaler()
@@ -56,7 +66,7 @@ def fit_individual_performance_cv(trainer, specs, x, y, metadata, selector,
         for spec in specs:
             set_global_seed(seed + fold)
             inner_spec = {**spec, "fit_verbose": 0}
-            print(f"Internal wav_kfold {fold}/{folds}: {spec['key']}", flush=True)
+            print(f"Internal {method} {fold}/{folds}: {spec['key']}", flush=True)
             model, history = trainer.train_one_model(inner_spec, RegressionModelMaker(tuple(x.shape[1:])),
                                                      x_fit, scaled, x_pca,
                                                      epochs[spec["key"]] if isinstance(epochs, dict) else epochs)
@@ -66,13 +76,16 @@ def fit_individual_performance_cv(trainer, specs, x, y, metadata, selector,
             gc.collect()
         coverage[held] += 1
         records.append({"fold": fold, "fit_indices": fit.tolist(), "validation_indices": held.tolist(),
+                        "fit_chunks": len(fit), "validation_chunks": len(held),
+                        "shared_samples": len(np.intersect1d(fit, held)),
                         "shared_source_wavs": len(set(groups[fit]) & set(groups[held])), "selection": selection})
     if not np.all(coverage == 1) or any(not np.isfinite(p).all() for p in predictions.values()):
         raise ValueError("Internal CV did not produce one finite prediction per sample")
     if np.var(y) == 0:
         raise ValueError("Internal performance weighting requires varying heat flux")
     errors, score_unit = _validation_errors(y, predictions)
-    audit = {"method": "wav_kfold", "shuffle": True, "random_state": seed, "folds": records,
+    audit = {"method": method, "split_unit": "chunk" if method == "chunk_kfold" else "source_wav",
+             "shuffle": True, "random_state": seed, "folds": records,
              "weight_formula": f"normalize(1 / max(1 - {score_unit}, 1e-6))",
              "score_unit": score_unit,
              "internal_score_scope": "training-day model selection only; not unknown-recording performance",

@@ -2,7 +2,7 @@
 音響スペクトログラムから熱流束を回帰し、ONB判定と説明性を評価する実行コード。
 
 実験条件はVALIDATION_CONFIGで指定する。主な処理は以下のとおり。
-1. 元WAVを分離する交差検証、または実験日全体を除外する分割で学習する。
+1. 各WAV内のchunk分割、または実験日全体を除外する分割で学習する。
 2. 同じ検証予測から、各単体モデルと指定したアンサンブル方式を評価する。
 3. 1秒chunk単位の通常指標を、同じ学習外予測から保存する。
 4. R²と連続予測のROC-AUCを記録する。
@@ -82,6 +82,8 @@ VALIDATION_CONFIG = apply_onb_defaults({
         "smoke_test": False,
         "epochs": 150,
         "folds": 3,
+        "internal_validation_split": "chunk_kfold",  # 学習内の通常KFold、shuffle=True
+        # "internal_validation_split": "wav_kfold",  # 元WAVを学習・検証で完全分離する対照、shuffle=True
         "smoke_folds": 2,
         "color_channel": 1,
         "random_seed": 42,
@@ -209,7 +211,7 @@ VALIDATION_CONFIG = apply_onb_defaults({
     "ensemble": {
         # 実装済み方式をここへ残し、使用する方式だけコメントを外す。
         "enabled_strategy_names": [
-            "performance_kfold",  # 元WAV非共有K-foldの全OOF単体R²から逆誤差重みを求める主方式
+            "performance_kfold",  # シャッフルありchunk KFoldの全OOF単体R²から逆誤差重みを求める主方式
             "simple_equal",  # 全モデルを同じ重みで平均する固定対照
             # "inner_holdout",  # 学習WAVの約20%を一度だけ分離し単体R²から重みを求める旧方式
             # "subset_equal_cv",  # OOF上で単体を含む全モデル部分集合から等重みの最良候補を選ぶ

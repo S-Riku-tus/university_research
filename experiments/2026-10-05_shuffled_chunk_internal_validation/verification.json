@@ -1,0 +1,30 @@
+{
+  "date": "2026-10-05",
+  "unit_and_integration_tests": {
+    "modules": [
+      "test_day_split_acoustic_selection",
+      "test_within_wav_chunk",
+      "test_training_oof_tuning",
+      "test_learning_policy",
+      "test_onb_defaults",
+      "test_training_state_persistence"
+    ],
+    "tests_run": 46,
+    "result": "OK",
+    "research_model_training": false
+  },
+  "actual_metadata_audit": {
+    "reference": "audit.json",
+    "passed": true,
+    "outer_train_chunks": 1620,
+    "outer_test_chunks": 540,
+    "outer_test_ids_unchanged": true,
+    "internal_fit_chunks_per_fold": 1080,
+    "internal_validation_chunks_per_fold": 540,
+    "folds": 3,
+    "all_36_wavs_present_in_each_fit": true,
+    "shared_chunk_count": 0,
+    "outer_test_excluded_from_internal_fit_and_validation": true
+  },
+  "accuracy_and_q100_improvement_verified": false
+}

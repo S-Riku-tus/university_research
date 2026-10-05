@@ -27,7 +27,7 @@
 
 現行の有効3モデルは`randomforest / conformer / alexnet`。主設定の統合方式は`performance_kfold`である。`simple_equal / inner_holdout / subset_equal_cv / crossfit_wav_stack / crossfit_shrinkage_stack`も実装済みで、主コードの`ensemble.enabled_strategy_names`に短い説明付きのコメントとして残している。[重み学習の実装](../code/utils/ensemble/crossfit_stacking.py)、[次条件](../experiments/2026-09-25_matched_performance_kfold/README.md)、[6方式の手法と数式](ensemble_methods.md)。
 
-外側評価は、別日`cross_day`と全WAVのchunkをそれぞれ分ける`within_wav_chunk`の2方式を明示選択する。本人の10/3方針により、外側のWAV単位日内holdoutと旧日内K-foldは実行経路から削除した。`within_wav_chunk`は単日・統合フォルダを指定でき、同一chunkを共有しないが同じWAVを両側で共有するため、既知WAV内の未使用区間評価であり未知WAV評価ではない。内部`performance_kfold`はどちらの外側方式でも学習側だけのWAV GroupKFoldを使う。これらと`matched / clean_only`を組み合わせる。matchedはnoiseごとに別familyを作り、モデル・PCA・scaler・epoch・重みをそのnoiseの学習データから再fitする。clean_onlyは同じcleanモデル・PCA・scaler・epoch・重みを評価noise間で共有する。明示分割では学習専用日は学習に要るノイズだけを探索する。過去資料と結果は保持し、旧分割の記述を現行仕様とは扱わない。
+外側評価は、別日`cross_day`と全WAVのchunkをそれぞれ分ける`within_wav_chunk`の2方式を明示選択する。本人の10/3方針により、外側のWAV単位日内holdoutと旧日内K-foldは実行経路から削除した。`within_wav_chunk`は各WAVから同率のchunkをランダムにテストへ回し、同一chunkを共有しない既知WAV内の未使用区間評価である。10/5本人指定により、内部`performance_kfold`と`training_oof`探索は、外側学習chunk全体の通常KFold、shuffle=True、seed42へ切り替えた。`run.internal_validation_split`の既定は`chunk_kfold`、明示した旧対照だけ`wav_kfold`を使う。実効方式を条件hashへ含め、通常保存先は`ic3`で旧`iw3`と識別する。これらと`matched / clean_only`を組み合わせる。matchedはnoiseごとに別familyを作り、モデル・PCA・scaler・epoch・重みをそのnoiseの学習データから再fitする。clean_onlyは同じcleanモデル・PCA・scaler・epoch・重みを評価noise間で共有する。明示分割では学習専用日は学習に要るノイズだけを探索する。過去資料と結果は保持し、旧分割の記述を現行仕様とは扱わない。
 
 通常の学習は`run.epochs`で指定した回数まで行い、別validationによるepoch選択とvalidation lossによるearly stoppingはない。OOM時にbatchを減らす再試行や、一定epoch以上の途中学習を受け入れる処理があるため、`tuning_summary.csv`等の実際のepoch/batchも確認する。要求epochの設定値だけで全モデルが必ず完走したと断定しない。
 

@@ -182,6 +182,7 @@ def _merge_dict(base, override):
 def apply_onb_defaults(config, now=None):
     """Resolve stable defaults while allowing explicit, local overrides."""
     defaults = {
+        "run": {"internal_validation_split": "chunk_kfold"},
         "acoustic_selection": deepcopy(DEFAULT_ACOUSTIC_SELECTION_CONFIG),
         "output": default_output_config(now),
         "explainability": deepcopy(DEFAULT_EXPLAINABILITY_CONFIG),

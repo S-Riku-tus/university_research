@@ -106,6 +106,9 @@ def serializable_run_specs(run_specs):
 
 def run_config_digest(validation_config, parameter_set, run_specs, model_tag, save_fold_predictions):
     config = dict(validation_config)
+    # Include the effective split rule even for callers using its default.
+    # Old WAV-OOF results must not be resumed as the new chunk-OOF experiment.
+    config["run"] = {"internal_validation_split": "chunk_kfold", **config.get("run", {})}
     models_config = dict(config.get("models", {}))
     # The current parameter set and fully resolved model parameters are hashed
     # separately below. Excluding the complete candidate list means that adding

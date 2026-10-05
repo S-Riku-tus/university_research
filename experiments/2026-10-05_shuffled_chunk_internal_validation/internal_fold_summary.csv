@@ -1,0 +1,4 @@
+﻿fold,fit_chunks,validation_chunks,shared_samples,shared_source_wavs,fit_wavs,validation_wavs,fit_chunks_per_wav_min,fit_chunks_per_wav_max
+1,1080,540,0,36,36,36,23,37
+2,1080,540,0,36,36,36,26,36
+3,1080,540,0,36,36,36,24,37

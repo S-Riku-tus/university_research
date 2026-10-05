@@ -152,7 +152,7 @@ class WithinWavChunkTest(unittest.TestCase):
             "acoustic_selection": {"peak_height_threshold": None}}
         self.assertEqual(
             result_scope_dir_name("onb", job, config, "170655", "hash"),
-            "onb_wc-t0611-v0611_iw3-nc_c1s_s0_e150_170655",
+            "onb_wc-t0611-v0611_ic3-nc_c1s_s0_e150_170655",
         )
 
     def test_combined_within_wav_chunk_reuses_each_source_days_single_day_test_chunks(self):
@@ -280,7 +280,9 @@ class WithinWavChunkTest(unittest.TestCase):
                     self.assertEqual(fold["n_evaluation_chunks"], 6)
                     inner = json.loads((directory / "internal_validation_fold1.json").read_text(encoding="utf-8"))
                     self.assertEqual(held, set(wav_groups(inner["samples"])))
-                    self.assertTrue(all(f["shared_source_wavs"] == 0 for f in inner["folds"]))
+                    self.assertEqual(inner["method"], "chunk_kfold")
+                    self.assertTrue(inner["shuffle"])
+                    self.assertTrue(all(f["shared_samples"] == 0 for f in inner["folds"]))
                     training_sets.append({(row["source_wav_id"], int(row["chunk_index"]))
                                           for row in inner["samples"]})
                     heldout_sets.append(set(fold["evaluation_sample_indices"]))

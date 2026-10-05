@@ -1,8 +1,8 @@
 # ONB回帰のアンサンブル手法と現行の重み決定
 
-更新日: 2026-09-25。
+更新日: 2026-10-05。分割切替の実装・確認は[10/5記録](../experiments/2026-10-05_shuffled_chunk_internal_validation/README.md)。
 
-**今後の主方式**：`performance_kfold`を用いる。学習日の全WAVを元WAV非共有K-foldで一度ずつ検証側へ回し、結合したOOF予測の**1秒chunk R²**から `normalize(1 / max(1-R², 1e-6))` で1組の重みを決める。主設定は5-fold、深層モデルは200 epoch固定である。
+**現在の主方式**：`performance_kfold`を用いる。外側学習chunk全体の通常KFold、shuffle=True、seed42で各chunkを一度ずつ検証し、結合OOFの**1秒chunk R²**から `normalize(1 / max(1-R², 1e-6))` で1組の重みを決める。主設定は3-fold、150 epoch。10/5本人指定による切替で、同じWAVは共有するが同じchunkは共有しない。明示した`run.internal_validation_split="wav_kfold"`だけが旧WAV分離対照となる。
 
 9/24本比較で使用した`inner_holdout`は、学習日の約20%を一度だけ取り分け、holdoutの1秒chunk R²から同じ式で重みを決める方式だった。過去runの再現用に実装は残すが、今後の主設定からは外す。旧版にあった「WAV中央値R²」は9/17以前の定義であり、現行`inner_holdout`にも`performance_kfold`にも該当しない。
 
@@ -10,22 +10,22 @@
 
 ### 現行コードで混同しやすい3種類の分割
 
-6/11学習→6/18評価の`explicit_days`条件では、次の分割は互いに別処理である。
+現在の主条件は6/11＋6/18統合の`within_wav_chunk`。次の分割は互いに別処理である。別日`cross_day`を選ぶ場合には外側だけを実験日全体の分離へ変える。
 
 | 分割 | 現行回数 | 用途 | 重みへの利用 |
 |---|---:|---|---|
-| 外側の実験日分割 | 1 | 6/11で最終学習し6/18を評価 | 6/18は重み計算に使わない |
-| `performance_kfold` | 5 | 18 WAVを14/15 WAV学習・3/4 WAV検証に分け、全WAVのOOF単体R²を得る | 結合OOFから1組の重みを作る |
+| 外側のchunk holdout | 1 | 各WAVの60 chunkを学習45・テスト15へランダム分割 | 外側テストは重み計算に使わない |
+| `performance_kfold` | 3 | 外側学習1620 chunkを各回1080学習・540検証へ分ける | 結合OOFから1組の重みを作る |
 | `inner_holdout` | 0（過去比較のみ） | 18 WAV中14 WAVで一時学習、別4 WAVの単体R²から重みを計算 | 単一holdoutから1組の重みを作る |
 
 ConformerとAlexNetは、内部K-fold学習と最終学習の両方で常に`run.epochs`の値を使用する。epochを別validationで選ぶ機能は9/25に削除した。
 
-別日分割では`run.folds`を5へ変更しても外側評価は1回のままであり、`performance_kfold`の内部fold数だけが5になる。crossfit 3方式の`inner_folds`は別の共通OOFを制御する。
+`run.folds`を変更しても外側評価は1回のままであり、`performance_kfold`の内部fold数だけが変わる。crossfit 3方式の`inner_folds`は別のWAV分離共通OOFを制御し、今回のchunk切替対象ではない。
 
 本書は、熱流束回帰に用いる3モデル、Random Forest系モデル（RF）、CNN＋Transformer、AlexNetを、6つの方法でどのように統合するかを数式とともに整理する。対象は次の6方式である。
 
 1. `simple_equal`: 単純等重み平均
-2. `performance_kfold`: 全学習WAVのOOF単体R²に基づく逆誤差重み（今後の主方式）
+2. `performance_kfold`: 全学習chunkのOOF単体R²に基づく逆誤差重み（現在の主方式）
 3. `inner_holdout`: 単一holdoutの単体R²に基づく逆誤差重み（過去run再現用）
 4. `subset_equal_cv`: crossfit予測による部分集合選択＋等重み平均
 5. `crossfit_wav_stack`: crossfit予測によるWAV単位制約付きstacking
@@ -239,13 +239,13 @@ $$
 
 等重みよりも学習日clean holdoutでの単体性能を反映でき、仕組みも比較的単純である。一方、一度の少数holdout WAVから求めたR²は変動しやすい。また、単体性能を個別に重みへ変換する方式であり、統合後のMSE、モデル間残差相関、noise下の性能順位変化を直接扱わない。
 
-## 4. `performance_kfold`: 全学習WAVのOOF単体性能による重み
+## 4. `performance_kfold`: 全学習chunkのOOF単体性能による重み
 
 ### 基本的な考え方
 
-外側学習集合の全WAVを元WAV単位のK-foldへ分ける。各foldで、検証WAVを除いたデータだけで3モデルを一時学習し、学習に含めなかったWAVを予測する。これをK回繰り返し、全学習WAVに対してOOF予測を1回ずつ得る。
+外側学習集合の全chunkをシャッフルしてK-foldへ分ける。各foldで、検証chunkを除いたデータだけで3モデルを一時学習し、その検証chunkを予測する。これをK回繰り返し、全学習chunkに対してOOF予測を1回ずつ得る。PCA・scaler・選別は各fitのみで学習し、外側テストはこの処理に含めない。
 
-6/11の18 WAVを5-foldにする主設定では、検証側が4、4、4、3、3 WAV、学習側が14、14、14、15、15 WAVになる。foldごとの重みを5組作って平均するのではなく、全foldのOOF予測を元の18 WAV順に結合してから、モデルごとに1個のR²を計算する。
+現在の1620 chunk・3-foldでは、各回1080学習・540検証となる。foldごとの重みを平均せず、全foldのOOFを元のchunk順に結合してからモデルごとに1個のR²を計算する。9/25時点の旧例は18 WAVを5-foldにし、検証4/4/4/3/3 WAV、学習14/14/14/15/15 WAVとした方式であり、現在の既定分割とは区別する。
 
 モデル $m$ の全OOF chunkに対する決定係数を $R_{m,\mathrm{OOF}}^2$ とすると、
 
@@ -264,7 +264,7 @@ $$
 
 ### `inner_holdout`との違い
 
-重み式は同じだが、性能推定に使う予測が異なる。`inner_holdout`は一度選んだ約20%だけを重み推定へ使う。`performance_kfold`は全学習WAVを一度ずつ検証側に回すため、特定4 WAVだけから順位を決める偏りを減らせる。
+重み式は同じだが、性能推定に使う予測が異なる。`inner_holdout`はWAVを一度選んで約20%だけを重み推定へ使う。現在の`performance_kfold`は全学習chunkを一度ずつ検証する。分割対象もOOFの範囲も異なり、同じWAVを共有する内部指標を未知WAV性能として扱わない。
 
 ただし、モデル別の単体R²だけから重みを作る点は変わらない。このため、残差の相関・相殺を直接扱わず、有害なモデルを厳密に0重みにする仕組みもない。また、現行実装は全OOF chunkをまとめてR²を計算するため、WAVごとのchunk数が異なる場合はchunk数の多いWAVの影響が大きくなる。現在の対象データでは各WAVの秒数を監査し、差がある場合はWAV等重み方式との違いを明記する。
 
@@ -598,7 +598,7 @@ $$
 | 方式 | 重みを決める情報 | 許される重み | 最小化・選択する量 | 誤差の補完を直接評価 |
 |---|---|---|---|---|
 | `simple_equal` | なし | $(1/3,1/3,1/3)$ 固定 | なし | しない |
-| `performance_kfold` | 全学習WAVの元WAV非共有OOFにおける各単体chunk R² | 非負・合計1 | 各単体の $1-R^2$ を逆数化（逆MSE相当） | しない |
+| `performance_kfold` | 全学習chunkのchunk非共有OOFにおける各単体R² | 非負・合計1 | 各単体の $1-R^2$ を逆数化（逆MSE相当） | しない |
 | `inner_holdout` | 元WAV非共有holdoutの各単体chunk R² | 非負・合計1 | 各単体の $1-R^2$ を逆数化（逆MSE相当） | しない |
 | `subset_equal_cv` | inner OOFの統合予測 | 単体または部分集合内の等重み | 7候補のWAV MSE | 候補の範囲で評価 |
 | `crossfit_wav_stack` | inner OOFの統合予測 | simplex上の連続重み | 統合後WAV MSE | する |
@@ -622,7 +622,7 @@ $$
 
 `inner_holdout`は、単体性能が悪いモデルの重みを下げられる。ただし、少数holdoutでのR²推定誤差と、モデル間誤差相関を扱わないことが弱点となる。
 
-`performance_kfold`は、全学習WAVのOOF予測を使うことで`inner_holdout`の単一分割依存を減らす。ただし、逆R²重みという式は同じなので、残差相関を扱わない点と、学習日内の単体順位が評価日へ移る必要がある点は残る。
+`performance_kfold`は、全学習chunkのOOF予測を使う。ただし、逆R²重みという式は同じなので残差相関を扱わず、別日へ適用する場合には学習日内の単体順位が評価日へ移る必要がある。WAV分離holdoutとは分割の単位も異なるため、その変更とOOF coverageの効果を区別する。
 
 `subset_equal_cv`は、悪化原因となるモデルを完全に除外できる。また単体候補を含むため、inner OOFのWAV MSE上では、候補に含まれる最良単体より悪い重みを選ばない。ただし、この性質は重み学習集合内のものであり、未知の外側WAVに対する保証ではない。
 

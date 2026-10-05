@@ -1,0 +1,54 @@
+{
+  "config": "configs/experiments/2026-10-05_shuffled_chunk_internal_validation.json",
+  "effective_internal_method": "chunk_kfold",
+  "shuffle": true,
+  "random_seed": 42,
+  "folds": 3,
+  "metadata_only": true,
+  "source_run": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/ensemble/202610/01/onb_wc-t0611-v0611_iw3-nc_c1s_s0_e150_170655",
+  "outer_train": 1620,
+  "outer_test": 540,
+  "source_wavs": 36,
+  "outer_test_ids_identical_to_20261001": true,
+  "outer_shared_samples": 0,
+  "all_internal_fits_and_validations_exclude_outer_test": true,
+  "all_internal_fits_retain_all_36_wavs": true,
+  "internal_held_out_coverage_once_per_chunk": true,
+  "training_identity_sha256": "9d4d4f20d90e9bef695cf83afae29019ae8adde34b1c563afb36508a5e8daa35",
+  "summaries": [
+    {
+      "fold": 1,
+      "fit_chunks": 1080,
+      "validation_chunks": 540,
+      "shared_samples": 0,
+      "shared_source_wavs": 36,
+      "fit_wavs": 36,
+      "validation_wavs": 36,
+      "fit_chunks_per_wav_min": 23,
+      "fit_chunks_per_wav_max": 37
+    },
+    {
+      "fold": 2,
+      "fit_chunks": 1080,
+      "validation_chunks": 540,
+      "shared_samples": 0,
+      "shared_source_wavs": 36,
+      "fit_wavs": 36,
+      "validation_wavs": 36,
+      "fit_chunks_per_wav_min": 26,
+      "fit_chunks_per_wav_max": 36
+    },
+    {
+      "fold": 3,
+      "fit_chunks": 1080,
+      "validation_chunks": 540,
+      "shared_samples": 0,
+      "shared_source_wavs": 36,
+      "fit_wavs": 36,
+      "validation_wavs": 36,
+      "fit_chunks_per_wav_min": 24,
+      "fit_chunks_per_wav_max": 37
+    }
+  ],
+  "research_models_trained": false
+}

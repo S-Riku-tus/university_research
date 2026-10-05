@@ -7,6 +7,7 @@
 | 目的 | 読む文書 | 更新方法 |
 |---|---|---|
 | 次の作業を始める | [研究の現在地](research_status.md) | 状態・本人の希望・次の一手を更新する唯一の入口 |
+| 本人指定のシャッフルありchunk分割と実装確認を見る | [10/5内部chunk KFoldへの切替](../experiments/2026-10-05_shuffled_chunk_internal_validation/README.md) | 外側ID維持、内部performance/tuningの切替、46テスト、全段階支持、旧結果識別、未出力の本比較を記録 |
 | 全熱流束支持の内部fold・早い100%判定・追加候補の結果を見る | [10/5内部fold・q100・候補比較](../experiments/2026-10-05_onb_endpoint_and_grouped_fold_review/README.md) | WAV分離の限界、順位均衡と既知WAV時間block、q100優先の再評価、ExtraTrees/HGB予備比較、固定統合と次の入力表現を記録 |
 | 学習OOFの共通失敗と第4モデル候補の予備比較を見る | [10/4 OOF診断と帯域特徴SVR](../experiments/2026-10-04_training_oof_diversity_diagnosis/README.md) | 内部ONB配置、学習chunkの特徴、nested SVR、訂正と追加誤り、noise転送、絶対power除去の不採用、次の配置対照を固定 |
 | 最新課題・説明性の選択理由・追加モデルの役割を確認する | [10/4現行結果と追加モデルの検討](research_plan/2026-10-04_current_challenges_xai_and_model_diversity.md) | clean_only主軸、両系列の共通失敗、逆方向出力と有用な補完の違い、現行log-power IG、XAI品質、追加モデルから統合へ進む条件を整理 |
