@@ -1,0 +1,174 @@
+{
+  "config": "configs/experiments/2026-10-04_training_oof_diversity_diagnosis.json",
+  "source_runs": {
+    "clean_only": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/ensemble/202610/01/onb_wc-t0611-v0611_iw3-nc_c1s_s0_e150_170655",
+    "matched": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/ensemble/202610/03/onb_wc-t0611-v0611_iw3-nm_c1s_s0_e150_153735"
+  },
+  "oof_inputs": [
+    {
+      "policy": "clean_only",
+      "noise": "clean",
+      "n_oof": 1620,
+      "n_wavs": 36,
+      "n_inner_folds": 3,
+      "shared_fit_held_wavs": 0,
+      "test_used": false,
+      "same_training_ids_and_targets": true,
+      "same_inner_folds": true,
+      "oof_sha256": "68068fffd379129f25e1f6bc840208e7351c938948eb7cc27808dc3d3f5b3bb0",
+      "weights": {
+        "randomforest": 0.21990015725867396,
+        "conformer": 0.4259432331560661,
+        "alexnet": 0.3541566095852599
+      },
+      "saved_fitted_models": false,
+      "source_run_hash": "9c846624",
+      "fit_id": "b6bde0ab4ebe"
+    },
+    {
+      "policy": "matched",
+      "noise": "0",
+      "n_oof": 1620,
+      "n_wavs": 36,
+      "n_inner_folds": 3,
+      "shared_fit_held_wavs": 0,
+      "test_used": false,
+      "same_training_ids_and_targets": true,
+      "same_inner_folds": true,
+      "oof_sha256": "52e4f52c796c48a835a7a168abea61cbbf857b8da26b85bc76a24a9a5d1a65b3",
+      "weights": {
+        "randomforest": 0.2705454022728172,
+        "conformer": 0.4230999588015229,
+        "alexnet": 0.30635463892565984
+      },
+      "saved_fitted_models": false,
+      "source_run_hash": "0ae50597",
+      "fit_id": "d8eb860a2d0a"
+    },
+    {
+      "policy": "matched",
+      "noise": "-4",
+      "n_oof": 1620,
+      "n_wavs": 36,
+      "n_inner_folds": 3,
+      "shared_fit_held_wavs": 0,
+      "test_used": false,
+      "same_training_ids_and_targets": true,
+      "same_inner_folds": true,
+      "oof_sha256": "26d9835d0c788ec1ebbcceccde294172c695409e0e662de62120321edc52ae1c",
+      "weights": {
+        "randomforest": 0.2819228948829408,
+        "conformer": 0.40584370604119685,
+        "alexnet": 0.31223339907586234
+      },
+      "saved_fitted_models": false,
+      "source_run_hash": "0ae50597",
+      "fit_id": "65e98912e5f0"
+    },
+    {
+      "policy": "matched",
+      "noise": "-8",
+      "n_oof": 1620,
+      "n_wavs": 36,
+      "n_inner_folds": 3,
+      "shared_fit_held_wavs": 0,
+      "test_used": false,
+      "same_training_ids_and_targets": true,
+      "same_inner_folds": true,
+      "oof_sha256": "b899a33bb22c186d0c409b3444cb596df35a14446d24553fed9df1f6d2f2995a",
+      "weights": {
+        "randomforest": 0.31680068232559433,
+        "conformer": 0.437868030697789,
+        "alexnet": 0.24533128697661655
+      },
+      "saved_fitted_models": false,
+      "source_run_hash": "0ae50597",
+      "fit_id": "f26e00059c43"
+    },
+    {
+      "policy": "matched",
+      "noise": "-12",
+      "n_oof": 1620,
+      "n_wavs": 36,
+      "n_inner_folds": 3,
+      "shared_fit_held_wavs": 0,
+      "test_used": false,
+      "same_training_ids_and_targets": true,
+      "same_inner_folds": true,
+      "oof_sha256": "267b7c5b93cb9bd3a95c26f155bbde62c3e2d3dc405152c1a28503a0d39bdc10",
+      "weights": {
+        "randomforest": 0.36093925402595217,
+        "conformer": 0.39051311798187494,
+        "alexnet": 0.24854762799217298
+      },
+      "saved_fitted_models": false,
+      "source_run_hash": "0ae50597",
+      "fit_id": "f3caaa93e1a2"
+    },
+    {
+      "policy": "matched",
+      "noise": "-16",
+      "n_oof": 1620,
+      "n_wavs": 36,
+      "n_inner_folds": 3,
+      "shared_fit_held_wavs": 0,
+      "test_used": false,
+      "same_training_ids_and_targets": true,
+      "same_inner_folds": true,
+      "oof_sha256": "5ab93d46e410ea3b22f0c89e7fb093a319dd00e2a7554db0170a6b3b2c1e600a",
+      "weights": {
+        "randomforest": 0.36959092492975903,
+        "conformer": 0.351333244535909,
+        "alexnet": 0.2790758305343319
+      },
+      "saved_fitted_models": false,
+      "source_run_hash": "0ae50597",
+      "fit_id": "d936a58d9f2d"
+    },
+    {
+      "policy": "matched",
+      "noise": "-20",
+      "n_oof": 1620,
+      "n_wavs": 36,
+      "n_inner_folds": 3,
+      "shared_fit_held_wavs": 0,
+      "test_used": false,
+      "same_training_ids_and_targets": true,
+      "same_inner_folds": true,
+      "oof_sha256": "e1140c30e4f65cdf5d997b090118582992650fe88de2b176bee70e5f05d8a459",
+      "weights": {
+        "randomforest": 0.3285519084899631,
+        "conformer": 0.40344646838304943,
+        "alexnet": 0.2680016231269875
+      },
+      "saved_fitted_models": false,
+      "source_run_hash": "0ae50597",
+      "fit_id": "b7182277ae55"
+    }
+  ],
+  "training_outer_overlap": 0,
+  "outer_predictions_read": false,
+  "distinct_oof_fits": 7,
+  "clean_matched_oof_identical": true,
+  "training_input_arrays_read": 3240,
+  "outer_input_arrays_read": 0,
+  "input_features": [
+    "log_power_512_1000",
+    "log_power_1000_2000",
+    "log_power_2000_3000",
+    "log_power_2100_2500",
+    "log_power_total",
+    "log_ratio_2000_3000_to_1000_2000",
+    "log_ratio_2100_2500_to_1000_2000",
+    "spectral_centroid_hz",
+    "normalized_spectral_entropy",
+    "temporal_power_cv"
+  ],
+  "units": "predictions and targets converted W/m2 to kW/m2",
+  "limitations": [
+    "Pooled OOF performance with OOF-derived weights is descriptive, not independent ensemble validation.",
+    "Input band summaries are not fitted-model attributions.",
+    "Adjacent ONB contrast involves one recording per stage and day, not independent chunk experiments.",
+    "No source run or main configuration modified; no existing models retrained."
+  ]
+}

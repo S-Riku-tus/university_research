@@ -1,12 +1,14 @@
 # 文書案内と更新ルール
 
-更新日: 2026-10-04。**現在の状態は一か所で更新し、過去の数値と判断は日付付き記録に残す。**
+更新日: 2026-10-05。**現在の状態は一か所で更新し、過去の数値と判断は日付付き記録に残す。**
 
 ## 読む順序と各文書の役割
 
 | 目的 | 読む文書 | 更新方法 |
 |---|---|---|
 | 次の作業を始める | [研究の現在地](research_status.md) | 状態・本人の希望・次の一手を更新する唯一の入口 |
+| 全熱流束支持の内部fold・早い100%判定・追加候補の結果を見る | [10/5内部fold・q100・候補比較](../experiments/2026-10-05_onb_endpoint_and_grouped_fold_review/README.md) | WAV分離の限界、順位均衡と既知WAV時間block、q100優先の再評価、ExtraTrees/HGB予備比較、固定統合と次の入力表現を記録 |
+| 学習OOFの共通失敗と第4モデル候補の予備比較を見る | [10/4 OOF診断と帯域特徴SVR](../experiments/2026-10-04_training_oof_diversity_diagnosis/README.md) | 内部ONB配置、学習chunkの特徴、nested SVR、訂正と追加誤り、noise転送、絶対power除去の不採用、次の配置対照を固定 |
 | 最新課題・説明性の選択理由・追加モデルの役割を確認する | [10/4現行結果と追加モデルの検討](research_plan/2026-10-04_current_challenges_xai_and_model_diversity.md) | clean_only主軸、両系列の共通失敗、逆方向出力と有用な補完の違い、現行log-power IG、XAI品質、追加モデルから統合へ進む条件を整理 |
 | 採用条件matchedとclean_onlyの対応結果を見る | [10/3 matched対応解析](../experiments/2026-10-03_tuned_within_wav_matched_comparison/README.md) | 14条件のID・無雑音一致、全域/ONB/q100、RF適応、共通陰性、OOF重みと外側順位、次の比較を固定 |
 | matched対照と誤り方を使う統合の次工程を考える | [10/3現在地・次工程](research_plan/2026-10-03_matched_and_error_aware_ensemble_next_steps.md) | 本人の最新希望、輪講論文との接続、共通条件matched、学習OOFでの選択、推論情報・テスト再利用の制約を記録 |

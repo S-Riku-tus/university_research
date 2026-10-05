@@ -1,0 +1,182 @@
+{
+  "created_date": "2026-10-04",
+  "status": "Partition audited; model training not performed; not a main-run override",
+  "purpose": "Test sensitivity to both ONB recordings being held out in the same internal fold",
+  "source_run": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/ensemble/202610/01/onb_wc-t0611-v0611_iw3-nc_c1s_s0_e150_170655",
+  "fixed_conditions": "3kHz, 1s, no selection, adopted parameters, same outer 1620/540 split",
+  "changed_factor": "Swap the held-out folds of 20250618 ONB and its next measured heat-flux stage",
+  "swap": {
+    "20250618::index=9.271677": 2,
+    "20250618::index=10.322114": 1
+  },
+  "folds": [
+    {
+      "fold": 1,
+      "fit_chunks": 1080,
+      "held_chunks": 540,
+      "shared_source_wavs": 0,
+      "fit_wavs": [
+        "20250611::index=1.3.28E-04",
+        "20250611::index=10.3.15E+05",
+        "20250611::index=11.3.69E+05",
+        "20250611::index=12.4.27E+05",
+        "20250611::index=13.4.89E+05",
+        "20250611::index=14.5.54E+05",
+        "20250611::index=15.6.24E+05",
+        "20250611::index=16.6.98E+05",
+        "20250611::index=2.2.36E+03",
+        "20250611::index=3.2.10E+04",
+        "20250611::index=6.1.44E+05",
+        "20250611::index=7.1.81E+05",
+        "20250618::index=1.0",
+        "20250618::index=11.376320",
+        "20250618::index=13.496023",
+        "20250618::index=14.562158",
+        "20250618::index=15.633482",
+        "20250618::index=16.709792",
+        "20250618::index=18.873637",
+        "20250618::index=2.2380",
+        "20250618::index=3.21242",
+        "20250618::index=6.146381",
+        "20250618::index=7.184190",
+        "20250618::index=9.271677"
+      ],
+      "held_wavs": [
+        "20250611::index=17.7.77E+05",
+        "20250611::index=18.8.59E+05",
+        "20250611::index=4.5.76E+04",
+        "20250611::index=5.1.11E+05",
+        "20250611::index=8.2.22E+05",
+        "20250611::index=9.2.67E+05",
+        "20250618::index=10.322114",
+        "20250618::index=12.434018",
+        "20250618::index=17.789500",
+        "20250618::index=4.58389",
+        "20250618::index=5.113188",
+        "20250618::index=8.225704"
+      ]
+    },
+    {
+      "fold": 2,
+      "fit_chunks": 1080,
+      "held_chunks": 540,
+      "shared_source_wavs": 0,
+      "fit_wavs": [
+        "20250611::index=15.6.24E+05",
+        "20250611::index=16.6.98E+05",
+        "20250611::index=17.7.77E+05",
+        "20250611::index=18.8.59E+05",
+        "20250611::index=2.2.36E+03",
+        "20250611::index=4.5.76E+04",
+        "20250611::index=5.1.11E+05",
+        "20250611::index=6.1.44E+05",
+        "20250611::index=8.2.22E+05",
+        "20250611::index=9.2.67E+05",
+        "20250618::index=1.0",
+        "20250618::index=10.322114",
+        "20250618::index=11.376320",
+        "20250618::index=12.434018",
+        "20250618::index=13.496023",
+        "20250618::index=14.562158",
+        "20250618::index=16.709792",
+        "20250618::index=17.789500",
+        "20250618::index=18.873637",
+        "20250618::index=2.2380",
+        "20250618::index=4.58389",
+        "20250618::index=5.113188",
+        "20250618::index=6.146381",
+        "20250618::index=8.225704"
+      ],
+      "held_wavs": [
+        "20250611::index=1.3.28E-04",
+        "20250611::index=10.3.15E+05",
+        "20250611::index=11.3.69E+05",
+        "20250611::index=12.4.27E+05",
+        "20250611::index=13.4.89E+05",
+        "20250611::index=14.5.54E+05",
+        "20250611::index=3.2.10E+04",
+        "20250611::index=7.1.81E+05",
+        "20250618::index=15.633482",
+        "20250618::index=3.21242",
+        "20250618::index=7.184190",
+        "20250618::index=9.271677"
+      ]
+    },
+    {
+      "fold": 3,
+      "fit_chunks": 1080,
+      "held_chunks": 540,
+      "shared_source_wavs": 0,
+      "fit_wavs": [
+        "20250611::index=1.3.28E-04",
+        "20250611::index=10.3.15E+05",
+        "20250611::index=11.3.69E+05",
+        "20250611::index=12.4.27E+05",
+        "20250611::index=13.4.89E+05",
+        "20250611::index=14.5.54E+05",
+        "20250611::index=17.7.77E+05",
+        "20250611::index=18.8.59E+05",
+        "20250611::index=3.2.10E+04",
+        "20250611::index=4.5.76E+04",
+        "20250611::index=5.1.11E+05",
+        "20250611::index=7.1.81E+05",
+        "20250611::index=8.2.22E+05",
+        "20250611::index=9.2.67E+05",
+        "20250618::index=10.322114",
+        "20250618::index=12.434018",
+        "20250618::index=15.633482",
+        "20250618::index=17.789500",
+        "20250618::index=3.21242",
+        "20250618::index=4.58389",
+        "20250618::index=5.113188",
+        "20250618::index=7.184190",
+        "20250618::index=8.225704",
+        "20250618::index=9.271677"
+      ],
+      "held_wavs": [
+        "20250611::index=15.6.24E+05",
+        "20250611::index=16.6.98E+05",
+        "20250611::index=2.2.36E+03",
+        "20250611::index=6.1.44E+05",
+        "20250618::index=1.0",
+        "20250618::index=11.376320",
+        "20250618::index=13.496023",
+        "20250618::index=14.562158",
+        "20250618::index=16.709792",
+        "20250618::index=18.873637",
+        "20250618::index=2.2380",
+        "20250618::index=6.146381"
+      ]
+    }
+  ],
+  "summary": [
+    {
+      "fold": 1,
+      "fit_chunks": 1080,
+      "held_chunks": 540,
+      "original_fit_onb_neighborhood_wavs": 0,
+      "alternative_fit_onb_neighborhood_wavs": 1
+    },
+    {
+      "fold": 2,
+      "fit_chunks": 1080,
+      "held_chunks": 540,
+      "original_fit_onb_neighborhood_wavs": 2,
+      "alternative_fit_onb_neighborhood_wavs": 1
+    },
+    {
+      "fold": 3,
+      "fit_chunks": 1080,
+      "held_chunks": 540,
+      "original_fit_onb_neighborhood_wavs": 2,
+      "alternative_fit_onb_neighborhood_wavs": 2
+    }
+  ],
+  "outer_test_used": false,
+  "main_config_modified": false,
+  "required_followup": "Retrain existing inner-fold models under this controlled partition before attributing errors to fold layout",
+  "limitations": [
+    "Availability of an ONB recording in inner-fit does not prove performance will improve",
+    "One split pair does not estimate general partition or seed uncertainty"
+  ]
+}

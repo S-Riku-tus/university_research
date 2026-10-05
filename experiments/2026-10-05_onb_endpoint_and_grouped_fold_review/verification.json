@@ -1,0 +1,11 @@
+{
+  "n_prediction_sets": 36,
+  "n_rows_per_set": 1620,
+  "q100_suffix_fixtures_passed": true,
+  "rare_group_feasibility_fixtures_passed": true,
+  "previous_svr_reproduced": true,
+  "all_saved_endpoint_metrics_recomputed": true,
+  "wav_disjoint_pilot_models_and_reload_verified": true,
+  "known_wav_block_gap_and_stage_coverage_audited": true,
+  "all_python_syntax_checked": true
+}

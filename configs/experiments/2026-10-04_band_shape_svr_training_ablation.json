@@ -1,0 +1,19 @@
+{
+  "created_date": "2026-10-04",
+  "purpose": "Identify whether absolute power dependence explains the first SVR pilot's noisy false positives",
+  "status": "One targeted training-side ablation after the first pilot failed; not adopted",
+  "parent_config": "configs/experiments/2026-10-04_band_feature_svr_training_pilot.json",
+  "output_prefix": "svr_shape",
+  "model": "Same RBF SVR, removing only the five absolute log-power features",
+  "features": ["log_ratio_2000_3000_to_1000_2000", "log_ratio_2100_2500_to_1000_2000", "spectral_centroid_hz", "normalized_spectral_entropy", "temporal_power_cv"],
+  "C_candidates": [1.0, 10.0, 100.0],
+  "epsilon": 0.02,
+  "gamma": "scale",
+  "stress_prediction_conditions": ["-20"],
+  "noisy_results_used_in_feature_design": true,
+  "hyperparameter_selection": "Clean only, nested source-WAV-disjoint 3-fold RMSE",
+  "outer_test_used": false,
+  "save_fold_models": true,
+  "hypothesis": "If absolute power dependence causes most transfer false positives, removing these features should reduce FP without merely making all predictions negative",
+  "limitations": ["This ablation was motivated by a noisy training-side result, so it is an exploratory noise-informed design decision", "Shape features may still change under additive noise", "Architecture is fixed, but selected C can differ because it is independently chosen by nested clean CV", "Neither variant is a final outer-test or new-noise validation"]
+}

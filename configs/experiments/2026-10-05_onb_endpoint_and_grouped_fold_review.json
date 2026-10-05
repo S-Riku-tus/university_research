@@ -1,0 +1,42 @@
+{
+  "status": "Training-side exploratory endpoint and split review; not a main-run configuration",
+  "source": "experiments/2026-10-04_training_oof_diversity_diagnosis",
+  "primary_user_objective": "Reach all observed chunks predicted ONB-positive at the lowest measured heat-flux stage; q100 and source-day g100",
+  "evaluation": "Pooled WAV-disjoint training OOF, 1620 chunks, 45 chunks per source WAV",
+  "outer_test_used": false,
+  "noise_policy": "clean_only; minus20 inputs are fixed clean-fit transfer diagnostics",
+  "n_splits": 3,
+  "seed": 42,
+  "split_prototype": "Within each day, sort source WAVs by heat flux; distribute successive rank blocks of 3 one per held-out fold; reject label-only allocations placing all near-ONB WAVs in one fold if at least 2 exist",
+  "known_wav_time_block_alternative": {
+    "status": "Split feasibility audit only; no model trained and no main setting changed",
+    "purpose": "Align internal selection with known-source-WAV unused-chunk scope and retain all measured stages",
+    "held_blocks_chunk_index": [[0, 19], [20, 39], [40, 59]],
+    "purge_neighbor_distances_in_chunks": [0, 1, 2],
+    "source_wav_shared_intentionally": true,
+    "held_chunk_used_in_fit": false,
+    "limitations": "A chosen gap does not prove temporal independence; this is not unknown-WAV validation"
+  },
+  "near_onb_definition_for_split_audit": "0.9 <= heat_flux/source_day_ONB <= 1.1; support audit only, not primary accuracy objective",
+  "model_families": {
+    "SVR": {"C": [1.0, 10.0, 100.0], "epsilon": 0.02, "gamma": "scale", "kernel": "rbf"},
+    "ExtraTrees": {"min_samples_leaf": [1, 5, 15], "n_estimators": 96, "max_features": 1.0, "bootstrap": false, "n_jobs": 1},
+    "HistGradientBoosting": {"max_leaf_nodes": [7, 15, 31], "max_iter": 150, "learning_rate": 0.05, "min_samples_leaf": 20, "l2_regularization": 1.0, "early_stopping": false}
+  },
+  "nested_selection": {
+    "partitions": "Three source-WAV folds inside each outer training-side OOF fit; split policy applies at both levels",
+    "policies": ["rmse", "q100_then_fp", "fp_then_q100"],
+    "q100_then_fp": "Illustrative lexicographic (worst source-day g100, mean g100, pooled FP count, RMSE), matching the stated early all-positive endpoint priority; report false alarms separately",
+    "fp_then_q100": "Illustrative lexicographic (pooled FP count, worst source-day g100, mean g100, RMSE), chosen only on inner clean OOF; no user-approved numeric FP tolerance is assumed",
+    "unreachable_q100": "positive infinity for ranking; missing for reporting"
+  },
+  "fixed_features": "Same 10 acoustic band/shape features as the 2026-10-04 SVR; no true heat flux, source day, WAV identifier or chunk index in prediction inputs",
+  "limitations": [
+    "A single independent source WAV per day/stage cannot be simultaneously fit and held out while preserving WAV separation",
+    "Prototype ensures pooled near-ONB fit coverage only when group multiplicity allows it; not day-specific ONB coverage in every fold",
+    "Early endpoint improvement can accompany false alarms; neither the candidate nor the illustrative objective is automatically adopted",
+    "Shared 10-feature pilots do not evaluate all representations of any model family",
+    "Noise results already informed candidate research; transfer evaluation is exploratory, not pristine confirmation",
+    "Pooled cross-fitted q100 is not an endpoint of a single final model or a population-level 100 percent guarantee"
+  ]
+}
