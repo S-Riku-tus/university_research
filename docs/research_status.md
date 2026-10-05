@@ -1,12 +1,14 @@
 # 研究の現在地と次にすること
 
-更新日: **2026-10-05（chunk内部検証の実装後の次工程を整理）**。分位点ルール時点の状態は[変更前の記録](../experiments/2026-09-16_peak_height_selection/previous_documents/research_status.md)に保存した。
+更新日: **2026-10-05（chunk内部検証・clean_only基準の実行準備を完了）**。分位点ルール時点の状態は[変更前の記録](../experiments/2026-09-16_peak_height_selection/previous_documents/research_status.md)に保存した。
 
 **外側・内部ともchunk分割を本人が選択**：[実装・確認記録](../experiments/2026-10-05_shuffled_chunk_internal_validation/README.md)。既知WAV内の未使用chunkに評価としての価値を認め、別日/未知WAVの結果と分けて読む方針。外側は各WAVの60から15をランダムにテストへ回す既存方式を維持。内部performance重みとtraining_oof探索は、外側学習全chunkの通常KFold、shuffle=True、seed42、3-foldへ変更した。各熱流束の割合を揃える層化や時間blockは今回の方式に含めない。主設定は`run.internal_validation_split="chunk_kfold"`、明示WAV対照だけ`wav_kfold`を残す。
 
 **分割と実装を確認、精度改善は未検証**：関連46テスト通過。実データでは外側1620/540と10/1テストID全件一致、内部は1080/540を3回、同じchunk共有0、全36 WAV・両日各18段階が全fitに残る。ONB段階の学習chunk数は6/11が27/36/27、6/18が29/33/28。PCA・scaler・選別はfitのみ、外側テストは内部検証から除外。旧結果の誤再開を防ぐ条件hashと`ic3`保存tokenを追加した。研究3モデルの再学習・新OOF重み・外側q100結果は未出力である。
 
-**次は分割変更だけの本比較を基準にする**：[実装後の段階案](research_plan/2026-10-05_after_chunk_split_next_steps.md)と[条件案](../configs/experiments/2026-10-05_chunk_kfold_clean_baseline_plan.json)を作成した。clean_only主軸・旧採用値固定で、このchunk条件の既存3モデルOOF・重み・最終予測を得て、同じ外側540の旧結果と日別q100/g100・誤報を読む。最終モデルは以前から全1620を学習しており、今回変わるのは主に内部一時モデルによる重み推定。最後の陰性が全3モデル共通なら追加モデル/入力表現、単体で補えるなら重み/統合を先に比べる。旧WAV分離の候補結果を新条件の不採用理由に直結させない。matchedは保持。主コードはmatched・モデル非保存のままで、今回は計画のみ、設定変更・新学習なし。先行提案のWAV均衡・時間blockを必須工程として自動実行しない。以下の「次工程」は先行解析時点の記録であり、最新方針は本段を優先する。
+**本人依頼の実行準備を完了**：[確認記録](../experiments/2026-10-05_chunk_clean_baseline_ready/README.md)。主コードをclean_only・最終学習状態保存/再読込確認ありへ変更し、matchedは切替コメントで保持。実行snapshotへの内部分割設定の転送漏れも修正した。関連9テスト通過、実データ7条件各2160 IDの対応、外側1620/540と旧テストID一致、内部全36 WAV支持を確認済み。本学習・新q100は未実施である。
+
+**次は分割変更だけの本比較を基準にする**：[実装後の段階案](research_plan/2026-10-05_after_chunk_split_next_steps.md)と[実効条件記録](../configs/experiments/2026-10-05_chunk_clean_baseline_ready.json)に沿い、clean_only主軸・旧採用値固定で、このchunk条件の既存3モデルOOF・重み・最終予測を得て、同じ外側540の旧結果と日別q100/g100・誤報を読む。最終モデルは以前から全1620を学習しており、今回変わるのは主に内部一時モデルによる重み推定。最後の陰性が全3モデル共通なら追加モデル/入力表現、単体で補えるなら重み/統合を先に比べる。旧WAV分離の候補結果を新条件の不採用理由に直結させない。matchedは保持。先行提案のWAV均衡・時間blockを必須工程として自動実行しない。以下の「次工程」は先行解析時点の記録であり、最新方針は本段を優先する。
 
 **本人の主評価をq100へ明確化**：[10/5分割・到達段階・候補比較](../experiments/2026-10-05_onb_endpoint_and_grouped_fold_review/README.md)で、「ONB近傍RMSEより、全chunkをONB以上と判定できる最小実測熱流束」を中心に据えた。日別q100/g100とFP/FPRを併記し、誤報許容値を本人の方針として仮定しない。10/4のSVRは見逃しを減らしてもq100は両日不変。旧統合学習OOFの最後の陰性段階は6/11の315.47（5/45）と6/18の376.32（3/45）kW/m²で、ONB段階だけの改善ではq100が動かない。100%は有限標本の全陽性であり、時間遅延や将来保証と区別する。
 

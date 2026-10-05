@@ -2,6 +2,12 @@
 
 このページは**日付ごとの履歴**。各節の「現在」「次にやること」は当時の記録であり、現在の未完了作業とは限らない。最新の状態は[研究の現在地](research_status.md)、更新関係は[文書案内](document_index.md)を読む。
 
+## 2026-10-05 chunk内部検証・clean_only基準の実行準備
+
+- 本人の「実行してよいか、必要なら修正」依頼により、主コードをclean_only・最終学習状態保存/再読込確認ありへ変更。matchedは切替コメントで保持した。
+- 実行snapshotへの内部分割設定の転送漏れを修正し、chunk/WAV両設定の反映と条件hashの識別、不正値の学習前拒否を確認。関連9テスト通過。
+- [事前確認](../experiments/2026-10-05_chunk_clean_baseline_ready/README.md)で全7条件の2160 ID対応、外側1620/540と旧テストID一致、内部全36 WAV支持を確認。[実効条件](../configs/experiments/2026-10-05_chunk_clean_baseline_ready.json)を保存。本学習・新OOF/重み・新q100は未実施。
+
 ## 2026-10-05 chunk分割実装後の次工程を整理
 
 - 本人の依頼により[段階案](research_plan/2026-10-05_after_chunk_split_next_steps.md)と[基準実験の条件案](../configs/experiments/2026-10-05_chunk_kfold_clean_baseline_plan.json)を作成。最初は既存採用値固定のclean_only基準で、新OOF・重みと同じ外側540のq100/g100・誤報を得る。

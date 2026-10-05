@@ -66,6 +66,7 @@ from utils.experiment.run_helpers import set_global_seed
 # 実験条件を変更するときは、まずVALIDATION_CONFIGを編集する。
 # 実験ごとに変更する条件をここにまとめる。
 # 固定的な出力・説明性とモデル対応表はutils/config/onb_defaults.py。
+# 今回の基準比較ではoutputで最終学習状態の保存を明示的に有効にする。
 #
 # 現在の設定の読み方:
 # ・目的: 同じ検証予測から単体モデルと各アンサンブル方式を比較する。
@@ -141,7 +142,7 @@ VALIDATION_CONFIG = apply_onb_defaults({
         # clean_only: 無雑音だけで学習し、同じモデル・前処理・重みで
         #             全評価ノイズを予測する固定clean診断。
         # 評価ノイズ一覧から無雑音を外しても、学習には無雑音を読み込む。
-        "training_noise": "matched",
+        "training_noise": "clean_only",  # chunk内部検証への変更だけを比べる主条件
     },
     "acoustic_selection": {
         # スペクトルの縦軸に引く横線。図の「×10^-9」表示で高さ1に相当。
@@ -221,6 +222,13 @@ VALIDATION_CONFIG = apply_onb_defaults({
     },
     "features": {
         "pca_components": 100,
+    },
+    "output": {
+        "save_fold_predictions": True,
+        # 最新の最終モデルを、後から同じ状態で説明・追加推論できるようにする。
+        "save_fitted_artifacts": True,
+        # "save_fitted_artifacts": False,  # 予測だけを残す従来の軽量保存
+        "verify_reloaded_artifacts": True,
     },
     "explainability": {
         "enabled": False,
@@ -386,6 +394,7 @@ def validation_config_snapshot(max_freq_hz):
             "smoke_test": SMOKE_TEST,
             "epochs": EPOCH_NUM,
             "folds": DIVISIONS,
+            "internal_validation_split": _cfg("run", "internal_validation_split"),
             "color_channel": COLOR_CHANNEL,
             "random_seed": RANDOM_SEED,
             "deterministic_ops": DETERMINISTIC_OPS,
@@ -468,6 +477,8 @@ def update_noise_trend_plots(plotter, job, run_dir, run_hash, model_keys):
 
 
 def validate_validation_config(enabled_specs):
+    if _cfg("run", "internal_validation_split") not in {"chunk_kfold", "wav_kfold"}:
+        raise ValueError("internal_validation_split must be 'chunk_kfold' or 'wav_kfold'.")
     if "performance_kfold" in ENSEMBLE_MANAGER.selected_strategy_names and DIVISIONS < 2:
         raise ValueError("folds must be at least 2.")
     if int(PCA_COMPONENTS) <= 0:

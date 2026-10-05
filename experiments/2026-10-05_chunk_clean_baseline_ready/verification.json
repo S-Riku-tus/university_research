@@ -1,0 +1,122 @@
+{
+  "date": "2026-10-05",
+  "research_training_started": false,
+  "ready_configuration": "configs/experiments/2026-10-05_chunk_clean_baseline_ready.json",
+  "entrypoint_sha256": "9113ac1a6728744c98b3cae95eeff9f3e7ec9faa766e70035795f34da83b5fe9",
+  "entrypoint_validation_passed": true,
+  "fixed_parameter_run_not_search": true,
+  "training_families": 1,
+  "training_noise": "clean_only",
+  "evaluation_conditions": [
+    {
+      "noise": "heatflux_no_noise",
+      "samples": 2160,
+      "outer_test_chunks": 540,
+      "sample_npy_shape": [
+        224,
+        224
+      ],
+      "metadata_aligned": true
+    },
+    {
+      "noise": "heatflux_reference_SNR=0",
+      "samples": 2160,
+      "outer_test_chunks": 540,
+      "sample_npy_shape": [
+        224,
+        224
+      ],
+      "metadata_aligned": true
+    },
+    {
+      "noise": "heatflux_reference_SNR=-4",
+      "samples": 2160,
+      "outer_test_chunks": 540,
+      "sample_npy_shape": [
+        224,
+        224
+      ],
+      "metadata_aligned": true
+    },
+    {
+      "noise": "heatflux_reference_SNR=-8",
+      "samples": 2160,
+      "outer_test_chunks": 540,
+      "sample_npy_shape": [
+        224,
+        224
+      ],
+      "metadata_aligned": true
+    },
+    {
+      "noise": "heatflux_reference_SNR=-12",
+      "samples": 2160,
+      "outer_test_chunks": 540,
+      "sample_npy_shape": [
+        224,
+        224
+      ],
+      "metadata_aligned": true
+    },
+    {
+      "noise": "heatflux_reference_SNR=-16",
+      "samples": 2160,
+      "outer_test_chunks": 540,
+      "sample_npy_shape": [
+        224,
+        224
+      ],
+      "metadata_aligned": true
+    },
+    {
+      "noise": "heatflux_reference_SNR=-20",
+      "samples": 2160,
+      "outer_test_chunks": 540,
+      "sample_npy_shape": [
+        224,
+        224
+      ],
+      "metadata_aligned": true
+    }
+  ],
+  "outer_training_chunks": 1620,
+  "outer_test_chunks": 540,
+  "outer_test_ids_identical_to_20261001": true,
+  "internal_split_forwarded_to_execution": "chunk_kfold",
+  "internal_folds": [
+    {
+      "fold": 1,
+      "fit_chunks": 1080,
+      "validation_chunks": 540,
+      "fit_wavs": 36,
+      "shared_chunk_count": 0
+    },
+    {
+      "fold": 2,
+      "fit_chunks": 1080,
+      "validation_chunks": 540,
+      "fit_wavs": 36,
+      "shared_chunk_count": 0
+    },
+    {
+      "fold": 3,
+      "fit_chunks": 1080,
+      "validation_chunks": 540,
+      "fit_wavs": 36,
+      "shared_chunk_count": 0
+    }
+  ],
+  "OOF_coverage_once_per_chunk": true,
+  "unit_and_integration_tests": {
+    "tests_run": 9,
+    "result": "OK",
+    "modules": [
+      "test_onb_entrypoint",
+      "test_onb_defaults",
+      "test_training_state_persistence",
+      "test_within_wav_chunk.WithinWavChunkTest.test_runner_excludes_test_from_inner_cv_preprocessing_and_fit"
+    ],
+    "small_test_models_only": true
+  },
+  "q100_improvement_verified": false
+}
