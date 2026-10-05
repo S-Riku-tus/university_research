@@ -1,0 +1,10 @@
+{
+  "source_failed_run": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/ensemble/202610/05/onb_wc-t0611-v0611_ic3-nc_c1s_s0_e150_183837/maxfreq=3kHz/heatflux_no_noise",
+  "probe": "First 8 outer training chunks, matching the save/reload verification in the failed run",
+  "reported_max_difference_W_m2": 11960.8984,
+  "pca_transform_version_after_fix": 2,
+  "component_order_after_fix": "C",
+  "pca_feature_decimals": 6,
+  "research_model_retraining": false,
+  "original_run_overwritten": false
+}

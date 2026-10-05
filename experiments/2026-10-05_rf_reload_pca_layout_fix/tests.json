@@ -1,0 +1,18 @@
+{
+  "date": "2026-10-05",
+  "modules": [
+    "test_onb_entrypoint",
+    "test_day_split_acoustic_selection",
+    "test_within_wav_chunk",
+    "test_training_oof_tuning",
+    "test_learning_policy",
+    "test_onb_defaults",
+    "test_training_state_persistence"
+  ],
+  "tests_run": 49,
+  "result": "OK",
+  "new_regression_test": "test_pca_transform_matches_after_serializing_strided_components",
+  "new_test_failed_before_fix": true,
+  "new_test_passed_after_fix": true,
+  "research_model_training_restarted": false
+}

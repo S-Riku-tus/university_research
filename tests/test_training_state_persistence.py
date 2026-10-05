@@ -4,7 +4,9 @@ import sys
 import tempfile
 import unittest
 
+import joblib
 import numpy as np
+from sklearn.decomposition import PCA
 from sklearn.preprocessing import MinMaxScaler
 from tensorflow import keras
 
@@ -62,6 +64,26 @@ class TrainingStatePersistenceTest(unittest.TestCase):
             [trainer.transform_pca(pca, x[:5]), trainer.transform_pca(pca, x[5:])]
         )
         np.testing.assert_array_equal(whole, in_parts)
+
+    def test_pca_transform_matches_after_serializing_strided_components(self):
+        # Randomized PCA retains a strided view of its oversampled matrix;
+        # joblib reloads this as a contiguous array. Float32 projection near
+        # a quantization boundary must still produce identical RF features.
+        rng = np.random.default_rng(5)
+        x_fit = (
+            rng.normal(size=(48, 513)) * 1e-4
+            + rng.normal(size=513) * 0.01
+        ).astype(np.float32)
+        pca = PCA(n_components=20, svd_solver="randomized", random_state=42).fit(x_fit)
+        x_probe = (rng.normal(size=(8, 513)) * 1e-8).astype(np.float32)
+        trainer = ModelTrainer(42)
+        original = trainer.transform_pca(pca, x_probe)
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / "pca.joblib"
+            joblib.dump(pca, path)
+            restored_pca = joblib.load(path)
+            restored = trainer.transform_pca(restored_pca, x_probe)
+        np.testing.assert_array_equal(restored, original)
 
     def test_keras_and_randomforest_state_reload_predictions(self):
         rng = np.random.default_rng(7)
@@ -136,6 +158,8 @@ class TrainingStatePersistenceTest(unittest.TestCase):
             self.assertEqual(saved["training_wav_groups"], ["wav-a", "wav-b"])
             self.assertEqual(saved["model_epochs"], {"tiny": 1})
             self.assertEqual(saved["pca_feature_decimals"], 6)
+            self.assertEqual(saved["pca_transform_version"], 2)
+            self.assertEqual(saved["pca_transform_component_order"], "C")
 
 
 if __name__ == "__main__":

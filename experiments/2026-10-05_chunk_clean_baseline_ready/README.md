@@ -2,6 +2,8 @@
 
 確認日: 2026-10-05。本人の「現在のONBコードで実行してよいか、必要なら修正」の依頼に対応した。**設定・事前確認まで完了。本学習と新しい精度結果は未実施。**
 
+同日後続：この準備後の本人実行はRFの保存再読込検証で停止した。[原因と修正](../2026-10-05_rf_reload_pca_layout_fix/README.md)を参照する。以下の9テストと事前確認は実行前の記録であり、保存後のPCA配置による数値差を覆っていなかった。
+
 - [主実行コード](../../code/run_ensemble_regression_onb.py)を`training_noise="clean_only"`へ変更し、matchedを切替用コメントで残した。
 - 最終学習モデル・PCA・target scaler・重みの保存と再読込検証を、主実行の`output`で明示的に有効にした。共通の軽量保存既定は変更していない。状態はclean条件の`fitted_state/fold1/`に置き、他の雑音条件から同じ状態を参照する。
 - `validation_config_snapshot()`が`internal_validation_split`を実行設定へ転送していなかった箇所を修正した。chunkでは既定値によって動いていたが、WAV対照の選択が伝わらなかった。両方式の転送・条件hashの識別と、不正値の学習前拒否を確認した。

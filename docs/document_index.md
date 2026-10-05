@@ -7,6 +7,7 @@
 | 目的 | 読む文書 | 更新方法 |
 |---|---|---|
 | 次の作業を始める | [研究の現在地](research_status.md) | 状態・本人の希望・次の一手を更新する唯一の入口 |
+| RF保存再読込の予測不一致と修正を見る | [10/5 PCA配置の数値互換性修正](../experiments/2026-10-05_rf_reload_pca_layout_fix/README.md) | 本人停止runで差を再現、共通PCAのC配置、変換版2のhash記録、実RF再検証差0、49テストと再実行前の状態を記録 |
 | ONB主コードの実行準備と現在の条件を見る | [10/5 clean_only実行準備](../experiments/2026-10-05_chunk_clean_baseline_ready/README.md) | clean_only・学習状態保存、内部分割の実行転送修正、9テスト、7条件のID対応と旧テスト維持、本学習未実施を記録 |
 | chunk分割の実装後に進む順序と判断条件を見る | [10/5実装後の次工程](research_plan/2026-10-05_after_chunk_split_next_steps.md) | 固定値clean_only基準、q100の最後の陰性による分岐、旧候補の再検討、入力とモデルの対照、統合・XAI・再現性の順序を提案として整理 |
 | 本人指定のシャッフルありchunk分割と実装確認を見る | [10/5内部chunk KFoldへの切替](../experiments/2026-10-05_shuffled_chunk_internal_validation/README.md) | 外側ID維持、内部performance/tuningの切替、46テスト、全段階支持、旧結果識別、未出力の本比較を記録 |

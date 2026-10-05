@@ -12,7 +12,7 @@ import joblib
 import numpy as np
 
 from utils.experiment.run_helpers import json_default, makedirs, open_text, windows_long_path
-from utils.training.model_training import PCA_FEATURE_DECIMALS
+from utils.training.model_training import PCA_FEATURE_DECIMALS, PCA_TRANSFORM_VERSION
 
 
 def _file_digest(path):
@@ -91,6 +91,8 @@ def begin_fitted_state(
         "training_wav_groups": sorted({str(value) for value in training_wav_groups}),
         "model_epochs": {key: int(value) for key, value in model_epochs.items()},
         "pca_feature_decimals": PCA_FEATURE_DECIMALS if pca is not None else None,
+        "pca_transform_version": PCA_TRANSFORM_VERSION if pca is not None else None,
+        "pca_transform_component_order": "C" if pca is not None else None,
         "environment": environment_snapshot(),
         "preprocessors": {},
         "models": {},

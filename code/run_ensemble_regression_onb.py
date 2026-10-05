@@ -30,7 +30,7 @@ os.environ.setdefault("CUBLAS_WORKSPACE_CONFIG", ":4096:8")
 import matplotlib.pyplot as plt
 import numpy as np
 
-from utils.training.model_training import ModelTrainer
+from utils.training.model_training import ModelTrainer, PCA_TRANSFORM_VERSION
 from utils.ensemble.ensemble_runtime import EnsembleManager
 from utils.plotting.regression_plots import RegressionPlotter
 from utils.config.parameter_sets import (
@@ -426,6 +426,7 @@ def validation_config_snapshot(max_freq_hz):
         "ensemble": ENSEMBLE_MANAGER.snapshot(),
         "features": {
             "pca_components": PCA_COMPONENTS,
+            "pca_transform_version": PCA_TRANSFORM_VERSION,
         },
         "output": {
             "save_date": SAVE_DATE,

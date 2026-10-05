@@ -1,0 +1,52 @@
+{
+  "source_failed_run": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/ensemble/202610/05/onb_wc-t0611-v0611_ic3-nc_c1s_s0_e150_183837/maxfreq=3kHz/heatflux_no_noise",
+  "source_artifacts_sha256": {
+    "pca.joblib": "62242465013f0db865fb6158586b3034f6c0169063f8307e307a6aea7f7d9b16",
+    "randomforest.joblib": "bf4e1f0619e6659359e24778663a698dd6085644315aa57ffece429f45197ea9",
+    "target_scaler.joblib": "35105fbe5dcac2708348886c2d8a18cfcb4255ffb596e3a8c205c6e2d3aedd19"
+  },
+  "probe_outer_training_indices": [
+    1,
+    2,
+    4,
+    6,
+    7,
+    8,
+    9,
+    10
+  ],
+  "legacy_layout_changed_feature_count": 1,
+  "legacy_max_prediction_difference_W_m2": 11960.8984375,
+  "legacy_mean_prediction_difference_W_m2": 1495.1123046875,
+  "fixed_feature_arrays_identical": true,
+  "actual_saved_model_reload_verification": {
+    "performed": true,
+    "probe_samples": 8,
+    "max_abs_prediction_difference_w_m2": 0.0,
+    "mean_abs_prediction_difference_w_m2": 0.0,
+    "allclose_rtol": 1e-06,
+    "allclose_atol_w_m2": 0.001,
+    "passed": true
+  },
+  "pca_transform_version": 2,
+  "old_run_hash": "0bbd1a41",
+  "fixed_run_hash": "2a9bfcd8",
+  "run_identity_changed": true,
+  "original_run_overwritten": false,
+  "source_run_complete": false,
+  "source_internal_audit_keys": [
+    "method",
+    "split_unit",
+    "shuffle",
+    "random_state",
+    "folds",
+    "weight_formula",
+    "score_unit",
+    "internal_score_scope",
+    "test_used",
+    "individual_errors",
+    "samples"
+  ],
+  "research_model_retraining": false,
+  "q100_improvement_verified": false
+}

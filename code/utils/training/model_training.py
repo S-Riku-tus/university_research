@@ -14,12 +14,20 @@ from utils.experiment.run_helpers import current_global_seed, reapply_global_see
 # to a split threshold. BLAS can otherwise introduce a few 1e-9 of variation
 # when the same transform is evaluated in a different process or batch.
 PCA_FEATURE_DECIMALS = 6
+PCA_TRANSFORM_VERSION = 2
 
 
 def stable_pca_transform(pca, x):
-    """Flatten x and quantize transform-level numerical BLAS noise."""
+    """Use a canonical PCA array layout before quantizing BLAS noise."""
     array = np.asarray(x)
     flat = np.ascontiguousarray(array.reshape(array.shape[0], -1))
+    # Randomized PCA can keep a non-contiguous view of its oversampled SVD
+    # matrix. joblib reloads that view as a C-contiguous array. Different
+    # layouts select different float32 BLAS paths; even six-decimal rounding
+    # can cross a boundary and send a tree down another branch. Preserve the
+    # fitted values/dtype, but use the same layout for fitting and inference.
+    pca.components_ = np.ascontiguousarray(pca.components_)
+    pca.mean_ = np.ascontiguousarray(pca.mean_)
     return np.round(pca.transform(flat), decimals=PCA_FEATURE_DECIMALS)
 
 
