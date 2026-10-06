@@ -1,6 +1,6 @@
 # コード地図
 
-更新日: 2026-09-29。現在の設定・完了runは[研究の現在地](research_status.md)。通常の主実行は[run_ensemble_regression_onb.py](../code/run_ensemble_regression_onb.py)。
+更新日: 2026-10-06。現在の設定・完了runは[研究の現在地](research_status.md)。通常の主実行は[run_ensemble_regression_onb.py](../code/run_ensemble_regression_onb.py)。
 
 ## 主経路と入出力
 
@@ -11,6 +11,7 @@
 | 読込 | [dataloading_and_conversion.py](../code/utils/dataloading/dataloading_and_conversion.py) | 時間×周波数×channelのx、熱流束y、元WAV/chunk情報 |
 | 条件・分割 | [dataset_jobs.py](../code/utils/experiment/dataset_jobs.py)、[learning_policy.py](../code/utils/experiment/learning_policy.py) | 実験日/ノイズ方針、元WAV分離、ノイズ間の対応検査 |
 | 学習・評価実行 | [learning_runner.py](../code/utils/experiment/learning_runner.py) | 分割・ノイズ方針ごとの学習・予測・XAI・指標・保存をまとめる |
+| 固定HGBの追加比較 | [run_hgb_complementarity_validation.py](../code/run_hgb_complementarity_validation.py)、[acoustic_summary_features.py](../code/utils/dataloading/acoustic_summary_features.py) | 固定34特徴HGBと既存3を同じchunk splitで再fit、clean-fit雑音OOF、固定統合、内部/最終状態保存。主runnerとは独立した比較入口 |
 | モデル | [base_regression.py](../code/utils/models/regression/base_regression.py)、[onb_defaults.py](../code/utils/config/onb_defaults.py) | RandomForest=XGBRF、Conformer、log-power AlexNet。固定registryと出力・評価・XAI既定値 |
 | 学習器 | [model_training.py](../code/utils/training/model_training.py) | 学習側PCA、Keras/RF学習、元スケールへの予測復元 |
 | 統合 | [strategy_catalog.py](../code/utils/ensemble/strategy_catalog.py)、[ensemble_runtime.py](../code/utils/ensemble/ensemble_runtime.py)、[ensemble_weighting.py](../code/utils/ensemble/ensemble_weighting.py) | 選択式の統合、主方式performance K-foldのOOF chunk R²逆誤差重み、過去inner holdout、crossfitのWAV目的 |
@@ -30,6 +31,8 @@
 外側評価は、別日`cross_day`と全WAVのchunkをそれぞれ分ける`within_wav_chunk`の2方式を明示選択する。本人の10/3方針により、外側のWAV単位日内holdoutと旧日内K-foldは実行経路から削除した。`within_wav_chunk`は各WAVから同率のchunkをランダムにテストへ回し、同一chunkを共有しない既知WAV内の未使用区間評価である。10/5本人指定により、内部`performance_kfold`と`training_oof`探索は、外側学習chunk全体の通常KFold、shuffle=True、seed42へ切り替えた。`run.internal_validation_split`の既定は`chunk_kfold`、明示した旧対照だけ`wav_kfold`を使う。実効方式を条件hashへ含め、通常保存先は`ic3`で旧`iw3`と識別する。これらと`matched / clean_only`を組み合わせる。matchedはnoiseごとに別familyを作り、モデル・PCA・scaler・epoch・重みをそのnoiseの学習データから再fitする。clean_onlyは同じcleanモデル・PCA・scaler・epoch・重みを評価noise間で共有する。明示分割では学習専用日は学習に要るノイズだけを探索する。過去資料と結果は保持し、旧分割の記述を現行仕様とは扱わない。
 
 通常の学習は`run.epochs`で指定した回数まで行い、別validationによるepoch選択とvalidation lossによるearly stoppingはない。OOM時にbatchを減らす再試行や、一定epoch以上の途中学習を受け入れる処理があるため、`tuning_summary.csv`等の実際のepoch/batchも確認する。要求epochの設定値だけで全モデルが必ず完走したと断定しない。
+
+固定HGB比較の条件は[専用JSON](../configs/experiments/2026-10-06_hgb_followup_validation.json)から読む。`--phase train/integrate/analyze`で全モデル学習、OOFによる統合固定、外側評価を分け、同じ条件hashの完了fitから再開できる。各内部foldも保存し、150 epochs完走を要求する。雑音OOFを重みへ使う方式は、基礎モデルがclean固定でも、純粋なclean_only統合とは分けて報告する。[比較記録と再現入口](../experiments/2026-10-06_hgb_followup_validation/README.md)。
 
 ## 保存されるもの
 

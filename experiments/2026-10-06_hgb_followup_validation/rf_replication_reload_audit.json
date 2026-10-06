@@ -1,0 +1,7 @@
+{
+  "full540_prediction_checks": 56,
+  "full540_reload_passed": true,
+  "blas_threads": 2,
+  "probe8_batch_max_abs_kW_m2": 0.0,
+  "claim_scope": "Saved paired-run models under fixed two-thread CPU PCA/RF context; no general batch/thread invariance claim"
+}

@@ -1,0 +1,13 @@
+{
+  "feature_unittest": {
+    "passed": 4,
+    "failed": 0
+  },
+  "integration_unittest": {
+    "passed": 2,
+    "failed": 0
+  },
+  "new_document_links_valid": true,
+  "comparison_plot_visually_inspected": true,
+  "notes": "Tests run with unittest in the existing environment; no dependency installation"
+}

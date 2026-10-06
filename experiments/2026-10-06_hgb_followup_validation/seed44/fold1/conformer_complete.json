@@ -1,0 +1,23 @@
+{
+  "config_sha256": "a9409422a611b51111c9fac124ff77a4a3bd6fd789218570ac7385baf4d3dd4c",
+  "seed": 44,
+  "stage": "fold1",
+  "model": "conformer",
+  "model_seed": 45,
+  "fit_chunks": 1080,
+  "held_chunks": 540,
+  "shared_chunks": 0,
+  "clean_fit": true,
+  "noise_refit": false,
+  "training_info": {
+    "verbose": 0,
+    "epochs": 150,
+    "steps": 90,
+    "requested_batch_size": 12,
+    "actual_batch_size": 12,
+    "epochs_completed": 150
+  },
+  "elapsed_seconds": 120.96899999998277,
+  "reload_verified": true,
+  "artifact_sha256": "232cc23d57e1756b1245f5a05f60ee3d92f6d0999ae5b437b803ab578c0e35bb"
+}

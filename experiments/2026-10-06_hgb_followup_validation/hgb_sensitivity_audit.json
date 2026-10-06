@@ -1,0 +1,27 @@
+{
+  "fit_operations": 12,
+  "parameters_fixed": {
+    "max_leaf_nodes": 31,
+    "max_iter": 150,
+    "learning_rate": 0.05,
+    "min_samples_leaf": 20,
+    "l2_regularization": 1.0,
+    "early_stopping": false
+  },
+  "factorial_diagnostic": {
+    "outer_splits": [
+      42,
+      43,
+      44
+    ],
+    "hgb_random_states": [
+      42,
+      43,
+      44,
+      45
+    ]
+  },
+  "outer_used_for_selection": false,
+  "timing": "Exploratory diagnostic prompted by seed43 strong-noise false alarms; not independent confirmation",
+  "feature_definition": "Same frequency34; all1620 baseline clean feature values checked identical"
+}

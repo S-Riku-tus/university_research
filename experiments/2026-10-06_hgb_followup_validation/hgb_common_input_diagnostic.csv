@@ -1,0 +1,7 @@
+﻿training_split_seed,fixed_input_set,noise,mean_abs_prediction_change_vs_seed42,max_abs_prediction_change_vs_seed42,pre_ONB_positive_count,holdout_claim_for_other_training_splits
+42,"seed42 outer540, diagnostic only; may overlap other seeds' clean training",clean,0.0,0.0,0,False
+42,"seed42 outer540, diagnostic only; may overlap other seeds' clean training",-20,0.0,0.0,0,False
+43,"seed42 outer540, diagnostic only; may overlap other seeds' clean training",clean,13.380635377167906,195.03868390170248,0,False
+43,"seed42 outer540, diagnostic only; may overlap other seeds' clean training",-20,51.53458424635646,113.10158287346214,90,False
+44,"seed42 outer540, diagnostic only; may overlap other seeds' clean training",clean,13.104347327052214,148.93694853659474,0,False
+44,"seed42 outer540, diagnostic only; may overlap other seeds' clean training",-20,10.432809375013646,61.50071624149362,0,False

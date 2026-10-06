@@ -1,0 +1,97 @@
+{
+  "fit_scope": "clean training OOF only",
+  "outer_labels_used_for_fit": false,
+  "config_sha256": "130f8a7cba794e64143deed88fa8b26850ad5975dbb054dc2107d709305a3761",
+  "methods": [
+    {
+      "method": "existing3_mse",
+      "inputs": [
+        "randomforest",
+        "conformer",
+        "alexnet"
+      ],
+      "weights": [
+        0.059045516258284775,
+        0.5762641930760839,
+        0.36469029066563124
+      ],
+      "kind": "linear"
+    },
+    {
+      "method": "existing_ca_mse",
+      "inputs": [
+        "conformer",
+        "alexnet"
+      ],
+      "weights": [
+        0.6328926981250441,
+        0.36710730187495594
+      ],
+      "kind": "linear"
+    },
+    {
+      "method": "conformer_hgb_mse",
+      "inputs": [
+        "conformer",
+        "frequency34_HGB_rmse"
+      ],
+      "weights": [
+        0.3005962537083592,
+        0.6994037462916408
+      ],
+      "kind": "linear"
+    },
+    {
+      "method": "alexnet_hgb_mse",
+      "inputs": [
+        "alexnet",
+        "frequency34_HGB_rmse"
+      ],
+      "weights": [
+        0.24951399886832554,
+        0.7504860011316745
+      ],
+      "kind": "linear"
+    },
+    {
+      "method": "ca_hgb_mse",
+      "inputs": [
+        "conformer",
+        "alexnet",
+        "frequency34_HGB_rmse"
+      ],
+      "weights": [
+        0.20611184995457438,
+        0.18847187926453585,
+        0.6054162707808899
+      ],
+      "kind": "linear"
+    },
+    {
+      "method": "existing3_diversity",
+      "inputs": [
+        "randomforest",
+        "conformer",
+        "alexnet"
+      ],
+      "weights": [
+        0.04826752661478947,
+        0.6040442718640441,
+        0.3476882015211665
+      ],
+      "kind": "linear",
+      "penalty": 328.40593985818487
+    },
+    {
+      "method": "existing3_affine",
+      "inputs": [
+        "randomforest",
+        "conformer",
+        "alexnet"
+      ],
+      "artifact": "existing3_affine_ridge.joblib",
+      "kind": "affine"
+    }
+  ],
+  "timing": "Follow-up diagnostic after the preceding developmental pilot; not pristine confirmation"
+}

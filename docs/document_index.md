@@ -7,6 +7,8 @@
 | 目的 | 読む文書 | 更新方法 |
 |---|---|---|
 | 次の作業を始める | [研究の現在地](research_status.md) | 状態・本人の希望・次の一手を更新する唯一の入口 |
+| 固定HGBの追加seed・説明性・雑音OOF統合を見る | [10/6固定候補の追検証](../experiments/2026-10-06_hgb_followup_validation/README.md) | 全モデルpaired学習、clean利得と強雑音の分割感度、共通入力説明、純clean/雑音露出統合の区別、本人確認用音声と記入表を記録 |
+| q100以外の追加モデル利得と公平な対照を見る | [10/6回帰・判定・雑音耐性の再評価](../experiments/2026-10-06_model_addition_general_metrics_review/README.md) | 本人補足、既存3の同方式重み/meta対照、RMSE/MAE/Recall、WAV・領域別改善、HGB単体と統合の違い、固定候補の次工程を記録 |
 | 新chunk条件の追加モデル・入力・統合の実行結果を見る | [10/6 SVR/HGB予備比較](../experiments/2026-10-06_chunk_complementary_model_pilots/README.md) | 18候補、固定29統合、同じ外側7条件、周波数/時間入力の固定対照、q100/誤報、残る6/11陰性、保存モデルと検算を記録 |
 | chunk内部検証clean_onlyの完了結果と次工程を見る | [10/6新旧基準比較](../experiments/2026-10-06_chunk_clean_baseline_analysis/README.md) | 7条件完了、同一540、q100不変、OOF支持と最後の共通陰性、重み/単体差、固定組合せ、候補比較の条件案を記録 |
 | RF保存再読込の予測不一致と修正を見る | [10/5 PCA配置の数値互換性修正](../experiments/2026-10-05_rf_reload_pca_layout_fix/README.md) | 本人停止runで差を再現、共通PCAのC配置、変換版2のhash記録、実RF再検証差0、49テストと再実行前の状態を記録 |

@@ -1,0 +1,18 @@
+{
+  "config_sha256": "a9409422a611b51111c9fac124ff77a4a3bd6fd789218570ac7385baf4d3dd4c",
+  "seed": 43,
+  "stage": "final",
+  "model": "hgb",
+  "model_seed": 44,
+  "fit_chunks": 1620,
+  "held_chunks": 540,
+  "shared_chunks": 0,
+  "clean_fit": true,
+  "noise_refit": false,
+  "training_info": {
+    "iterations": 150
+  },
+  "elapsed_seconds": 0.5630000000237487,
+  "reload_verified": true,
+  "artifact_sha256": "e55c4c58e33708f6ab1575dffe0039a4fadf54b9b7b755a580c41ee30cf451e8"
+}

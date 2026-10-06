@@ -1,0 +1,11 @@
+{
+  "purpose": "Separate Ridge integration effects from the effect of adding HGB",
+  "parent_config": "configs/experiments/2026-10-06_hgb_followup_validation.json",
+  "methods": ["existing3_clean_ridge", "existing3_noisy_ridge"],
+  "inputs": ["randomforest", "conformer", "alexnet"],
+  "pipeline": "StandardScaler followed by Ridge(alpha=1.0)",
+  "fit_labels": "Corresponding training OOF only; never outer labels",
+  "noise_exposure": "Clean control uses clean OOF; noisy control uses equally weighted clean and six noisy OOF conditions from clean-fitted base models",
+  "timing": "Supplementary controls specified after seed43 exploratory results, before fitting these controls; no candidate or base-training parameter change",
+  "claim_scope": "Descriptive paired method control, not a newly preregistered independent validation"
+}

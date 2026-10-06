@@ -1,0 +1,16 @@
+{
+  "purpose": "Reassess model addition using regression, detection and clean-fit noise transfer together; q100 remains important but is not an adoption gate",
+  "source": "experiments/2026-10-06_chunk_complementary_model_pilots",
+  "user_clarification": "A new model may be useful through other metrics even if the all-positive endpoint remains unchanged",
+  "scope": "Same existing clean-only 1620 training / 540 known-WAV unused chunks, seven noises, source-day thresholds",
+  "additional_controls": ["existing three models with simplex MSE weights", "existing three models with the same diversity penalty", "existing three models with affine Ridge", "Conformer plus AlexNet with MSE weights", "Conformer plus HGB with MSE weights", "AlexNet plus HGB with MSE weights", "Conformer plus AlexNet plus HGB with MSE weights"],
+  "control_fit_data": "Saved clean training OOF only; freeze before reading outer prediction labels in this script; fit diagnostics are not nested ensemble validation",
+  "candidate": "frequency34_HGB_rmse already selected from training OOF in the preceding pilot; no new model-family or hyperparameter search",
+  "baseline_model_training": false,
+  "regions": ["below60", "60_to_ONB", "ONB_to_1.5ONB", "above_1.5ONB", "near_ONB_0.9_to_1.1"],
+  "evaluation_metrics": ["RMSE", "MAE", "R2", "bias", "post_ONB_RMSE", "near_ONB_RMSE", "precision", "recall", "F1", "FP", "FN", "FPR", "ROC_AUC", "PR_AUC", "day_q100"],
+  "gain_attribution": "Compare additions under the same weight algorithm; compare integrated predictions with the candidate itself and existing single models; inspect paired WAV and heat-flux-region squared errors",
+  "bootstrap": {"unit": "source WAV, paired across methods", "stratification": "18 WAVs resampled within each of the two source days", "repeats": 3000, "seed": 106, "interpretation": "Exploratory sensitivity to the observed stage/WAV mix conditional on fitted models; not a new training-seed experiment or independent-day confirmation"},
+  "selection_on_outer_labels": false,
+  "reporting": "All predefined contrasts; do not adopt based on an outer best-method search; keep historical pilot outputs and live runner unchanged"
+}

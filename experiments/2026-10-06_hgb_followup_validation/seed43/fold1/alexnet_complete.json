@@ -1,0 +1,23 @@
+{
+  "config_sha256": "a9409422a611b51111c9fac124ff77a4a3bd6fd789218570ac7385baf4d3dd4c",
+  "seed": 43,
+  "stage": "fold1",
+  "model": "alexnet",
+  "model_seed": 44,
+  "fit_chunks": 1080,
+  "held_chunks": 540,
+  "shared_chunks": 0,
+  "clean_fit": true,
+  "noise_refit": false,
+  "training_info": {
+    "verbose": 0,
+    "epochs": 150,
+    "steps": 135,
+    "requested_batch_size": 8,
+    "actual_batch_size": 8,
+    "epochs_completed": 150
+  },
+  "elapsed_seconds": 185.03100000001723,
+  "reload_verified": true,
+  "artifact_sha256": "fda2c712304b91f40a9b025acbc8036642728b63533ccd59e7a9acac597bf2e3"
+}

@@ -1,0 +1,8 @@
+{
+  "verbose": 0,
+  "epochs": 150,
+  "steps": 135,
+  "requested_batch_size": 8,
+  "actual_batch_size": 8,
+  "epochs_completed": 150
+}

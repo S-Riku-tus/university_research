@@ -1,0 +1,19 @@
+{
+  "python": "3.9.18",
+  "packages": {
+    "numpy": "1.22.3",
+    "scipy": "1.7.3",
+    "scikit-learn": "1.6.1",
+    "xgboost": "2.1.4",
+    "tensorflow": "2.9.1",
+    "threadpoolctl": "3.5.0"
+  },
+  "paired_blas_threads": 2,
+  "seed42_rf_xai_blas_threads": 20,
+  "accelerator": "NVIDIA GeForce RTX 4090",
+  "source_sha256": {
+    "code/run_hgb_complementarity_validation.py": "5c122d63f4dd955f016d1170d2be21c1fea948025142c0e8763212587dd2c0bd",
+    "code/utils/dataloading/acoustic_summary_features.py": "fd5e17295e8a730db26edee7213ad80be803e4612ee30d9d7688b465564c99a7"
+  },
+  "note": "Source snapshot after the integration-only constant-residual correction; base training implementation unchanged"
+}

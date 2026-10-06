@@ -1,0 +1,223 @@
+{
+  "config_sha256": "a9409422a611b51111c9fac124ff77a4a3bd6fd789218570ac7385baf4d3dd4c",
+  "fit_labels": "training OOF only",
+  "outer_labels_used": false,
+  "methods": [
+    {
+      "method": "existing_performance",
+      "indices": [
+        0,
+        1,
+        2
+      ],
+      "weights": [
+        0.16158205105304502,
+        0.534189939576509,
+        0.3042280093704459
+      ],
+      "kind": "linear"
+    },
+    {
+      "method": "existing_equal",
+      "indices": [
+        0,
+        1,
+        2
+      ],
+      "weights": [
+        0.3333333333333333,
+        0.3333333333333333,
+        0.3333333333333333
+      ],
+      "kind": "linear"
+    },
+    {
+      "method": "hgb4_equal",
+      "indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "weights": [
+        0.25,
+        0.25,
+        0.25,
+        0.25
+      ],
+      "kind": "linear"
+    },
+    {
+      "method": "existing3_clean_mse",
+      "indices": [
+        0,
+        1,
+        2
+      ],
+      "weights": [
+        0.01616200428880647,
+        0.689314323594434,
+        0.29452367211675956
+      ],
+      "kind": "linear",
+      "noisy_oof_used": false
+    },
+    {
+      "method": "hgb4_clean_mse",
+      "indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "weights": [
+        0.0,
+        0.23997119008836199,
+        0.11965638583404052,
+        0.6403724240775974
+      ],
+      "kind": "linear",
+      "noisy_oof_used": false
+    },
+    {
+      "method": "ca_hgb_clean_mse",
+      "indices": [
+        1,
+        2,
+        3
+      ],
+      "weights": [
+        0.2399713237374831,
+        0.1196574282376633,
+        0.6403712480248537
+      ],
+      "kind": "linear",
+      "noisy_oof_used": false
+    },
+    {
+      "method": "conformer_hgb_clean_mse",
+      "indices": [
+        1,
+        3
+      ],
+      "weights": [
+        0.2885205127401347,
+        0.7114794872598654
+      ],
+      "kind": "linear",
+      "noisy_oof_used": false
+    },
+    {
+      "method": "existing3_noisy_mse",
+      "indices": [
+        0,
+        1,
+        2
+      ],
+      "weights": [
+        0.08397481083825747,
+        0.5384154317544803,
+        0.37760975740726227
+      ],
+      "kind": "linear",
+      "noisy_oof_used": true
+    },
+    {
+      "method": "hgb4_noisy_mse",
+      "indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "weights": [
+        6.5052130349130266e-18,
+        0.44283244101388186,
+        0.3101169693481073,
+        0.24705058963801094
+      ],
+      "kind": "linear",
+      "noisy_oof_used": true
+    },
+    {
+      "method": "conformer_hgb_noisy_mse",
+      "indices": [
+        1,
+        3
+      ],
+      "weights": [
+        0.6404136751795457,
+        0.3595863248204543
+      ],
+      "kind": "linear",
+      "noisy_oof_used": true
+    },
+    {
+      "method": "hgb4_diversity",
+      "indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "weights": [
+        0.0,
+        0.18554048850897306,
+        0.09876582987768705,
+        0.71569368161334
+      ],
+      "kind": "linear",
+      "penalty": 362.4603412678264
+    },
+    {
+      "method": "hgb4_clean_ridge",
+      "indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "kind": "ridge",
+      "artifact": "hgb4_clean_ridge.joblib",
+      "noisy_oof_used": false
+    },
+    {
+      "method": "hgb4_noisy_ridge",
+      "indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "kind": "ridge",
+      "artifact": "hgb4_noisy_ridge.joblib",
+      "noisy_oof_used": true
+    },
+    {
+      "method": "existing3_clean_ridge",
+      "indices": [
+        0,
+        1,
+        2
+      ],
+      "kind": "ridge",
+      "artifact": "existing3_clean_ridge.joblib",
+      "noisy_oof_used": false,
+      "supplemental_control_sha256": "65eb0d1c5d226c47937f382915894d387a6ed87baa58ca176d4d738a274e4b2e"
+    },
+    {
+      "method": "existing3_noisy_ridge",
+      "indices": [
+        0,
+        1,
+        2
+      ],
+      "kind": "ridge",
+      "artifact": "existing3_noisy_ridge.joblib",
+      "noisy_oof_used": true,
+      "supplemental_control_sha256": "65eb0d1c5d226c47937f382915894d387a6ed87baa58ca176d4d738a274e4b2e"
+    }
+  ],
+  "supplemental_control_config": "configs\\experiments\\2026-10-06_hgb_followup_ridge_controls.json",
+  "supplemental_control_sha256": "65eb0d1c5d226c47937f382915894d387a6ed87baa58ca176d4d738a274e4b2e"
+}

@@ -1,0 +1,16 @@
+{
+  "config_sha256": "a9409422a611b51111c9fac124ff77a4a3bd6fd789218570ac7385baf4d3dd4c",
+  "seed": 44,
+  "stage": "fold2",
+  "model": "randomforest",
+  "model_seed": 46,
+  "fit_chunks": 1080,
+  "held_chunks": 540,
+  "shared_chunks": 0,
+  "clean_fit": true,
+  "noise_refit": false,
+  "training_info": {},
+  "elapsed_seconds": 1.3600000000442378,
+  "reload_verified": true,
+  "artifact_sha256": "a47416140a642428657f90172d304b3c656d3cc87aafae7e8e9d7412edfa84ac"
+}

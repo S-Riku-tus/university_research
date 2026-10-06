@@ -1,0 +1,10 @@
+{
+  "config_sha256": "a9409422a611b51111c9fac124ff77a4a3bd6fd789218570ac7385baf4d3dd4c",
+  "seeds": [
+    43,
+    44
+  ],
+  "status": "paired training, clean-fit noisy OOF and frozen evaluation complete",
+  "metric_rows": 1596,
+  "outer_labels_used_for_selection": false
+}

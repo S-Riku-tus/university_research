@@ -1,0 +1,8 @@
+{
+  "input_shift": "Final saved HGB, each seed's own 540 unused chunks compared with its clean fit feature range; no noisy refit",
+  "representative_dependency": "Same seed42-selected cases under seed43/44 HGB models; some cases were used for these models' fits and are flagged",
+  "interpretation": "Descriptive range and input dependence; not independent performance, physical causality or proof of the reason for split sensitivity",
+  "model_selection": false,
+  "representative_rows": 384,
+  "feature_range_rows": 1666
+}
