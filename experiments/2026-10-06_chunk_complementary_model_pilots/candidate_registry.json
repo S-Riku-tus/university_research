@@ -1,0 +1,164 @@
+[
+  {
+    "method": "band10_SVR_rmse",
+    "representation": "band10",
+    "family": "SVR",
+    "policy": "rmse",
+    "final_parameter": 100.0,
+    "final_artifact": "band10_SVR_final_p100.0.joblib",
+    "n_features": 10
+  },
+  {
+    "method": "band10_SVR_q100_then_fp",
+    "representation": "band10",
+    "family": "SVR",
+    "policy": "q100_then_fp",
+    "final_parameter": 1.0,
+    "final_artifact": "band10_SVR_final_p1.0.joblib",
+    "n_features": 10
+  },
+  {
+    "method": "band10_SVR_fp_then_q100",
+    "representation": "band10",
+    "family": "SVR",
+    "policy": "fp_then_q100",
+    "final_parameter": 1.0,
+    "final_artifact": "band10_SVR_final_p1.0.joblib",
+    "n_features": 10
+  },
+  {
+    "method": "band10_HGB_rmse",
+    "representation": "band10",
+    "family": "HGB",
+    "policy": "rmse",
+    "final_parameter": 15,
+    "final_artifact": "band10_HGB_final_p15.joblib",
+    "n_features": 10
+  },
+  {
+    "method": "band10_HGB_q100_then_fp",
+    "representation": "band10",
+    "family": "HGB",
+    "policy": "q100_then_fp",
+    "final_parameter": 15,
+    "final_artifact": "band10_HGB_final_p15.joblib",
+    "n_features": 10
+  },
+  {
+    "method": "band10_HGB_fp_then_q100",
+    "representation": "band10",
+    "family": "HGB",
+    "policy": "fp_then_q100",
+    "final_parameter": 15,
+    "final_artifact": "band10_HGB_final_p15.joblib",
+    "n_features": 10
+  },
+  {
+    "method": "frequency34_SVR_rmse",
+    "representation": "frequency34",
+    "family": "SVR",
+    "policy": "rmse",
+    "final_parameter": 10.0,
+    "final_artifact": "frequency34_SVR_final_p10.0.joblib",
+    "n_features": 34
+  },
+  {
+    "method": "frequency34_SVR_q100_then_fp",
+    "representation": "frequency34",
+    "family": "SVR",
+    "policy": "q100_then_fp",
+    "final_parameter": 100.0,
+    "final_artifact": "frequency34_SVR_final_p100.0.joblib",
+    "n_features": 34
+  },
+  {
+    "method": "frequency34_SVR_fp_then_q100",
+    "representation": "frequency34",
+    "family": "SVR",
+    "policy": "fp_then_q100",
+    "final_parameter": 100.0,
+    "final_artifact": "frequency34_SVR_final_p100.0.joblib",
+    "n_features": 34
+  },
+  {
+    "method": "frequency34_HGB_rmse",
+    "representation": "frequency34",
+    "family": "HGB",
+    "policy": "rmse",
+    "final_parameter": 31,
+    "final_artifact": "frequency34_HGB_final_p31.joblib",
+    "n_features": 34
+  },
+  {
+    "method": "frequency34_HGB_q100_then_fp",
+    "representation": "frequency34",
+    "family": "HGB",
+    "policy": "q100_then_fp",
+    "final_parameter": 15,
+    "final_artifact": "frequency34_HGB_final_p15.joblib",
+    "n_features": 34
+  },
+  {
+    "method": "frequency34_HGB_fp_then_q100",
+    "representation": "frequency34",
+    "family": "HGB",
+    "policy": "fp_then_q100",
+    "final_parameter": 15,
+    "final_artifact": "frequency34_HGB_final_p15.joblib",
+    "n_features": 34
+  },
+  {
+    "method": "temporal46_SVR_rmse",
+    "representation": "temporal46",
+    "family": "SVR",
+    "policy": "rmse",
+    "final_parameter": 10.0,
+    "final_artifact": "temporal46_SVR_final_p10.0.joblib",
+    "n_features": 46
+  },
+  {
+    "method": "temporal46_SVR_q100_then_fp",
+    "representation": "temporal46",
+    "family": "SVR",
+    "policy": "q100_then_fp",
+    "final_parameter": 1.0,
+    "final_artifact": "temporal46_SVR_final_p1.0.joblib",
+    "n_features": 46
+  },
+  {
+    "method": "temporal46_SVR_fp_then_q100",
+    "representation": "temporal46",
+    "family": "SVR",
+    "policy": "fp_then_q100",
+    "final_parameter": 1.0,
+    "final_artifact": "temporal46_SVR_final_p1.0.joblib",
+    "n_features": 46
+  },
+  {
+    "method": "temporal46_HGB_rmse",
+    "representation": "temporal46",
+    "family": "HGB",
+    "policy": "rmse",
+    "final_parameter": 31,
+    "final_artifact": "temporal46_HGB_final_p31.joblib",
+    "n_features": 46
+  },
+  {
+    "method": "temporal46_HGB_q100_then_fp",
+    "representation": "temporal46",
+    "family": "HGB",
+    "policy": "q100_then_fp",
+    "final_parameter": 7,
+    "final_artifact": "temporal46_HGB_final_p7.joblib",
+    "n_features": 46
+  },
+  {
+    "method": "temporal46_HGB_fp_then_q100",
+    "representation": "temporal46",
+    "family": "HGB",
+    "policy": "fp_then_q100",
+    "final_parameter": 31,
+    "final_artifact": "temporal46_HGB_final_p31.joblib",
+    "n_features": 46
+  }
+]

@@ -1,0 +1,10 @@
+﻿candidate,existing_model,residual_correlation,common_fn_corrected,last_common_fn_corrected,new_fn_vs_performance
+frequency34_HGB_rmse,randomforest,0.43280549513636396,22,3,5
+frequency34_HGB_rmse,conformer,0.48464973862692623,22,3,5
+frequency34_HGB_rmse,alexnet,0.3687114895355609,22,3,5
+band10_SVR_fp_then_q100,randomforest,0.722441073838106,6,1,16
+band10_SVR_fp_then_q100,conformer,0.550226196904048,6,1,16
+band10_SVR_fp_then_q100,alexnet,0.2670900968967476,6,1,16
+band10_HGB_fp_then_q100,randomforest,0.5584307431287207,24,3,8
+band10_HGB_fp_then_q100,conformer,0.48747664498653037,24,3,8
+band10_HGB_fp_then_q100,alexnet,0.33507267357170634,24,3,8

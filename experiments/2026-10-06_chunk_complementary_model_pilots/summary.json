@@ -1,0 +1,209 @@
+{
+  "candidate_policies": 18,
+  "model_families": 2,
+  "representations": 3,
+  "base_model_fit_operations": 271,
+  "meta_model_fit_operations": 3,
+  "total_new_fit_operations": 274,
+  "saved_joblib_models": 58,
+  "external_evaluation": {
+    "training_chunks": 1620,
+    "outer_chunks": 540,
+    "shared_chunks": 0,
+    "shared_wavs": 36,
+    "noises": [
+      "clean",
+      "0",
+      "-4",
+      "-8",
+      "-12",
+      "-16",
+      "-20"
+    ],
+    "candidate_methods": 18,
+    "integration_methods": 29,
+    "frozen_integration_sha256": "6c3f1778ced356bba4fd3181f54775833169eb251c0d56d38a1afaaa892fc9ef",
+    "config_sha256": "12cb407fbce7c249323aec59b30b581dcf3a88b78c030e243c7361fb97be7613",
+    "selection_on_outer_labels": false,
+    "frozen_unchanged_after_evaluation": true,
+    "production_model_retraining": false,
+    "matched_retraining": false,
+    "status": "Completed developmental comparison on known-WAV unused chunks"
+  },
+  "verification": {
+    "metric_rows": 1272,
+    "independent_endpoint_checks": 848,
+    "nested_reloaded_prediction_checks": 108,
+    "final_reloaded_prediction_checks": 126,
+    "frozen_integration_prediction_checks": 203,
+    "outer_train_chunk_overlap": 0,
+    "status": "passed"
+  },
+  "comparison": [
+    {
+      "method": "baseline_performance",
+      "rmse_clean": 33.745139639904714,
+      "fp_clean": 1,
+      "fn_clean": 40,
+      "q100_0611": 368.97810499999997,
+      "q100_0618": 434.0180833,
+      "rmse_minus20": 80.67043100311724,
+      "fp_minus20": 0,
+      "fn_minus20": 65
+    },
+    {
+      "method": "conformer_alexnet_equal",
+      "rmse_clean": 33.30434200934299,
+      "fp_clean": 1,
+      "fn_clean": 31,
+      "q100_0611": 368.97810499999997,
+      "q100_0618": 322.1142428,
+      "rmse_minus20": 79.16903292241206,
+      "fp_minus20": 0,
+      "fn_minus20": 67
+    },
+    {
+      "method": "band10_HGB_rmse",
+      "rmse_clean": 37.72506556051075,
+      "fp_clean": 0,
+      "fn_clean": 21,
+      "q100_0611": 368.97810499999997,
+      "q100_0618": 376.3201201,
+      "rmse_minus20": 98.31956770438534,
+      "fp_minus20": 1,
+      "fn_minus20": 49
+    },
+    {
+      "method": "frequency34_HGB_rmse",
+      "rmse_clean": 33.25363627332946,
+      "fp_clean": 0,
+      "fn_clean": 21,
+      "q100_0611": 368.97810499999997,
+      "q100_0618": 376.3201201,
+      "rmse_minus20": 74.1851537678615,
+      "fp_minus20": 0,
+      "fn_minus20": 49
+    },
+    {
+      "method": "temporal46_HGB_rmse",
+      "rmse_clean": 30.94446470130974,
+      "fp_clean": 2,
+      "fn_clean": 25,
+      "q100_0611": 368.97810499999997,
+      "q100_0618": 376.3201201,
+      "rmse_minus20": 75.10535952139392,
+      "fp_minus20": 4,
+      "fn_minus20": 41
+    },
+    {
+      "method": "frequency34_HGB_rmse__equal4",
+      "rmse_clean": 34.381279823799225,
+      "fp_clean": 1,
+      "fn_clean": 44,
+      "q100_0611": 368.97810499999997,
+      "q100_0618": 434.0180833,
+      "rmse_minus20": 82.09707351151106,
+      "fp_minus20": 0,
+      "fn_minus20": 60
+    },
+    {
+      "method": "frequency34_HGB_rmse__mse_simplex",
+      "rmse_clean": 28.4558044915382,
+      "fp_clean": 0,
+      "fn_clean": 24,
+      "q100_0611": 368.97810499999997,
+      "q100_0618": 376.3201201,
+      "rmse_minus20": 74.1713295919179,
+      "fp_minus20": 0,
+      "fn_minus20": 61
+    },
+    {
+      "method": "frequency34_HGB_rmse__diversity_simplex",
+      "rmse_clean": 28.944795600877274,
+      "fp_clean": 0,
+      "fn_clean": 23,
+      "q100_0611": 368.97810499999997,
+      "q100_0618": 376.3201201,
+      "rmse_minus20": 73.90350169512342,
+      "fp_minus20": 0,
+      "fn_minus20": 58
+    },
+    {
+      "method": "frequency34_HGB_rmse__affine_ridge",
+      "rmse_clean": 27.233410377804173,
+      "fp_clean": 1,
+      "fn_clean": 26,
+      "q100_0611": 368.97810499999997,
+      "q100_0618": 376.3201201,
+      "rmse_minus20": 74.560265173235,
+      "fp_minus20": 0,
+      "fn_minus20": 62
+    }
+  ],
+  "noise_aggregates": [
+    {
+      "method": "baseline_performance",
+      "mean_noise_rmse": 68.74149156835509,
+      "mean_strong_noise_rmse": 76.41919026230933,
+      "mean_noise_fp": 0.16666666666666666,
+      "mean_noise_fn": 55.833333333333336
+    },
+    {
+      "method": "conformer_alexnet_equal",
+      "mean_noise_rmse": 69.23491622874762,
+      "mean_strong_noise_rmse": 77.69721063867068,
+      "mean_noise_fp": 0.16666666666666666,
+      "mean_noise_fn": 58.333333333333336
+    },
+    {
+      "method": "band10_HGB_rmse",
+      "mean_noise_rmse": 87.25992299888397,
+      "mean_strong_noise_rmse": 96.99322120681514,
+      "mean_noise_fp": 2.3333333333333335,
+      "mean_noise_fn": 40.5
+    },
+    {
+      "method": "frequency34_HGB_rmse",
+      "mean_noise_rmse": 68.5856270726223,
+      "mean_strong_noise_rmse": 72.29620297948443,
+      "mean_noise_fp": 0.6666666666666666,
+      "mean_noise_fn": 45.166666666666664
+    },
+    {
+      "method": "temporal46_HGB_rmse",
+      "mean_noise_rmse": 67.49165487289103,
+      "mean_strong_noise_rmse": 72.00005462230442,
+      "mean_noise_fp": 3.0,
+      "mean_noise_fn": 41.666666666666664
+    },
+    {
+      "method": "frequency34_HGB_rmse__equal4",
+      "mean_noise_rmse": 68.74439548791234,
+      "mean_strong_noise_rmse": 76.23870760741282,
+      "mean_noise_fp": 0.3333333333333333,
+      "mean_noise_fn": 51.666666666666664
+    },
+    {
+      "method": "frequency34_HGB_rmse__mse_simplex",
+      "mean_noise_rmse": 66.40852481158902,
+      "mean_strong_noise_rmse": 72.05046752713271,
+      "mean_noise_fp": 0.0,
+      "mean_noise_fn": 52.166666666666664
+    },
+    {
+      "method": "frequency34_HGB_rmse__diversity_simplex",
+      "mean_noise_rmse": 66.54829379546136,
+      "mean_strong_noise_rmse": 71.90690181537676,
+      "mean_noise_fp": 0.0,
+      "mean_noise_fn": 50.0
+    },
+    {
+      "method": "frequency34_HGB_rmse__affine_ridge",
+      "mean_noise_rmse": 66.15124105980006,
+      "mean_strong_noise_rmse": 72.50415802315479,
+      "mean_noise_fp": 0.16666666666666666,
+      "mean_noise_fn": 53.166666666666664
+    }
+  ],
+  "next_research_question": "Two June 11 last-stage chunks remain below threshold for every evaluated OOF base model; distinguish inadequate representation from a weak/noisy or mislabeled acoustic interval"
+}

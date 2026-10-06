@@ -1,0 +1,30 @@
+{
+  "fit_operations": 10,
+  "max_leaf_nodes": 15,
+  "outer_labels_used_for_selection": false,
+  "timing": "Diagnostic follow-up after observing the frozen pilot evaluation; not an independent confirmation",
+  "models": [
+    {
+      "representation": "band10",
+      "parameter": 15,
+      "final_model": "band10_HGB_final_p15.joblib",
+      "reused_final_model": true,
+      "reload_verified": true
+    },
+    {
+      "representation": "frequency34",
+      "parameter": 15,
+      "final_model": "frequency34_HGB_final_p15.joblib",
+      "reused_final_model": true,
+      "reload_verified": true
+    },
+    {
+      "representation": "temporal46",
+      "parameter": 15,
+      "final_model": "fixed15_temporal46_final.joblib",
+      "reused_final_model": false,
+      "reload_verified": true
+    }
+  ],
+  "frozen_integration_sha256": "6c3f1778ced356bba4fd3181f54775833169eb251c0d56d38a1afaaa892fc9ef"
+}

@@ -1,0 +1,11 @@
+﻿day,last_failed_stage_kW_m2,feature,failed_chunks,passed_chunks,failed_median,passed_median,comparison
+2025.06.11_0.3_2,315.4661173,log_power_2100_2500,4,41,-9.320326542274527,-6.510539751844507,"same-source-WAV training chunks; descriptive, small failed count"
+2025.06.11_0.3_2,315.4661173,log_power_total,4,41,-9.270218061364378,-7.154717287926684,"same-source-WAV training chunks; descriptive, small failed count"
+2025.06.11_0.3_2,315.4661173,temporal_power_cv,4,41,0.4231920837146472,2.8164546248804707,"same-source-WAV training chunks; descriptive, small failed count"
+2025.06.11_0.3_2,315.4661173,spectral_centroid_hz,4,41,1301.2045844039824,1892.0438903645259,"same-source-WAV training chunks; descriptive, small failed count"
+2025.06.11_0.3_2,315.4661173,normalized_spectral_entropy,4,41,0.9202043089997571,0.8207753895268148,"same-source-WAV training chunks; descriptive, small failed count"
+2025.06.18_0.3_3,376.3201201,log_power_2100_2500,2,43,-8.970644698769306,-6.365566843469643,"same-source-WAV training chunks; descriptive, small failed count"
+2025.06.18_0.3_3,376.3201201,log_power_total,2,43,-9.237661313712554,-7.063531088731062,"same-source-WAV training chunks; descriptive, small failed count"
+2025.06.18_0.3_3,376.3201201,temporal_power_cv,2,43,0.7096245418581886,1.8480748337761839,"same-source-WAV training chunks; descriptive, small failed count"
+2025.06.18_0.3_3,376.3201201,spectral_centroid_hz,2,43,1484.6304082023453,2050.3352246910117,"same-source-WAV training chunks; descriptive, small failed count"
+2025.06.18_0.3_3,376.3201201,normalized_spectral_entropy,2,43,0.9071310031576919,0.8053745009199275,"same-source-WAV training chunks; descriptive, small failed count"

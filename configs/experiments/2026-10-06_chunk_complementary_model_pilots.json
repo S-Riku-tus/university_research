@@ -1,0 +1,35 @@
+{
+  "created_date": "2026-10-06",
+  "authorization": "User requested all feasible parts of the proposed steps 1-4; q100 and false alarms reported together",
+  "baseline_scope": "experiments/2026-10-06_chunk_clean_baseline_analysis/run_scope.json",
+  "learning_policy": "clean_only",
+  "outer_split": "existing 1620 train / 540 unused chunks within the same 36 WAVs; seed 42",
+  "candidate_oof": "Replay the saved shuffled 3 chunk folds, preserving original sample order",
+  "nested_selection": {"folds": 3, "shuffle": true, "seed": "42 + outer_oof_fold", "policies": ["rmse", "q100_then_fp", "fp_then_q100"]},
+  "models": {
+    "SVR": {"C": [1.0, 10.0, 100.0], "epsilon": 0.02, "gamma": "scale", "kernel": "rbf"},
+    "HGB": {"max_leaf_nodes": [7, 15, 31], "max_iter": 150, "learning_rate": 0.05, "min_samples_leaf": 20, "l2_regularization": 1.0, "early_stopping": false}
+  },
+  "target_transform": "MinMaxScaler fitted on each fit split; targets in kW/m2",
+  "svr_input_scaler": "StandardScaler fitted on each fit split",
+  "representations": {
+    "band10": "The same 10 features as the earlier pilots, including absolute log power",
+    "frequency34": "band10 + 24 relative log powers in uniform 125-Hz bands over 0-3000 Hz",
+    "temporal46": "band10 + six within-chunk distribution features in each of six 500-Hz bands: log power quantiles 0.1/0.5/0.9, CV, peak/mean, fraction above twice the mean"
+  },
+  "feature_axes": ["time", "frequency"],
+  "frequency_coordinates": "Approximate post-resize coordinates: round(224 * Hz / 3000)",
+  "log_floor": 1e-20,
+  "forbidden_inputs": ["heat_flux", "day", "source_wav_id", "chunk_index", "sample_filename", "clean_reference_of_noisy_input"],
+  "training_stress_condition": "minus20, descriptive only; not used for candidate selection",
+  "integration_shortlist": "Training clean OOF winners for RMSE, q100-first, FP-first, and last-stage common-negative correction; deduplicate identical prediction vectors",
+  "integration_catalog": ["existing performance and equal/subset controls", "four-model equal", "inverse-MSE", "75% baseline plus 25% candidate", "nonnegative simplex MSE fit", "simplex fit with residual-correlation penalty", "training q100-first and FP-first finite weight-grid fits", "affine Ridge with intercept if last-stage corrections exist"],
+  "onb_weight_grid": {"candidate_fraction": [0, 0.25, 0.5, 0.75, 1], "rf_fraction_within_existing": [0, 0.1556511420710336], "conformer_alexnet_relative_weights": [[0.5, 0.5], [0.5819167277155465, 0.4180832722844535]], "selection": "Separate q100-first and FP-first illustrations fitted to training clean OOF; no numeric FP limit assumed"},
+  "diversity_penalty": "lambda=0.25 * baseline OOF MSE; penalize positive pairwise residual correlation, alongside prediction MSE; descriptive training fit, not independent ensemble OOF validation",
+  "ridge_alpha": 1.0,
+  "ensemble_oof_limitation": "Existing saved base OOF predictions do not permit unbiased nested meta-model validation. Ensemble weights/meta-model use clean training OOF as fit/selection data, then are frozen before outer evaluation",
+  "outer_evaluation": "All predefined candidates and frozen integration methods on the same 540 chunks, all seven noises; no method, hyperparameter, or weight selected from outer labels",
+  "development_limitation": "This holdout has been inspected in earlier research; the comparison is developmental, not pristine confirmation",
+  "numeric_false_alarm_budget": null,
+  "main_configuration": "Keep the research runner and three production models unchanged until adoption is justified; matched remains a separate historical comparison"
+}

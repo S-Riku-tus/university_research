@@ -1,0 +1,325 @@
+{
+  "selected_from": "clean training OOF only",
+  "outer_labels_used": false,
+  "shortlist": [
+    "frequency34_HGB_rmse",
+    "band10_SVR_fp_then_q100",
+    "band10_HGB_fp_then_q100"
+  ],
+  "methods": [
+    {
+      "method": "baseline_performance",
+      "candidate": null,
+      "weights": [
+        0.1556511420710336,
+        0.49131986430665925,
+        0.35302899362230716
+      ],
+      "kind": "linear"
+    },
+    {
+      "method": "baseline_equal",
+      "candidate": null,
+      "weights": [
+        0.3333333333333333,
+        0.3333333333333333,
+        0.3333333333333333
+      ],
+      "kind": "linear"
+    },
+    {
+      "method": "conformer_alexnet_equal",
+      "candidate": null,
+      "weights": [
+        0,
+        0.5,
+        0.5
+      ],
+      "kind": "linear"
+    },
+    {
+      "method": "rf_conformer_equal",
+      "candidate": null,
+      "weights": [
+        0.5,
+        0.5,
+        0
+      ],
+      "kind": "linear"
+    },
+    {
+      "method": "rf_alexnet_equal",
+      "candidate": null,
+      "weights": [
+        0.5,
+        0,
+        0.5
+      ],
+      "kind": "linear"
+    },
+    {
+      "method": "frequency34_HGB_rmse__equal4",
+      "candidate": "frequency34_HGB_rmse",
+      "weights": [
+        0.25,
+        0.25,
+        0.25,
+        0.25
+      ],
+      "kind": "linear"
+    },
+    {
+      "method": "frequency34_HGB_rmse__inverse_mse4",
+      "candidate": "frequency34_HGB_rmse",
+      "weights": [
+        0.08877586901112738,
+        0.2802250425913836,
+        0.20135063114822077,
+        0.42964845724926826
+      ],
+      "kind": "linear"
+    },
+    {
+      "method": "frequency34_HGB_rmse__baseline75_candidate25",
+      "candidate": "frequency34_HGB_rmse",
+      "weights": [
+        0.11673835655327519,
+        0.36848989822999445,
+        0.26477174521673036,
+        0.25
+      ],
+      "kind": "linear"
+    },
+    {
+      "method": "frequency34_HGB_rmse__mse_simplex",
+      "candidate": "frequency34_HGB_rmse",
+      "weights": [
+        4.808996564455648e-10,
+        0.20611180211224478,
+        0.1884719605740229,
+        0.6054162368328326
+      ],
+      "kind": "linear",
+      "correlation_penalty_strength": 0.0
+    },
+    {
+      "method": "frequency34_HGB_rmse__diversity_simplex",
+      "candidate": "frequency34_HGB_rmse",
+      "weights": [
+        7.537208863222702e-10,
+        0.1415428737961929,
+        0.18110745768619838,
+        0.6773496677638879
+      ],
+      "kind": "linear",
+      "correlation_penalty_strength": 328.40593985818487
+    },
+    {
+      "method": "frequency34_HGB_rmse__q100_then_fp_weight_grid",
+      "candidate": "frequency34_HGB_rmse",
+      "weights": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "kind": "linear",
+      "selection_status": "training fit diagnostic"
+    },
+    {
+      "method": "frequency34_HGB_rmse__fp_then_q100_weight_grid",
+      "candidate": "frequency34_HGB_rmse",
+      "weights": [
+        0.0,
+        0.29095836385777324,
+        0.20904163614222676,
+        0.5
+      ],
+      "kind": "linear",
+      "selection_status": "training fit diagnostic"
+    },
+    {
+      "method": "frequency34_HGB_rmse__affine_ridge",
+      "candidate": "frequency34_HGB_rmse",
+      "kind": "ridge",
+      "artifact": "frequency34_HGB_rmse_affine_ridge.joblib"
+    },
+    {
+      "method": "band10_SVR_fp_then_q100__equal4",
+      "candidate": "band10_SVR_fp_then_q100",
+      "weights": [
+        0.25,
+        0.25,
+        0.25,
+        0.25
+      ],
+      "kind": "linear"
+    },
+    {
+      "method": "band10_SVR_fp_then_q100__inverse_mse4",
+      "candidate": "band10_SVR_fp_then_q100",
+      "weights": [
+        0.12389313117929365,
+        0.39107426768355047,
+        0.28099933501921903,
+        0.20403326611793696
+      ],
+      "kind": "linear"
+    },
+    {
+      "method": "band10_SVR_fp_then_q100__baseline75_candidate25",
+      "candidate": "band10_SVR_fp_then_q100",
+      "weights": [
+        0.11673835655327519,
+        0.36848989822999445,
+        0.26477174521673036,
+        0.25
+      ],
+      "kind": "linear"
+    },
+    {
+      "method": "band10_SVR_fp_then_q100__mse_simplex",
+      "candidate": "band10_SVR_fp_then_q100",
+      "weights": [
+        1.2211731090585893e-13,
+        0.4956696257964272,
+        0.35793071530323683,
+        0.1463996589002139
+      ],
+      "kind": "linear",
+      "correlation_penalty_strength": 0.0
+    },
+    {
+      "method": "band10_SVR_fp_then_q100__diversity_simplex",
+      "candidate": "band10_SVR_fp_then_q100",
+      "weights": [
+        0.0,
+        0.5187894226888042,
+        0.35140808429765924,
+        0.12980249301353666
+      ],
+      "kind": "linear",
+      "correlation_penalty_strength": 328.40593985818487
+    },
+    {
+      "method": "band10_SVR_fp_then_q100__q100_then_fp_weight_grid",
+      "candidate": "band10_SVR_fp_then_q100",
+      "weights": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "kind": "linear",
+      "selection_status": "training fit diagnostic"
+    },
+    {
+      "method": "band10_SVR_fp_then_q100__fp_then_q100_weight_grid",
+      "candidate": "band10_SVR_fp_then_q100",
+      "weights": [
+        0.0,
+        0.5819167277155465,
+        0.4180832722844535,
+        0.0
+      ],
+      "kind": "linear",
+      "selection_status": "training fit diagnostic"
+    },
+    {
+      "method": "band10_SVR_fp_then_q100__affine_ridge",
+      "candidate": "band10_SVR_fp_then_q100",
+      "kind": "ridge",
+      "artifact": "band10_SVR_fp_then_q100_affine_ridge.joblib"
+    },
+    {
+      "method": "band10_HGB_fp_then_q100__equal4",
+      "candidate": "band10_HGB_fp_then_q100",
+      "weights": [
+        0.25,
+        0.25,
+        0.25,
+        0.25
+      ],
+      "kind": "linear"
+    },
+    {
+      "method": "band10_HGB_fp_then_q100__inverse_mse4",
+      "candidate": "band10_HGB_fp_then_q100",
+      "weights": [
+        0.10302727295626905,
+        0.325210243209513,
+        0.23367393263843594,
+        0.338088551195782
+      ],
+      "kind": "linear"
+    },
+    {
+      "method": "band10_HGB_fp_then_q100__baseline75_candidate25",
+      "candidate": "band10_HGB_fp_then_q100",
+      "weights": [
+        0.11673835655327519,
+        0.36848989822999445,
+        0.26477174521673036,
+        0.25
+      ],
+      "kind": "linear"
+    },
+    {
+      "method": "band10_HGB_fp_then_q100__mse_simplex",
+      "candidate": "band10_HGB_fp_then_q100",
+      "weights": [
+        2.3018874517022086e-12,
+        0.31935555469682686,
+        0.25881043380767804,
+        0.42183401149319316
+      ],
+      "kind": "linear",
+      "correlation_penalty_strength": 0.0
+    },
+    {
+      "method": "band10_HGB_fp_then_q100__diversity_simplex",
+      "candidate": "band10_HGB_fp_then_q100",
+      "weights": [
+        3.4676429128280575e-11,
+        0.29293591562206706,
+        0.25894750590194027,
+        0.44811657844131625
+      ],
+      "kind": "linear",
+      "correlation_penalty_strength": 328.40593985818487
+    },
+    {
+      "method": "band10_HGB_fp_then_q100__q100_then_fp_weight_grid",
+      "candidate": "band10_HGB_fp_then_q100",
+      "weights": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "kind": "linear",
+      "selection_status": "training fit diagnostic"
+    },
+    {
+      "method": "band10_HGB_fp_then_q100__fp_then_q100_weight_grid",
+      "candidate": "band10_HGB_fp_then_q100",
+      "weights": [
+        0.0,
+        0.43643754578665983,
+        0.31356245421334017,
+        0.25
+      ],
+      "kind": "linear",
+      "selection_status": "training fit diagnostic"
+    },
+    {
+      "method": "band10_HGB_fp_then_q100__affine_ridge",
+      "candidate": "band10_HGB_fp_then_q100",
+      "kind": "ridge",
+      "artifact": "band10_HGB_fp_then_q100_affine_ridge.joblib"
+    }
+  ],
+  "config_sha256": "12cb407fbce7c249323aec59b30b581dcf3a88b78c030e243c7361fb97be7613",
+  "ensemble_oof_status": "fit diagnostic, not nested independent validation",
+  "matched_not_retrained": true
+}

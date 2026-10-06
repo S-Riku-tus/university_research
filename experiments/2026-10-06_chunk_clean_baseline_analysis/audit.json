@@ -1,0 +1,157 @@
+{
+  "scope": {
+    "runs": {
+      "old_wav_clean": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/ensemble/202610/01/onb_wc-t0611-v0611_iw3-nc_c1s_s0_e150_170655",
+      "new_chunk_clean": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/ensemble/202610/05/onb_wc-t0611-v0611_ic3-nc_c1s_s0_e150_192410"
+    },
+    "excluded_incomplete_run": "202610/05/onb_wc-t0611-v0611_ic3-nc_c1s_s0_e150_183837",
+    "thresholds_W_m2": {
+      "2025.06.11_0.3_2": 221505.1102,
+      "2025.06.18_0.3_3": 271677.6816
+    },
+    "comparison_changes": [
+      "internal WAV KFold to shuffled chunk KFold",
+      "PCA projection canonical memory layout, version 2",
+      "final fitted-state persistence enabled"
+    ],
+    "evaluation": "same 540 known-WAV unused chunks, source-day thresholds; development comparison",
+    "training_oof_chunks": 1620,
+    "selection_on_outer_labels": false,
+    "new_training": false,
+    "ensemble_subset_diagnostics": "fixed existing-model subsets, descriptive; no formally selected new ensemble",
+    "matched": "prior comparison preserved; no new matched run added to this analysis"
+  },
+  "input_sha256": {
+    "old_wav_clean": {
+      "clean": {
+        "run_manifest.json": "5d87295709fa6540eb6a12916316a686bcda304a081a526c4f463b8ba54c1c46",
+        "completed.json": "119f24884076974b5573a4b2bb638147d0365ac2145b18bcb3eaa0947a30949b",
+        "internal_validation_fold1.json": "68068fffd379129f25e1f6bc840208e7351c938948eb7cc27808dc3d3f5b3bb0",
+        "predictions": "7542295b7c320e2e58d97722313513b553cbbd2515ac31082eb63d58fa81a6e4"
+      },
+      "0": {
+        "run_manifest.json": "e4422a3d4b127622d6dbf2801f4017527ab1da7b48feae89bbd9fe861d26bb76",
+        "completed.json": "119f24884076974b5573a4b2bb638147d0365ac2145b18bcb3eaa0947a30949b",
+        "internal_validation_fold1.json": "68068fffd379129f25e1f6bc840208e7351c938948eb7cc27808dc3d3f5b3bb0",
+        "predictions": "9d2fd414a4ed9cc2935d4a73dedd9b92806cf660129a454ed2d5868912855275"
+      },
+      "-4": {
+        "run_manifest.json": "62ceb9d1b0ed442ecfa01a54a9de22b32f5b2074edd051a3a4b970f52f3343b4",
+        "completed.json": "119f24884076974b5573a4b2bb638147d0365ac2145b18bcb3eaa0947a30949b",
+        "internal_validation_fold1.json": "68068fffd379129f25e1f6bc840208e7351c938948eb7cc27808dc3d3f5b3bb0",
+        "predictions": "6a33bed9a1508ba82ca9885b7d0eec4dc07eaf47f053c5e1ffbb308359fa71d1"
+      },
+      "-8": {
+        "run_manifest.json": "10978ad681dedbc36efffd425097a7161edb93cad747f4ae33b2dfd03edd3d50",
+        "completed.json": "119f24884076974b5573a4b2bb638147d0365ac2145b18bcb3eaa0947a30949b",
+        "internal_validation_fold1.json": "68068fffd379129f25e1f6bc840208e7351c938948eb7cc27808dc3d3f5b3bb0",
+        "predictions": "bfc0ef6ff923ee81b792c0f32d56901fbd96294a0540a9f1d122d880664bfdb2"
+      },
+      "-12": {
+        "run_manifest.json": "8f8f5095c81349c5ab35d9831c3a223809fb58f24c463767ea5b97207fb79fd7",
+        "completed.json": "119f24884076974b5573a4b2bb638147d0365ac2145b18bcb3eaa0947a30949b",
+        "internal_validation_fold1.json": "68068fffd379129f25e1f6bc840208e7351c938948eb7cc27808dc3d3f5b3bb0",
+        "predictions": "ba7e37b64ba7aad55f2f521ec5f72b1c67d211f444681d6a6fede8f7e14480c3"
+      },
+      "-16": {
+        "run_manifest.json": "d87320aacc30f136bcf7b289d6bb0a20e89f06d979dd79909b2981f893add8c6",
+        "completed.json": "119f24884076974b5573a4b2bb638147d0365ac2145b18bcb3eaa0947a30949b",
+        "internal_validation_fold1.json": "68068fffd379129f25e1f6bc840208e7351c938948eb7cc27808dc3d3f5b3bb0",
+        "predictions": "22fb4d7a91cc08890abce189869343c0d2eba6f00419dae57354619db9d4d5b9"
+      },
+      "-20": {
+        "run_manifest.json": "8c9d49cf89562f796615121c847ce6edccfb18d453fe180ce894aa122ae44ec0",
+        "completed.json": "119f24884076974b5573a4b2bb638147d0365ac2145b18bcb3eaa0947a30949b",
+        "internal_validation_fold1.json": "68068fffd379129f25e1f6bc840208e7351c938948eb7cc27808dc3d3f5b3bb0",
+        "predictions": "f0637e09c824fa3882fbb534445a395a1066df5d2e3f6e2603410cb3225f927e"
+      }
+    },
+    "new_chunk_clean": {
+      "clean": {
+        "run_manifest.json": "2aa329f5d9dfb6021fd9215d44a6331e56677d4165d35e0dad8c9ba5a6f20b66",
+        "completed.json": "06fc07d0003a33cfd1a03a75c98176999927135caba2d1dff903e785594a15a0",
+        "internal_validation_fold1.json": "bf063365fcd8c54604a997eb87e95c1a210b3461418cbbfa25b8903c81f258dd",
+        "predictions": "b99cdf0b0e45945733950bfaf38e615e48939e96df8edf4d9817cb1926ca3252"
+      },
+      "0": {
+        "run_manifest.json": "dc0b1a6867844a7b47d5f469114399a8b37a7423eef3150a7fde81698b760f2d",
+        "completed.json": "06fc07d0003a33cfd1a03a75c98176999927135caba2d1dff903e785594a15a0",
+        "internal_validation_fold1.json": "bf063365fcd8c54604a997eb87e95c1a210b3461418cbbfa25b8903c81f258dd",
+        "predictions": "d829aba60d9d722ac92ac6b14df36e9b429e43b9ed9f863d27bfc9ffc6c2d640"
+      },
+      "-4": {
+        "run_manifest.json": "839ec07d5f172608c91daf217963da04e0b8a0a5a8891d122f3491e3ddbea0c8",
+        "completed.json": "06fc07d0003a33cfd1a03a75c98176999927135caba2d1dff903e785594a15a0",
+        "internal_validation_fold1.json": "bf063365fcd8c54604a997eb87e95c1a210b3461418cbbfa25b8903c81f258dd",
+        "predictions": "5cc074ee94b0c97a62d33983cc78ccaa6ad34b687f9ff0b5b449a4a6fe00bdab"
+      },
+      "-8": {
+        "run_manifest.json": "82490327afcc1db2b97eabad8b783297dc103706e0921c7c23abd01c616e3ed3",
+        "completed.json": "06fc07d0003a33cfd1a03a75c98176999927135caba2d1dff903e785594a15a0",
+        "internal_validation_fold1.json": "bf063365fcd8c54604a997eb87e95c1a210b3461418cbbfa25b8903c81f258dd",
+        "predictions": "e7519b29c32e74d3b81ba66e2a9726f6cea473caa304589f2fb0c943b52aa4e6"
+      },
+      "-12": {
+        "run_manifest.json": "8770acaf9e61935290645cf4da21fdcad423a4eb86b16794317d355673ce71d0",
+        "completed.json": "06fc07d0003a33cfd1a03a75c98176999927135caba2d1dff903e785594a15a0",
+        "internal_validation_fold1.json": "bf063365fcd8c54604a997eb87e95c1a210b3461418cbbfa25b8903c81f258dd",
+        "predictions": "9b8564f6f6fd66628dafc4d91573dfa10a6e1355e3291e119f3a568c8783563d"
+      },
+      "-16": {
+        "run_manifest.json": "10b67bcde90d7496de83d745f6ac759b597e11a3d83bc3cc3dd5299a33eb41b2",
+        "completed.json": "06fc07d0003a33cfd1a03a75c98176999927135caba2d1dff903e785594a15a0",
+        "internal_validation_fold1.json": "bf063365fcd8c54604a997eb87e95c1a210b3461418cbbfa25b8903c81f258dd",
+        "predictions": "8c012fdd620e25abe4d8eaa00b71d4d1ac21dbac661c781ad411073445437edb"
+      },
+      "-20": {
+        "run_manifest.json": "59227c84df18eee89cbdabaab24a4a9fab9f0f2b9f4d846aebb3ce7335c5d382",
+        "completed.json": "06fc07d0003a33cfd1a03a75c98176999927135caba2d1dff903e785594a15a0",
+        "internal_validation_fold1.json": "bf063365fcd8c54604a997eb87e95c1a210b3461418cbbfa25b8903c81f258dd",
+        "predictions": "8acc1094fa27ef2ada378456b331488176cbe56a40c5df1c30763e9c84d56e50"
+      }
+    }
+  },
+  "fit_ids": {
+    "old_wav_clean": [
+      "b6bde0ab4ebe"
+    ],
+    "new_chunk_clean": [
+      "dbcaecdc8494"
+    ]
+  },
+  "completed_conditions_per_run": 7,
+  "same_540_outer_ids_and_targets": true,
+  "same_1620_training_ids": true,
+  "fixed_parameters_and_no_selection": true,
+  "new_internal_fold_support": [
+    {
+      "fold": 1,
+      "fit_chunks": 1080,
+      "validation_chunks": 540,
+      "fit_wavs": 36,
+      "shared_chunks": 0,
+      "outer_test_excluded": true
+    },
+    {
+      "fold": 2,
+      "fit_chunks": 1080,
+      "validation_chunks": 540,
+      "fit_wavs": 36,
+      "shared_chunks": 0,
+      "outer_test_excluded": true
+    },
+    {
+      "fold": 3,
+      "fit_chunks": 1080,
+      "validation_chunks": 540,
+      "fit_wavs": 36,
+      "shared_chunks": 0,
+      "outer_test_excluded": true
+    }
+  ],
+  "all_new_final_models_reloaded_without_prediction_difference": true,
+  "conformer_and_alexnet_outer_predictions_identical_in_all_7_conditions": true,
+  "reused_training_feature_cache_sha256": "c75cb19f8722f9a21ae1d38071ce0c2ea48706ae889d1c829c7841fd2f27b476",
+  "new_training_executed_for_analysis": false,
+  "xai_executed_for_analysis": false
+}

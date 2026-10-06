@@ -1,0 +1,15 @@
+﻿run,noise,completed,outer_ids_and_targets_match,training_wav_groups_match,models_and_parameters_match,fit_id,n_training,n_evaluation,outer_wavs
+old_wav_clean,clean,True,True,True,True,b6bde0ab4ebe,1620,540,36
+old_wav_clean,0,True,True,True,True,b6bde0ab4ebe,1620,540,36
+old_wav_clean,-4,True,True,True,True,b6bde0ab4ebe,1620,540,36
+old_wav_clean,-8,True,True,True,True,b6bde0ab4ebe,1620,540,36
+old_wav_clean,-12,True,True,True,True,b6bde0ab4ebe,1620,540,36
+old_wav_clean,-16,True,True,True,True,b6bde0ab4ebe,1620,540,36
+old_wav_clean,-20,True,True,True,True,b6bde0ab4ebe,1620,540,36
+new_chunk_clean,clean,True,True,True,True,dbcaecdc8494,1620,540,36
+new_chunk_clean,0,True,True,True,True,dbcaecdc8494,1620,540,36
+new_chunk_clean,-4,True,True,True,True,dbcaecdc8494,1620,540,36
+new_chunk_clean,-8,True,True,True,True,dbcaecdc8494,1620,540,36
+new_chunk_clean,-12,True,True,True,True,dbcaecdc8494,1620,540,36
+new_chunk_clean,-16,True,True,True,True,dbcaecdc8494,1620,540,36
+new_chunk_clean,-20,True,True,True,True,dbcaecdc8494,1620,540,36

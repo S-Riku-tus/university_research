@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "raw_outer_metric_checks": 210,
+  "independent_q100_checks": 140,
+  "clean_oof_checks": [
+    {
+      "run": "old_wav_clean",
+      "n": 1620,
+      "ensemble_fn": 133,
+      "all_three_fn": 100
+    },
+    {
+      "run": "new_chunk_clean",
+      "n": 1620,
+      "ensemble_fn": 104,
+      "all_three_fn": 52
+    }
+  ],
+  "performance_q100_unchanged_in_all_14_day_noise_pairs": true,
+  "research_model_training_executed": false
+}

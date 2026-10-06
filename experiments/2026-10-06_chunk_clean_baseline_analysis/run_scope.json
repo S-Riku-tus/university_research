@@ -1,0 +1,15 @@
+{
+  "runs": {
+    "old_wav_clean": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/ensemble/202610/01/onb_wc-t0611-v0611_iw3-nc_c1s_s0_e150_170655",
+    "new_chunk_clean": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/ensemble/202610/05/onb_wc-t0611-v0611_ic3-nc_c1s_s0_e150_192410"
+  },
+  "excluded_incomplete_run": "202610/05/onb_wc-t0611-v0611_ic3-nc_c1s_s0_e150_183837",
+  "thresholds_W_m2": {"2025.06.11_0.3_2": 221505.1102, "2025.06.18_0.3_3": 271677.6816},
+  "comparison_changes": ["internal WAV KFold to shuffled chunk KFold", "PCA projection canonical memory layout, version 2", "final fitted-state persistence enabled"],
+  "evaluation": "same 540 known-WAV unused chunks, source-day thresholds; development comparison",
+  "training_oof_chunks": 1620,
+  "selection_on_outer_labels": false,
+  "new_training": false,
+  "ensemble_subset_diagnostics": "fixed existing-model subsets, descriptive; no formally selected new ensemble",
+  "matched": "prior comparison preserved; no new matched run added to this analysis"
+}

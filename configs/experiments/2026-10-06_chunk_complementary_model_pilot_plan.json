@@ -1,0 +1,42 @@
+{
+  "status": "proposed; not implemented or trained in this analysis",
+  "subsequent_execution_record": "experiments/2026-10-06_chunk_complementary_model_pilots/README.md; executed later on 2026-10-06 by user request, preserving this proposal",
+  "baseline_scope": "experiments/2026-10-06_chunk_clean_baseline_analysis/run_scope.json",
+  "question": "Can a new model correct the remaining last-stage common negatives under the chosen chunk validation while controlling added errors?",
+  "primary_learning_policy": "clean_only",
+  "matched": "preserve as a separate corresponding comparison",
+  "fixed_conditions": {
+    "outer_training_chunks": 1620,
+    "outer_test_chunks": 540,
+    "max_frequency_hz": 3000,
+    "chunk_seconds": 1,
+    "acoustic_selection": "none",
+    "internal_validation_split": "chunk_kfold",
+    "folds": 3,
+    "shuffle": true,
+    "seed": 42
+  },
+  "first_candidate_comparison": {
+    "model_families": ["SVR", "HistGradientBoostingRegressor"],
+    "initial_input": "same 10 band-power, spectral-shape and temporal-variation features as earlier pilots",
+    "purpose": "reassess model complementarity under the new internal support, not directly adopt earlier WAV-CV selections",
+    "parameter_selection": "small training-only nested chunk comparison; preprocessing fitted on each fit split; exclude outer labels"
+  },
+  "baseline_integration_controls": [
+    "existing performance weights",
+    "simple equal average",
+    "predefined individual and equal subset diagnostics; no outer-label-based adoption"
+  ],
+  "primary_diagnostics": [
+    "source-day q100 and g100",
+    "pre-ONB FP and FPR",
+    "common-negative correction at 315.4661173 kW/m2 on June 11 and 376.3201201 kW/m2 on June 18",
+    "new false negatives at the same or higher measured stages",
+    "global quality and clean-to-noise transfer"
+  ],
+  "fallback_if_same_features_fail": "Add one input preserving finer frequency shape or within-one-second temporal distribution; compare one change at a time",
+  "integration_after_candidate": "check simple integration first, then training-selected weights/subsets; consider a new meta-model only if useful complement remains unused",
+  "noise_oof_requirement": "If noise predictions enter weight selection, obtain clean-fitted noisy OOF for all models; matched OOF and final in-sample predictions cannot replace it",
+  "numeric_false_positive_allowance": null,
+  "new_model_fit_or_live_config_changes": false
+}

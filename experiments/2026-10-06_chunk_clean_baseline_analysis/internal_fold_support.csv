@@ -1,0 +1,4 @@
+﻿fold,fit_chunks,validation_chunks,fit_wavs,shared_chunks,outer_test_excluded
+1,1080,540,36,0,True
+2,1080,540,36,0,True
+3,1080,540,36,0,True

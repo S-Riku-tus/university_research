@@ -1,0 +1,12 @@
+{
+  "purpose": "Separate input representation from hyperparameter changes in the complementary HGB pilots",
+  "timing": "Diagnostic follow-up after observing the frozen pilot evaluation; not an independent confirmation",
+  "family": "HGB",
+  "fixed_parameter": {"max_leaf_nodes": 15},
+  "parameter_reason": "Middle of the predefined 7/15/31 grid and the band10 final selection; fixed across all representations, not optimized on outer labels",
+  "representations": ["band10", "frequency34", "temporal46"],
+  "folds": "Same saved 3 shuffled chunk folds; no hyperparameter selection",
+  "outer_labels_used_for_selection": false,
+  "existing_integration_choices": "Frozen integration catalog unchanged; do not add this follow-up into selection",
+  "scope": "clean training, seven clean-fit transfer conditions on the same outer 540; primary study scope remains known-WAV unused chunks"
+}

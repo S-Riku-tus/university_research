@@ -1,0 +1,9 @@
+{
+  "metric_rows": 1272,
+  "independent_endpoint_checks": 848,
+  "nested_reloaded_prediction_checks": 108,
+  "final_reloaded_prediction_checks": 126,
+  "frozen_integration_prediction_checks": 203,
+  "outer_train_chunk_overlap": 0,
+  "status": "passed"
+}

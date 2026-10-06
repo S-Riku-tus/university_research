@@ -1,0 +1,24 @@
+{
+  "training_chunks": 1620,
+  "outer_chunks": 540,
+  "shared_chunks": 0,
+  "shared_wavs": 36,
+  "noises": [
+    "clean",
+    "0",
+    "-4",
+    "-8",
+    "-12",
+    "-16",
+    "-20"
+  ],
+  "candidate_methods": 18,
+  "integration_methods": 29,
+  "frozen_integration_sha256": "6c3f1778ced356bba4fd3181f54775833169eb251c0d56d38a1afaaa892fc9ef",
+  "config_sha256": "12cb407fbce7c249323aec59b30b581dcf3a88b78c030e243c7361fb97be7613",
+  "selection_on_outer_labels": false,
+  "frozen_unchanged_after_evaluation": true,
+  "production_model_retraining": false,
+  "matched_retraining": false,
+  "status": "Completed developmental comparison on known-WAV unused chunks"
+}
