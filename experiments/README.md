@@ -1,11 +1,14 @@
 # 実験結果・実装記録の入口
 
-更新日: 2026-09-25。現在の研究状態は[研究の現在地](../docs/research_status.md)。ここには、その判断の根拠となる**日付付きの結果・検証記録**を置く。
+更新日: 2026-10-06。現在の研究状態は[研究の現在地](../docs/research_status.md)。ここには、その判断の根拠となる**日付付きの結果・検証記録**を置く。
 
 ## 直近の結果と使い分け
 
 | 記録 | 範囲・用途 |
 |---|---|
+| [10/6 修論の次工程に向けた5モデル保存予測診断](2026-10-06_thesis_next_steps_analysis/README.md) | 全5共通FN・固定元3比率・配分下限を分け、日別q100の最後の陰性とET相対のMSEを分解。新学習・モデル推論なし |
+| [10/6 通常ONBの5モデル化](2026-10-06_onb_five_model_integration/README.md) | モデルutils・共有OOF・3/4/5対照・日別指標・保存再読込・指標差と削除対照。実main 1 epoch確認済み、新通常150 epochsは未実施 |
+| [10/6 元3保持の追加モデル比較](2026-10-06_fixed_three_additions/README.md) | 9候補・seed43/44・clean_only・3/4/5の研究比較。元3に対する利得と、4/単体/q100/劣化量の限界を固定 |
 | [9/25 ensemble保存日付階層整理](2026-09-25_ensemble_date_layout/README.md) | 保存先を`YYYYMM/DD/条件`へ統一し、日付付き既存結果を衝突検査・件数照合付きで移行 |
 | [9/25 performance_kfold主方式・固定epoch条件](2026-09-25_matched_performance_kfold/README.md) | 全18 WAVの5-fold OOF、200 epoch固定、simple equal対照、実行コマンドと監査項目。条件作成済み・未実行 |
 | [9/24–25 matchedノイズ別重み本比較](2026-09-24_matched_noise_specific_weights/README.md) | noise別再fitの21条件監査、clean-only対応比較、領域別性能、innerの単一holdout制約、後継performance K-fold比較の根拠 |

@@ -1,0 +1,61 @@
+{
+  "status": "passed",
+  "new_model_fits": 0,
+  "new_model_predictions": 0,
+  "weights_changed": false,
+  "input_files": [
+    {
+      "path": "experiments\\2026-10-06_fixed_three_additions\\metrics.csv",
+      "sha256": "2c0771388d718f1ecf782220d8d40ac0371d6a026beb51c4a9d7eea7bf5427f8"
+    },
+    {
+      "path": "experiments\\2026-10-06_fixed_three_additions\\seed43\\predictions.npz",
+      "sha256": "bad2ade7638bd909012793788ebb6a791d94a141503fbb5c442a45c0633e34f4"
+    },
+    {
+      "path": "experiments\\2026-10-06_fixed_three_additions\\seed43\\outer_integrated.npz",
+      "sha256": "5a08d609d3e59913babc9fb1fb072b749c320c679658290da8e48698f8b2354a"
+    },
+    {
+      "path": "experiments\\2026-10-06_fixed_three_additions\\seed43\\frozen_integration.json",
+      "sha256": "436d0e744a28979e20449381fb52e93275873b7f0c2c91fced81b83e9b6998f1"
+    },
+    {
+      "path": "experiments\\2026-10-06_hgb_followup_validation\\seed43\\manifest.json",
+      "sha256": "bbda441c18fbde02db247a41a84acdac2c592cde88311060c15d11d93e4531ea"
+    },
+    {
+      "path": "experiments\\2026-10-06_fixed_three_additions\\seed44\\predictions.npz",
+      "sha256": "18f7ed951311f455d900e4d32699384d63066498f3a7d3e49fcc28f91ea0c251"
+    },
+    {
+      "path": "experiments\\2026-10-06_fixed_three_additions\\seed44\\outer_integrated.npz",
+      "sha256": "af92b6d1f10b3515b067e1e8ac74366dc7e7519c734e9ff7213b8e44e4ad6e2e"
+    },
+    {
+      "path": "experiments\\2026-10-06_fixed_three_additions\\seed44\\frozen_integration.json",
+      "sha256": "f8b707966372d8af59ccc66003245033cb13415dbb88d31b282236f9a71953bb"
+    },
+    {
+      "path": "experiments\\2026-10-06_hgb_followup_validation\\seed44\\manifest.json",
+      "sha256": "e6b7f7a35758bb7eedadc797dc8b14849510e04caf9ecc7ef14ec8dc705992b8"
+    }
+  ],
+  "max_reconstructed_five_prediction_difference_kW_m2": 2.2737367544323206e-13,
+  "verified": [
+    "saved outer prediction reconstruction",
+    "disjoint exhaustive FN partition",
+    "q100 against source metrics",
+    "weighted error-product MSE identity",
+    "ExtraTrees-relative MSE identity",
+    "weighted dispersion identity"
+  ],
+  "row_counts": {
+    "remaining_false_negatives": 84,
+    "loss_decomposition": 56,
+    "weighted_error_terms": 840,
+    "outer_false_negative_examples": 592,
+    "q100_last_false_negative": 28
+  },
+  "scope": "post hoc descriptive analysis of reused development data; no selection; pointwise bounds are oracle diagnostics"
+}

@@ -7,6 +7,7 @@
 | 目的 | 読む文書 | 更新方法 |
 |---|---|---|
 | 次の作業を始める | [研究の現在地](research_status.md) | 状態・本人の希望・次の一手を更新する唯一の入口 |
+| 添付分析を踏まえた修論の主張と次工程を見る | [10/6主張・段階的計画](research_plan/2026-10-06_thesis_claims_and_next_steps.md)、[保存予測の診断](../experiments/2026-10-06_thesis_next_steps_analysis/README.md) | 現行C1〜C7、一次資料調査、FNと統合制約・q100・ET相対の損失分解、通常本run/限定XAI/執筆の順序と終了条件 |
 | 5モデルを通常ONBで実行し、指標差を確認する | [10/6通常ONB組込み](../experiments/2026-10-06_onb_five_model_integration/README.md) | モデルutils/学習/統合/保存/XAI対応、3/4/5対照、平均/日別閾値の出力先、実main動作確認と150epochs本run未実施を区別 |
 | 5モデル全体と追加2つの採用理由を教授へ説明する | [10/6モデル役割と次工程](notes/2026-10-06_five_model_rationale_and_next_steps.md) | 実構造、期待役割、削除70条件、元RFの必須性未確認、4/5の交換、一次資料と段階案を整理 |
 | 元3を固定する4・5モデル追加と候補調査を見る | [10/6元3固定の追加比較](../experiments/2026-10-06_fixed_three_additions/README.md) | 9候補nested学習、元3/HGB4/ExtraTrees4/5の同条件比較、全メンバー保持、q100/領域/雑音の代償を固定。通常runner組込みは上の後継記録 |
