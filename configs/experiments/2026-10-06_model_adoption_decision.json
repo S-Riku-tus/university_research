@@ -1,0 +1,26 @@
+{
+  "decision_date": "2026-10-06",
+  "authorization": "User delegates model/integration selection to the assistant and states that no further facts from original audio review, experiment notes or synchronized video are available",
+  "additional_human_evidence_available": false,
+  "human_review_required": false,
+  "user_approval_required_for_this_research_decision": false,
+  "evaluation_scope": "Existing 2025-06-11 and 2025-06-18, 3 kHz, one-second shuffled known-WAV chunk evaluation; developmental resampling, not new-day validation",
+  "training_policy": "clean_only for both base models and primary integration",
+  "primary": {
+    "method": "ca_hgb_clean_mse",
+    "models": ["conformer", "alexnet", "hgb"],
+    "candidate": {"representation": "frequency34", "max_leaf_nodes": 31, "max_iter": 150, "learning_rate": 0.05, "min_samples_leaf": 20, "l2_regularization": 1.0, "early_stopping": false},
+    "weight_fit": "Minimize heat-flux MSE on aligned clean training OOF; weights nonnegative and sum to one",
+    "fixed_weights_across_experiment_seeds": false,
+    "true_SNR_or_heat_flux_used_for_inference_switching": false,
+    "reason": "Repeated clean RMSE/MAE and false-negative improvements with zero observed false positives in both replications; q100 benefit is not a mandatory criterion; equivalent to the tested four-model MSE integration when RF weight is zero"
+  },
+  "reference_methods": ["existing_performance", "existing3_clean_mse", "randomforest", "conformer", "alexnet", "hgb"],
+  "strongest_integration_alternative": "hgb4_clean_ridge",
+  "noise_exposed_controls": ["existing3_noisy_mse", "hgb4_noisy_mse", "existing3_noisy_ridge", "hgb4_noisy_ridge"],
+  "not_selected_as_primary": ["hgb single", "four-model equal average", "fixed residual-correlation diversity penalty", "conformer_hgb_clean_mse", "noise-exposed integration"],
+  "decision_policy": "Qualitative balanced research judgment using repeated gains, q100, false positives and noise failures; no fabricated numeric false-alarm budget or universal optimum claim",
+  "next_computational_priority": "Train-only limited regularization controls for frequency34 HGB, then same-frequency34 ExtraTrees and direct Ridge/PLS learner controls on existing saved paired folds",
+  "new_training_executed_in_this_decision_turn": false,
+  "implementation_state": "Selected primary already implemented and evaluated in the comparison entrypoint; ordinary ONB main runner remains the existing three-model baseline"
+}

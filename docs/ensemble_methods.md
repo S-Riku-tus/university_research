@@ -1,6 +1,12 @@
 # ONB回帰のアンサンブル手法と現行の重み決定
 
-更新日: 2026-10-05。分割切替の実装・確認は[10/5記録](../experiments/2026-10-05_shuffled_chunk_internal_validation/README.md)。
+更新日: 2026-10-06。元3保持の5モデル組込みは[通常実行記録](../experiments/2026-10-06_onb_five_model_integration/README.md)。
+
+**現在の主方式は`original3_hgb_extra_trees`**。以下で説明する旧6方式も実装を保持する。現在は5単体の同じ内部chunk OOFを共有し、元3MSE/performance、HGB4、ExtraTrees4、5、5等平均を出す。外側未使用chunkは重みfitへ渡さず、clean_onlyでは1組を全noiseへ固定転送する。
+
+元3の内部重み $v$ はclean OOFのMSE最小化、$v_m\ge10^{-6}$、$\sum_m v_m=1$ で求める。元3ブロック $B=\sum_{m\in\{RF,C,A\}}v_m\hat y_m$ を固定し、$\hat y=aB+b\hat y_{HGB}+c\hat y_{ET}$、$a+b+c=1$、$a\ge0.25$、$b,c\ge0.05$ でclean OOF MSEを最小化する。4モデルは片方の追加項を除く。保持floorは今回の設計制約であり、全5つの科学的必要性や最適比率を示すものではない。[実装](../code/utils/ensemble/fixed_core_stacking.py)、[採用理由・削除対照](notes/2026-10-06_five_model_rationale_and_next_steps.md)。
+
+以下は10/5までの主方式と旧6方式の数式説明で、3モデルに関する記号や「現在」の記述は当時の条件として読む。
 
 **現在の主方式**：`performance_kfold`を用いる。外側学習chunk全体の通常KFold、shuffle=True、seed42で各chunkを一度ずつ検証し、結合OOFの**1秒chunk R²**から `normalize(1 / max(1-R², 1e-6))` で1組の重みを決める。主設定は3-fold、150 epoch。10/5本人指定による切替で、同じWAVは共有するが同じchunkは共有しない。明示した`run.internal_validation_split="wav_kfold"`だけが旧WAV分離対照となる。
 

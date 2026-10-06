@@ -104,7 +104,7 @@ class ModelTrainer:
     """
     1 モデルの学習・予測と、非深層モデル用の PCA 前処理をまとめたクラス。
     MODEL_SPECS の各 spec (key/label/kind/builder ...) を受け取り、
-    kind ("keras" / "sklearn") に応じて入力形態を切り替える。
+    kindに応じて入力を切り替える。keras/summaryはraw、従来sklearnはPCA。
     """
 
     def __init__(self, random_seed=42):
@@ -228,7 +228,7 @@ class ModelTrainer:
                 spec, mm, x_fit, y_fit_scaled, epochs
             )
             return model, history
-        else:  # sklearn / xgboost
+        elif spec["kind"] in {"sklearn", "sklearn_summary"}:
             builder_params = dict(spec.get("builder_params", {}))
             if spec.get("random_state_from_run", False):
                 builder_params.setdefault(
@@ -237,14 +237,20 @@ class ModelTrainer:
             model = spec["builder"](mm, **builder_params)
             label = spec.get("label", spec.get("key", "sklearn model"))
             print(f"[training] {label}: [--------------------] 0/1", flush=True)
-            model.fit(x_fit_pca, y_fit_scaled.ravel())
+            inputs = x_fit if spec["kind"] == "sklearn_summary" else x_fit_pca
+            model.fit(inputs, y_fit_scaled.ravel())
             print(f"[training] {label}: [####################] 1/1 (100%)", flush=True)
             return model, None
+        else:
+            raise ValueError(f"Unknown model kind: {spec['kind']}")
 
     def predict_one_model(self, spec, model, x, x_pca, scaler):
         """学習済みモデルで予測し、元スケールの熱流束に戻して返す。"""
         if spec["kind"] == "keras":
             pred_scaled = model.predict(x, verbose=0)
+        elif spec["kind"] in {"sklearn", "sklearn_summary"}:
+            inputs = x if spec["kind"] == "sklearn_summary" else x_pca
+            pred_scaled = np.asarray(model.predict(inputs)).reshape(-1, 1)
         else:
-            pred_scaled = model.predict(x_pca).reshape(-1, 1)
+            raise ValueError(f"Unknown model kind: {spec['kind']}")
         return scaler.inverse_transform(pred_scaled).ravel()

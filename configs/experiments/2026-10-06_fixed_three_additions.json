@@ -1,0 +1,40 @@
+{
+  "purpose": "Preserve RF + Conformer + AlexNet and test genuine four/five-model additions on saved paired splits",
+  "user_instruction": "Original three models remain fixed; add models rather than automatically replace RF. Interpret 14 as four from context.",
+  "source": "experiments/2026-10-06_hgb_followup_validation",
+  "seeds": [43, 44],
+  "training_policy": "clean_only, including candidate selection and integration",
+  "evaluation_scope": "Known-WAV unused chunks, developmental repeated splits; not independent new-day validation",
+  "existing_models_refitted": false,
+  "candidate_selection": "Three-fold shuffled chunk CV inside each fit; minimize clean MSE, tie by grid order. Outer/OOF-held labels excluded.",
+  "hgb_defaults": {"max_iter": 150, "learning_rate": 0.05, "max_leaf_nodes": 31, "min_samples_leaf": 20, "l2_regularization": 1.0, "early_stopping": false},
+  "families": {
+    "hgb_regularized": {"representation": "frequency34", "grid": [{"min_samples_leaf": 40}, {"l2_regularization": 10.0}, {"max_leaf_nodes": 15}]},
+    "extra_trees": {"representation": "frequency34", "grid": [{"min_samples_leaf": 2, "max_features": 1.0}, {"min_samples_leaf": 8, "max_features": 1.0}, {"min_samples_leaf": 2, "max_features": 0.7}]},
+    "rf34": {"representation": "frequency34", "grid": [{"max_depth": 12}, {"max_depth": 6}]},
+    "gradient_boosting": {"representation": "frequency34", "grid": [{"max_depth": 2}, {"max_depth": 3}]},
+    "xgb_boosting": {"representation": "frequency34", "grid": [{"max_depth": 3, "reg_lambda": 1.0}, {"max_depth": 3, "reg_lambda": 10.0}, {"max_depth": 5, "reg_lambda": 10.0}]},
+    "ridge_direct": {"representation": "frequency34", "grid": [{"alpha": 1.0}, {"alpha": 10.0}, {"alpha": 100.0}]},
+    "pls": {"representation": "frequency34", "grid": [{"n_components": 4}, {"n_components": 8}, {"n_components": 12}]},
+    "kernel_ridge": {"representation": "frequency34", "grid": [{"alpha": 0.01, "gamma": 0.029411764705882353}, {"alpha": 0.1, "gamma": 0.029411764705882353}, {"alpha": 0.01, "gamma": 0.0029411764705882353}]},
+    "hgb_temporal": {"representation": "temporal46", "grid": [{"max_leaf_nodes": 15}, {"max_leaf_nodes": 31}]}
+  },
+  "target_scaling": "MinMaxScaler fitted inside each fit; Kernel Ridge uses StandardScaler target to revert toward training mean out of support",
+  "integration": {
+    "anchors": ["existing_performance", "existing3_clean_mse"],
+    "preserve_internal_three_ratios": true,
+    "minimum_original_three_total_weight": 0.25,
+    "minimum_each_added_model_weight_for_genuine_four_five": 0.05,
+    "fixed_four_control": "75% original-three ensemble + 25% HGB",
+    "fixed_five_control": "50% original-three ensemble + 25% HGB + 25% additional candidate",
+    "equal_four_five_controls": true,
+    "floor_rationale": "Explicit research design controls retaining all members; not derived from test results or asserted optimal",
+    "fifth_family_selection": "Clean OOF integration-fit MSE among the nine candidate families; external result not used",
+    "unrestricted_simplex": "Diagnostic only, permits RF weight zero and therefore does not count as preserving three"
+  },
+  "true_SNR_day_or_heat_flux_used_as_model_input": false,
+  "outer_labels_used_for_selection": false,
+  "noise_augmentation_or_noisy_weight_selection": false,
+  "cpu_threads": 2,
+  "status": "Conditions fixed before new candidate fits; models and selected integrations saved separately from historical results"
+}

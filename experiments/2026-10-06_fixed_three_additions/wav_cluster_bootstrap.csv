@@ -1,0 +1,21 @@
+﻿seed,noise,baseline,addition,delta_rmse,cluster_bootstrap_low95,cluster_bootstrap_high95,improved_wavs,wavs,resamples,scope
+43,clean,existing3_clean_mse,existing3_clean_mse__hgb4_anchor,-9.635582393446395,-15.335161563788594,-4.095210269657666,27,36,3000,descriptive uncertainty conditional on reused development data
+43,clean,existing3_clean_mse,existing3_clean_mse__extra_trees4_anchor,-11.002315249703965,-17.741022661576014,-4.677486486632432,27,36,3000,descriptive uncertainty conditional on reused development data
+43,clean,existing3_clean_mse,existing3_clean_mse__selected5,-11.070809013987994,-17.802929918793158,-4.799472022545229,27,36,3000,descriptive uncertainty conditional on reused development data
+43,clean,existing3_clean_mse__hgb4_anchor,existing3_clean_mse__selected5,-1.4352266205415987,-3.463167711820817,0.40526221347516894,24,36,3000,descriptive uncertainty conditional on reused development data
+43,clean,existing3_clean_mse__extra_trees4_anchor,existing3_clean_mse__selected5,-0.0684937642840282,-0.16855415429991077,0.04043208427457606,23,36,3000,descriptive uncertainty conditional on reused development data
+43,-20,existing3_clean_mse,existing3_clean_mse__hgb4_anchor,11.605771817583758,-0.6561098844503607,21.609809374441834,23,36,3000,descriptive uncertainty conditional on reused development data
+43,-20,existing3_clean_mse,existing3_clean_mse__extra_trees4_anchor,-6.054697799472507,-9.493448790746108,-3.6047654253861925,29,36,3000,descriptive uncertainty conditional on reused development data
+43,-20,existing3_clean_mse,existing3_clean_mse__selected5,-5.093797348387284,-8.884868649226888,-2.331995460108253,30,36,3000,descriptive uncertainty conditional on reused development data
+43,-20,existing3_clean_mse__hgb4_anchor,existing3_clean_mse__selected5,-16.69956916597104,-24.89909438938782,-6.811533361839865,23,36,3000,descriptive uncertainty conditional on reused development data
+43,-20,existing3_clean_mse__extra_trees4_anchor,existing3_clean_mse__selected5,0.960900451085223,-0.07418138931420584,1.845542748240527,16,36,3000,descriptive uncertainty conditional on reused development data
+44,clean,existing3_clean_mse,existing3_clean_mse__hgb4_anchor,-7.403988682236168,-12.238973887445342,-2.2820880474689904,26,36,3000,descriptive uncertainty conditional on reused development data
+44,clean,existing3_clean_mse,existing3_clean_mse__extra_trees4_anchor,-8.521063014855784,-14.014352624250487,-2.8697236599335425,28,36,3000,descriptive uncertainty conditional on reused development data
+44,clean,existing3_clean_mse,existing3_clean_mse__selected5,-8.631844163631264,-14.066404614239831,-3.048589600889087,28,36,3000,descriptive uncertainty conditional on reused development data
+44,clean,existing3_clean_mse__hgb4_anchor,existing3_clean_mse__selected5,-1.2278554813950961,-2.8309372759646547,0.39450036195835614,28,36,3000,descriptive uncertainty conditional on reused development data
+44,clean,existing3_clean_mse__extra_trees4_anchor,existing3_clean_mse__selected5,-0.11078114877548018,-0.57509745096865,0.3802473879821014,14,36,3000,descriptive uncertainty conditional on reused development data
+44,-20,existing3_clean_mse,existing3_clean_mse__hgb4_anchor,-7.3243572707523725,-10.709994054887895,-3.448380302958157,25,36,3000,descriptive uncertainty conditional on reused development data
+44,-20,existing3_clean_mse,existing3_clean_mse__extra_trees4_anchor,-7.568502492098773,-13.825215887591694,-0.6377222816162963,23,36,3000,descriptive uncertainty conditional on reused development data
+44,-20,existing3_clean_mse,existing3_clean_mse__selected5,-7.843350539864005,-13.502091342687379,-1.594574062205253,22,36,3000,descriptive uncertainty conditional on reused development data
+44,-20,existing3_clean_mse__hgb4_anchor,existing3_clean_mse__selected5,-0.5189932691116326,-3.1716268271436947,2.319334406059797,22,36,3000,descriptive uncertainty conditional on reused development data
+44,-20,existing3_clean_mse__extra_trees4_anchor,existing3_clean_mse__selected5,-0.2748480477652322,-1.052134475508172,0.4717992691749143,17,36,3000,descriptive uncertainty conditional on reused development data

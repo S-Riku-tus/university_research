@@ -1,0 +1,34 @@
+{
+  "status": "passed",
+  "seeds": [
+    43,
+    44
+  ],
+  "production_strategies_verified": [
+    "original3_mse",
+    "original3_performance",
+    "original3_hgb",
+    "original3_extra_trees",
+    "original3_hgb_extra_trees"
+  ],
+  "noise_conditions": [
+    "clean",
+    "0",
+    "-4",
+    "-8",
+    "-12",
+    "-16",
+    "-20"
+  ],
+  "maximum_prediction_difference_kW_m2": 7.958078640513122e-13,
+  "maximum_component_difference_W_m2": 2.3283064365386963e-10,
+  "component_comparisons": 28,
+  "component_predictions_checked": 15120,
+  "source_metric_rows": 252,
+  "metric_changes": 3360,
+  "removal_ablation_conditions": 70,
+  "original_predictions_changed": false,
+  "new_150_epoch_main_run_executed": false,
+  "core_member_floor": 1e-06,
+  "note": "Numerical membership floor is the only added guard versus the prior pilot; these paired cores were already positive"
+}

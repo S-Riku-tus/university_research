@@ -1,0 +1,435 @@
+{
+  "fold": 1,
+  "weights": {
+    "original3_hgb_extra_trees": {
+      "randomforest": 0.2416826333737653,
+      "conformer": 0.008317116626234718,
+      "alexnet": 2.500000000059902e-07,
+      "hgb": 0.050000000000000086,
+      "extra_trees": 0.7
+    },
+    "original3_mse": {
+      "randomforest": 0.9667305334950612,
+      "conformer": 0.03326846650493887,
+      "alexnet": 1.0000000000239608e-06,
+      "hgb": 0.0,
+      "extra_trees": 0.0
+    },
+    "original3_performance": {
+      "randomforest": 0.9280816644362733,
+      "conformer": 0.017672154805844602,
+      "alexnet": 0.054246180757882206,
+      "hgb": 0.0,
+      "extra_trees": 0.0
+    },
+    "original3_hgb": {
+      "randomforest": 0.5647945531454159,
+      "conformer": 0.019436490337755716,
+      "alexnet": 5.84231627728798e-07,
+      "hgb": 0.41576837228520064,
+      "extra_trees": 0.0
+    },
+    "original3_extra_trees": {
+      "randomforest": 0.2416826333737653,
+      "conformer": 0.008317116626234718,
+      "alexnet": 2.500000000059902e-07,
+      "hgb": 0.0,
+      "extra_trees": 0.75
+    }
+  },
+  "diagnostics": {
+    "original3_hgb_extra_trees": {
+      "core_weights": {
+        "randomforest": 0.9667305334950612,
+        "conformer": 0.03326846650493887,
+        "alexnet": 1.0000000000239608e-06
+      },
+      "block_weights": {
+        "original_three": 0.25,
+        "hgb": 0.050000000000000086,
+        "extra_trees": 0.7
+      },
+      "active_members": 5,
+      "oof_fit_rmse_w_m2": 59376.282467631434,
+      "selection_scope": "training OOF integration fit diagnostic, not outer performance",
+      "outer_labels_used": false,
+      "options": {
+        "core_keys": [
+          "randomforest",
+          "conformer",
+          "alexnet"
+        ],
+        "core_rule": "mse",
+        "core_member_floor": 1e-06,
+        "minimum_core_total": 0.25,
+        "minimum_added_member": 0.05,
+        "added_keys": [
+          "hgb",
+          "extra_trees"
+        ]
+      }
+    },
+    "original3_mse": {
+      "core_weights": {
+        "randomforest": 0.9667305334950612,
+        "conformer": 0.03326846650493887,
+        "alexnet": 1.0000000000239608e-06
+      },
+      "block_weights": {
+        "original_three": 1.0
+      },
+      "active_members": 3,
+      "oof_fit_rmse_w_m2": 98170.71649832581,
+      "selection_scope": "training OOF integration fit diagnostic, not outer performance",
+      "outer_labels_used": false,
+      "options": {
+        "core_keys": [
+          "randomforest",
+          "conformer",
+          "alexnet"
+        ],
+        "core_rule": "mse",
+        "core_member_floor": 1e-06,
+        "minimum_core_total": 0.25,
+        "minimum_added_member": 0.05,
+        "added_keys": []
+      }
+    },
+    "original3_performance": {
+      "core_weights": {
+        "randomforest": 0.9280816644362733,
+        "conformer": 0.017672154805844602,
+        "alexnet": 0.054246180757882206
+      },
+      "block_weights": {
+        "original_three": 1.0
+      },
+      "active_members": 3,
+      "oof_fit_rmse_w_m2": 109216.0419949517,
+      "selection_scope": "training OOF integration fit diagnostic, not outer performance",
+      "outer_labels_used": false,
+      "options": {
+        "core_keys": [
+          "randomforest",
+          "conformer",
+          "alexnet"
+        ],
+        "core_rule": "performance",
+        "core_member_floor": 1e-06,
+        "minimum_core_total": 0.25,
+        "minimum_added_member": 0.05,
+        "added_keys": []
+      }
+    },
+    "original3_hgb": {
+      "core_weights": {
+        "randomforest": 0.9667305334950612,
+        "conformer": 0.03326846650493887,
+        "alexnet": 1.0000000000239608e-06
+      },
+      "block_weights": {
+        "original_three": 0.5842316277147993,
+        "hgb": 0.41576837228520064
+      },
+      "active_members": 4,
+      "oof_fit_rmse_w_m2": 91160.443447232,
+      "selection_scope": "training OOF integration fit diagnostic, not outer performance",
+      "outer_labels_used": false,
+      "options": {
+        "core_keys": [
+          "randomforest",
+          "conformer",
+          "alexnet"
+        ],
+        "core_rule": "mse",
+        "core_member_floor": 1e-06,
+        "minimum_core_total": 0.25,
+        "minimum_added_member": 0.05,
+        "added_keys": [
+          "hgb"
+        ]
+      }
+    },
+    "original3_extra_trees": {
+      "core_weights": {
+        "randomforest": 0.9667305334950612,
+        "conformer": 0.03326846650493887,
+        "alexnet": 1.0000000000239608e-06
+      },
+      "block_weights": {
+        "original_three": 0.25,
+        "extra_trees": 0.75
+      },
+      "active_members": 4,
+      "oof_fit_rmse_w_m2": 58589.02396089845,
+      "selection_scope": "training OOF integration fit diagnostic, not outer performance",
+      "outer_labels_used": false,
+      "options": {
+        "core_keys": [
+          "randomforest",
+          "conformer",
+          "alexnet"
+        ],
+        "core_rule": "mse",
+        "core_member_floor": 1e-06,
+        "minimum_core_total": 0.25,
+        "minimum_added_member": 0.05,
+        "added_keys": [
+          "extra_trees"
+        ]
+      }
+    }
+  },
+  "splits": [
+    {
+      "fold": 1,
+      "fit_indices": [
+        1,
+        2,
+        3,
+        6,
+        8,
+        13,
+        14,
+        17,
+        20,
+        21,
+        23,
+        24,
+        25,
+        29,
+        32,
+        37,
+        38,
+        41,
+        46,
+        48,
+        49,
+        50,
+        51,
+        52,
+        54,
+        57,
+        58,
+        59,
+        60,
+        61,
+        63,
+        68,
+        70,
+        71,
+        73,
+        74,
+        75,
+        82,
+        84,
+        85,
+        86,
+        87,
+        91,
+        92,
+        93,
+        94,
+        96,
+        97,
+        98,
+        99,
+        101,
+        102,
+        104,
+        105
+      ],
+      "validation_indices": [
+        0,
+        4,
+        5,
+        7,
+        9,
+        10,
+        11,
+        12,
+        15,
+        16,
+        18,
+        19,
+        22,
+        26,
+        27,
+        28,
+        30,
+        31,
+        33,
+        34,
+        35,
+        36,
+        39,
+        40,
+        42,
+        43,
+        44,
+        45,
+        47,
+        53,
+        55,
+        56,
+        62,
+        64,
+        65,
+        66,
+        67,
+        69,
+        72,
+        76,
+        77,
+        78,
+        79,
+        80,
+        81,
+        83,
+        88,
+        89,
+        90,
+        95,
+        100,
+        103,
+        106,
+        107
+      ],
+      "fit_chunks": 54,
+      "validation_chunks": 54,
+      "shared_samples": 0,
+      "shared_source_wavs": 28,
+      "selection": {
+        "enabled": false,
+        "n_before": 54,
+        "n_after": 54
+      }
+    },
+    {
+      "fold": 2,
+      "fit_indices": [
+        0,
+        4,
+        5,
+        7,
+        9,
+        10,
+        11,
+        12,
+        15,
+        16,
+        18,
+        19,
+        22,
+        26,
+        27,
+        28,
+        30,
+        31,
+        33,
+        34,
+        35,
+        36,
+        39,
+        40,
+        42,
+        43,
+        44,
+        45,
+        47,
+        53,
+        55,
+        56,
+        62,
+        64,
+        65,
+        66,
+        67,
+        69,
+        72,
+        76,
+        77,
+        78,
+        79,
+        80,
+        81,
+        83,
+        88,
+        89,
+        90,
+        95,
+        100,
+        103,
+        106,
+        107
+      ],
+      "validation_indices": [
+        1,
+        2,
+        3,
+        6,
+        8,
+        13,
+        14,
+        17,
+        20,
+        21,
+        23,
+        24,
+        25,
+        29,
+        32,
+        37,
+        38,
+        41,
+        46,
+        48,
+        49,
+        50,
+        51,
+        52,
+        54,
+        57,
+        58,
+        59,
+        60,
+        61,
+        63,
+        68,
+        70,
+        71,
+        73,
+        74,
+        75,
+        82,
+        84,
+        85,
+        86,
+        87,
+        91,
+        92,
+        93,
+        94,
+        96,
+        97,
+        98,
+        99,
+        101,
+        102,
+        104,
+        105
+      ],
+      "fit_chunks": 54,
+      "validation_chunks": 54,
+      "shared_samples": 0,
+      "shared_source_wavs": 28,
+      "selection": {
+        "enabled": false,
+        "n_before": 54,
+        "n_after": 54
+      }
+    }
+  ],
+  "split_policy": "chunk_kfold",
+  "outer_labels_used": false
+}

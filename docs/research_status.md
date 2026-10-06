@@ -1,6 +1,26 @@
 # 研究の現在地と次にすること
 
-更新日: **2026-10-06（固定HGBの追加2 seed・共通入力説明・雑音OOF統合を完了）**。分位点ルール時点の状態は[変更前の記録](../experiments/2026-09-16_peak_height_selection/previous_documents/research_status.md)に保存した。
+更新日: **2026-10-06（通常ONBへ5モデルを組込み、指標差・役割・削除対照を確認）**。分位点ルール時点の状態は[変更前の記録](../experiments/2026-09-16_peak_height_selection/previous_documents/research_status.md)に保存した。
+
+**本人の最新指示：従来のRF＋Conformer＋AlexNetは固定し、4・5モデルへの追加を主軸にする。** 前回のRFを外す3モデル採用は、この希望の主方針から外す。追加の人手情報は得られない前提を維持し、モデル調査・比較・判断はAI側で進める。[元3固定の追加比較](../experiments/2026-10-06_fixed_three_additions/README.md)、[後継判断](../configs/experiments/2026-10-06_fixed_three_additions_decision.json)。元モデルの予測と元3内の比率を保持し、元3ブロックと追加モデルの配分を決める。
+
+**追加比較は実行済み**：同じ保存seed43/44で周波数34の正則化HGB・ExtraTrees・RF・通常GB・XGBoost・直接Ridge・PLS・Kernel Ridge、時間46 HGBの9候補をnested clean学習。648fit、保存72モデル、87統合/単体×7条件×2seed、3654指標行を取得した。元3と基準HGBのOOF/外側配列は全件完全一致、再学習なし。時間46の旧clean2160入力との一致、保存72モデルの全7条件再読込、正の4/5メンバー・保持比率・指標再計算、関連unittest3件を確認。
+
+**研究上の主候補は元3＋周波数HGB＋ExtraTreesの5モデル**：clean OOFで第5候補を選ぶと両seedでExtraTrees。元3にも同じMSEをfitした基準に対し、clean RMSE35.74→24.67／33.89→25.26、MAE26.70→17.24／24.12→17.16、FN32→25／28→19、全7条件FP0。−20 RMSE81.41→76.31／81.41→73.57、6雑音平均69.39→65.63／67.49→63.41。元3の従来performance内部比率を保つ対照でもclean RMSE36.04→25.05／35.30→25.74へ改善した。
+
+**5モデルの追加利得には限界もある**：元3＋ExtraTrees4との差はclean RMSE0.07/0.11、FN1/1で小さく、WAV単位の記述的区間は0を含む。seed43 clean6/18 q100はHGB4の322.11から5では376.32へ戻る。低熱流束cleanとseed44−20近傍は悪化。強雑音の絶対誤差は改善してもcleanからのRMSE増加量は縮小していない。元3＋ExtraTrees4を僅差の最有力対照、元3＋HGB4をq100対照として保持する。元3総量25%以上・追加各5%以上は今回の保持制約であり、最適比率の断定ではない。
+
+**HGBがRF一般より良いとはしない**：同じ34特徴RFのclean RMSE29.93/29.97は元PCA画像RF70.97/69.60より良く、−20 FPも0/0。同じ34特徴のHGBはclean28.33/28.88だが−20は106.37/72.41・FP88/0で順位が分割に依存する。ExtraTreesはclean25.76/26.68・−20 RMSE74.72/73.28・FP0/0。直接Ridge/PLS・時間HGBの強雑音失敗も確認。[モデル調査](../experiments/2026-10-06_fixed_three_additions/model_research.md)はLightGBM/CatBoost/TabPFN等の未検証候補と実測9候補を区別する。
+
+**通常ONBへ5モデルを組込み・動作確認済み**：[実装と検算](../experiments/2026-10-06_onb_five_model_integration/README.md)。HGB/ExtraTreesをモデルutilsとregistryへ置き、生power→34特徴の保存Pipelineを学習・推論・再読込・共通周波数maskへ接続した。通常の`run_ensemble_regression_onb.py`は元3＋HGB＋ExtraTreesが既定、同じ1回の内部OOFで元3MSE/performance・HGB4・ExtraTrees4・5・5等平均を出す。従来の統合日平均ONB閾値は保持し、日別閾値の全指標・差・日別q100も別CSVへ追加。TP/FP/TN/FN/FPRと領域母数も通常指標に保存する。
+
+**各指標差とモデル役割を確定**：[指標差](../experiments/2026-10-06_onb_five_model_integration/metric_changes_summary.md)。clean Recall89.84→92.06%／91.11→93.97%、F1 0.94649→0.95868／0.95349→0.96890、Accuracy94.07→95.37%／94.81→96.48%、Precision100%とFP0は不変。新統合の7条件照合は最大差7.96×10⁻¹³ kW/m²、追加2Pipelineの28条件15120予測も一致。保存予測のモデル削除70条件を取得し、Conformer/ExtraTreesの有用な寄与、AlexNetの回帰/FN交換、RFを外すとRMSEがわずかに下がることも確認。[教授向け採用理由と段階案](notes/2026-10-06_five_model_rationale_and_next_steps.md)は5モデル全ての必須性を断定しない。
+
+**実装確認と本実行を分ける**：実際のONB mainを元5構造・1 epoch/内部2fold・実入力144で実行し、15fit、最終5保存/再読込、clean/−20の11予測列と各33日別指標行を確認した。この値を研究性能に加えない。通常設定は150 epochs/3fold/seed42で、新しい通常150 epochs本runは今回未実施。次は標準保存形式の本runを1回確認し、3/4/5の交換を読む。既存の150 epochs候補検証を未実施として再学習しない。追加モデル数・全grid・gateを自動追加せず、物理的音源の同定・未知日検証・追加人手確認を進行条件にしない。
+
+以下は元3固定の最新指示を受ける前の採用判断・追検証記録。RF置換の主採用と当時の次工程は上段で更新済み。
+
+**本人の最新指示を固定**：原録音の追加人手確認・実験メモ・同期映像から新しい事実は得られない前提で進める。それらを本人の宿題や進行条件へ戻さない。採用判断もAI側が引き受ける。[候補・統合の採用判断](../experiments/2026-10-06_model_adoption_decision/README.md)を作成し、**周波数34特徴HGB＋Conformer＋AlexNet、clean OOFのMSE最小化・非負重み**を研究上の主方式として採用した。元のRF＋Conformer＋AlexNetは基準対照、clean Ridgeは最有力対照、雑音OOF方式は雑音へ露出する別条件の対照として残す。新しい数値的な誤報許容値を設けたのではなく、繰り返しの回帰/FN改善、q100、FP抑制、clean_onlyの研究目的を合わせた判断である。
 
 **本人依頼の4項目の計算・比較・文書化を完了**：[固定HGB候補の追検証](../experiments/2026-10-06_hgb_followup_validation/README.md)。seed43/44で外側・内部chunk splitと全モデルを同じ条件で作り直し、基礎32 fit、CNN16 fitの150 epochs完走、clean-fit雑音OOFと19方式×7条件の評価を取得した。同じMSE統合の既存3→HGB追加でclean RMSE35.74→27.36／33.89→26.51、MAE26.70→19.83／24.12→18.74、FN32→25／28→21、FP0を維持。両seedで26/36 WAVの二乗誤差が改善。seed44ではq100が変わらなくても利得が残り、q100のみを採否条件にしない本人方針を継続する。
 
@@ -8,7 +28,7 @@
 
 **説明と統合の比較も実施済み**：[共通chunk説明](../experiments/2026-10-06_hgb_followup_validation/explanation_findings.md)。HGBはパワー/比率/周波数形状への依存が強く、時間順序に不変。4モデルの共通入力加工32例、保存HGBの追加seed診断を実行した。多様性項は両seedでclean FN/q100の追加改善なし。clean Ridgeは回帰・見逃しをさらに改善するがseed44 FP1。雑音OOFを使う固定重みはHGB比率を約63–64%→23–25%へ下げ、seed43の悪化を縮小するがcleanと見逃しの交換がある。基礎モデルがclean固定でも統合は雑音へ露出しているので、純粋なclean_onlyと分ける。RFはPCAスレッド数への感度が残り、今回の固定2スレッドでは全56保存予測組を再現した。元主runnerの採用設定・過去matchedは変更していない。
 
-**次は本人側の記録確認と採用優先の判断**：[確認手順](../experiments/2026-10-06_hgb_followup_validation/human_review_instructions.md)、38行の記入表、34原録音抜粋を用意した。本人に同じ学習の再実行を依頼する部分はない。HGBはclean改善の有望候補として保持し、主比較はclean-MSE、Ridgeと雑音OOF方式は対照として残す。追加計算を続ける場合は強雑音の分割感度を具体的対象に、学習側だけで正則化または同じ入力の学習器対照を限定比較する。未知日検証とq100最後の少数失敗は、今回の候補価値を確定するための必須前提にしない。
+**次は主方式の通常実行への組込みと、学習側の限定対照**：主採用の3モデルMSEは比較用入口で実装・評価済み。4モデルMSEのRF重み0を受け、全7560予測を照合して二値判定一致、最大差約0.00024 kW/m²を確認した。通常ONB主runnerの既定はまだ元の3モデルであり、採用文書を書いただけで設定が切り替わったとは扱わない。新たな候補比較はまず周波数HGBの正則化、同じ34特徴のExtraTrees・直接Ridge/PLS、次に時間HGBの再現確認。現在のSVRは強雑音の崩れから主候補から外す。38行の表と34録音抜粋は既存診断資料として保持し、本人の追加確認は不要。未知日検証や物理的音源の同定を今回の進行条件にしない。
 
 以下は追検証前の同日記録。最新の完了状態と新しい強雑音の制約は上段を優先する。
 

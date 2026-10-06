@@ -1,0 +1,6 @@
+{
+  "sklearn": "1.6.1",
+  "numpy": "1.22.3",
+  "config_sha256": "b6569762c307c6dd39eb21d21a6d5fb82836c67d9f13c202690e8a452c2f91fb",
+  "python": "3.9.18 (main, Sep 11 2023, 13:30:38) [MSC v.1916 64 bit (AMD64)]"
+}

@@ -12,6 +12,7 @@ from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras import backend as K
 
 from utils.calculation.regression_detection_metrics import RegressionDetectionMetrics
+from utils.calculation.source_day_metrics import source_day_metric_rows, metric_delta_rows
 from utils.calculation.prediction_records import (
     build_fold_prediction_rows, load_sample_metadata_without_arrays,
     write_fold_prediction_csv,
@@ -39,12 +40,14 @@ from utils.training.internal_validation import fit_individual_performance_cv
 from utils.training.fitted_artifacts import (
     begin_fitted_state, finish_fitted_state, save_and_verify_model,
 )
+from utils.ensemble.fixed_core_stacking import FIXED_CORE_STRATEGY
 
 
 SUMMARY_METRICS = [
     "r2", "rmse_all", "mae_all", "r2_high", "rmse_high", "mae_high",
     "rmse_onb", "mae_onb", "roc_auc_cont", "pr_auc_cont",
     "accuracy", "precision", "recall", "f1",
+    "tp", "fp", "tn", "fn", "fpr", "n_pre_onb", "n_post_onb", "n_onb",
 ]
 
 
@@ -92,6 +95,7 @@ class ResultRecorder:
         self.store = {key: defaultdict(list) for key in self.all_keys}
         self.train_meta = {key: defaultdict(list) for key in self.keys}
         self.split_records = []
+        self.source_day_rows = []
         self.band = config["thresholds"]["onb_band_frac"]
 
     def start(self):
@@ -121,6 +125,11 @@ class ResultRecorder:
         outputs = self.ensemble.combine_predictions(single_predictions, inner_errors, fold, crossfit_fit)
         self.ensemble.save_crossfit_fit(self.path, fold, crossfit_fit)
         predictions = self.ensemble.merge_predictions(single_predictions, outputs)
+        if self.config["thresholds"].get("report_source_day_metrics", False):
+            self.source_day_rows.extend(source_day_metric_rows(
+                y_true, predictions, [metadata[int(i)] for i in indices],
+                self.config["thresholds"]["by_experiment"], fold, self.labels, self.band))
+            self._write_source_day_metrics()
         rows = build_fold_prediction_rows(indices, y_true, predictions, metadata, fold)
         if self.config["output"]["save_fold_predictions"]:
             directory = self.path / "fold_pred"
@@ -169,6 +178,16 @@ class ResultRecorder:
                 output.write(f"  [{self.labels[key]}] " + " | ".join(
                     f"{metric}={self.store[key][metric][-1]:.6g}" for metric in SUMMARY_METRICS) + "\n")
         return outputs
+
+    def _write_source_day_metrics(self):
+        for filename, rows in [("metrics_by_source_day.csv", self.source_day_rows),
+                               ("metrics_source_day_deltas.csv", metric_delta_rows(self.source_day_rows))]:
+            if not rows:
+                continue
+            with open_text(self.path / filename, "w", encoding="utf-8-sig", newline="") as stream:
+                writer = csv.DictWriter(stream, fieldnames=list(rows[0]))
+                writer.writeheader()
+                writer.writerows(rows)
 
     def finish(self, plotter, update_noise_trends):
         context = self.job["learning_context"]
@@ -238,11 +257,16 @@ def _completed(recorder):
 def run_learning_experiments(jobs, policy, config, enabled_specs, parameter_sets,
                              ensemble_manager, trainer, plotter, update_noise_trends):
     """同じ学習済みモデルを必要な評価ノイズへ適用し、完了後に共通出力を保存する。"""
+    for spec in enabled_specs:
+        supported = spec.get("supported_max_freq_hz")
+        if supported and any(job["max_freq_hz"] not in supported for job in jobs):
+            raise ValueError(f"{spec['key']} requires maxfreq=3kHz for its fixed frequency34 features")
     families = build_learning_families(jobs, policy, config["data"]["experiment_names"])
     selector = AcousticTrainingSelector(config.get("acoustic_selection"), config["thresholds"].get("by_experiment", {}))
     if "acoustic_selection" in config:
         config["acoustic_selection"] = selector.config
-    performance_cv = "performance_kfold" in ensemble_manager.selected_strategy_names
+    fixed_core_cv = any(item["strategy"] == FIXED_CORE_STRATEGY for item in ensemble_manager.strategy_plan)
+    performance_cv = "performance_kfold" in ensemble_manager.selected_strategy_names or fixed_core_cv
     crossfit_cv = any(
         name in {"subset_equal_cv", "crossfit_wav_stack", "crossfit_shrinkage_stack"}
         for name in ensemble_manager.selected_strategy_names
@@ -387,9 +411,12 @@ def run_learning_experiments(jobs, policy, config, enabled_specs, parameter_sets
                     inner_errors = ensemble.fit_inner_holdout_errors(
                         trainer, x_fit, y_fit, groups[fit_indices], config["features"]["pca_components"],
                         tuple(x.shape[1:]), model_epochs, fold, fold_count)
-                crossfit_fit = ensemble.fit_crossfit_weights(
-                    trainer, x_fit, y_fit, groups[fit_indices], config["features"]["pca_components"],
-                    tuple(x.shape[1:]), model_epochs, fold, fold_count)
+                if fixed_core_cv:
+                    crossfit_fit = ensemble.fit_weights_from_internal_audit(internal_audit, fold)
+                else:
+                    crossfit_fit = ensemble.fit_crossfit_weights(
+                        trainer, x_fit, y_fit, groups[fit_indices], config["features"]["pca_components"],
+                        tuple(x.shape[1:]), model_epochs, fold, fold_count)
                 scaler = MinMaxScaler()
                 y_scaled = scaler.fit_transform(y_fit.reshape(-1, 1))
                 pca, x_fit_pca = None, None

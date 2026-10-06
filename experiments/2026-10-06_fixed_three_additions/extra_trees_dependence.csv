@@ -1,0 +1,11 @@
+﻿seed,model,group,impurity_importance_sum,interpretation
+43,extra_trees,absolute_power,0.7767137952039217,"descriptive split dependence, not physical source attribution"
+43,extra_trees,power_ratios,0.026055325275851776,"descriptive split dependence, not physical source attribution"
+43,extra_trees,centroid_entropy,0.017560660597594403,"descriptive split dependence, not physical source attribution"
+43,extra_trees,temporal_cv,0.00222991788927439,"descriptive split dependence, not physical source attribution"
+43,extra_trees,frequency_shape,0.17744030103335764,"descriptive split dependence, not physical source attribution"
+44,extra_trees,absolute_power,0.7900189738205287,"descriptive split dependence, not physical source attribution"
+44,extra_trees,power_ratios,0.02188074545869511,"descriptive split dependence, not physical source attribution"
+44,extra_trees,centroid_entropy,0.009494417100260059,"descriptive split dependence, not physical source attribution"
+44,extra_trees,temporal_cv,0.0018213605861611532,"descriptive split dependence, not physical source attribution"
+44,extra_trees,frequency_shape,0.176784503034355,"descriptive split dependence, not physical source attribution"

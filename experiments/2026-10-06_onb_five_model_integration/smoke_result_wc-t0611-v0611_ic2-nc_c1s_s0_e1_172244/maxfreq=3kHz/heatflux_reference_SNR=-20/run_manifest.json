@@ -1,0 +1,740 @@
+{
+  "created_at": "2026-10-06T17:22:45",
+  "run_instance_id": "172244",
+  "run_hash": "fee244ff",
+  "run_dir": "",
+  "folder_naming": {
+    "scheme": "onb_{split-and-days}_{validation-and-noise}_{chunk}_{selection}_{epochs}[_{parameter-index}]_{HHMMSS}",
+    "reason": "Expose the main comparison conditions and the execution time without repeating the date.",
+    "details": "The directory name is capped at 52 characters; full conditions and run_hash are stored in this manifest.",
+    "result_hierarchy": "scoped_date/frequency/noise"
+  },
+  "dataset": {
+    "experiment_name": "2025.06.11_0.3_2_6.18_0.3_3",
+    "source_dir": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\experiments\\2026-10-06_onb_five_model_integration\\smoke_inputs_4hpjtixd\\source",
+    "data_path": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\experiments\\2026-10-06_onb_five_model_integration\\smoke_inputs_4hpjtixd\\source\\maxfreq=3kHz\\heatflux_reference_SNR=-20",
+    "max_freq_hz": "maxfreq=3kHz",
+    "noise_dir_name": "heatflux_reference_SNR=-20",
+    "snr_value": "-20",
+    "threshold": 246591.3959
+  },
+  "parameter_set_name": "randomforest__n_estimators=100__max_depth=12__subsample=0.6__colsample_bynode=0.6___conformer__lr=0.001__batch_size=12___alexnet__lr=0.003__batch_size=8___hgb__max_iter=150__learning_rate=0.05__max_leaf_nodes=31__min_samples_leaf=20__l2_regularization=1.0__early_stopping=False___extra_trees__n_estimators=256__min_samples_leaf=2__max_features=1.0__n_jobs=2",
+  "parameter_set_tag": "active_rf-ctf-alex-hgb_3faf33f",
+  "model_tag": "s_randomforest-conformer-alexnet-hgb-extra_trees",
+  "model_params": {
+    "randomforest": {
+      "kind": "sklearn",
+      "params": {
+        "n_estimators": 100,
+        "max_depth": 12,
+        "subsample": 0.6,
+        "colsample_bynode": 0.6
+      }
+    },
+    "conformer": {
+      "lr": 0.001,
+      "batch_size": 12,
+      "input_axes_assumption": [
+        "time_frame",
+        "frequency_bin",
+        "channel"
+      ],
+      "architecture": {
+        "front_end": "alexnet_like_cnn",
+        "input_transform": "log1p(power / 1e-12)",
+        "sequence_length_after_cnn": 7,
+        "model_dim": 64,
+        "num_heads": 4,
+        "attention_key_dim_per_head": 16,
+        "ff_dim": 256,
+        "num_transformer_blocks": 2,
+        "dropout": 0.1,
+        "encoder": "transformer_encoder",
+        "pooling": "GlobalAveragePooling1D"
+      }
+    },
+    "alexnet": {
+      "lr": 0.003,
+      "batch_size": 8,
+      "architecture": {
+        "input_transform": "log1p(power / 1e-12)",
+        "regression_head": "Flatten-Dense4096-Dense4096"
+      }
+    },
+    "hgb": {
+      "kind": "sklearn_summary",
+      "params": {
+        "max_iter": 150,
+        "learning_rate": 0.05,
+        "max_leaf_nodes": 31,
+        "min_samples_leaf": 20,
+        "l2_regularization": 1.0,
+        "early_stopping": false
+      }
+    },
+    "extra_trees": {
+      "kind": "sklearn_summary",
+      "params": {
+        "n_estimators": 256,
+        "min_samples_leaf": 2,
+        "max_features": 1.0,
+        "n_jobs": 2
+      }
+    }
+  },
+  "run_specs": [
+    {
+      "key": "randomforest",
+      "label": "RandomForest",
+      "kind": "sklearn",
+      "random_state_from_run": true,
+      "builder_params": {
+        "n_estimators": 100,
+        "max_depth": 12,
+        "subsample": 0.6,
+        "colsample_bynode": 0.6
+      }
+    },
+    {
+      "key": "conformer",
+      "label": "Conformer",
+      "kind": "keras",
+      "input_axes_assumption": [
+        "time_frame",
+        "frequency_bin",
+        "channel"
+      ],
+      "architecture": {
+        "front_end": "alexnet_like_cnn",
+        "input_transform": "log1p(power / 1e-12)",
+        "sequence_length_after_cnn": 7,
+        "model_dim": 64,
+        "num_heads": 4,
+        "attention_key_dim_per_head": 16,
+        "ff_dim": 256,
+        "num_transformer_blocks": 2,
+        "dropout": 0.1,
+        "encoder": "transformer_encoder",
+        "pooling": "GlobalAveragePooling1D"
+      },
+      "fit_verbose": 0,
+      "progress_interval_epochs": 10,
+      "lr": 0.001,
+      "batch_size": 12
+    },
+    {
+      "key": "alexnet",
+      "label": "AlexNet",
+      "kind": "keras",
+      "architecture": {
+        "input_transform": "log1p(power / 1e-12)",
+        "regression_head": "Flatten-Dense4096-Dense4096"
+      },
+      "fit_verbose": 0,
+      "progress_interval_epochs": 10,
+      "lr": 0.003,
+      "batch_size": 8
+    },
+    {
+      "key": "hgb",
+      "label": "HGB frequency34",
+      "kind": "sklearn_summary",
+      "random_state_from_run": true,
+      "input_representation": "raw_power_to_frequency34",
+      "feature_version": 1,
+      "supported_max_freq_hz": [
+        "maxfreq=3kHz"
+      ],
+      "builder_params": {
+        "max_iter": 150,
+        "learning_rate": 0.05,
+        "max_leaf_nodes": 31,
+        "min_samples_leaf": 20,
+        "l2_regularization": 1.0,
+        "early_stopping": false
+      }
+    },
+    {
+      "key": "extra_trees",
+      "label": "ExtraTrees frequency34",
+      "kind": "sklearn_summary",
+      "random_state_from_run": true,
+      "input_representation": "raw_power_to_frequency34",
+      "feature_version": 1,
+      "supported_max_freq_hz": [
+        "maxfreq=3kHz"
+      ],
+      "builder_params": {
+        "n_estimators": 256,
+        "min_samples_leaf": 2,
+        "max_features": 1.0,
+        "n_jobs": 2
+      }
+    }
+  ],
+  "validation_config": {
+    "learning_policy": {
+      "training_noise": "clean_only",
+      "evaluation_mode": "within_wav_chunk",
+      "within_wav_chunk_experiment": "2025.06.11_0.3_2_6.18_0.3_3",
+      "test_fraction": 0.25,
+      "test_split_seed": 42,
+      "train_experiments": [
+        "2025.06.11_0.3_2_6.18_0.3_3"
+      ],
+      "test_experiments": [
+        "2025.06.11_0.3_2_6.18_0.3_3"
+      ]
+    },
+    "acoustic_selection": {
+      "mode": "peak_height",
+      "features_csv": "experiments/2026-09-16_peak_height_selection/peak_features.csv",
+      "feature": "peak_2100_2500_psd",
+      "peak_height_threshold": null,
+      "peak_height_threshold_by_experiment": {},
+      "protect_onb_band_frac": 0.1,
+      "apply_max_heat_flux_by_experiment": {},
+      "enabled": false
+    },
+    "run": {
+      "smoke_test": true,
+      "epochs": 1,
+      "folds": 2,
+      "internal_validation_split": "chunk_kfold",
+      "color_channel": 1,
+      "random_seed": 42,
+      "cpu_threads": 2,
+      "deterministic_ops": true,
+      "loop_parameter_sets": true
+    },
+    "data": {
+      "experiment_root": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3",
+      "result_model_group": "ensemble",
+      "noise_source": "waterflow",
+      "chunk_seconds": 1,
+      "experiment_names": [
+        "2025.06.11_0.3_2_6.18_0.3_3"
+      ],
+      "max_freq_hz_list": [
+        "maxfreq=3kHz"
+      ],
+      "noise_dir_names": [
+        "heatflux_no_noise",
+        "heatflux_reference_SNR=-20"
+      ],
+      "data_source_dir_by_experiment": {
+        "2025.06.11_0.3_2": "waterflow_20260817_{chunk_tag}",
+        "2025.06.18_0.3_3": "waterflow_20260817_{chunk_tag}",
+        "2025.06.11_0.3_2_6.18_0.3_3": "waterflow_20260817_{chunk_tag}",
+        "2025.07.09_0.3_1": "waterflow_20260817_{chunk_tag}"
+      }
+    },
+    "thresholds": {
+      "by_experiment": {
+        "2025.06.11_0.3_2": 221505.1102,
+        "2025.06.18_0.3_3": 271677.6816,
+        "2025.06.11_0.3_2_6.18_0.3_3": 246591.3959,
+        "2025.07.09_0.3_1": 571694.252491167
+      },
+      "provenance_by_experiment": {
+        "2025.06.11_0.3_2": {
+          "threshold": 221505.1102,
+          "source": "experiments/2026-09-24_selection_onb_ig_review/README.md#2-onb値の確定",
+          "definition": "experiment-specific ONB confirmed for the current run"
+        },
+        "2025.06.18_0.3_3": {
+          "threshold": 271677.6816,
+          "source": "experiments/2026-09-24_selection_onb_ig_review/README.md#2-onb値の確定",
+          "definition": "experiment-specific ONB confirmed for the current run"
+        },
+        "2025.06.11_0.3_2_6.18_0.3_3": {
+          "threshold": 246591.3959,
+          "source": "experiments/2026-09-29_within_wav_chunk_combined/README.md",
+          "definition": "user-directed arithmetic mean of the confirmed 2025-06-11 and 2025-06-18 ONB thresholds for the combined-dataset comparison"
+        },
+        "2025.07.09_0.3_1": {
+          "threshold": 571694.252491167,
+          "source": "experiments/2026-09-24_selection_onb_ig_review/README.md#2-onb値の確定",
+          "definition": "experiment-specific ONB confirmed for the current run"
+        }
+      },
+      "require_experiment_threshold": true,
+      "onb_band_frac": 0.1,
+      "report_source_day_metrics": true
+    },
+    "models": {
+      "fixed_model_keys": [
+        "randomforest",
+        "conformer",
+        "alexnet",
+        "hgb",
+        "extra_trees"
+      ],
+      "active_max_freq_hz": "maxfreq=3kHz",
+      "parameter_sets": [
+        {
+          "name": "randomforest__n_estimators=100__max_depth=12__subsample=0.6__colsample_bynode=0.6___conformer__lr=0.001__batch_size=12___alexnet__lr=0.003__batch_size=8___hgb__max_iter=150__learning_rate=0.05__max_leaf_nodes=31__min_samples_leaf=20__l2_regularization=1.0__early_stopping=False___extra_trees__n_estimators=256__min_samples_leaf=2__max_features=1.0__n_jobs=2",
+          "tag": "active_rf-ctf-alex-hgb_3faf33f",
+          "models": {
+            "randomforest": {
+              "n_estimators": 100,
+              "max_depth": 12,
+              "subsample": 0.6,
+              "colsample_bynode": 0.6
+            },
+            "conformer": {
+              "lr": 0.001,
+              "batch_size": 12
+            },
+            "alexnet": {
+              "lr": 0.003,
+              "batch_size": 8
+            },
+            "hgb": {
+              "max_iter": 150,
+              "learning_rate": 0.05,
+              "max_leaf_nodes": 31,
+              "min_samples_leaf": 20,
+              "l2_regularization": 1.0,
+              "early_stopping": false
+            },
+            "extra_trees": {
+              "n_estimators": 256,
+              "min_samples_leaf": 2,
+              "max_features": 1.0,
+              "n_jobs": 2
+            }
+          },
+          "default_keras": {
+            "fit_verbose": 0,
+            "progress_interval_epochs": 10
+          }
+        }
+      ],
+      "parameter_search_enabled": false
+    },
+    "ensemble": {
+      "selection": {
+        "enabled_strategy_names": [
+          "original3_hgb_extra_trees",
+          "original3_mse",
+          "original3_performance",
+          "original3_hgb",
+          "original3_extra_trees",
+          "simple_equal"
+        ]
+      },
+      "enabled": true,
+      "strategies": [
+        {
+          "label": "Original three + HGB + ExtraTrees",
+          "strategy": "fixed_core_oof",
+          "fixed_core": {
+            "core_keys": [
+              "randomforest",
+              "conformer",
+              "alexnet"
+            ],
+            "core_rule": "mse",
+            "core_member_floor": 1e-06,
+            "minimum_core_total": 0.25,
+            "minimum_added_member": 0.05,
+            "added_keys": [
+              "hgb",
+              "extra_trees"
+            ]
+          },
+          "name": "original3_hgb_extra_trees"
+        },
+        {
+          "label": "Original three MSE",
+          "strategy": "fixed_core_oof",
+          "fixed_core": {
+            "core_keys": [
+              "randomforest",
+              "conformer",
+              "alexnet"
+            ],
+            "core_rule": "mse",
+            "core_member_floor": 1e-06,
+            "minimum_core_total": 0.25,
+            "minimum_added_member": 0.05,
+            "added_keys": []
+          },
+          "name": "original3_mse"
+        },
+        {
+          "label": "Original three performance",
+          "strategy": "fixed_core_oof",
+          "fixed_core": {
+            "core_keys": [
+              "randomforest",
+              "conformer",
+              "alexnet"
+            ],
+            "core_rule": "performance",
+            "core_member_floor": 1e-06,
+            "minimum_core_total": 0.25,
+            "minimum_added_member": 0.05,
+            "added_keys": []
+          },
+          "name": "original3_performance"
+        },
+        {
+          "label": "Original three + HGB",
+          "strategy": "fixed_core_oof",
+          "fixed_core": {
+            "core_keys": [
+              "randomforest",
+              "conformer",
+              "alexnet"
+            ],
+            "core_rule": "mse",
+            "core_member_floor": 1e-06,
+            "minimum_core_total": 0.25,
+            "minimum_added_member": 0.05,
+            "added_keys": [
+              "hgb"
+            ]
+          },
+          "name": "original3_hgb"
+        },
+        {
+          "label": "Original three + ExtraTrees",
+          "strategy": "fixed_core_oof",
+          "fixed_core": {
+            "core_keys": [
+              "randomforest",
+              "conformer",
+              "alexnet"
+            ],
+            "core_rule": "mse",
+            "core_member_floor": 1e-06,
+            "minimum_core_total": 0.25,
+            "minimum_added_member": 0.05,
+            "added_keys": [
+              "extra_trees"
+            ]
+          },
+          "name": "original3_extra_trees"
+        },
+        {
+          "label": "Ensemble simple equal",
+          "strategy": "simple",
+          "name": "simple_equal"
+        }
+      ],
+      "reference_model": "randomforest",
+      "inner_holdout_frac": 0.2,
+      "combine": "mean",
+      "resolved_strategy_plan": [
+        {
+          "name": "original3_hgb_extra_trees",
+          "result_key": "ensemble__original3_hgb_extra_trees",
+          "label": "Original three + HGB + ExtraTrees",
+          "strategy": "fixed_core_oof",
+          "claim_safe": true,
+          "fixed_core": {
+            "core_keys": [
+              "randomforest",
+              "conformer",
+              "alexnet"
+            ],
+            "core_rule": "mse",
+            "core_member_floor": 1e-06,
+            "minimum_core_total": 0.25,
+            "minimum_added_member": 0.05,
+            "added_keys": [
+              "hgb",
+              "extra_trees"
+            ]
+          }
+        },
+        {
+          "name": "original3_mse",
+          "result_key": "ensemble__original3_mse",
+          "label": "Original three MSE",
+          "strategy": "fixed_core_oof",
+          "claim_safe": true,
+          "fixed_core": {
+            "core_keys": [
+              "randomforest",
+              "conformer",
+              "alexnet"
+            ],
+            "core_rule": "mse",
+            "core_member_floor": 1e-06,
+            "minimum_core_total": 0.25,
+            "minimum_added_member": 0.05,
+            "added_keys": []
+          }
+        },
+        {
+          "name": "original3_performance",
+          "result_key": "ensemble__original3_performance",
+          "label": "Original three performance",
+          "strategy": "fixed_core_oof",
+          "claim_safe": true,
+          "fixed_core": {
+            "core_keys": [
+              "randomforest",
+              "conformer",
+              "alexnet"
+            ],
+            "core_rule": "performance",
+            "core_member_floor": 1e-06,
+            "minimum_core_total": 0.25,
+            "minimum_added_member": 0.05,
+            "added_keys": []
+          }
+        },
+        {
+          "name": "original3_hgb",
+          "result_key": "ensemble__original3_hgb",
+          "label": "Original three + HGB",
+          "strategy": "fixed_core_oof",
+          "claim_safe": true,
+          "fixed_core": {
+            "core_keys": [
+              "randomforest",
+              "conformer",
+              "alexnet"
+            ],
+            "core_rule": "mse",
+            "core_member_floor": 1e-06,
+            "minimum_core_total": 0.25,
+            "minimum_added_member": 0.05,
+            "added_keys": [
+              "hgb"
+            ]
+          }
+        },
+        {
+          "name": "original3_extra_trees",
+          "result_key": "ensemble__original3_extra_trees",
+          "label": "Original three + ExtraTrees",
+          "strategy": "fixed_core_oof",
+          "claim_safe": true,
+          "fixed_core": {
+            "core_keys": [
+              "randomforest",
+              "conformer",
+              "alexnet"
+            ],
+            "core_rule": "mse",
+            "core_member_floor": 1e-06,
+            "minimum_core_total": 0.25,
+            "minimum_added_member": 0.05,
+            "added_keys": [
+              "extra_trees"
+            ]
+          }
+        },
+        {
+          "name": "simple_equal",
+          "result_key": "ensemble__simple_equal",
+          "label": "Ensemble simple equal",
+          "strategy": "simple",
+          "claim_safe": true
+        }
+      ]
+    },
+    "features": {
+      "pca_components": 100,
+      "pca_transform_version": 2,
+      "acoustic_summary_version": 1
+    },
+    "output": {
+      "save_date": "20261006",
+      "result_date_dir": "202610/06/onb",
+      "run_instance_id": "172244",
+      "execution_id": "172244",
+      "run_scoped_result_dir": true,
+      "save_fold_predictions": true,
+      "save_tuning_summary": true,
+      "save_fitted_artifacts": true,
+      "verify_reloaded_artifacts": true,
+      "resume_completed_runs": true,
+      "noise_trend_plots": {
+        "enabled": true,
+        "ensemble_strategy_names": "all",
+        "metrics": [
+          "r2",
+          "roc_auc_cont"
+        ],
+        "formats": [
+          "png",
+          "pdf"
+        ]
+      }
+    },
+    "explainability": {
+      "enabled": false,
+      "max_samples_per_fold": 5,
+      "ig_steps": 64,
+      "ig_max_steps": 4096,
+      "ig_batch_size": 8,
+      "ig_device": "auto",
+      "ig_nonfused_batchnorm": true,
+      "ig_cpu_fallback": true,
+      "ig_path_space": "log_power",
+      "ig_rtol": 0.001,
+      "ig_atol": 1e-06,
+      "ig_map_rtol": 0.01,
+      "methods_by_model": {
+        "randomforest": [
+          "tree_shap_pca",
+          "group_occlusion"
+        ],
+        "conformer": [
+          "integrated_gradients",
+          "group_occlusion"
+        ],
+        "alexnet": [
+          "integrated_gradients",
+          "grad_cam",
+          "group_occlusion"
+        ],
+        "hgb": [
+          "group_occlusion"
+        ],
+        "extra_trees": [
+          "group_occlusion"
+        ]
+      },
+      "frequency_bands_hz": [
+        [
+          0,
+          256
+        ],
+        [
+          256,
+          512
+        ],
+        [
+          512,
+          1000
+        ],
+        [
+          1000,
+          2000
+        ],
+        [
+          2000,
+          5000
+        ],
+        [
+          5000,
+          10000
+        ],
+        [
+          10000,
+          15000
+        ],
+        [
+          15000,
+          22000
+        ]
+      ],
+      "time_extent_seconds": 1.0,
+      "onb_band_frac": 0.1,
+      "baseline_value": 0.0,
+      "curve_fractions": [
+        0.0,
+        0.05,
+        0.1,
+        0.2,
+        0.3,
+        0.5,
+        1.0
+      ],
+      "stability": {
+        "enabled": true,
+        "methods": [
+          "integrated_gradients"
+        ],
+        "repeats": 2,
+        "noise_fraction": 0.01,
+        "clip_nonnegative": true,
+        "random_seed": 42
+      },
+      "sanity_check": {
+        "enabled": true,
+        "methods": [
+          "integrated_gradients"
+        ],
+        "random_seed": 42
+      },
+      "retrain_completed_runs_for_xai": false,
+      "condition_filter": {
+        "experiment_names": [
+          "2025.06.11_0.3_2_6.18_0.3_3"
+        ],
+        "max_freq_hz_list": [
+          "maxfreq=3kHz"
+        ],
+        "noise_dir_names": [
+          "heatflux_no_noise",
+          "heatflux_reference_SNR=0",
+          "heatflux_reference_SNR=-4",
+          "heatflux_reference_SNR=-8",
+          "heatflux_reference_SNR=-12",
+          "heatflux_reference_SNR=-16",
+          "heatflux_reference_SNR=-20"
+        ]
+      },
+      "model_keys": [
+        "randomforest",
+        "conformer",
+        "alexnet",
+        "hgb",
+        "extra_trees"
+      ],
+      "target_folds": [
+        1
+      ],
+      "save_maps": false
+    }
+  },
+  "execution_schema_version": 2,
+  "execution_config_hash": "fee244ff",
+  "learning_context": {
+    "training_noise": "clean_only",
+    "evaluation_mode": "within_wav_chunk",
+    "within_wav_chunk_experiment": "2025.06.11_0.3_2_6.18_0.3_3",
+    "test_fraction": 0.25,
+    "test_split_seed": 42,
+    "train_experiments": [
+      "2025.06.11_0.3_2_6.18_0.3_3"
+    ],
+    "test_experiments": [
+      "2025.06.11_0.3_2_6.18_0.3_3"
+    ],
+    "training_experiments": [
+      "2025.06.11_0.3_2_6.18_0.3_3"
+    ],
+    "evaluation_experiments": [
+      "2025.06.11_0.3_2_6.18_0.3_3"
+    ],
+    "training_noise_dir": "heatflux_no_noise",
+    "ensemble_weight_scope": "shared_clean_across_evaluation_noises",
+    "evaluation_scheme": "within_wav_chunk_holdout",
+    "generalization_scope": "within_known_source_wav_unseen_chunk_holdout",
+    "outer_folds_per_evaluation_day": 1,
+    "training_datasets": [
+      {
+        "experiment_name": "2025.06.11_0.3_2_6.18_0.3_3",
+        "data_path": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\experiments\\2026-10-06_onb_five_model_integration\\smoke_inputs_4hpjtixd\\source\\maxfreq=3kHz\\heatflux_no_noise",
+        "noise_dir_name": "heatflux_no_noise",
+        "max_freq_hz": "maxfreq=3kHz"
+      }
+    ],
+    "evaluation_noise_dir": "heatflux_reference_SNR=-20"
+  },
+  "study_directory_naming": {
+    "directory": "smoke_result_wc-t0611-v0611_ic2-nc_c1s_s0_e1_172244",
+    "scheme": "onb_{split-and-days}_{validation-and-noise}_{chunk}_{selection}_{epochs}[_{parameter-index}]_{HHMMSS}",
+    "max_component_length": 52,
+    "full_conditions": "validation_config and learning_context"
+  }
+}

@@ -73,11 +73,20 @@ class RegressionPlotter:
 
     def plot_bar(self, metric_name, labels, values, errors, epochs, save_path, snr_value):
         """モデル別の指標を棒グラフで保存 (R2 / 連続スコア ROC-AUC など)。"""
-        plt.figure(figsize=(8, 6))
+        crowded = len(labels) > 6
+        plt.figure(figsize=(max(8, 1.1 * len(labels)), 7 if crowded else 6))
         colors = ['c', 'cadetblue', 'skyblue', 'dodgerblue', 'steelblue', 'lightblue']
         display_label_aliases = {
             "RandomForest": "RandomForest",
             "Conformer": "Conformer",
+            "HGB frequency34": "HGB34",
+            "ExtraTrees frequency34": "ExtraTrees34",
+            "Original three MSE": "Original3 MSE",
+            "Original three performance": "Original3 perf",
+            "Original three + HGB": "Original3 + HGB",
+            "Original three + ExtraTrees": "Original3 + ET",
+            "Original three + HGB + ExtraTrees": "Original3 + HGB + ET",
+            "Ensemble simple equal": "Equal mean",
         }
         display_labels = [display_label_aliases.get(label, label) for label in labels]
         plt.bar(display_labels, values, color=colors[:len(labels)],
@@ -87,7 +96,8 @@ class RegressionPlotter:
         if metric_name == "R2 Score":
             display_metric_name = "R\u00b2 Score"
         plt.ylabel(display_metric_name, fontsize=23)
-        plt.xticks(fontsize=20)
+        plt.xticks(fontsize=13 if crowded else 20, rotation=35 if crowded else 0,
+                   ha="right" if crowded else "center")
         plt.yticks(fontsize=18)
         for i, v in enumerate(values):
             if not np.isnan(v):
@@ -97,7 +107,7 @@ class RegressionPlotter:
                 else:
                     text = f'{v:.4f} \u00b1 {err:.4f}'
                 plt.text(i, 0.03, text, ha='center', va='bottom',
-                         fontsize=25, color='black', rotation=90)
+                         fontsize=20 if crowded else 25, color='black', rotation=90)
         out_dir = os.path.join(save_path, "bar")
         safe = _safe_stem(metric_name)
         plt.tight_layout()

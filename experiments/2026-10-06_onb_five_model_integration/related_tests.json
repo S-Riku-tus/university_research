@@ -1,0 +1,20 @@
+{
+  "modules": [
+    "test_onb_defaults",
+    "test_onb_entrypoint",
+    "test_onb_five_models",
+    "test_training_state_persistence",
+    "test_acoustic_summary_features",
+    "test_ensemble_group_holdout",
+    "test_crossfit_stacking",
+    "test_learning_policy",
+    "test_training_oof_tuning",
+    "test_noise_trend_plots",
+    "test_xai_chunk_evaluation"
+  ],
+  "tests": 60,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "status": "passed"
+}

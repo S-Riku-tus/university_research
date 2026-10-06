@@ -1,0 +1,7 @@
+﻿method,evidence_stage,clean_rmse,clean_mae,clean_fn,clean_fp,minus20_rmse,minus20_fn,minus20_fp,clean_oof_rmse,minus20_oof_fp,paired_seeds43_44_available
+band10_SVR_rmse,seed42 developmental pilot; RMSE selection,55.4308072745207,31.626966812893684,28,2,360.1073391278874,65,0,52.8018878989976,356,False
+band10_HGB_rmse,seed42 developmental pilot; RMSE selection,37.72506556051075,26.06576325189927,21,0,98.31956770438534,49,1,38.20055594338076,110,False
+frequency34_SVR_rmse,seed42 developmental pilot; RMSE selection,34.85055588611392,21.597143557431526,22,1,203.23403323124185,0,224,37.136212844794514,629,False
+frequency34_HGB_rmse,seed42 developmental pilot; RMSE selection,33.25363627332946,19.93090364037696,21,0,74.1851537678615,49,0,32.402477640871595,7,True
+temporal46_SVR_rmse,seed42 developmental pilot; RMSE selection,40.975327808743096,28.6573244823103,29,2,220.84791752399505,31,225,43.17524162915371,631,False
+temporal46_HGB_rmse,seed42 developmental pilot; RMSE selection,30.94446470130974,20.36036945931755,25,2,75.10535952139392,41,4,32.80674323336706,105,False

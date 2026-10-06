@@ -12,10 +12,10 @@
 | 条件・分割 | [dataset_jobs.py](../code/utils/experiment/dataset_jobs.py)、[learning_policy.py](../code/utils/experiment/learning_policy.py) | 実験日/ノイズ方針、元WAV分離、ノイズ間の対応検査 |
 | 学習・評価実行 | [learning_runner.py](../code/utils/experiment/learning_runner.py) | 分割・ノイズ方針ごとの学習・予測・XAI・指標・保存をまとめる |
 | 固定HGBの追加比較 | [run_hgb_complementarity_validation.py](../code/run_hgb_complementarity_validation.py)、[acoustic_summary_features.py](../code/utils/dataloading/acoustic_summary_features.py) | 固定34特徴HGBと既存3を同じchunk splitで再fit、clean-fit雑音OOF、固定統合、内部/最終状態保存。主runnerとは独立した比較入口 |
-| モデル | [base_regression.py](../code/utils/models/regression/base_regression.py)、[onb_defaults.py](../code/utils/config/onb_defaults.py) | RandomForest=XGBRF、Conformer、log-power AlexNet。固定registryと出力・評価・XAI既定値 |
-| 学習器 | [model_training.py](../code/utils/training/model_training.py) | 学習側PCA、Keras/RF学習、元スケールへの予測復元 |
-| 統合 | [strategy_catalog.py](../code/utils/ensemble/strategy_catalog.py)、[ensemble_runtime.py](../code/utils/ensemble/ensemble_runtime.py)、[ensemble_weighting.py](../code/utils/ensemble/ensemble_weighting.py) | 選択式の統合、主方式performance K-foldのOOF chunk R²逆誤差重み、過去inner holdout、crossfitのWAV目的 |
-| 回帰・二値指標 | [regression_detection_metrics.py](../code/utils/calculation/regression_detection_metrics.py) | R²/RMSE/MAE、連続ROC/PR-AUC、二値分類指標 |
+| モデル | [base_regression.py](../code/utils/models/regression/base_regression.py)、[acoustic_regression.py](../code/utils/models/regression/acoustic_regression.py)、[onb_defaults.py](../code/utils/config/onb_defaults.py) | 元XGBRF、CNN＋Transformer、log-power AlexNetを保持し、raw→34特徴HGB/ExtraTreesを追加。通常主設定は5 |
+| 学習器 | [model_training.py](../code/utils/training/model_training.py) | RFだけfit側PCA、Kerasとsummaryはraw入力。共通scaler、学習/元スケール復元 |
+| 統合 | [strategy_catalog.py](../code/utils/ensemble/strategy_catalog.py)、[fixed_core_stacking.py](../code/utils/ensemble/fixed_core_stacking.py)、[ensemble_runtime.py](../code/utils/ensemble/ensemble_runtime.py) | 共有clean OOFで元3内部比率を保持し、元3/HGB4/ExtraTrees4/5を一度に比較。過去performance/inner holdout/crossfitも保持 |
+| 回帰・二値指標 | [regression_detection_metrics.py](../code/utils/calculation/regression_detection_metrics.py)、[source_day_metrics.py](../code/utils/calculation/source_day_metrics.py) | 従来実験閾値の指標＋日別閾値の合算/各日/元3差。FN/FP等の件数と日別q100も保存 |
 | chunk予測記録 | [prediction_records.py](../code/utils/calculation/prediction_records.py) | foldごとの1秒予測と元WAV・時刻情報をCSVへ保存 |
 | ONB閾値 | [onb_thresholds.py](../code/utils/experiment/onb_thresholds.py) | 3日分の正確な閾値と原資料の出典 |
 | 説明性 | [training_integration.py](../code/utils/explainability/training_integration.py)、[spectrogram_explainers.py](../code/utils/explainability/spectrogram_explainers.py) | TreeSHAP/IG/Grad-CAM/マスク、整合性・安定性・最終層ランダム化 |
@@ -26,7 +26,7 @@
 
 主実行の`VALIDATION_CONFIG`にはデータ、学習条件、モデル別parameter grid、統合など実験ごとに変える項目を置く。`data_source_dir_by_experiment`の`{chunk_tag}`は`chunk_seconds`から`0.5s`または`1s`へ自動解決される。`acoustic_selection`はピーク高さ閾値だけを置き、`None`なら選別なしとする。特徴CSV・帯域・対象範囲など通常固定する条件と、output/evaluation/explainability、モデルregistryは[onb_defaults.py](../code/utils/config/onb_defaults.py)で補完し、解決後の全設定をmanifestへ保存する。`configs/experiments/`のJSONは条件実行スクリプトで実行時上書きでき、YAMLは記録用で自動読込しない。外側評価は`learning_policy.evaluation_mode`で選び、`evaluation_settings`内の同名欄だけを編集する。`cross_day`は学習日・テスト日のリスト、`within_wav_chunk`は実験フォルダ・テスト割合・seedを指定し、対象実験名は自動算出する。
 
-現行の有効3モデルは`randomforest / conformer / alexnet`。主設定の統合方式は`performance_kfold`である。`simple_equal / inner_holdout / subset_equal_cv / crossfit_wav_stack / crossfit_shrinkage_stack`も実装済みで、主コードの`ensemble.enabled_strategy_names`に短い説明付きのコメントとして残している。[重み学習の実装](../code/utils/ensemble/crossfit_stacking.py)、[次条件](../experiments/2026-09-25_matched_performance_kfold/README.md)、[6方式の手法と数式](ensemble_methods.md)。
+現行主設定は`models.enabled_keys`の`randomforest / conformer / alexnet / hgb / extra_trees`。主統合は`original3_hgb_extra_trees`、対照は`original3_mse / original3_performance / original3_hgb / original3_extra_trees / simple_equal`。同じ1回の内部chunk OOFを共有して比率/配分をfitする。追加2は3 kHz専用の34特徴であり、別帯域を選ぶ前に入力表現を再定義する。registryの引数を省略する旧比較入口には元3を返す。[通常組込み記録](../experiments/2026-10-06_onb_five_model_integration/README.md)、[モデル理由](notes/2026-10-06_five_model_rationale_and_next_steps.md)、[統合の数式と旧6方式](ensemble_methods.md)。過去performance/inner holdout/crossfit方式も実装を保持する。
 
 外側評価は、別日`cross_day`と全WAVのchunkをそれぞれ分ける`within_wav_chunk`の2方式を明示選択する。本人の10/3方針により、外側のWAV単位日内holdoutと旧日内K-foldは実行経路から削除した。`within_wav_chunk`は各WAVから同率のchunkをランダムにテストへ回し、同一chunkを共有しない既知WAV内の未使用区間評価である。10/5本人指定により、内部`performance_kfold`と`training_oof`探索は、外側学習chunk全体の通常KFold、shuffle=True、seed42へ切り替えた。`run.internal_validation_split`の既定は`chunk_kfold`、明示した旧対照だけ`wav_kfold`を使う。実効方式を条件hashへ含め、通常保存先は`ic3`で旧`iw3`と識別する。これらと`matched / clean_only`を組み合わせる。matchedはnoiseごとに別familyを作り、モデル・PCA・scaler・epoch・重みをそのnoiseの学習データから再fitする。clean_onlyは同じcleanモデル・PCA・scaler・epoch・重みを評価noise間で共有する。明示分割では学習専用日は学習に要るノイズだけを探索する。過去資料と結果は保持し、旧分割の記述を現行仕様とは扱わない。
 
@@ -37,6 +37,8 @@
 ## 保存されるもの
 
 各runは`fold_pred/`の1秒chunk予測、`explainability/`、損失/散布図/通常指標、manifestを持つ。新実行経路は`split_manifest.json`と完了時の`completed.json`も保存する。
+
+5モデル主設定では11予測列（5単体＋6統合）を保存し、`metrics_by_source_day.csv`と`metrics_source_day_deltas.csv`を追加する。統合日の従来平均閾値と日別ONB閾値を別の評価定義として残す。`ensemble_training_oof_fit_f1.json`と`ensemble_training_oof_f1.csv`は重みfitの学習側診断であり外側評価ではない。
 
 主実行の保存先は各実験日の`regression_result/npy/<モデル群>/<YYYYMM>/<DD>/onb_<主要条件>_[p番号_]<HHMMSS>/<周波数>/<ノイズ>/`。解析年月と日を分け、月単位で結果を探せるようにする。日付直下は最大52文字で、学習・評価日、WAV/chunk内部検証、学習ノイズ、音響選別閾値、epochを短く表示し、末尾6桁は日付を含まない実行時刻とする。1起動内で複数parameter setを比較するときだけ`p01`等を付ける。実際の全条件と設定hashは`run_manifest.json`に記録する。`tuning_summary.csv`は条件フォルダの直下、ノイズ比較図はその下の`noise_trends/<統合方式>/<周波数>/`に置く。`RUN_ID`を明示して同じ条件で再実行した場合は同じフォルダを参照して完了判定する。2026-09-25に日付付き既存系列を`YYYYMM/DD`へ移行した。日付のない旧系列は元の場所に残す。
 

@@ -38,6 +38,8 @@ from utils.config.parameter_sets import (
     resolve_parameter_set,
 )
 from utils.config.onb_defaults import apply_onb_defaults, onb_model_specs
+from threadpoolctl import threadpool_limits
+from utils.ensemble.fixed_core_stacking import FIXED_CORE_STRATEGY
 from utils.explainability.training_integration import (
     resolve_explainability_scope,
 )
@@ -88,6 +90,7 @@ VALIDATION_CONFIG = apply_onb_defaults({
         "smoke_folds": 2,
         "color_channel": 1,
         "random_seed": 42,
+        "cpu_threads": 2,  # 保存RF/PCAの数値環境を追検証と揃える。
         "loop_parameter_sets": True,
     },
     "data": {
@@ -158,9 +161,10 @@ VALIDATION_CONFIG = apply_onb_defaults({
         "provenance_by_experiment": onb_threshold_provenance_by_experiment(),
         "require_experiment_threshold": True,
         "onb_band_frac": 0.10,
+        "report_source_day_metrics": True,  # 統合日の平均閾値評価と日別閾値評価を両方保存。
     },
     "models": {
-        # RandomForest・Conformer・AlexNetの3モデルは常にすべて実行する。
+        "enabled_keys": ["randomforest", "conformer", "alexnet", "hgb", "extra_trees"],
         "parameter_sets": {
             # 周波数ごとに独立した候補リストを持つ。選択中の周波数に
             # 対応する欄だけが使われ、全リストが1要素なら通常run、
@@ -182,6 +186,13 @@ VALIDATION_CONFIG = apply_onb_defaults({
                     "alexnet": {
                         "lr": [0.003],
                         "batch_size": [8],
+                    },
+                    "hgb": {
+                        "max_iter": [150], "learning_rate": [0.05], "max_leaf_nodes": [31],
+                        "min_samples_leaf": [20], "l2_regularization": [1.0], "early_stopping": [False],
+                    },
+                    "extra_trees": {
+                        "n_estimators": [256], "min_samples_leaf": [2], "max_features": [1.0], "n_jobs": [2],
                     },
                 },
                 "maxfreq=22kHz": {
@@ -212,8 +223,13 @@ VALIDATION_CONFIG = apply_onb_defaults({
     "ensemble": {
         # 実装済み方式をここへ残し、使用する方式だけコメントを外す。
         "enabled_strategy_names": [
-            "performance_kfold",  # シャッフルありchunk KFoldの全OOF単体R²から逆誤差重みを求める主方式
-            "simple_equal",  # 全モデルを同じ重みで平均する固定対照
+            "original3_hgb_extra_trees",  # 主方式：元3内比率固定、元3総量25%以上・追加各5%以上。
+            "original3_mse",  # 同じ5単体予測から元3だけを使う公平な基準。
+            "original3_performance",  # 従来3モデルの重み方式も同じrunに保存。
+            "original3_hgb",  # 元3＋HGBの4モデル対照。
+            "original3_extra_trees",  # 元3＋ExtraTreesの4モデル対照。
+            "simple_equal",  # 5モデル等平均の固定対照。
+            # "performance_kfold",  # 全activeモデルの単体逆誤差重み。
             # "inner_holdout",  # 学習WAVの約20%を一度だけ分離し単体R²から重みを求める旧方式
             # "subset_equal_cv",  # OOF上で単体を含む全モデル部分集合から等重みの最良候補を選ぶ
             # "crossfit_wav_stack",  # OOFの統合後WAV誤差を最小化する非負連続重みstacking
@@ -274,7 +290,7 @@ THRESHOLD_PROVENANCE_BY_EXPERIMENT = _cfg(
 REQUIRE_EXPERIMENT_THRESHOLD = _cfg("thresholds", "require_experiment_threshold")
 ONB_BAND_FRAC = _cfg("thresholds", "onb_band_frac")
 
-MODEL_SPECS = onb_model_specs()
+MODEL_SPECS = onb_model_specs(_cfg("models", "enabled_keys"))
 MODEL_KEYS = [spec["key"] for spec in MODEL_SPECS]
 PARAMETER_PLANS_BY_MAX_FREQ = build_frequency_parameter_execution_plans(
     _cfg("models", "parameter_sets"),
@@ -397,6 +413,7 @@ def validation_config_snapshot(max_freq_hz):
             "internal_validation_split": _cfg("run", "internal_validation_split"),
             "color_channel": COLOR_CHANNEL,
             "random_seed": RANDOM_SEED,
+            "cpu_threads": _cfg("run", "cpu_threads"),
             "deterministic_ops": DETERMINISTIC_OPS,
             "loop_parameter_sets": FLG_ROOP,
         },
@@ -416,6 +433,7 @@ def validation_config_snapshot(max_freq_hz):
             "provenance_by_experiment": THRESHOLD_PROVENANCE_BY_EXPERIMENT,
             "require_experiment_threshold": REQUIRE_EXPERIMENT_THRESHOLD,
             "onb_band_frac": ONB_BAND_FRAC,
+            "report_source_day_metrics": _cfg("thresholds", "report_source_day_metrics"),
         },
         "models": {
             "fixed_model_keys": MODEL_KEYS,
@@ -427,6 +445,7 @@ def validation_config_snapshot(max_freq_hz):
         "features": {
             "pca_components": PCA_COMPONENTS,
             "pca_transform_version": PCA_TRANSFORM_VERSION,
+            "acoustic_summary_version": 1 if any(s["kind"] == "sklearn_summary" for s in MODEL_SPECS) else None,
         },
         "output": {
             "save_date": SAVE_DATE,
@@ -480,10 +499,20 @@ def update_noise_trend_plots(plotter, job, run_dir, run_hash, model_keys):
 def validate_validation_config(enabled_specs):
     if _cfg("run", "internal_validation_split") not in {"chunk_kfold", "wav_kfold"}:
         raise ValueError("internal_validation_split must be 'chunk_kfold' or 'wav_kfold'.")
-    if "performance_kfold" in ENSEMBLE_MANAGER.selected_strategy_names and DIVISIONS < 2:
+    uses_oof = ("performance_kfold" in ENSEMBLE_MANAGER.selected_strategy_names
+                or any(s["strategy"] == FIXED_CORE_STRATEGY for s in ENSEMBLE_MANAGER.strategy_plan))
+    if uses_oof and DIVISIONS < 2:
         raise ValueError("folds must be at least 2.")
     if int(PCA_COMPONENTS) <= 0:
         raise ValueError("pca_components must be a positive integer.")
+    if not isinstance(_cfg("run", "cpu_threads"), int) or _cfg("run", "cpu_threads") < 1:
+        raise ValueError("cpu_threads must be a positive integer")
+    for spec in enabled_specs:
+        supported = spec.get("supported_max_freq_hz")
+        if supported and set(MAX_FREQ_HZ_LIST)-set(supported):
+            raise ValueError(f"{spec['key']} supports only {supported}; its fixed frequency features cannot be reused at another upper frequency")
+        if spec["kind"] == "sklearn_summary" and COLOR_CHANNEL != 1:
+            raise ValueError("frequency34 summary models require one power channel")
     model_keys = [spec["key"] for spec in enabled_specs]
     if len(model_keys) != len(set(model_keys)):
         raise ValueError(f"Duplicate fixed model keys: {model_keys}")
@@ -640,13 +669,14 @@ def validate_validation_config(enabled_specs):
                 "Explainability requires ONB thresholds for every selected "
                 f"experiment: {sorted(missing_xai_thresholds)}")
 
+@threadpool_limits.wrap(limits=_cfg("run", "cpu_threads"))
 def main():
     set_global_seed(RANDOM_SEED, deterministic_ops=DETERMINISTIC_OPS)
     # 指標計算、学習、統合、作図の共通処理を用意する。
     trainer = ModelTrainer(random_seed=RANDOM_SEED)
     plotter = RegressionPlotter()
 
-    # ONB研究で固定した3モデルを常にすべて使用する。
+    # 元3＋追加2を同じ分割で学習し、3/4/5の統合対照を一度に出す。
     enabled_specs = list(MODEL_SPECS)
 
     # Windowsのパス長制限を考慮し、結果フォルダ名を短くする。

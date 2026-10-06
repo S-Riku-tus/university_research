@@ -2,6 +2,27 @@
 
 このページは**日付ごとの履歴**。各節の「現在」「次にやること」は当時の記録であり、現在の未完了作業とは限らない。最新の状態は[研究の現在地](research_status.md)、更新関係は[文書案内](document_index.md)を読む。
 
+## 2026-10-06 通常ONBの5モデル化・指標差・教授向け理由を整理
+
+- [通常組込み](../experiments/2026-10-06_onb_five_model_integration/README.md)として追加2をモデルutilsへ実装し、5単体、共有OOFの元3/HGB4/ExtraTrees4/5/等平均、最終保存/再読込、説明性入口を接続。通常ONBの既定を5に変更した。
+- 従来の統合日平均ONB閾値を保持し、日別閾値の指標/元3との差/q100を別CSVへ追加。通常指標にもTP/FP/TN/FN/FPR・領域母数を保存。[各指標差](../experiments/2026-10-06_onb_five_model_integration/metric_changes_summary.md)でclean Recall+2.22/+2.86pp、F1+0.01219/+0.01542、Accuracy+1.30/+1.67pp、Precision不変を定量化。
+- 保存150 epochsモデルの7条件で新統合を照合し、予測差最大7.96×10⁻¹³ kW/m²。追加2の通常Pipeline28条件/15120予測も一致、252指標/3360差行を保存。削除70条件でモデルの寄与と交換を確認し、[教授向け文書](notes/2026-10-06_five_model_rationale_and_next_steps.md)へ元RFの必要性未確認も記録。
+- 実main・実5構造の1 epoch/内部2fold、実入力144の15fitを完走。最終5の再読込、clean/−20の11予測列と各33日別指標行を確認。この値は研究性能ではない。新しい通常150 epochs本runは未実施、設定は150/3fold/seed42。既存150 epochs検証は完了のまま保持。
+
+## 2026-10-06 元3固定の4・5モデル追加と9候補比較を完了
+
+- 本人の「元RF/Conformer/AlexNetは固定して追加する」意図へ主方針を修正。[追加比較](../experiments/2026-10-06_fixed_three_additions/README.md)と[後継判断](../configs/experiments/2026-10-06_fixed_three_additions_decision.json)を保存。元3予測・内部比率を保持し、正の全4/5メンバー統合を実装した。
+- 同じseed43/44・clean_onlyで9候補をnested学習、648fit、保存72モデル、87方式×7条件、3654指標行を取得。第5候補は両seedでExtraTrees。元3MSE→HGB＋ExtraTrees5のclean RMSE35.74→24.67／33.89→25.26、FN32→25／28→19、−20 RMSE81.41→76.31／81.41→73.57、全7条件FP0。
+- 同じ34特徴RFも元PCA画像RFより改善し、HGB一般の優位と入力の差を区別。ExtraTrees4と5の僅差、seed43のHGB4 q100利得喪失、低熱流束/強雑音近傍悪化、絶対誤差改善と劣化量の違いを記録。LightGBM/CatBoost/TabPFN等の公式調査と未検証を分けた。
+- 元4予測配列全件完全一致、保存72モデルの全7条件再読込/hash、分割非共有、保持比率/メンバー数、指標再計算と関連unittest3件を確認。比較用入口は実装/実行済み、通常ONB主runnerは元3のまま。前節のRF置換採用は後継方針で更新済み。
+
+## 2026-10-06 追加人手情報なしでモデル・統合の主採用を判断
+
+- 本人が追加の原録音確認・実験メモ・同期映像から事実は得られず、採用判断もAIに任せると再指定。[採用判断](../experiments/2026-10-06_model_adoption_decision/README.md)へ反映し、手動確認を次工程から外した。
+- 周波数34 HGB＋Conformer＋AlexNet、clean OOFのMSE最小化・非負重みを研究上の主方式に採用。元3は基準、Ridgeは最有力統合対照、雑音OOF方式は別条件として保持。4モデルMSEとの全7560予測で二値判定一致、最大差約0.00024 kW/m²を検算した。
+- SVR/HGB×3入力の6 RMSE候補を旧seed42表に整理し、新19方式×2 seedの38プロファイルを保存。周波数HGBは主採用、時間HGBは第2候補、現SVRは強雑音の崩れから低順位、ExtraTrees34・直接Ridge/PLSは未検証候補と区別した。
+- 新モデル学習は今回なし。比較用入口の主方式は実装・評価済み、通常主runnerは元3の既定のまま。次は通常実行への組込みと、同じ入力での正則化/学習器対照。以下の「本人確認待ち」は当時の記録で、現行の未完了事項ではない。
+
 ## 2026-10-06 固定HGBの追加seed・共通入力説明・雑音OOF統合を完了
 
 - 本人が依頼した次の4項目を[追検証](../experiments/2026-10-06_hgb_followup_validation/README.md)として実装・実行。seed43/44で全基礎モデルを対応分割で再fitし、32保存fit、CNN16 fitの150 epochs、clean-fitの全7条件OOF/外側を取得した。

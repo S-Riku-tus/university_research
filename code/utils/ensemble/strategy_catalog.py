@@ -1,11 +1,32 @@
 from copy import deepcopy
 
 from utils.ensemble.crossfit_stacking import CROSSFIT_DEFAULTS
+from utils.ensemble.fixed_core_stacking import FIXED_CORE_DEFAULTS, FIXED_CORE_STRATEGY
 
 
 # Stable strategy definitions live here so experiment scripts only choose names.
 # Add or revise a reusable ensemble profile in this catalog, not in a run script.
 ENSEMBLE_STRATEGY_CATALOG = {
+    "original3_performance": {
+        "label": "Original three performance", "strategy": FIXED_CORE_STRATEGY,
+        "fixed_core": {**FIXED_CORE_DEFAULTS, "core_rule": "performance"},
+    },
+    "original3_mse": {
+        "label": "Original three MSE", "strategy": FIXED_CORE_STRATEGY,
+        "fixed_core": {**FIXED_CORE_DEFAULTS},
+    },
+    "original3_hgb": {
+        "label": "Original three + HGB", "strategy": FIXED_CORE_STRATEGY,
+        "fixed_core": {**FIXED_CORE_DEFAULTS, "added_keys": ["hgb"]},
+    },
+    "original3_extra_trees": {
+        "label": "Original three + ExtraTrees", "strategy": FIXED_CORE_STRATEGY,
+        "fixed_core": {**FIXED_CORE_DEFAULTS, "added_keys": ["extra_trees"]},
+    },
+    "original3_hgb_extra_trees": {
+        "label": "Original three + HGB + ExtraTrees", "strategy": FIXED_CORE_STRATEGY,
+        "fixed_core": {**FIXED_CORE_DEFAULTS, "added_keys": ["hgb", "extra_trees"]},
+    },
     "simple_equal": {
         "label": "Ensemble simple equal",
         "strategy": "simple",

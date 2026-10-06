@@ -23,9 +23,17 @@ def _build_alexnet(model_maker, **params):
     return model_maker.alexnet(**params)
 
 
-def onb_model_specs():
-    """Return a fresh registry for the fixed production model structures."""
-    return [
+def _build_hgb(model_maker, **params):
+    return model_maker.hgb_frequency34(**params)
+
+
+def _build_extra_trees(model_maker, **params):
+    return model_maker.extra_trees_frequency34(**params)
+
+
+def onb_model_specs(model_keys=None):
+    """Select a fresh registry; omitted keys preserve the historical three."""
+    registry = [
         {
             "key": "randomforest",
             "label": "RandomForest",
@@ -65,7 +73,24 @@ def onb_model_specs():
                 "regression_head": "Flatten-Dense4096-Dense4096",
             },
         },
+        {
+            "key": "hgb", "label": "HGB frequency34", "kind": "sklearn_summary",
+            "builder": _build_hgb, "random_state_from_run": True,
+            "input_representation": "raw_power_to_frequency34", "feature_version": 1,
+            "supported_max_freq_hz": ["maxfreq=3kHz"],
+        },
+        {
+            "key": "extra_trees", "label": "ExtraTrees frequency34", "kind": "sklearn_summary",
+            "builder": _build_extra_trees, "random_state_from_run": True,
+            "input_representation": "raw_power_to_frequency34", "feature_version": 1,
+            "supported_max_freq_hz": ["maxfreq=3kHz"],
+        },
     ]
+    keys = list(model_keys) if model_keys is not None else ["randomforest", "conformer", "alexnet"]
+    by_key = {spec["key"]: spec for spec in registry}
+    if not keys or len(keys) != len(set(keys)) or set(keys) - set(by_key):
+        raise ValueError(f"Invalid ONB model keys: {keys}")
+    return [by_key[key] for key in keys]
 
 
 def default_output_config(now=None):
@@ -138,6 +163,8 @@ DEFAULT_EXPLAINABILITY_CONFIG = {
         "alexnet": [
             "integrated_gradients", "grad_cam", "group_occlusion"
         ],
+        "hgb": ["group_occlusion"],
+        "extra_trees": ["group_occlusion"],
     },
     "frequency_bands_hz": [
         [0, 256],

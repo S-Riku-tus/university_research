@@ -62,7 +62,7 @@ def main():
             **annotations.get((item["scope"],item["noise"],p.identity(item)),{"recording_anomaly_observed":"","synchronized_video_or_log_available":"","bubble_observation":"","notes":""})})
     with (OUT/"human_review_sheet.csv").open("w",encoding="utf-8-sig",newline="") as stream:
         writer=csv.DictWriter(stream,fieldnames=list(records[0]));writer.writeheader();writer.writerows(records)
-    (OUT/"audio_review/README.md").write_text("# 原録音の確認用抜粋\n\n録音内の対象1秒と前後最大1秒を、増幅・正規化・雑音追加せずに抜き出した。対応表は親フォルダのhuman_review_sheet.csv。evaluation_noiseは解析条件で、このWAVへ人工雑音を加えたという意味ではない。モデル入力のhighpass/STFT加工前の音声である。音だけから気泡発生を確定せず、録音異常の有無と同期観測の所在を記入する。\n",encoding="utf-8")
+    (OUT/"audio_review/README.md").write_text("# 原録音の確認用抜粋\n\n追加の人手確認から新しい事実は得られない前提で、既存診断資料として保持する。本人の確認・記入は要求しない。現在の扱いは親フォルダのhuman_review_instructions.mdと、2026-10-06_model_adoption_decisionの採用判断を参照する。\n\n録音内の対象1秒と前後最大1秒を、増幅・正規化・雑音追加せずに抜き出した。対応表は親フォルダのhuman_review_sheet.csv。evaluation_noiseは解析条件で、このWAVへ人工雑音を加えたという意味ではない。モデル入力のhighpass/STFT加工前の音声であり、音だけから気泡発生を確定しない。\n",encoding="utf-8")
     print("Human review sheet:",len(records),"rows;",len(clips),"original-audio excerpts")
 
 

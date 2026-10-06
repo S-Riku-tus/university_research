@@ -7,7 +7,11 @@
 | 目的 | 読む文書 | 更新方法 |
 |---|---|---|
 | 次の作業を始める | [研究の現在地](research_status.md) | 状態・本人の希望・次の一手を更新する唯一の入口 |
-| 固定HGBの追加seed・説明性・雑音OOF統合を見る | [10/6固定候補の追検証](../experiments/2026-10-06_hgb_followup_validation/README.md) | 全モデルpaired学習、clean利得と強雑音の分割感度、共通入力説明、純clean/雑音露出統合の区別、本人確認用音声と記入表を記録 |
+| 5モデルを通常ONBで実行し、指標差を確認する | [10/6通常ONB組込み](../experiments/2026-10-06_onb_five_model_integration/README.md) | モデルutils/学習/統合/保存/XAI対応、3/4/5対照、平均/日別閾値の出力先、実main動作確認と150epochs本run未実施を区別 |
+| 5モデル全体と追加2つの採用理由を教授へ説明する | [10/6モデル役割と次工程](notes/2026-10-06_five_model_rationale_and_next_steps.md) | 実構造、期待役割、削除70条件、元RFの必須性未確認、4/5の交換、一次資料と段階案を整理 |
+| 元3を固定する4・5モデル追加と候補調査を見る | [10/6元3固定の追加比較](../experiments/2026-10-06_fixed_three_additions/README.md) | 9候補nested学習、元3/HGB4/ExtraTrees4/5の同条件比較、全メンバー保持、q100/領域/雑音の代償を固定。通常runner組込みは上の後継記録 |
+| RF置換の旧採用判断と当時の候補優先を見る | [10/6モデル・統合の採用判断](../experiments/2026-10-06_model_adoption_decision/README.md) | AIへの判断委任、追加人手確認なし、3モデルMSEの旧採用理由を保持。元3固定の最新指示と後継9候補/4・5比較は上の記録を優先 |
+| 固定HGBの追加seed・説明性・雑音OOF統合を見る | [10/6固定候補の追検証](../experiments/2026-10-06_hgb_followup_validation/README.md) | 全モデルpaired学習、clean利得と強雑音の分割感度、共通入力説明、純clean/雑音露出統合の区別、音声・表は追加人手確認を要求しない診断資料として記録 |
 | q100以外の追加モデル利得と公平な対照を見る | [10/6回帰・判定・雑音耐性の再評価](../experiments/2026-10-06_model_addition_general_metrics_review/README.md) | 本人補足、既存3の同方式重み/meta対照、RMSE/MAE/Recall、WAV・領域別改善、HGB単体と統合の違い、固定候補の次工程を記録 |
 | 新chunk条件の追加モデル・入力・統合の実行結果を見る | [10/6 SVR/HGB予備比較](../experiments/2026-10-06_chunk_complementary_model_pilots/README.md) | 18候補、固定29統合、同じ外側7条件、周波数/時間入力の固定対照、q100/誤報、残る6/11陰性、保存モデルと検算を記録 |
 | chunk内部検証clean_onlyの完了結果と次工程を見る | [10/6新旧基準比較](../experiments/2026-10-06_chunk_clean_baseline_analysis/README.md) | 7条件完了、同一540、q100不変、OOF支持と最後の共通陰性、重み/単体差、固定組合せ、候補比較の条件案を記録 |

@@ -461,7 +461,7 @@ def resolve_parameter_set(enabled_specs, parameter_set):
                     builder_params[name] = value
             if builder_params:
                 resolved_spec["builder_params"] = builder_params
-        elif resolved_spec["kind"] == "sklearn":
+        elif resolved_spec["kind"] in {"sklearn", "sklearn_summary"}:
             params = {}
             params.update(per_model.get(resolved_spec["key"], {}))
             if params:

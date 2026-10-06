@@ -16,6 +16,7 @@ from utils.ensemble.crossfit_stacking import (
     CROSSFIT_STRATEGIES, fit_crossfit_strategy, group_crossfit_splits,
 )
 from utils.ensemble.strategy_catalog import resolve_ensemble_selection
+from utils.ensemble.fixed_core_stacking import FIXED_CORE_STRATEGY, fit_fixed_core_strategy
 from utils.ensemble.strategy_comparison import (
     aggregate_correction_rows,
     compute_strategy_outputs,
@@ -122,6 +123,14 @@ class EnsembleManager:
                 0 < self.inner_holdout_frac < 1):
             raise ValueError("Ensemble inner_holdout_frac must be between 0 and 1.")
         crossfit = [item for item in self.strategy_plan if item["strategy"] in CROSSFIT_STRATEGIES]
+        fixed_core = [item for item in self.strategy_plan if item["strategy"] == FIXED_CORE_STRATEGY]
+        if fixed_core:
+            if self.combine != "mean" or crossfit:
+                raise ValueError("Fixed-core OOF requires mean combination and the shared internal validation split")
+            for item in fixed_core:
+                needed = item["fixed_core"]["core_keys"]+item["fixed_core"]["added_keys"]
+                if set(needed)-set(model_keys):
+                    raise ValueError(f"Missing fixed-core models for {item['name']}: {set(needed)-set(model_keys)}")
         if crossfit:
             if self.combine != "mean":
                 raise ValueError("Crossfit strategies require combine='mean'.")
@@ -344,16 +353,50 @@ class EnsembleRun:
                 "splits": split_records, "oof_predictions": oof, "targets": y_train,
                 "groups": groups, "inner_fold_ids": inner_fold_ids}
 
+    def fit_weights_from_internal_audit(self, audit, fold):
+        """Reuse the internal held predictions; do not fit another neural CV pass."""
+        plan = [item for item in self.strategy_plan if item["strategy"] == FIXED_CORE_STRATEGY]
+        if not plan:
+            return None
+        if audit.get("test_used") is not False:
+            raise ValueError("Fixed-core weights require training-only internal OOF")
+        samples = audit["samples"]
+        targets = np.asarray([row["heat_flux"] for row in samples], float)
+        oof = {key: np.asarray([row[key] for row in samples], float) for key in self.model_keys}
+        coverage = np.zeros(len(samples), int)
+        ids = np.zeros(len(samples), int)
+        for split in audit["folds"]:
+            fit, held = np.asarray(split["fit_indices"], int), np.asarray(split["validation_indices"], int)
+            if np.intersect1d(fit, held).size:
+                raise ValueError("Shared fit and held chunk in internal OOF")
+            np.add.at(coverage, held, 1)
+            ids[held] = split["fold"]
+        if not np.all(coverage == 1):
+            raise ValueError("Every training chunk requires exactly one held OOF prediction")
+        weights, diagnostics = {}, {}
+        for item in plan:
+            weights[item["name"]], diagnostics[item["name"]] = fit_fixed_core_strategy(
+                oof, targets, self.model_keys, item["fixed_core"])
+        return {"fold": int(fold), "weights": weights, "diagnostics": diagnostics,
+                "splits": audit["folds"], "split_policy": audit["method"],
+                "oof_predictions": oof, "targets": targets,
+                "groups": np.asarray([row["source_wav_id"] for row in samples]), "inner_fold_ids": ids}
+
     def save_crossfit_fit(self, save_path, fold, fit):
         if fit is None:
             return
         if fit["fold"] != fold:
             raise ValueError("Crossfit fit belongs to a different outer fold.")
         audit = {key: fit[key] for key in ("fold", "weights", "diagnostics", "splits")}
-        with open_text(os.path.join(save_path, f"ensemble_crossfit_fit_f{fold}.json"),
+        prefix = "ensemble_training_oof" if "split_policy" in fit else "ensemble_crossfit"
+        if "split_policy" in fit:
+            audit["split_policy"] = fit["split_policy"]
+            audit["outer_labels_used"] = False
+        with open_text(os.path.join(save_path, f"{prefix}_fit_f{fold}.json"),
                        "w", encoding="utf-8") as output:
             json.dump(audit, output, ensure_ascii=False, indent=2, allow_nan=False)
-        with open_text(os.path.join(save_path, f"ensemble_inner_oof_f{fold}.csv"),
+        csv_name = f"ensemble_training_oof_f{fold}.csv" if "split_policy" in fit else f"ensemble_inner_oof_f{fold}.csv"
+        with open_text(os.path.join(save_path, csv_name),
                        "w", newline="", encoding="utf-8") as output:
             writer = csv.writer(output)
             writer.writerow(["training_row_index", "source_wav_group", "inner_fold", "y_true", *self.model_keys])

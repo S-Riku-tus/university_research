@@ -1,0 +1,11 @@
+{
+  "status": "passed",
+  "primary_vs_four_model_prediction_pairs": 7560,
+  "max_prediction_difference_kW_m2": 0.00024021522187922528,
+  "binary_decisions_identical": true,
+  "pilot_inventory_rows": 6,
+  "paired_method_profile_rows": 38,
+  "new_model_training": false,
+  "manual_evidence_requests_removed": true,
+  "decision_config": "configs\\experiments\\2026-10-06_model_adoption_decision.json"
+}

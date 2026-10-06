@@ -1,0 +1,12 @@
+{
+  "config_sha256": "b6569762c307c6dd39eb21d21a6d5fb82836c67d9f13c202690e8a452c2f91fb",
+  "verified_metric_rows": 3654,
+  "persisted_nested_models": 72,
+  "total_candidate_fits_including_inner_selection": 648,
+  "original_four_prediction_arrays_unchanged": true,
+  "original_three_ratios_preserved": true,
+  "genuine_four_five_member_counts_verified": true,
+  "all_seven_reload_verified": true,
+  "outer_labels_used_for_selection": false,
+  "status": "passed"
+}

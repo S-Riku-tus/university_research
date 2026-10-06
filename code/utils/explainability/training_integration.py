@@ -966,25 +966,37 @@ def explain_keras_model(model_key, model, scaler, x_val, y_val, pred, threshold,
 
 
 def explain_sklearn_model(model_key, model, pca, scaler, x_val, y_val, pred, threshold,
-                          out_dir, max_freq_hz, config):
-    if pca is None:
+                          out_dir, max_freq_hz, config, input_representation="pca"):
+    summary_input = input_representation == "frequency34"
+    if pca is None and not summary_input:
         _write_status(out_dir, "skipped", "PCA object was not retained for this run.")
         return
 
     methods = _methods_for_model(config, model_key)
-    if hasattr(model, "feature_importances_"):
-        rows = [[i, float(v)] for i, v in enumerate(np.asarray(model.feature_importances_).ravel())]
+    importance_model = model.named_steps["regressor"] if summary_input else model
+    if hasattr(importance_model, "feature_importances_"):
+        names = model.named_steps["features"].get_feature_names_out() if summary_input else None
+        rows = [[str(names[i]) if summary_input else i, float(v)]
+                for i, v in enumerate(np.asarray(importance_model.feature_importances_).ravel())]
         rows.sort(key=lambda row: row[1], reverse=True)
-        write_csv(os.path.join(out_dir, "pca_feature_importance.csv"),
-                  ["pca_component", "importance"], rows)
+        filename = "summary_feature_importance.csv" if summary_input else "pca_feature_importance.csv"
+        write_csv(os.path.join(out_dir, filename),
+                  ["feature" if summary_input else "pca_component", "importance"], rows)
 
     max_samples = int(config.get("max_samples_per_fold", 5))
     groups = _frequency_groups(x_val, max_freq_hz, config)
-    predict_fn = sklearn_predict_fn(model, pca, scaler)
+    if summary_input:
+        def predict_fn(raw):
+            scaled = np.asarray(model.predict(raw)).reshape(-1, 1)
+            return scaler.inverse_transform(scaled).ravel()
+    else:
+        predict_fn = sklearn_predict_fn(model, pca, scaler)
     selected_samples = selected_sample_indices(
         y_val, pred, threshold, max_samples)
 
     if "tree_shap_pca" in methods or "treeshap" in methods:
+        if summary_input:
+            raise ValueError("PCA TreeSHAP is not an explanation for frequency34 summary regressors")
         _write_tree_shap_pca(
             model, pca, scaler, x_val, selected_samples, out_dir)
 
@@ -1483,5 +1495,8 @@ def maybe_explain_trained_model(spec, model, scaler, x_val, y_val, pred, thresho
     elif spec["kind"] == "sklearn":
         explain_sklearn_model(model_key, model, pca, scaler, x_val, y_val, pred,
                               threshold, out_dir, max_freq_hz, config)
+    elif spec["kind"] == "sklearn_summary":
+        explain_sklearn_model(model_key, model, None, scaler, x_val, y_val, pred,
+                              threshold, out_dir, max_freq_hz, config, input_representation="frequency34")
     else:
         _write_status(out_dir, "skipped", f"Unknown model kind: {spec['kind']}")

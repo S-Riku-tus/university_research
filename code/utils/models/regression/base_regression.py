@@ -169,6 +169,14 @@ class RegressionModelMaker:
         model = Model(inputs=base_model.input, outputs=x)
         return model
 
+    def hgb_frequency34(self, **params):
+        from utils.models.regression.acoustic_regression import hgb_frequency34
+        return hgb_frequency34(**params)
+
+    def extra_trees_frequency34(self, **params):
+        from utils.models.regression.acoustic_regression import extra_trees_frequency34
+        return extra_trees_frequency34(**params)
+
     def random_forest(self, **params):
         """
         XGBoostを使用したランダムフォレスト回帰モデル

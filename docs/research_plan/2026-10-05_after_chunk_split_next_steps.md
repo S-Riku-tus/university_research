@@ -2,6 +2,8 @@
 
 作成日: 2026-10-05。本人の「分割の実装が終わったので、後回しにした次工程を論理的・段階的に考える」依頼に対応。最新方針は外側・内部ともシャッフルありchunk分割、clean_only主軸、matched保持、主評価は早い全chunk陽性到達段階q100。以下は提案であり、新しいモデル結果が得られた記録ではない。
 
+**10/6最新指示・通常組込み完了**：本人の意図は元RF/Conformer/AlexNetを固定し、4・5モデルへ追加すること。[9候補比較](../../experiments/2026-10-06_fixed_three_additions/README.md)の後、[通常ONBの5モデル組込み](../../experiments/2026-10-06_onb_five_model_integration/README.md)を実装・実mainで動作確認した。追加2をモデルutilsへ置き、3/4/5の共有OOF統合、両閾値の指標差、保存/再読込、XAI入口を接続。既存150 epochsの7条件再現と削除70条件を完了し、[教授向け理由と段階案](../notes/2026-10-06_five_model_rationale_and_next_steps.md)を保存した。次は標準形式の150 epochs本runを1回確認すること。今回の新本runは未実施、動作確認1 epoch値は研究性能に混ぜない。追加人手情報なし・AIへの判断委任も維持する。以下の「採用未確定」「記録確認」やq100中心の条件は当時の履歴で、最新指示を上書きしない。
+
 同日追記：本人の実行準備依頼により、主コードをclean_only・最終モデル保存/再読込確認ありへ変更し、内部分割設定の実行snapshotへの転送を修正した。[準備確認](../../experiments/2026-10-05_chunk_clean_baseline_ready/README.md)、[実効条件](../../configs/experiments/2026-10-05_chunk_clean_baseline_ready.json)。本学習は未実施。
 
 同日後続：本人実行がRF保存再読込の予測差で停止し、[PCA配置の数値互換性](../../experiments/2026-10-05_rf_reload_pca_layout_fix/README.md)を修正した。内部OOFは出たが外側結果は未取得、修正後の本学習再実行も未実施。新しい基準には内部分割変更とPCA変換版2の修正が含まれる。単体予測と重みを分けて読み、旧結果との差を分割だけの因果効果と断定しない。

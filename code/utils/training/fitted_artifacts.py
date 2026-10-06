@@ -133,7 +133,7 @@ def save_and_verify_model(
     loaded_scaler = joblib.load(windows_long_path(directory / "target_scaler.joblib"))
     loaded_pca = None
     x_probe_pca = None
-    if spec["kind"] != "keras":
+    if spec["kind"] == "sklearn":
         loaded_pca = joblib.load(windows_long_path(directory / "pca.joblib"))
         x_probe_pca = trainer.transform_pca(loaded_pca, x_probe)
 
@@ -153,7 +153,7 @@ def save_and_verify_model(
     verification = {"performed": bool(verify)}
     if verify:
         original_pca = None
-        if spec["kind"] != "keras":
+        if spec["kind"] == "sklearn":
             original_pca = trainer.transform_pca(pca, x_probe)
         original = trainer.predict_one_model(
             spec, model, x_probe, original_pca, scaler
@@ -179,17 +179,22 @@ def save_and_verify_model(
                 f"mean_abs={verification['mean_abs_prediction_difference_w_m2']:.9g} W/m2"
             )
 
+    parameter_model = (model.named_steps["regressor"]
+                       if spec["kind"] == "sklearn_summary" else model)
     manifest["models"][key] = {
         "kind": spec["kind"],
         "builder_params": spec.get("builder_params", {}),
         "fitted_random_state": (
-            model.get_params().get("random_state")
-            if spec["kind"] != "keras" and hasattr(model, "get_params")
+            parameter_model.get_params().get("random_state")
+            if spec["kind"] != "keras" and hasattr(parameter_model, "get_params")
             else manifest["random_seed"]
         ),
         "artifact": _file_record(path, directory),
         "verification": verification,
     }
+    if spec["kind"] == "sklearn_summary":
+        manifest["models"][key].update(input_representation=spec["input_representation"],
+                                       feature_version=spec["feature_version"])
     del loaded_model
     return manifest["models"][key]
 

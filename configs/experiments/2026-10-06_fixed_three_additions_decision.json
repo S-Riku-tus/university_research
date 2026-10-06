@@ -1,0 +1,44 @@
+{
+  "decision_date": "2026-10-06",
+  "user_instruction": "Keep the original RF, Conformer and AlexNet; investigate and validate additions to four or five models",
+  "supersedes": "configs/experiments/2026-10-06_model_adoption_decision.json",
+  "evidence": "experiments/2026-10-06_fixed_three_additions/README.md",
+  "evaluation_scope": "Same two development recording days, paired known-WAV unused chunk splits 43/44",
+  "primary_candidate": {
+    "method": "existing3_clean_mse__selected5",
+    "models": ["randomforest", "conformer", "alexnet", "hgb", "extra_trees"],
+    "existing_three_refitted": false,
+    "existing_three_internal_ratios_fixed_when_adding_models": true,
+    "core_ratio_rule": "Fit nonnegative sum-one MSE weights to original-three clean OOF, then hold internal ratios fixed",
+    "block_rule": "Fit clean OOF MSE among original-three block, frequency34 HGB and frequency34 ExtraTrees",
+    "minimum_original_three_total": 0.25,
+    "minimum_each_added_model": 0.05,
+    "fifth_model_rule": "Choose family among nine nested candidates by clean OOF integration-fit MSE",
+    "observed_fifth_both_seeds": "extra_trees",
+    "extra_trees_final_parameters": {"n_estimators": 256, "min_samples_leaf": 2, "max_features": 1.0},
+    "hgb_parameters": {"max_iter": 150, "learning_rate": 0.05, "max_leaf_nodes": 31, "min_samples_leaf": 20, "l2_regularization": 1.0, "early_stopping": false},
+    "training_policy": "clean_only for candidates and weights",
+    "fixed_across_seed_weights": false,
+    "true_SNR_or_heat_flux_used_for_prediction": false,
+    "reason": "Preserves original-three models, repeated regression and FN gains versus same-MSE baseline, lower minus20 absolute RMSE in both splits and observed FP0 across all seven conditions"
+  },
+  "retained_controls": {
+    "strongest_simpler_candidate": "existing3_clean_mse__extra_trees4_anchor",
+    "q100_alternative": "existing3_clean_mse__hgb4_anchor",
+    "exact_previous_ratio_controls": ["existing_performance", "existing_performance__hgb4_anchor", "existing_performance__selected5"],
+    "diagnostic_only_previous_replacement": "hgb4_unrestricted_diagnostic"
+  },
+  "limitations": [
+    "Five versus ExtraTrees-only four is a small gain; descriptive WAV-bootstrap clean intervals include zero",
+    "Five loses seed43 June18 clean q100 benefit of HGB-only four",
+    "Low heat-flux clean regression and seed44 strong-noise ONB-near regression can worsen",
+    "Minus20 absolute error improves versus original three; clean-to-noise RMSE increase is not smaller",
+    "ExtraTrees single can be better in strong-noise absolute regression",
+    "RF remains active with small positive weight; member retention is not equal utility",
+    "Same development data reused; no new-day independent confirmation"
+  ],
+  "implementation_state": "Full training, selection, integration and persistence evaluated in code/run_fixed_three_additions.py. Normal ONB runner remains original three.",
+  "verification": "72 saved models, 648 total fits, 3654 recomputed metric rows, exact original prediction arrays, genuine positive four/five member weights",
+  "additional_human_evidence_required": false,
+  "next_step": "Integrate fixed-core addition rule into normal runner, retaining four-model ExtraTrees and HGB controls; do not automatically increase model count"
+}

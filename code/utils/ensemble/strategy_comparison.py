@@ -4,11 +4,12 @@ import re
 import numpy as np
 
 from utils.ensemble.crossfit_stacking import CROSSFIT_STRATEGIES, validate_crossfit_options
+from utils.ensemble.fixed_core_stacking import FIXED_CORE_STRATEGY, validate_options
 
 
 VALID_STRATEGIES = {
     "simple", "inner_holdout", "performance_kfold",
-} | CROSSFIT_STRATEGIES
+} | CROSSFIT_STRATEGIES | {FIXED_CORE_STRATEGY}
 HIGHER_IS_BETTER = {
     "r2", "r2_high", "roc_auc_cont", "pr_auc_cont",
     "accuracy", "precision", "recall", "f1",
@@ -62,6 +63,9 @@ def normalize_strategy_plan(config):
         if strategy in CROSSFIT_STRATEGIES:
             item["crossfit"] = dict(raw["crossfit"])
             validate_crossfit_options(item["crossfit"])
+        if strategy == FIXED_CORE_STRATEGY:
+            item["fixed_core"] = dict(raw["fixed_core"])
+            validate_options(item["fixed_core"])
         plan.append(item)
         names.add(name)
         result_keys.add(result_key)
@@ -95,7 +99,7 @@ def compute_strategy_outputs(
                 raise ValueError("performance_kfold requires finite training-only CV errors for every model")
         else:
             errors = {}
-        if strategy in CROSSFIT_STRATEGIES:
+        if strategy in CROSSFIT_STRATEGIES or strategy == FIXED_CORE_STRATEGY:
             if combine != "mean":
                 raise ValueError("Crossfit strategies require weighted mean combination.")
             if fitted_weights is None or item["name"] not in fitted_weights:

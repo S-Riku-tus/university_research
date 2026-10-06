@@ -1,0 +1,23 @@
+{
+  "config_sha256": "b6569762c307c6dd39eb21d21a6d5fb82836c67d9f13c202690e8a452c2f91fb",
+  "seeds": [
+    43,
+    44
+  ],
+  "evaluation": [
+    {
+      "seed": 43,
+      "methods": 87,
+      "outer_chunks": 540
+    },
+    {
+      "seed": 44,
+      "methods": 87,
+      "outer_chunks": 540
+    }
+  ],
+  "metric_rows": 3654,
+  "outer_labels_used_for_selection": false,
+  "existing_three_refitted": false,
+  "status": "nested candidates and fixed-core additions evaluated"
+}

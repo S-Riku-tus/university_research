@@ -1,5 +1,7 @@
 # モデル・説明性の参照メモ
 
+**2026-10-06更新先**：[5モデルの採用理由と段階案](2026-10-06_five_model_rationale_and_next_steps.md)を追加。通常ONBは元3＋周波数34 HGB/ExtraTreesへ組込み済み。追加2の共通周波数maskとExtraTrees34特徴重要度を通常XAI入口から出せる。現在の主設定はXAI disabledで、今回の実装確認を新しい全域XAI実行と扱わない。以下の3モデル・旧統合・旧IG状態は過去世代の参照記録。
+
 **2026-09-19選択理由の再検証**：[手法ごとの採用理由、他候補との比較、現行runの限界](2026-09-19_explainability_method_selection.md)を追加。**現行の説明性出力は周波数帯マスクのみ（時間区間マスクは廃止）**。旧IGの不一致と、数値修正後の9/18runにも残る未収束を区別する。現行の単体モデルは[onb_defaults.py](../../code/utils/config/onb_defaults.py)の`randomforest`・`conformer`・`alexnet`。結果表示名の「Conformer」を厳密な標準Conformer構造と同一視しない。
 
 **2026-09-16追記**: IGの積分を修正し、寄与合計とmapの収束を検査する実装へ更新した。[変更内容・使い方](../../experiments/2026-09-16_ig_numerical_fix/README.md)。以下で言及する9/14・9/15の旧IGの不整合は当時の出力に関する事実で、修正済みコードによる再計算を意味しない。

@@ -116,6 +116,7 @@ class RegressionDetectionMetrics:
                 "precision": np.nan,
                 "recall": np.nan,
                 "f1": np.nan,
+                **{key: np.nan for key in ("tp", "fp", "tn", "fn", "fpr", "n_pre_onb", "n_post_onb")},
             }
         threshold = float(threshold)
         y_true_bin = (np.asarray(y_true).ravel() >= threshold).astype(int)
@@ -126,6 +127,12 @@ class RegressionDetectionMetrics:
             "recall": recall_score(y_true_bin, y_pred_bin, zero_division=0),
             "f1": f1_score(y_true_bin, y_pred_bin, zero_division=0),
         }
+        tp = int(np.sum((y_true_bin == 1) & (y_pred_bin == 1)))
+        fp = int(np.sum((y_true_bin == 0) & (y_pred_bin == 1)))
+        fn = int(np.sum((y_true_bin == 1) & (y_pred_bin == 0)))
+        tn = int(np.sum((y_true_bin == 0) & (y_pred_bin == 0)))
+        out.update(tp=tp, fp=fp, tn=tn, fn=fn, fpr=fp/(fp+tn) if fp+tn else np.nan,
+                   n_pre_onb=fp+tn, n_post_onb=tp+fn)
         return out
 
     def mean_se(self, arr):
