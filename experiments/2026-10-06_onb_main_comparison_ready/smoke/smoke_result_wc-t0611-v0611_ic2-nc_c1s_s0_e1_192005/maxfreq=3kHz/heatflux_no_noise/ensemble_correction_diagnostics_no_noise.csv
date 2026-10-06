@@ -1,0 +1,7 @@
+fold,strategy_name,strategy_type,claim_safe,reference_model,n_samples,n_better,n_worse,n_tied,mean_abs_error_delta,n_onb,mean_onb_abs_error_delta,reference_false_negatives,ensemble_false_negatives,false_negative_delta,recovered_false_negatives,new_false_negatives
+1,original3_hgb_extra_trees,fixed_core_oof,1,randomforest,36,31,5,0,-52851.79207337937,2,-57558.02014961929,2,1,-1,1,0
+1,original3_mse,fixed_core_oof,1,randomforest,36,21,15,0,-2671.05772299333,2,-5201.990760269851,2,2,0,0,0
+1,original3_performance,fixed_core_oof,1,randomforest,36,15,21,0,2011.6617488194493,2,-5103.924951609435,2,2,0,0,0
+1,original3_hgb,fixed_core_oof,1,randomforest,36,26,10,0,-30510.98184240957,2,-32010.64145270828,2,1,-1,1,0
+1,original3_extra_trees,fixed_core_oof,1,randomforest,36,31,5,0,-53007.12255277207,2,-57843.46292599446,2,1,-1,1,0
+1,simple_equal,simple,1,randomforest,36,11,25,0,73336.74209366376,2,104368.5086394356,2,0,-2,2,0

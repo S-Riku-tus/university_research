@@ -39,7 +39,9 @@ from utils.experiment.acoustic_selection import AcousticTrainingSelector
 from utils.training.internal_validation import fit_individual_performance_cv
 from utils.training.fitted_artifacts import (
     begin_fitted_state, finish_fitted_state, save_and_verify_model,
+    verify_reloaded_evaluation_predictions,
 )
+from utils.experiment.onb_main_comparison import export_main_comparison
 from utils.ensemble.fixed_core_stacking import FIXED_CORE_STRATEGY
 
 
@@ -348,6 +350,8 @@ def run_learning_experiments(jobs, policy, config, enabled_specs, parameter_sets
                 for recorder in recorders:
                     update_noise_trends(plotter, recorder.job, run_dir, run_hash, recorder.keys)
                 print(f"完了済みのため学習を省略: {run_dir}")
+                if config["output"].get("main_comparison_report", False):
+                    export_main_comparison(recorders, config)
                 if not config["run"]["loop_parameter_sets"]:
                     break
                 continue
@@ -485,6 +489,27 @@ def run_learning_experiments(jobs, policy, config, enabled_specs, parameter_sets
                     del model, history
                     K.clear_session()
                     gc.collect()
+                    if artifact_directory is not None and config["output"].get("verify_reloaded_evaluation_predictions", False):
+                        if spec["kind"] == "keras":
+                            artifact_manifest["models"][spec["key"]]["training_history"] = {
+                                key: values[-1] for key, values in recorders[0].train_meta[spec["key"]].items()}
+
+                        def evaluation_datasets():
+                            for current in recorders:
+                                current_job = current.job
+                                current_indices = splits_by_noise[current_job["noise_dir_name"]][fold-1][1]
+                                if len(family["training_jobs"]) == 1 and Path(current_job["data_path"]) == Path(family["training_jobs"][0]["data_path"]):
+                                    raw = x[current_indices]
+                                else:
+                                    raw, _ = loader.load_npy_data(current_job["data_path"], sample_indices=current_indices)
+                                yield current_job["noise_dir_name"], raw, predictions[current.snr][spec["key"]]
+                                del raw
+
+                        verify_reloaded_evaluation_predictions(artifact_directory, artifact_manifest, spec,
+                            RegressionModelMaker(tuple(x.shape[1:])), trainer, evaluation_datasets())
+                        print(f"保存再読込の全評価予測を確認: {spec['key']} / {len(recorders)}条件", flush=True)
+                        K.clear_session()
+                        gc.collect()
                 artifact_outputs = None
                 for recorder_i, recorder in enumerate(recorders):
                     metadata = metadata_by_noise[recorder.job["noise_dir_name"]]
@@ -504,6 +529,8 @@ def run_learning_experiments(jobs, policy, config, enabled_specs, parameter_sets
                 gc.collect()
             for recorder in recorders:
                 recorder.finish(plotter, update_noise_trends)
+            if config["output"].get("main_comparison_report", False):
+                export_main_comparison(recorders, config)
             del x, y, train_metadata
             gc.collect()
             if not config["run"]["loop_parameter_sets"]:

@@ -121,6 +121,15 @@ def run_config_digest(validation_config, parameter_set, run_specs, model_tag, sa
         output_digest["verify_reloaded_artifacts"] = bool(
             config.get("output", {}).get("verify_reloaded_artifacts", True)
         )
+        if config.get("output", {}).get("verify_reloaded_evaluation_predictions", False):
+            output_digest["verify_reloaded_evaluation_predictions"] = True
+            output_digest["fitted_verification_schema_version"] = 2
+    if config.get("output", {}).get("main_comparison_report", False):
+        # Old completed states lack evaluation reload checks and epoch audits.
+        # Do not resume them as a run that satisfied the new output contract.
+        protocol = config["output"]["main_comparison_protocol"]
+        output_digest["main_comparison_protocol"] = protocol
+        output_digest["main_comparison_schema_version"] = 1
     config["output"] = output_digest
     return short_digest({
         "validation_config": config,

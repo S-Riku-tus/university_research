@@ -14,6 +14,7 @@
 
 import os
 import re
+import json
 from datetime import datetime
 from pathlib import Path
 from pprint import pformat
@@ -49,6 +50,7 @@ from utils.experiment.learning_policy import (
     resolve_experiment_names,
 )
 from utils.experiment.learning_runner import run_learning_experiments
+from utils.experiment.onb_main_comparison import validate_main_comparison_jobs
 from utils.experiment.training_oof_tuning import run_training_oof_tuning
 from utils.experiment.result_paths import (
     existing_result_run_path,
@@ -73,7 +75,7 @@ from utils.experiment.run_helpers import set_global_seed
 # 現在の設定の読み方:
 # ・目的: 同じ検証予測から単体モデルと各アンサンブル方式を比較する。
 # ・評価: cross_dayは別日、within_wav_chunkは各WAV内の未使用chunkをテストする。
-# ・モデル: RF、CNN＋Transformer、AlexNet。
+# ・モデル: 元RF、CNN＋Transformer、AlexNet、周波数34特徴HGB・ExtraTrees。
 # ・統合方式: ensembleに列挙した全方式を実行・評価する。
 # ・説明性: 有効なデータ条件・モデル・foldについて指定手法を実行する。
 #
@@ -245,6 +247,9 @@ VALIDATION_CONFIG = apply_onb_defaults({
         "save_fitted_artifacts": True,
         # "save_fitted_artifacts": False,  # 予測だけを残す従来の軽量保存
         "verify_reloaded_artifacts": True,
+        "verify_reloaded_evaluation_predictions": True,  # 全5モデル×全7条件の評価540予測を再読込で照合。
+        "main_comparison_report": True,  # clean_only通常runの終了時に日別主表・重み・検算をまとめる。
+        "main_comparison_protocol": "configs/experiments/2026-10-06_onb_main_comparison_protocol.json",
     },
     "explainability": {
         "enabled": False,
@@ -403,6 +408,8 @@ def parameter_plan_for_max_freq(max_freq_hz):
 
 def validation_config_snapshot(max_freq_hz):
     plan = parameter_plan_for_max_freq(max_freq_hz)
+    with (REPO_ROOT / _cfg("output", "main_comparison_protocol")).open(encoding="utf-8") as stream:
+        main_protocol = json.load(stream)
     return {
         "learning_policy": dict(LEARNING_POLICY),
         "acoustic_selection": dict(VALIDATION_CONFIG.get("acoustic_selection", {})),
@@ -457,6 +464,10 @@ def validation_config_snapshot(max_freq_hz):
             "save_tuning_summary": SAVE_TUNING_SUMMARY,
             "save_fitted_artifacts": SAVE_FITTED_ARTIFACTS,
             "verify_reloaded_artifacts": VERIFY_RELOADED_ARTIFACTS,
+            "verify_reloaded_evaluation_predictions": _cfg("output", "verify_reloaded_evaluation_predictions"),
+            "main_comparison_report": bool(_cfg("output", "main_comparison_report")
+                                           and LEARNING_POLICY["training_noise"] == "clean_only"),
+            "main_comparison_protocol": main_protocol,
             "resume_completed_runs": RESUME_COMPLETED_RUNS,
             "noise_trend_plots": dict(NOISE_TREND_CONFIG),
         },
@@ -497,6 +508,13 @@ def update_noise_trend_plots(plotter, job, run_dir, run_hash, model_keys):
 
 
 def validate_validation_config(enabled_specs):
+    if _cfg("output", "verify_reloaded_evaluation_predictions") and not SAVE_FITTED_ARTIFACTS:
+        raise ValueError("Full evaluation reload verification requires save_fitted_artifacts=True")
+    if _cfg("output", "main_comparison_report") and LEARNING_POLICY["training_noise"] == "clean_only":
+        if not (SAVE_FOLD_PREDICTIONS and SAVE_FITTED_ARTIFACTS and VERIFY_RELOADED_ARTIFACTS
+                and _cfg("output", "verify_reloaded_evaluation_predictions")
+                and _cfg("thresholds", "report_source_day_metrics")):
+            raise ValueError("Main comparison requires saved predictions, fitted states, both reload checks and source-day metrics")
     if _cfg("run", "internal_validation_split") not in {"chunk_kfold", "wav_kfold"}:
         raise ValueError("internal_validation_split must be 'chunk_kfold' or 'wav_kfold'.")
     uses_oof = ("performance_kfold" in ENSEMBLE_MANAGER.selected_strategy_names
@@ -754,6 +772,10 @@ def main():
                 trainer,
             )
             continue
+
+        if frequency_config["output"]["main_comparison_report"]:
+            frequency_config["output"]["main_comparison_preflight"] = validate_main_comparison_jobs(frequency_jobs, frequency_config)
+            print("主比較の事前確認: 全ノイズの入力・評価chunk・正解・日別ONBが一致。", flush=True)
 
         run_learning_experiments(
             frequency_jobs, LEARNING_POLICY, frequency_config,

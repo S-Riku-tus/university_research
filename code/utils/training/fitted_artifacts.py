@@ -217,3 +217,43 @@ def finish_fitted_state(directory, manifest, ensemble_outputs):
     with open_text(manifest_path, "w", encoding="utf-8") as output:
         json.dump(manifest, output, ensure_ascii=False, indent=2, default=json_default)
     return manifest_path
+
+
+def verify_reloaded_evaluation_predictions(directory, manifest, spec, model_maker, trainer, datasets):
+    """Reload once and compare every evaluated chunk in every supplied condition.
+
+    The caller releases its trained model before this pass. Each dataset is
+    yielded on demand, so noisy input arrays and duplicate CNNs do not remain
+    resident together. This verification never fits or changes weights.
+    """
+    directory = Path(directory)
+    scaler = joblib.load(windows_long_path(directory / "target_scaler.joblib"))
+    pca = joblib.load(windows_long_path(directory / "pca.joblib")) if spec["kind"] == "sklearn" else None
+    if spec["kind"] == "keras":
+        model = spec["builder"](model_maker, **spec.get("builder_params", {}))
+        model.load_weights(windows_long_path(directory / f"{spec['key']}.weights.h5"))
+    else:
+        model = joblib.load(windows_long_path(directory / f"{spec['key']}.joblib"))
+    checks = []
+    for noise, inputs, expected in datasets:
+        transformed = trainer.transform_pca(pca, inputs) if pca is not None else None
+        restored = np.asarray(trainer.predict_one_model(spec, model, inputs, transformed, scaler), float).ravel()
+        expected = np.asarray(expected, float).ravel()
+        if restored.shape != expected.shape or not len(expected) or not np.isfinite(expected).all() or not np.isfinite(restored).all():
+            raise RuntimeError(f"Invalid restored evaluation predictions: {spec['key']} / {noise}")
+        difference = np.abs(restored-expected)
+        check = {"noise_dir_name": noise, "samples": len(expected),
+                 "max_abs_prediction_difference_w_m2": float(difference.max()),
+                 "mean_abs_prediction_difference_w_m2": float(difference.mean()),
+                 "allclose_rtol": 1e-6, "allclose_atol_w_m2": 1e-3,
+                 "passed": bool(np.allclose(restored, expected, rtol=1e-6, atol=1e-3))}
+        checks.append(check)
+        if not check["passed"]:
+            raise RuntimeError(f"Restored evaluation mismatch: {spec['key']} / {noise}; max_abs={difference.max():.9g} W/m2")
+        del inputs, transformed, restored
+    if not checks:
+        raise ValueError("Evaluation reload verification requires at least one dataset")
+    manifest["models"][spec["key"]]["evaluation_verification"] = {"performed": True, "passed": True,
+        "conditions": checks, "total_predictions": sum(r["samples"] for r in checks)}
+    del model
+    return checks

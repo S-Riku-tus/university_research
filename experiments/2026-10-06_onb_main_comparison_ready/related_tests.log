@@ -1,0 +1,27 @@
+......C:\Users\Casper4\.conda\envs\TFGPU_shiba_2025\lib\site-packages\scipy\optimize\optimize.py:282: RuntimeWarning: Values in x were outside bounds during a minimize step, clipping to bounds
+  warnings.warn("Values in x were outside bounds during a "
+..C:\Users\Casper4\.conda\envs\TFGPU_shiba_2025\lib\site-packages\joblib\externals\loky\backend\context.py:131: UserWarning: Could not find the number of physical cores for the following reason:
+[WinError 2] 指定されたファイルが見つかりません。
+Returning the number of logical cores instead. You can silence this warning by setting LOKY_MAX_CPU_COUNT to the number of cores you want to use.
+  warnings.warn(
+  File "C:\Users\Casper4\.conda\envs\TFGPU_shiba_2025\lib\site-packages\joblib\externals\loky\backend\context.py", line 247, in _count_physical_cores
+    cpu_count_physical = _count_physical_cores_win32()
+  File "C:\Users\Casper4\.conda\envs\TFGPU_shiba_2025\lib\site-packages\joblib\externals\loky\backend\context.py", line 299, in _count_physical_cores_win32
+    cpu_info = subprocess.run(
+  File "C:\Users\Casper4\.conda\envs\TFGPU_shiba_2025\lib\subprocess.py", line 505, in run
+    with Popen(*popenargs, **kwargs) as process:
+  File "C:\Users\Casper4\.conda\envs\TFGPU_shiba_2025\lib\subprocess.py", line 951, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "C:\Users\Casper4\.conda\envs\TFGPU_shiba_2025\lib\subprocess.py", line 1436, in _execute_child
+    hp, ht, pid, tid = _winapi.CreateProcess(executable, args,
+......[training] Tiny: [--------------------] 0/1
+[training] Tiny: [####################] 1/1 (100%), loss=0.468394
+[training] RF: [--------------------] 0/1
+[training] RF: [####################] 1/1 (100%)
+..[training] RandomForest: [--------------------] 0/1
+[training] RandomForest: [####################] 1/1 (100%)
+..................................
+----------------------------------------------------------------------
+Ran 50 tests in 8.834s
+
+OK

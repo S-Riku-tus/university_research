@@ -1,0 +1,13 @@
+﻿noise,fold,model_key,samples,max_abs_difference_W_m2,passed
+clean,1,ensemble__original3_hgb_extra_trees,36,0.0,True
+clean,1,ensemble__original3_mse,36,0.0,True
+clean,1,ensemble__original3_performance,36,0.0,True
+clean,1,ensemble__original3_hgb,36,0.0,True
+clean,1,ensemble__original3_extra_trees,36,0.0,True
+clean,1,ensemble__simple_equal,36,0.0,True
+-20,1,ensemble__original3_hgb_extra_trees,36,0.0,True
+-20,1,ensemble__original3_mse,36,0.0,True
+-20,1,ensemble__original3_performance,36,0.0,True
+-20,1,ensemble__original3_hgb,36,0.0,True
+-20,1,ensemble__original3_extra_trees,36,0.0,True
+-20,1,ensemble__simple_equal,36,0.0,True

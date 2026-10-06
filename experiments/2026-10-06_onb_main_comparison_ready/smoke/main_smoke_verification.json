@@ -1,0 +1,34 @@
+{
+  "status": "passed",
+  "actual_onb_main_called": true,
+  "execution_id": "192005",
+  "models": [
+    "randomforest",
+    "conformer",
+    "alexnet",
+    "hgb",
+    "extra_trees"
+  ],
+  "original_architectures_used": true,
+  "epochs_per_cnn": 1,
+  "inner_folds": 2,
+  "source_wavs": 36,
+  "input_chunks": 144,
+  "outer_fit_chunks": 108,
+  "outer_eval_chunks": 36,
+  "noise_conditions": [
+    "clean",
+    "-20"
+  ],
+  "base_fits": 15,
+  "persisted_final_models": 5,
+  "persisted_model_reload_verified": true,
+  "source_day_metric_rows_per_condition": 33,
+  "prediction_columns": 11,
+  "research_performance_claim": false,
+  "normal_150_epoch_run_executed": false,
+  "results": [
+    "experiments\\2026-10-06_onb_main_comparison_ready\\smoke\\smoke_result_wc-t0611-v0611_ic2-nc_c1s_s0_e1_192005\\maxfreq=3kHz\\heatflux_no_noise",
+    "experiments\\2026-10-06_onb_main_comparison_ready\\smoke\\smoke_result_wc-t0611-v0611_ic2-nc_c1s_s0_e1_192005\\maxfreq=3kHz\\heatflux_reference_SNR=-20"
+  ]
+}

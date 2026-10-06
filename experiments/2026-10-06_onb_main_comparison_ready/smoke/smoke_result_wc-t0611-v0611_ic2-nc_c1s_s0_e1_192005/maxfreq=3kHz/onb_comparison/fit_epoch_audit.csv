@@ -1,0 +1,7 @@
+﻿stage,fold,model_key,requested_epochs,actual_batch_size,requested_batch_size,stopped_by_memory_error,epochs_completed,complete
+final,1,conformer,1,12,12,,1,True
+final,1,alexnet,1,8,8,,1,True
+internal,1,conformer,1,12,12,False,1,True
+internal,1,alexnet,1,8,8,False,1,True
+internal,2,conformer,1,12,12,False,1,True
+internal,2,alexnet,1,8,8,False,1,True

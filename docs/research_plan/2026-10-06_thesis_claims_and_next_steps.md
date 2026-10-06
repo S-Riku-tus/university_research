@@ -2,6 +2,8 @@
 
 作成日：2026-10-06。本人の依頼により、添付された広い分析を、[現在地](../research_status.md)、[中心仮説](2026-09-15_master_thesis_hypothesis.md)、[年間計画](2026_annual_plan.md)、[10/2目次案](2026-10-02_master_thesis_outline_and_two_week_plan.md)、[主張台帳](../thesis/2026-10-02_claims_evidence_and_decisions.md)、現在の実装・保存結果と照合した。加えて一次資料を調査し、[最終5モデルの保存予測診断](../../experiments/2026-10-06_thesis_next_steps_analysis/README.md)を実施した。本人の「元3を保持して追加」の方針は維持する。以下はAIによる提案と確認事実であり、教授との合意・正式期限の記録ではない。
 
+**同日・本人の順序指定への対応**：第1段階「主張・評価条件・主表」は[現行正本](../thesis/2026-10-06_main_claims_and_evaluation.md)として完了。保存seed43/44の462行・過去252行を照合した。次の通常本runで同じ主表と全評価予測の再読込・実epoch/batchを確認できるよう[ONBを整備](../../experiments/2026-10-06_onb_main_comparison_ready/README.md)。関連50テストと実main 1 epochの接続確認済み、新150 epochs本runは未実施。
+
 ## 1. 総合判断：比較の目的を固定し、説明と執筆へ比重を移す
 
 添付の「モデル追加から修論の主張確定へ」という方向には賛成する。現時点では9追加候補、3・4・5構成、2seed、学習側での選択、削除対照、通常ONBへの接続まで結果がある。もう一つ強いモデルを見つけることだけでは、入力表現の効果、統合の追加利得、ONBとの交換は説明できない。

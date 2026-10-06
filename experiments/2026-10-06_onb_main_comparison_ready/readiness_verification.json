@@ -1,0 +1,11 @@
+{
+  "status": "passed",
+  "python_files_compiled": 11,
+  "local_links_checked": 27,
+  "diff_check_passed": true,
+  "standard_150_epoch_run_executed": false,
+  "unique_related_tests_verified": 51,
+  "additional_identity_tests_passed": 12,
+  "actual_one_epoch_main_passed": true,
+  "normal_seven_dataset_preflight_passed": true
+}

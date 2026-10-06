@@ -1,0 +1,43 @@
+{
+  "status": "passed",
+  "normal_150_epoch_main_run_completed": false,
+  "epochs_complete": true,
+  "requested_batch_sizes_completed": true,
+  "standard_configuration": false,
+  "smoke_test": true,
+  "noise_conditions": [
+    "clean",
+    "-20"
+  ],
+  "source_day_metric_rows": 66,
+  "fitted_models": 5,
+  "reloaded_evaluation_predictions": 360,
+  "same_clean_fit_across_noise": true,
+  "same_evaluation_chunks_and_targets": true,
+  "internal_oof_coverage_and_no_shared_chunks": true,
+  "saved_weights_and_ensemble_predictions_verified": true,
+  "performance_improvement_required_for_completion": false,
+  "sources": [
+    {
+      "noise_dir_name": "heatflux_no_noise",
+      "fold": 1,
+      "run_directory": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\experiments\\2026-10-06_onb_main_comparison_ready\\smoke\\smoke_result_wc-t0611-v0611_ic2-nc_c1s_s0_e1_192005\\maxfreq=3kHz\\heatflux_no_noise",
+      "prediction_csv": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\experiments\\2026-10-06_onb_main_comparison_ready\\smoke\\smoke_result_wc-t0611-v0611_ic2-nc_c1s_s0_e1_192005\\maxfreq=3kHz\\heatflux_no_noise\\fold_pred\\pred_f1_no_noise.csv",
+      "fit_id": "3763dfd24f07",
+      "fitted_state": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\experiments\\2026-10-06_onb_main_comparison_ready\\smoke\\smoke_result_wc-t0611-v0611_ic2-nc_c1s_s0_e1_192005\\maxfreq=3kHz\\heatflux_no_noise\\fitted_state\\fold1",
+      "evaluation_chunks": 36,
+      "evaluation_identity_sha256": "3ef43b36527732932225bb9dfc8f55ebcd45717b8ec7ef201ade72ce4bf10368"
+    },
+    {
+      "noise_dir_name": "heatflux_reference_SNR=-20",
+      "fold": 1,
+      "run_directory": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\experiments\\2026-10-06_onb_main_comparison_ready\\smoke\\smoke_result_wc-t0611-v0611_ic2-nc_c1s_s0_e1_192005\\maxfreq=3kHz\\heatflux_reference_SNR=-20",
+      "prediction_csv": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\experiments\\2026-10-06_onb_main_comparison_ready\\smoke\\smoke_result_wc-t0611-v0611_ic2-nc_c1s_s0_e1_192005\\maxfreq=3kHz\\heatflux_reference_SNR=-20\\fold_pred\\pred_f1_-20.csv",
+      "fit_id": "3763dfd24f07",
+      "fitted_state": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\experiments\\2026-10-06_onb_main_comparison_ready\\smoke\\smoke_result_wc-t0611-v0611_ic2-nc_c1s_s0_e1_192005\\maxfreq=3kHz\\heatflux_no_noise\\fitted_state\\fold1",
+      "evaluation_chunks": 36,
+      "evaluation_identity_sha256": "3ef43b36527732932225bb9dfc8f55ebcd45717b8ec7ef201ade72ce4bf10368"
+    }
+  ],
+  "scope": "software smoke or nonstandard configuration; not the standard 150-epoch research result"
+}

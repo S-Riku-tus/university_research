@@ -1,0 +1,11 @@
+﻿fold,model_key,noise_dir_name,samples,max_abs_prediction_difference_w_m2,mean_abs_prediction_difference_w_m2,allclose_rtol,allclose_atol_w_m2,passed
+1,randomforest,heatflux_no_noise,36,0.0,0.0,1e-06,0.001,True
+1,randomforest,heatflux_reference_SNR=-20,36,0.0,0.0,1e-06,0.001,True
+1,conformer,heatflux_no_noise,36,0.0,0.0,1e-06,0.001,True
+1,conformer,heatflux_reference_SNR=-20,36,0.0,0.0,1e-06,0.001,True
+1,alexnet,heatflux_no_noise,36,0.0,0.0,1e-06,0.001,True
+1,alexnet,heatflux_reference_SNR=-20,36,0.0,0.0,1e-06,0.001,True
+1,hgb,heatflux_no_noise,36,0.0,0.0,1e-06,0.001,True
+1,hgb,heatflux_reference_SNR=-20,36,0.0,0.0,1e-06,0.001,True
+1,extra_trees,heatflux_no_noise,36,1.1641532182693481e-10,5.153803310046594e-12,1e-06,0.001,True
+1,extra_trees,heatflux_reference_SNR=-20,36,1.1641532182693481e-10,5.659078144364887e-12,1e-06,0.001,True

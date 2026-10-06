@@ -1,0 +1,78 @@
+{
+  "status": "passed",
+  "standard_configuration": true,
+  "datasets": [
+    {
+      "noise_dir_name": "heatflux_no_noise",
+      "data_path": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\data\\npy\\waterflow_20260817_1s\\maxfreq=3kHz\\heatflux_no_noise",
+      "source_wavs": 36,
+      "input_chunks": 2160,
+      "training_chunks": 1620,
+      "evaluation_chunks": 540,
+      "evaluation_identity_sha256": "c2ac41e7a7894d3e4e62781b29a91c2894f01849d4fb328afa6629a499354458"
+    },
+    {
+      "noise_dir_name": "heatflux_reference_SNR=0",
+      "data_path": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\data\\npy\\waterflow_20260817_1s\\maxfreq=3kHz\\heatflux_reference_SNR=0",
+      "source_wavs": 36,
+      "input_chunks": 2160,
+      "training_chunks": 1620,
+      "evaluation_chunks": 540,
+      "evaluation_identity_sha256": "c2ac41e7a7894d3e4e62781b29a91c2894f01849d4fb328afa6629a499354458"
+    },
+    {
+      "noise_dir_name": "heatflux_reference_SNR=-4",
+      "data_path": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\data\\npy\\waterflow_20260817_1s\\maxfreq=3kHz\\heatflux_reference_SNR=-4",
+      "source_wavs": 36,
+      "input_chunks": 2160,
+      "training_chunks": 1620,
+      "evaluation_chunks": 540,
+      "evaluation_identity_sha256": "c2ac41e7a7894d3e4e62781b29a91c2894f01849d4fb328afa6629a499354458"
+    },
+    {
+      "noise_dir_name": "heatflux_reference_SNR=-8",
+      "data_path": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\data\\npy\\waterflow_20260817_1s\\maxfreq=3kHz\\heatflux_reference_SNR=-8",
+      "source_wavs": 36,
+      "input_chunks": 2160,
+      "training_chunks": 1620,
+      "evaluation_chunks": 540,
+      "evaluation_identity_sha256": "c2ac41e7a7894d3e4e62781b29a91c2894f01849d4fb328afa6629a499354458"
+    },
+    {
+      "noise_dir_name": "heatflux_reference_SNR=-12",
+      "data_path": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\data\\npy\\waterflow_20260817_1s\\maxfreq=3kHz\\heatflux_reference_SNR=-12",
+      "source_wavs": 36,
+      "input_chunks": 2160,
+      "training_chunks": 1620,
+      "evaluation_chunks": 540,
+      "evaluation_identity_sha256": "c2ac41e7a7894d3e4e62781b29a91c2894f01849d4fb328afa6629a499354458"
+    },
+    {
+      "noise_dir_name": "heatflux_reference_SNR=-16",
+      "data_path": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\data\\npy\\waterflow_20260817_1s\\maxfreq=3kHz\\heatflux_reference_SNR=-16",
+      "source_wavs": 36,
+      "input_chunks": 2160,
+      "training_chunks": 1620,
+      "evaluation_chunks": 540,
+      "evaluation_identity_sha256": "c2ac41e7a7894d3e4e62781b29a91c2894f01849d4fb328afa6629a499354458"
+    },
+    {
+      "noise_dir_name": "heatflux_reference_SNR=-20",
+      "data_path": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\data\\npy\\waterflow_20260817_1s\\maxfreq=3kHz\\heatflux_reference_SNR=-20",
+      "source_wavs": 36,
+      "input_chunks": 2160,
+      "training_chunks": 1620,
+      "evaluation_chunks": 540,
+      "evaluation_identity_sha256": "c2ac41e7a7894d3e4e62781b29a91c2894f01849d4fb328afa6629a499354458"
+    }
+  ],
+  "configured_noise_conditions": [
+    "clean",
+    "0",
+    "-4",
+    "-8",
+    "-12",
+    "-16",
+    "-20"
+  ]
+}

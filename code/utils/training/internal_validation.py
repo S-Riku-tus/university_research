@@ -63,6 +63,7 @@ def fit_individual_performance_cv(trainer, specs, x, y, metadata, selector,
         if any(spec["kind"] == "sklearn" for spec in specs):
             x_pca, others, _ = trainer.make_pca(x_fit, [x_held], pca_components, return_pca=True)
             held_pca = others[0]
+        model_training = {}
         for spec in specs:
             set_global_seed(seed + fold)
             inner_spec = {**spec, "fit_verbose": 0}
@@ -71,6 +72,13 @@ def fit_individual_performance_cv(trainer, specs, x, y, metadata, selector,
                                                      x_fit, scaled, x_pca,
                                                      epochs[spec["key"]] if isinstance(epochs, dict) else epochs)
             predictions[spec["key"]][held] = trainer.predict_one_model(inner_spec, model, x_held, held_pca, scaler)
+            if spec["kind"] == "keras":
+                history_params = getattr(history, "params", {})
+                model_training[spec["key"]] = {"requested_epochs": int(epochs[spec["key"]] if isinstance(epochs, dict) else epochs),
+                    "epochs_completed": history_params.get("epochs_completed"),
+                    "requested_batch_size": history_params.get("requested_batch_size"),
+                    "actual_batch_size": history_params.get("actual_batch_size"),
+                    "stopped_by_memory_error": bool(history_params.get("stopped_by_memory_error", False))}
             del model, history
             K.clear_session()
             gc.collect()
@@ -78,7 +86,8 @@ def fit_individual_performance_cv(trainer, specs, x, y, metadata, selector,
         records.append({"fold": fold, "fit_indices": fit.tolist(), "validation_indices": held.tolist(),
                         "fit_chunks": len(fit), "validation_chunks": len(held),
                         "shared_samples": len(np.intersect1d(fit, held)),
-                        "shared_source_wavs": len(set(groups[fit]) & set(groups[held])), "selection": selection})
+                        "shared_source_wavs": len(set(groups[fit]) & set(groups[held])), "selection": selection,
+                        "model_training": model_training})
     if not np.all(coverage == 1) or any(not np.isfinite(p).all() for p in predictions.values()):
         raise ValueError("Internal CV did not produce one finite prediction per sample")
     if np.var(y) == 0:

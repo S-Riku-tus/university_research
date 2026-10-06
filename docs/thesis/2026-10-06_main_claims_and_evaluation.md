@@ -1,0 +1,53 @@
+# 修論の主張・評価条件・主表：現行正本
+
+確定日：2026-10-06。本人の「1をまず終える」依頼に基づき、現在の研究で採用する主張範囲・比較・評価定義・主表を揃えた。教授の了承や論文の完成を記録した文書ではない。条件を変えた次の実験は別条件として記録し、本書の数値を置き換えない。
+
+機械可読の定義は[評価プロトコルv1](../../configs/experiments/2026-10-06_onb_main_comparison_protocol.json)、現在の主表は[seed43・44の主比較表](../../experiments/2026-10-06_onb_main_comparison_ready/saved_main_tables/main_comparison.md)。全数値は同じ集計コードから生成した。既存の通常統合検算252指標行と一致を確認した。
+
+## 1. 採用する主張
+
+> 既知録音内の未使用区間で、従来3モデルに音響要約特徴を用いるHGBとExtraTreesを追加すると、元3に対する全域回帰誤差とONB見逃しが改善した。統合の利得は雑音条件、熱流束領域、比較相手、評価指標に依存する。回帰・見逃しの改善はq100の一律の前進や雑音による劣化量の縮小を保証せず、共通失敗と統合制約を分けて解釈する必要がある。
+
+| 採用する内容 | 対応する根拠 | 本文での留保 |
+|---|---|---|
+| 元3への追加の有用性 | 主表の元3MSE→5：clean RMSE35.74→24.67／33.89→25.26、FN32→25／28→19、評価全7条件の5で観測FP0 | 既知録音の範囲。独立試験・将来のFP0保証とはしない |
+| 入力表現と学習器の組合せで挙動が変わる | 同じ34特徴RFと元PCA RF、HGB、ETの[比較](../../experiments/2026-10-06_fixed_three_additions/README.md) | 設定選択も違うため、入力だけの因果効果やHGB一般の優越とはしない |
+| ETに加える統合の利得は条件付き | cleanでは5がET単体を改善、−20全域ではET単体が優位。[損失分解](../../experiments/2026-10-06_thesis_next_steps_analysis/README.md)で調整方向と代償を確認 | 相関が低い・モデルが多いというだけで有用性を断定しない |
+| FN・q100・近傍誤差は異なる | 日別q100と最後の陰性。HGB4のseed43・6/18 clean q100322.11は5で376.32。seed44−20の近傍誤差は元3から悪化 | 5対4の優位・最良構成・全指標改善は未確認 |
+| 残るFNには共通失敗と統合設計が関係する | 全5陰性、固定元3比率、最低配分、標本ごとの到達可能性の[区分](../../experiments/2026-10-06_thesis_next_steps_analysis/README.md) | 外側正解を使った可能性診断を推論可能な新方式と扱わない |
+
+特徴利用と物理的音源の因果は未確定。未知日・未知録音・未知装置の一般化、5モデル全ての必須性、5が4と同等であるという統計的主張も本書の結論に含めない。
+
+## 2. 固定する比較設計
+
+- 主構成：元RF（PCA＋XGBRF）、CNN＋Transformer（コード表示Conformer）、AlexNet派生CNN、周波数34特徴HGB、同じ34特徴ExtraTrees。
+- 主基準：同じ単体予測からclean OOF MSEで重みを決めた元3。主要対照は元3＋ET4、ET単体。HGB4、HGB単体、従来元3performance、5等平均も同じrunで表示する。
+- 主系列：2025/6/11・6/18、各18 WAV・60個の1秒chunk、3 kHz・224×224×1、選別なし。各WAV45学習／15評価、計1620／540。内部shuffleありchunk KFold 3分割。
+- 学習：clean_only。cleanモデル・前処理・重みを固定してcleanと6付加水流雑音へ適用する。reference SNRは0、−4、−8、−12、−16、−20。各chunkの実現SNRと区別する。
+- 統合：clean学習OOFの全域MSE。元3内比率を固定、元3総量25%以上、追加各5%以上。元3各比率の1e−6は数値的な保持floor。これらを最適な普遍比率とは説明しない。
+- 評価範囲：同じWAVの未使用chunk。研究で繰り返し用いた録音であり、完全に未参照の独立最終試験ではない。seed・雑音条件は独立した録音実験ではない。
+
+現在の主表は150 epochs学習済みの保存seed43・44。通常入口の新本runはseed42・150 epochs・内部3foldとする。seed42との一致や有利な結果を完了条件にしない。
+
+## 3. 指標の主従・単位・定義
+
+| 区分 | 指標・集計 | 定義と読み方 |
+|---|---|---|
+| ONBの中心 | 日別q100/g100とFP/FPR | q100は「その実測段階以降の全評価chunkが陽性となる最小実測熱流束」。補間しない。未到達は空欄/未到達。g100=q100−日別ONB。日間平均を一つの検知点としない |
+| ONBの補助 | TP/FP/TN/FN、Recall、Precision、F1、Accuracy | 陽性：実測値≥出典日ONB、陽性予測：予測値≥同じONB。全体は日別判定の件数を合算して計算。母数も保存 |
+| 回帰とfit目的 | 全域RMSE/MAE/R² | 重みは学習OOFのMSEで決める。q100を最適化した方式ではない。熱流束・誤差の主表はkW/m²、内部保存/計算はW/m² |
+| 領域別の交換 | ONB前・近傍・ONB以上のRMSEとbias | 近傍は日別ONBの±10%。bias=予測−実測の平均。全域の改善を近傍改善に読み替えない |
+| 雑音の影響 | 雑音下の絶対誤差と自身のcleanからの増加量 | RMSE(noise)−RMSE(clean)を別表へ保存。6条件平均は6つの指標の算術平均で、独立実験の平均ではない |
+| 順位の補助 | 連続ROC-AUC、連続PR-AUC（average precision） | 従来と同じ予測熱流束の生スコアを使う。全体では日別ONBが異なるため、共通閾値に対する運用性能とは区別する |
+
+日別閾値は6/11：221505.1102、6/18：271677.6816 W/m²。[確認済み出典](../../experiments/2026-09-24_selection_onb_ig_review/README.md)と[閾値registry](../../code/utils/experiment/onb_thresholds.py)に対応する。統合平均246591.3959 W/m²の従来metrics_summary・散布図は補助結果として保存する。日別主表のFN・q100へ混在させない。
+
+## 4. 数値の正本と再現
+
+主表は[main_comparison.md](../../experiments/2026-10-06_onb_main_comparison_ready/saved_main_tables/main_comparison.md)。11単体/統合×7条件×日別2＋全体×2seedの462指標行を[main_metrics.csv](../../experiments/2026-10-06_onb_main_comparison_ready/saved_main_tables/main_metrics.csv)へ保存した。
+
+元3・ET4・ET単体との差、cleanからの劣化量、日別q100/g100、統合重みを分けて保存する。元予測NPZ・固定重み・manifestの参照とSHA-256、252行の過去指標との一致、再構成差は[verification.json](../../experiments/2026-10-06_onb_main_comparison_ready/saved_main_tables/verification.json)。新学習・新モデル推論なし。
+
+再生成：`python experiments/2026-10-06_onb_main_comparison_ready/build_saved_main_tables.py`。集計本体は[共通reporter](../../code/utils/calculation/onb_comparison_report.py)。通常ONBにも同じreporterを接続し、旧閾値の表・新しい日別主表・実装確認を区別して残す。
+
+第1段階の終了条件である「主張、比較相手、評価条件、指標、数値の出典が一意に対応する状態」は完了した。次の標準本runを終えた際は、この正本の定義に沿う新しいseed42の表を別runとして追加する。

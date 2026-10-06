@@ -1,6 +1,8 @@
 # 研究の現在地と次にすること
 
-更新日: **2026-10-06（5モデルの残る見逃し・損失分解を確認し、修論の主張と次工程を整理）**。分位点ルール時点の状態は[変更前の記録](../experiments/2026-09-16_peak_height_selection/previous_documents/research_status.md)に保存した。
+更新日: **2026-10-06（主張・評価・主表を確定し、通常ONBの本実行で確認する出力を整備）**。分位点ルール時点の状態は[変更前の記録](../experiments/2026-09-16_peak_height_selection/previous_documents/research_status.md)に保存した。
+
+**本人指定の第1段階は完了、第2段階を実行できる状態**：[主張・評価・主表の現行正本](thesis/2026-10-06_main_claims_and_evaluation.md)と[本runの実行・確認先](../experiments/2026-10-06_onb_main_comparison_ready/README.md)。日別ONB・q100/FP中心の評価、元3MSE/ET4/ET単体などの比較を確定し、保存seed43/44の462主指標行を作成、過去252行と一致。通常ONBの終了時に同じ主表・指標差・劣化量・日別q100・重みを自動出力する。全5×全7条件の全評価予測を再読込で照合し、OOF非共有・配分制約・保存重みの再構成・内部/最終CNNの実epoch/batchを記録する。実データ7条件の2160/1620/540と評価ID一致、関連50テスト、実main 1 epochの全360再読込予測・主表生成を確認済み。既定150 epochs/3fold/seed42の新しい本runは未実施。次は通常ONBを実行し、出力された`onb_comparison/main_comparison.md`と`verification.json`を読む。
 
 **本人の最新指示：従来のRF＋Conformer＋AlexNetは固定し、4・5モデルへの追加を主軸にする。** 前回のRFを外す3モデル採用は、この希望の主方針から外す。追加の人手情報は得られない前提を維持し、モデル調査・比較・判断はAI側で進める。[元3固定の追加比較](../experiments/2026-10-06_fixed_three_additions/README.md)、[後継判断](../configs/experiments/2026-10-06_fixed_three_additions_decision.json)。元モデルの予測と元3内の比率を保持し、元3ブロックと追加モデルの配分を決める。
 

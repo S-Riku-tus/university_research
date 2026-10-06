@@ -1,0 +1,9 @@
+{
+  "status": "passed",
+  "tests": 12,
+  "patterns": [
+    "test_onb_main_comparison.py",
+    "test_onb_entrypoint.py",
+    "test_training_state_persistence.py"
+  ]
+}

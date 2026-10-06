@@ -6,6 +6,7 @@
 
 | 記録 | 範囲・用途 |
 |---|---|
+| [10/6 主表確定・ONB本実行の確認準備](2026-10-06_onb_main_comparison_ready/README.md) | 現行正本・評価プロトコル、保存462行/過去252行照合、通常主表・劣化量・重み・全評価再読込・epoch/batchの自動確認、関連50テストと実main 1 epoch確認。本150 epochsは未実施 |
 | [10/6 修論の次工程に向けた5モデル保存予測診断](2026-10-06_thesis_next_steps_analysis/README.md) | 全5共通FN・固定元3比率・配分下限を分け、日別q100の最後の陰性とET相対のMSEを分解。新学習・モデル推論なし |
 | [10/6 通常ONBの5モデル化](2026-10-06_onb_five_model_integration/README.md) | モデルutils・共有OOF・3/4/5対照・日別指標・保存再読込・指標差と削除対照。実main 1 epoch確認済み、新通常150 epochsは未実施 |
 | [10/6 元3保持の追加モデル比較](2026-10-06_fixed_three_additions/README.md) | 9候補・seed43/44・clean_only・3/4/5の研究比較。元3に対する利得と、4/単体/q100/劣化量の限界を固定 |

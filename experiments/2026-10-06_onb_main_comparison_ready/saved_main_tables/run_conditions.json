@@ -1,0 +1,10 @@
+{
+  "seeds": [
+    43,
+    44
+  ],
+  "source": "fixed-three additions study",
+  "source_protocol": "configs\\experiments\\2026-10-06_onb_main_comparison_protocol.json",
+  "evaluation": "same known-WAV unused chunks; 540 per seed; source-day ONB thresholds",
+  "new_standard_run": false
+}

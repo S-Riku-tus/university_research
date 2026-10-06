@@ -1,0 +1,987 @@
+学習外データでの熱流束・ONB評価
+{
+  "training_noise": "clean_only",
+  "evaluation_mode": "within_wav_chunk",
+  "within_wav_chunk_experiment": "2025.06.11_0.3_2_6.18_0.3_3",
+  "test_fraction": 0.25,
+  "test_split_seed": 42,
+  "train_experiments": [
+    "2025.06.11_0.3_2_6.18_0.3_3"
+  ],
+  "test_experiments": [
+    "2025.06.11_0.3_2_6.18_0.3_3"
+  ],
+  "training_experiments": [
+    "2025.06.11_0.3_2_6.18_0.3_3"
+  ],
+  "evaluation_experiments": [
+    "2025.06.11_0.3_2_6.18_0.3_3"
+  ],
+  "training_noise_dir": "heatflux_no_noise",
+  "ensemble_weight_scope": "shared_clean_across_evaluation_noises",
+  "evaluation_scheme": "within_wav_chunk_holdout",
+  "generalization_scope": "within_known_source_wav_unseen_chunk_holdout",
+  "outer_folds_per_evaluation_day": 1,
+  "training_datasets": [
+    {
+      "experiment_name": "2025.06.11_0.3_2_6.18_0.3_3",
+      "data_path": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\experiments\\2026-10-06_onb_main_comparison_ready\\smoke\\smoke_inputs_bw48bl79\\source\\maxfreq=3kHz\\heatflux_no_noise",
+      "noise_dir_name": "heatflux_no_noise",
+      "max_freq_hz": "maxfreq=3kHz"
+    }
+  ],
+  "evaluation_noise_dir": "heatflux_no_noise"
+}
+{
+  "learning_policy": {
+    "training_noise": "clean_only",
+    "evaluation_mode": "within_wav_chunk",
+    "within_wav_chunk_experiment": "2025.06.11_0.3_2_6.18_0.3_3",
+    "test_fraction": 0.25,
+    "test_split_seed": 42,
+    "train_experiments": [
+      "2025.06.11_0.3_2_6.18_0.3_3"
+    ],
+    "test_experiments": [
+      "2025.06.11_0.3_2_6.18_0.3_3"
+    ]
+  },
+  "acoustic_selection": {
+    "mode": "peak_height",
+    "features_csv": "experiments/2026-09-16_peak_height_selection/peak_features.csv",
+    "feature": "peak_2100_2500_psd",
+    "peak_height_threshold": null,
+    "peak_height_threshold_by_experiment": {},
+    "protect_onb_band_frac": 0.1,
+    "apply_max_heat_flux_by_experiment": {},
+    "enabled": false
+  },
+  "run": {
+    "smoke_test": true,
+    "epochs": 1,
+    "folds": 2,
+    "internal_validation_split": "chunk_kfold",
+    "color_channel": 1,
+    "random_seed": 42,
+    "cpu_threads": 2,
+    "deterministic_ops": true,
+    "loop_parameter_sets": true
+  },
+  "data": {
+    "experiment_root": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3",
+    "result_model_group": "ensemble",
+    "noise_source": "waterflow",
+    "chunk_seconds": 1,
+    "experiment_names": [
+      "2025.06.11_0.3_2_6.18_0.3_3"
+    ],
+    "max_freq_hz_list": [
+      "maxfreq=3kHz"
+    ],
+    "noise_dir_names": [
+      "heatflux_no_noise",
+      "heatflux_reference_SNR=-20"
+    ],
+    "data_source_dir_by_experiment": {
+      "2025.06.11_0.3_2": "waterflow_20260817_{chunk_tag}",
+      "2025.06.18_0.3_3": "waterflow_20260817_{chunk_tag}",
+      "2025.06.11_0.3_2_6.18_0.3_3": "waterflow_20260817_{chunk_tag}",
+      "2025.07.09_0.3_1": "waterflow_20260817_{chunk_tag}"
+    }
+  },
+  "thresholds": {
+    "by_experiment": {
+      "2025.06.11_0.3_2": 221505.1102,
+      "2025.06.18_0.3_3": 271677.6816,
+      "2025.06.11_0.3_2_6.18_0.3_3": 246591.3959,
+      "2025.07.09_0.3_1": 571694.252491167
+    },
+    "provenance_by_experiment": {
+      "2025.06.11_0.3_2": {
+        "threshold": 221505.1102,
+        "source": "experiments/2026-09-24_selection_onb_ig_review/README.md#2-onb値の確定",
+        "definition": "experiment-specific ONB confirmed for the current run"
+      },
+      "2025.06.18_0.3_3": {
+        "threshold": 271677.6816,
+        "source": "experiments/2026-09-24_selection_onb_ig_review/README.md#2-onb値の確定",
+        "definition": "experiment-specific ONB confirmed for the current run"
+      },
+      "2025.06.11_0.3_2_6.18_0.3_3": {
+        "threshold": 246591.3959,
+        "source": "experiments/2026-09-29_within_wav_chunk_combined/README.md",
+        "definition": "user-directed arithmetic mean of the confirmed 2025-06-11 and 2025-06-18 ONB thresholds for the combined-dataset comparison"
+      },
+      "2025.07.09_0.3_1": {
+        "threshold": 571694.252491167,
+        "source": "experiments/2026-09-24_selection_onb_ig_review/README.md#2-onb値の確定",
+        "definition": "experiment-specific ONB confirmed for the current run"
+      }
+    },
+    "require_experiment_threshold": true,
+    "onb_band_frac": 0.1,
+    "report_source_day_metrics": true
+  },
+  "models": {
+    "fixed_model_keys": [
+      "randomforest",
+      "conformer",
+      "alexnet",
+      "hgb",
+      "extra_trees"
+    ],
+    "active_max_freq_hz": "maxfreq=3kHz",
+    "parameter_sets": [
+      {
+        "name": "randomforest__n_estimators=100__max_depth=12__subsample=0.6__colsample_bynode=0.6___conformer__lr=0.001__batch_size=12___alexnet__lr=0.003__batch_size=8___hgb__max_iter=150__learning_rate=0.05__max_leaf_nodes=31__min_samples_leaf=20__l2_regularization=1.0__early_stopping=False___extra_trees__n_estimators=256__min_samples_leaf=2__max_features=1.0__n_jobs=2",
+        "tag": "active_rf-ctf-alex-hgb_3faf33f",
+        "models": {
+          "randomforest": {
+            "n_estimators": 100,
+            "max_depth": 12,
+            "subsample": 0.6,
+            "colsample_bynode": 0.6
+          },
+          "conformer": {
+            "lr": 0.001,
+            "batch_size": 12
+          },
+          "alexnet": {
+            "lr": 0.003,
+            "batch_size": 8
+          },
+          "hgb": {
+            "max_iter": 150,
+            "learning_rate": 0.05,
+            "max_leaf_nodes": 31,
+            "min_samples_leaf": 20,
+            "l2_regularization": 1.0,
+            "early_stopping": false
+          },
+          "extra_trees": {
+            "n_estimators": 256,
+            "min_samples_leaf": 2,
+            "max_features": 1.0,
+            "n_jobs": 2
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    ],
+    "parameter_search_enabled": false
+  },
+  "ensemble": {
+    "selection": {
+      "enabled_strategy_names": [
+        "original3_hgb_extra_trees",
+        "original3_mse",
+        "original3_performance",
+        "original3_hgb",
+        "original3_extra_trees",
+        "simple_equal"
+      ]
+    },
+    "enabled": true,
+    "strategies": [
+      {
+        "label": "Original three + HGB + ExtraTrees",
+        "strategy": "fixed_core_oof",
+        "fixed_core": {
+          "core_keys": [
+            "randomforest",
+            "conformer",
+            "alexnet"
+          ],
+          "core_rule": "mse",
+          "core_member_floor": 1e-06,
+          "minimum_core_total": 0.25,
+          "minimum_added_member": 0.05,
+          "added_keys": [
+            "hgb",
+            "extra_trees"
+          ]
+        },
+        "name": "original3_hgb_extra_trees"
+      },
+      {
+        "label": "Original three MSE",
+        "strategy": "fixed_core_oof",
+        "fixed_core": {
+          "core_keys": [
+            "randomforest",
+            "conformer",
+            "alexnet"
+          ],
+          "core_rule": "mse",
+          "core_member_floor": 1e-06,
+          "minimum_core_total": 0.25,
+          "minimum_added_member": 0.05,
+          "added_keys": []
+        },
+        "name": "original3_mse"
+      },
+      {
+        "label": "Original three performance",
+        "strategy": "fixed_core_oof",
+        "fixed_core": {
+          "core_keys": [
+            "randomforest",
+            "conformer",
+            "alexnet"
+          ],
+          "core_rule": "performance",
+          "core_member_floor": 1e-06,
+          "minimum_core_total": 0.25,
+          "minimum_added_member": 0.05,
+          "added_keys": []
+        },
+        "name": "original3_performance"
+      },
+      {
+        "label": "Original three + HGB",
+        "strategy": "fixed_core_oof",
+        "fixed_core": {
+          "core_keys": [
+            "randomforest",
+            "conformer",
+            "alexnet"
+          ],
+          "core_rule": "mse",
+          "core_member_floor": 1e-06,
+          "minimum_core_total": 0.25,
+          "minimum_added_member": 0.05,
+          "added_keys": [
+            "hgb"
+          ]
+        },
+        "name": "original3_hgb"
+      },
+      {
+        "label": "Original three + ExtraTrees",
+        "strategy": "fixed_core_oof",
+        "fixed_core": {
+          "core_keys": [
+            "randomforest",
+            "conformer",
+            "alexnet"
+          ],
+          "core_rule": "mse",
+          "core_member_floor": 1e-06,
+          "minimum_core_total": 0.25,
+          "minimum_added_member": 0.05,
+          "added_keys": [
+            "extra_trees"
+          ]
+        },
+        "name": "original3_extra_trees"
+      },
+      {
+        "label": "Ensemble simple equal",
+        "strategy": "simple",
+        "name": "simple_equal"
+      }
+    ],
+    "reference_model": "randomforest",
+    "inner_holdout_frac": 0.2,
+    "combine": "mean",
+    "resolved_strategy_plan": [
+      {
+        "name": "original3_hgb_extra_trees",
+        "result_key": "ensemble__original3_hgb_extra_trees",
+        "label": "Original three + HGB + ExtraTrees",
+        "strategy": "fixed_core_oof",
+        "claim_safe": true,
+        "fixed_core": {
+          "core_keys": [
+            "randomforest",
+            "conformer",
+            "alexnet"
+          ],
+          "core_rule": "mse",
+          "core_member_floor": 1e-06,
+          "minimum_core_total": 0.25,
+          "minimum_added_member": 0.05,
+          "added_keys": [
+            "hgb",
+            "extra_trees"
+          ]
+        }
+      },
+      {
+        "name": "original3_mse",
+        "result_key": "ensemble__original3_mse",
+        "label": "Original three MSE",
+        "strategy": "fixed_core_oof",
+        "claim_safe": true,
+        "fixed_core": {
+          "core_keys": [
+            "randomforest",
+            "conformer",
+            "alexnet"
+          ],
+          "core_rule": "mse",
+          "core_member_floor": 1e-06,
+          "minimum_core_total": 0.25,
+          "minimum_added_member": 0.05,
+          "added_keys": []
+        }
+      },
+      {
+        "name": "original3_performance",
+        "result_key": "ensemble__original3_performance",
+        "label": "Original three performance",
+        "strategy": "fixed_core_oof",
+        "claim_safe": true,
+        "fixed_core": {
+          "core_keys": [
+            "randomforest",
+            "conformer",
+            "alexnet"
+          ],
+          "core_rule": "performance",
+          "core_member_floor": 1e-06,
+          "minimum_core_total": 0.25,
+          "minimum_added_member": 0.05,
+          "added_keys": []
+        }
+      },
+      {
+        "name": "original3_hgb",
+        "result_key": "ensemble__original3_hgb",
+        "label": "Original three + HGB",
+        "strategy": "fixed_core_oof",
+        "claim_safe": true,
+        "fixed_core": {
+          "core_keys": [
+            "randomforest",
+            "conformer",
+            "alexnet"
+          ],
+          "core_rule": "mse",
+          "core_member_floor": 1e-06,
+          "minimum_core_total": 0.25,
+          "minimum_added_member": 0.05,
+          "added_keys": [
+            "hgb"
+          ]
+        }
+      },
+      {
+        "name": "original3_extra_trees",
+        "result_key": "ensemble__original3_extra_trees",
+        "label": "Original three + ExtraTrees",
+        "strategy": "fixed_core_oof",
+        "claim_safe": true,
+        "fixed_core": {
+          "core_keys": [
+            "randomforest",
+            "conformer",
+            "alexnet"
+          ],
+          "core_rule": "mse",
+          "core_member_floor": 1e-06,
+          "minimum_core_total": 0.25,
+          "minimum_added_member": 0.05,
+          "added_keys": [
+            "extra_trees"
+          ]
+        }
+      },
+      {
+        "name": "simple_equal",
+        "result_key": "ensemble__simple_equal",
+        "label": "Ensemble simple equal",
+        "strategy": "simple",
+        "claim_safe": true
+      }
+    ]
+  },
+  "features": {
+    "pca_components": 100,
+    "pca_transform_version": 2,
+    "acoustic_summary_version": 1
+  },
+  "output": {
+    "save_date": "20261006",
+    "result_date_dir": "202610/06/onb",
+    "run_instance_id": "192005",
+    "execution_id": "192005",
+    "run_scoped_result_dir": true,
+    "save_fold_predictions": true,
+    "save_tuning_summary": true,
+    "save_fitted_artifacts": true,
+    "verify_reloaded_artifacts": true,
+    "verify_reloaded_evaluation_predictions": true,
+    "main_comparison_report": true,
+    "main_comparison_protocol": {
+      "protocol_id": "onb-fixed-three-five-v1",
+      "version": 1,
+      "date": "2026-10-06",
+      "primary_model_key": "ensemble__original3_hgb_extra_trees",
+      "baseline_model_key": "ensemble__original3_mse",
+      "comparison_baselines": [
+        "ensemble__original3_mse",
+        "ensemble__original3_extra_trees",
+        "extra_trees"
+      ],
+      "model_keys": [
+        "randomforest",
+        "conformer",
+        "alexnet",
+        "hgb",
+        "extra_trees"
+      ],
+      "ensemble_names": [
+        "original3_mse",
+        "original3_performance",
+        "original3_hgb",
+        "original3_extra_trees",
+        "original3_hgb_extra_trees",
+        "simple_equal"
+      ],
+      "noise_conditions": [
+        "clean",
+        "0",
+        "-4",
+        "-8",
+        "-12",
+        "-16",
+        "-20"
+      ],
+      "source_day_thresholds_W_m2": {
+        "2025.06.11_0.3_2": 221505.1102,
+        "2025.06.18_0.3_3": 271677.6816
+      },
+      "legacy_combined_threshold_W_m2": 246591.3959,
+      "near_onb_band_fraction": 0.1,
+      "main_detection_metrics": [
+        "q100_by_source_day",
+        "g100_by_source_day",
+        "fp",
+        "fpr"
+      ],
+      "supporting_detection_metrics": [
+        "fn",
+        "recall",
+        "precision",
+        "f1",
+        "accuracy"
+      ],
+      "regression_metrics": [
+        "rmse_all",
+        "mae_all",
+        "r2",
+        "rmse_pre_onb",
+        "rmse_onb",
+        "rmse_high",
+        "bias_all",
+        "bias_onb"
+      ],
+      "continuous_auc_score": "raw predicted heat flux W/m2; pooled source-day labels differ in threshold; supplementary ranking metric",
+      "q100_definition": "minimum measured heat flux level from which every evaluated chunk at that and all higher measured levels is predicted positive; no interpolation; unavailable if no level satisfies this",
+      "selection_objective": "clean training-OOF MSE; q100 is an evaluation endpoint, not the fitted objective",
+      "integration": {
+        "core_rule": "mse",
+        "core_member_floor": 1e-06,
+        "minimum_core_total": 0.25,
+        "minimum_added_member": 0.05,
+        "original_three_ratios_locked": true
+      },
+      "pca_components": 100,
+      "standard_model_parameters": {
+        "randomforest": {
+          "n_estimators": 100,
+          "max_depth": 12,
+          "subsample": 0.6,
+          "colsample_bynode": 0.6
+        },
+        "conformer": {
+          "lr": 0.001,
+          "batch_size": 12
+        },
+        "alexnet": {
+          "lr": 0.003,
+          "batch_size": 8
+        },
+        "hgb": {
+          "max_iter": 150,
+          "learning_rate": 0.05,
+          "max_leaf_nodes": 31,
+          "min_samples_leaf": 20,
+          "l2_regularization": 1.0,
+          "early_stopping": false
+        },
+        "extra_trees": {
+          "n_estimators": 256,
+          "min_samples_leaf": 2,
+          "max_features": 1.0,
+          "n_jobs": 2
+        }
+      },
+      "standard_run": {
+        "epochs": 150,
+        "internal_folds": 3,
+        "random_seed": 42,
+        "cpu_threads": 2,
+        "training_noise": "clean_only",
+        "internal_split": "chunk_kfold",
+        "chunk_seconds": 1,
+        "max_freq_hz": "maxfreq=3kHz",
+        "color_channels": 1,
+        "selection": null,
+        "source_wavs": 36,
+        "chunks_per_wav": 60,
+        "train_chunks": 1620,
+        "evaluation_chunks": 540
+      },
+      "comparison_rule": "same chunk identities and targets; same clean-fitted models and weights across noise; no selection from outer results",
+      "uncertainty_scope": "paired descriptive results on reused known recordings; seeds and artificial noise levels are not independent experiments",
+      "acceptance_rule": "complete configured outputs, splits, epochs, weight constraints and restored predictions; performance improvements are observations, not pass/fail criteria"
+    },
+    "resume_completed_runs": true,
+    "noise_trend_plots": {
+      "enabled": true,
+      "ensemble_strategy_names": "all",
+      "metrics": [
+        "r2",
+        "roc_auc_cont"
+      ],
+      "formats": [
+        "png",
+        "pdf"
+      ]
+    },
+    "main_comparison_preflight": {
+      "status": "passed",
+      "standard_configuration": false,
+      "datasets": [
+        {
+          "noise_dir_name": "heatflux_no_noise",
+          "data_path": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\experiments\\2026-10-06_onb_main_comparison_ready\\smoke\\smoke_inputs_bw48bl79\\source\\maxfreq=3kHz\\heatflux_no_noise",
+          "source_wavs": 36,
+          "input_chunks": 144,
+          "training_chunks": 108,
+          "evaluation_chunks": 36,
+          "evaluation_identity_sha256": "3ef43b36527732932225bb9dfc8f55ebcd45717b8ec7ef201ade72ce4bf10368"
+        },
+        {
+          "noise_dir_name": "heatflux_reference_SNR=-20",
+          "data_path": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\experiments\\2026-10-06_onb_main_comparison_ready\\smoke\\smoke_inputs_bw48bl79\\source\\maxfreq=3kHz\\heatflux_reference_SNR=-20",
+          "source_wavs": 36,
+          "input_chunks": 144,
+          "training_chunks": 108,
+          "evaluation_chunks": 36,
+          "evaluation_identity_sha256": "3ef43b36527732932225bb9dfc8f55ebcd45717b8ec7ef201ade72ce4bf10368"
+        }
+      ],
+      "configured_noise_conditions": [
+        "clean",
+        "-20"
+      ]
+    }
+  },
+  "explainability": {
+    "enabled": false,
+    "max_samples_per_fold": 5,
+    "ig_steps": 64,
+    "ig_max_steps": 4096,
+    "ig_batch_size": 8,
+    "ig_device": "auto",
+    "ig_nonfused_batchnorm": true,
+    "ig_cpu_fallback": true,
+    "ig_path_space": "log_power",
+    "ig_rtol": 0.001,
+    "ig_atol": 1e-06,
+    "ig_map_rtol": 0.01,
+    "methods_by_model": {
+      "randomforest": [
+        "tree_shap_pca",
+        "group_occlusion"
+      ],
+      "conformer": [
+        "integrated_gradients",
+        "group_occlusion"
+      ],
+      "alexnet": [
+        "integrated_gradients",
+        "grad_cam",
+        "group_occlusion"
+      ],
+      "hgb": [
+        "group_occlusion"
+      ],
+      "extra_trees": [
+        "group_occlusion"
+      ]
+    },
+    "frequency_bands_hz": [
+      [
+        0,
+        256
+      ],
+      [
+        256,
+        512
+      ],
+      [
+        512,
+        1000
+      ],
+      [
+        1000,
+        2000
+      ],
+      [
+        2000,
+        5000
+      ],
+      [
+        5000,
+        10000
+      ],
+      [
+        10000,
+        15000
+      ],
+      [
+        15000,
+        22000
+      ]
+    ],
+    "time_extent_seconds": 1.0,
+    "onb_band_frac": 0.1,
+    "baseline_value": 0.0,
+    "curve_fractions": [
+      0.0,
+      0.05,
+      0.1,
+      0.2,
+      0.3,
+      0.5,
+      1.0
+    ],
+    "stability": {
+      "enabled": true,
+      "methods": [
+        "integrated_gradients"
+      ],
+      "repeats": 2,
+      "noise_fraction": 0.01,
+      "clip_nonnegative": true,
+      "random_seed": 42
+    },
+    "sanity_check": {
+      "enabled": true,
+      "methods": [
+        "integrated_gradients"
+      ],
+      "random_seed": 42
+    },
+    "retrain_completed_runs_for_xai": false,
+    "condition_filter": {
+      "experiment_names": [
+        "2025.06.11_0.3_2_6.18_0.3_3"
+      ],
+      "max_freq_hz_list": [
+        "maxfreq=3kHz"
+      ],
+      "noise_dir_names": [
+        "heatflux_no_noise",
+        "heatflux_reference_SNR=0",
+        "heatflux_reference_SNR=-4",
+        "heatflux_reference_SNR=-8",
+        "heatflux_reference_SNR=-12",
+        "heatflux_reference_SNR=-16",
+        "heatflux_reference_SNR=-20"
+      ]
+    },
+    "model_keys": [
+      "randomforest",
+      "conformer",
+      "alexnet",
+      "hgb",
+      "extra_trees"
+    ],
+    "target_folds": [
+      1
+    ],
+    "save_maps": false
+  }
+}
+
+Fold 1 | fit_id=3763dfd24f07
+  weights[original3_hgb_extra_trees]={'randomforest': 0.2417, 'conformer': 0.0083, 'alexnet': 0.0, 'hgb': 0.05, 'extra_trees': 0.7}
+  weights[original3_mse]={'randomforest': 0.9667, 'conformer': 0.0333, 'alexnet': 0.0, 'hgb': 0.0, 'extra_trees': 0.0}
+  weights[original3_performance]={'randomforest': 0.9281, 'conformer': 0.0177, 'alexnet': 0.0542, 'hgb': 0.0, 'extra_trees': 0.0}
+  weights[original3_hgb]={'randomforest': 0.5648, 'conformer': 0.0194, 'alexnet': 0.0, 'hgb': 0.4158, 'extra_trees': 0.0}
+  weights[original3_extra_trees]={'randomforest': 0.2417, 'conformer': 0.0083, 'alexnet': 0.0, 'hgb': 0.0, 'extra_trees': 0.75}
+  weights[simple_equal]={'randomforest': 0.2, 'conformer': 0.2, 'alexnet': 0.2, 'hgb': 0.2, 'extra_trees': 0.2}
+  [RandomForest] r2=0.815819 | rmse_all=115961 | mae_all=88410.9 | r2_high=0.482069 | rmse_high=137573 | mae_high=100531 | rmse_onb=87730.8 | mae_onb=75513.2 | roc_auc_cont=0.976562 | pr_auc_cont=0.978571 | accuracy=0.944444 | precision=1 | recall=0.9 | f1=0.947368 | tp=18 | fp=0 | tn=16 | fn=2 | fpr=0 | n_pre_onb=16 | n_post_onb=20 | n_onb=2
+  [Conformer] r2=-12.181 | rmse_all=980989 | mae_all=907096 | r2_high=-11.5131 | rmse_high=676208 | mae_high=625689 | rmse_onb=1.06813e+06 | mae_onb=1.06507e+06 | roc_auc_cont=0.078125 | pr_auc_cont=0.378118 | accuracy=0.555556 | precision=0.555556 | recall=1 | f1=0.714286 | tp=20 | fp=16 | tn=0 | fn=0 | fpr=1 | n_pre_onb=16 | n_post_onb=20 | n_onb=2
+  [AlexNet] r2=-0.420485 | rmse_all=322039 | mae_all=250248 | r2_high=-3.94707 | rmse_high=425179 | mae_high=391717 | rmse_onb=128255 | mae_onb=124104 | roc_auc_cont=0.925 | pr_auc_cont=0.955872 | accuracy=0.444444 | precision=0 | recall=0 | f1=0 | tp=0 | fp=0 | tn=16 | fn=20 | fpr=0 | n_pre_onb=16 | n_post_onb=20 | n_onb=2
+  [HGB frequency34] r2=0.981232 | rmse_all=37016.8 | mae_all=29886.4 | r2_high=0.970149 | rmse_high=33027.6 | mae_high=25477.4 | rmse_onb=7488.56 | mae_onb=5831.45 | roc_auc_cont=1 | pr_auc_cont=1 | accuracy=1 | precision=1 | recall=1 | f1=1 | tp=20 | fp=0 | tn=16 | fn=0 | fpr=0 | n_pre_onb=16 | n_post_onb=20 | n_onb=2
+  [ExtraTrees frequency34] r2=0.988334 | rmse_all=29184.6 | mae_all=21655.7 | r2_high=0.982487 | rmse_high=25297.1 | mae_high=17967.4 | rmse_onb=7804.8 | mae_onb=7803.84 | roc_auc_cont=0.996875 | pr_auc_cont=0.997619 | accuracy=0.972222 | precision=1 | recall=0.95 | f1=0.974359 | tp=19 | fp=0 | tn=16 | fn=1 | fpr=0 | n_pre_onb=16 | n_post_onb=20 | n_onb=2
+  [Original three + HGB + ExtraTrees] r2=0.973355 | rmse_all=44105.7 | mae_all=35559.1 | r2_high=0.944586 | rmse_high=44999.6 | mae_high=33644.3 | rmse_onb=18254.6 | mae_onb=17955.2 | roc_auc_cont=0.996875 | pr_auc_cont=0.997619 | accuracy=0.972222 | precision=1 | recall=0.95 | f1=0.974359 | tp=19 | fp=0 | tn=16 | fn=1 | fpr=0 | n_pre_onb=16 | n_post_onb=20 | n_onb=2
+  [Original three MSE] r2=0.825134 | rmse_all=112990 | mae_all=85739.8 | r2_high=0.575067 | rmse_high=124611 | mae_high=89159.6 | rmse_onb=70736 | mae_onb=70311.2 | roc_auc_cont=0.984375 | pr_auc_cont=0.99 | accuracy=0.944444 | precision=1 | recall=0.9 | f1=0.947368 | tp=18 | fp=0 | tn=16 | fn=2 | fpr=0 | n_pre_onb=16 | n_post_onb=20 | n_onb=2
+  [Original three performance] r2=0.803695 | rmse_all=119717 | mae_all=90422.6 | r2_high=0.457801 | rmse_high=140759 | mae_high=102049 | rmse_onb=76284.6 | mae_onb=70409.3 | roc_auc_cont=0.978125 | pr_auc_cont=0.987037 | accuracy=0.944444 | precision=1 | recall=0.9 | f1=0.947368 | tp=18 | fp=0 | tn=16 | fn=2 | fpr=0 | n_pre_onb=16 | n_post_onb=20 | n_onb=2
+  [Original three + HGB] r2=0.921359 | rmse_all=75772.8 | mae_all=57899.9 | r2_high=0.816725 | rmse_high=81836.8 | mae_high=57688.3 | rmse_onb=43981.9 | mae_onb=43502.6 | roc_auc_cont=1 | pr_auc_cont=1 | accuracy=0.972222 | precision=1 | recall=0.95 | f1=0.974359 | tp=19 | fp=0 | tn=16 | fn=1 | fpr=0 | n_pre_onb=16 | n_post_onb=20 | n_onb=2
+  [Original three + ExtraTrees] r2=0.973568 | rmse_all=43929.6 | mae_all=35403.8 | r2_high=0.944784 | rmse_high=44918.9 | mae_high=33655.3 | rmse_onb=18098.9 | mae_onb=17669.8 | roc_auc_cont=0.996875 | pr_auc_cont=0.997619 | accuracy=0.972222 | precision=1 | recall=0.95 | f1=0.974359 | tp=19 | fp=0 | tn=16 | fn=1 | fpr=0 | n_pre_onb=16 | n_post_onb=20 | n_onb=2
+  [Ensemble simple equal] r2=0.51674 | rmse_all=187836 | mae_all=161748 | r2_high=0.709082 | rmse_high=103106 | mae_high=91076.7 | rmse_onb=180003 | mae_onb=179882 | roc_auc_cont=1 | pr_auc_cont=1 | accuracy=0.555556 | precision=0.555556 | recall=1 | f1=0.714286 | tp=20 | fp=16 | tn=0 | fn=0 | fpr=1 | n_pre_onb=16 | n_post_onb=20 | n_onb=2
+
+chunk指標: fold平均 ± 標準誤差（1分割の場合は標準誤差を推定できません）
+[RandomForest]
+  r2: 0.815819 ± 0.000000
+  rmse_all: 115961.089875 ± 0.000000
+  mae_all: 88410.898819 ± 0.000000
+  r2_high: 0.482069 ± 0.000000
+  rmse_high: 137573.058576 ± 0.000000
+  mae_high: 100530.965064 ± 0.000000
+  rmse_onb: 87730.797273 ± 0.000000
+  mae_onb: 75513.218587 ± 0.000000
+  roc_auc_cont: 0.976562 ± 0.000000
+  pr_auc_cont: 0.978571 ± 0.000000
+  accuracy: 0.944444 ± 0.000000
+  precision: 1.000000 ± 0.000000
+  recall: 0.900000 ± 0.000000
+  f1: 0.947368 ± 0.000000
+  tp: 18.000000 ± 0.000000
+  fp: 0.000000 ± 0.000000
+  tn: 16.000000 ± 0.000000
+  fn: 2.000000 ± 0.000000
+  fpr: 0.000000 ± 0.000000
+  n_pre_onb: 16.000000 ± 0.000000
+  n_post_onb: 20.000000 ± 0.000000
+  n_onb: 2.000000 ± 0.000000
+[Conformer]
+  r2: -12.181011 ± 0.000000
+  rmse_all: 980988.674317 ± 0.000000
+  mae_all: 907095.615226 ± 0.000000
+  r2_high: -11.513109 ± 0.000000
+  rmse_high: 676207.618878 ± 0.000000
+  mae_high: 625689.491685 ± 0.000000
+  rmse_onb: 1068130.542101 ± 0.000000
+  mae_onb: 1065066.295850 ± 0.000000
+  roc_auc_cont: 0.078125 ± 0.000000
+  pr_auc_cont: 0.378118 ± 0.000000
+  accuracy: 0.555556 ± 0.000000
+  precision: 0.555556 ± 0.000000
+  recall: 1.000000 ± 0.000000
+  f1: 0.714286 ± 0.000000
+  tp: 20.000000 ± 0.000000
+  fp: 16.000000 ± 0.000000
+  tn: 0.000000 ± 0.000000
+  fn: 0.000000 ± 0.000000
+  fpr: 1.000000 ± 0.000000
+  n_pre_onb: 16.000000 ± 0.000000
+  n_post_onb: 20.000000 ± 0.000000
+  n_onb: 2.000000 ± 0.000000
+[AlexNet]
+  r2: -0.420485 ± 0.000000
+  rmse_all: 322038.665802 ± 0.000000
+  mae_all: 250247.874345 ± 0.000000
+  r2_high: -3.947066 ± 0.000000
+  rmse_high: 425178.510466 ± 0.000000
+  mae_high: 391716.656948 ± 0.000000
+  rmse_onb: 128254.759255 ± 0.000000
+  mae_onb: 124104.106494 ± 0.000000
+  roc_auc_cont: 0.925000 ± 0.000000
+  pr_auc_cont: 0.955872 ± 0.000000
+  accuracy: 0.444444 ± 0.000000
+  precision: 0.000000 ± 0.000000
+  recall: 0.000000 ± 0.000000
+  f1: 0.000000 ± 0.000000
+  tp: 0.000000 ± 0.000000
+  fp: 0.000000 ± 0.000000
+  tn: 16.000000 ± 0.000000
+  fn: 20.000000 ± 0.000000
+  fpr: 0.000000 ± 0.000000
+  n_pre_onb: 16.000000 ± 0.000000
+  n_post_onb: 20.000000 ± 0.000000
+  n_onb: 2.000000 ± 0.000000
+[HGB frequency34]
+  r2: 0.981232 ± 0.000000
+  rmse_all: 37016.849146 ± 0.000000
+  mae_all: 29886.373064 ± 0.000000
+  r2_high: 0.970149 ± 0.000000
+  rmse_high: 33027.631220 ± 0.000000
+  mae_high: 25477.393086 ± 0.000000
+  rmse_onb: 7488.562682 ± 0.000000
+  mae_onb: 5831.453800 ± 0.000000
+  roc_auc_cont: 1.000000 ± 0.000000
+  pr_auc_cont: 1.000000 ± 0.000000
+  accuracy: 1.000000 ± 0.000000
+  precision: 1.000000 ± 0.000000
+  recall: 1.000000 ± 0.000000
+  f1: 1.000000 ± 0.000000
+  tp: 20.000000 ± 0.000000
+  fp: 0.000000 ± 0.000000
+  tn: 16.000000 ± 0.000000
+  fn: 0.000000 ± 0.000000
+  fpr: 0.000000 ± 0.000000
+  n_pre_onb: 16.000000 ± 0.000000
+  n_post_onb: 20.000000 ± 0.000000
+  n_onb: 2.000000 ± 0.000000
+[ExtraTrees frequency34]
+  r2: 0.988334 ± 0.000000
+  rmse_all: 29184.557678 ± 0.000000
+  mae_all: 21655.702488 ± 0.000000
+  r2_high: 0.982487 ± 0.000000
+  rmse_high: 25297.146217 ± 0.000000
+  mae_high: 17967.410524 ± 0.000000
+  rmse_onb: 7804.798405 ± 0.000000
+  mae_onb: 7803.835455 ± 0.000000
+  roc_auc_cont: 0.996875 ± 0.000000
+  pr_auc_cont: 0.997619 ± 0.000000
+  accuracy: 0.972222 ± 0.000000
+  precision: 1.000000 ± 0.000000
+  recall: 0.950000 ± 0.000000
+  f1: 0.974359 ± 0.000000
+  tp: 19.000000 ± 0.000000
+  fp: 0.000000 ± 0.000000
+  tn: 16.000000 ± 0.000000
+  fn: 1.000000 ± 0.000000
+  fpr: 0.000000 ± 0.000000
+  n_pre_onb: 16.000000 ± 0.000000
+  n_post_onb: 20.000000 ± 0.000000
+  n_onb: 2.000000 ± 0.000000
+[Original three + HGB + ExtraTrees]
+  r2: 0.973355 ± 0.000000
+  rmse_all: 44105.650106 ± 0.000000
+  mae_all: 35559.106745 ± 0.000000
+  r2_high: 0.944586 ± 0.000000
+  rmse_high: 44999.628324 ± 0.000000
+  mae_high: 33644.328022 ± 0.000000
+  rmse_onb: 18254.610495 ± 0.000000
+  mae_onb: 17955.198438 ± 0.000000
+  roc_auc_cont: 0.996875 ± 0.000000
+  pr_auc_cont: 0.997619 ± 0.000000
+  accuracy: 0.972222 ± 0.000000
+  precision: 1.000000 ± 0.000000
+  recall: 0.950000 ± 0.000000
+  f1: 0.974359 ± 0.000000
+  tp: 19.000000 ± 0.000000
+  fp: 0.000000 ± 0.000000
+  tn: 16.000000 ± 0.000000
+  fn: 1.000000 ± 0.000000
+  fpr: 0.000000 ± 0.000000
+  n_pre_onb: 16.000000 ± 0.000000
+  n_post_onb: 20.000000 ± 0.000000
+  n_onb: 2.000000 ± 0.000000
+[Original three MSE]
+  r2: 0.825134 ± 0.000000
+  rmse_all: 112990.445042 ± 0.000000
+  mae_all: 85739.841096 ± 0.000000
+  r2_high: 0.575067 ± 0.000000
+  rmse_high: 124611.377486 ± 0.000000
+  mae_high: 89159.551710 ± 0.000000
+  rmse_onb: 70736.010487 ± 0.000000
+  mae_onb: 70311.227827 ± 0.000000
+  roc_auc_cont: 0.984375 ± 0.000000
+  pr_auc_cont: 0.990000 ± 0.000000
+  accuracy: 0.944444 ± 0.000000
+  precision: 1.000000 ± 0.000000
+  recall: 0.900000 ± 0.000000
+  f1: 0.947368 ± 0.000000
+  tp: 18.000000 ± 0.000000
+  fp: 0.000000 ± 0.000000
+  tn: 16.000000 ± 0.000000
+  fn: 2.000000 ± 0.000000
+  fpr: 0.000000 ± 0.000000
+  n_pre_onb: 16.000000 ± 0.000000
+  n_post_onb: 20.000000 ± 0.000000
+  n_onb: 2.000000 ± 0.000000
+[Original three performance]
+  r2: 0.803695 ± 0.000000
+  rmse_all: 119716.868517 ± 0.000000
+  mae_all: 90422.560567 ± 0.000000
+  r2_high: 0.457801 ± 0.000000
+  rmse_high: 140759.156258 ± 0.000000
+  mae_high: 102049.211753 ± 0.000000
+  rmse_onb: 76284.568597 ± 0.000000
+  mae_onb: 70409.293636 ± 0.000000
+  roc_auc_cont: 0.978125 ± 0.000000
+  pr_auc_cont: 0.987037 ± 0.000000
+  accuracy: 0.944444 ± 0.000000
+  precision: 1.000000 ± 0.000000
+  recall: 0.900000 ± 0.000000
+  f1: 0.947368 ± 0.000000
+  tp: 18.000000 ± 0.000000
+  fp: 0.000000 ± 0.000000
+  tn: 16.000000 ± 0.000000
+  fn: 2.000000 ± 0.000000
+  fpr: 0.000000 ± 0.000000
+  n_pre_onb: 16.000000 ± 0.000000
+  n_post_onb: 20.000000 ± 0.000000
+  n_onb: 2.000000 ± 0.000000
+[Original three + HGB]
+  r2: 0.921359 ± 0.000000
+  rmse_all: 75772.820495 ± 0.000000
+  mae_all: 57899.916976 ± 0.000000
+  r2_high: 0.816725 ± 0.000000
+  rmse_high: 81836.824768 ± 0.000000
+  mae_high: 57688.282913 ± 0.000000
+  rmse_onb: 43981.894639 ± 0.000000
+  mae_onb: 43502.577135 ± 0.000000
+  roc_auc_cont: 1.000000 ± 0.000000
+  pr_auc_cont: 1.000000 ± 0.000000
+  accuracy: 0.972222 ± 0.000000
+  precision: 1.000000 ± 0.000000
+  recall: 0.950000 ± 0.000000
+  f1: 0.974359 ± 0.000000
+  tp: 19.000000 ± 0.000000
+  fp: 0.000000 ± 0.000000
+  tn: 16.000000 ± 0.000000
+  fn: 1.000000 ± 0.000000
+  fpr: 0.000000 ± 0.000000
+  n_pre_onb: 16.000000 ± 0.000000
+  n_post_onb: 20.000000 ± 0.000000
+  n_onb: 2.000000 ± 0.000000
+[Original three + ExtraTrees]
+  r2: 0.973568 ± 0.000000
+  rmse_all: 43929.608100 ± 0.000000
+  mae_all: 35403.776266 ± 0.000000
+  r2_high: 0.944784 ± 0.000000
+  rmse_high: 44918.944786 ± 0.000000
+  mae_high: 33655.283397 ± 0.000000
+  rmse_onb: 18098.871760 ± 0.000000
+  mae_onb: 17669.755662 ± 0.000000
+  roc_auc_cont: 0.996875 ± 0.000000
+  pr_auc_cont: 0.997619 ± 0.000000
+  accuracy: 0.972222 ± 0.000000
+  precision: 1.000000 ± 0.000000
+  recall: 0.950000 ± 0.000000
+  f1: 0.974359 ± 0.000000
+  tp: 19.000000 ± 0.000000
+  fp: 0.000000 ± 0.000000
+  tn: 16.000000 ± 0.000000
+  fn: 1.000000 ± 0.000000
+  fpr: 0.000000 ± 0.000000
+  n_pre_onb: 16.000000 ± 0.000000
+  n_post_onb: 20.000000 ± 0.000000
+  n_onb: 2.000000 ± 0.000000
+[Ensemble simple equal]
+  r2: 0.516740 ± 0.000000
+  rmse_all: 187836.486490 ± 0.000000
+  mae_all: 161747.640912 ± 0.000000
+  r2_high: 0.709082 ± 0.000000
+  rmse_high: 103105.647528 ± 0.000000
+  mae_high: 91076.726026 ± 0.000000
+  rmse_onb: 180002.635366 ± 0.000000
+  mae_onb: 179881.727227 ± 0.000000
+  roc_auc_cont: 1.000000 ± 0.000000
+  pr_auc_cont: 1.000000 ± 0.000000
+  accuracy: 0.555556 ± 0.000000
+  precision: 0.555556 ± 0.000000
+  recall: 1.000000 ± 0.000000
+  f1: 0.714286 ± 0.000000
+  tp: 20.000000 ± 0.000000
+  fp: 16.000000 ± 0.000000
+  tn: 0.000000 ± 0.000000
+  fn: 0.000000 ± 0.000000
+  fpr: 1.000000 ± 0.000000
+  n_pre_onb: 16.000000 ± 0.000000
+  n_post_onb: 20.000000 ± 0.000000
+  n_onb: 2.000000 ± 0.000000

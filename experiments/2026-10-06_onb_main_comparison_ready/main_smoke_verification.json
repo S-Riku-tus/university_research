@@ -1,0 +1,16 @@
+{
+  "status": "passed",
+  "actual_onb_main_called": true,
+  "epochs": 1,
+  "internal_folds": 2,
+  "source_wavs": 36,
+  "input_chunks": 144,
+  "models": 5,
+  "base_fits": 15,
+  "reload_conditions": 2,
+  "reloaded_evaluation_predictions": 360,
+  "source_day_metric_rows": 66,
+  "epoch_audit_rows": 6,
+  "main_report": "experiments\\2026-10-06_onb_main_comparison_ready\\smoke\\smoke_result_wc-t0611-v0611_ic2-nc_c1s_s0_e1_192005\\maxfreq=3kHz\\onb_comparison\\main_comparison.md",
+  "normal_150_epoch_run_executed": false
+}

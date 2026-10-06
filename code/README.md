@@ -13,6 +13,8 @@
 
 追加2は[acoustic_regression.py](utils/models/regression/acoustic_regression.py)にあり、3 kHz・1 channelのraw power→固定34特徴を使う。`metrics_by_source_day.csv`は日別ONB閾値の各日と合算、`metrics_source_day_deltas.csv`は元3との差を保存する。従来の`metrics_summary_*.csv`の統合日平均ONB閾値と区別する。[通常実行と確認先](../experiments/2026-10-06_onb_five_model_integration/README.md)、[5モデルの採用理由](../docs/notes/2026-10-06_five_model_rationale_and_next_steps.md)。
 
+10/6の[主張・評価・主表の正本](../docs/thesis/2026-10-06_main_claims_and_evaluation.md)に沿い、通常clean_onlyの終了時に`maxfreq=3kHz/onb_comparison/main_comparison.md`と全7条件の主表・差・劣化量・重み・検算を生成する。全5モデルの全評価予測を保存再読込で照合し、内部/最終CNNの実epoch・batchを記録する。欠落条件は学習前に検出する。[実行方法と読むファイル](../experiments/2026-10-06_onb_main_comparison_ready/README.md)。既定は150 epochs/3fold/seed42、50関連テスト・実main 1 epoch確認済み、新しい150 epochs本runは未実施。
+
 ## 過去コード
 
 [3.run_ensemble_ROC_100%_analysis.py](3.run_ensemble_ROC_100%_analysis.py)は旧版・再現用。現在の主実行ではない。`regression_analysis/`、`6-class classification/`、`dBdata/`、`trush_box/`にも過去の比較・試行がある。`compare_predict_heatflux.py`は保存済みモデル用の過去の推論処理で、現行runの結果CSVと同じ入力経路とは限らない。

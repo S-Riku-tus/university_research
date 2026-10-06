@@ -1,0 +1,33 @@
+{
+  "protocol_id": "onb-fixed-three-five-v1",
+  "version": 1,
+  "date": "2026-10-06",
+  "primary_model_key": "ensemble__original3_hgb_extra_trees",
+  "baseline_model_key": "ensemble__original3_mse",
+  "comparison_baselines": ["ensemble__original3_mse", "ensemble__original3_extra_trees", "extra_trees"],
+  "model_keys": ["randomforest", "conformer", "alexnet", "hgb", "extra_trees"],
+  "ensemble_names": ["original3_mse", "original3_performance", "original3_hgb", "original3_extra_trees", "original3_hgb_extra_trees", "simple_equal"],
+  "noise_conditions": ["clean", "0", "-4", "-8", "-12", "-16", "-20"],
+  "source_day_thresholds_W_m2": {"2025.06.11_0.3_2": 221505.1102, "2025.06.18_0.3_3": 271677.6816},
+  "legacy_combined_threshold_W_m2": 246591.3959,
+  "near_onb_band_fraction": 0.1,
+  "main_detection_metrics": ["q100_by_source_day", "g100_by_source_day", "fp", "fpr"],
+  "supporting_detection_metrics": ["fn", "recall", "precision", "f1", "accuracy"],
+  "regression_metrics": ["rmse_all", "mae_all", "r2", "rmse_pre_onb", "rmse_onb", "rmse_high", "bias_all", "bias_onb"],
+  "continuous_auc_score": "raw predicted heat flux W/m2; pooled source-day labels differ in threshold; supplementary ranking metric",
+  "q100_definition": "minimum measured heat flux level from which every evaluated chunk at that and all higher measured levels is predicted positive; no interpolation; unavailable if no level satisfies this",
+  "selection_objective": "clean training-OOF MSE; q100 is an evaluation endpoint, not the fitted objective",
+  "integration": {"core_rule": "mse", "core_member_floor": 0.000001, "minimum_core_total": 0.25, "minimum_added_member": 0.05, "original_three_ratios_locked": true},
+  "pca_components": 100,
+  "standard_model_parameters": {
+    "randomforest": {"n_estimators": 100, "max_depth": 12, "subsample": 0.6, "colsample_bynode": 0.6},
+    "conformer": {"lr": 0.001, "batch_size": 12},
+    "alexnet": {"lr": 0.003, "batch_size": 8},
+    "hgb": {"max_iter": 150, "learning_rate": 0.05, "max_leaf_nodes": 31, "min_samples_leaf": 20, "l2_regularization": 1.0, "early_stopping": false},
+    "extra_trees": {"n_estimators": 256, "min_samples_leaf": 2, "max_features": 1.0, "n_jobs": 2}
+  },
+  "standard_run": {"epochs": 150, "internal_folds": 3, "random_seed": 42, "cpu_threads": 2, "training_noise": "clean_only", "internal_split": "chunk_kfold", "chunk_seconds": 1, "max_freq_hz": "maxfreq=3kHz", "color_channels": 1, "selection": null, "source_wavs": 36, "chunks_per_wav": 60, "train_chunks": 1620, "evaluation_chunks": 540},
+  "comparison_rule": "same chunk identities and targets; same clean-fitted models and weights across noise; no selection from outer results",
+  "uncertainty_scope": "paired descriptive results on reused known recordings; seeds and artificial noise levels are not independent experiments",
+  "acceptance_rule": "complete configured outputs, splits, epochs, weight constraints and restored predictions; performance improvements are observations, not pass/fail criteria"
+}

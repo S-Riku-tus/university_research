@@ -1,0 +1,16 @@
+{
+  "status": "passed",
+  "tests": 50,
+  "failures": 0,
+  "errors": 0,
+  "patterns": [
+    "test_onb_main_comparison.py",
+    "test_onb_five_models.py",
+    "test_onb_entrypoint.py",
+    "test_onb_defaults.py",
+    "test_training_state_persistence.py",
+    "test_learning_policy.py",
+    "test_crossfit_stacking.py",
+    "test_training_oof_tuning.py"
+  ]
+}
