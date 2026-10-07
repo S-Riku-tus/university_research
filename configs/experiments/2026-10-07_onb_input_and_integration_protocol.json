@@ -1,0 +1,61 @@
+{
+  "protocol_id": "onb-200epoch-input-integration-v1",
+  "date": "2026-10-07",
+  "source_run": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/ensemble/202610/06/onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305/maxfreq=3kHz",
+  "source_run_hash": "2366b492",
+  "source_fit_id": "c755ee5f162b",
+  "members": ["randomforest", "conformer", "alexnet", "hgb", "extra_trees"],
+  "seed": 42,
+  "cpu_threads": 2,
+  "source_day_thresholds_W_m2": {"2025.06.11_0.3_2": 221505.1102, "2025.06.18_0.3_3": 271677.6816},
+  "evaluation_noise_conditions": ["clean", "0", "-4", "-8", "-12", "-16", "-20"],
+  "stage1": {
+    "question": "Which common raw-power dependencies accompany corrections, added failures and common misses?",
+    "noise_conditions": ["clean", "-20"],
+    "chunks_per_noise": 540,
+    "interventions": [
+      {"name": "unchanged", "type": "identity"},
+      {"name": "band_2100_2500_x0p1", "type": "band_attenuation", "low_hz": 2100, "high_hz": 2500, "power_factor": 0.1},
+      {"name": "band_1700_2100_x0p1", "type": "band_attenuation", "low_hz": 1700, "high_hz": 2100, "power_factor": 0.1},
+      {"name": "band_2500_2900_x0p1", "type": "band_attenuation", "low_hz": 2500, "high_hz": 2900, "power_factor": 0.1},
+      {"name": "global_power_x0p5", "type": "global_gain", "power_factor": 0.5},
+      {"name": "global_power_x2", "type": "global_gain", "power_factor": 2.0},
+      {"name": "time_permutation", "type": "time_permutation", "seed": 20261007}
+    ],
+    "frequency_coordinates": "fixed approximate post-resize mapping: round(224 * Hz / 3000); same coordinates as current frequency34",
+    "checks": ["all 540 unchanged predictions match source for each model/noise", "unchanged ensemble reconstruction", "same raw input intervention for all five", "frequency34 and HGB/ET time-order invariance", "gain affects only five absolute log-power features where floor inactive", "same evaluation identities across noises"],
+    "representative_rule": "all common clean false negatives, all clean ET4-to-five changed detections, and each day's last five-model false negatives; no cherry-picked success examples",
+    "interpretation": "fixed-model sensitivity under artificial interventions; no source identification or evidence that a band is uniquely necessary"
+  },
+  "stage2": {
+    "question": "Does fixing the original-three internal ratio cause the observed tradeoffs?",
+    "candidates": ["saved_fixed_core_mse", "free_core_ratio_mse"],
+    "training_predictions": "source clean OOF 1620 rows only",
+    "objective": "mean squared heat-flux error",
+    "constraints": {"weight_sum": 1.0, "minimum_core_total": 0.25, "minimum_added_member": 0.05, "minimum_core_member_fraction_of_core": 0.000001},
+    "outer_labels_used_for_fit": false,
+    "noise_predictions_used_for_fit": false,
+    "checks": ["all five positive", "same core-total/addition/member-floor constraints", "current weights are feasible", "free-ratio clean OOF MSE cannot exceed current feasible MSE beyond numerical tolerance", "two feasible starts agree", "only saved predictions used"],
+    "interpretation": "post hoc development comparison; OOF fit score is not independent meta-validation"
+  },
+  "stage3": {
+    "trigger": "unchanged clean common false negatives remain, or stages1/2 leave an unresolved absolute-power versus relative-shape explanation",
+    "question": "How does removing absolute power or relative shape change information use after clean retraining?",
+    "learners": ["hgb", "extra_trees"],
+    "representations": {"full34_reference": "reuse current saved predictions and models", "absolute_power5": [0, 1, 2, 3, 4], "relative_shape29": [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33]},
+    "fit_scope": "same clean outer-training 1620 chunks, same three saved inner splits, fold-fit-only target scaling",
+    "parameters": "current learner parameters; final random state43 and inner random states43/44/45; no tuning",
+    "expected_model_fits": 16,
+    "ensemble_contrast": "replace only HGB or only ET representation; preserve original-three predictions/ratio; fit same fixed-core MSE rule on clean OOF",
+    "outer_labels_used_for_fit_or_selection": false,
+    "checks": ["training and outer identities disjoint", "OOF held chunks never fitted", "OOF coverage one", "full34 feature implementation matches saved pipelines", "persist and reload all 16 models/scalers", "reload final pipelines on all 7 evaluation noises", "original-five common misses and FP scored for each fixed contrast"],
+    "interpretation": "input-removal retraining within two fixed learners, not a new model-family search or independent test"
+  },
+  "report": {
+    "evaluation_unit": "one-second chunk within known WAV; source-day thresholds; pooled counts only; daily q100",
+    "metrics": "all existing source_day_metric_rows metrics, prediction changes, FN corrections/additions, FP, daily q100, region biases and errors",
+    "unchanged_outputs": "original source run, current ONB defaults/models/weights, previous analysis and 150-epoch results",
+    "selection_policy": "report all fixed contrasts; no SNR/true-label routing; no automatic promotion of outer-best candidate",
+    "scope": "reused development recordings; weights/parameters fitted without outer chunks; exploration after reading prior outer performance"
+  }
+}

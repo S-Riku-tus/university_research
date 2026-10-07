@@ -7,6 +7,7 @@
 | 段階 | 主なコード | 入出力・役割 |
 |---|---|---|
 | 前処理 | [水流音STFT生成](../code/2.run_npy_waterflow_2つhighpass.py)、[waterflow_preprocessing.py](../code/utils/dataloading/waterflow_preprocessing.py) | 元WAV→固定基準ノイズ・STFT power→224×224 NPY、manifest |
+| 10/7新実験の準備 | [従来の熱流束Notebook](../code/0.run_auto_heatflux_analysis_v2.ipynb)、[録音コピー・改名](../code/1.run_rename_files.ipynb)、[実行手順](2026-10-07_new_experiment_processing.md) | 本人希望により従来3入口を使用。GL860/旧CSV両対応、R_shuntを既存Notebook設定欄へ移動、今回のパス・形状条件を指定。処理は本人が実行 |
 | 統合データ | [build_combined_0611_0618_dataset.py](../code/build_combined_0611_0618_dataset.py) | 6/11・6/18の0.5秒／1秒NPY・元名／熱流束名付きWAV・測定メタデータを、出典を保持して独立コピー |
 | 読込 | [dataloading_and_conversion.py](../code/utils/dataloading/dataloading_and_conversion.py) | 時間×周波数×channelのx、熱流束y、元WAV/chunk情報 |
 | 条件・分割 | [dataset_jobs.py](../code/utils/experiment/dataset_jobs.py)、[learning_policy.py](../code/utils/experiment/learning_policy.py) | 実験日/ノイズ方針、元WAV分離、ノイズ間の対応検査 |

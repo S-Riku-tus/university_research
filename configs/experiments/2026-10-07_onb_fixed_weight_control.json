@@ -1,0 +1,12 @@
+{
+  "protocol_id": "onb-input-removal-fixed-weight-diagnostic-v1",
+  "date": "2026-10-07",
+  "base_protocol": "configs/experiments/2026-10-07_onb_input_and_integration_protocol.json",
+  "timing": "post hoc addendum after stage3: HGB subset weights reached the 5% floor in both input-removal contrasts",
+  "question": "Is the integrated change due to the replacement prediction or to refitting its weight?",
+  "comparisons": ["original saved five", "replace one representation with original five weights", "same replacement with stage3 clean OOF refitted weights"],
+  "fitting": "none; all existing models and weight vectors frozen",
+  "scope": "clean OOF fitting diagnostic and all seven outer development conditions; same saved predictions",
+  "loss_decomposition": "MSE_fixed-minus-source = 2E[e_source * delta_input] + E[delta_input^2]; MSE_refit-minus-fixed = 2E[e_fixed * delta_weight] + E[delta_weight^2]",
+  "selection": "no new candidate selection or default changes; descriptive separation only"
+}

@@ -1,0 +1,213 @@
+{
+  "status": "passed",
+  "completed_full_200_epoch_run": true,
+  "nominal_150_protocol_match": false,
+  "new_model_fits": 0,
+  "new_model_predictions": 0,
+  "weights_changed": false,
+  "seed": 42,
+  "cnn_epochs": 200,
+  "internal_folds": 3,
+  "source_wavs": 36,
+  "training_chunks": 1620,
+  "evaluation_chunks_per_noise": 540,
+  "positive_chunks": 315,
+  "negative_chunks": 225,
+  "evaluated_noise_conditions": 7,
+  "reloaded_model_predictions": 18900,
+  "audited_cnn_fits": 8,
+  "max_saved_reload_difference_W_m2": 1.1641532182693479e-10,
+  "max_five_reconstruction_difference_kW_m2": 4.547473508864641e-13,
+  "recomputed_main_metric_rows": 231,
+  "max_main_metric_numeric_difference": 5.684341886080802e-14,
+  "bootstrap_scope": "descriptive paired WAV resampling within each day; reused development data; no architecture selection",
+  "across_run_scope": "seed42/200 epochs versus seed43,44/150 epochs; not an epoch-effect experiment or independent new recordings",
+  "fn_upper_bound_scope": "per-sample oracle upper bound; no guarantee of one common weight vector, FP safety, or q100 improvement",
+  "completion_records": [
+    {
+      "noise": "clean",
+      "completion_record": {
+        "run_hash": "2366b492",
+        "fit_ids": [
+          "c755ee5f162b"
+        ]
+      }
+    },
+    {
+      "noise": "0",
+      "completion_record": {
+        "run_hash": "2366b492",
+        "fit_ids": [
+          "c755ee5f162b"
+        ]
+      }
+    },
+    {
+      "noise": "-4",
+      "completion_record": {
+        "run_hash": "2366b492",
+        "fit_ids": [
+          "c755ee5f162b"
+        ]
+      }
+    },
+    {
+      "noise": "-8",
+      "completion_record": {
+        "run_hash": "2366b492",
+        "fit_ids": [
+          "c755ee5f162b"
+        ]
+      }
+    },
+    {
+      "noise": "-12",
+      "completion_record": {
+        "run_hash": "2366b492",
+        "fit_ids": [
+          "c755ee5f162b"
+        ]
+      }
+    },
+    {
+      "noise": "-16",
+      "completion_record": {
+        "run_hash": "2366b492",
+        "fit_ids": [
+          "c755ee5f162b"
+        ]
+      }
+    },
+    {
+      "noise": "-20",
+      "completion_record": {
+        "run_hash": "2366b492",
+        "fit_ids": [
+          "c755ee5f162b"
+        ]
+      }
+    }
+  ],
+  "input_files": [
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\onb_comparison\\verification.json",
+      "sha256": "eaa717a241bc131639221faff70d4c2e2d896313b9c5c79a2e4d08d29ff8d0b1"
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\onb_comparison\\run_conditions.json",
+      "sha256": "13a7f64b0a959830a6e59f04427d919e786244de68d6d0ad51074ceabc17d34a"
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\onb_comparison\\main_metrics.csv",
+      "sha256": "51dfe9e75bca3487ffa4f2f714d968d936639ff5f27f19d13f2d67b2e6943261"
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\onb_comparison\\fit_epoch_audit.csv",
+      "sha256": "c9b7b5797f6f18ffc9f3ca3a56c4b88d0199fd37c7bb4f3be3df4fba476e07b8"
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\onb_comparison\\fitted_reload_checks.csv",
+      "sha256": "f88de84536767201299820ffa42b9c3026e6380504b3e21b31f9ab3e70913aa0"
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\onb_comparison\\ensemble_reconstruction_checks.csv",
+      "sha256": "44e19012357f27c5daacf6dbea20ba8980833c7f05254c16ce017898681aaf8f"
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\heatflux_no_noise\\ensemble_training_oof_fit_f1.json",
+      "sha256": "8fe9019d4d229b21b120339508eedb958966489d5ec0e5f4d7e4d44899dde3ef"
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\heatflux_no_noise\\ensemble_training_oof_f1.csv",
+      "sha256": "3fb7942f653771515c2b86df50b0998a383a8474eea1cd11c1fe03586db4965a"
+    },
+    {
+      "path": "experiments\\2026-10-06_onb_main_comparison_ready\\saved_main_tables\\main_metrics.csv",
+      "sha256": "9764dc51156941ff4127a95fea2a174fbe1af1282eb502258020c9988a629a0f"
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\heatflux_no_noise\\fold_pred\\pred_f1_no_noise.csv",
+      "sha256": "ede56620159ec8155ad3fbe3c0207e02754d54b899d59013374f4c4726844032"
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\heatflux_no_noise\\completed.json",
+      "sha256": "f5160e3a86f6f1ee4bc9626053680497bd27901d6038435a14d4ff67f901589f"
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\heatflux_no_noise\\split_manifest.json",
+      "sha256": "a9f210af51ea54d2e1c5378241915df9c007d8b0df99bd7aaae401d673e679ea"
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\heatflux_reference_SNR=0\\fold_pred\\pred_f1_0.csv",
+      "sha256": "2eeef5a143cf5c12633c947d1e172764663b103c2879688cded017dcc420d29f"
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\heatflux_reference_SNR=0\\completed.json",
+      "sha256": "f5160e3a86f6f1ee4bc9626053680497bd27901d6038435a14d4ff67f901589f"
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\heatflux_reference_SNR=0\\split_manifest.json",
+      "sha256": "7c856aad34e17573f2cc2ed7b05f2ebbe8e3f79508ea77cb009bded6c3bb6b52"
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\heatflux_reference_SNR=-4\\fold_pred\\pred_f1_-4.csv",
+      "sha256": "9d944556f163ecba629b0bbb853bde3774552470fe1fb84a874550e619670c38"
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\heatflux_reference_SNR=-4\\completed.json",
+      "sha256": "f5160e3a86f6f1ee4bc9626053680497bd27901d6038435a14d4ff67f901589f"
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\heatflux_reference_SNR=-4\\split_manifest.json",
+      "sha256": "59520ae95effee36607e7004e894a27bd2e9996978cc599d3a2c3758d7b005f3"
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\heatflux_reference_SNR=-8\\fold_pred\\pred_f1_-8.csv",
+      "sha256": "18dcb5b527533c2259b6327d44cced9b72b29e4e104478598e480b59f52c0d3a"
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\heatflux_reference_SNR=-8\\completed.json",
+      "sha256": "f5160e3a86f6f1ee4bc9626053680497bd27901d6038435a14d4ff67f901589f"
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\heatflux_reference_SNR=-8\\split_manifest.json",
+      "sha256": "98d65e5c55a7c98bfdd96e54e6612e5efae575de7612cf9a529afef420a7c8d9"
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\heatflux_reference_SNR=-12\\fold_pred\\pred_f1_-12.csv",
+      "sha256": "6ab87e03e95d11dd515a04510805b95ab44256323d19be7d8f5c3715d268d44b"
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\heatflux_reference_SNR=-12\\completed.json",
+      "sha256": "f5160e3a86f6f1ee4bc9626053680497bd27901d6038435a14d4ff67f901589f"
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\heatflux_reference_SNR=-12\\split_manifest.json",
+      "sha256": "30fef71014ae59d0ada3ba00f876fd8486500d44e078d10d276d81dda4200bd7"
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\heatflux_reference_SNR=-16\\fold_pred\\pred_f1_-16.csv",
+      "sha256": "4a4e958c9433854bf663f6172ec9d2c8e90426ad61a585f426d66ac3bec4db9e"
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\heatflux_reference_SNR=-16\\completed.json",
+      "sha256": "f5160e3a86f6f1ee4bc9626053680497bd27901d6038435a14d4ff67f901589f"
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\heatflux_reference_SNR=-16\\split_manifest.json",
+      "sha256": "10057c8a506fa1b72ea73289c3e01daadf7cf3dacfc6201fb8cf9501797f6e32"
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\heatflux_reference_SNR=-20\\fold_pred\\pred_f1_-20.csv",
+      "sha256": "17dbcb96f5ed652ca17ecb46996c32e18105d34580d46915ad256909517abe80"
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\heatflux_reference_SNR=-20\\completed.json",
+      "sha256": "f5160e3a86f6f1ee4bc9626053680497bd27901d6038435a14d4ff67f901589f"
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\heatflux_reference_SNR=-20\\split_manifest.json",
+      "sha256": "a004d4fd1950d5ee0f5dc01143cfdcf9209aea328ca658c0061c8018cf7822f8"
+    }
+  ]
+}

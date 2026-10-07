@@ -1,0 +1,23 @@
+{
+  "date": "2026-10-07",
+  "source_run_hash": "2366b492",
+  "status": "three_authorized_stages_completed",
+  "main_method": "retain original-three fixed ratios + HGB frequency34 + ExtraTrees frequency34; clean OOF constrained MSE",
+  "default_runner_changed": false,
+  "saved_source_weights_changed": false,
+  "auxiliary_comparison": "free original-three internal ratios under the same positive membership/core/addition constraints",
+  "input_removal_variants_promoted": false,
+  "evidence": {
+    "band_dependence": "2.1-2.5kHz attenuation is more harmful than equal-width adjacent contrasts; sensitivity only",
+    "time_order": "HGB/ET are invariant; original CNN models change; no physical time-source identification",
+    "free_ratio": "clean RMSE27.80->27.47, FN27->24; -20 FN52->53 and near RMSE99.32->102.13; q100 unchanged",
+    "full34": "both HGB/ET have lower clean OOF and clean/-20 all-region RMSE than power5/relative29 under fixed parameters",
+    "power_only_noise": "-20 standalone HGB FP106/225 and ET FP113/225",
+    "new_prediction_and_weights": "HGB relative29 fixed weights RMSE29.06/q100376.32; refit weights27.39/q100322.11; HGB weight at5% floor",
+    "remaining_failure": "all 11 source common clean FNs remain in every new integrated representation; last6/11 chunk21 at315.47 remains below threshold in all four new standalone models"
+  },
+  "interpretation_limits": "reused development recordings; fixed-model sensitivity and input-removal retraining; no independent test or proof of physical causality/all-five necessity",
+  "optional_followup": ["compare last6/11 failure to same-WAV successful chunks and training-side acoustic neighbors", "check saved seed43/44 free-ratio rule if deciding whether to replace main integration"],
+  "optional_followup_executed": false,
+  "evidence_directory": "experiments/2026-10-07_onb_input_and_integration"
+}

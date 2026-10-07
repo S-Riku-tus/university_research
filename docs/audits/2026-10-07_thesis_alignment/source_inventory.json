@@ -1,0 +1,176 @@
+[
+  {
+    "path": "code/utils/ensemble/fixed_core_stacking.py",
+    "role": "referenced_by_audit",
+    "exists": true,
+    "sha256": "7d798b355d5ddd8f4261b9f710698a02f44aac1efb248ec916e69b26a946eb0d"
+  },
+  {
+    "path": "experiments/2026-09-19_noise_recovery_review/A1_A7_saved_prediction_diagnosis.md",
+    "role": "referenced_by_audit",
+    "exists": true,
+    "sha256": "771799faab592ae38a0b06553d97fe99778829a060f1503a5c064c614e6e0f02"
+  },
+  {
+    "path": "experiments/2026-09-20_c_selection/README.md",
+    "role": "referenced_by_audit",
+    "exists": true,
+    "sha256": "3d44ab9c1eeea11e63657389bb6ebb294c42f30fa0542c20a85fb5286249ffb0"
+  },
+  {
+    "path": "experiments/2026-09-22_d_explainability/README.md",
+    "role": "referenced_by_audit",
+    "exists": true,
+    "sha256": "592dd9c1c154bee31d2c09a9acb181ed9955a720f8e6916bfeb14a8a6a49c1e2"
+  },
+  {
+    "path": "experiments/2026-09-24_clean_train_noise_inference/README.md",
+    "role": "referenced_by_audit",
+    "exists": true,
+    "sha256": "59cd631638e7502fddcc2171bab97ce406b15a8034ba84727461da325b4ba00b"
+  },
+  {
+    "path": "experiments/2026-09-24_selection_onb_ig_review/README.md",
+    "role": "referenced_by_audit",
+    "exists": true,
+    "sha256": "4d5db202765c66a3a3983d9804cb301a3d13a832620ba1ef1f9ca4b8313023d5"
+  },
+  {
+    "path": "experiments/2026-09-29_within_wav_chunk_05s_analysis/README.md",
+    "role": "referenced_by_audit",
+    "exists": true,
+    "sha256": "62a26ae1e66815cc95bd970ad8c02c82cbb4f92c060ca5fe0ef6a6302f8ae31d"
+  },
+  {
+    "path": "experiments/2026-10-01_3khz_22khz_tuned_outer_comparison/README.md",
+    "role": "referenced_by_audit",
+    "exists": true,
+    "sha256": "c683c45ad53a12005c0baf05f4491730666696c643a994e6994ec22ba09680b9"
+  },
+  {
+    "path": "experiments/2026-10-03_tuned_within_wav_matched_comparison/README.md",
+    "role": "referenced_by_audit",
+    "exists": true,
+    "sha256": "5aad08d71e3edbbce0538a51293ef1b3236f412e15db454ccc6f5a2199559e7d"
+  },
+  {
+    "path": "experiments/2026-10-06_fixed_three_additions/README.md",
+    "role": "referenced_by_audit",
+    "exists": true,
+    "sha256": "488f6b5281fefaef3d76451a6b5719551535abae437dff5f99dceb3ceb2886af"
+  },
+  {
+    "path": "experiments/2026-10-07_onb_200epoch_result_analysis/README.md",
+    "role": "referenced_by_audit",
+    "exists": true,
+    "sha256": "f109d9e6ab72ea5ceada55e8a3c9907d0574e310f7794ad2fe0c27bc39d10676"
+  },
+  {
+    "path": "experiments/2026-10-07_onb_input_and_integration/README.md",
+    "role": "referenced_by_audit",
+    "exists": true,
+    "sha256": "f4b30d6f13e16717a0b16276f9117b662d1c2ba66bf013e62d2a9d87834e02f6"
+  },
+  {
+    "path": "experiments/2026-10-07_onb_input_and_integration/decision.json",
+    "role": "referenced_by_audit",
+    "exists": true,
+    "sha256": "98b3aa7a16756535f7df0a029ebd4c717bac8bd93bee5a45df97c8d6409aaaaa"
+  },
+  {
+    "path": "experiments/2026-10-07_pool_boiling_data_setup/README.md",
+    "role": "referenced_by_audit",
+    "exists": true,
+    "sha256": "156947d00dc9e744100707931dfa18240a49c10f04e9bf759a0a7c76f2c4da8e"
+  },
+  {
+    "path": "研究進捗報告/2026_AE＿植木研＿8125517＿柴崎陸.docx",
+    "role": "referenced_by_audit",
+    "exists": true,
+    "sha256": "44cbfbd996cf3666da33cc8537f26a90334246e0d1d126ecda9445663e43c26e"
+  },
+  {
+    "path": "研究進捗報告/研究計画の基本となる考え方_柴崎陸.docx",
+    "role": "referenced_by_audit",
+    "exists": true,
+    "sha256": "73c087e5abd70292f6ec8064427421e5e7913a25dd0755736135c2407804f432"
+  },
+  {
+    "path": "docs/audits/2026-10-07_thesis_alignment/primary_source_extracts.md",
+    "role": "referenced_by_audit",
+    "exists": true,
+    "sha256": "cd9443cea078135ee743510891be02548baea2f4e0c9f4a8da81f03c83ce590a"
+  },
+  {
+    "path": "docs/audits/2026-10-07_thesis_alignment/primary_source_inventory.json",
+    "role": "referenced_by_audit",
+    "exists": true,
+    "sha256": "037de560e761e8297d50b269a93ed4c7ff5ec8191d2492786e57409d7cbc5247"
+  },
+  {
+    "path": "docs/notes/2026-09-19_explainability_method_selection.md",
+    "role": "referenced_by_audit",
+    "exists": true,
+    "sha256": "fce54a9cde2ba1dc2af6b40ff037d78d3ce2e5ca746581fed80d8be3a484ea2a"
+  },
+  {
+    "path": "docs/notes/2026-10-06_five_model_rationale_and_next_steps.md",
+    "role": "referenced_by_audit",
+    "exists": true,
+    "sha256": "ac13df1ea61e0e3ecca2a841301adf63e2229c087225c5d285390d69c4488b29"
+  },
+  {
+    "path": "docs/thesis/2026-10-06_main_claims_and_evaluation.md",
+    "role": "referenced_by_audit",
+    "exists": true,
+    "sha256": "dff759299cf2e6e32e6104351a46815e275baa4efa295be5ecf712cbc5f33c3c"
+  },
+  {
+    "path": "docs/research_plan/2026-05-22_after_presentation_concise.md",
+    "role": "referenced_by_audit",
+    "exists": true,
+    "sha256": "6e005a384afb27f71f02b5b5414b758548bf103c0d2a9d84062b4b637846145d"
+  },
+  {
+    "path": "docs/research_plan/2026-06-19_after_presentation.md",
+    "role": "referenced_by_audit",
+    "exists": true,
+    "sha256": "5029e7c086cc8860417c517aa03af737bfb186ece060a78102120c3457828b5d"
+  },
+  {
+    "path": "docs/research_plan/2026-08-17_noise_accuracy_reversal_investigation.md",
+    "role": "referenced_by_audit",
+    "exists": true,
+    "sha256": "26c3dcb6ac54dac2b034bca9079edb547123d38d118d3187b7bf6b431ec473f6"
+  },
+  {
+    "path": "docs/research_plan/2026-09-15_master_thesis_hypothesis.md",
+    "role": "referenced_by_audit",
+    "exists": true,
+    "sha256": "db6e05bc429a80076c6f0aff67e006a37faef9d1d702408a04a5ca0543a82e20"
+  },
+  {
+    "path": "docs/research_plan/2026-09-18_professor_discussion.md",
+    "role": "referenced_by_audit",
+    "exists": true,
+    "sha256": "ea3f013ce743c5b27305615e2e5f1f409088d81cf25f5e54713e4cb567793c9d"
+  },
+  {
+    "path": "docs/research_plan/2026-09-29_scope_chunk_length_and_tuning.md",
+    "role": "referenced_by_audit",
+    "exists": true,
+    "sha256": "6c79a8350c3d53a5072c34a16bf950e3ba1fa7d3e0bafb04b5014ab5f31e62c6"
+  },
+  {
+    "path": "docs/research_plan/2026-10-02_master_thesis_outline_and_two_week_plan.md",
+    "role": "referenced_by_audit",
+    "exists": true,
+    "sha256": "7c4a897912c81affbc1e7d2e625f8762b6e0ebd745c31d666581eb6df7e3bd4f"
+  },
+  {
+    "path": "docs/research_plan/2026-10-02_second_semester_goal_progress_and_professor_feedback_audit.md",
+    "role": "referenced_by_audit",
+    "exists": true,
+    "sha256": "c0de1ac84ff38a420fa8b16a84e6d81b475f5fe1ae60b303c8cff2b37150b672"
+  }
+]

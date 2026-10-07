@@ -1,0 +1,60 @@
+{
+  "protocol": {
+    "question": "Does fixing the original-three internal ratio cause the observed tradeoffs?",
+    "candidates": [
+      "saved_fixed_core_mse",
+      "free_core_ratio_mse"
+    ],
+    "training_predictions": "source clean OOF 1620 rows only",
+    "objective": "mean squared heat-flux error",
+    "constraints": {
+      "weight_sum": 1.0,
+      "minimum_core_total": 0.25,
+      "minimum_added_member": 0.05,
+      "minimum_core_member_fraction_of_core": 1e-06
+    },
+    "outer_labels_used_for_fit": false,
+    "noise_predictions_used_for_fit": false,
+    "checks": [
+      "all five positive",
+      "same core-total/addition/member-floor constraints",
+      "current weights are feasible",
+      "free-ratio clean OOF MSE cannot exceed current feasible MSE beyond numerical tolerance",
+      "two feasible starts agree",
+      "only saved predictions used"
+    ],
+    "interpretation": "post hoc development comparison; OOF fit score is not independent meta-validation"
+  },
+  "weights": {
+    "randomforest": 2.499999999847169e-07,
+    "conformer": 0.16881865346947209,
+    "alexnet": 0.08118109653052792,
+    "hgb": 0.26991356965172664,
+    "extra_trees": 0.4800864303482734
+  },
+  "fixed_weights": {
+    "randomforest": 0.01462038911687336,
+    "conformer": 0.178306127026322,
+    "alexnet": 0.05707348385680466,
+    "hgb": 0.2724643727432154,
+    "extra_trees": 0.47753562725678456
+  },
+  "clean_oof_fixed_mse": 811.9426175573245,
+  "fit_diagnostics": [
+    {
+      "success": true,
+      "iterations": 11,
+      "mse_kW_m2_squared": 801.9596495689442,
+      "minimum_constraint_slack": -1.5283068406868544e-17
+    },
+    {
+      "success": true,
+      "iterations": 18,
+      "mse_kW_m2_squared": 801.9596495689442,
+      "minimum_constraint_slack": 0.0
+    }
+  ],
+  "fit_outer_labels_used": false,
+  "fit_noisy_predictions_used": false,
+  "freeze_timing": "written after clean OOF fit and before noisy/outer scoring"
+}

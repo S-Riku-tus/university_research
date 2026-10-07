@@ -85,7 +85,7 @@ from utils.experiment.run_helpers import set_global_seed
 VALIDATION_CONFIG = apply_onb_defaults({
     "run": {
         "smoke_test": False,
-        "epochs": 150,
+        "epochs": 200,
         "folds": 3,
         "internal_validation_split": "chunk_kfold",  # 学習内の通常KFold、shuffle=True
         # "internal_validation_split": "wav_kfold",  # 元WAVを学習・検証で完全分離する対照、shuffle=True

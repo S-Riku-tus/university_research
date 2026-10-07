@@ -1,0 +1,44 @@
+{
+  "status": "passed",
+  "stages": [
+    {
+      "stage": "stage1",
+      "verification_sha256": "cae27e7ab6affa41c8ed1a22630e9bc5f9587ff5fec45984268cf31125e5638d"
+    },
+    {
+      "stage": "stage2",
+      "verification_sha256": "abf8c72857db1988c142e485760c18e03d60cf10444f73e3a197c3b50bd9129f"
+    },
+    {
+      "stage": "stage3",
+      "verification_sha256": "16fd53e23822c2b2e0f6a3083a7c062749633aa7967cc174cfb6c73447c250ad"
+    }
+  ],
+  "additional_model_fits": 0,
+  "additional_model_inference": 0,
+  "fixed_weight_control_is_post_hoc": true,
+  "fixed_weight_control_protocol_sha256": "6f0c2752f5fff2791a04ed3962c116cec5768f235b18018c036075c4b839de91",
+  "fixed_weight_metric_rows": 216,
+  "refitted_control_metric_rows_reproduced": 120,
+  "mse_decomposition_rows": 256,
+  "baseline_checks": [
+    {
+      "stage": "stage1",
+      "source_metric_rows_recomputed": 66,
+      "passed": true
+    },
+    {
+      "stage": "stage2",
+      "source_metric_rows_recomputed": 231,
+      "passed": true
+    },
+    {
+      "stage": "stage3",
+      "source_metric_rows_recomputed": 231,
+      "passed": true
+    }
+  ],
+  "all_16_saved_models_and_scalers_hashes_verified": true,
+  "source_models_defaults_and_original_results_preserved": true,
+  "scope": "reused development recordings; weights/parameters fitted without outer chunks; exploration after reading prior outer performance"
+}

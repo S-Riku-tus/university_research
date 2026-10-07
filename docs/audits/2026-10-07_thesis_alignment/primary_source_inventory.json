@@ -1,0 +1,89 @@
+[
+  {
+    "path": "研究進捗報告/研究計画の基本となる考え方_柴崎陸.docx",
+    "role": "planning",
+    "exists": true,
+    "sha256": "73c087e5abd70292f6ec8064427421e5e7913a25dd0755736135c2407804f432",
+    "total_paragraphs": 16,
+    "selected_paragraph_numbers": [
+      1,
+      5,
+      7,
+      8,
+      10,
+      11,
+      12,
+      13,
+      15,
+      16
+    ]
+  },
+  {
+    "path": "研究進捗報告/2026_AE＿植木研＿8125517＿柴崎陸.docx",
+    "role": "formal_plan",
+    "exists": true,
+    "sha256": "44cbfbd996cf3666da33cc8537f26a90334246e0d1d126ecda9445663e43c26e",
+    "total_paragraphs": 61,
+    "selected_paragraph_numbers": [
+      4,
+      27,
+      28,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      44,
+      59,
+      60
+    ]
+  },
+  {
+    "path": "研究進捗報告/2026/925/研究進捗報告_柴崎陸_9月25日.docx",
+    "role": "submitted_report",
+    "exists": true,
+    "sha256": "423e3c0c76d20a07d757e2d9d369389e818b284f43d11e5112741725655d98f6",
+    "total_paragraphs": 30,
+    "selected_paragraph_numbers": [
+      8,
+      9,
+      11,
+      13,
+      16,
+      17,
+      18,
+      19,
+      24,
+      26,
+      28,
+      29,
+      30
+    ]
+  },
+  {
+    "path": "研究進捗報告/2026/918（研究計画発表）/研究進捗_柴崎陸_0918.pptx",
+    "role": "presented_plan",
+    "exists": true,
+    "sha256": "029ae296efd12bb1d9bcda02a02a9e07871a57a37badf8ed47650f2cb82a413a",
+    "selected_slide_numbers": [
+      3,
+      4,
+      5,
+      8
+    ]
+  },
+  {
+    "path": "研究進捗報告/2026/724（中間発表）/研究進捗_柴崎陸_0724.pptx",
+    "role": "interim_plan",
+    "exists": true,
+    "sha256": "247322a09ce055d25a2b5ee55b3a844482da0dd7c204651122d4cd3e58879c0e",
+    "selected_slide_numbers": [
+      3,
+      4,
+      5,
+      11,
+      12
+    ]
+  }
+]

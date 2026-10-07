@@ -1,0 +1,209 @@
+{
+  "status": "passed",
+  "model_fits": 0,
+  "model_predictions": 37800,
+  "saved_models_and_weights_unchanged": true,
+  "metrics_rows": 462,
+  "checks": [
+    {
+      "noise": "clean",
+      "check": "global_power_x0p5_absolute_power_only",
+      "max_abs_difference": 3.552713678800501e-15,
+      "passed": true
+    },
+    {
+      "noise": "clean",
+      "check": "global_power_x2_absolute_power_only",
+      "max_abs_difference": 3.552713678800501e-15,
+      "passed": true
+    },
+    {
+      "noise": "clean",
+      "check": "feature34_time_invariance",
+      "max_abs_difference": 1.7763568394002505e-15,
+      "passed": true
+    },
+    {
+      "noise": "-20",
+      "check": "global_power_x0p5_absolute_power_only",
+      "max_abs_difference": 3.552713678800501e-15,
+      "passed": true
+    },
+    {
+      "noise": "-20",
+      "check": "global_power_x2_absolute_power_only",
+      "max_abs_difference": 3.552713678800501e-15,
+      "passed": true
+    },
+    {
+      "noise": "-20",
+      "check": "feature34_time_invariance",
+      "max_abs_difference": 1.7763568394002505e-15,
+      "passed": true
+    },
+    {
+      "noise": "clean",
+      "check": "randomforest_unchanged_matches_saved",
+      "max_abs_difference_W_m2": 0.0,
+      "passed": true
+    },
+    {
+      "noise": "-20",
+      "check": "randomforest_unchanged_matches_saved",
+      "max_abs_difference_W_m2": 0.0,
+      "passed": true
+    },
+    {
+      "noise": "clean",
+      "check": "conformer_unchanged_matches_saved",
+      "max_abs_difference_W_m2": 1.1368683772161603e-13,
+      "passed": true
+    },
+    {
+      "noise": "-20",
+      "check": "conformer_unchanged_matches_saved",
+      "max_abs_difference_W_m2": 0.0,
+      "passed": true
+    },
+    {
+      "noise": "clean",
+      "check": "alexnet_unchanged_matches_saved",
+      "max_abs_difference_W_m2": 0.0,
+      "passed": true
+    },
+    {
+      "noise": "-20",
+      "check": "alexnet_unchanged_matches_saved",
+      "max_abs_difference_W_m2": 0.0,
+      "passed": true
+    },
+    {
+      "noise": "clean",
+      "check": "hgb_unchanged_matches_saved",
+      "max_abs_difference_W_m2": 1.1641532182693481e-10,
+      "passed": true
+    },
+    {
+      "noise": "clean",
+      "check": "hgb_time_invariance",
+      "max_abs_difference_W_m2": 0.0,
+      "passed": true
+    },
+    {
+      "noise": "-20",
+      "check": "hgb_unchanged_matches_saved",
+      "max_abs_difference_W_m2": 1.1641532182693481e-10,
+      "passed": true
+    },
+    {
+      "noise": "-20",
+      "check": "hgb_time_invariance",
+      "max_abs_difference_W_m2": 0.0,
+      "passed": true
+    },
+    {
+      "noise": "clean",
+      "check": "extra_trees_unchanged_matches_saved",
+      "max_abs_difference_W_m2": 1.1641532182693481e-10,
+      "passed": true
+    },
+    {
+      "noise": "clean",
+      "check": "extra_trees_time_invariance",
+      "max_abs_difference_W_m2": 1.1641532182693481e-10,
+      "passed": true
+    },
+    {
+      "noise": "-20",
+      "check": "extra_trees_unchanged_matches_saved",
+      "max_abs_difference_W_m2": 2.3283064365386963e-10,
+      "passed": true
+    },
+    {
+      "noise": "-20",
+      "check": "extra_trees_time_invariance",
+      "max_abs_difference_W_m2": 1.1641532182693481e-10,
+      "passed": true
+    }
+  ],
+  "input_files": [
+    {
+      "path": "configs\\experiments\\2026-10-07_onb_input_and_integration_protocol.json",
+      "sha256": "cc4e8d1a0edec243bfea885bfa714da6fb4631dfe5b31c527ab16ae6b112ff49"
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\heatflux_no_noise\\ensemble_training_oof_fit_f1.json",
+      "sha256": "8fe9019d4d229b21b120339508eedb958966489d5ec0e5f4d7e4d44899dde3ef"
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\heatflux_no_noise\\ensemble_training_oof_f1.csv",
+      "sha256": "3fb7942f653771515c2b86df50b0998a383a8474eea1cd11c1fe03586db4965a"
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\heatflux_no_noise\\internal_validation_fold1.json",
+      "sha256": "c523f5d7092bb6c697e5b457619bf275c25cbd329a2bed00a3c564b4cd9a73ec"
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\heatflux_no_noise\\fitted_state\\fold1\\artifact_manifest.json",
+      "sha256": "d4fd8ec5cd160b1cbc07fbd6333e337296d24ef21f0b662c361470bbaeabb584"
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\heatflux_no_noise\\fitted_state\\fold1\\randomforest.joblib",
+      "sha256": "d83da55de626956756539b998d080d72f7fa041bb4682f21dbd4a6cd2a9e950e"
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\heatflux_no_noise\\fitted_state\\fold1\\conformer.weights.h5",
+      "sha256": "456ef40cfdb1ad014c305ef7b8e600bb0fe1f0434a856b7cd74bd178761bbd16"
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\heatflux_no_noise\\fitted_state\\fold1\\alexnet.weights.h5",
+      "sha256": "6d070d418c1ff80b28f94b996d9d7fb0441bc87dd03a636a7a4cb0213787039d"
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\heatflux_no_noise\\fitted_state\\fold1\\hgb.joblib",
+      "sha256": "ac4e89e1565ec112cbcdc14ad02b65a5591231372ce90d3be9b4971e07bbe68e"
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\heatflux_no_noise\\fitted_state\\fold1\\extra_trees.joblib",
+      "sha256": "8f143aa8da2012ec03d4ba8e1119b5f641ff54855be4756a033bd1dd6e30a8d2"
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\heatflux_no_noise\\fitted_state\\fold1\\pca.joblib",
+      "sha256": "464a02941a2d87188cfc7ce7430514f2a1903204b3cb432905fbf3436bf7e910"
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\heatflux_no_noise\\fitted_state\\fold1\\target_scaler.joblib",
+      "sha256": "35105fbe5dcac2708348886c2d8a18cfcb4255ffb596e3a8c205c6e2d3aedd19"
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\heatflux_no_noise\\fold_pred\\pred_f1_no_noise.csv",
+      "sha256": "ede56620159ec8155ad3fbe3c0207e02754d54b899d59013374f4c4726844032"
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\heatflux_reference_SNR=0\\fold_pred\\pred_f1_0.csv",
+      "sha256": "2eeef5a143cf5c12633c947d1e172764663b103c2879688cded017dcc420d29f"
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\heatflux_reference_SNR=-4\\fold_pred\\pred_f1_-4.csv",
+      "sha256": "9d944556f163ecba629b0bbb853bde3774552470fe1fb84a874550e619670c38"
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\heatflux_reference_SNR=-8\\fold_pred\\pred_f1_-8.csv",
+      "sha256": "18dcb5b527533c2259b6327d44cced9b72b29e4e104478598e480b59f52c0d3a"
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\heatflux_reference_SNR=-12\\fold_pred\\pred_f1_-12.csv",
+      "sha256": "6ab87e03e95d11dd515a04510805b95ab44256323d19be7d8f5c3715d268d44b"
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\heatflux_reference_SNR=-16\\fold_pred\\pred_f1_-16.csv",
+      "sha256": "4a4e958c9433854bf663f6172ec9d2c8e90426ad61a585f426d66ac3bec4db9e"
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\heatflux_reference_SNR=-20\\fold_pred\\pred_f1_-20.csv",
+      "sha256": "17dbcb96f5ed652ca17ecb46996c32e18105d34580d46915ad256909517abe80"
+    }
+  ],
+  "frequency_coordinates": "fixed approximate post-resize mapping: round(224 * Hz / 3000); same coordinates as current frequency34",
+  "scope": "fixed-model sensitivity under artificial interventions; no source identification or evidence that a band is uniquely necessary"
+}

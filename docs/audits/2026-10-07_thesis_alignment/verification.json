@@ -1,0 +1,7 @@
+{
+  "tasks": 18,
+  "local_references": 29,
+  "missing_references": [],
+  "changed_primary_sources": [],
+  "coverage": "goal-indexed audit of relevant recorded sources; not a full data/log reanalysis"
+}

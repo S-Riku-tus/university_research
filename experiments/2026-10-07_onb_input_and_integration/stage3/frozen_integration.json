@@ -1,0 +1,234 @@
+{
+  "protocol": {
+    "trigger": "unchanged clean common false negatives remain, or stages1/2 leave an unresolved absolute-power versus relative-shape explanation",
+    "question": "How does removing absolute power or relative shape change information use after clean retraining?",
+    "learners": [
+      "hgb",
+      "extra_trees"
+    ],
+    "representations": {
+      "full34_reference": "reuse current saved predictions and models",
+      "absolute_power5": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "relative_shape29": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33
+      ]
+    },
+    "fit_scope": "same clean outer-training 1620 chunks, same three saved inner splits, fold-fit-only target scaling",
+    "parameters": "current learner parameters; final random state43 and inner random states43/44/45; no tuning",
+    "expected_model_fits": 16,
+    "ensemble_contrast": "replace only HGB or only ET representation; preserve original-three predictions/ratio; fit same fixed-core MSE rule on clean OOF",
+    "outer_labels_used_for_fit_or_selection": false,
+    "checks": [
+      "training and outer identities disjoint",
+      "OOF held chunks never fitted",
+      "OOF coverage one",
+      "full34 feature implementation matches saved pipelines",
+      "persist and reload all 16 models/scalers",
+      "reload final pipelines on all 7 evaluation noises",
+      "original-five common misses and FP scored for each fixed contrast"
+    ],
+    "interpretation": "input-removal retraining within two fixed learners, not a new model-family search or independent test"
+  },
+  "contrasts": {
+    "hgb__absolute_power5": {
+      "weights": {
+        "randomforest": 0.01462038911687336,
+        "conformer": 0.178306127026322,
+        "alexnet": 0.05707348385680466,
+        "hgb": 0.05000000000000009,
+        "extra_trees": 0.7
+      },
+      "diagnostic": {
+        "core_weights": {
+          "randomforest": 0.05848155646749344,
+          "conformer": 0.713224508105288,
+          "alexnet": 0.22829393542721865
+        },
+        "block_weights": {
+          "original_three": 0.25,
+          "hgb": 0.05000000000000009,
+          "extra_trees": 0.7
+        },
+        "active_members": 5,
+        "oof_fit_rmse_w_m2": 29348.760656221042,
+        "selection_scope": "training OOF integration fit diagnostic, not outer performance",
+        "outer_labels_used": false,
+        "options": {
+          "core_keys": [
+            "randomforest",
+            "conformer",
+            "alexnet"
+          ],
+          "core_rule": "mse",
+          "core_member_floor": 1e-06,
+          "minimum_core_total": 0.25,
+          "minimum_added_member": 0.05,
+          "added_keys": [
+            "hgb",
+            "extra_trees"
+          ]
+        }
+      },
+      "replaced_member": "hgb"
+    },
+    "hgb__relative_shape29": {
+      "weights": {
+        "randomforest": 0.01462038911687336,
+        "conformer": 0.178306127026322,
+        "alexnet": 0.05707348385680466,
+        "hgb": 0.05,
+        "extra_trees": 0.7000000000000001
+      },
+      "diagnostic": {
+        "core_weights": {
+          "randomforest": 0.05848155646749344,
+          "conformer": 0.713224508105288,
+          "alexnet": 0.22829393542721865
+        },
+        "block_weights": {
+          "original_three": 0.25,
+          "hgb": 0.05,
+          "extra_trees": 0.7000000000000001
+        },
+        "active_members": 5,
+        "oof_fit_rmse_w_m2": 28861.177021784377,
+        "selection_scope": "training OOF integration fit diagnostic, not outer performance",
+        "outer_labels_used": false,
+        "options": {
+          "core_keys": [
+            "randomforest",
+            "conformer",
+            "alexnet"
+          ],
+          "core_rule": "mse",
+          "core_member_floor": 1e-06,
+          "minimum_core_total": 0.25,
+          "minimum_added_member": 0.05,
+          "added_keys": [
+            "hgb",
+            "extra_trees"
+          ]
+        }
+      },
+      "replaced_member": "hgb"
+    },
+    "extra_trees__absolute_power5": {
+      "weights": {
+        "randomforest": 0.019724237439427035,
+        "conformer": 0.24055121640455562,
+        "alexnet": 0.07699733147236947,
+        "hgb": 0.612727214683648,
+        "extra_trees": 0.05
+      },
+      "diagnostic": {
+        "core_weights": {
+          "randomforest": 0.05848155646749344,
+          "conformer": 0.713224508105288,
+          "alexnet": 0.22829393542721865
+        },
+        "block_weights": {
+          "original_three": 0.3372727853163521,
+          "hgb": 0.612727214683648,
+          "extra_trees": 0.05
+        },
+        "active_members": 5,
+        "oof_fit_rmse_w_m2": 29683.243693245364,
+        "selection_scope": "training OOF integration fit diagnostic, not outer performance",
+        "outer_labels_used": false,
+        "options": {
+          "core_keys": [
+            "randomforest",
+            "conformer",
+            "alexnet"
+          ],
+          "core_rule": "mse",
+          "core_member_floor": 1e-06,
+          "minimum_core_total": 0.25,
+          "minimum_added_member": 0.05,
+          "added_keys": [
+            "hgb",
+            "extra_trees"
+          ]
+        }
+      },
+      "replaced_member": "extra_trees"
+    },
+    "extra_trees__relative_shape29": {
+      "weights": {
+        "randomforest": 0.019721108712903675,
+        "conformer": 0.24051305934153594,
+        "alexnet": 0.0769851178902756,
+        "hgb": 0.6127807140552849,
+        "extra_trees": 0.05
+      },
+      "diagnostic": {
+        "core_weights": {
+          "randomforest": 0.05848155646749344,
+          "conformer": 0.713224508105288,
+          "alexnet": 0.22829393542721865
+        },
+        "block_weights": {
+          "original_three": 0.3372192859447152,
+          "hgb": 0.6127807140552849,
+          "extra_trees": 0.05
+        },
+        "active_members": 5,
+        "oof_fit_rmse_w_m2": 29567.09284447934,
+        "selection_scope": "training OOF integration fit diagnostic, not outer performance",
+        "outer_labels_used": false,
+        "options": {
+          "core_keys": [
+            "randomforest",
+            "conformer",
+            "alexnet"
+          ],
+          "core_rule": "mse",
+          "core_member_floor": 1e-06,
+          "minimum_core_total": 0.25,
+          "minimum_added_member": 0.05,
+          "added_keys": [
+            "hgb",
+            "extra_trees"
+          ]
+        }
+      },
+      "replaced_member": "extra_trees"
+    }
+  },
+  "freeze_timing": "all 16 clean fits and clean OOF weights frozen before outer/noise scoring",
+  "outer_labels_used_for_fit_or_selection": false
+}
