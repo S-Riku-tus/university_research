@@ -98,6 +98,25 @@ class ExperimentDayResolutionTest(unittest.TestCase):
             )
             self.assertEqual(selected.name, "waterflow_20260817_1s")
 
+    def test_missing_explicit_full_dataset_never_selects_a_preview(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            preview = root / "data" / "npy" / "waterflow_20261007_preview_1s"
+            preview.mkdir(parents=True)
+            selected = find_data_source_dir(
+                root, "2026.10.07_0.3_1",
+                {"2026.10.07_0.3_1": "waterflow_20261007_{chunk_tag}"}, "waterflow", 1,
+            )
+            self.assertEqual(selected, root / "data" / "npy" / "waterflow_20261007_1s")
+            self.assertFalse(selected.exists())
+
+    def test_unconfigured_sources_retain_legacy_discovery(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            expected = root / "data" / "npy" / "waterflow_20260817_1s"
+            expected.mkdir(parents=True)
+            self.assertEqual(find_data_source_dir(root, "day", {}, "waterflow", 1), expected)
+
 
 if __name__ == "__main__":
     unittest.main()

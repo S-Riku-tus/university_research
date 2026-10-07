@@ -1,0 +1,41 @@
+{
+    "date":  "2026-10-07",
+    "scope":  "Before reversible stage/time alignment changes",
+    "files":  [
+                  {
+                      "path":  "code/0.run_auto_heatflux_analysis_v2.ipynb",
+                      "bytes":  115307,
+                      "sha256":  "7d48e51cb287f083016f56b20b7f17d3cc9b0cfe7ccf840e24fbd6a33cf31ae0"
+                  },
+                  {
+                      "path":  "code/1.run_rename_files.ipynb",
+                      "bytes":  5322,
+                      "sha256":  "a723163478ba60ae52685c361d4269b7b9200706d86890bbab4a48edd39c945a"
+                  },
+                  {
+                      "path":  "code/2.run_npy_waterflow_2つhighpass.py",
+                      "bytes":  10757,
+                      "sha256":  "608113ad4970e0001e39fc4ade1fbf553c42b339834177a46c36647f2a291ab2"
+                  },
+                  {
+                      "path":  "code/utils/experiment/onb_thresholds.py",
+                      "bytes":  4851,
+                      "sha256":  "4a0e0bd060dc230fc5557e950b521c083a2a59e81cd8c574963956c8a38e534a"
+                  },
+                  {
+                      "path":  "code/utils/dataloading/waterflow_preprocessing.py",
+                      "bytes":  29218,
+                      "sha256":  "03b90a519c6af96760110e0fd6c2cfda53a8edbdf133a9a5880be2a3f4e6dcb5"
+                  },
+                  {
+                      "path":  "Pool_boiling/Subcooling_20_degrees/0.3/2026.10.07_0.3_1/実験結果2026.10.07_0.3_1/debug_2026.10.07_0.3_1.csv",
+                      "bytes":  176038,
+                      "sha256":  "d39ab726314920bc7b78ec4036b9db3ffb71998d3ae2d891d5fc2308810656bb"
+                  },
+                  {
+                      "path":  "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/実験結果2025.06.18_0.3_3/heat_flux_2025.06.18_0.3_3.csv",
+                      "bytes":  497,
+                      "sha256":  "4edf7d75bc2d3668e5fa39a19413f5f8b5577d8f43c9e6c63b496b09979a87be"
+                  }
+              ]
+}

@@ -1,0 +1,3 @@
+Ultrapure water T_bulk: 80.35
+intercept of nucleate_boiling prestart(R_bulk): 8.19e-02
+automatic linearity-loss candidate (not authoritative ONB): 2.76e+05

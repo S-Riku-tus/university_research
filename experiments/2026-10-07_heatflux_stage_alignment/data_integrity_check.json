@@ -1,0 +1,97 @@
+{
+  "date": "2026-10-07",
+  "files_checked": 15,
+  "all_match": true,
+  "files": [
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2026.10.07_0.3_1/録音データ/1.0V.wav",
+      "bytes": 28444748,
+      "sha256": "c7516defa737910b65c588fff0b16e13afed2355a9ef84407498b6243a1bd636",
+      "matches_recorded_original": true
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2026.10.07_0.3_1/録音データ/1.1V.wav",
+      "bytes": 23660620,
+      "sha256": "c4972389f5090332c71f9b1cd5c0a8e7d847f14aa1944ccf8539b098c48d240f",
+      "matches_recorded_original": true
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2026.10.07_0.3_1/録音データ/1.2V.wav",
+      "bytes": 23529548,
+      "sha256": "761e04c452791913f29443b2dd71b3c2809c1dba0d374df32fde8b4932f0db2b",
+      "matches_recorded_original": true
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2026.10.07_0.3_1/録音データ/1.3V.wav",
+      "bytes": 23726156,
+      "sha256": "3c6bf520a69ce732177f15f08663703127cd86034b5a40040e560ef6ea3554b8",
+      "matches_recorded_original": true
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2026.10.07_0.3_1/録音データ/1.4v.wav",
+      "bytes": 24119372,
+      "sha256": "c01fa8815b842c5b5c997ebf5ccb81e67afe6534883934eeaa660b255abf3a9b",
+      "matches_recorded_original": true
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2026.10.07_0.3_1/録音データ/1.5v.wav",
+      "bytes": 23398476,
+      "sha256": "cac4dc294f6fa7a67ab6ecd4c055017a5bc44bca45dd28bac584157c6a4a6e71",
+      "matches_recorded_original": true
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2026.10.07_0.3_1/録音データ/1.6V.wav",
+      "bytes": 24119372,
+      "sha256": "90fb6cf78a96b1201bd8edaf17805ee92e5de884c54527a85574ef55fc25ebf8",
+      "matches_recorded_original": true
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2026.10.07_0.3_1/録音データ/1.7V.wav",
+      "bytes": 23988300,
+      "sha256": "89585bfd9bac8f08d4364809ea30f121f41b862c919dae93f9ffd13d8378d7e5",
+      "matches_recorded_original": true
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2026.10.07_0.3_1/録音データ/1.8V.wav",
+      "bytes": 23660620,
+      "sha256": "4510f9e44a3d2ded894a1ee0ba697e9251ccf364370e561dfa9049e14a2007e6",
+      "matches_recorded_original": true
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2026.10.07_0.3_1/録音データ/1.9V.wav",
+      "bytes": 23988300,
+      "sha256": "3aa9f94f405c08b48d3a033f03e47fb74baca5f5d1ddc618bdfb9e4200a43199",
+      "matches_recorded_original": true
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2026.10.07_0.3_1/録音データ/2.0V.wav",
+      "bytes": 24905804,
+      "sha256": "eb2a012399950dc24d3206a15d811eff43ef7678c0531ca4ea78870a82c2234e",
+      "matches_recorded_original": true
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2026.10.07_0.3_1/raw/logger/GL860_M411L1602_2026-10-07_11-12-55.CSV",
+      "bytes": 850601,
+      "sha256": "8f7c2a41441510ea2c57815ae708564d2091bd8de3803262358dc89c8fc64afd",
+      "matches_recorded_original": true
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2026.10.07_0.3_1/raw/experiment_notes/2026-10-07_06-57-53-export.elabftw.csv",
+      "bytes": 1009,
+      "sha256": "111c85d369a45fd8928ee32817e0394c75140213297fa2ce1759d4cab36e87c9",
+      "matches_recorded_original": true
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2026.10.07_0.3_1/実験結果2026.10.07_0.3_1/debug_2026.10.07_0.3_1.csv",
+      "bytes": 176038,
+      "sha256": "d39ab726314920bc7b78ec4036b9db3ffb71998d3ae2d891d5fc2308810656bb",
+      "matches_recorded_original": true
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/実験結果2025.06.18_0.3_3/heat_flux_2025.06.18_0.3_3.csv",
+      "bytes": 497,
+      "sha256": "4edf7d75bc2d3668e5fa39a19413f5f8b5577d8f43c9e6c63b496b09979a87be",
+      "matches_recorded_original": true
+    }
+  ]
+}

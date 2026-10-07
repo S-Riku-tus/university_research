@@ -12,6 +12,8 @@ import numpy as np
 from scipy import signal
 from skimage.transform import resize
 
+from utils.calculation.heatflux_preprocessing import load_processing_config, resolve_heat_flux_csv_path
+
 
 plt.rcParams["font.family"] = "Times New Roman"
 plt.rcParams["mathtext.fontset"] = "cm"
@@ -67,11 +69,10 @@ def build_experiment_context(
 ):
     experiment_root = os.path.join(base_experiment_dir, experiment_name)
     recording_folder_path = os.path.join(experiment_root, recording_dir_name)
-    heat_flux_csv_path = os.path.join(
-        experiment_root,
-        f"実験結果{experiment_name}",
-        f"heat_flux_{experiment_name}.csv",
-    )
+    heat_flux_csv_path = str(resolve_heat_flux_csv_path(experiment_root))
+    processing_config = load_processing_config(experiment_root)
+    if processing_config and not os.path.isfile(heat_flux_csv_path):
+        raise FileNotFoundError(f'Configured heat flux CSV is missing; run heat flux preprocessing first: {heat_flux_csv_path}')
     output_name = f"waterflow_{save_date}_{chunk_label(chunk_seconds)}s"
     base_npy_save_folder_path = os.path.join(
         experiment_root,

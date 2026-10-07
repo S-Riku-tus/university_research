@@ -1,0 +1,75 @@
+{
+  "purpose": "Condition record; normal execution uses VALIDATION_CONFIG in the existing ONB entry point",
+  "status": "prepared_not_executed",
+  "entrypoint": "code/run_ensemble_regression_onb.py",
+  "experiment": "2026.10.07_0.3_1",
+  "data": {
+    "data_source_dir": "waterflow_20261007_{chunk_tag}",
+    "chunk_seconds": 1,
+    "max_freq_hz": "maxfreq=3kHz",
+    "noise_dir_names": [
+      "heatflux_no_noise",
+      "heatflux_reference_SNR=0",
+      "heatflux_reference_SNR=-4",
+      "heatflux_reference_SNR=-8",
+      "heatflux_reference_SNR=-12",
+      "heatflux_reference_SNR=-16",
+      "heatflux_reference_SNR=-20"
+    ],
+    "preprocessing_max_freq_hz": [
+      3000,
+      22050
+    ],
+    "preview_is_training_data": false,
+    "preprocessing_noise_setting": "Currently clean only; align with ONB conditions before running"
+  },
+  "learning_policy": {
+    "active_evaluation_mode": "within_wav_chunk",
+    "within_wav_chunk": {
+      "experiment": "2026.10.07_0.3_1",
+      "test_fraction": 0.25,
+      "test_split_seed": 42
+    },
+    "cross_day_option": {
+      "train_experiments": [
+        "2025.06.11_0.3_2",
+        "2025.06.18_0.3_3"
+      ],
+      "test_experiments": [
+        "2026.10.07_0.3_1"
+      ]
+    },
+    "training_noise": "clean_only"
+  },
+  "run": {
+    "epochs": 200,
+    "folds": 3,
+    "internal_validation_split": "chunk_kfold",
+    "random_seed": 42,
+    "enabled_model_keys": [
+      "randomforest",
+      "conformer",
+      "alexnet",
+      "hgb",
+      "extra_trees"
+    ]
+  },
+  "onb": {
+    "applied_voltage_v": 1.2,
+    "source": "eLabFTW experiment notes for 2026-10-07",
+    "heat_flux_unit": "W/m2",
+    "resolution": "Read exact q at volt=1.2V from the computed heat_flux CSV; do not estimate a numerical threshold",
+    "missing_or_invalid_label_behavior": "Stop before training"
+  },
+  "output": {
+    "save_fitted_artifacts": true,
+    "verify_reloaded_artifacts": true,
+    "report_source_day_metrics": true,
+    "main_comparison_report": false,
+    "main_comparison_reason": "The old fixed 36-WAV/seven-noise protocol does not describe this experiment"
+  },
+  "heatflux_processing_config": "configs/datasets/2026.10.07_0.3_1_heatflux_processing.json",
+  "heatflux_validation_record": "experiments/2026-10-07_heatflux_stage_alignment/README.md",
+  "heatflux_result_layout_record": "experiments/2026-10-07_heatflux_result_layout/README.md",
+  "heatflux_status": "User generated labels; established hierarchy restored; calculation and downstream references verified"
+}

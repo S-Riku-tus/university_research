@@ -28,8 +28,9 @@ def find_data_source_dir(
         # 主configではchunk_secondsだけの変更で0.5s/1sを切り替えられる。
         configured = str(configured).replace("{chunk_tag}", chunk_tag(chunk_seconds))
         configured_path = npy_root / configured
-        if configured_path.is_dir():
-            return configured_path
+        # 明示された本データが未生成でも、そのパスを返して欠損を報告する。
+        # 別タグのpreviewや旧条件へ自動フォールバックしない。
+        return configured_path
 
     candidates = sorted(npy_root.glob(f"{noise_source_prefix}_*_{chunk_tag(chunk_seconds)}"))
     if not candidates:

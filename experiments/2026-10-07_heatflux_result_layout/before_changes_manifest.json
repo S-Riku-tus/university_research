@@ -1,0 +1,91 @@
+{
+  "date": "2026-10-07",
+  "files": [
+    {
+      "path": "code/0.run_auto_heatflux_analysis_v2.ipynb",
+      "sha256": "814617cc6090cc1502311f3aeca800573d046a21d009502bb04fe1c8b7ccf886",
+      "bytes": 261553
+    },
+    {
+      "path": "code/utils/calculation/heatflux_preprocessing.py",
+      "sha256": "3442affd8d20bbef32e260250c6e50445f111174cb7610608f38d8e01fbfac25",
+      "bytes": 11198
+    },
+    {
+      "path": "code/utils/dataloading/waterflow_preprocessing.py",
+      "sha256": "afc787b46625629e179fdf5f2ccd55d76476146a145c7f92d28a683a6c51bc93",
+      "bytes": 29526
+    },
+    {
+      "path": "configs/datasets/2026.10.07_0.3_1_heatflux_processing.json",
+      "sha256": "f825e540d3b6ee8589e5639f7171a68a6f24a2fb154ce52592ba9dda97aa2cfd",
+      "bytes": 1172
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2026.10.07_0.3_1/実験結果2026.10.07_0.3_1/stage_time_v1_20261007/2026.10.07_0.3_1_automatic_linearity_diagnostic.txt",
+      "relative_result_path": "2026.10.07_0.3_1_automatic_linearity_diagnostic.txt",
+      "sha256": "b07c4db8c70b73bd81da831f973794c96af32f24ed6164d8a4c2f690ad2817df",
+      "bytes": 159
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2026.10.07_0.3_1/実験結果2026.10.07_0.3_1/stage_time_v1_20261007/detected_stage_boundaries.csv",
+      "relative_result_path": "detected_stage_boundaries.csv",
+      "sha256": "c63754170b287e5a9ee38f7600d6a9ea57964b702233b421758e20ea1a5b09a2",
+      "bytes": 490
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2026.10.07_0.3_1/実験結果2026.10.07_0.3_1/stage_time_v1_20261007/heat_flux_2026.10.07_0.3_1.csv",
+      "relative_result_path": "heat_flux_2026.10.07_0.3_1.csv",
+      "sha256": "ef300f8f90e8b744edfe878693eda85770a988785b0e89a8a36041246f3343ba",
+      "bytes": 712
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2026.10.07_0.3_1/実験結果2026.10.07_0.3_1/stage_time_v1_20261007/joint_stable_regions_2026.10.07_0.3_1.csv",
+      "relative_result_path": "joint_stable_regions_2026.10.07_0.3_1.csv",
+      "sha256": "f9c131baacc0991864f98b2f2445a80a142fe8cbd521e1e8a77e6e917648c3c6",
+      "bytes": 7987
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2026.10.07_0.3_1/実験結果2026.10.07_0.3_1/stage_time_v1_20261007/processing_provenance.json",
+      "relative_result_path": "processing_provenance.json",
+      "sha256": "2259b748c7791c04707e23e3196176a2c9934854612ade76c671f3280dd610a7",
+      "bytes": 2558
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2026.10.07_0.3_1/実験結果2026.10.07_0.3_1/stage_time_v1_20261007/stable_interval_candidates.csv",
+      "relative_result_path": "stable_interval_candidates.csv",
+      "sha256": "e66247db4c082c0f9b441106d90d9d879d27c772bab2519fce753b97c7e4e145",
+      "bytes": 684
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2026.10.07_0.3_1/実験結果2026.10.07_0.3_1/stage_time_v1_20261007/T_Reso_2026.10.07_0.3_1.csv",
+      "relative_result_path": "T_Reso_2026.10.07_0.3_1.csv",
+      "sha256": "fcfc991f95d90872dc8da1d6d46d46223cc589cd505067341e51cfe5ef579936",
+      "bytes": 2105
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2026.10.07_0.3_1/実験結果2026.10.07_0.3_1/stage_time_v1_20261007/Volt_T_2026.10.07_0.3_1.csv",
+      "relative_result_path": "Volt_T_2026.10.07_0.3_1.csv",
+      "sha256": "e6799d0a9050b4bbcd39ceb2199669367273565522feef442cbc823ac0378f12",
+      "bytes": 250
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2026.10.07_0.3_1/実験結果2026.10.07_0.3_1/stage_time_v1_20261007/非沸騰領域のグラフ/2026.10.07_0.3_1.png",
+      "relative_result_path": "非沸騰領域のグラフ/2026.10.07_0.3_1.png",
+      "sha256": "bcc131926229eabecdf1af62e0ba943c076aa9b83b9adff32f770f245ebe149d",
+      "bytes": 36765
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2026.10.07_0.3_1/実験結果2026.10.07_0.3_1/stage_time_v1_20261007/非沸騰領域のグラフ/核沸騰伝熱特性の相関式との比較.png",
+      "relative_result_path": "非沸騰領域のグラフ/核沸騰伝熱特性の相関式との比較.png",
+      "sha256": "bcc131926229eabecdf1af62e0ba943c076aa9b83b9adff32f770f245ebe149d",
+      "bytes": 36765
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2026.10.07_0.3_1/実験結果2026.10.07_0.3_1/stage_time_v1_20261007/非沸騰領域のグラフ/非沸騰領域.png",
+      "relative_result_path": "非沸騰領域のグラフ/非沸騰領域.png",
+      "sha256": "aa75e8673eb13ab6ea85f679f4a1dbc91e97838c895a4f84ffa99efd1614673b",
+      "bytes": 45345
+    }
+  ]
+}

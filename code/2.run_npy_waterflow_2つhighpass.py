@@ -26,8 +26,8 @@ from utils.dataloading.waterflow_preprocessing import (
 SAVE_DATE = 20261007
 RANDOM_SEED = 42
 
-MAX_FREQ_HZ = [22050]  # Other existing choices: 3000, 5000, 10000, 15000.
-CHUNK_SECONDS_LIST = [1]
+MAX_FREQ_HZ = [3000, 22050]  # 3 kHz for the current ONB models; 22.05 kHz for comparison.
+CHUNK_SECONDS_LIST = [0.5, 1]
 REFERENCE_SNR_DB = [None]  # Clean first; noise conditions can be configured later.
 MAX_CHUNKS_PER_SOURCE = None  # Set 1 for a preview, with a separate SAVE_DATE tag.
 

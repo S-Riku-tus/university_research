@@ -120,6 +120,7 @@ VALIDATION_CONFIG = apply_onb_defaults({
             "2025.06.18_0.3_3": "waterflow_20260817_{chunk_tag}",
             "2025.06.11_0.3_2_6.18_0.3_3": "waterflow_20260817_{chunk_tag}",
             "2025.07.09_0.3_1": "waterflow_20260817_{chunk_tag}",
+            "2026.10.07_0.3_1": "waterflow_20261007_{chunk_tag}",
         },
     },
     "learning_policy": {
@@ -131,13 +132,14 @@ VALIDATION_CONFIG = apply_onb_defaults({
             #   2025.06.18_0.3_3
             #   2025.07.09_0.3_1
             #   2025.06.11_0.3_2_6.18_0.3_3
+            #   2026.10.07_0.3_1
             "cross_day": {
-                "train_experiments": ["2025.06.11_0.3_2"],
-                "test_experiments": ["2025.06.18_0.3_3"],
+                "train_experiments": ["2025.06.11_0.3_2", "2025.06.18_0.3_3"],
+                "test_experiments": ["2026.10.07_0.3_1"],
             },
             "within_wav_chunk": {
                 # 1実験フォルダ内の全WAVが、学習側とテスト側の両方に入る。
-                "experiment": "2025.06.11_0.3_2_6.18_0.3_3",
+                "experiment": "2026.10.07_0.3_1",
                 "test_fraction": 0.25,  # 各WAVのchunk数の25%をテスト専用にする。
                 "test_split_seed": 42,
             },
@@ -147,7 +149,7 @@ VALIDATION_CONFIG = apply_onb_defaults({
         # clean_only: 無雑音だけで学習し、同じモデル・前処理・重みで
         #             全評価ノイズを予測する固定clean診断。
         # 評価ノイズ一覧から無雑音を外しても、学習には無雑音を読み込む。
-        "training_noise": "clean_only",  # chunk内部検証への変更だけを比べる主条件
+        "training_noise": "clean_only",
     },
     "acoustic_selection": {
         # スペクトルの縦軸に引く横線。図の「×10^-9」表示で高さ1に相当。
@@ -159,8 +161,11 @@ VALIDATION_CONFIG = apply_onb_defaults({
     "thresholds": {
         # ONBと確認された最初の測定点の熱流束と、その出典を一元管理する。
         # ONB直前の測定点を誤って閾値に使わないようにする。
-        "by_experiment": onb_threshold_by_experiment(),
-        "provenance_by_experiment": onb_threshold_provenance_by_experiment(),
+        # 今回はノートの沸騰開始1.2 Vに対応する、計算済みCSVのq[W/m²]を読む。
+        # CSV未生成ならNoneのまま、学習前に停止する。値を推定・流用しない。
+        "by_experiment": onb_threshold_by_experiment(csv_experiments=["2026.10.07_0.3_1"]),
+        "provenance_by_experiment": onb_threshold_provenance_by_experiment(
+            csv_experiments=["2026.10.07_0.3_1"]),
         "require_experiment_threshold": True,
         "onb_band_frac": 0.10,
         "report_source_day_metrics": True,  # 統合日の平均閾値評価と日別閾値評価を両方保存。
@@ -247,8 +252,9 @@ VALIDATION_CONFIG = apply_onb_defaults({
         "save_fitted_artifacts": True,
         # "save_fitted_artifacts": False,  # 予測だけを残す従来の軽量保存
         "verify_reloaded_artifacts": True,
-        "verify_reloaded_evaluation_predictions": True,  # 全5モデル×全7条件の評価540予測を再読込で照合。
-        "main_comparison_report": True,  # clean_only通常runの終了時に日別主表・重み・検算をまとめる。
+        "verify_reloaded_evaluation_predictions": True,  # 全有効モデル・条件の評価予測を再読込で照合。
+        # 旧36 WAV・全7条件専用の固定プロトコル。今回の日の通常指標は別途保存される。
+        "main_comparison_report": False,
         "main_comparison_protocol": "configs/experiments/2026-10-06_onb_main_comparison_protocol.json",
     },
     "explainability": {
@@ -576,10 +582,23 @@ def validate_validation_config(enabled_specs):
             if THRESHOLD_BY_EXPERIMENT.get(name) is None
         ]
         if missing_thresholds:
+            pending_sources = {
+                name: THRESHOLD_PROVENANCE_BY_EXPERIMENT.get(name, {}).get("heat_flux_csv")
+                for name in missing_thresholds
+            }
             raise ValueError(
                 "Missing ONB threshold for experiments: "
-                f"{missing_thresholds}. Add them to VALIDATION_CONFIG['thresholds']['by_experiment']."
+                f"{missing_thresholds}. Generate and review the heat flux CSV for the "
+                f"recorded ONB voltage, or set VALIDATION_CONFIG['thresholds']['by_experiment']. "
+                f"Pending CSV sources: {pending_sources}"
             )
+        invalid_thresholds = [
+            name for name in EXPERIMENT_DIR_NAMES
+            if not np.isfinite(float(THRESHOLD_BY_EXPERIMENT[name]))
+            or float(THRESHOLD_BY_EXPERIMENT[name]) <= 0
+        ]
+        if invalid_thresholds:
+            raise ValueError(f"ONB thresholds must be finite positive W/m²: {invalid_thresholds}")
 
     if EXPLAINABILITY_ENABLED:
         requested_models = set(EXPLAINABILITY_CONFIG.get("model_keys") or model_keys)

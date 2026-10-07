@@ -1,0 +1,60 @@
+[
+  {
+    "experiment": "2026.10.07_0.3_1",
+    "window_seconds": 15.0,
+    "status": "complete",
+    "stage_count": 21,
+    "min_coverage_fraction": 0.5167464114832536,
+    "max_selected_vs_full_pct": 2.1248328356413215,
+    "max_product_definition_difference_pct": 0.0007050996949309329,
+    "logger_sha256": "8f7c2a41441510ea2c57815ae708564d2091bd8de3803262358dc89c8fc64afd",
+    "q_at_observed_onb_1p2v_w_m2": 329639.9080604293,
+    "max_delta_vs_35s_pct": 0.22097913202691055
+  },
+  {
+    "experiment": "2026.10.07_0.3_1",
+    "window_seconds": 35.0,
+    "status": "complete",
+    "stage_count": 21,
+    "min_coverage_fraction": 0.5167464114832536,
+    "max_selected_vs_full_pct": 2.1248328356413215,
+    "max_product_definition_difference_pct": 0.0005117785586983281,
+    "logger_sha256": "8f7c2a41441510ea2c57815ae708564d2091bd8de3803262358dc89c8fc64afd",
+    "q_at_observed_onb_1p2v_w_m2": 330369.9567232741,
+    "max_delta_vs_35s_pct": null
+  },
+  {
+    "experiment": "2026.10.07_0.3_1",
+    "window_seconds": 55.0,
+    "status": "no_valid_result",
+    "reason": "No joint stable interval at 1.1 V for 55 s; inspect stage 5939..6103"
+  },
+  {
+    "experiment": "2025.06.18_0.3_3",
+    "window_seconds": 15.0,
+    "status": "complete",
+    "stage_count": 18,
+    "min_coverage_fraction": 0.5882352941176471,
+    "max_selected_vs_full_pct": 0.8530627601963658,
+    "max_product_definition_difference_pct": 0.0004267340730779168,
+    "logger_sha256": "0f01ec965effe71a6d96db5677665e5160c130bb2ffea10a19d3b5bb52bc4139",
+    "max_delta_from_old_pct": 0.23989551368504003
+  },
+  {
+    "experiment": "2025.06.18_0.3_3",
+    "window_seconds": 35.0,
+    "status": "complete",
+    "stage_count": 18,
+    "min_coverage_fraction": 0.7058823529411765,
+    "max_selected_vs_full_pct": 0.8530627601963658,
+    "max_product_definition_difference_pct": 0.0005226161296723042,
+    "logger_sha256": "0f01ec965effe71a6d96db5677665e5160c130bb2ffea10a19d3b5bb52bc4139",
+    "max_delta_from_old_pct": 0.15809704954010684
+  },
+  {
+    "experiment": "2025.06.18_0.3_3",
+    "window_seconds": 55.0,
+    "status": "no_valid_result",
+    "reason": "No joint stable interval at 0 V for 55 s; inspect stage 963..973"
+  }
+]

@@ -1,0 +1,180 @@
+{
+  "date": "2026-10-07",
+  "output_layout": "established hierarchy",
+  "heat_flux_csv": "Pool_boiling/Subcooling_20_degrees/0.3/2026.10.07_0.3_1/実験結果2026.10.07_0.3_1/heat_flux_2026.10.07_0.3_1.csv",
+  "user_executed_cells": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11
+  ],
+  "notebook_saved_errors": 0,
+  "csv_stage_count": 21,
+  "matched_recording_count": 11,
+  "max_recomputed_q_abs_difference_w_m2": 1.1641532182693481e-10,
+  "thermal_outputs_match_separate_notebook_validation": true,
+  "onb_observed_voltage_v": 1.2,
+  "onb_threshold_w_m2": 330369.956723274,
+  "rename_stft_onb_csv_paths_match": true,
+  "onb_entrypoint_config_validation_passed": true,
+  "moved_results_unchanged": [
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2026.10.07_0.3_1/実験結果2026.10.07_0.3_1/2026.10.07_0.3_1_automatic_linearity_diagnostic.txt",
+      "sha256": "b07c4db8c70b73bd81da831f973794c96af32f24ed6164d8a4c2f690ad2817df",
+      "unchanged": true
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2026.10.07_0.3_1/実験結果2026.10.07_0.3_1/detected_stage_boundaries.csv",
+      "sha256": "c63754170b287e5a9ee38f7600d6a9ea57964b702233b421758e20ea1a5b09a2",
+      "unchanged": true
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2026.10.07_0.3_1/実験結果2026.10.07_0.3_1/heat_flux_2026.10.07_0.3_1.csv",
+      "sha256": "ef300f8f90e8b744edfe878693eda85770a988785b0e89a8a36041246f3343ba",
+      "unchanged": true
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2026.10.07_0.3_1/実験結果2026.10.07_0.3_1/joint_stable_regions_2026.10.07_0.3_1.csv",
+      "sha256": "f9c131baacc0991864f98b2f2445a80a142fe8cbd521e1e8a77e6e917648c3c6",
+      "unchanged": true
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2026.10.07_0.3_1/実験結果2026.10.07_0.3_1/processing_provenance.json",
+      "sha256": "2259b748c7791c04707e23e3196176a2c9934854612ade76c671f3280dd610a7",
+      "unchanged": true
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2026.10.07_0.3_1/実験結果2026.10.07_0.3_1/stable_interval_candidates.csv",
+      "sha256": "e66247db4c082c0f9b441106d90d9d879d27c772bab2519fce753b97c7e4e145",
+      "unchanged": true
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2026.10.07_0.3_1/実験結果2026.10.07_0.3_1/T_Reso_2026.10.07_0.3_1.csv",
+      "sha256": "fcfc991f95d90872dc8da1d6d46d46223cc589cd505067341e51cfe5ef579936",
+      "unchanged": true
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2026.10.07_0.3_1/実験結果2026.10.07_0.3_1/Volt_T_2026.10.07_0.3_1.csv",
+      "sha256": "e6799d0a9050b4bbcd39ceb2199669367273565522feef442cbc823ac0378f12",
+      "unchanged": true
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2026.10.07_0.3_1/実験結果2026.10.07_0.3_1/非沸騰領域のグラフ/2026.10.07_0.3_1.png",
+      "sha256": "bcc131926229eabecdf1af62e0ba943c076aa9b83b9adff32f770f245ebe149d",
+      "unchanged": true
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2026.10.07_0.3_1/実験結果2026.10.07_0.3_1/非沸騰領域のグラフ/核沸騰伝熱特性の相関式との比較.png",
+      "sha256": "bcc131926229eabecdf1af62e0ba943c076aa9b83b9adff32f770f245ebe149d",
+      "unchanged": true
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2026.10.07_0.3_1/実験結果2026.10.07_0.3_1/非沸騰領域のグラフ/非沸騰領域.png",
+      "sha256": "aa75e8673eb13ab6ea85f679f4a1dbc91e97838c895a4f84ffa99efd1614673b",
+      "unchanged": true
+    }
+  ],
+  "original_and_previous_results_sha256_match": true,
+  "temperature_decreases_observed": [
+    {
+      "from_volt": "0.1V",
+      "to_volt": "0.2V",
+      "from_c": 82.2,
+      "to_c": 80.5
+    },
+    {
+      "from_volt": "1.1V",
+      "to_volt": "1.2V",
+      "from_c": 113.7,
+      "to_c": 110.3
+    }
+  ],
+  "selected_vs_full_stage_resistance_check": [
+    {
+      "volt": 1.1,
+      "selected_wire_resistance_ohm": 0.08984778839554436,
+      "full_stage_wire_resistance_ohm": 0.08949350329327671
+    },
+    {
+      "volt": 1.2,
+      "selected_wire_resistance_ohm": 0.08903769365828836,
+      "full_stage_wire_resistance_ohm": 0.08953285322904898
+    }
+  ],
+  "physical_validation_note": "Successful execution and numeric consistency do not establish actual shunt resistance or WAV/logger synchronization.",
+  "wav_mapping": [
+    {
+      "recording_voltage": "1.0V",
+      "csv_row": 11,
+      "copied_filename": "index=11.233222.wav",
+      "q_w_m2": 233222.09885016416
+    },
+    {
+      "recording_voltage": "1.1V",
+      "csv_row": 12,
+      "copied_filename": "index=12.275717.wav",
+      "q_w_m2": 275717.86016768526
+    },
+    {
+      "recording_voltage": "1.2V",
+      "csv_row": 13,
+      "copied_filename": "index=13.330369.wav",
+      "q_w_m2": 330369.956723274
+    },
+    {
+      "recording_voltage": "1.3V",
+      "csv_row": 14,
+      "copied_filename": "index=14.384952.wav",
+      "q_w_m2": 384952.0326108895
+    },
+    {
+      "recording_voltage": "1.4V",
+      "csv_row": 15,
+      "copied_filename": "index=15.443576.wav",
+      "q_w_m2": 443576.737728866
+    },
+    {
+      "recording_voltage": "1.5V",
+      "csv_row": 16,
+      "copied_filename": "index=16.507382.wav",
+      "q_w_m2": 507382.79587825015
+    },
+    {
+      "recording_voltage": "1.6V",
+      "csv_row": 17,
+      "copied_filename": "index=17.577179.wav",
+      "q_w_m2": 577179.8051447601
+    },
+    {
+      "recording_voltage": "1.7V",
+      "csv_row": 18,
+      "copied_filename": "index=18.650145.wav",
+      "q_w_m2": 650145.3628196109
+    },
+    {
+      "recording_voltage": "1.8V",
+      "csv_row": 19,
+      "copied_filename": "index=19.727988.wav",
+      "q_w_m2": 727988.2493419284
+    },
+    {
+      "recording_voltage": "1.9V",
+      "csv_row": 20,
+      "copied_filename": "index=20.810650.wav",
+      "q_w_m2": 810650.4349683783
+    },
+    {
+      "recording_voltage": "2.0V",
+      "csv_row": 21,
+      "copied_filename": "index=21.897794.wav",
+      "q_w_m2": 897794.4890244651
+    }
+  ]
+}
