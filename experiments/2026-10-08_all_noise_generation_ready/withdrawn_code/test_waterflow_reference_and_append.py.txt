@@ -1,0 +1,97 @@
+import csv
+import importlib.util
+import json
+from pathlib import Path
+import sys
+import tempfile
+import unittest
+from unittest.mock import patch
+
+import numpy as np
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "code"))
+from utils.dataloading.waterflow_preprocessing import save_spectrogram_chunks_with_snr
+from utils.experiment.run_helpers import open_text, windows_long_path
+
+spec = importlib.util.spec_from_file_location("noise_generation_entry", ROOT / "code/2.run_npy_waterflow_2つhighpass.py")
+entry = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(entry)
+
+
+def reference_manifest(rms):
+    return {"noise": {"scaling_mode": "fixed_global_rms", "fixed_reference_signal_rms": rms},
+        "highpass_filter": {"fp_hz": 500, "fs_hz": 400, "gpass_db": 1, "gstop_db": 40}}
+
+
+class ReferenceAndAppendTest(unittest.TestCase):
+    def test_old_reference_is_shared_without_estimating_test_day(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            paths = [Path(temporary) / "train_day.json", Path(temporary) / "other_day.json"]
+            for path in paths:
+                path.write_text(json.dumps(reference_manifest(.5)), encoding="utf-8")
+            with patch.object(entry, "REFERENCE_RMS_MANIFEST_PATHS", [str(path) for path in paths]), patch.object(entry, "_estimate_global_reference_rms", side_effect=AssertionError("test-day signal must not determine noise level")):
+                rms, measurements, records, provenance = entry._resolve_reference_rms(["unseen.wav"])
+            self.assertEqual(rms, .5)
+            self.assertEqual(measurements, {})
+            self.assertEqual(len(records), 2)
+            self.assertTrue(all(len(record["sha256"]) == 64 for record in records))
+            self.assertIn("copied", provenance)
+
+    def test_inconsistent_or_invalid_reference_is_rejected(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            first, second = Path(temporary) / "a.json", Path(temporary) / "b.json"
+            first.write_text(json.dumps(reference_manifest(.5)), encoding="utf-8")
+            for changed in [reference_manifest(.6), reference_manifest(0), reference_manifest(float("nan")),
+                {**reference_manifest(.5), "highpass_filter": {"fp_hz": 100}}]:
+                with self.subTest(reference=changed):
+                    second.write_text(json.dumps(changed), encoding="utf-8")
+                    with patch.object(entry, "REFERENCE_RMS_MANIFEST_PATHS", [str(first), str(second)]):
+                        with self.assertRaises(ValueError):
+                            entry._resolve_reference_rms([])
+
+    def test_append_all_levels_preserves_clean_and_condition_provenance(self):
+        with tempfile.TemporaryDirectory(dir=windows_long_path(tempfile.gettempdir())) as temporary:
+            base = Path(temporary) / ("long_generation_path_" * 8)
+            context = {"experiment_name": "new_day", "folder_path": str(base / "wav"),
+                "waterflow_path": str(base / "noise.wav"), "heat_flux_csv_path": str(base / "q.csv"),
+                "heat_flux_label_by_index": {}, "base_npy_save_folder_path": str(base / "npy"),
+                "base_png_save_folder_path": str(base / "png"), "save_date": 20261007,
+                "script_path": str(ROOT / "code/2.run_npy_waterflow_2つhighpass.py")}
+            config = {**entry.PREPROCESS_CONFIG, "sample_number": 2, "audio_samples_used": 8,
+                "save_spectrogram_png": False, "fixed_reference_signal_rms": 2.0}
+            source = str(base / "index=1.123.wav")
+            signal, noise = np.linspace(.1, .8, 8), np.linspace(.1, 6.4, 64)
+            arguments = dict(file_path=source, max_freq_hz=3000, chunk_seconds=8/44100,
+                context=context, prefiltered_signal=signal, prefiltered_waterflow_noise=noise)
+            save_spectrogram_chunks_with_snr(**arguments, config=config, snr_db=[None])
+            parent = base / "npy/maxfreq=3kHz"
+            clean_file = next((parent / "heatflux_no_noise").glob("*.npy"))
+            watched = [clean_file, parent / "heatflux_no_noise/chunk_manifest.csv", parent / "preprocess_manifest.json"]
+            before = []
+            for path in watched:
+                with open(windows_long_path(path), "rb") as file:
+                    before.append(file.read())
+            noisy_config = {**config, "fixed_reference_signal_rms": .5}
+            save_spectrogram_chunks_with_snr(**arguments, config=noisy_config, snr_db=[0, -4, -8, -12, -16, -20])
+            # A second source must upsert, including when the CSV's path exceeds 260 characters.
+            save_spectrogram_chunks_with_snr(**{**arguments, "file_path": str(base / "index=2.456.wav"), "prefiltered_signal": signal*3}, config=noisy_config, snr_db=[0, -4, -8, -12, -16, -20])
+            for path, expected in zip(watched, before):
+                with open(windows_long_path(path), "rb") as file:
+                    self.assertEqual(file.read(), expected)
+            for level in [0, -4, -8, -12, -16, -20]:
+                directory = parent / f"heatflux_reference_SNR={level}"
+                with open_text(directory / "chunk_manifest.csv", "r", encoding="utf-8", newline="") as file:
+                    rows = list(csv.DictReader(file))
+                self.assertEqual(len(rows), 2)
+                self.assertEqual(rows[0]["noise_seed"], rows[1]["noise_seed"])
+                for row in rows:
+                    self.assertAlmostEqual(float(row["scaled_noise_chunk_power"]), .25 * 10**(-level/10))
+                with open_text(directory / "preprocess_manifest.json", "r", encoding="utf-8") as file:
+                    meta = json.load(file)
+                self.assertEqual(meta["noise"]["snr_list_db"], [level])
+                self.assertEqual(meta["noise"]["fixed_reference_signal_rms"], .5)
+
+
+if __name__ == "__main__":
+    unittest.main()

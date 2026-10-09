@@ -1,5 +1,11 @@
 # 2026-10-07 新実験を従来コードで処理する手順
 
+**10/9・全入力の生成完了を確認**：[本人実行後の完了記録](../experiments/2026-10-09_new_experiment_generation_audit/verification.json)。5帯域・両時間長・無雑音＋6雑音の全70条件、NPY/PNG各69300が揃った。全件対応/ラベル/雑音記録、内容630組と元WAV再計算24例を確認。下段の未生成・生成予定は当時の状態で、入力の再生成は不要。次は別日適用の条件を整える。
+
+**10/8本人指示・追加実装を撤回**：旧RMSのmanifest継承・保存保護等を元に戻し、SNRリストの変更だけで無雑音＋6雑音を生成する従来処理へ戻した。現在は下段3節の7条件設定を使う。過去の旧基準継承・条件別manifest保存の案内は現行要件ではない。
+
+**10/8出力確認**：[本人生成のNPY/PNGを検算](../experiments/2026-10-08_new_experiment_input_audit/README.md)。0.5/1秒×3/22.05 kHz、各3960出力済み、主1秒3 kHz660。元WAV3例の再計算一致、全形式・ラベル・manifest/PNG対応を確認した。モデル性能は未検証。以下の「空フォルダ」「音響生成未実行」は準備当時の状態で、生成済み原出力を再作成しない。現在の次工程は[10/8本人方針](research_plan/2026-10-08_user_direction_and_next_steps.md)を参照する。
+
 対象：`Pool_boiling/Subcooling_20_degrees/0.3/2026.10.07_0.3_1`。
 
 本人の希望に合わせ、**従来の3つの入口を使う**。今回専用の実行コードは撤去した。10/7の追加修正では、熱流束・温度等を別の検証フォルダで計算して比較済み。原録音のコピー/改名・音響生成・モデル学習は実行していない。[修正と比較記録](../experiments/2026-10-07_heatflux_stage_alignment/README.md)。
@@ -92,21 +98,21 @@ GL860はCH1水温、CH2シャント[mV]、CH3電極電圧[V]を読み、CH2を10
 SAVE_DATE = 20261007
 EXPERIMENT_NAMES = ["2026.10.07_0.3_1"]
 RECORDING_DIR_NAME = "録音データ_熱流束"
-MAX_FREQ_HZ = [3000, 22050]
-CHUNK_SECONDS_LIST = [1]
-REFERENCE_SNR_DB = [None]
+MAX_FREQ_HZ = [3000, 5000, 10000, 15000, 22050]
+CHUNK_SECONDS_LIST = [0.5, 1]
+REFERENCE_SNR_DB = [None, 0, -4, -8, -12, -16, -20]
 MAX_CHUNKS_PER_SOURCE = None
 ```
 
-少量確認では同じファイルの`SAVE_DATE = "20261007_preview"`、`MAX_CHUNKS_PER_SOURCE = 1`へ変更し、研究ルートのPowerShellから実行する。
+**本人指定どおり、従来処理のSNRリストを変更**。既存cleanは生成済みだが、`None`を含めた現在の設定では無雑音と6雑音を同じ実行で生成する。既存cleanを再生成しない場合は`None`を外す。追加した旧日のRMS継承・保存保護等は撤回した。[変更の記録](../experiments/2026-10-08_all_noise_generation_ready/README.md)。
 
 ```powershell
 python "code/2.run_npy_waterflow_2つhighpass.py"
 ```
 
-各WAVの最初の1秒、各周波数11 NPYと11 PNG、2周波数合計22個ずつを生成する設定。確認後、`SAVE_DATE = 20261007`、`MAX_CHUNKS_PER_SOURCE = None`へ戻し、同じコマンドで全生成する。プレビューと全生成はそれぞれ`waterflow_20261007_preview_1s`、`waterflow_20261007_1s`へ保存する。
+現在の設定のまま実行すると、本保存先へ0.5秒/1秒・5帯域・無雑音＋6雑音のNPY/PNG各69,300個を生成する。同じタグの既存出力には書き込む。全生成はまだAI側で実行していない。撤回後の従来生成/雑音診断の関連7テストが通った。
 
-既定は先頭60秒、1秒chunk、500 Hz高域通過、3 kHzと22.05 kHz、無雑音。各周波数660 NPYと660 PNG、2周波数合計1320個ずつの予定。現行5モデルONBは3 kHzを使用するため、3 kHzを前処理へ追加した。既存処理の44.1 kHzへのリサンプリング、224×224、float32、時間×周波数の線形powerを使う。原録音は192 kHzのまま保持する。切り出す範囲を変える場合は本人の音響処理で調整する。
+既定は先頭60秒、0.5秒/1秒chunk、500 Hz高域通過、全5帯域・7条件。各帯域・各条件で0.5秒1320/1秒660ずつ。現行5モデルONBは1秒3 kHzを使用する。44.1 kHzへのリサンプリング、224×224、float32、時間×周波数の線形powerは維持する。原録音は192 kHzのまま保持する。
 
 ```text
 data/npy/waterflow_20261007_1s/maxfreq=3kHz/heatflux_no_noise/
@@ -114,9 +120,9 @@ data/npy/waterflow_20261007_1s/maxfreq=22kHz/heatflux_no_noise/
 data/spectrogram_png/waterflow_20261007_1s/<周波数>/heatflux_no_noise/
 ```
 
-manifestも保存する。`maxfreq=22kHz`は丸めた表記で、実値は22,050 Hz。同じタグで再実行すると既存生成物へ書き込む従来動作なので、条件を変える場合は`SAVE_DATE`を別タグにする。
+`heatflux_no_noise`と`heatflux_reference_SNR=0`等へ保存する。`maxfreq=22kHz`は丸めた表記で、実値は22,050 Hz。従来どおりband直下の`preprocess_manifest.json`と`global_reference_manifest.json`を保存する。同じタグの再実行は既存生成物へ書き込むため、条件を変更する場合は`SAVE_DATE`を別タグにする。
 
-無雑音設定でも従来runnerは水流音を読みRMSを計算するが、入力へノイズは加えない。過去の雑音条件との比較は別工程で、新しい評価日の録音から決めたRMSを過去と同一基準として扱わない。
+RMSは今回の対象全録音のfiltered RMSの中央値を一つ求め、全source/chunkに共通で使う。旧日のmanifestを参照する設定は撤去した。RMSは未校正のPCM振幅尺度で、PaやdB SPLではない。各実験の代表RMSに対するreference SNRであり、旧日と同じ付加雑音の絶対振幅を指定する方式ではない。
 
 変更前の3入口は[previous_code](../experiments/2026-10-07_pool_boiling_data_setup/previous_code/)に保存した。設定は従来のコード冒頭で行う。
 
@@ -136,7 +142,7 @@ python code/run_ensemble_regression_onb.py
 
 別日評価を行うときは`learning_policy.evaluation_mode`を`"cross_day"`へ変える。設定済みの`evaluation_settings.cross_day`は、**6/11＋6/18学習 → 今回10/7評価**。対象日のリストは自動で解決される。逆方向などへ変えたい場合は同じ欄の`train_experiments`と`test_experiments`だけを編集する。今回の日を別日テストとして使う場合、その結果を見て学習パラメータや重みを調整する前に条件を固定する。
 
-**現在はNPY生成側が無雑音だけ、ONB側が7条件なので、実行前にそろえる。** 無雑音だけで始める場合は、ONBの`VALIDATION_CONFIG["data"]["noise_dir_names"] = ["heatflux_no_noise"]`にする。7条件で評価する場合は、生成側の`REFERENCE_SNR_DB = [None, 0, -4, -8, -12, -16, -20]`にし、全条件を生成してからONBを実行する。今回の修正では本人のONB設定を変更していない。新しい日から作ったRMS基準は過去の固定基準と同一ではない。
+**現在は生成コードのSNRリストを7条件へ設定済みだが、本ノイズデータの生成はAI側では未実行。** 無雑音だけで始める場合は、ONBの`VALIDATION_CONFIG["data"]["noise_dir_names"] = ["heatflux_no_noise"]`にする。7条件で評価する場合は上段の生成スクリプトを実行し、全件を確認してからONBを実行する。ONBの学習・評価方式は今回変更していない。
 
 STFTとONBも従来階層の同じ熱流束CSVを参照する。今回のconfigがある実験でCSV未生成の場合、WAV名の整数値へ切り替えず停止する。ラベルを変更してNPYを作り直す場合は、`SAVE_DATE`を別タグにし、ONBの`data_source_dir_by_experiment`をその本生成先に合わせる。既存のラベル付きコピーは自動削除せず、本人が必要に応じて別名保存してから改名Notebookを実行する。
 

@@ -1,0 +1,12 @@
+{
+  "checked_date": "2026-10-08",
+  "old_experiments": ["2025.06.11_0.3_2", "2025.06.18_0.3_3"],
+  "old_manifest_location": "data/npy/waterflow_20260817_1s/maxfreq=3kHz/preprocess_manifest.json",
+  "old_fixed_reference_signal_rms": 0.0004822199855309985,
+  "new_experiment": "2026.10.07_0.3_1",
+  "new_manifest_location": "data/npy/waterflow_20261007_1s/maxfreq=3kHz/preprocess_manifest.json",
+  "new_fixed_reference_signal_rms": 0.011917774650702801,
+  "same_reference": false,
+  "new_noise_generated": false,
+  "interpretation": "Same reference-SNR names would produce different added-noise RMS across these dataset generations. Use a common reference to compare equal added-noise amplitude; clean inputs are unaffected. These are uncalibrated PCM amplitude scales, not measured SPL."
+}

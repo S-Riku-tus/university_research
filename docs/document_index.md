@@ -1,12 +1,19 @@
 # 文書案内と更新ルール
 
-更新日: 2026-10-07。**現在の状態は一か所で更新し、過去の数値と判断は日付付き記録に残す。**
+更新日: 2026-10-09。**現在の状態は一か所で更新し、過去の数値と判断は日付付き記録に残す。**
 
 ## 読む順序と各文書の役割
 
 | 目的 | 読む文書 | 更新方法 |
 |---|---|---|
 | 次の作業を始める | [研究の現在地](research_status.md) | 状態・本人の希望・次の一手を更新する唯一の入口 |
+| 新実験の無雑音と全ノイズの生成完了を確認する | [10/9完了確認](../experiments/2026-10-09_new_experiment_generation_audit/verification.json)、[条件別件数](../experiments/2026-10-09_new_experiment_generation_audit/condition_counts.csv) | 全70条件、NPY/PNG各69300、全件対応/ラベル/雑音記録、内容630組・元WAV再計算24例。モデル結果は未確認 |
+| 新実験の全ノイズを全帯域・両時間長で生成する | [10/8全ノイズ生成準備](../experiments/2026-10-08_all_noise_generation_ready/README.md) | 追加のRMS継承・保存処理を撤回し、従来処理に復帰。SNR一覧は無雑音＋6条件、5帯域・両時間長を維持。関連7テスト合格、本生成は未実行 |
+| 10/8の本人の最新希望と次の順序を読む | [各課題の扱い・新日/物理特徴優先](research_plan/2026-10-08_user_direction_and_next_steps.md) | clean_only、3/4/5継続、新日入力確認、保留対象、報告準備。10/7の執筆優先・未知日後順位の提案より優先 |
+| 新実験のNPY・スペクトログラムが生成済みか確認する | [10/8入力監査](../experiments/2026-10-08_new_experiment_input_audit/README.md) | NPY/PNG各3960、主660、全件形式/ラベル/対応、元WAV3例再現、ONB前後の共通尺度図。モデル性能は未検証 |
+| 評価範囲・分割・再現性を説明する | [10/8条件説明](notes/2026-10-08_evaluation_scope_and_reproducibility.md) | 旧主比較1620/540、新日内495/165、旧保存fit固定適用と全旧日cross_dayを区別 |
+| RMS・精度回復・ピーク選別を教授へ説明する | [10/8理由メモ](notes/2026-10-08_noise_recovery_and_peak_selection_for_progress.md) | RMSの意味/生成式、旧生成交絡、修正後の回復、選別近傍悪化、教授用短文。matched補足は本人用 |
+| 10/9の4項目進捗報告を準備する | [SOAP下書き](progress/2026-10-09_weekly_progress_draft.md)、[発表準備メモ](progress/2026-10-09_presentation_brief.md) | 全入力生成完了・旧3/4/5結果・原因説明・別日適用/特徴比較を対応。提出は本人 |
 | 修論の元の目的・教授指摘・完了/未完了・優先度を確認する | [10/7研究全体の再監査](research_plan/2026-10-07_thesis_alignment_and_priority_audit.md) | 計画書原本と発表・相談・結果を対応付けた18課題台帳。固定比率の出所、早期検知/雑音劣化の留保、目次・考察優先、条件付き追加を整理 |
 | 今日追加した10/7実験を自分で処理する | [従来コードを使う実行手順](2026-10-07_new_experiment_processing.md) | 原13ファイル保持、明示印加順・秒単位の共通区間、従来階層のCSVを改名/STFT/ONBが参照。熱計算は別保存先で確認、音響生成・学習は本人が実行 |
 | 本人の熱流束出力と従来階層への復帰を確認 | [配置修正・内容確認](../experiments/2026-10-07_heatflux_result_layout/README.md) | 生成済み11ファイルの内容保持移動、21段階の再計算一致、改名/STFT/ONB読込、23テスト。温度の代表区間依存は未確定 |

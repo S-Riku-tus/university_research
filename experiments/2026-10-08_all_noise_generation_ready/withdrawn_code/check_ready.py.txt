@@ -1,0 +1,123 @@
+"""Small real-input check; writes only to this experiment's smoke_output."""
+import csv
+import hashlib
+import importlib.util
+import json
+import os
+from pathlib import Path
+import sys
+
+import matplotlib
+matplotlib.use("Agg")
+import numpy as np
+from PIL import Image
+
+ROOT = Path(__file__).resolve().parents[2]
+OUT = Path(__file__).resolve().parent
+sys.path.insert(0, str(ROOT / "code"))
+from utils.experiment.run_helpers import open_text, windows_long_path
+
+spec = importlib.util.spec_from_file_location("checked_noise_entry", ROOT / "code/2.run_npy_waterflow_2つhighpass.py")
+entry = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(entry)
+
+
+def read_rows(path):
+    with open_text(path, "r", encoding="utf-8-sig", newline="") as file:
+        return list(csv.DictReader(file))
+
+
+def sha256(path):
+    value = hashlib.sha256()
+    with open(windows_long_path(path), "rb") as file:
+        for block in iter(lambda: file.read(1024*1024), b""):
+            value.update(block)
+    return value.hexdigest()
+
+
+def main():
+    plans = entry._build_source_plans(1)
+    if len(plans) != 1:
+        raise ValueError("This check is limited to the explicitly configured new experiment")
+    plan = plans[0]
+    context = plan["context"]
+    production_root = Path(context["experiment_root"])
+    watched = [Path(context["heat_flux_csv_path"])]
+    for seconds in entry.CHUNK_SECONDS_LIST:
+        for band in entry.MAX_FREQ_HZ:
+            tag = f"waterflow_{entry.SAVE_DATE}_{seconds:g}s"
+            for format_dir, extension in [("npy", "npy"), ("spectrogram_png", "png")]:
+                parent = production_root / "data" / format_dir / tag / f"maxfreq={band/1000:.0f}kHz"
+                watched.extend([parent / "preprocess_manifest.json", parent / "heatflux_no_noise/chunk_manifest.csv"])
+                watched.append(next((parent / "heatflux_no_noise").glob(f"*.{extension}")))
+    before = {str(path): sha256(path) for path in watched}
+    reference_rms, measurements, reference_records, provenance = entry._resolve_reference_rms(plan["wav_paths"])
+    target = OUT / "smoke_output"
+    if target.exists():
+        raise FileExistsError("Smoke output already exists; keep the completed check intact")
+    os.makedirs(windows_long_path(target))
+    config = {**entry.PREPROCESS_CONFIG, "max_chunks_per_source": 1,
+        "fixed_reference_signal_rms": reference_rms, "fixed_reference_provenance": provenance,
+        "reference_source_manifests": reference_records}
+    chosen = [path for name, path in zip(plan["wav_files"], plan["wav_paths"]) if name.startswith(("index=11.", "index=13."))]
+    if len(chosen) != 2:
+        raise ValueError("Expected 1.0 V and 1.2 V source WAVs")
+    noise = entry._load_and_filter(entry.WATERFLOW_PATH, first_channel=True)
+    signals = {path: entry._load_and_filter(path) for path in chosen}
+    checks, minimum, maximum = [], float("inf"), 0
+    for seconds in entry.CHUNK_SECONDS_LIST:
+        original = entry._build_source_plans(seconds)[0]["context"]
+        tag = f"waterflow_{entry.SAVE_DATE}_{seconds:g}s"
+        test_context = {**original, "base_npy_save_folder_path": str(target / "data/npy" / tag),
+            "base_png_save_folder_path": str(target / "data/spectrogram_png" / tag)}
+        entry._write_reference_manifest(test_context, reference_rms, measurements, reference_records)
+        for band in entry.MAX_FREQ_HZ:
+            for path in chosen:
+                entry.save_spectrogram_chunks_with_snr(file_path=path, max_freq_hz=band,
+                    chunk_seconds=seconds, context=test_context, config=config, snr_db=entry.REFERENCE_SNR_DB,
+                    prefiltered_signal=signals[path], prefiltered_waterflow_noise=noise)
+            parent = Path(test_context["base_npy_save_folder_path"]) / f"maxfreq={band/1000:.0f}kHz"
+            offsets = []
+            for level in entry.REFERENCE_SNR_DB:
+                directory = parent / f"heatflux_reference_SNR={level}"
+                rows = read_rows(directory / "chunk_manifest.csv")
+                if len(rows) != 2:
+                    raise ValueError("Source CSV coverage is incomplete")
+                offsets.append([(row["noise_seed"], row["noise_offset_samples"]) for row in rows])
+                for row in rows:
+                    added = float(row["scaled_noise_chunk_power"])
+                    expected = reference_rms**2 / 10**(level/10)
+                    if not np.isclose(added, expected, rtol=1e-12, atol=0):
+                        raise ValueError("Added noise power differs from the common reference")
+                    array = np.load(windows_long_path(directory / row["sample_filename"]), allow_pickle=False)
+                    if array.shape != (224, 224) or array.dtype != np.float32 or not np.isfinite(array).all() or (array < 0).any():
+                        raise ValueError("Generated array is invalid")
+                    minimum, maximum = min(minimum, float(array.min())), max(maximum, float(array.max()))
+                    png = Path(test_context["base_png_save_folder_path"]) / parent.name / directory.name / (Path(row["sample_filename"]).stem + ".png")
+                    with Image.open(windows_long_path(png)) as picture:
+                        picture.verify()
+                if rows[0]["noise_seed"] != rows[1]["noise_seed"] or rows[0]["noise_offset_samples"] != rows[1]["noise_offset_samples"]:
+                    raise ValueError("Noise is not paired across sources")
+                with open_text(directory / "preprocess_manifest.json", "r", encoding="utf-8") as file:
+                    meta = json.load(file)
+                if meta["noise"]["snr_list_db"] != [level] or meta["noise"]["fixed_reference_signal_rms"] != reference_rms:
+                    raise ValueError("Condition provenance is inconsistent")
+                checks.append({"chunk_seconds": seconds, "max_freq_hz": band, "snr_db": level, "source_rows": len(rows)})
+            if any(value != offsets[0] for value in offsets):
+                raise ValueError("Noise is not paired across SNR levels")
+    after = {str(path): sha256(path) for path in watched}
+    if before != after:
+        raise ValueError("Production clean inputs or manifests changed")
+    verification = {"shared_reference_rms": reference_rms, "reference_source_manifests": reference_records,
+        "checked_conditions": len(checks), "smoke_npy": sum(row["source_rows"] for row in checks),
+        "smoke_png": sum(row["source_rows"] for row in checks), "array_min": minimum, "array_max": maximum,
+        "watched_production_files": len(watched), "production_files_unchanged": True,
+        "expected_full_additional_npy": 11 * sum(round(60 / value) for value in entry.CHUNK_SECONDS_LIST) * len(entry.MAX_FREQ_HZ) * len(entry.REFERENCE_SNR_DB),
+        "expected_full_additional_png": 11 * sum(round(60 / value) for value in entry.CHUNK_SECONDS_LIST) * len(entry.MAX_FREQ_HZ) * len(entry.REFERENCE_SNR_DB),
+        "conditions": checks, "scope": "Two actual source WAVs, first chunk only, all configured noise/frequency/duration combinations; full production generation not executed."}
+    (OUT / "verification.json").write_text(json.dumps(verification, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
+    print(json.dumps({key: value for key, value in verification.items() if key not in ["conditions", "reference_source_manifests"]}, ensure_ascii=True))
+
+
+if __name__ == "__main__":
+    main()

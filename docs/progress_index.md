@@ -2,6 +2,35 @@
 
 このページは**日付ごとの履歴**。各節の「現在」「次にやること」は当時の記録であり、現在の未完了作業とは限らない。最新の状態は[研究の現在地](research_status.md)、更新関係は[文書案内](document_index.md)を読む。
 
+## 2026-10-09 本人実行後、新実験の全70条件の生成完了を確認
+
+- 本人の9/25報告を踏まえた4項目整理依頼で、提出DOCX原本を照合し、[10/9 SOAP下書き](progress/2026-10-09_weekly_progress_draft.md)と[発表メモ](progress/2026-10-09_presentation_brief.md)を更新。前回の選別・説明性手法・未完アンサンブルに対する回答を揃え、Aに判断と未確認事項、Pに新日への固定適用・物理的特徴比較を記載。修正前下書きは`docs/audits/2026-10-09_weekly_report_alignment/`へ保持し、9/25原本・コード・結果は変更していない。
+- 本人の現状再確認依頼で[現ファイルと通常設定を再確認](../experiments/2026-10-09_new_experiment_generation_audit/current_state_recheck.json)。全70条件の件数/ファイル名/manifest hash、ラベルCSVに変化なし、新日モデル出力0。旧日最大qと新日の録音q範囲、旧/新RMS比24.7144も確認。先行内容検査を繰り返さず、再生成・学習・設定切替は行っていない。
+- [全条件の確認記録](../experiments/2026-10-09_new_experiment_generation_audit/verification.json)、[条件別件数](../experiments/2026-10-09_new_experiment_generation_audit/condition_counts.csv)。5帯域×0.5/1秒×無雑音＋6雑音の全70条件、NPY/PNG各69300（clean9900、noise59400）。各1秒660/0.5秒1320、全11 WAVのchunkに欠落・重複なし。
+- 全件のファイル/manifest対応、ラベル、非空/NPY容量、雑音power・seedの対応を確認。全条件から固定抽出した630組のNPY/PNGは正常、代表24例は元WAV・水流音からメモリ上で再計算して完全一致。内容は標本検査であり、全69300配列/PNGの走査ではない。
+- 基準RMSは従来処理による新日の中央値0.011917774650702801。熱流束CSVは前回hashと一致、新日のモデル出力ファイル0。通常コード・データを変更せず、今日のSOAP下書きと発表メモへ生成済み範囲を反映した。
+
+## 2026-10-08 本人指示で追加実装を撤回し、従来生成へ復帰
+
+- 旧RMS継承・追加manifest・保存処理の変更を戻し、共有生成utilsは変更前と一致。本人の5帯域・0.5/1秒と、`REFERENCE_SNR_DB=[None, 0, -4, -8, -12, -16, -20]`を維持した。
+- 関連7テスト合格。`None`は無雑音も生成する指定で、同じタグの出力は再生成時に書き込む。本生成・学習は実行していない。
+- [撤回記録と現設定](../experiments/2026-10-08_all_noise_generation_ready/README.md)へ撤回前コードを保存。下段の10テスト・120 NPY/PNGは撤回前実装の履歴であり、現在の実装の確認結果として扱わない。
+
+## 2026-10-08 全ノイズ生成入口を修正・確認
+
+- 本人の「ほかのすべてのノイズを生成できるようにコードを修正」に対応。[生成準備・実行方法](../experiments/2026-10-08_all_noise_generation_ready/README.md)、[条件記録](../configs/experiments/2026-10-08_all_noise_generation_ready.json)。従来入口の新日・5帯域・0.5/1秒で6ノイズだけを追加し、既存cleanを保持する。
+- 旧2日のmanifestから共通RMSを継承し、参照hash・条件別manifest・別noise基準記録を保存。Windowsの長いNPY/PNG/CSVパス、既存chunk manifestへの2source追記を確認。
+- 関連10テスト合格。実1.0/1.2 V・先頭chunkで60組合せのNPY/PNG各120を別保存先へ生成。shape/dtype/有限値、PNG、旧基準のpower、source/SNRのpaired seed/offset、61確認ファイルhash不変を確認。
+- 本生成の追加は各59400予定、まだAI側で実行していない。少量確認を本生成完了・学習結果と扱わない。ONBの学習/評価設定は保持。
+
+## 2026-10-08 本人の最新方針、新実験入力確認、10/9 SOAP準備
+
+- [本人の各課題への最新判断](research_plan/2026-10-08_user_direction_and_next_steps.md)を記録。新実験の未知日適用・物理的特徴を最優先、clean_onlyを対象、3/4/5・統合検討を継続。入力長/帯域/tuning/追加学習量/IG選択理由/目次/修論本文は保留。10/7の執筆最優先・未知日後順位のAI提案を更新。
+- [新実験の実出力を確認](../experiments/2026-10-08_new_experiment_input_audit/README.md)。NPY/PNG各3960、1秒3 kHz主660、全件形式/値/ラベル/manifest/元WAV/chunk対応、PNG内容、元WAV3例の完全再現。ノートONB1.2 Vのq330.3699567、主陽性540/陰性120。共通色尺度と60 chunk平均でONB前後を表示。
+- [評価範囲の説明](notes/2026-10-08_evaluation_scope_and_reproducibility.md)、[RMS・精度回復・弱音選別の理由](notes/2026-10-08_noise_recovery_and_peak_selection_for_progress.md)を作成。旧実験を今週実行したとは扱わず、事実/仮説/教授用短文を分離。
+- `research-weekly-progress`スキルと4項目テンプレートで[10/9 SOAP下書き](progress/2026-10-09_weekly_progress_draft.md)、[発表メモ](progress/2026-10-09_presentation_brief.md)を準備。matched比較・執筆・追加tuningを今週Pへ戻さない。教授への伝達・提出は本人。
+- 新日のモデル出力0、別日性能/音源は未検証。通常設定は新日内495/165と7雑音指定のままなので、旧保存fitの新日固定適用と通常cross_dayの新fitを分け、生成済みclean対象に合わせて次へ進む。新学習/モデル推論/雑音生成/通常設定変更なし。
+
 ## 2026-10-07 修論の目的・教授指摘・完了状況と優先順位を再監査
 
 - 本人の研究全体の再整理依頼に基づき、[目的・課題・優先度の再監査](research_plan/2026-10-07_thesis_alignment_and_priority_audit.md)を作成。計画書/目的DOCX、7/24・9/18PPTX、9/25週報の関連本文を[出典付きで抽出](audits/2026-10-07_thesis_alignment/primary_source_extracts.md)し、教授原メモ・現行方針・結果を18課題へ対応付けた。

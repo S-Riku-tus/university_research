@@ -1,0 +1,144 @@
+{
+  "experiment": "2026.10.07_0.3_1",
+  "audit_date": "2026-10-08",
+  "label_csv_rows": 21,
+  "label_csv_sha256": "ef300f8f90e8b744edfe878693eda85770a988785b0e89a8a36041246f3343ba",
+  "generation_entry_sha256": "9e542fbba84bef15a6812df56976c72971f9a27338b857988950ea23f89d01ce",
+  "onb_voltage_observation": "1.2V",
+  "onb_q_w_m2": 330369.956723274,
+  "datasets": [
+    {
+      "dataset": "waterflow_20261007_0.5s",
+      "frequency": "maxfreq=22kHz",
+      "npy": 1320,
+      "png": 1320,
+      "manifest_rows": 1320,
+      "source_wavs": 11,
+      "chunks_per_wav": [
+        120
+      ],
+      "shapes": {
+        "(224, 224)": 1320
+      },
+      "dtypes": {
+        "float32": 1320
+      },
+      "array_min": 4.19709038815751e-19,
+      "array_max": 0.0007500139763578773,
+      "noise_folders": [
+        "heatflux_no_noise"
+      ],
+      "manifest_created_at": "2026-10-07T19:19:21",
+      "preprocess_manifest_sha256": "c7f15fb023b5648de76fa7a50d2d9d1a893d7a53c6d45cb2cd70ba08f795c699",
+      "chunk_manifest_sha256": "692764bbdfa83541ebb0717f881c32f389d17a6878b15ed72b93f4bafafabbe9",
+      "fixed_reference_rms": 0.011917774650702801
+    },
+    {
+      "dataset": "waterflow_20261007_0.5s",
+      "frequency": "maxfreq=3kHz",
+      "npy": 1320,
+      "png": 1320,
+      "manifest_rows": 1320,
+      "source_wavs": 11,
+      "chunks_per_wav": [
+        120
+      ],
+      "shapes": {
+        "(224, 224)": 1320
+      },
+      "dtypes": {
+        "float32": 1320
+      },
+      "array_min": 1.6923126593509004e-19,
+      "array_max": 0.0016616112552583218,
+      "noise_folders": [
+        "heatflux_no_noise"
+      ],
+      "manifest_created_at": "2026-10-07T19:16:56",
+      "preprocess_manifest_sha256": "15fc3ddd2ad8e79ab72d75da1eb3207c3a7f84c42310ae09ba495dfa89e228a1",
+      "chunk_manifest_sha256": "692764bbdfa83541ebb0717f881c32f389d17a6878b15ed72b93f4bafafabbe9",
+      "fixed_reference_rms": 0.011917774650702801
+    },
+    {
+      "dataset": "waterflow_20261007_1s",
+      "frequency": "maxfreq=22kHz",
+      "npy": 660,
+      "png": 660,
+      "manifest_rows": 660,
+      "source_wavs": 11,
+      "chunks_per_wav": [
+        60
+      ],
+      "shapes": {
+        "(224, 224)": 660
+      },
+      "dtypes": {
+        "float32": 660
+      },
+      "array_min": 1.1123356190941986e-18,
+      "array_max": 0.0007274228264577687,
+      "noise_folders": [
+        "heatflux_no_noise"
+      ],
+      "manifest_created_at": "2026-10-07T19:21:53",
+      "preprocess_manifest_sha256": "0feabd073470735b0b529a6f6e40cfa8c5717099963927a9d5feb99e92fce0b5",
+      "chunk_manifest_sha256": "ee4f70db5e13bf03acb6fd356239f77d6b3d8a7a8bf55a46e40cc8fb1488965d",
+      "fixed_reference_rms": 0.011917774650702801
+    },
+    {
+      "dataset": "waterflow_20261007_1s",
+      "frequency": "maxfreq=3kHz",
+      "npy": 660,
+      "png": 660,
+      "manifest_rows": 660,
+      "source_wavs": 11,
+      "chunks_per_wav": [
+        60
+      ],
+      "shapes": {
+        "(224, 224)": 660
+      },
+      "dtypes": {
+        "float32": 660
+      },
+      "array_min": 4.054987479763377e-19,
+      "array_max": 0.0016115636099129915,
+      "noise_folders": [
+        "heatflux_no_noise"
+      ],
+      "manifest_created_at": "2026-10-07T19:20:44",
+      "preprocess_manifest_sha256": "680b910ccc9ecebd1de08cf5c00ee5c23ba8d8ce54f04ce2f2aadc1372c052a1",
+      "chunk_manifest_sha256": "ee4f70db5e13bf03acb6fd356239f77d6b3d8a7a8bf55a46e40cc8fb1488965d",
+      "fixed_reference_rms": 0.011917774650702801
+    }
+  ],
+  "total_npy": 3960,
+  "total_png": 3960,
+  "main_1s_3khz_chunks": 660,
+  "main_positive_chunks": 540,
+  "main_negative_chunks": 120,
+  "near_onb_plus_minus_10_percent_chunks": 60,
+  "regression_output_files": 0,
+  "raw_wav_reproduction": [
+    {
+      "voltage": "1.0V",
+      "chunk_index": 0,
+      "maximum_absolute_difference": 0.0,
+      "bitwise_equal": true
+    },
+    {
+      "voltage": "1.2V",
+      "chunk_index": 0,
+      "maximum_absolute_difference": 0.0,
+      "bitwise_equal": true
+    },
+    {
+      "voltage": "1.3V",
+      "chunk_index": 0,
+      "maximum_absolute_difference": 0.0,
+      "bitwise_equal": true
+    }
+  ],
+  "errors": [],
+  "scope": "Input audit and descriptive plots only; no training, noise generation, or physical source identification."
+}

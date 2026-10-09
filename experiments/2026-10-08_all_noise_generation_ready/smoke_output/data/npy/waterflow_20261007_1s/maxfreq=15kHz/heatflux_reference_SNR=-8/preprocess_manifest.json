@@ -1,0 +1,85 @@
+{
+  "created_at": "2026-10-08T14:01:32",
+  "script": "code\\2.run_npy_waterflow_2つhighpass.py",
+  "source_audio_folder": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2026.10.07_0.3_1\\録音データ_熱流束",
+  "waterflow_path": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\water_flow\\water_flow_125.wav",
+  "heat_flux_csv_path": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2026.10.07_0.3_1\\実験結果2026.10.07_0.3_1\\heat_flux_2026.10.07_0.3_1.csv",
+  "label_source": "heat_flux_csv.q keyed by wav index",
+  "save_date": 20261007,
+  "output_formats": {
+    "npy": true,
+    "spectrogram_png": true,
+    "png_with_axes": false
+  },
+  "chunk_seconds": 1,
+  "samplerate_hz": 44100,
+  "audio_samples_used": 2646000,
+  "audio_loading": "scipy.io.wavfile + scipy.signal.resample_poly",
+  "segment_samples": 44100,
+  "chunk_selection": {
+    "max_chunks_per_source": 1,
+    "strategy": "evenly spaced over available source chunks"
+  },
+  "max_freq_hz": 15000,
+  "max_freq_khz_display": 15.0,
+  "max_frequency_bin_index": 457,
+  "stft": {
+    "frames": 672,
+    "n_fft": 1344,
+    "window": "hann",
+    "hop_length_formula": "(len(chunk) - n_fft) // frames",
+    "hop_length_samples": 63,
+    "spectrum": "linear power, amplitude**2",
+    "resize_shape": [
+      224,
+      224
+    ],
+    "resize_library": "skimage.transform.resize",
+    "saved_array_dtype": "float32",
+    "saved_array_axes_before_resize": [
+      "time_frame",
+      "frequency_bin"
+    ]
+  },
+  "highpass_filter": {
+    "type": "butterworth",
+    "fp_hz": 500,
+    "fs_hz": 400,
+    "gpass_db": 1,
+    "gstop_db": 40,
+    "buttord_order": 24,
+    "buttord_Wn_normalized": 0.022046818938456846,
+    "buttord_cutoff_hz": 486.13235759297345,
+    "application": "scipy.signal.sosfiltfilt"
+  },
+  "noise": {
+    "snr_list_db": [
+      -8
+    ],
+    "scaling_mode": "fixed_global_rms",
+    "fixed_reference_signal_rms": 0.0004822199855309985,
+    "fixed_reference_provenance": "fixed_global_rms copied from reference manifests: Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\data\\npy\\waterflow_20260817_1s\\maxfreq=3kHz\\preprocess_manifest.json; Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\data\\npy\\waterflow_20260817_1s\\maxfreq=3kHz\\preprocess_manifest.json; not calibrated SPL",
+    "reference_source_manifests": [
+      {
+        "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\data\\npy\\waterflow_20260817_1s\\maxfreq=3kHz\\preprocess_manifest.json",
+        "sha256": "93e5a16d5105e5711c73a67e6fd6ddd945f17c14531c7d6d0240bb34b76adf97",
+        "reference_rms": 0.0004822199855309985
+      },
+      {
+        "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\data\\npy\\waterflow_20260817_1s\\maxfreq=3kHz\\preprocess_manifest.json",
+        "sha256": "d5ced7f199f1200e5a968dbb2043f241e1c64988e48774f944df2a0be81b7d29",
+        "reference_rms": 0.0004822199855309985
+      }
+    ],
+    "randomize_noise_offset_per_chunk": true,
+    "random_seed": 42,
+    "pair_noise_across_snr": true,
+    "noise_seed_scope": "shared_across_sources",
+    "level_folder_prefix": "reference_SNR",
+    "level_definition": "reference level relative to one shared fixed filtered-signal RMS; not the realized SNR of each individual source chunk",
+    "relative_formula": "scaled_noise = waterflow_noise_chunk * sqrt((mean(source_wav**2) / 10**(snr/10)) / mean(waterflow_noise_recording**2))",
+    "fixed_formula": "scaled_noise = waterflow_noise_chunk * sqrt((fixed_reference_signal_rms**2 / 10**(snr/10)) / mean(waterflow_noise_recording**2))",
+    "fixed_global_formula": "scaled_noise = waterflow_noise_chunk * sqrt((fixed_reference_signal_rms**2 / 10**(level_db/10)) / mean(waterflow_noise_chunk**2))",
+    "realized_snr": "10*log10(mean(signal_chunk**2)/mean(scaled_noise_chunk**2)); saved for every chunk in chunk_manifest.csv"
+  }
+}

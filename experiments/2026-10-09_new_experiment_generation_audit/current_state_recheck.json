@@ -1,0 +1,703 @@
+{
+  "record_date_jst": "2026-10-09",
+  "status": "passed",
+  "previous_full_audit_checked_at_jst": "2026-10-09T11:33:29+09:00",
+  "condition_count": 70,
+  "total_npy": 69300,
+  "total_png": 69300,
+  "labelled_wavs": 11,
+  "label_csv_unchanged": true,
+  "regression_result_files": 0,
+  "regression_result_file_paths": [],
+  "current_onb_evaluation_mode": "within_wav_chunk",
+  "current_onb_training_noise": "clean_only",
+  "current_onb_data": {
+    "chunk_seconds": 1,
+    "max_freq_hz_list": [
+      "maxfreq=3kHz"
+    ],
+    "noise_dir_names": [
+      "heatflux_no_noise",
+      "heatflux_reference_SNR=0",
+      "heatflux_reference_SNR=-4",
+      "heatflux_reference_SNR=-8",
+      "heatflux_reference_SNR=-12",
+      "heatflux_reference_SNR=-16",
+      "heatflux_reference_SNR=-20"
+    ]
+  },
+  "current_onb_evaluation_settings": {
+    "cross_day": {
+      "train_experiments": [
+        "2025.06.11_0.3_2",
+        "2025.06.18_0.3_3"
+      ],
+      "test_experiments": [
+        "2026.10.07_0.3_1"
+      ]
+    },
+    "within_wav_chunk": {
+      "experiment": "2026.10.07_0.3_1",
+      "test_fraction": 0.25,
+      "test_split_seed": 42
+    }
+  },
+  "current_onb_sha256": "adef55fed6c916f569e65ef8bb54d1f4c5ec6887dd43c0378af18d33f02d06e1",
+  "old_day_ranges": [
+    {
+      "experiment": "2025.06.11_0.3_2",
+      "heat_flux_min_kw_m2": 3.28047e-07,
+      "heat_flux_max_kw_m2": 859.3439142,
+      "reference_rms": 0.0004822199855309985
+    },
+    {
+      "experiment": "2025.06.18_0.3_3",
+      "heat_flux_min_kw_m2": -1.42e-09,
+      "heat_flux_max_kw_m2": 873.6370359,
+      "reference_rms": 0.0004822199855309985
+    }
+  ],
+  "new_recorded_heat_flux_min_kw_m2": 233.22209885016417,
+  "new_recorded_heat_flux_max_kw_m2": 897.7944890244651,
+  "new_to_old_reference_rms_ratio": 24.714393862335456,
+  "reference_amplitude_difference_db": 27.85899927107566,
+  "prior_content_checks": {
+    "sampled_pairs": 630,
+    "reproduced_chunks": 24,
+    "prior_error_count": 0
+  },
+  "scope": "Live counts and filename/manifest correspondence, saved metadata hashes, labels, model-output presence, and configuration. Prior content samples were not rerun; no generation or model training/prediction.",
+  "errors": [],
+  "conditions": [
+    {
+      "dataset": "waterflow_20261007_0.5s",
+      "band": "maxfreq=3kHz",
+      "noise": "heatflux_no_noise",
+      "npy_count": 1320,
+      "png_count": 1320,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_0.5s",
+      "band": "maxfreq=3kHz",
+      "noise": "heatflux_reference_SNR=0",
+      "npy_count": 1320,
+      "png_count": 1320,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_0.5s",
+      "band": "maxfreq=3kHz",
+      "noise": "heatflux_reference_SNR=-4",
+      "npy_count": 1320,
+      "png_count": 1320,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_0.5s",
+      "band": "maxfreq=3kHz",
+      "noise": "heatflux_reference_SNR=-8",
+      "npy_count": 1320,
+      "png_count": 1320,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_0.5s",
+      "band": "maxfreq=3kHz",
+      "noise": "heatflux_reference_SNR=-12",
+      "npy_count": 1320,
+      "png_count": 1320,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_0.5s",
+      "band": "maxfreq=3kHz",
+      "noise": "heatflux_reference_SNR=-16",
+      "npy_count": 1320,
+      "png_count": 1320,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_0.5s",
+      "band": "maxfreq=3kHz",
+      "noise": "heatflux_reference_SNR=-20",
+      "npy_count": 1320,
+      "png_count": 1320,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_0.5s",
+      "band": "maxfreq=5kHz",
+      "noise": "heatflux_no_noise",
+      "npy_count": 1320,
+      "png_count": 1320,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_0.5s",
+      "band": "maxfreq=5kHz",
+      "noise": "heatflux_reference_SNR=0",
+      "npy_count": 1320,
+      "png_count": 1320,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_0.5s",
+      "band": "maxfreq=5kHz",
+      "noise": "heatflux_reference_SNR=-4",
+      "npy_count": 1320,
+      "png_count": 1320,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_0.5s",
+      "band": "maxfreq=5kHz",
+      "noise": "heatflux_reference_SNR=-8",
+      "npy_count": 1320,
+      "png_count": 1320,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_0.5s",
+      "band": "maxfreq=5kHz",
+      "noise": "heatflux_reference_SNR=-12",
+      "npy_count": 1320,
+      "png_count": 1320,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_0.5s",
+      "band": "maxfreq=5kHz",
+      "noise": "heatflux_reference_SNR=-16",
+      "npy_count": 1320,
+      "png_count": 1320,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_0.5s",
+      "band": "maxfreq=5kHz",
+      "noise": "heatflux_reference_SNR=-20",
+      "npy_count": 1320,
+      "png_count": 1320,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_0.5s",
+      "band": "maxfreq=10kHz",
+      "noise": "heatflux_no_noise",
+      "npy_count": 1320,
+      "png_count": 1320,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_0.5s",
+      "band": "maxfreq=10kHz",
+      "noise": "heatflux_reference_SNR=0",
+      "npy_count": 1320,
+      "png_count": 1320,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_0.5s",
+      "band": "maxfreq=10kHz",
+      "noise": "heatflux_reference_SNR=-4",
+      "npy_count": 1320,
+      "png_count": 1320,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_0.5s",
+      "band": "maxfreq=10kHz",
+      "noise": "heatflux_reference_SNR=-8",
+      "npy_count": 1320,
+      "png_count": 1320,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_0.5s",
+      "band": "maxfreq=10kHz",
+      "noise": "heatflux_reference_SNR=-12",
+      "npy_count": 1320,
+      "png_count": 1320,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_0.5s",
+      "band": "maxfreq=10kHz",
+      "noise": "heatflux_reference_SNR=-16",
+      "npy_count": 1320,
+      "png_count": 1320,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_0.5s",
+      "band": "maxfreq=10kHz",
+      "noise": "heatflux_reference_SNR=-20",
+      "npy_count": 1320,
+      "png_count": 1320,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_0.5s",
+      "band": "maxfreq=15kHz",
+      "noise": "heatflux_no_noise",
+      "npy_count": 1320,
+      "png_count": 1320,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_0.5s",
+      "band": "maxfreq=15kHz",
+      "noise": "heatflux_reference_SNR=0",
+      "npy_count": 1320,
+      "png_count": 1320,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_0.5s",
+      "band": "maxfreq=15kHz",
+      "noise": "heatflux_reference_SNR=-4",
+      "npy_count": 1320,
+      "png_count": 1320,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_0.5s",
+      "band": "maxfreq=15kHz",
+      "noise": "heatflux_reference_SNR=-8",
+      "npy_count": 1320,
+      "png_count": 1320,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_0.5s",
+      "band": "maxfreq=15kHz",
+      "noise": "heatflux_reference_SNR=-12",
+      "npy_count": 1320,
+      "png_count": 1320,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_0.5s",
+      "band": "maxfreq=15kHz",
+      "noise": "heatflux_reference_SNR=-16",
+      "npy_count": 1320,
+      "png_count": 1320,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_0.5s",
+      "band": "maxfreq=15kHz",
+      "noise": "heatflux_reference_SNR=-20",
+      "npy_count": 1320,
+      "png_count": 1320,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_0.5s",
+      "band": "maxfreq=22kHz",
+      "noise": "heatflux_no_noise",
+      "npy_count": 1320,
+      "png_count": 1320,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_0.5s",
+      "band": "maxfreq=22kHz",
+      "noise": "heatflux_reference_SNR=0",
+      "npy_count": 1320,
+      "png_count": 1320,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_0.5s",
+      "band": "maxfreq=22kHz",
+      "noise": "heatflux_reference_SNR=-4",
+      "npy_count": 1320,
+      "png_count": 1320,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_0.5s",
+      "band": "maxfreq=22kHz",
+      "noise": "heatflux_reference_SNR=-8",
+      "npy_count": 1320,
+      "png_count": 1320,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_0.5s",
+      "band": "maxfreq=22kHz",
+      "noise": "heatflux_reference_SNR=-12",
+      "npy_count": 1320,
+      "png_count": 1320,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_0.5s",
+      "band": "maxfreq=22kHz",
+      "noise": "heatflux_reference_SNR=-16",
+      "npy_count": 1320,
+      "png_count": 1320,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_0.5s",
+      "band": "maxfreq=22kHz",
+      "noise": "heatflux_reference_SNR=-20",
+      "npy_count": 1320,
+      "png_count": 1320,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_1s",
+      "band": "maxfreq=3kHz",
+      "noise": "heatflux_no_noise",
+      "npy_count": 660,
+      "png_count": 660,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_1s",
+      "band": "maxfreq=3kHz",
+      "noise": "heatflux_reference_SNR=0",
+      "npy_count": 660,
+      "png_count": 660,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_1s",
+      "band": "maxfreq=3kHz",
+      "noise": "heatflux_reference_SNR=-4",
+      "npy_count": 660,
+      "png_count": 660,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_1s",
+      "band": "maxfreq=3kHz",
+      "noise": "heatflux_reference_SNR=-8",
+      "npy_count": 660,
+      "png_count": 660,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_1s",
+      "band": "maxfreq=3kHz",
+      "noise": "heatflux_reference_SNR=-12",
+      "npy_count": 660,
+      "png_count": 660,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_1s",
+      "band": "maxfreq=3kHz",
+      "noise": "heatflux_reference_SNR=-16",
+      "npy_count": 660,
+      "png_count": 660,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_1s",
+      "band": "maxfreq=3kHz",
+      "noise": "heatflux_reference_SNR=-20",
+      "npy_count": 660,
+      "png_count": 660,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_1s",
+      "band": "maxfreq=5kHz",
+      "noise": "heatflux_no_noise",
+      "npy_count": 660,
+      "png_count": 660,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_1s",
+      "band": "maxfreq=5kHz",
+      "noise": "heatflux_reference_SNR=0",
+      "npy_count": 660,
+      "png_count": 660,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_1s",
+      "band": "maxfreq=5kHz",
+      "noise": "heatflux_reference_SNR=-4",
+      "npy_count": 660,
+      "png_count": 660,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_1s",
+      "band": "maxfreq=5kHz",
+      "noise": "heatflux_reference_SNR=-8",
+      "npy_count": 660,
+      "png_count": 660,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_1s",
+      "band": "maxfreq=5kHz",
+      "noise": "heatflux_reference_SNR=-12",
+      "npy_count": 660,
+      "png_count": 660,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_1s",
+      "band": "maxfreq=5kHz",
+      "noise": "heatflux_reference_SNR=-16",
+      "npy_count": 660,
+      "png_count": 660,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_1s",
+      "band": "maxfreq=5kHz",
+      "noise": "heatflux_reference_SNR=-20",
+      "npy_count": 660,
+      "png_count": 660,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_1s",
+      "band": "maxfreq=10kHz",
+      "noise": "heatflux_no_noise",
+      "npy_count": 660,
+      "png_count": 660,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_1s",
+      "band": "maxfreq=10kHz",
+      "noise": "heatflux_reference_SNR=0",
+      "npy_count": 660,
+      "png_count": 660,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_1s",
+      "band": "maxfreq=10kHz",
+      "noise": "heatflux_reference_SNR=-4",
+      "npy_count": 660,
+      "png_count": 660,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_1s",
+      "band": "maxfreq=10kHz",
+      "noise": "heatflux_reference_SNR=-8",
+      "npy_count": 660,
+      "png_count": 660,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_1s",
+      "band": "maxfreq=10kHz",
+      "noise": "heatflux_reference_SNR=-12",
+      "npy_count": 660,
+      "png_count": 660,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_1s",
+      "band": "maxfreq=10kHz",
+      "noise": "heatflux_reference_SNR=-16",
+      "npy_count": 660,
+      "png_count": 660,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_1s",
+      "band": "maxfreq=10kHz",
+      "noise": "heatflux_reference_SNR=-20",
+      "npy_count": 660,
+      "png_count": 660,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_1s",
+      "band": "maxfreq=15kHz",
+      "noise": "heatflux_no_noise",
+      "npy_count": 660,
+      "png_count": 660,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_1s",
+      "band": "maxfreq=15kHz",
+      "noise": "heatflux_reference_SNR=0",
+      "npy_count": 660,
+      "png_count": 660,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_1s",
+      "band": "maxfreq=15kHz",
+      "noise": "heatflux_reference_SNR=-4",
+      "npy_count": 660,
+      "png_count": 660,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_1s",
+      "band": "maxfreq=15kHz",
+      "noise": "heatflux_reference_SNR=-8",
+      "npy_count": 660,
+      "png_count": 660,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_1s",
+      "band": "maxfreq=15kHz",
+      "noise": "heatflux_reference_SNR=-12",
+      "npy_count": 660,
+      "png_count": 660,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_1s",
+      "band": "maxfreq=15kHz",
+      "noise": "heatflux_reference_SNR=-16",
+      "npy_count": 660,
+      "png_count": 660,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_1s",
+      "band": "maxfreq=15kHz",
+      "noise": "heatflux_reference_SNR=-20",
+      "npy_count": 660,
+      "png_count": 660,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_1s",
+      "band": "maxfreq=22kHz",
+      "noise": "heatflux_no_noise",
+      "npy_count": 660,
+      "png_count": 660,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_1s",
+      "band": "maxfreq=22kHz",
+      "noise": "heatflux_reference_SNR=0",
+      "npy_count": 660,
+      "png_count": 660,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_1s",
+      "band": "maxfreq=22kHz",
+      "noise": "heatflux_reference_SNR=-4",
+      "npy_count": 660,
+      "png_count": 660,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_1s",
+      "band": "maxfreq=22kHz",
+      "noise": "heatflux_reference_SNR=-8",
+      "npy_count": 660,
+      "png_count": 660,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_1s",
+      "band": "maxfreq=22kHz",
+      "noise": "heatflux_reference_SNR=-12",
+      "npy_count": 660,
+      "png_count": 660,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_1s",
+      "band": "maxfreq=22kHz",
+      "noise": "heatflux_reference_SNR=-16",
+      "npy_count": 660,
+      "png_count": 660,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    },
+    {
+      "dataset": "waterflow_20261007_1s",
+      "band": "maxfreq=22kHz",
+      "noise": "heatflux_reference_SNR=-20",
+      "npy_count": 660,
+      "png_count": 660,
+      "metadata_unchanged": true,
+      "files_match_manifest": true
+    }
+  ]
+}

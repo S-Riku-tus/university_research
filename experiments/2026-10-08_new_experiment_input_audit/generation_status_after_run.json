@@ -1,0 +1,373 @@
+{
+  "checked_at_jst": "2026-10-08T13:51:21+09:00",
+  "label_csv_exists": true,
+  "label_csv_unchanged": true,
+  "raw_wavs": 11,
+  "labelled_wavs": 11,
+  "conditions": [
+    {
+      "dataset": "waterflow_20261007_0.5s",
+      "band": "maxfreq=10kHz",
+      "noise": "heatflux_no_noise",
+      "npy_count": 1320,
+      "png_count": 1320,
+      "manifest_rows": 1320,
+      "expected_per_condition": 1320,
+      "source_wavs_in_manifest": 11,
+      "chunks_per_source": {
+        "index=11.233222": 120,
+        "index=12.275717": 120,
+        "index=13.330369": 120,
+        "index=14.384952": 120,
+        "index=15.443576": 120,
+        "index=16.507382": 120,
+        "index=17.577179": 120,
+        "index=18.650145": 120,
+        "index=19.727988": 120,
+        "index=20.810650": 120,
+        "index=21.897794": 120
+      },
+      "requested_snr_db": [
+        ""
+      ],
+      "positive_added_noise_rows": 0,
+      "manifest_complete": true,
+      "npy_manifest_names_match": true,
+      "png_manifest_names_match": true,
+      "preprocess_created_at": "2026-10-08T13:23:01",
+      "preprocess_configured_snrs": [
+        null
+      ],
+      "preprocess_sha256": "11b84135f4da2f93da649642ca78389be25bd67a714a2148d9a8c1ba9e66cb2c",
+      "previous_preprocess_manifest_unchanged": null
+    },
+    {
+      "dataset": "waterflow_20261007_0.5s",
+      "band": "maxfreq=15kHz",
+      "noise": "heatflux_no_noise",
+      "npy_count": 1320,
+      "png_count": 1320,
+      "manifest_rows": 1320,
+      "expected_per_condition": 1320,
+      "source_wavs_in_manifest": 11,
+      "chunks_per_source": {
+        "index=11.233222": 120,
+        "index=12.275717": 120,
+        "index=13.330369": 120,
+        "index=14.384952": 120,
+        "index=15.443576": 120,
+        "index=16.507382": 120,
+        "index=17.577179": 120,
+        "index=18.650145": 120,
+        "index=19.727988": 120,
+        "index=20.810650": 120,
+        "index=21.897794": 120
+      },
+      "requested_snr_db": [
+        ""
+      ],
+      "positive_added_noise_rows": 0,
+      "manifest_complete": true,
+      "npy_manifest_names_match": true,
+      "png_manifest_names_match": true,
+      "preprocess_created_at": "2026-10-08T13:25:15",
+      "preprocess_configured_snrs": [
+        null
+      ],
+      "preprocess_sha256": "1abdd972cddce8ee869b744ab5b32a4c95e6bfc4f6604412546293f20d1542fe",
+      "previous_preprocess_manifest_unchanged": null
+    },
+    {
+      "dataset": "waterflow_20261007_0.5s",
+      "band": "maxfreq=22kHz",
+      "noise": "heatflux_no_noise",
+      "npy_count": 1320,
+      "png_count": 1320,
+      "manifest_rows": 1320,
+      "expected_per_condition": 1320,
+      "source_wavs_in_manifest": 11,
+      "chunks_per_source": {
+        "index=11.233222": 120,
+        "index=12.275717": 120,
+        "index=13.330369": 120,
+        "index=14.384952": 120,
+        "index=15.443576": 120,
+        "index=16.507382": 120,
+        "index=17.577179": 120,
+        "index=18.650145": 120,
+        "index=19.727988": 120,
+        "index=20.810650": 120,
+        "index=21.897794": 120
+      },
+      "requested_snr_db": [
+        ""
+      ],
+      "positive_added_noise_rows": 0,
+      "manifest_complete": true,
+      "npy_manifest_names_match": true,
+      "png_manifest_names_match": true,
+      "preprocess_created_at": "2026-10-07T19:19:21",
+      "preprocess_configured_snrs": [
+        null
+      ],
+      "preprocess_sha256": "c7f15fb023b5648de76fa7a50d2d9d1a893d7a53c6d45cb2cd70ba08f795c699",
+      "previous_preprocess_manifest_unchanged": true
+    },
+    {
+      "dataset": "waterflow_20261007_0.5s",
+      "band": "maxfreq=3kHz",
+      "noise": "heatflux_no_noise",
+      "npy_count": 1320,
+      "png_count": 1320,
+      "manifest_rows": 1320,
+      "expected_per_condition": 1320,
+      "source_wavs_in_manifest": 11,
+      "chunks_per_source": {
+        "index=11.233222": 120,
+        "index=12.275717": 120,
+        "index=13.330369": 120,
+        "index=14.384952": 120,
+        "index=15.443576": 120,
+        "index=16.507382": 120,
+        "index=17.577179": 120,
+        "index=18.650145": 120,
+        "index=19.727988": 120,
+        "index=20.810650": 120,
+        "index=21.897794": 120
+      },
+      "requested_snr_db": [
+        ""
+      ],
+      "positive_added_noise_rows": 0,
+      "manifest_complete": true,
+      "npy_manifest_names_match": true,
+      "png_manifest_names_match": true,
+      "preprocess_created_at": "2026-10-07T19:16:56",
+      "preprocess_configured_snrs": [
+        null
+      ],
+      "preprocess_sha256": "15fc3ddd2ad8e79ab72d75da1eb3207c3a7f84c42310ae09ba495dfa89e228a1",
+      "previous_preprocess_manifest_unchanged": true
+    },
+    {
+      "dataset": "waterflow_20261007_0.5s",
+      "band": "maxfreq=5kHz",
+      "noise": "heatflux_no_noise",
+      "npy_count": 1320,
+      "png_count": 1320,
+      "manifest_rows": 1320,
+      "expected_per_condition": 1320,
+      "source_wavs_in_manifest": 11,
+      "chunks_per_source": {
+        "index=11.233222": 120,
+        "index=12.275717": 120,
+        "index=13.330369": 120,
+        "index=14.384952": 120,
+        "index=15.443576": 120,
+        "index=16.507382": 120,
+        "index=17.577179": 120,
+        "index=18.650145": 120,
+        "index=19.727988": 120,
+        "index=20.810650": 120,
+        "index=21.897794": 120
+      },
+      "requested_snr_db": [
+        ""
+      ],
+      "positive_added_noise_rows": 0,
+      "manifest_complete": true,
+      "npy_manifest_names_match": true,
+      "png_manifest_names_match": true,
+      "preprocess_created_at": "2026-10-08T13:20:34",
+      "preprocess_configured_snrs": [
+        null
+      ],
+      "preprocess_sha256": "97a21196018b7c59d673007de7293e605fa52bd9a4846ee48a8c55d534418631",
+      "previous_preprocess_manifest_unchanged": null
+    },
+    {
+      "dataset": "waterflow_20261007_1s",
+      "band": "maxfreq=10kHz",
+      "noise": "heatflux_no_noise",
+      "npy_count": 660,
+      "png_count": 660,
+      "manifest_rows": 660,
+      "expected_per_condition": 660,
+      "source_wavs_in_manifest": 11,
+      "chunks_per_source": {
+        "index=11.233222": 60,
+        "index=12.275717": 60,
+        "index=13.330369": 60,
+        "index=14.384952": 60,
+        "index=15.443576": 60,
+        "index=16.507382": 60,
+        "index=17.577179": 60,
+        "index=18.650145": 60,
+        "index=19.727988": 60,
+        "index=20.810650": 60,
+        "index=21.897794": 60
+      },
+      "requested_snr_db": [
+        ""
+      ],
+      "positive_added_noise_rows": 0,
+      "manifest_complete": true,
+      "npy_manifest_names_match": true,
+      "png_manifest_names_match": true,
+      "preprocess_created_at": "2026-10-08T13:27:48",
+      "preprocess_configured_snrs": [
+        null
+      ],
+      "preprocess_sha256": "a152bda22cffc8ec3fb48dc873412d24bfad28d237d1969447ab170540dd6325",
+      "previous_preprocess_manifest_unchanged": null
+    },
+    {
+      "dataset": "waterflow_20261007_1s",
+      "band": "maxfreq=15kHz",
+      "noise": "heatflux_no_noise",
+      "npy_count": 660,
+      "png_count": 660,
+      "manifest_rows": 660,
+      "expected_per_condition": 660,
+      "source_wavs_in_manifest": 11,
+      "chunks_per_source": {
+        "index=11.233222": 60,
+        "index=12.275717": 60,
+        "index=13.330369": 60,
+        "index=14.384952": 60,
+        "index=15.443576": 60,
+        "index=16.507382": 60,
+        "index=17.577179": 60,
+        "index=18.650145": 60,
+        "index=19.727988": 60,
+        "index=20.810650": 60,
+        "index=21.897794": 60
+      },
+      "requested_snr_db": [
+        ""
+      ],
+      "positive_added_noise_rows": 0,
+      "manifest_complete": true,
+      "npy_manifest_names_match": true,
+      "png_manifest_names_match": true,
+      "preprocess_created_at": "2026-10-08T13:28:57",
+      "preprocess_configured_snrs": [
+        null
+      ],
+      "preprocess_sha256": "d30ccd994d47189b32e345f9f17d2539b6cd72dd165784b028949d8e3fea1845",
+      "previous_preprocess_manifest_unchanged": null
+    },
+    {
+      "dataset": "waterflow_20261007_1s",
+      "band": "maxfreq=22kHz",
+      "noise": "heatflux_no_noise",
+      "npy_count": 660,
+      "png_count": 660,
+      "manifest_rows": 660,
+      "expected_per_condition": 660,
+      "source_wavs_in_manifest": 11,
+      "chunks_per_source": {
+        "index=11.233222": 60,
+        "index=12.275717": 60,
+        "index=13.330369": 60,
+        "index=14.384952": 60,
+        "index=15.443576": 60,
+        "index=16.507382": 60,
+        "index=17.577179": 60,
+        "index=18.650145": 60,
+        "index=19.727988": 60,
+        "index=20.810650": 60,
+        "index=21.897794": 60
+      },
+      "requested_snr_db": [
+        ""
+      ],
+      "positive_added_noise_rows": 0,
+      "manifest_complete": true,
+      "npy_manifest_names_match": true,
+      "png_manifest_names_match": true,
+      "preprocess_created_at": "2026-10-07T19:21:53",
+      "preprocess_configured_snrs": [
+        null
+      ],
+      "preprocess_sha256": "0feabd073470735b0b529a6f6e40cfa8c5717099963927a9d5feb99e92fce0b5",
+      "previous_preprocess_manifest_unchanged": true
+    },
+    {
+      "dataset": "waterflow_20261007_1s",
+      "band": "maxfreq=3kHz",
+      "noise": "heatflux_no_noise",
+      "npy_count": 660,
+      "png_count": 660,
+      "manifest_rows": 660,
+      "expected_per_condition": 660,
+      "source_wavs_in_manifest": 11,
+      "chunks_per_source": {
+        "index=11.233222": 60,
+        "index=12.275717": 60,
+        "index=13.330369": 60,
+        "index=14.384952": 60,
+        "index=15.443576": 60,
+        "index=16.507382": 60,
+        "index=17.577179": 60,
+        "index=18.650145": 60,
+        "index=19.727988": 60,
+        "index=20.810650": 60,
+        "index=21.897794": 60
+      },
+      "requested_snr_db": [
+        ""
+      ],
+      "positive_added_noise_rows": 0,
+      "manifest_complete": true,
+      "npy_manifest_names_match": true,
+      "png_manifest_names_match": true,
+      "preprocess_created_at": "2026-10-07T19:20:44",
+      "preprocess_configured_snrs": [
+        null
+      ],
+      "preprocess_sha256": "680b910ccc9ecebd1de08cf5c00ee5c23ba8d8ce54f04ce2f2aadc1372c052a1",
+      "previous_preprocess_manifest_unchanged": true
+    },
+    {
+      "dataset": "waterflow_20261007_1s",
+      "band": "maxfreq=5kHz",
+      "noise": "heatflux_no_noise",
+      "npy_count": 660,
+      "png_count": 660,
+      "manifest_rows": 660,
+      "expected_per_condition": 660,
+      "source_wavs_in_manifest": 11,
+      "chunks_per_source": {
+        "index=11.233222": 60,
+        "index=12.275717": 60,
+        "index=13.330369": 60,
+        "index=14.384952": 60,
+        "index=15.443576": 60,
+        "index=16.507382": 60,
+        "index=17.577179": 60,
+        "index=18.650145": 60,
+        "index=19.727988": 60,
+        "index=20.810650": 60,
+        "index=21.897794": 60
+      },
+      "requested_snr_db": [
+        ""
+      ],
+      "positive_added_noise_rows": 0,
+      "manifest_complete": true,
+      "npy_manifest_names_match": true,
+      "png_manifest_names_match": true,
+      "preprocess_created_at": "2026-10-08T13:26:37",
+      "preprocess_configured_snrs": [
+        null
+      ],
+      "preprocess_sha256": "3a171eff7a0d94dd5cf4984994235ccdc02bc6d68c0a427d9150b85e68e7ff14",
+      "previous_preprocess_manifest_unchanged": null
+    }
+  ],
+  "npy_total": 9900,
+  "png_total": 9900,
+  "noise_conditions_with_outputs": [],
+  "regression_output_files": 0
+}

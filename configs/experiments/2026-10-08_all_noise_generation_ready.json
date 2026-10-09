@@ -1,0 +1,22 @@
+{
+  "record_date": "2026-10-08",
+  "status": "original_pipeline_restored",
+  "entrypoint": "code/2.run_npy_waterflow_2つhighpass.py",
+  "experiment_names": ["2026.10.07_0.3_1"],
+  "save_date": 20261007,
+  "max_frequency_hz": [3000, 5000, 10000, 15000, 22050],
+  "chunk_seconds": [0.5, 1],
+  "reference_snr_db": [null, 0, -4, -8, -12, -16, -20],
+  "audio_samples_used_at_44100_hz": 2646000,
+  "max_chunks_per_source": null,
+  "save_npy": true,
+  "save_spectrogram_png": true,
+  "reference_rms_policy": "Median filtered source RMS over the configured WAV files, as in the original pipeline",
+  "source_manifest_inheritance": false,
+  "clean_regenerated": true,
+  "expected_generated_per_format": 69300,
+  "expected_noise_only_per_format": 59400,
+  "validation": "7 existing unit tests passed after restoring the original pipeline",
+  "full_production_generation_executed_by_agent": false,
+  "note": "Condition record only. Runtime settings are the entrypoint constants. None generates clean along with the six noise conditions; existing outputs with the same tags are written again. Withdrawn implementation and validation are archived in the experiment record."
+}

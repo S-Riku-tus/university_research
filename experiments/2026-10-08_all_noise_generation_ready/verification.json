@@ -1,0 +1,387 @@
+{
+  "shared_reference_rms": 0.0004822199855309985,
+  "reference_source_manifests": [
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2\\data\\npy\\waterflow_20260817_1s\\maxfreq=3kHz\\preprocess_manifest.json",
+      "sha256": "93e5a16d5105e5711c73a67e6fd6ddd945f17c14531c7d6d0240bb34b76adf97",
+      "reference_rms": 0.0004822199855309985
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.18_0.3_3\\data\\npy\\waterflow_20260817_1s\\maxfreq=3kHz\\preprocess_manifest.json",
+      "sha256": "d5ced7f199f1200e5a968dbb2043f241e1c64988e48774f944df2a0be81b7d29",
+      "reference_rms": 0.0004822199855309985
+    }
+  ],
+  "checked_conditions": 60,
+  "smoke_npy": 120,
+  "smoke_png": 120,
+  "array_min": 1.3110753772346844e-18,
+  "array_max": 3.484599801595323e-05,
+  "watched_production_files": 61,
+  "production_files_unchanged": true,
+  "expected_full_additional_npy": 59400,
+  "expected_full_additional_png": 59400,
+  "conditions": [
+    {
+      "chunk_seconds": 0.5,
+      "max_freq_hz": 3000,
+      "snr_db": 0,
+      "source_rows": 2
+    },
+    {
+      "chunk_seconds": 0.5,
+      "max_freq_hz": 3000,
+      "snr_db": -4,
+      "source_rows": 2
+    },
+    {
+      "chunk_seconds": 0.5,
+      "max_freq_hz": 3000,
+      "snr_db": -8,
+      "source_rows": 2
+    },
+    {
+      "chunk_seconds": 0.5,
+      "max_freq_hz": 3000,
+      "snr_db": -12,
+      "source_rows": 2
+    },
+    {
+      "chunk_seconds": 0.5,
+      "max_freq_hz": 3000,
+      "snr_db": -16,
+      "source_rows": 2
+    },
+    {
+      "chunk_seconds": 0.5,
+      "max_freq_hz": 3000,
+      "snr_db": -20,
+      "source_rows": 2
+    },
+    {
+      "chunk_seconds": 0.5,
+      "max_freq_hz": 5000,
+      "snr_db": 0,
+      "source_rows": 2
+    },
+    {
+      "chunk_seconds": 0.5,
+      "max_freq_hz": 5000,
+      "snr_db": -4,
+      "source_rows": 2
+    },
+    {
+      "chunk_seconds": 0.5,
+      "max_freq_hz": 5000,
+      "snr_db": -8,
+      "source_rows": 2
+    },
+    {
+      "chunk_seconds": 0.5,
+      "max_freq_hz": 5000,
+      "snr_db": -12,
+      "source_rows": 2
+    },
+    {
+      "chunk_seconds": 0.5,
+      "max_freq_hz": 5000,
+      "snr_db": -16,
+      "source_rows": 2
+    },
+    {
+      "chunk_seconds": 0.5,
+      "max_freq_hz": 5000,
+      "snr_db": -20,
+      "source_rows": 2
+    },
+    {
+      "chunk_seconds": 0.5,
+      "max_freq_hz": 10000,
+      "snr_db": 0,
+      "source_rows": 2
+    },
+    {
+      "chunk_seconds": 0.5,
+      "max_freq_hz": 10000,
+      "snr_db": -4,
+      "source_rows": 2
+    },
+    {
+      "chunk_seconds": 0.5,
+      "max_freq_hz": 10000,
+      "snr_db": -8,
+      "source_rows": 2
+    },
+    {
+      "chunk_seconds": 0.5,
+      "max_freq_hz": 10000,
+      "snr_db": -12,
+      "source_rows": 2
+    },
+    {
+      "chunk_seconds": 0.5,
+      "max_freq_hz": 10000,
+      "snr_db": -16,
+      "source_rows": 2
+    },
+    {
+      "chunk_seconds": 0.5,
+      "max_freq_hz": 10000,
+      "snr_db": -20,
+      "source_rows": 2
+    },
+    {
+      "chunk_seconds": 0.5,
+      "max_freq_hz": 15000,
+      "snr_db": 0,
+      "source_rows": 2
+    },
+    {
+      "chunk_seconds": 0.5,
+      "max_freq_hz": 15000,
+      "snr_db": -4,
+      "source_rows": 2
+    },
+    {
+      "chunk_seconds": 0.5,
+      "max_freq_hz": 15000,
+      "snr_db": -8,
+      "source_rows": 2
+    },
+    {
+      "chunk_seconds": 0.5,
+      "max_freq_hz": 15000,
+      "snr_db": -12,
+      "source_rows": 2
+    },
+    {
+      "chunk_seconds": 0.5,
+      "max_freq_hz": 15000,
+      "snr_db": -16,
+      "source_rows": 2
+    },
+    {
+      "chunk_seconds": 0.5,
+      "max_freq_hz": 15000,
+      "snr_db": -20,
+      "source_rows": 2
+    },
+    {
+      "chunk_seconds": 0.5,
+      "max_freq_hz": 22050,
+      "snr_db": 0,
+      "source_rows": 2
+    },
+    {
+      "chunk_seconds": 0.5,
+      "max_freq_hz": 22050,
+      "snr_db": -4,
+      "source_rows": 2
+    },
+    {
+      "chunk_seconds": 0.5,
+      "max_freq_hz": 22050,
+      "snr_db": -8,
+      "source_rows": 2
+    },
+    {
+      "chunk_seconds": 0.5,
+      "max_freq_hz": 22050,
+      "snr_db": -12,
+      "source_rows": 2
+    },
+    {
+      "chunk_seconds": 0.5,
+      "max_freq_hz": 22050,
+      "snr_db": -16,
+      "source_rows": 2
+    },
+    {
+      "chunk_seconds": 0.5,
+      "max_freq_hz": 22050,
+      "snr_db": -20,
+      "source_rows": 2
+    },
+    {
+      "chunk_seconds": 1,
+      "max_freq_hz": 3000,
+      "snr_db": 0,
+      "source_rows": 2
+    },
+    {
+      "chunk_seconds": 1,
+      "max_freq_hz": 3000,
+      "snr_db": -4,
+      "source_rows": 2
+    },
+    {
+      "chunk_seconds": 1,
+      "max_freq_hz": 3000,
+      "snr_db": -8,
+      "source_rows": 2
+    },
+    {
+      "chunk_seconds": 1,
+      "max_freq_hz": 3000,
+      "snr_db": -12,
+      "source_rows": 2
+    },
+    {
+      "chunk_seconds": 1,
+      "max_freq_hz": 3000,
+      "snr_db": -16,
+      "source_rows": 2
+    },
+    {
+      "chunk_seconds": 1,
+      "max_freq_hz": 3000,
+      "snr_db": -20,
+      "source_rows": 2
+    },
+    {
+      "chunk_seconds": 1,
+      "max_freq_hz": 5000,
+      "snr_db": 0,
+      "source_rows": 2
+    },
+    {
+      "chunk_seconds": 1,
+      "max_freq_hz": 5000,
+      "snr_db": -4,
+      "source_rows": 2
+    },
+    {
+      "chunk_seconds": 1,
+      "max_freq_hz": 5000,
+      "snr_db": -8,
+      "source_rows": 2
+    },
+    {
+      "chunk_seconds": 1,
+      "max_freq_hz": 5000,
+      "snr_db": -12,
+      "source_rows": 2
+    },
+    {
+      "chunk_seconds": 1,
+      "max_freq_hz": 5000,
+      "snr_db": -16,
+      "source_rows": 2
+    },
+    {
+      "chunk_seconds": 1,
+      "max_freq_hz": 5000,
+      "snr_db": -20,
+      "source_rows": 2
+    },
+    {
+      "chunk_seconds": 1,
+      "max_freq_hz": 10000,
+      "snr_db": 0,
+      "source_rows": 2
+    },
+    {
+      "chunk_seconds": 1,
+      "max_freq_hz": 10000,
+      "snr_db": -4,
+      "source_rows": 2
+    },
+    {
+      "chunk_seconds": 1,
+      "max_freq_hz": 10000,
+      "snr_db": -8,
+      "source_rows": 2
+    },
+    {
+      "chunk_seconds": 1,
+      "max_freq_hz": 10000,
+      "snr_db": -12,
+      "source_rows": 2
+    },
+    {
+      "chunk_seconds": 1,
+      "max_freq_hz": 10000,
+      "snr_db": -16,
+      "source_rows": 2
+    },
+    {
+      "chunk_seconds": 1,
+      "max_freq_hz": 10000,
+      "snr_db": -20,
+      "source_rows": 2
+    },
+    {
+      "chunk_seconds": 1,
+      "max_freq_hz": 15000,
+      "snr_db": 0,
+      "source_rows": 2
+    },
+    {
+      "chunk_seconds": 1,
+      "max_freq_hz": 15000,
+      "snr_db": -4,
+      "source_rows": 2
+    },
+    {
+      "chunk_seconds": 1,
+      "max_freq_hz": 15000,
+      "snr_db": -8,
+      "source_rows": 2
+    },
+    {
+      "chunk_seconds": 1,
+      "max_freq_hz": 15000,
+      "snr_db": -12,
+      "source_rows": 2
+    },
+    {
+      "chunk_seconds": 1,
+      "max_freq_hz": 15000,
+      "snr_db": -16,
+      "source_rows": 2
+    },
+    {
+      "chunk_seconds": 1,
+      "max_freq_hz": 15000,
+      "snr_db": -20,
+      "source_rows": 2
+    },
+    {
+      "chunk_seconds": 1,
+      "max_freq_hz": 22050,
+      "snr_db": 0,
+      "source_rows": 2
+    },
+    {
+      "chunk_seconds": 1,
+      "max_freq_hz": 22050,
+      "snr_db": -4,
+      "source_rows": 2
+    },
+    {
+      "chunk_seconds": 1,
+      "max_freq_hz": 22050,
+      "snr_db": -8,
+      "source_rows": 2
+    },
+    {
+      "chunk_seconds": 1,
+      "max_freq_hz": 22050,
+      "snr_db": -12,
+      "source_rows": 2
+    },
+    {
+      "chunk_seconds": 1,
+      "max_freq_hz": 22050,
+      "snr_db": -16,
+      "source_rows": 2
+    },
+    {
+      "chunk_seconds": 1,
+      "max_freq_hz": 22050,
+      "snr_db": -20,
+      "source_rows": 2
+    }
+  ],
+  "scope": "Two actual source WAVs, first chunk only, all configured noise/frequency/duration combinations; full production generation not executed."
+}
