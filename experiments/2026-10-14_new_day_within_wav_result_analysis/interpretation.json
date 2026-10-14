@@ -1,0 +1,45 @@
+{
+  "record_date_jst": "2026-10-14",
+  "subject": "10月7日新実験の既知WAV内未使用chunk評価",
+  "conditions": "conditions.json",
+  "verification": "verification.json",
+  "completed": "本人run114213の1秒3kHz・選別なし・clean_only・495学習/165評価、全7条件が完了。単体5と保存6統合、全8CNN fitの200 epochs、保存再読込5775予測の成功記録と保存モデルhash、同一評価ID/fit/重み、全154日別/全体指標行と統合再構成を照合した。解析は保存値だけを使用。",
+  "scope": "同一新日の同一11WAVを学習/評価で共有する。旧6月保存モデルの新日固定適用ではなく、未知日・未知WAV・未知熱流束段階の一般化は示さない。元の保存fit入口は本人指示による復元で撤回された記録を優先する。",
+  "confirmed_findings": [
+    {
+      "claim": "元3への追加はclean回帰と見逃しを改善した",
+      "evidence": "main_metrics.csv, paired_detection_changes.csv",
+      "values": "元3→5: RMSE26.69→19.57 kW/m²、FN15→11、FP0維持。近傍RMSE13.68→7.22。表示値は丸め、正確な値はmain_metrics.csvを正とする。",
+      "limit": "ExtraTrees単体RMSE18.78/FN2、ET4 RMSE19.31/FN12。5が最良ではなく、全域MSEとONB見逃しは目的が異なる。"
+    },
+    {
+      "claim": "ONB境界の数値校正と統合で失う陽性が中心のclean課題",
+      "evidence": "stage_metrics.csv, endpoints_and_ranking.csv, five_false_negative_cases.csv, oof_fit_diagnostics.csv",
+      "values": "5の全11FNはq330.3699567の15評価chunkに集中。平均予測327.218、次段階384.952から全評価chunk陽性。ExtraTrees陽性9を5で失う。全5共通陰性は1。cleanの5はROC-AUC1で、陰性最大286.856<陽性最小304.835<固定閾値330.370。",
+      "limit": "評価予測から閾値を選ぶ事後的な診断を採用方式としない。学習OOFでは予測範囲が重なる。ONBは段階観察に由来する代表ラベルで秒単位の気泡時刻ではない。"
+    },
+    {
+      "claim": "雑音下のRecall/q100改善は上方シフトによる誤報を伴う",
+      "evidence": "main_metrics.csv, stage_metrics.csv, noise_and_detection.png, stage_predictions.png",
+      "values": "5の0dBはFN0/FP28、-4以下はFN0/FP30=全陰性の誤報。-20では平均bias+340.407、RMSE392.650、近傍535.434 kW/m²。全陽性でAccuracy81.818%/F1.9/Recall1。q100233.222・g100-97.148は安全な早期検知ではない。",
+      "limit": "全体回帰だけでも順位AUCだけでも固定閾値での検知性能を代表しない。"
+    },
+    {
+      "claim": "元3に対する統合の雑音劣化抑制は今回の強雑音条件で支持されるが条件付き",
+      "evidence": "main_metrics.csv, noise_degradation.csv, noise_overview.csv, loss_decomposition.csv",
+      "values": "-20の元3→5 RMSE525.435→392.650、cleanからの増加498.744→373.079。0/-4は5が元3より悪い。ET4は全7条件で5よりRMSEが小さく、ET単体も0以外で5より小さい。6雑音RMSE算術平均は元3299.532→5 233.305、ET4 227.024、ET単体204.078。",
+      "limit": "6月との順位差を日変更だけの因果効果としない。学習集合、fit、重み、評価範囲、雑音絶対振幅が異なる。追加HGBのET4比MSE差は全7条件で正。"
+    },
+    {
+      "claim": "reference 0dBは弱いONB前信号に対して強雑音である",
+      "evidence": "realized_snr_by_stage.csv, conditions.json",
+      "values": "0dB評価chunkの実現SNR中央値はq233.22=-27.509dB、q275.72=-19.147dB、q330.37=-8.709dB。付加雑音は共通RMS0.01191777465を使用する。",
+      "limit": "入力の音量/形状変化への依存と整合するが、power増加だけが原因との確定や気泡音源の因果同定にはしない。"
+    }
+  ],
+  "next_discriminating_comparisons": [
+    "既存学習OOFと保存評価のONB段階を、全5共通陰性1件・ET陽性を失う9件・残る1件に分け、熱流束の校正差と特徴の対応を読む。評価で有利になる閾値/重みを直接採用しない。",
+    "同じqとq/日別ONBの両軸で新旧日の絶対強度・相対周波数形状・時間変動を比較する。雑音で信号の弱い低段階が高熱流束に見える仮説を識別する。",
+    "現在の日内比較を完了成果として保持する。未知日への適用は別の問いとして必要になった時に、本人の最新方針に沿って評価条件を決める。撤回済み保存fit入口を自動復活させない。"
+  ]
+}

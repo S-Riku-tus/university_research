@@ -126,7 +126,7 @@ VALIDATION_CONFIG = apply_onb_defaults({
     "learning_policy": {
         #   cross_day       = 学習実験とテスト実験を完全分離
         #   within_wav_chunk= 1実験内の全WAVから同率のchunkをテストへ分離
-        "evaluation_mode": "within_wav_chunk",
+        "evaluation_mode": "cross_day",
         "evaluation_settings": {
             #   2025.06.11_0.3_2
             #   2025.06.18_0.3_3

@@ -1,0 +1,9 @@
+﻿fit_scope,fold,model_key,requested_epochs,epochs_completed,requested_batch_size,actual_batch_size,stopped_by_memory_error
+internal,1,conformer,200,200,12,12,False
+internal,1,alexnet,200,200,8,8,False
+internal,2,conformer,200,200,12,12,False
+internal,2,alexnet,200,200,8,8,False
+internal,3,conformer,200,200,12,12,False
+internal,3,alexnet,200,200,8,8,False
+final,1,conformer,200,200,12,12,
+final,1,alexnet,200,200,8,8,

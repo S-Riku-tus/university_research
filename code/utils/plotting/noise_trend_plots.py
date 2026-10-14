@@ -21,6 +21,14 @@ MODEL_LABELS = {
     "conformer": "Conformer",
     "alexnet": "AlexNet",
 }
+MODEL_STYLES = {
+    "randomforest": ("#009E73", "o", "-"),
+    "conformer": ("#D55E00", "s", "--"),
+    "alexnet": ("#0072B2", "^", "-."),
+    "hgb": ("#CC79A7", "v", ":"),
+    "extra_trees": ("#56B4E9", "P", "--"),
+    "ensemble": ("#222222", "D", "-"),
+}
 STRATEGY_LABELS = {
     "simple_equal": "equal mean",
     "inner_holdout": "inner holdout",
@@ -216,8 +224,6 @@ def plot_noise_trends_from_runs(run_paths, output_dir, *, formats=("png", "pdf")
     for row in rows:
         groups.setdefault((row["strategy"], row["evaluation_unit"], row["metric"]), []).append(row)
     artifacts = []
-    styles = [("#12bfc4", "o", "-"), ("#469ca8", "s", "--"),
-              ("#65bdeb", "^", ":"), ("#2588fa", "D", "-.")]
     # 既存の大きな散布図用設定に影響されないよう、この図だけの書式を指定する。
     with plt.rc_context({"font.family": "DejaVu Serif", "font.size": 11,
                          "axes.labelsize": 13, "xtick.labelsize": 10,
@@ -237,15 +243,23 @@ def plot_noise_trends_from_runs(run_paths, output_dir, *, formats=("png", "pdf")
             model_order = list(dict.fromkeys(row["model_key"] for row in group))
             fig, ax = plt.subplots(figsize=(7.0, 4.8))
             try:
-                for index, model in enumerate(model_order):
+                for model in model_order:
                     by_noise = {row["noise"]: row for row in group if row["model_key"] == model}
                     values = np.asarray([by_noise[noise]["value"] for noise in noises])
                     errors = np.asarray([by_noise[noise]["standard_error"] for noise in noises])
-                    color, marker, line = styles[index % len(styles)]
+                    # Keep each model's style stable across subsets and ensemble strategies.
+                    is_ensemble = model.startswith("ensemble__")
+                    style_key = "ensemble" if is_ensemble else model
+                    color, marker, line = MODEL_STYLES.get(style_key, ("#7f7f7f", "X", ":"))
                     ax.errorbar(np.arange(len(noises)), values,
                                 yerr=errors if np.any(np.isfinite(errors)) else None,
-                                color=color, marker=marker, linestyle=line, markersize=4,
-                                linewidth=1.5, capsize=3, label=by_noise[noises[0]]["model_label"])
+                                color=color, marker=marker, linestyle=line,
+                                markersize=6.5 if is_ensemble else 5,
+                                markerfacecolor="white" if is_ensemble else color,
+                                markeredgewidth=1.2,
+                                linewidth=2.2 if is_ensemble else 1.5,
+                                zorder=3 if is_ensemble else 2,
+                                capsize=3, label=by_noise[noises[0]]["model_label"])
                 ax.set_xticks(np.arange(len(noises)))
                 ax.set_xticklabels(["No_noise" if noise == "no_noise" else noise for noise in noises])
                 ax.set_xlabel("Noise level (reference SNR [dB])")

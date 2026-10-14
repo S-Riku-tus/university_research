@@ -1,0 +1,104 @@
+{
+  "source_run_hash": "2366b492",
+  "fit_id": "c755ee5f162b",
+  "source_training_chunks": 1620,
+  "source_days": [
+    "2025.06.11_0.3_2",
+    "2025.06.18_0.3_3"
+  ],
+  "target_days": [
+    "2026.10.07_0.3_1"
+  ],
+  "evaluation_chunks_per_condition": 4,
+  "noise_conditions": [
+    "heatflux_no_noise",
+    "heatflux_reference_SNR=-20"
+  ],
+  "models": [
+    "randomforest",
+    "conformer",
+    "alexnet",
+    "hgb",
+    "extra_trees"
+  ],
+  "ensembles": [
+    "ensemble__original3_hgb_extra_trees",
+    "ensemble__original3_mse",
+    "ensemble__original3_performance",
+    "ensemble__original3_hgb",
+    "ensemble__original3_extra_trees",
+    "ensemble__simple_equal"
+  ],
+  "training_performed": false,
+  "preprocessing_and_weights_frozen": true,
+  "scope": "Four target chunks per condition; software verification only, not research performance.",
+  "status": "passed",
+  "source_files_unchanged": true,
+  "source_reload_checks": [
+    {
+      "model_key": "randomforest",
+      "probe_samples": 252,
+      "inference_batch_size": 32,
+      "passed": true,
+      "max_abs_difference_W_m2": 0.0
+    },
+    {
+      "model_key": "conformer",
+      "probe_samples": 252,
+      "inference_batch_size": 32,
+      "passed": true,
+      "max_abs_difference_W_m2": 0.0
+    },
+    {
+      "model_key": "alexnet",
+      "probe_samples": 252,
+      "inference_batch_size": 32,
+      "passed": true,
+      "max_abs_difference_W_m2": 0.0
+    },
+    {
+      "model_key": "hgb",
+      "probe_samples": 252,
+      "inference_batch_size": 32,
+      "passed": true,
+      "max_abs_difference_W_m2": 0.0
+    },
+    {
+      "model_key": "extra_trees",
+      "probe_samples": 252,
+      "inference_batch_size": 32,
+      "passed": true,
+      "max_abs_difference_W_m2": 1.1641532182693481e-10
+    }
+  ],
+  "base_predictions": 40,
+  "output_files": [
+    "completed.json",
+    "features_across_days.png",
+    "features_by_chunk.csv",
+    "features_by_wav.csv",
+    "frozen_weights.json",
+    "main_deltas.csv",
+    "main_metrics.csv",
+    "noise_degradation.csv",
+    "noise_overview.csv",
+    "q100_by_source_day.csv",
+    "run_conditions.json",
+    "source_reload_checks.csv"
+  ],
+  "condition_files": [
+    "chunk_error_diagnostics.csv",
+    "input_provenance.csv",
+    "metrics_by_stage.csv",
+    "metrics_by_training_range.csv",
+    "paired_detection_changes.csv",
+    "prediction_by_stage.png",
+    "predictions.csv",
+    "residual_complementarity.csv"
+  ],
+  "features_by_chunk.csv_rows": 1624,
+  "features_by_wav.csv_rows": 40,
+  "main_metrics.csv_rows": 44,
+  "noise_degradation.csv_rows": 22,
+  "temporary_predictions_retained": false
+}

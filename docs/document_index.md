@@ -1,12 +1,17 @@
 # 文書案内と更新ルール
 
-更新日: 2026-10-09。**現在の状態は一か所で更新し、過去の数値と判断は日付付き記録に残す。**
+更新日: 2026-10-14。**現在の状態は一か所で更新し、過去の数値と判断は日付付き記録に残す。**
 
 ## 読む順序と各文書の役割
 
 | 目的 | 読む文書 | 更新方法 |
 |---|---|---|
 | 次の作業を始める | [研究の現在地](research_status.md) | 状態・本人の希望・次の一手を更新する唯一の入口 |
+| 完了した確認を除いた残課題・過去の精度逆転・後段の統合案を確認する | [10/14最新の3課題と追加回答](research_plan/2026-10-14_completed_checks_noise_history_and_future_ensembles.md) | 基盤・比較・悪化量・q100照合は完了。5を発表へ採用、6をつなぐ案、12の目的別統合と13の詳細改善は保留。学部/2025年追加録音/2026年新実験を区別する |
+| 理想の結論と2025年データでの課題・金曜論点を選ぶ | [10/14最新方針と22論点](research_plan/2026-10-14_ideal_conclusion_and_friday_issue_list.md)、[質問回答と本人の発表選択](research_plan/2026-10-14_friday_selection_and_question_answers.md)、[雑音悪化量の確認](../experiments/2026-10-14_2025_noise_degradation_review/README.md)、[q100旧新照合](audits/2026-10-14_user_direction_and_metric_review/q100_verification.json) | 最新本人選択を優先。比較は手段、有効条件の最終確認は後段。悪化量は集計完了。17の再掲・21の目次は発表に入れる |
+| 学部からの進捗・教授指摘を踏まえて残課題を確認する | [10/14歴史照合・課題台帳](audits/2026-10-14_research_history/assessment.json)、[原資料索引](audits/2026-10-14_research_history/source_inventory.csv) | 2024–2026資料200件棚卸し、147本文/ノートを話題検索。原教授コメント・本人報告・AI解釈・実績を分け、目的/雑音問題/説明性活用/統合/ONB/評価範囲/報告を現状へ対応 |
+| 10/14新実験の日内評価結果を読む | [条件](../experiments/2026-10-14_new_day_within_wav_result_analysis/conditions.json)、[主指標](../experiments/2026-10-14_new_day_within_wav_result_analysis/main_metrics.csv)、[解釈](../experiments/2026-10-14_new_day_within_wav_result_analysis/interpretation.json) | 新日495/165・全7条件、同じclean fit/重み・154指標検算。ONB境界のFN、ET陽性を失う統合、強雑音の全陽性化と実現SNR。未知日評価とは区別 |
+| 10/14保存fit入口の撤回・復元を確認する | [復元条件](../configs/experiments/2026-10-14_onb_restore_within_wav_chunk.json)、[復元検算](../experiments/2026-10-14_onb_saved_fit_evaluation/restore_verification.json)、[撤回前条件](../configs/experiments/2026-10-14_onb_saved_fit_evaluation.json) | 本人指示で従来within_wav_chunk学習へ復元。旧1620 fit→新660の本評価は未実行、撤回前の実装確認と今回の日内本結果を混同しない |
 | 新実験の無雑音と全ノイズの生成完了を確認する | [10/9完了確認](../experiments/2026-10-09_new_experiment_generation_audit/verification.json)、[条件別件数](../experiments/2026-10-09_new_experiment_generation_audit/condition_counts.csv) | 全70条件、NPY/PNG各69300、全件対応/ラベル/雑音記録、内容630組・元WAV再計算24例。モデル結果は未確認 |
 | 新実験の全ノイズを全帯域・両時間長で生成する | [10/8全ノイズ生成準備](../experiments/2026-10-08_all_noise_generation_ready/README.md) | 追加のRMS継承・保存処理を撤回し、従来処理に復帰。SNR一覧は無雑音＋6条件、5帯域・両時間長を維持。関連7テスト合格、本生成は未実行 |
 | 10/8の本人の最新希望と次の順序を読む | [各課題の扱い・新日/物理特徴優先](research_plan/2026-10-08_user_direction_and_next_steps.md) | clean_only、3/4/5継続、新日入力確認、保留対象、報告準備。10/7の執筆優先・未知日後順位の提案より優先 |

@@ -1,0 +1,68 @@
+{
+  "record_date_jst": "2026-10-14",
+  "implementation_status": "passed",
+  "related_unittests_passed": 40,
+  "unit_test_patterns": [
+    "test_saved_fit_evaluation.py",
+    "test_onb_entrypoint.py",
+    "test_onb_defaults.py",
+    "test_onb_main_comparison.py",
+    "test_learning_policy.py",
+    "test_onb_five_models.py"
+  ],
+  "all_seven_conditions_preflight": {
+    "source_run_hash": "2366b492",
+    "fit_id": "c755ee5f162b",
+    "source_training_chunks": 1620,
+    "source_days": [
+      "2025.06.11_0.3_2",
+      "2025.06.18_0.3_3"
+    ],
+    "target_days": [
+      "2026.10.07_0.3_1"
+    ],
+    "evaluation_chunks_per_condition": 660,
+    "noise_conditions": [
+      "heatflux_no_noise",
+      "heatflux_reference_SNR=0",
+      "heatflux_reference_SNR=-4",
+      "heatflux_reference_SNR=-8",
+      "heatflux_reference_SNR=-12",
+      "heatflux_reference_SNR=-16",
+      "heatflux_reference_SNR=-20"
+    ],
+    "models": [
+      "randomforest",
+      "conformer",
+      "alexnet",
+      "hgb",
+      "extra_trees"
+    ],
+    "ensembles": [
+      "ensemble__original3_hgb_extra_trees",
+      "ensemble__original3_mse",
+      "ensemble__original3_performance",
+      "ensemble__original3_hgb",
+      "ensemble__original3_extra_trees",
+      "ensemble__simple_equal"
+    ],
+    "training_performed": false,
+    "preprocessing_and_weights_frozen": true
+  },
+  "software_verification_file": "software_verification.json",
+  "new_day_regression_result_files": 0,
+  "full_new_day_evaluation_performed": false,
+  "training_performed": false,
+  "limitations": [
+    "Saved-fit evaluator currently supports one target experiment, one-second 3 kHz mono power and the saved five-model fit.",
+    "Feature comparisons are descriptive summaries on the resized frequency grid, not physical source identification.",
+    "The four-chunk software verification is not a research performance evaluation."
+  ],
+  "withdrawal": {
+    "date_jst": "2026-10-14",
+    "reason": "User requested removal of saved_fit and restoration of normal within_wav_chunk training/evaluation.",
+    "current_use": "historical_record_only",
+    "replacement_config": "configs/experiments/2026-10-14_onb_restore_within_wav_chunk.json",
+    "withdrawn_code": "experiments/2026-10-14_onb_saved_fit_evaluation/withdrawn_code"
+  }
+}

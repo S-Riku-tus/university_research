@@ -1,0 +1,33 @@
+{
+  "scope": "2025 June 11+18 saved within_wav_chunk clean_only results; no new fitting or inference",
+  "source_rows": 693,
+  "clean_to_noise_rows": 594,
+  "models": 11,
+  "source_days": [
+    "2025.06.11_0.3_2",
+    "2025.06.18_0.3_3"
+  ],
+  "pooled_n": 540,
+  "pooled_pre_onb": 225,
+  "pooled_post_onb": 315,
+  "cnn_epochs_by_training_seed": {
+    "42": 200,
+    "43": 150,
+    "44": 150
+  },
+  "saved_degradation_rows_checked": 396,
+  "metrics_checked": 4,
+  "max_saved_degradation_difference": 2.842170943040401e-14,
+  "sources": [
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\onb_comparison\\main_metrics.csv",
+      "sha256": "51dfe9e75bca3487ffa4f2f714d968d936639ff5f27f19d13f2d67b2e6943261"
+    },
+    {
+      "path": "experiments\\2026-10-06_onb_main_comparison_ready\\saved_main_tables\\main_metrics.csv",
+      "sha256": "9764dc51156941ff4127a95fea2a174fbe1af1282eb502258020c9988a629a0f"
+    }
+  ],
+  "sources_unchanged": true,
+  "interpretation": "Smaller noisy RMSE and smaller clean-to-noise RMSE increase are distinct claims. Conditions and final model adoption remain provisional."
+}

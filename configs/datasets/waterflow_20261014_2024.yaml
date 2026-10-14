@@ -1,0 +1,35 @@
+# 設定記録。生成スクリプトが自動で読み込むファイルではない。
+# データ生成・モデルによる性能検証は未実行。
+recorded_on: 2026-10-14
+entrypoint: code/2.run_npy_waterflow_2つhighpass.py
+save_date: 20261014
+source:
+  experiment_root: Pool_boiling/Subcooling_20_degrees/0.3
+  experiments:
+    - 2024.11.12_1_2.13_1
+  recording_directory: 録音データ_熱流束_合計
+  wav_count: 77
+  heat_flux_label_source: WAVファイル名のindex=<番号>.<熱流束>の熱流束部分（W/m²）
+preprocessing:
+  sample_rate_hz: 44100
+  audio_samples_used: 2646000
+  source_channels: mean
+  highpass:
+    pass_hz: 500
+    stop_hz: 400
+    pass_loss_db: 1
+    stop_attenuation_db: 40
+  stft_frame_count: 672
+  max_frequency_hz: [3000, 5000, 10000, 15000, 22050]
+  chunk_seconds: [0.5, 1]
+  array_shape: [224, 224]
+  array_dtype: float32
+noise:
+  source: water_flow/water_flow_125.wav
+  reference_snr_db: [null, 0, -4, -8, -12, -16, -20]
+  scaling_mode: fixed_global_rms
+  reference_scope: 今回対象の全77 WAVを高域通過後に求めたRMSの中央値
+  random_seed: 42
+output:
+  npy: <experiment_root>/<experiment>/data/npy/waterflow_20261014_{0.5s|1s}
+  png: <experiment_root>/<experiment>/data/spectrogram_png/waterflow_20261014_{0.5s|1s}

@@ -1,0 +1,111 @@
+{
+  "analysis_date_jst": "2026-10-14",
+  "run_directory": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2026.10.07_0.3_1\\regression_result\\npy\\ensemble\\202610\\14\\onb_wc-t1007-v1007_ic3-nc_c1s_s0_e200_114213\\maxfreq=3kHz",
+  "run_hash": "07271a9c",
+  "fit_id": "a8c4bef6ea83",
+  "learning_context": {
+    "training_noise": "clean_only",
+    "evaluation_mode": "within_wav_chunk",
+    "within_wav_chunk_experiment": "2026.10.07_0.3_1",
+    "test_fraction": 0.25,
+    "test_split_seed": 42,
+    "train_experiments": [
+      "2026.10.07_0.3_1"
+    ],
+    "test_experiments": [
+      "2026.10.07_0.3_1"
+    ],
+    "training_experiments": [
+      "2026.10.07_0.3_1"
+    ],
+    "evaluation_experiments": [
+      "2026.10.07_0.3_1"
+    ],
+    "training_noise_dir": "heatflux_no_noise",
+    "ensemble_weight_scope": "shared_clean_across_evaluation_noises",
+    "evaluation_scheme": "within_wav_chunk_holdout",
+    "generalization_scope": "within_known_source_wav_unseen_chunk_holdout",
+    "outer_folds_per_evaluation_day": 1,
+    "training_datasets": [
+      {
+        "experiment_name": "2026.10.07_0.3_1",
+        "data_path": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2026.10.07_0.3_1\\data\\npy\\waterflow_20261007_1s\\maxfreq=3kHz\\heatflux_no_noise",
+        "noise_dir_name": "heatflux_no_noise",
+        "max_freq_hz": "maxfreq=3kHz"
+      }
+    ],
+    "evaluation_noise_dir": "heatflux_no_noise"
+  },
+  "input": {
+    "chunk_seconds": 1,
+    "max_frequency_hz": 3000,
+    "selection": "none"
+  },
+  "threshold_W_m2": 330369.956723274,
+  "training_chunks": 495,
+  "evaluation_chunks_per_condition": 165,
+  "independent_source_wavs": 11,
+  "training_and_evaluation_wavs_shared": true,
+  "evaluation_positive_negative_near": [
+    135,
+    30,
+    15
+  ],
+  "noise_conditions": [
+    "clean",
+    "0",
+    "-4",
+    "-8",
+    "-12",
+    "-16",
+    "-20"
+  ],
+  "noise_reference_rms": 0.011917774650702801,
+  "evaluation_scope": "new_experiment_within_known_source_wav_unseen_chunks",
+  "saved_old_fit_transfer_performed": false,
+  "analysis_fitting_or_model_inference": false,
+  "weights": {
+    "ensemble__original3_hgb_extra_trees": {
+      "randomforest": 0.015494236312621812,
+      "conformer": 0.19563315642794607,
+      "alexnet": 0.03887260725943213,
+      "hgb": 0.17517345003348855,
+      "extra_trees": 0.5748265499665115
+    },
+    "ensemble__original3_mse": {
+      "randomforest": 0.06197694525048725,
+      "conformer": 0.7825326257117843,
+      "alexnet": 0.15549042903772853,
+      "hgb": 0.0,
+      "extra_trees": 0.0
+    },
+    "ensemble__original3_performance": {
+      "randomforest": 0.13496947330456666,
+      "conformer": 0.6208321029238446,
+      "alexnet": 0.24419842377158876,
+      "hgb": 0.0,
+      "extra_trees": 0.0
+    },
+    "ensemble__original3_hgb": {
+      "randomforest": 0.02151097169065692,
+      "conformer": 0.27160159460374955,
+      "alexnet": 0.053967652062883516,
+      "hgb": 0.65291978164271,
+      "extra_trees": 0.0
+    },
+    "ensemble__original3_extra_trees": {
+      "randomforest": 0.015494236312621812,
+      "conformer": 0.19563315642794607,
+      "alexnet": 0.03887260725943213,
+      "hgb": 0.0,
+      "extra_trees": 0.75
+    },
+    "ensemble__simple_equal": {
+      "randomforest": 0.2,
+      "conformer": 0.2,
+      "alexnet": 0.2,
+      "hgb": 0.2,
+      "extra_trees": 0.2
+    }
+  }
+}

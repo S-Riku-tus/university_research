@@ -1,0 +1,17 @@
+{
+  "record_date_jst": "2026-10-14",
+  "inventory_count": 200,
+  "text_record_count": 147,
+  "extraction_counts": {
+    "cached_office_text": 103,
+    "cached_pdf_text": 27,
+    "duplicate_pdf_export": 52,
+    "local_text": 12,
+    "new_or_changed_office_xml": 5,
+    "pdf_index_only": 1
+  },
+  "topic_evidence_rows": 481,
+  "all_extracted_texts_keyword_surveyed": true,
+  "scope": "2024-2026 dated research folders, authored conference material, formal plans and graduation thesis; course material and unrelated papers excluded.",
+  "limitations": "Office text/notes and existing PDF text only; embedded plots and visual layout are not re-rendered. Folder years/dates are not assumed to be event dates. Report text does not establish submission or teacher approval."
+}

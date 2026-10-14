@@ -1,0 +1,10 @@
+{
+  "status": "passed",
+  "inventory_rows": 200,
+  "text_records": 147,
+  "topic_evidence_rows": 481,
+  "task_ledger_rows": 13,
+  "anchor_references_checked": 20,
+  "new_links_checked": 5,
+  "scope": "Source inventory, cached extraction hashes checked during survey, assessment JSON and anchor/new-link existence; no training or inference."
+}

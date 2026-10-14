@@ -1,0 +1,61 @@
+{
+  "record_date_jst": "2026-10-14",
+  "status": "passed",
+  "checked_conditions": [
+    {
+      "noise_dir_name": "heatflux_no_noise",
+      "training_chunks": 495,
+      "evaluation_chunks": 165,
+      "chunk_overlap": 0
+    },
+    {
+      "noise_dir_name": "heatflux_reference_SNR=0",
+      "training_chunks": 495,
+      "evaluation_chunks": 165,
+      "chunk_overlap": 0
+    },
+    {
+      "noise_dir_name": "heatflux_reference_SNR=-4",
+      "training_chunks": 495,
+      "evaluation_chunks": 165,
+      "chunk_overlap": 0
+    },
+    {
+      "noise_dir_name": "heatflux_reference_SNR=-8",
+      "training_chunks": 495,
+      "evaluation_chunks": 165,
+      "chunk_overlap": 0
+    },
+    {
+      "noise_dir_name": "heatflux_reference_SNR=-12",
+      "training_chunks": 495,
+      "evaluation_chunks": 165,
+      "chunk_overlap": 0
+    },
+    {
+      "noise_dir_name": "heatflux_reference_SNR=-16",
+      "training_chunks": 495,
+      "evaluation_chunks": 165,
+      "chunk_overlap": 0
+    },
+    {
+      "noise_dir_name": "heatflux_reference_SNR=-20",
+      "training_chunks": 495,
+      "evaluation_chunks": 165,
+      "chunk_overlap": 0
+    }
+  ],
+  "training_noise": "clean_only",
+  "training_jobs": 1,
+  "evaluation_jobs": 7,
+  "same_evaluation_chunk_identities_across_noise": true,
+  "execution_config_absent": true,
+  "training_performed": false,
+  "prediction_performed": false,
+  "related_unittests_passed": 23,
+  "test_patterns": [
+    "test_onb_entrypoint.py",
+    "test_onb_defaults.py",
+    "test_learning_policy.py"
+  ]
+}

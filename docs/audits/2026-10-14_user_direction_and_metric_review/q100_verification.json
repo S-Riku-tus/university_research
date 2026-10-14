@@ -1,0 +1,83 @@
+{
+  "status": "passed",
+  "comparison_cells": 154,
+  "legacy_green_line_with_inclusive_boundary_matches_current_all_cells": true,
+  "legacy_strict_boundary_matches_current_cells": 154,
+  "scope": "Same saved June 2025 predictions and same source-day ONB threshold; no claim of identical historical fit, pooled threshold, or averaging.",
+  "source_hashes": [
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\heatflux_no_noise\\fold_pred\\pred_f1_no_noise.csv",
+      "sha256": "ede56620159ec8155ad3fbe3c0207e02754d54b899d59013374f4c4726844032"
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\heatflux_reference_SNR=0\\fold_pred\\pred_f1_0.csv",
+      "sha256": "2eeef5a143cf5c12633c947d1e172764663b103c2879688cded017dcc420d29f"
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\heatflux_reference_SNR=-4\\fold_pred\\pred_f1_-4.csv",
+      "sha256": "9d944556f163ecba629b0bbb853bde3774552470fe1fb84a874550e619670c38"
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\heatflux_reference_SNR=-8\\fold_pred\\pred_f1_-8.csv",
+      "sha256": "18dcb5b527533c2259b6327d44cced9b72b29e4e104478598e480b59f52c0d3a"
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\heatflux_reference_SNR=-12\\fold_pred\\pred_f1_-12.csv",
+      "sha256": "6ab87e03e95d11dd515a04510805b95ab44256323d19be7d8f5c3715d268d44b"
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\heatflux_reference_SNR=-16\\fold_pred\\pred_f1_-16.csv",
+      "sha256": "4a4e958c9433854bf663f6172ec9d2c8e90426ad61a585f426d66ac3bec4db9e"
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\heatflux_reference_SNR=-20\\fold_pred\\pred_f1_-20.csv",
+      "sha256": "17dbcb96f5ed652ca17ecb46996c32e18105d34580d46915ad256909517abe80"
+    }
+  ],
+  "code_locations": {
+    "legacy_green_line": "archive/code/3.run_ensemble_100percent_classification.py:350",
+    "legacy_complete_separation_search": "archive/code/3.run_ensemble_100percent_classification.py:251",
+    "current_q100": "code/utils/calculation/source_day_metrics.py:66"
+  },
+  "correction": "Legacy plotted 100% classification threshold and current q100 have the same positive-tail detection meaning. Neither green-line calculation checks false positives below ONB. The old separate TPR=1/FPR=0 threshold search changes both truth and prediction thresholds and is a different calculation.",
+  "toy_examples": [
+    {
+      "name": "all_positive_false_alarm",
+      "observed_onb": 100,
+      "q_true": [
+        50.0,
+        100.0,
+        150.0
+      ],
+      "q_pred": [
+        150.0,
+        160.0,
+        170.0
+      ],
+      "legacy_green_line_q100": 50.0,
+      "current_q100": 50.0,
+      "fp": 1,
+      "fn": 0,
+      "full_classification_perfect": false
+    },
+    {
+      "name": "no_false_alarm_but_boundary_miss",
+      "observed_onb": 100,
+      "q_true": [
+        50.0,
+        100.0,
+        150.0
+      ],
+      "q_pred": [
+        60.0,
+        90.0,
+        160.0
+      ],
+      "legacy_green_line_q100": 150.0,
+      "current_q100": 150.0,
+      "fp": 0,
+      "fn": 1,
+      "full_classification_perfect": false
+    }
+  ]
+}
