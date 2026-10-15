@@ -1,0 +1,26 @@
+{
+  "checked_at_jst": "2026-10-15T20:41:34.758912+09:00",
+  "slides": 11,
+  "canvas_inches": [
+    20.0,
+    11.25
+  ],
+  "source_figures": 11,
+  "original_pptx_sha256": "61ff57ee77725a23d67aa2aeed1d20461ad3e164552a9b65165f96cd39c8bbeb",
+  "original_pptx_unchanged": true,
+  "main_result_csv_unchanged": true,
+  "source_image_hashes_unchanged": true,
+  "geometry_failures": [],
+  "text_overflows": [],
+  "new_training": 0,
+  "new_inference": 0,
+  "original_pptx_edited": false,
+  "preview_is_original_office_render": false,
+  "local_markdown_links_checked": 33,
+  "pdf_pages": 11,
+  "slide_png_count": 11,
+  "montage_available": true,
+  "guide_slide_order_verified": true,
+  "pdf_size_mb": 1.35,
+  "visual_review": "Contact sheet and main result/explanation/semester pages inspected"
+}

@@ -1,5 +1,7 @@
 # 10/16研究進捗発表 各スライドの内容案
 
+**作成に使う具体化版**：[貼り付け文章・cm座標・図表・口頭説明](2026-10-16_slide_build_guide.md)、[全11枚の配置見本PDF](assets/2026-10-16/layout_preview/slide_layout_preview.pdf)。以下の筋を保ち、4の模式図は縦3段で指定した。原PPTXは保持。
+
 作成日：2026-10-14。本人の最新返信、[完了確認を除いた方針](../research_plan/2026-10-14_completed_checks_noise_history_and_future_ensembles.md)、[今回の保存結果分析](../../experiments/2026-10-14_error_feature_linkage/README.md)、[10/16コピーと9/18版の書式分析](../audits/2026-10-14_slide_style_and_content/style_analysis.md)に基づく。
 
 **10/15更新**：[文章・必要図・残る反映作業・後期計画の点検](2026-10-16_slide_readiness_and_semester_plan.md)。主結果は本日完了したclean_only `143609`へ更新。再実行`194258`も全7条件・主表が完了し、保存予測・指標・重みが丸め程度の差で一致、FN/FP/日別q100は完全一致した。説明を変えず194258の新図も使用できる。旧fitの入力加工と今日の結果を区別する。最後は元の4区分を使う進捗反映版の後期計画へ更新し、修論完成後の最終確認は引き続き今回の対象外。

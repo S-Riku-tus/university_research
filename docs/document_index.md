@@ -7,6 +7,7 @@
 | 目的 | 読む文書 | 更新方法 |
 |---|---|---|
 | 次の作業を始める | [研究の現在地](research_status.md) | 状態・本人の希望・次の一手を更新する唯一の入口 |
+| 10/16のスライドを文章と配置からすぐ作る | [貼り付け文章・cm座標・図の指定](progress/2026-10-16_slide_build_guide.md)、[11枚の見本PDF](progress/assets/2026-10-16/layout_preview/slide_layout_preview.pdf)、[一覧](progress/assets/2026-10-16/layout_preview/contact_sheet.png)、[確認記録](audits/2026-10-15_slide_layout_guide/README.md) | 原寸/書式/実図から各オブジェクトを具体化。原PPTX保持、PPTXの実編集は未実施 |
 | 10/16各ページの文・画像・後期計画・残る対応を確認する | [ページ別点検と計画](progress/2026-10-16_slide_readiness_and_semester_plan.md)、[基本11枚案](progress/2026-10-16_slide_content_plan.md)、[再実行の照合](../experiments/2026-10-15_presentation_readiness/run_consistency.json)、[図の出典](progress/assets/2026-10-16/asset_sources.json) | 143609と194258は全7条件・主指標・重みが丸め程度の差で一致。新図も使用可。後期計画を進捗へ合わせ、素材を準備。原PPTX保持、実反映は未実施 |
 | 今回完了したclean_onlyの結果を読む | [10/15 143609の結果分析](../experiments/2026-10-15_clean_only_result_analysis/README.md) | matched途中停止後、clean_onlyだけ分析。元3比の全域改善・近傍の交換・ONB段階の見逃し・q100を整理。検算・分析図・更新bar168図まで保存 |
 | 今日のONB 2実行の進み具合を確認する | [10/15 17:18の固定記録](../experiments/2026-10-15_onb_two_run_progress/README.md) | clean_onlyは全7条件・最終集計完了。matchedは3/7完了・−8処理中。性能分析は終了後で、時刻以降の進行は未確認 |
