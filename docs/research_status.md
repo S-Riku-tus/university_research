@@ -1,6 +1,8 @@
 # 研究の現在地と次にすること
 
-更新日: **2026-10-14（保存結果の誤り/特徴接続を分析・10/16の各ページ内容案を作成）**。分位点ルール時点の状態は[変更前の記録](../experiments/2026-09-16_peak_height_selection/previous_documents/research_status.md)に保存した。
+更新日: **2026-10-15（発表用ONB条件を提案・barモデル名の拡大を確認）**。分位点ルール時点の状態は[変更前の記録](../experiments/2026-09-16_peak_height_selection/previous_documents/research_status.md)に保存した。
+
+**10/15・発表用出力の条件とbar修正**：[条件説明](notes/2026-10-15_onb_presentation_run_conditions.md)、[提案JSON](../configs/experiments/2026-10-15_onb_presentation_run_proposal.json)、[表示・入力確認](../experiments/2026-10-15_bar_label_readability/README.md)。見た目の更新だけなら保存結果再描画が第一候補。通常再実行する場合は2025/6/11＋6/18統合、1秒3 kHz、日内25%/split42、clean_only、200 epochs、内部chunk3-fold/seed42、同じ5単体/6統合・採用値・全7雑音を維持。提案入力は7/7、36 WAV・1620/540、評価ID/正解一致。現在の入口はcross_dayで新2026日を評価する設定のためそのまま実行せず、今回の提案は未適用。`--preflight`も現行入口は解析しない。barモデル名は縦軸と同じ23 pt、水平改行と幅調整を実装し5/11方式×2フォントで非重複/図内/数値不変を確認。色と数値は保持、新学習・モデル推論なし。修論完成後の最終確認とは別の発表用出力準備で、追加探索へ広げない。
 
 **本人の最新方針と今回の完了**：[研究の接続分析・発表方針の最新整理](research_plan/2026-10-14_research_synthesis_and_presentation_policy.md)。データ差による難しさと処理の問題を分け、過去の逆転→診断→修正→修正後matched→clean_onlyの流れに本人は賛成。将来の希望は入力に応じた自動重み切替で、目的別固定重みだけではない。時間/コストに見合う場合の候補で今回未実装。修論としてまとまった後の最終確認は、余裕がある場合だけで今回の発表準備・次週作業から除外する。
 

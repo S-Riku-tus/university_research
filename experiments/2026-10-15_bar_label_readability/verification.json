@@ -1,0 +1,115 @@
+{
+  "status": "passed",
+  "source": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\heatflux_no_noise\\metrics_summary_no_noise.csv",
+  "source_sha256": "0f5ad8c30785f86a56837a4f4b601fa3e3fcd8c4c9dc7ebb73f1c9cad45f2ed2",
+  "source_unchanged": true,
+  "new_fits": 0,
+  "new_inference": 0,
+  "renders": [
+    {
+      "path": "times_5\\bar\\r2_ep200_no_noise.png",
+      "model_count": 5,
+      "font": [
+        "Times New Roman"
+      ],
+      "tick_fontsize": 23,
+      "axis_fontsize": 23,
+      "figure_size_inches": [
+        9.0,
+        6.949999999999999
+      ],
+      "minimum_label_gap_pixels": 35.49134654627079,
+      "all_labels_inside_figure": true,
+      "values_unchanged": true,
+      "labels": [
+        "Random\nForest",
+        "Conformer",
+        "AlexNet",
+        "HGB34",
+        "ExtraTrees\n34"
+      ]
+    },
+    {
+      "path": "times_11\\bar\\r2_ep200_no_noise.png",
+      "model_count": 11,
+      "font": [
+        "Times New Roman"
+      ],
+      "tick_fontsize": 23,
+      "axis_fontsize": 23,
+      "figure_size_inches": [
+        18.421410467977925,
+        7.3
+      ],
+      "minimum_label_gap_pixels": 19.519547101299963,
+      "all_labels_inside_figure": true,
+      "values_unchanged": true,
+      "labels": [
+        "Random\nForest",
+        "Conformer",
+        "AlexNet",
+        "HGB34",
+        "ExtraTrees\n34",
+        "Original3\n+ HGB\n+ ET",
+        "Original3\nMSE",
+        "Original3\nperf",
+        "Original3\n+ HGB",
+        "Original3\n+ ET",
+        "Equal\nmean"
+      ]
+    },
+    {
+      "path": "sans_5\\bar\\r2_ep200_no_noise.png",
+      "model_count": 5,
+      "font": [
+        "DejaVu Sans"
+      ],
+      "tick_fontsize": 23,
+      "axis_fontsize": 23,
+      "figure_size_inches": [
+        9.842157014059566,
+        6.949999999999999
+      ],
+      "minimum_label_gap_pixels": 23.770388611753305,
+      "all_labels_inside_figure": true,
+      "values_unchanged": true,
+      "labels": [
+        "Random\nForest",
+        "Conformer",
+        "AlexNet",
+        "HGB34",
+        "ExtraTrees\n34"
+      ]
+    },
+    {
+      "path": "sans_11\\bar\\r2_ep200_no_noise.png",
+      "model_count": 11,
+      "font": [
+        "DejaVu Sans"
+      ],
+      "tick_fontsize": 23,
+      "axis_fontsize": 23,
+      "figure_size_inches": [
+        21.89754818485067,
+        7.3
+      ],
+      "minimum_label_gap_pixels": 22.980966727903933,
+      "all_labels_inside_figure": true,
+      "values_unchanged": true,
+      "labels": [
+        "Random\nForest",
+        "Conformer",
+        "AlexNet",
+        "HGB34",
+        "ExtraTrees\n34",
+        "Original3\n+ HGB\n+ ET",
+        "Original3\nMSE",
+        "Original3\nperf",
+        "Original3\n+ HGB",
+        "Original3\n+ ET",
+        "Equal\nmean"
+      ]
+    }
+  ],
+  "scope": "Typography preview using old saved R2 means/SE; not a new performance evaluation"
+}

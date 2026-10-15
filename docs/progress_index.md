@@ -2,6 +2,12 @@
 
 このページは**日付ごとの履歴**。各節の「現在」「次にやること」は当時の記録であり、現在の未完了作業とは限らない。最新の状態は[研究の現在地](research_status.md)、更新関係は[文書案内](document_index.md)を読む。
 
+## 2026-10-15 発表用ONB条件提案とbarのモデル名23 pt化
+
+- [条件説明](notes/2026-10-15_onb_presentation_run_conditions.md)と[提案JSON](../configs/experiments/2026-10-15_onb_presentation_run_proposal.json)を作成。保存結果の再描画を第一候補とし、再学習する場合も最新2025年200 epochs主条件を維持する。現行入口は新2026評価cross_dayのため設定変更が必要だが、今回は適用/本学習なし。
+- [入力確認](../experiments/2026-10-15_bar_label_readability/proposed_run_input_check.json)は全7条件36 WAV/1620学習/540評価で一致。通常入口をimportせず、配列・学習・推論なしで確認した。撤回前の`--preflight`説明を現行の手順として使わない。
+- [bar表示修正とプレビュー](../experiments/2026-10-15_bar_label_readability/README.md)。モデル名を縦軸同様23 pt、水平改行/横幅調整。実保存指標で5/11方式×2フォントの4描画、非重複・図内・値不変・CSV hash不変、構文チェックを確認。配色と学習条件は変更していない。
+
 ## 2026-10-14 保存結果の接続分析・元スライド書式確認・10/16ページ別内容案
 
 - [最新の研究方針](research_plan/2026-10-14_research_synthesis_and_presentation_policy.md)に、データ差/処理問題の区別、本人が合意した5段階の流れ、入力からの自動重み切替という本人の将来希望、修論完成後の最終確認を今回から除外する指示を記録した。

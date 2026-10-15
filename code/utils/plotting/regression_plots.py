@@ -1,4 +1,5 @@
 import os
+import textwrap
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.ticker import ScalarFormatter
@@ -74,30 +75,35 @@ class RegressionPlotter:
     def plot_bar(self, metric_name, labels, values, errors, epochs, save_path, snr_value):
         """モデル別の指標を棒グラフで保存 (R2 / 連続スコア ROC-AUC など)。"""
         crowded = len(labels) > 6
-        plt.figure(figsize=(max(8, 1.1 * len(labels)), 7 if crowded else 6))
+        axis_fontsize = 23
         colors = ['c', 'cadetblue', 'skyblue', 'dodgerblue', 'steelblue', 'lightblue']
         display_label_aliases = {
-            "RandomForest": "RandomForest",
+            "RandomForest": "Random\nForest",
             "Conformer": "Conformer",
             "HGB frequency34": "HGB34",
-            "ExtraTrees frequency34": "ExtraTrees34",
-            "Original three MSE": "Original3 MSE",
-            "Original three performance": "Original3 perf",
-            "Original three + HGB": "Original3 + HGB",
-            "Original three + ExtraTrees": "Original3 + ET",
-            "Original three + HGB + ExtraTrees": "Original3 + HGB + ET",
-            "Ensemble simple equal": "Equal mean",
+            "ExtraTrees frequency34": "ExtraTrees\n34",
+            "Original three MSE": "Original3\nMSE",
+            "Original three performance": "Original3\nperf",
+            "Original three + HGB": "Original3\n+ HGB",
+            "Original three + ExtraTrees": "Original3\n+ ET",
+            "Original three + HGB + ExtraTrees": "Original3\n+ HGB\n+ ET",
+            "Ensemble simple equal": "Equal\nmean",
         }
-        display_labels = [display_label_aliases.get(label, label) for label in labels]
-        plt.bar(display_labels, values, color=colors[:len(labels)],
+        display_labels = [display_label_aliases.get(label, textwrap.fill(
+            str(label), width=12, break_long_words=True, break_on_hyphens=False)) for label in labels]
+        label_lines = max((label.count("\n")+1 for label in display_labels), default=1)
+        fig = plt.figure(figsize=(max(9, 1.4 * len(labels)), 6.6 + .35*(label_lines-1)))
+        positions = np.arange(len(labels))
+        plt.bar(positions, values, color=colors[:len(labels)],
                 yerr=errors, capsize=5, width=0.5)
         plt.ylim(0.0, 1.05)
         display_metric_name = metric_name
         if metric_name == "R2 Score":
             display_metric_name = "R\u00b2 Score"
-        plt.ylabel(display_metric_name, fontsize=23)
-        plt.xticks(fontsize=13 if crowded else 20, rotation=35 if crowded else 0,
-                   ha="right" if crowded else "center")
+        plt.ylabel(display_metric_name, fontsize=axis_fontsize)
+        plt.xticks(positions, display_labels, fontsize=axis_fontsize,
+                   rotation=0, ha="center", multialignment="center")
+        plt.gca().tick_params(axis="x", pad=9)
         plt.yticks(fontsize=18)
         for i, v in enumerate(values):
             if not np.isnan(v):
@@ -111,6 +117,18 @@ class RegressionPlotter:
         out_dir = os.path.join(save_path, "bar")
         safe = _safe_stem(metric_name)
         plt.tight_layout()
+        # Keep large labels; give them more horizontal space if the active font
+        # is wider than expected. Text bounds are measured after wrapping.
+        fig.canvas.draw()
+        renderer = fig.canvas.get_renderer()
+        bounds = [label.get_window_extent(renderer) for label in plt.gca().get_xticklabels()]
+        required_scale = max((
+            (left.width/2 + right.width/2 + 12) / ((right.x0+right.x1-left.x0-left.x1)/2)
+            for left, right in zip(bounds, bounds[1:])
+        ), default=1.)
+        if required_scale > 1:
+            fig.set_size_inches(fig.get_figwidth()*required_scale*1.04, fig.get_figheight())
+            plt.tight_layout()
         snr_stem = _safe_stem(snr_value, max_len=16)
         _save_current_figure(os.path.join(out_dir, f'{safe}_ep{epochs}_{snr_stem}.png'))
         plt.close()

@@ -1,6 +1,6 @@
 # コード地図
 
-更新日: 2026-10-14。現在の設定・完了runは[研究の現在地](research_status.md)。通常の主実行は[run_ensemble_regression_onb.py](../code/run_ensemble_regression_onb.py)。
+更新日: 2026-10-15。現在の設定・完了runは[研究の現在地](research_status.md)。通常の主実行は[run_ensemble_regression_onb.py](../code/run_ensemble_regression_onb.py)。
 
 ## 主経路と入出力
 
@@ -26,13 +26,19 @@
 
 ## 設定の正本
 
+**10/15の現行確認**：現在の入口は通常学習で、`execution.mode`切替や`--preflight`引数を備えていない。`learning_policy.evaluation_mode="cross_day"`、旧6月学習→新2026/10/7評価。発表用の2025年主条件とは異なるため、そのまま実行しない。[今回の条件案・入力確認](notes/2026-10-15_onb_presentation_run_conditions.md)を参照。提案JSONは未適用で、通常入口が自動読込するものではない。barモデル名の23 pt化は反映済み。
+
+### 10/14撤回前の保存fit入口の記録（現行手順ではない）
+
 10/14現在の入口は`VALIDATION_CONFIG.execution.mode="saved_fit"`。旧6月1620 chunkの200 epochs保存fitを、新日10/7の全660 chunkへ適用する。初回は`data.noise_dir_names`を無雑音だけとし、6雑音を比較するときは同欄のコメントを戻す。`execution.source_condition_dir`と`source_fold`で保存fitを明示し、フォルダの新旧から自動選択しない。推論batchは旧runnerと同じ32。旧予測の照合は指定probeを含む元の32標本batch全体を再現し、最後の部分batchも保持する。学習用epoch/params設定はsaved_fitでは使用せず、保存モデルの条件を出力する。
 
-事前確認はリポジトリ直下で`python code/run_ensemble_regression_onb.py --preflight`、本評価は同じコマンドから`--preflight`を外す。事前確認はモデル予測・学習・結果出力を行わない。本評価の出力は新日側の`regression_result/npy/ensemble/YYYYMM/DD/onb_saved_<hash>_<HHMMSS>/maxfreq=3kHz/`。既存保存先への再実行は上書きせず停止し、新しい実行時刻で別記録を作る。
+撤回前の保存fit入口には`--preflight`があったが、現行入口では解析されず、付けても事前確認専用にはならない。現在はこの引数を使わない。以下の保存fit出力は当時の記録：新日側の`regression_result/npy/ensemble/YYYYMM/DD/onb_saved_<hash>_<HHMMSS>/maxfreq=3kHz/`。
 
 全体の`main_metrics.csv`はkW/m²換算の日別/全体指標、`main_deltas.csv`は元3/ET4/ET単体との差、`q100_by_source_day.csv`は日別到達段階。雑音を含めた場合は`noise_degradation.csv`で自身のcleanからの増加量を確認する。各雑音フォルダの`metrics_by_stage.csv`と`prediction_by_stage.png`は段階別分布、`metrics_by_training_range.csv`は旧学習熱流束範囲の内外、`chunk_error_diagnostics.csv`は全chunkの共通FN/統合で失った陽性/訂正・追加誤り、`residual_complementarity.csv`は領域別の単体残差と共通誤り。これらの誤差・予測CSVは列名どおりW/m²。`features_by_chunk.csv`/`features_by_wav.csv`/`features_across_days.png`は旧fitの正確な1620学習chunkと新日cleanを、絶対qとq/日別ONBの両軸で比較する。34特徴はresize後の近似周波数に基づく記述量で、物理音源の因果同定とは区別する。
 
 `execution.mode="train"`へ変えると従来の学習入口を使用する。現在の`learning_policy.evaluation_mode="cross_day"`では旧2日全2160で新fitし、新日を評価するため、旧保存1620 fitの固定適用とは別条件。`within_wav_chunk`も従来どおり選択可能。生成データ・旧run・元重みは変更しない。[実装確認記録](../experiments/2026-10-14_onb_saved_fit_evaluation/software_verification.json)。
+
+### 通常実行の共通設定
 
 主実行の`VALIDATION_CONFIG`にはデータ、学習条件、モデル別parameter grid、統合など実験ごとに変える項目を置く。`data_source_dir_by_experiment`の`{chunk_tag}`は`chunk_seconds`から`0.5s`または`1s`へ自動解決される。`acoustic_selection`はピーク高さ閾値だけを置き、`None`なら選別なしとする。特徴CSV・帯域・対象範囲など通常固定する条件と、output/evaluation/explainability、モデルregistryは[onb_defaults.py](../code/utils/config/onb_defaults.py)で補完し、解決後の全設定をmanifestへ保存する。`configs/experiments/`のJSONは条件実行スクリプトで実行時上書きでき、YAMLは記録用で自動読込しない。外側評価は`learning_policy.evaluation_mode`で選び、`evaluation_settings`内の同名欄だけを編集する。`cross_day`は学習日・テスト日のリスト、`within_wav_chunk`は実験フォルダ・テスト割合・seedを指定し、対象実験名は自動算出する。
 

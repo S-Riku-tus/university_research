@@ -1,0 +1,297 @@
+{
+  "date": "2026-10-15",
+  "status": "proposal_only_not_applied_to_entrypoint",
+  "purpose": "Presentation output using the existing June-2025 main conditions",
+  "current_entrypoint_learning_policy": {
+    "evaluation_mode": "cross_day",
+    "evaluation_settings": {
+      "cross_day": {
+        "train_experiments": [
+          "2025.06.11_0.3_2",
+          "2025.06.18_0.3_3"
+        ],
+        "test_experiments": [
+          "2026.10.07_0.3_1"
+        ]
+      },
+      "within_wav_chunk": {
+        "experiment": "2026.10.07_0.3_1",
+        "test_fraction": 0.25,
+        "test_split_seed": 42
+      }
+    },
+    "training_noise": "clean_only"
+  },
+  "current_entrypoint_main_comparison_report": false,
+  "recommended_validation_config": {
+    "run": {
+      "smoke_test": false,
+      "epochs": 200,
+      "folds": 3,
+      "internal_validation_split": "chunk_kfold",
+      "smoke_folds": 2,
+      "color_channel": 1,
+      "random_seed": 42,
+      "cpu_threads": 2,
+      "loop_parameter_sets": true
+    },
+    "data": {
+      "experiment_root_parts": [
+        "Pool_boiling",
+        "Subcooling_20_degrees",
+        "0.3"
+      ],
+      "noise_source": "waterflow",
+      "chunk_seconds": 1,
+      "max_freq_hz_list": [
+        "maxfreq=3kHz"
+      ],
+      "noise_dir_names": [
+        "heatflux_no_noise",
+        "heatflux_reference_SNR=0",
+        "heatflux_reference_SNR=-4",
+        "heatflux_reference_SNR=-8",
+        "heatflux_reference_SNR=-12",
+        "heatflux_reference_SNR=-16",
+        "heatflux_reference_SNR=-20"
+      ],
+      "data_source_dir_by_experiment": {
+        "2025.06.11_0.3_2": "waterflow_20260817_{chunk_tag}",
+        "2025.06.18_0.3_3": "waterflow_20260817_{chunk_tag}",
+        "2025.06.11_0.3_2_6.18_0.3_3": "waterflow_20260817_{chunk_tag}",
+        "2025.07.09_0.3_1": "waterflow_20260817_{chunk_tag}",
+        "2026.10.07_0.3_1": "waterflow_20261007_{chunk_tag}"
+      }
+    },
+    "learning_policy": {
+      "evaluation_mode": "within_wav_chunk",
+      "evaluation_settings": {
+        "cross_day": {
+          "train_experiments": [
+            "2025.06.11_0.3_2",
+            "2025.06.18_0.3_3"
+          ],
+          "test_experiments": [
+            "2026.10.07_0.3_1"
+          ]
+        },
+        "within_wav_chunk": {
+          "experiment": "2025.06.11_0.3_2_6.18_0.3_3",
+          "test_fraction": 0.25,
+          "test_split_seed": 42
+        }
+      },
+      "training_noise": "clean_only"
+    },
+    "acoustic_selection": {
+      "peak_height_threshold": null,
+      "protect_onb_band_frac": 0.1
+    },
+    "models": {
+      "enabled_keys": [
+        "randomforest",
+        "conformer",
+        "alexnet",
+        "hgb",
+        "extra_trees"
+      ],
+      "parameter_sets": {
+        "type": "max_freq_active_model_grid",
+        "by_max_freq_hz": {
+          "maxfreq=3kHz": {
+            "randomforest": {
+              "n_estimators": [
+                100
+              ],
+              "max_depth": [
+                12
+              ],
+              "subsample": [
+                0.6
+              ],
+              "colsample_bynode": [
+                0.6
+              ]
+            },
+            "conformer": {
+              "lr": [
+                0.001
+              ],
+              "batch_size": [
+                12
+              ]
+            },
+            "alexnet": {
+              "lr": [
+                0.003
+              ],
+              "batch_size": [
+                8
+              ]
+            },
+            "hgb": {
+              "max_iter": [
+                150
+              ],
+              "learning_rate": [
+                0.05
+              ],
+              "max_leaf_nodes": [
+                31
+              ],
+              "min_samples_leaf": [
+                20
+              ],
+              "l2_regularization": [
+                1.0
+              ],
+              "early_stopping": [
+                false
+              ]
+            },
+            "extra_trees": {
+              "n_estimators": [
+                256
+              ],
+              "min_samples_leaf": [
+                2
+              ],
+              "max_features": [
+                1.0
+              ],
+              "n_jobs": [
+                2
+              ]
+            }
+          },
+          "maxfreq=22kHz": {
+            "randomforest": {
+              "n_estimators": [
+                600
+              ],
+              "max_depth": [
+                6
+              ],
+              "subsample": [
+                0.6
+              ],
+              "colsample_bynode": [
+                0.6
+              ]
+            },
+            "conformer": {
+              "lr": [
+                0.0003
+              ],
+              "batch_size": [
+                8
+              ]
+            },
+            "alexnet": {
+              "lr": [
+                0.01
+              ],
+              "batch_size": [
+                24
+              ]
+            }
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    },
+    "ensemble": {
+      "enabled_strategy_names": [
+        "original3_hgb_extra_trees",
+        "original3_mse",
+        "original3_performance",
+        "original3_hgb",
+        "original3_extra_trees",
+        "simple_equal"
+      ]
+    },
+    "features": {
+      "pca_components": 100
+    },
+    "output": {
+      "save_fold_predictions": true,
+      "save_fitted_artifacts": true,
+      "verify_reloaded_artifacts": true,
+      "verify_reloaded_evaluation_predictions": true,
+      "main_comparison_report": true,
+      "main_comparison_protocol": "configs/experiments/2026-10-06_onb_main_comparison_protocol.json"
+    },
+    "explainability": {
+      "enabled": false
+    },
+    "thresholds": {
+      "require_experiment_threshold": true,
+      "onb_band_frac": 0.1,
+      "report_source_day_metrics": true,
+      "by_experiment": {
+        "2025.06.11_0.3_2": 221505.1102,
+        "2025.06.18_0.3_3": 271677.6816,
+        "2025.06.11_0.3_2_6.18_0.3_3": 246591.3959,
+        "2025.07.09_0.3_1": 571694.252491167
+      },
+      "provenance_by_experiment": {
+        "2025.06.11_0.3_2": {
+          "threshold": 221505.1102,
+          "source": "experiments/2026-09-24_selection_onb_ig_review/README.md#2-onb値の確定",
+          "definition": "experiment-specific ONB confirmed for the current run"
+        },
+        "2025.06.18_0.3_3": {
+          "threshold": 271677.6816,
+          "source": "experiments/2026-09-24_selection_onb_ig_review/README.md#2-onb値の確定",
+          "definition": "experiment-specific ONB confirmed for the current run"
+        },
+        "2025.06.11_0.3_2_6.18_0.3_3": {
+          "threshold": 246591.3959,
+          "source": "experiments/2026-09-29_within_wav_chunk_combined/README.md",
+          "definition": "user-directed arithmetic mean of the confirmed 2025-06-11 and 2025-06-18 ONB thresholds for the combined-dataset comparison"
+        },
+        "2025.07.09_0.3_1": {
+          "threshold": 571694.252491167,
+          "source": "experiments/2026-09-24_selection_onb_ig_review/README.md#2-onb値の確定",
+          "definition": "experiment-specific ONB confirmed for the current run"
+        }
+      }
+    }
+  },
+  "preserve_model_parameters": {
+    "randomforest": {
+      "n_estimators": 100,
+      "max_depth": 12,
+      "subsample": 0.6,
+      "colsample_bynode": 0.6
+    },
+    "conformer": {
+      "lr": 0.001,
+      "batch_size": 12
+    },
+    "alexnet": {
+      "lr": 0.003,
+      "batch_size": 8
+    },
+    "hgb": {
+      "max_iter": 150,
+      "learning_rate": 0.05,
+      "max_leaf_nodes": 31,
+      "min_samples_leaf": 20,
+      "l2_regularization": 1.0,
+      "early_stopping": false
+    },
+    "extra_trees": {
+      "n_estimators": 256,
+      "min_samples_leaf": 2,
+      "max_features": 1.0,
+      "n_jobs": 2
+    }
+  },
+  "protocol_note": "Existing v1 standard epoch is 150. This proposal intentionally keeps the latest actual run at 200; standard_configuration=False is expected, not incomplete training.",
+  "replot_alternative": "If only typography/colors change, redraw saved predictions/metrics with the current plotter to preserve the analyzed fit and results.",
+  "training_or_inference_started": false
+}
