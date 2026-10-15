@@ -1,0 +1,60 @@
+{
+  "checked_at_jst": "2026-10-15T10:53:23+09:00",
+  "experiment": "2024.11.12_1_2.13_1",
+  "source_wav_count": 77,
+  "evaluation_unit": "Source WAV x sequential 0.5 or 1 second chunks; file inventory only, no model evaluation",
+  "generation_process": {
+    "running": false,
+    "method": "Win32_Process command line inspection; only Anaconda Navigator Python processes were present"
+  },
+  "condition_count_expected": 70,
+  "condition_status": {
+    "complete_file_inventory": 14,
+    "partial": 7,
+    "not_started": 49
+  },
+  "npy_total": 183752,
+  "png_total": 183751,
+  "expected_total_each": 485100,
+  "latest_files": {
+    "npy": {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2024.11.12_1_2.13_1\\data\\npy\\waterflow_20261014_0.5s\\maxfreq=10kHz\\heatflux_reference_SNR=-16\\9.18e+05_src-index=22.9.18e+05_chunk-0031.npy",
+      "mtime_epoch": 1791993556.6911879,
+      "modified_jst": "2026-10-15T00:59:16+09:00",
+      "bytes": 200832
+    },
+    "spectrogram_png": {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2024.11.12_1_2.13_1\\data\\spectrogram_png\\waterflow_20261014_0.5s\\maxfreq=10kHz\\heatflux_reference_SNR=-16\\9.18e+05_src-index=22.9.18e+05_chunk-0030.png",
+      "mtime_epoch": 1791993556.4145768,
+      "modified_jst": "2026-10-15T00:59:16+09:00",
+      "bytes": 54590
+    }
+  },
+  "latest_file_content_checks": {
+    "npy": {
+      "readable": true,
+      "shape": [
+        224,
+        224
+      ],
+      "dtype": "float32",
+      "finite": true,
+      "nonnegative": true
+    },
+    "spectrogram_png": {
+      "readable": true,
+      "image_size": [
+        540,
+        540
+      ]
+    }
+  },
+  "npy_without_png_examples": {
+    "0.5s/10kHz/heatflux_reference_SNR=-16": [
+      "9.18e+05_src-index=22.9.18e+05_chunk-0031"
+    ]
+  },
+  "stop_reason": "Unknown; no generation stdout/stderr log identified. Process absence and stale output confirm interruption but not its cause.",
+  "limits": "All expected filenames, counts, sizes and manifest membership checked. Array and image contents checked only for the latest NPY and latest PNG.",
+  "actions": "Inspection only; generation not restarted; source files, generated files and code not modified."
+}

@@ -7,6 +7,7 @@
 | 目的 | 読む文書 | 更新方法 |
 |---|---|---|
 | 次の作業を始める | [研究の現在地](research_status.md) | 状態・本人の希望・次の一手を更新する唯一の入口 |
+| 既存結果の説明への接続・10/16発表内容・最新の対象を確認する | [研究方針の最新整理](research_plan/2026-10-14_research_synthesis_and_presentation_policy.md)、[保存結果分析](../experiments/2026-10-14_error_feature_linkage/README.md)、[元PPTX書式](audits/2026-10-14_slide_style_and_content/style_analysis.md)、[各ページ内容案](progress/2026-10-16_slide_content_plan.md) | 分析・書式照合・ページ案は完了。自動重み切替は将来候補。修論完成後の最終確認は今回は対象外。原PPTXは保持 |
 | 完了した確認を除いた残課題・過去の精度逆転・後段の統合案を確認する | [10/14最新の3課題と追加回答](research_plan/2026-10-14_completed_checks_noise_history_and_future_ensembles.md) | 基盤・比較・悪化量・q100照合は完了。5を発表へ採用、6をつなぐ案、12の目的別統合と13の詳細改善は保留。学部/2025年追加録音/2026年新実験を区別する |
 | 理想の結論と2025年データでの課題・金曜論点を選ぶ | [10/14最新方針と22論点](research_plan/2026-10-14_ideal_conclusion_and_friday_issue_list.md)、[質問回答と本人の発表選択](research_plan/2026-10-14_friday_selection_and_question_answers.md)、[雑音悪化量の確認](../experiments/2026-10-14_2025_noise_degradation_review/README.md)、[q100旧新照合](audits/2026-10-14_user_direction_and_metric_review/q100_verification.json) | 最新本人選択を優先。比較は手段、有効条件の最終確認は後段。悪化量は集計完了。17の再掲・21の目次は発表に入れる |
 | 学部からの進捗・教授指摘を踏まえて残課題を確認する | [10/14歴史照合・課題台帳](audits/2026-10-14_research_history/assessment.json)、[原資料索引](audits/2026-10-14_research_history/source_inventory.csv) | 2024–2026資料200件棚卸し、147本文/ノートを話題検索。原教授コメント・本人報告・AI解釈・実績を分け、目的/雑音問題/説明性活用/統合/ONB/評価範囲/報告を現状へ対応 |

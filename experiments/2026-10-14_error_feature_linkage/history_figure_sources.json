@@ -1,0 +1,18 @@
+{
+  "sources": [
+    {
+      "path": "experiments\\2026-07-24_noise_shortcut_diagnostic\\metrics_summary.csv",
+      "sha256": "958bc503427fbf37c51c058ac94bf1012e170cffd5ccb31f765080b739dd6dad"
+    },
+    {
+      "path": "experiments\\2026-09-19_noise_recovery_review\\r2_from_saved_predictions.csv",
+      "sha256": "68deb5027dcfe061ffbd0ae15c06bb8ed1e49abe766f0dc2a98050212f150533"
+    }
+  ],
+  "sources_unchanged": true,
+  "new_fits": 0,
+  "new_inference": 0,
+  "old_diagnostic_scope": "June18/22kHz/PCA/KFold; not current five-model performance",
+  "matched_scope": "September18/run151715, June11->June18, 22kHz, matched, 1080 chunks",
+  "causal_comparison_with_latest_current_run": false
+}

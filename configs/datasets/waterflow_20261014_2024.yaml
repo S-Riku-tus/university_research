@@ -1,8 +1,10 @@
 # 設定記録。生成スクリプトが自動で読み込むファイルではない。
-# データ生成・モデルによる性能検証は未実行。
+# 10/15に生成中断を確認。再開対応を追加し、本生成の再実行は本人が行う。
 recorded_on: 2026-10-14
+updated_on: 2026-10-15
 entrypoint: code/2.run_npy_waterflow_2つhighpass.py
 save_date: 20261014
+resume_existing: true  # 完了ファイルは保持し、不足ファイルとmanifestを補完する。
 source:
   experiment_root: Pool_boiling/Subcooling_20_degrees/0.3
   experiments:

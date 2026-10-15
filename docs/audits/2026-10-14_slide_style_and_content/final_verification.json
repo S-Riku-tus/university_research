@@ -1,0 +1,52 @@
+{
+  "local_links_checked": 43,
+  "main_slides": 11,
+  "source_pptx_unchanged": true,
+  "analysis_sources_unchanged": true,
+  "fits": 0,
+  "inference": 0,
+  "new_interventions": 0,
+  "claim_lengths": [
+    {
+      "slide": 2,
+      "claim_chars": 31
+    },
+    {
+      "slide": 3,
+      "claim_chars": 29
+    },
+    {
+      "slide": 4,
+      "claim_chars": 26
+    },
+    {
+      "slide": 5,
+      "claim_chars": 29
+    },
+    {
+      "slide": 6,
+      "claim_chars": 27
+    },
+    {
+      "slide": 7,
+      "claim_chars": 27
+    },
+    {
+      "slide": 8,
+      "claim_chars": 31
+    },
+    {
+      "slide": 9,
+      "claim_chars": 27
+    },
+    {
+      "slide": 10,
+      "claim_chars": 27
+    },
+    {
+      "slide": 11,
+      "claim_chars": 32
+    }
+  ],
+  "latest_five_vs_core_rmse_improvement_cells": 7
+}

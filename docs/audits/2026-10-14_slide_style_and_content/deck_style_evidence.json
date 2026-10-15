@@ -1,0 +1,3639 @@
+{
+  "decks": {
+    "copied_1016": {
+      "path": "研究進捗報告\\2026\\1016（研究進捗報告）\\研究進捗_柴崎陸_1016.pptx",
+      "sha256": "61ff57ee77725a23d67aa2aeed1d20461ad3e164552a9b65165f96cd39c8bbeb",
+      "width_emu": 18288000,
+      "height_emu": 10287000,
+      "slides": [
+        {
+          "slide": 1,
+          "texts": [
+            "アンサンブル学習に基づく音響識別による",
+            "プール沸騰の発生検知",
+            "植木研究室　　柴崎陸",
+            "2026年10月16日",
+            "1",
+            "研究進捗"
+          ],
+          "table_texts": [],
+          "text_characters": 55,
+          "paragraphs": 6,
+          "pictures": 0,
+          "picture_area_sum": 0,
+          "font_sizes_pt": [
+            30.0,
+            40.0,
+            66.0
+          ],
+          "shapes": [
+            {
+              "paragraphs": [
+                "アンサンブル学習に基づく音響識別による",
+                "プール沸騰の発生検知"
+              ],
+              "runs": [
+                {
+                  "text": "アンサンブル学習に基づく音響識別による",
+                  "size_pt": 40.0,
+                  "bold": null,
+                  "latin": "Source Han Sans JP Bold",
+                  "east_asian": "Source Han Sans JP Bold"
+                },
+                {
+                  "text": "プール沸騰の発生検知",
+                  "size_pt": 40.0,
+                  "bold": null,
+                  "latin": "Source Han Sans JP Bold",
+                  "east_asian": "Source Han Sans JP Bold"
+                }
+              ],
+              "geometry": {
+                "x": 0.12175344488188976,
+                "y": 0.4123865072421503,
+                "w": 0.7575859580052493,
+                "h": 0.11967590162340819
+              }
+            },
+            {
+              "paragraphs": [
+                "植木研究室　　柴崎陸"
+              ],
+              "runs": [
+                {
+                  "text": "植木研究室　　",
+                  "size_pt": 40.0,
+                  "bold": null,
+                  "latin": null,
+                  "east_asian": null
+                },
+                {
+                  "text": "柴崎陸",
+                  "size_pt": 40.0,
+                  "bold": null,
+                  "latin": "+mj-ea",
+                  "east_asian": "+mj-ea"
+                }
+              ],
+              "geometry": {
+                "x": 0.0484375,
+                "y": 0.7513825216292408,
+                "w": 0.8916666666666667,
+                "h": 0.05235821911149995
+              }
+            },
+            {
+              "paragraphs": [
+                "2026年10月16日"
+              ],
+              "runs": [
+                {
+                  "text": "2026年10月16日",
+                  "size_pt": 30.0,
+                  "bold": null,
+                  "latin": "Century Gothic Paneuropean",
+                  "east_asian": "Century Gothic Paneuropean"
+                }
+              ],
+              "geometry": {
+                "x": 0.33415594925634295,
+                "y": 0.6602936716243802,
+                "w": 0.31636488407699037,
+                "h": 0.048244386118401865
+              }
+            },
+            {
+              "paragraphs": [
+                "1"
+              ],
+              "runs": [],
+              "geometry": null
+            },
+            {
+              "paragraphs": [
+                "研究進捗"
+              ],
+              "runs": [
+                {
+                  "text": "研究進捗",
+                  "size_pt": 66.0,
+                  "bold": null,
+                  "latin": "Source Han Sans JP Bold",
+                  "east_asian": "Source Han Sans JP Bold"
+                }
+              ],
+              "geometry": {
+                "x": 0.11547785433070866,
+                "y": 0.2467564887722368,
+                "w": 0.7575859580052493,
+                "h": 0.09873267230485078
+              }
+            }
+          ],
+          "media": [],
+          "xml_sha256": "1b14ebc72baac333d2f5d3bdc2d2b237ceb4bbde65ee7c83bf0dda1a4c6ff216"
+        },
+        {
+          "slide": 2,
+          "texts": [
+            "Tokyo University of Science",
+            "2",
+            "今回の発表内容",
+            "01\n02\n03",
+            "04",
+            "学習・評価設計と音響選別\n回帰・ONB判定と統合結果の分析\n説明性",
+            "後期の研究計画"
+          ],
+          "table_texts": [],
+          "text_characters": 85,
+          "paragraphs": 7,
+          "pictures": 1,
+          "picture_area_sum": 0.002581406246531629,
+          "font_sizes_pt": [
+            12.0,
+            30.0,
+            44.0
+          ],
+          "shapes": [
+            {
+              "paragraphs": [
+                "Tokyo University of Science"
+              ],
+              "runs": [
+                {
+                  "text": "Tokyo University of Science",
+                  "size_pt": 12.0,
+                  "bold": null,
+                  "latin": "Source Han Sans JP",
+                  "east_asian": "Source Han Sans JP"
+                }
+              ],
+              "geometry": {
+                "x": 0.02378231627296588,
+                "y": 0.10072120151647711,
+                "w": 0.020195319335083114,
+                "h": 0.21957684456109652
+              }
+            },
+            {
+              "paragraphs": [
+                "2"
+              ],
+              "runs": [],
+              "geometry": {
+                "x": 0.02317711067366579,
+                "y": 0.955092641197628,
+                "w": 0.021440944881889763,
+                "h": 0.04089501312335958
+              }
+            },
+            {
+              "paragraphs": [
+                "今回の発表内容"
+              ],
+              "runs": [
+                {
+                  "text": "今回の発表内容",
+                  "size_pt": 30.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                }
+              ],
+              "geometry": {
+                "x": 0.09879675196850393,
+                "y": 0.029653251676873726,
+                "w": 0.4513888888888889,
+                "h": 0.06810304267522116
+              }
+            },
+            {
+              "paragraphs": [
+                "01\n02\n03",
+                "04"
+              ],
+              "runs": [
+                {
+                  "text": "01\n02\n03",
+                  "size_pt": 44.0,
+                  "bold": null,
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                },
+                {
+                  "text": "04",
+                  "size_pt": 44.0,
+                  "bold": null,
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                }
+              ],
+              "geometry": {
+                "x": 0.20277777777777778,
+                "y": 0.43333333333333335,
+                "w": 0.0625,
+                "h": 0.21481481481481482
+              }
+            },
+            {
+              "paragraphs": [
+                "学習・評価設計と音響選別\n回帰・ONB判定と統合結果の分析\n説明性",
+                "後期の研究計画"
+              ],
+              "runs": [
+                {
+                  "text": "学習・評価設計と音響選別\n回帰・",
+                  "size_pt": 44.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                },
+                {
+                  "text": "ONB",
+                  "size_pt": 44.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                },
+                {
+                  "text": "判定と統合結果の分析\n説明性",
+                  "size_pt": 44.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                },
+                {
+                  "text": "後期の研究計画",
+                  "size_pt": 44.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                }
+              ],
+              "geometry": {
+                "x": 0.2791666666666667,
+                "y": 0.43333333333333335,
+                "w": 0.5902777777777778,
+                "h": 0.28888888888888886
+              }
+            }
+          ],
+          "media": [
+            {
+              "part": "ppt/media/image1.png",
+              "geometry": {
+                "x": 0.01486340769903762,
+                "y": 0.023826480023330418,
+                "w": 0.038033136482939635,
+                "h": 0.06787255759696705
+              },
+              "area_fraction": 0.002581406246531629,
+              "sha256": "a54c551ef70d0082e1dbd62721eec2179252e1d5d87ce8df2fa1e2e7bb1ff044"
+            }
+          ],
+          "xml_sha256": "765d5a545e55b2b062bb56daa20116d379deb77e390205283e0fce9afccc5726"
+        },
+        {
+          "slide": 3,
+          "texts": [
+            "3",
+            "Tokyo University of Science",
+            "1. 学習・評価設計",
+            "学習・推論時のデータを別日の実験で得た音響データとした",
+            "例1",
+            "6/11 学習",
+            "→",
+            "→",
+            "6/18 評価",
+            "6/11, 18 学習",
+            "6/11 評価",
+            "例2"
+          ],
+          "table_texts": [],
+          "text_characters": 103,
+          "paragraphs": 12,
+          "pictures": 1,
+          "picture_area_sum": 0.002581406246531629,
+          "font_sizes_pt": [
+            12.0,
+            25.0,
+            30.0,
+            32.0,
+            40.0
+          ],
+          "shapes": [
+            {
+              "paragraphs": [
+                "3"
+              ],
+              "runs": [],
+              "geometry": {
+                "x": 0.8215501421697288,
+                "y": 0.03333333333333333,
+                "w": 0.11666666666666667,
+                "h": 0.035493827160493825
+              }
+            },
+            {
+              "paragraphs": [
+                "Tokyo University of Science"
+              ],
+              "runs": [
+                {
+                  "text": "Tokyo University of Science",
+                  "size_pt": 12.0,
+                  "bold": null,
+                  "latin": "Source Han Sans JP",
+                  "east_asian": "Source Han Sans JP"
+                }
+              ],
+              "geometry": {
+                "x": 0.02378231627296588,
+                "y": 0.10072120151647711,
+                "w": 0.020195319335083114,
+                "h": 0.21957684456109652
+              }
+            },
+            {
+              "paragraphs": [
+                "1. 学習・評価設計"
+              ],
+              "runs": [
+                {
+                  "text": "1. ",
+                  "size_pt": 30.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                },
+                {
+                  "text": "学習・評価設計",
+                  "size_pt": 30.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                }
+              ],
+              "geometry": {
+                "x": 0.09879675196850393,
+                "y": 0.029653251676873726,
+                "w": 0.5277777777777778,
+                "h": 0.06810304267522116
+              }
+            },
+            {
+              "paragraphs": [
+                "学習・推論時のデータを別日の実験で得た音響データとした"
+              ],
+              "runs": [
+                {
+                  "text": "学習・推論時のデータを別日の実験で得た音響データとした",
+                  "size_pt": 32.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                }
+              ],
+              "geometry": {
+                "x": 0.08680555555555555,
+                "y": 0.1382716049382716,
+                "w": 0.8402777777777778,
+                "h": 0.08888888888888889
+              }
+            },
+            {
+              "paragraphs": [
+                "例1"
+              ],
+              "runs": [
+                {
+                  "text": "例",
+                  "size_pt": 32.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                },
+                {
+                  "text": "1",
+                  "size_pt": 32.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                }
+              ],
+              "geometry": {
+                "x": 0.17083333333333334,
+                "y": 0.2851851851851852,
+                "w": 0.125,
+                "h": 0.044444444444444446
+              }
+            },
+            {
+              "paragraphs": [
+                "6/11 学習"
+              ],
+              "runs": [
+                {
+                  "text": "6/11 ",
+                  "size_pt": 40.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                },
+                {
+                  "text": "学習",
+                  "size_pt": 40.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                }
+              ],
+              "geometry": {
+                "x": 0.2833333333333333,
+                "y": 0.39416535433070865,
+                "w": 0.15,
+                "h": 0.09753086419753086
+              }
+            },
+            {
+              "paragraphs": [
+                "→"
+              ],
+              "runs": [
+                {
+                  "text": "→",
+                  "size_pt": 25.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                }
+              ],
+              "geometry": {
+                "x": 0.5041666666666667,
+                "y": 0.40959745309614076,
+                "w": 0.04513888888888889,
+                "h": 0.06172839506172839
+              }
+            },
+            {
+              "paragraphs": [
+                "→"
+              ],
+              "runs": [
+                {
+                  "text": "→",
+                  "size_pt": 25.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                }
+              ],
+              "geometry": {
+                "x": 0.5041666666666667,
+                "y": 0.7839506172839507,
+                "w": 0.04513888888888889,
+                "h": 0.06172839506172839
+              }
+            },
+            {
+              "paragraphs": [
+                "6/18 評価"
+              ],
+              "runs": [
+                {
+                  "text": "6/18 ",
+                  "size_pt": 40.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                },
+                {
+                  "text": "評価",
+                  "size_pt": 40.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                }
+              ],
+              "geometry": {
+                "x": 0.6201388888888889,
+                "y": 0.39169621852823955,
+                "w": 0.15,
+                "h": 0.09753086419753086
+              }
+            },
+            {
+              "paragraphs": [
+                "6/11, 18 学習"
+              ],
+              "runs": [
+                {
+                  "text": "6/11, 18 ",
+                  "size_pt": 40.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                },
+                {
+                  "text": "学習",
+                  "size_pt": 40.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                }
+              ],
+              "geometry": {
+                "x": 0.26979166666666665,
+                "y": 0.7672839506172839,
+                "w": 0.19444444444444445,
+                "h": 0.09753086419753086
+              }
+            },
+            {
+              "paragraphs": [
+                "6/11 評価"
+              ],
+              "runs": [
+                {
+                  "text": "6/11 ",
+                  "size_pt": 40.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                },
+                {
+                  "text": "評価",
+                  "size_pt": 40.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                }
+              ],
+              "geometry": {
+                "x": 0.6201388888888889,
+                "y": 0.7672839506172839,
+                "w": 0.15,
+                "h": 0.09753086419753086
+              }
+            },
+            {
+              "paragraphs": [
+                "例2"
+              ],
+              "runs": [
+                {
+                  "text": "例",
+                  "size_pt": 32.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                },
+                {
+                  "text": "2",
+                  "size_pt": 32.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                }
+              ],
+              "geometry": {
+                "x": 0.17083333333333334,
+                "y": 0.6654320987654321,
+                "w": 0.125,
+                "h": 0.044444444444444446
+              }
+            }
+          ],
+          "media": [
+            {
+              "part": "ppt/media/image1.png",
+              "geometry": {
+                "x": 0.01486340769903762,
+                "y": 0.023826480023330418,
+                "w": 0.038033136482939635,
+                "h": 0.06787255759696705
+              },
+              "area_fraction": 0.002581406246531629,
+              "sha256": "a54c551ef70d0082e1dbd62721eec2179252e1d5d87ce8df2fa1e2e7bb1ff044"
+            }
+          ],
+          "xml_sha256": "918c203441bfcfc2354bdb2a96e2738c7b3c260d7b326936af2ea07c2c554949"
+        },
+        {
+          "slide": 4,
+          "texts": [
+            "Tokyo University of Science",
+            "4",
+            "1. 音響選別",
+            "ONB直後からそれ以降である閾値を超えたもののみ沸騰データとした",
+            "沸騰データとして残す",
+            "未沸騰データとして削除",
+            "閾値：",
+            "2.1~2.5kHzで",
+            "1×10^-9",
+            "×10^-8",
+            "×10^-9"
+          ],
+          "table_texts": [],
+          "text_characters": 121,
+          "paragraphs": 11,
+          "pictures": 3,
+          "picture_area_sum": 0.40259690355705835,
+          "font_sizes_pt": [
+            12.0,
+            24.0,
+            30.0,
+            32.0,
+            40.0
+          ],
+          "shapes": [
+            {
+              "paragraphs": [
+                "Tokyo University of Science"
+              ],
+              "runs": [
+                {
+                  "text": "Tokyo University of Science",
+                  "size_pt": 12.0,
+                  "bold": null,
+                  "latin": "Source Han Sans JP",
+                  "east_asian": "Source Han Sans JP"
+                }
+              ],
+              "geometry": {
+                "x": 0.02378231627296588,
+                "y": 0.10072120151647711,
+                "w": 0.020195319335083114,
+                "h": 0.21957684456109652
+              }
+            },
+            {
+              "paragraphs": [
+                "4"
+              ],
+              "runs": [],
+              "geometry": {
+                "x": 0.014790791776027996,
+                "y": 0.9476997180907942,
+                "w": 0.032778652668416446,
+                "h": 0.04494011859628658
+              }
+            },
+            {
+              "paragraphs": [
+                "1. 音響選別"
+              ],
+              "runs": [
+                {
+                  "text": "1. ",
+                  "size_pt": 30.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                },
+                {
+                  "text": "音響選別",
+                  "size_pt": 30.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                }
+              ],
+              "geometry": {
+                "x": 0.09879675196850393,
+                "y": 0.029653251676873726,
+                "w": 0.5277777777777778,
+                "h": 0.06810304267522116
+              }
+            },
+            {
+              "paragraphs": [
+                "ONB直後からそれ以降である閾値を超えたもののみ沸騰データとした"
+              ],
+              "runs": [
+                {
+                  "text": "ONB",
+                  "size_pt": 32.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                },
+                {
+                  "text": "直後からそれ以降である閾値を超えたもののみ沸騰データとした",
+                  "size_pt": 32.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                }
+              ],
+              "geometry": {
+                "x": 0.08680555555555555,
+                "y": 0.1382716049382716,
+                "w": 0.8402777777777778,
+                "h": 0.08888888888888889
+              }
+            },
+            {
+              "paragraphs": [
+                "沸騰データとして残す"
+              ],
+              "runs": [
+                {
+                  "text": "沸騰データ",
+                  "size_pt": 40.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                },
+                {
+                  "text": "として残す",
+                  "size_pt": 24.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                }
+              ],
+              "geometry": {
+                "x": 0.17916666666666667,
+                "y": 0.8851851851851852,
+                "w": 0.2958332786526684,
+                "h": 0.09753086419753086
+              }
+            },
+            {
+              "paragraphs": [
+                "未沸騰データとして削除"
+              ],
+              "runs": [
+                {
+                  "text": "未沸騰データ",
+                  "size_pt": 40.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                },
+                {
+                  "text": "として削除",
+                  "size_pt": 24.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                }
+              ],
+              "geometry": {
+                "x": 0.6416666666666667,
+                "y": 0.8851851851851852,
+                "w": 0.3354167213473316,
+                "h": 0.09753086419753086
+              }
+            },
+            {
+              "paragraphs": [
+                "閾値：",
+                "2.1~2.5kHzで",
+                "1×10^-9"
+              ],
+              "runs": [
+                {
+                  "text": "閾値：",
+                  "size_pt": 40.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                },
+                {
+                  "text": "2.1~2.5kHz",
+                  "size_pt": 40.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                },
+                {
+                  "text": "で",
+                  "size_pt": 40.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                },
+                {
+                  "text": "1×10^-9",
+                  "size_pt": 40.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                }
+              ],
+              "geometry": {
+                "x": 0.8379207130358706,
+                "y": 0.1464463886458637,
+                "w": 0.21434202755905513,
+                "h": 0.09753086419753086
+              }
+            },
+            {
+              "paragraphs": [
+                "×10^-8"
+              ],
+              "runs": [
+                {
+                  "text": "×10^-8",
+                  "size_pt": 32.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                }
+              ],
+              "geometry": {
+                "x": 0.05151088145231846,
+                "y": 0.22592592592592592,
+                "w": 0.09326667760279965,
+                "h": 0.09753086419753086
+              }
+            },
+            {
+              "paragraphs": [
+                "×10^-9"
+              ],
+              "runs": [
+                {
+                  "text": "×10^-9",
+                  "size_pt": 32.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                }
+              ],
+              "geometry": {
+                "x": 0.5125,
+                "y": 0.2282689802663556,
+                "w": 0.09326667760279965,
+                "h": 0.09753086419753086
+              }
+            }
+          ],
+          "media": [
+            {
+              "part": "ppt/media/image1.png",
+              "geometry": {
+                "x": 0.01486340769903762,
+                "y": 0.023826480023330418,
+                "w": 0.038033136482939635,
+                "h": 0.06787255759696705
+              },
+              "area_fraction": 0.002581406246531629,
+              "sha256": "a54c551ef70d0082e1dbd62721eec2179252e1d5d87ce8df2fa1e2e7bb1ff044"
+            },
+            {
+              "part": "ppt/media/image2.png",
+              "geometry": {
+                "x": 0.0875,
+                "y": 0.26589433265286283,
+                "w": 0.33541666666666664,
+                "h": 0.5962962962962963
+              },
+              "area_fraction": 0.20000771604938272,
+              "sha256": "f0f1c450f8d3f8b9769604ab942f35eaed956891660f2ad240e9183510bb4955"
+            },
+            {
+              "part": "ppt/media/image3.png",
+              "geometry": {
+                "x": 0.5455615704286965,
+                "y": 0.26589433265286283,
+                "w": 0.3354167213473316,
+                "h": 0.5962963935063672
+              },
+              "area_fraction": 0.20000778126114396,
+              "sha256": "38b06e3b90c95e56d67dd1f21c1b2c118c35f3fda64c2a173d45fe75145181e3"
+            }
+          ],
+          "xml_sha256": "09c6f5fea40c94c9ae807140f8517b05a822f4fd36365ac3e24622806f2d7591"
+        },
+        {
+          "slide": 5,
+          "texts": [
+            "Tokyo University of Science",
+            "5",
+            "入力ノイズなしの検証では，アンサンブルが最も精度が高くなった",
+            "2. 熱流束回帰",
+            "実行条件",
+            "学習データ：",
+            "6/11実験 1080個（未沸騰フィルタ後986個）",
+            "テストデータ：",
+            "6/18実験　1080個",
+            "エポック数：200",
+            "Fold数：3",
+            "その他各モデルのパラメータは適切なものを設定した"
+          ],
+          "table_texts": [],
+          "text_characters": 161,
+          "paragraphs": 12,
+          "pictures": 2,
+          "picture_area_sum": 0.2929516972286827,
+          "font_sizes_pt": [
+            12.0,
+            24.0,
+            28.0,
+            30.0,
+            32.0
+          ],
+          "shapes": [
+            {
+              "paragraphs": [
+                "Tokyo University of Science"
+              ],
+              "runs": [
+                {
+                  "text": "Tokyo University of Science",
+                  "size_pt": 12.0,
+                  "bold": null,
+                  "latin": "Source Han Sans JP",
+                  "east_asian": "Source Han Sans JP"
+                }
+              ],
+              "geometry": {
+                "x": 0.02378231627296588,
+                "y": 0.10072120151647711,
+                "w": 0.020195319335083114,
+                "h": 0.21957684456109652
+              }
+            },
+            {
+              "paragraphs": [
+                "5"
+              ],
+              "runs": [],
+              "geometry": {
+                "x": 0.014790791776027996,
+                "y": 0.9476997180907942,
+                "w": 0.032778652668416446,
+                "h": 0.04494011859628658
+              }
+            },
+            {
+              "paragraphs": [
+                "入力ノイズなしの検証では，アンサンブルが最も精度が高くなった"
+              ],
+              "runs": [
+                {
+                  "text": "入力ノイズなしの検証では，アンサンブルが最も精度が高くなった",
+                  "size_pt": 32.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                }
+              ],
+              "geometry": {
+                "x": 0.08194444444444444,
+                "y": 0.1382716049382716,
+                "w": 0.8472222222222222,
+                "h": 0.09382716049382717
+              }
+            },
+            {
+              "paragraphs": [
+                "2. 熱流束回帰"
+              ],
+              "runs": [
+                {
+                  "text": "2. ",
+                  "size_pt": 30.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                },
+                {
+                  "text": "熱流束回帰",
+                  "size_pt": 30.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                }
+              ],
+              "geometry": {
+                "x": 0.09879675196850393,
+                "y": 0.029653251676873726,
+                "w": 0.5277777777777778,
+                "h": 0.06810304267522116
+              }
+            },
+            {
+              "paragraphs": [
+                "実行条件",
+                "学習データ：",
+                "6/11実験 1080個（未沸騰フィルタ後986個）",
+                "テストデータ：",
+                "6/18実験　1080個",
+                "エポック数：200",
+                "Fold数：3",
+                "その他各モデルのパラメータは適切なものを設定した"
+              ],
+              "runs": [
+                {
+                  "text": "実行条件",
+                  "size_pt": 28.0,
+                  "bold": "1",
+                  "latin": "游ゴシック",
+                  "east_asian": "游ゴシック"
+                },
+                {
+                  "text": "学習データ：",
+                  "size_pt": 24.0,
+                  "bold": "1",
+                  "latin": "游ゴシック",
+                  "east_asian": "游ゴシック"
+                },
+                {
+                  "text": "6/11",
+                  "size_pt": 24.0,
+                  "bold": "1",
+                  "latin": "游ゴシック",
+                  "east_asian": "游ゴシック"
+                },
+                {
+                  "text": "実験 ",
+                  "size_pt": 24.0,
+                  "bold": "1",
+                  "latin": "游ゴシック",
+                  "east_asian": "游ゴシック"
+                },
+                {
+                  "text": "1080",
+                  "size_pt": 24.0,
+                  "bold": "1",
+                  "latin": "游ゴシック",
+                  "east_asian": "游ゴシック"
+                },
+                {
+                  "text": "個（未沸騰フィルタ後",
+                  "size_pt": 24.0,
+                  "bold": "1",
+                  "latin": "游ゴシック",
+                  "east_asian": "游ゴシック"
+                },
+                {
+                  "text": "986",
+                  "size_pt": 24.0,
+                  "bold": "1",
+                  "latin": "游ゴシック",
+                  "east_asian": "游ゴシック"
+                },
+                {
+                  "text": "個）",
+                  "size_pt": 24.0,
+                  "bold": "1",
+                  "latin": "游ゴシック",
+                  "east_asian": "游ゴシック"
+                },
+                {
+                  "text": "テストデータ：",
+                  "size_pt": 24.0,
+                  "bold": "1",
+                  "latin": "游ゴシック",
+                  "east_asian": "游ゴシック"
+                },
+                {
+                  "text": "6/18",
+                  "size_pt": 24.0,
+                  "bold": "1",
+                  "latin": "游ゴシック",
+                  "east_asian": "游ゴシック"
+                },
+                {
+                  "text": "実験　",
+                  "size_pt": 24.0,
+                  "bold": "1",
+                  "latin": "游ゴシック",
+                  "east_asian": "游ゴシック"
+                },
+                {
+                  "text": "1080",
+                  "size_pt": 24.0,
+                  "bold": "1",
+                  "latin": "游ゴシック",
+                  "east_asian": "游ゴシック"
+                },
+                {
+                  "text": "個",
+                  "size_pt": 24.0,
+                  "bold": "1",
+                  "latin": "游ゴシック",
+                  "east_asian": "游ゴシック"
+                },
+                {
+                  "text": "エポック数：",
+                  "size_pt": 24.0,
+                  "bold": "1",
+                  "latin": "游ゴシック",
+                  "east_asian": "游ゴシック"
+                },
+                {
+                  "text": "200",
+                  "size_pt": 24.0,
+                  "bold": "1",
+                  "latin": "游ゴシック",
+                  "east_asian": "游ゴシック"
+                },
+                {
+                  "text": "Fold",
+                  "size_pt": 24.0,
+                  "bold": "1",
+                  "latin": "游ゴシック",
+                  "east_asian": "游ゴシック"
+                },
+                {
+                  "text": "数：",
+                  "size_pt": 24.0,
+                  "bold": "1",
+                  "latin": "游ゴシック",
+                  "east_asian": "游ゴシック"
+                },
+                {
+                  "text": "3",
+                  "size_pt": 24.0,
+                  "bold": "1",
+                  "latin": "游ゴシック",
+                  "east_asian": "游ゴシック"
+                },
+                {
+                  "text": "その他各モデルのパラメータは適切なものを設定した",
+                  "size_pt": 24.0,
+                  "bold": "1",
+                  "latin": "游ゴシック",
+                  "east_asian": "游ゴシック"
+                }
+              ],
+              "geometry": {
+                "x": 0.6090277777777777,
+                "y": 0.37407407407407406,
+                "w": 0.35,
+                "h": 0.4158738213278896
+              }
+            }
+          ],
+          "media": [
+            {
+              "part": "ppt/media/image1.png",
+              "geometry": {
+                "x": 0.01486340769903762,
+                "y": 0.023826480023330418,
+                "w": 0.038033136482939635,
+                "h": 0.06787255759696705
+              },
+              "area_fraction": 0.002581406246531629,
+              "sha256": "a54c551ef70d0082e1dbd62721eec2179252e1d5d87ce8df2fa1e2e7bb1ff044"
+            },
+            {
+              "part": "ppt/media/image4.png",
+              "geometry": {
+                "x": 0.09728160542432196,
+                "y": 0.28519782249441045,
+                "w": 0.46666661198600173,
+                "h": 0.6222221250121512
+              },
+              "area_fraction": 0.29037029098215106,
+              "sha256": "7e178aebfad110dd3493828a045f37ff81cad600fd30c993427446ba128b4ced"
+            }
+          ],
+          "xml_sha256": "b2843ede3c468097cc9be4a8ef2f4b310ffa6ae1ea364e3f0891adb50acb3e05"
+        },
+        {
+          "slide": 6,
+          "texts": [
+            "Tokyo University of Science",
+            "6",
+            "マスクによる精度低下の影響が大きい周波数帯はモデルごとに異なる",
+            "3. 説明性（周波数帯マスク）"
+          ],
+          "table_texts": [],
+          "text_characters": 74,
+          "paragraphs": 4,
+          "pictures": 2,
+          "picture_area_sum": 0.593009836093455,
+          "font_sizes_pt": [
+            12.0,
+            30.0,
+            32.0
+          ],
+          "shapes": [
+            {
+              "paragraphs": [
+                "Tokyo University of Science"
+              ],
+              "runs": [
+                {
+                  "text": "Tokyo University of Science",
+                  "size_pt": 12.0,
+                  "bold": null,
+                  "latin": "Source Han Sans JP",
+                  "east_asian": "Source Han Sans JP"
+                }
+              ],
+              "geometry": {
+                "x": 0.02378231627296588,
+                "y": 0.10072120151647711,
+                "w": 0.020195319335083114,
+                "h": 0.21957684456109652
+              }
+            },
+            {
+              "paragraphs": [
+                "6"
+              ],
+              "runs": [],
+              "geometry": {
+                "x": 0.014790791776027996,
+                "y": 0.9476997180907942,
+                "w": 0.032778652668416446,
+                "h": 0.04494011859628658
+              }
+            },
+            {
+              "paragraphs": [
+                "マスクによる精度低下の影響が大きい周波数帯はモデルごとに異なる"
+              ],
+              "runs": [
+                {
+                  "text": "マスクによる精度低下の影響が大きい周波数帯はモデルごとに異なる",
+                  "size_pt": 32.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                }
+              ],
+              "geometry": {
+                "x": 0.08194444444444444,
+                "y": 0.1382716049382716,
+                "w": 0.8472222222222222,
+                "h": 0.09382716049382717
+              }
+            },
+            {
+              "paragraphs": [
+                "3. 説明性（周波数帯マスク）"
+              ],
+              "runs": [
+                {
+                  "text": "3. ",
+                  "size_pt": 30.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                },
+                {
+                  "text": "説明性（周波数帯マスク）",
+                  "size_pt": 30.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                }
+              ],
+              "geometry": {
+                "x": 0.09879675196850393,
+                "y": 0.029653251676873726,
+                "w": 0.5277777777777778,
+                "h": 0.06810304267522116
+              }
+            }
+          ],
+          "media": [
+            {
+              "part": "ppt/media/image1.png",
+              "geometry": {
+                "x": 0.01486340769903762,
+                "y": 0.023826480023330418,
+                "w": 0.038033136482939635,
+                "h": 0.06787255759696705
+              },
+              "area_fraction": 0.002581406246531629,
+              "sha256": "a54c551ef70d0082e1dbd62721eec2179252e1d5d87ce8df2fa1e2e7bb1ff044"
+            },
+            {
+              "part": "ppt/media/image5.png",
+              "geometry": {
+                "x": 0.06848343175853018,
+                "y": 0.2672619811412462,
+                "w": 0.8849607939632546,
+                "h": 0.667180324681637
+              },
+              "area_fraction": 0.5904284298469235,
+              "sha256": "d47a86b7a7b271eb593e1682dada94e588c8eee69db1c72a032ad11583434412"
+            }
+          ],
+          "xml_sha256": "f1b02da9d02baf279d0797320f5af3b11871c1deda173d498054e1339e1e783d"
+        },
+        {
+          "slide": 7,
+          "texts": [
+            "Tokyo University of Science",
+            "7",
+            "同じ入力でも寄与分布は異なる",
+            "3. 説明性（Integrated Gradient）",
+            "※22 kHz・0 dB、ONB時点の同一データを入力",
+            "AlexNet",
+            "Conformer",
+            "入力"
+          ],
+          "table_texts": [],
+          "text_characters": 114,
+          "paragraphs": 8,
+          "pictures": 4,
+          "picture_area_sum": 0.4737656213328288,
+          "font_sizes_pt": [
+            12.0,
+            28.0,
+            30.0,
+            32.0,
+            40.0
+          ],
+          "shapes": [
+            {
+              "paragraphs": [
+                "Tokyo University of Science"
+              ],
+              "runs": [
+                {
+                  "text": "Tokyo University of Science",
+                  "size_pt": 12.0,
+                  "bold": null,
+                  "latin": "Source Han Sans JP",
+                  "east_asian": "Source Han Sans JP"
+                }
+              ],
+              "geometry": {
+                "x": 0.02378231627296588,
+                "y": 0.10072120151647711,
+                "w": 0.020195319335083114,
+                "h": 0.21957684456109652
+              }
+            },
+            {
+              "paragraphs": [
+                "7"
+              ],
+              "runs": [],
+              "geometry": {
+                "x": 0.014790791776027996,
+                "y": 0.9476997180907942,
+                "w": 0.032778652668416446,
+                "h": 0.04494011859628658
+              }
+            },
+            {
+              "paragraphs": [
+                "同じ入力でも寄与分布は異なる"
+              ],
+              "runs": [
+                {
+                  "text": "同じ入力でも寄与分布は異なる",
+                  "size_pt": 32.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                }
+              ],
+              "geometry": {
+                "x": 0.08680555555555555,
+                "y": 0.1382716049382716,
+                "w": 0.8402777777777778,
+                "h": 0.08888888888888889
+              }
+            },
+            {
+              "paragraphs": [
+                "3. 説明性（Integrated Gradient）"
+              ],
+              "runs": [
+                {
+                  "text": "3. ",
+                  "size_pt": 30.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                },
+                {
+                  "text": "説明性（",
+                  "size_pt": 30.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                },
+                {
+                  "text": "Integrated Gradient",
+                  "size_pt": 30.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                },
+                {
+                  "text": "）",
+                  "size_pt": 30.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                }
+              ],
+              "geometry": {
+                "x": 0.09879675196850393,
+                "y": 0.029653251676873726,
+                "w": 0.5277777777777778,
+                "h": 0.06810304267522116
+              }
+            },
+            {
+              "paragraphs": [
+                "※22 kHz・0 dB、ONB時点の同一データを入力"
+              ],
+              "runs": [
+                {
+                  "text": "※",
+                  "size_pt": 28.0,
+                  "bold": "1",
+                  "latin": "游ゴシック",
+                  "east_asian": "游ゴシック"
+                },
+                {
+                  "text": "22 kHz・0 dB、ONB",
+                  "size_pt": 28.0,
+                  "bold": "1",
+                  "latin": "游ゴシック",
+                  "east_asian": "游ゴシック"
+                },
+                {
+                  "text": "時点",
+                  "size_pt": 28.0,
+                  "bold": "1",
+                  "latin": "游ゴシック",
+                  "east_asian": "游ゴシック"
+                },
+                {
+                  "text": "の同一",
+                  "size_pt": 28.0,
+                  "bold": "1",
+                  "latin": "游ゴシック",
+                  "east_asian": "游ゴシック"
+                },
+                {
+                  "text": "データを入力",
+                  "size_pt": 28.0,
+                  "bold": "1",
+                  "latin": "游ゴシック",
+                  "east_asian": "游ゴシック"
+                }
+              ],
+              "geometry": {
+                "x": 0.09328297244094488,
+                "y": 0.9076105764557209,
+                "w": 0.5673465113735783,
+                "h": 0.09753086419753086
+              }
+            },
+            {
+              "paragraphs": [
+                "AlexNet"
+              ],
+              "runs": [
+                {
+                  "text": "AlexNet",
+                  "size_pt": 40.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                }
+              ],
+              "geometry": {
+                "x": 0.19531113298337707,
+                "y": 0.812588898609896,
+                "w": 0.18098868110236221,
+                "h": 0.09753086419753086
+              }
+            },
+            {
+              "paragraphs": [
+                "Conformer"
+              ],
+              "runs": [
+                {
+                  "text": "Conformer",
+                  "size_pt": 40.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                }
+              ],
+              "geometry": {
+                "x": 0.5739058945756781,
+                "y": 0.8181090696996208,
+                "w": 0.18098868110236221,
+                "h": 0.09753086419753086
+              }
+            },
+            {
+              "paragraphs": [
+                "入力"
+              ],
+              "runs": [
+                {
+                  "text": "入力",
+                  "size_pt": 40.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                }
+              ],
+              "geometry": {
+                "x": 0.8625,
+                "y": 0.33741732283464565,
+                "w": 0.1375,
+                "h": 0.09753086419753086
+              }
+            }
+          ],
+          "media": [
+            {
+              "part": "ppt/media/image1.png",
+              "geometry": {
+                "x": 0.01486340769903762,
+                "y": 0.023826480023330418,
+                "w": 0.038033136482939635,
+                "h": 0.06787255759696705
+              },
+              "area_fraction": 0.002581406246531629,
+              "sha256": "a54c551ef70d0082e1dbd62721eec2179252e1d5d87ce8df2fa1e2e7bb1ff044"
+            },
+            {
+              "part": "ppt/media/image6.png",
+              "geometry": {
+                "x": 0.075,
+                "y": 0.2379753086419753,
+                "w": 0.36197779965004373,
+                "h": 0.5801338582677166
+              },
+              "area_fraction": 0.20999557751823839,
+              "sha256": "9dc17cf1172a7fb45bf971a9ff3a4b0809c2c8e56c58ab2326669b3e2f02048c"
+            },
+            {
+              "part": "ppt/media/image7.png",
+              "geometry": {
+                "x": 0.4546888670166229,
+                "y": 0.23797521143190434,
+                "w": 0.36197779965004373,
+                "h": 0.5801338582677166
+              },
+              "area_fraction": 0.20999557751823839,
+              "sha256": "8423a974e3efbf8edcd07cfd945800f67de84a6348f77d81b69ab6df07256171"
+            },
+            {
+              "part": "ppt/media/image8.png",
+              "geometry": {
+                "x": 0.8085799431321085,
+                "y": 0.05129347720423836,
+                "w": 0.17891923665791776,
+                "h": 0.2861238456304073
+              },
+              "area_fraction": 0.051193060049820376,
+              "sha256": "2785013c82c2461f1b2269d13fafacb6428dafa643af4c05c84b1244087ba364"
+            }
+          ],
+          "xml_sha256": "1537328745f3d1fd5e6af39f196e2a1d363d78cc5ec286d560086496a347e7f5"
+        },
+        {
+          "slide": 8,
+          "texts": [
+            "Tokyo University of Science",
+            "9",
+            "4. 後期の研究計画",
+            "今ここ",
+            "今ここ"
+          ],
+          "table_texts": [
+            "大項目",
+            "小項目",
+            "9月",
+            "10月",
+            "11月",
+            "12月",
+            "1月",
+            "2月",
+            "① 評価設計・学習",
+            "データの確定",
+            "実験別に学習／テストデータを分割の実装",
+            "沸騰後のデータで閾値を設定・スクリーニング実装",
+            "上記実装でアンサンブル検証（全条件）",
+            "② アンサンブル手法",
+            "の確立",
+            "【",
+            "必要なら",
+            "】",
+            "単体モデルを下回る条件・要因を調査・整理",
+            "【",
+            "必要なら",
+            "】",
+            "必要に応じて新たなアンサンブル手法を調査・実装",
+            "【",
+            "必要なら",
+            "】",
+            "複数手法の比較でアンサンブル方法を確定",
+            "③ 説明性を用いた要",
+            "因分析・検証",
+            "説明性指標で特徴利用を可視化・比較",
+            "各指標を踏まえて学習・推論パイプラインに活用できるか模索・実装・考察",
+            "④ 修論執筆・発表準",
+            "備",
+            "背景・実験方法（など書ける範囲から進める）",
+            "結果・考察・結論の整理",
+            "論文執筆完了・発表資料作成・発表練習など"
+          ],
+          "text_characters": 363,
+          "paragraphs": 5,
+          "pictures": 1,
+          "picture_area_sum": 0.002581406246531629,
+          "font_sizes_pt": [
+            12.0,
+            24.0,
+            28.0,
+            30.0
+          ],
+          "shapes": [
+            {
+              "paragraphs": [
+                "Tokyo University of Science"
+              ],
+              "runs": [
+                {
+                  "text": "Tokyo University of Science",
+                  "size_pt": 12.0,
+                  "bold": null,
+                  "latin": "Source Han Sans JP",
+                  "east_asian": "Source Han Sans JP"
+                }
+              ],
+              "geometry": {
+                "x": 0.02378231627296588,
+                "y": 0.10072120151647711,
+                "w": 0.020195319335083114,
+                "h": 0.21957684456109652
+              }
+            },
+            {
+              "paragraphs": [
+                "9"
+              ],
+              "runs": [
+                {
+                  "text": "9",
+                  "size_pt": 24.0,
+                  "bold": null,
+                  "latin": null,
+                  "east_asian": null
+                }
+              ],
+              "geometry": {
+                "x": 0.014790791776027996,
+                "y": 0.9476997180907942,
+                "w": 0.032778652668416446,
+                "h": 0.04494011859628658
+              }
+            },
+            {
+              "paragraphs": [
+                "4. 後期の研究計画"
+              ],
+              "runs": [
+                {
+                  "text": "4. ",
+                  "size_pt": 30.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                },
+                {
+                  "text": "後期の研究計画",
+                  "size_pt": 30.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                }
+              ],
+              "geometry": {
+                "x": 0.09879675196850393,
+                "y": 0.029653251676873726,
+                "w": 0.5277777777777778,
+                "h": 0.06810304267522116
+              }
+            },
+            {
+              "paragraphs": [
+                "今ここ"
+              ],
+              "runs": [
+                {
+                  "text": "今ここ",
+                  "size_pt": 28.0,
+                  "bold": "1",
+                  "latin": "游ゴシック",
+                  "east_asian": "游ゴシック"
+                }
+              ],
+              "geometry": {
+                "x": 0.5536805555555555,
+                "y": 0.24098765432098765,
+                "w": 0.07657403762029746,
+                "h": 0.09753086419753086
+              }
+            },
+            {
+              "paragraphs": [
+                "今ここ"
+              ],
+              "runs": [
+                {
+                  "text": "今ここ",
+                  "size_pt": 28.0,
+                  "bold": "1",
+                  "latin": "游ゴシック",
+                  "east_asian": "游ゴシック"
+                }
+              ],
+              "geometry": {
+                "x": 0.5536805555555555,
+                "y": 0.5755555555555556,
+                "w": 0.07657403762029746,
+                "h": 0.09753086419753086
+              }
+            }
+          ],
+          "media": [
+            {
+              "part": "ppt/media/image1.png",
+              "geometry": {
+                "x": 0.01486340769903762,
+                "y": 0.023826480023330418,
+                "w": 0.038033136482939635,
+                "h": 0.06787255759696705
+              },
+              "area_fraction": 0.002581406246531629,
+              "sha256": "a54c551ef70d0082e1dbd62721eec2179252e1d5d87ce8df2fa1e2e7bb1ff044"
+            }
+          ],
+          "xml_sha256": "d394d507f67d3275783cb9362d363e580c16829bc3c5155d938937ef710d2043"
+        }
+      ],
+      "summary": {
+        "slide_count": 8,
+        "text_chars_median": 108.5,
+        "text_chars_range": [
+          55,
+          363
+        ],
+        "pictures_by_slide": [
+          0,
+          1,
+          1,
+          3,
+          2,
+          2,
+          4,
+          1
+        ],
+        "font_sizes_frequency": {
+          "40.0": 21,
+          "30.0": 16,
+          "66.0": 1,
+          "12.0": 7,
+          "44.0": 6,
+          "32.0": 12,
+          "25.0": 2,
+          "24.0": 21,
+          "28.0": 8
+        }
+      }
+    },
+    "reference_0918": {
+      "path": "研究進捗報告\\2026\\918（研究計画発表）\\研究進捗_柴崎陸_0918.pptx",
+      "sha256": "029ae296efd12bb1d9bcda02a02a9e07871a57a37badf8ed47650f2cb82a413a",
+      "width_emu": 18288000,
+      "height_emu": 10287000,
+      "slides": [
+        {
+          "slide": 1,
+          "texts": [
+            "アンサンブル学習に基づく音響識別による",
+            "プール沸騰の発生検知",
+            "植木研究室　　柴崎陸",
+            "2026年9月18日",
+            "1",
+            "研究進捗"
+          ],
+          "table_texts": [],
+          "text_characters": 54,
+          "paragraphs": 6,
+          "pictures": 0,
+          "picture_area_sum": 0,
+          "font_sizes_pt": [
+            30.0,
+            40.0,
+            66.0
+          ],
+          "shapes": [
+            {
+              "paragraphs": [
+                "アンサンブル学習に基づく音響識別による",
+                "プール沸騰の発生検知"
+              ],
+              "runs": [
+                {
+                  "text": "アンサンブル学習に基づく音響識別による",
+                  "size_pt": 40.0,
+                  "bold": null,
+                  "latin": "Source Han Sans JP Bold",
+                  "east_asian": "Source Han Sans JP Bold"
+                },
+                {
+                  "text": "プール沸騰の発生検知",
+                  "size_pt": 40.0,
+                  "bold": null,
+                  "latin": "Source Han Sans JP Bold",
+                  "east_asian": "Source Han Sans JP Bold"
+                }
+              ],
+              "geometry": {
+                "x": 0.12175344488188976,
+                "y": 0.4123865072421503,
+                "w": 0.7575859580052493,
+                "h": 0.11967590162340819
+              }
+            },
+            {
+              "paragraphs": [
+                "植木研究室　　柴崎陸"
+              ],
+              "runs": [
+                {
+                  "text": "植木研究室　　",
+                  "size_pt": 40.0,
+                  "bold": null,
+                  "latin": null,
+                  "east_asian": null
+                },
+                {
+                  "text": "柴崎陸",
+                  "size_pt": 40.0,
+                  "bold": null,
+                  "latin": "+mj-ea",
+                  "east_asian": "+mj-ea"
+                }
+              ],
+              "geometry": {
+                "x": 0.0484375,
+                "y": 0.7513825216292408,
+                "w": 0.8916666666666667,
+                "h": 0.05235821911149995
+              }
+            },
+            {
+              "paragraphs": [
+                "2026年9月18日"
+              ],
+              "runs": [
+                {
+                  "text": "2026年9月18日",
+                  "size_pt": 30.0,
+                  "bold": null,
+                  "latin": "Century Gothic Paneuropean",
+                  "east_asian": "Century Gothic Paneuropean"
+                }
+              ],
+              "geometry": {
+                "x": 0.33415594925634295,
+                "y": 0.6602936716243802,
+                "w": 0.31636488407699037,
+                "h": 0.048244386118401865
+              }
+            },
+            {
+              "paragraphs": [
+                "1"
+              ],
+              "runs": [],
+              "geometry": null
+            },
+            {
+              "paragraphs": [
+                "研究進捗"
+              ],
+              "runs": [
+                {
+                  "text": "研究進捗",
+                  "size_pt": 66.0,
+                  "bold": null,
+                  "latin": "Source Han Sans JP Bold",
+                  "east_asian": "Source Han Sans JP Bold"
+                }
+              ],
+              "geometry": {
+                "x": 0.11547785433070866,
+                "y": 0.2467564887722368,
+                "w": 0.7575859580052493,
+                "h": 0.09873267230485078
+              }
+            }
+          ],
+          "media": [],
+          "xml_sha256": "fd88df4246d15df3e60a6165f2a7372c831e2ba16b822d6809458885c9f53372"
+        },
+        {
+          "slide": 2,
+          "texts": [
+            "Tokyo University of Science",
+            "2",
+            "今回の発表内容",
+            "01\n02\n03",
+            "04",
+            "学習・評価設計と音響選別\n回帰・ONB判定と統合結果の分析\n説明性",
+            "後期の研究計画"
+          ],
+          "table_texts": [],
+          "text_characters": 85,
+          "paragraphs": 7,
+          "pictures": 1,
+          "picture_area_sum": 0.002581406246531629,
+          "font_sizes_pt": [
+            12.0,
+            30.0,
+            44.0
+          ],
+          "shapes": [
+            {
+              "paragraphs": [
+                "Tokyo University of Science"
+              ],
+              "runs": [
+                {
+                  "text": "Tokyo University of Science",
+                  "size_pt": 12.0,
+                  "bold": null,
+                  "latin": "Source Han Sans JP",
+                  "east_asian": "Source Han Sans JP"
+                }
+              ],
+              "geometry": {
+                "x": 0.02378231627296588,
+                "y": 0.10072120151647711,
+                "w": 0.020195319335083114,
+                "h": 0.21957684456109652
+              }
+            },
+            {
+              "paragraphs": [
+                "2"
+              ],
+              "runs": [],
+              "geometry": {
+                "x": 0.02317711067366579,
+                "y": 0.955092641197628,
+                "w": 0.021440944881889763,
+                "h": 0.04089501312335958
+              }
+            },
+            {
+              "paragraphs": [
+                "今回の発表内容"
+              ],
+              "runs": [
+                {
+                  "text": "今回の発表内容",
+                  "size_pt": 30.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                }
+              ],
+              "geometry": {
+                "x": 0.09879675196850393,
+                "y": 0.029653251676873726,
+                "w": 0.4513888888888889,
+                "h": 0.06810304267522116
+              }
+            },
+            {
+              "paragraphs": [
+                "01\n02\n03",
+                "04"
+              ],
+              "runs": [
+                {
+                  "text": "01\n02\n03",
+                  "size_pt": 44.0,
+                  "bold": null,
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                },
+                {
+                  "text": "04",
+                  "size_pt": 44.0,
+                  "bold": null,
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                }
+              ],
+              "geometry": {
+                "x": 0.20277777777777778,
+                "y": 0.43333333333333335,
+                "w": 0.0625,
+                "h": 0.21481481481481482
+              }
+            },
+            {
+              "paragraphs": [
+                "学習・評価設計と音響選別\n回帰・ONB判定と統合結果の分析\n説明性",
+                "後期の研究計画"
+              ],
+              "runs": [
+                {
+                  "text": "学習・評価設計と音響選別\n回帰・",
+                  "size_pt": 44.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                },
+                {
+                  "text": "ONB",
+                  "size_pt": 44.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                },
+                {
+                  "text": "判定と統合結果の分析\n説明性",
+                  "size_pt": 44.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                },
+                {
+                  "text": "後期の研究計画",
+                  "size_pt": 44.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                }
+              ],
+              "geometry": {
+                "x": 0.2791666666666667,
+                "y": 0.43333333333333335,
+                "w": 0.5902777777777778,
+                "h": 0.28888888888888886
+              }
+            }
+          ],
+          "media": [
+            {
+              "part": "ppt/media/image1.png",
+              "geometry": {
+                "x": 0.01486340769903762,
+                "y": 0.023826480023330418,
+                "w": 0.038033136482939635,
+                "h": 0.06787255759696705
+              },
+              "area_fraction": 0.002581406246531629,
+              "sha256": "a54c551ef70d0082e1dbd62721eec2179252e1d5d87ce8df2fa1e2e7bb1ff044"
+            }
+          ],
+          "xml_sha256": "765d5a545e55b2b062bb56daa20116d379deb77e390205283e0fce9afccc5726"
+        },
+        {
+          "slide": 3,
+          "texts": [
+            "3",
+            "Tokyo University of Science",
+            "1. 学習・評価設計",
+            "学習・推論時のデータを別日の実験で得た音響データとした",
+            "例1",
+            "6/11 学習",
+            "→",
+            "→",
+            "6/18 評価",
+            "6/11, 18 学習",
+            "6/11 評価",
+            "例2"
+          ],
+          "table_texts": [],
+          "text_characters": 103,
+          "paragraphs": 12,
+          "pictures": 1,
+          "picture_area_sum": 0.002581406246531629,
+          "font_sizes_pt": [
+            12.0,
+            25.0,
+            30.0,
+            32.0,
+            40.0
+          ],
+          "shapes": [
+            {
+              "paragraphs": [
+                "3"
+              ],
+              "runs": [],
+              "geometry": {
+                "x": 0.8215501421697288,
+                "y": 0.03333333333333333,
+                "w": 0.11666666666666667,
+                "h": 0.035493827160493825
+              }
+            },
+            {
+              "paragraphs": [
+                "Tokyo University of Science"
+              ],
+              "runs": [
+                {
+                  "text": "Tokyo University of Science",
+                  "size_pt": 12.0,
+                  "bold": null,
+                  "latin": "Source Han Sans JP",
+                  "east_asian": "Source Han Sans JP"
+                }
+              ],
+              "geometry": {
+                "x": 0.02378231627296588,
+                "y": 0.10072120151647711,
+                "w": 0.020195319335083114,
+                "h": 0.21957684456109652
+              }
+            },
+            {
+              "paragraphs": [
+                "1. 学習・評価設計"
+              ],
+              "runs": [
+                {
+                  "text": "1. ",
+                  "size_pt": 30.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                },
+                {
+                  "text": "学習・評価設計",
+                  "size_pt": 30.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                }
+              ],
+              "geometry": {
+                "x": 0.09879675196850393,
+                "y": 0.029653251676873726,
+                "w": 0.5277777777777778,
+                "h": 0.06810304267522116
+              }
+            },
+            {
+              "paragraphs": [
+                "学習・推論時のデータを別日の実験で得た音響データとした"
+              ],
+              "runs": [
+                {
+                  "text": "学習・推論時のデータを別日の実験で得た音響データとした",
+                  "size_pt": 32.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                }
+              ],
+              "geometry": {
+                "x": 0.08680555555555555,
+                "y": 0.1382716049382716,
+                "w": 0.8402777777777778,
+                "h": 0.08888888888888889
+              }
+            },
+            {
+              "paragraphs": [
+                "例1"
+              ],
+              "runs": [
+                {
+                  "text": "例",
+                  "size_pt": 32.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                },
+                {
+                  "text": "1",
+                  "size_pt": 32.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                }
+              ],
+              "geometry": {
+                "x": 0.17083333333333334,
+                "y": 0.2851851851851852,
+                "w": 0.125,
+                "h": 0.044444444444444446
+              }
+            },
+            {
+              "paragraphs": [
+                "6/11 学習"
+              ],
+              "runs": [
+                {
+                  "text": "6/11 ",
+                  "size_pt": 40.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                },
+                {
+                  "text": "学習",
+                  "size_pt": 40.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                }
+              ],
+              "geometry": {
+                "x": 0.2833333333333333,
+                "y": 0.39416535433070865,
+                "w": 0.15,
+                "h": 0.09753086419753086
+              }
+            },
+            {
+              "paragraphs": [
+                "→"
+              ],
+              "runs": [
+                {
+                  "text": "→",
+                  "size_pt": 25.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                }
+              ],
+              "geometry": {
+                "x": 0.5041666666666667,
+                "y": 0.40959745309614076,
+                "w": 0.04513888888888889,
+                "h": 0.06172839506172839
+              }
+            },
+            {
+              "paragraphs": [
+                "→"
+              ],
+              "runs": [
+                {
+                  "text": "→",
+                  "size_pt": 25.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                }
+              ],
+              "geometry": {
+                "x": 0.5041666666666667,
+                "y": 0.7839506172839507,
+                "w": 0.04513888888888889,
+                "h": 0.06172839506172839
+              }
+            },
+            {
+              "paragraphs": [
+                "6/18 評価"
+              ],
+              "runs": [
+                {
+                  "text": "6/18 ",
+                  "size_pt": 40.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                },
+                {
+                  "text": "評価",
+                  "size_pt": 40.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                }
+              ],
+              "geometry": {
+                "x": 0.6201388888888889,
+                "y": 0.39169621852823955,
+                "w": 0.15,
+                "h": 0.09753086419753086
+              }
+            },
+            {
+              "paragraphs": [
+                "6/11, 18 学習"
+              ],
+              "runs": [
+                {
+                  "text": "6/11, 18 ",
+                  "size_pt": 40.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                },
+                {
+                  "text": "学習",
+                  "size_pt": 40.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                }
+              ],
+              "geometry": {
+                "x": 0.26979166666666665,
+                "y": 0.7672839506172839,
+                "w": 0.19444444444444445,
+                "h": 0.09753086419753086
+              }
+            },
+            {
+              "paragraphs": [
+                "6/11 評価"
+              ],
+              "runs": [
+                {
+                  "text": "6/11 ",
+                  "size_pt": 40.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                },
+                {
+                  "text": "評価",
+                  "size_pt": 40.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                }
+              ],
+              "geometry": {
+                "x": 0.6201388888888889,
+                "y": 0.7672839506172839,
+                "w": 0.15,
+                "h": 0.09753086419753086
+              }
+            },
+            {
+              "paragraphs": [
+                "例2"
+              ],
+              "runs": [
+                {
+                  "text": "例",
+                  "size_pt": 32.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                },
+                {
+                  "text": "2",
+                  "size_pt": 32.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                }
+              ],
+              "geometry": {
+                "x": 0.17083333333333334,
+                "y": 0.6654320987654321,
+                "w": 0.125,
+                "h": 0.044444444444444446
+              }
+            }
+          ],
+          "media": [
+            {
+              "part": "ppt/media/image1.png",
+              "geometry": {
+                "x": 0.01486340769903762,
+                "y": 0.023826480023330418,
+                "w": 0.038033136482939635,
+                "h": 0.06787255759696705
+              },
+              "area_fraction": 0.002581406246531629,
+              "sha256": "a54c551ef70d0082e1dbd62721eec2179252e1d5d87ce8df2fa1e2e7bb1ff044"
+            }
+          ],
+          "xml_sha256": "918c203441bfcfc2354bdb2a96e2738c7b3c260d7b326936af2ea07c2c554949"
+        },
+        {
+          "slide": 4,
+          "texts": [
+            "Tokyo University of Science",
+            "4",
+            "1. 音響選別",
+            "ONB直後からそれ以降である閾値を超えたもののみ沸騰データとした",
+            "沸騰データとして残す",
+            "未沸騰データとして削除",
+            "閾値：",
+            "2.1~2.5kHzで",
+            "1×10^-9",
+            "×10^-8",
+            "×10^-9"
+          ],
+          "table_texts": [],
+          "text_characters": 121,
+          "paragraphs": 11,
+          "pictures": 3,
+          "picture_area_sum": 0.40259690355705835,
+          "font_sizes_pt": [
+            12.0,
+            24.0,
+            30.0,
+            32.0,
+            40.0
+          ],
+          "shapes": [
+            {
+              "paragraphs": [
+                "Tokyo University of Science"
+              ],
+              "runs": [
+                {
+                  "text": "Tokyo University of Science",
+                  "size_pt": 12.0,
+                  "bold": null,
+                  "latin": "Source Han Sans JP",
+                  "east_asian": "Source Han Sans JP"
+                }
+              ],
+              "geometry": {
+                "x": 0.02378231627296588,
+                "y": 0.10072120151647711,
+                "w": 0.020195319335083114,
+                "h": 0.21957684456109652
+              }
+            },
+            {
+              "paragraphs": [
+                "4"
+              ],
+              "runs": [],
+              "geometry": {
+                "x": 0.014790791776027996,
+                "y": 0.9476997180907942,
+                "w": 0.032778652668416446,
+                "h": 0.04494011859628658
+              }
+            },
+            {
+              "paragraphs": [
+                "1. 音響選別"
+              ],
+              "runs": [
+                {
+                  "text": "1. ",
+                  "size_pt": 30.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                },
+                {
+                  "text": "音響選別",
+                  "size_pt": 30.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                }
+              ],
+              "geometry": {
+                "x": 0.09879675196850393,
+                "y": 0.029653251676873726,
+                "w": 0.5277777777777778,
+                "h": 0.06810304267522116
+              }
+            },
+            {
+              "paragraphs": [
+                "ONB直後からそれ以降である閾値を超えたもののみ沸騰データとした"
+              ],
+              "runs": [
+                {
+                  "text": "ONB",
+                  "size_pt": 32.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                },
+                {
+                  "text": "直後からそれ以降である閾値を超えたもののみ沸騰データとした",
+                  "size_pt": 32.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                }
+              ],
+              "geometry": {
+                "x": 0.08680555555555555,
+                "y": 0.1382716049382716,
+                "w": 0.8402777777777778,
+                "h": 0.08888888888888889
+              }
+            },
+            {
+              "paragraphs": [
+                "沸騰データとして残す"
+              ],
+              "runs": [
+                {
+                  "text": "沸騰データ",
+                  "size_pt": 40.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                },
+                {
+                  "text": "として残す",
+                  "size_pt": 24.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                }
+              ],
+              "geometry": {
+                "x": 0.17916666666666667,
+                "y": 0.8851851851851852,
+                "w": 0.2958332786526684,
+                "h": 0.09753086419753086
+              }
+            },
+            {
+              "paragraphs": [
+                "未沸騰データとして削除"
+              ],
+              "runs": [
+                {
+                  "text": "未沸騰データ",
+                  "size_pt": 40.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                },
+                {
+                  "text": "として削除",
+                  "size_pt": 24.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                }
+              ],
+              "geometry": {
+                "x": 0.6416666666666667,
+                "y": 0.8851851851851852,
+                "w": 0.3354167213473316,
+                "h": 0.09753086419753086
+              }
+            },
+            {
+              "paragraphs": [
+                "閾値：",
+                "2.1~2.5kHzで",
+                "1×10^-9"
+              ],
+              "runs": [
+                {
+                  "text": "閾値：",
+                  "size_pt": 40.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                },
+                {
+                  "text": "2.1~2.5kHz",
+                  "size_pt": 40.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                },
+                {
+                  "text": "で",
+                  "size_pt": 40.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                },
+                {
+                  "text": "1×10^-9",
+                  "size_pt": 40.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                }
+              ],
+              "geometry": {
+                "x": 0.8379207130358706,
+                "y": 0.1464463886458637,
+                "w": 0.21434202755905513,
+                "h": 0.09753086419753086
+              }
+            },
+            {
+              "paragraphs": [
+                "×10^-8"
+              ],
+              "runs": [
+                {
+                  "text": "×10^-8",
+                  "size_pt": 32.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                }
+              ],
+              "geometry": {
+                "x": 0.05151088145231846,
+                "y": 0.22592592592592592,
+                "w": 0.09326667760279965,
+                "h": 0.09753086419753086
+              }
+            },
+            {
+              "paragraphs": [
+                "×10^-9"
+              ],
+              "runs": [
+                {
+                  "text": "×10^-9",
+                  "size_pt": 32.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                }
+              ],
+              "geometry": {
+                "x": 0.5125,
+                "y": 0.2282689802663556,
+                "w": 0.09326667760279965,
+                "h": 0.09753086419753086
+              }
+            }
+          ],
+          "media": [
+            {
+              "part": "ppt/media/image1.png",
+              "geometry": {
+                "x": 0.01486340769903762,
+                "y": 0.023826480023330418,
+                "w": 0.038033136482939635,
+                "h": 0.06787255759696705
+              },
+              "area_fraction": 0.002581406246531629,
+              "sha256": "a54c551ef70d0082e1dbd62721eec2179252e1d5d87ce8df2fa1e2e7bb1ff044"
+            },
+            {
+              "part": "ppt/media/image2.png",
+              "geometry": {
+                "x": 0.0875,
+                "y": 0.26589433265286283,
+                "w": 0.33541666666666664,
+                "h": 0.5962962962962963
+              },
+              "area_fraction": 0.20000771604938272,
+              "sha256": "f0f1c450f8d3f8b9769604ab942f35eaed956891660f2ad240e9183510bb4955"
+            },
+            {
+              "part": "ppt/media/image3.png",
+              "geometry": {
+                "x": 0.5455615704286965,
+                "y": 0.26589433265286283,
+                "w": 0.3354167213473316,
+                "h": 0.5962963935063672
+              },
+              "area_fraction": 0.20000778126114396,
+              "sha256": "38b06e3b90c95e56d67dd1f21c1b2c118c35f3fda64c2a173d45fe75145181e3"
+            }
+          ],
+          "xml_sha256": "09c6f5fea40c94c9ae807140f8517b05a822f4fd36365ac3e24622806f2d7591"
+        },
+        {
+          "slide": 5,
+          "texts": [
+            "Tokyo University of Science",
+            "5",
+            "入力ノイズなしの検証では，アンサンブルが最も精度が高くなった",
+            "2. 熱流束回帰",
+            "実行条件",
+            "学習データ：",
+            "6/11実験 1080個（未沸騰フィルタ後986個）",
+            "テストデータ：",
+            "6/18実験　1080個",
+            "エポック数：200",
+            "Fold数：3",
+            "その他各モデルのパラメータは適切なものを設定した"
+          ],
+          "table_texts": [],
+          "text_characters": 161,
+          "paragraphs": 12,
+          "pictures": 2,
+          "picture_area_sum": 0.2929516972286827,
+          "font_sizes_pt": [
+            12.0,
+            24.0,
+            28.0,
+            30.0,
+            32.0
+          ],
+          "shapes": [
+            {
+              "paragraphs": [
+                "Tokyo University of Science"
+              ],
+              "runs": [
+                {
+                  "text": "Tokyo University of Science",
+                  "size_pt": 12.0,
+                  "bold": null,
+                  "latin": "Source Han Sans JP",
+                  "east_asian": "Source Han Sans JP"
+                }
+              ],
+              "geometry": {
+                "x": 0.02378231627296588,
+                "y": 0.10072120151647711,
+                "w": 0.020195319335083114,
+                "h": 0.21957684456109652
+              }
+            },
+            {
+              "paragraphs": [
+                "5"
+              ],
+              "runs": [],
+              "geometry": {
+                "x": 0.014790791776027996,
+                "y": 0.9476997180907942,
+                "w": 0.032778652668416446,
+                "h": 0.04494011859628658
+              }
+            },
+            {
+              "paragraphs": [
+                "入力ノイズなしの検証では，アンサンブルが最も精度が高くなった"
+              ],
+              "runs": [
+                {
+                  "text": "入力ノイズなしの検証では，アンサンブルが最も精度が高くなった",
+                  "size_pt": 32.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                }
+              ],
+              "geometry": {
+                "x": 0.08194444444444444,
+                "y": 0.1382716049382716,
+                "w": 0.8472222222222222,
+                "h": 0.09382716049382717
+              }
+            },
+            {
+              "paragraphs": [
+                "2. 熱流束回帰"
+              ],
+              "runs": [
+                {
+                  "text": "2. ",
+                  "size_pt": 30.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                },
+                {
+                  "text": "熱流束回帰",
+                  "size_pt": 30.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                }
+              ],
+              "geometry": {
+                "x": 0.09879675196850393,
+                "y": 0.029653251676873726,
+                "w": 0.5277777777777778,
+                "h": 0.06810304267522116
+              }
+            },
+            {
+              "paragraphs": [
+                "実行条件",
+                "学習データ：",
+                "6/11実験 1080個（未沸騰フィルタ後986個）",
+                "テストデータ：",
+                "6/18実験　1080個",
+                "エポック数：200",
+                "Fold数：3",
+                "その他各モデルのパラメータは適切なものを設定した"
+              ],
+              "runs": [
+                {
+                  "text": "実行条件",
+                  "size_pt": 28.0,
+                  "bold": "1",
+                  "latin": "游ゴシック",
+                  "east_asian": "游ゴシック"
+                },
+                {
+                  "text": "学習データ：",
+                  "size_pt": 24.0,
+                  "bold": "1",
+                  "latin": "游ゴシック",
+                  "east_asian": "游ゴシック"
+                },
+                {
+                  "text": "6/11",
+                  "size_pt": 24.0,
+                  "bold": "1",
+                  "latin": "游ゴシック",
+                  "east_asian": "游ゴシック"
+                },
+                {
+                  "text": "実験 ",
+                  "size_pt": 24.0,
+                  "bold": "1",
+                  "latin": "游ゴシック",
+                  "east_asian": "游ゴシック"
+                },
+                {
+                  "text": "1080",
+                  "size_pt": 24.0,
+                  "bold": "1",
+                  "latin": "游ゴシック",
+                  "east_asian": "游ゴシック"
+                },
+                {
+                  "text": "個（未沸騰フィルタ後",
+                  "size_pt": 24.0,
+                  "bold": "1",
+                  "latin": "游ゴシック",
+                  "east_asian": "游ゴシック"
+                },
+                {
+                  "text": "986",
+                  "size_pt": 24.0,
+                  "bold": "1",
+                  "latin": "游ゴシック",
+                  "east_asian": "游ゴシック"
+                },
+                {
+                  "text": "個）",
+                  "size_pt": 24.0,
+                  "bold": "1",
+                  "latin": "游ゴシック",
+                  "east_asian": "游ゴシック"
+                },
+                {
+                  "text": "テストデータ：",
+                  "size_pt": 24.0,
+                  "bold": "1",
+                  "latin": "游ゴシック",
+                  "east_asian": "游ゴシック"
+                },
+                {
+                  "text": "6/18",
+                  "size_pt": 24.0,
+                  "bold": "1",
+                  "latin": "游ゴシック",
+                  "east_asian": "游ゴシック"
+                },
+                {
+                  "text": "実験　",
+                  "size_pt": 24.0,
+                  "bold": "1",
+                  "latin": "游ゴシック",
+                  "east_asian": "游ゴシック"
+                },
+                {
+                  "text": "1080",
+                  "size_pt": 24.0,
+                  "bold": "1",
+                  "latin": "游ゴシック",
+                  "east_asian": "游ゴシック"
+                },
+                {
+                  "text": "個",
+                  "size_pt": 24.0,
+                  "bold": "1",
+                  "latin": "游ゴシック",
+                  "east_asian": "游ゴシック"
+                },
+                {
+                  "text": "エポック数：",
+                  "size_pt": 24.0,
+                  "bold": "1",
+                  "latin": "游ゴシック",
+                  "east_asian": "游ゴシック"
+                },
+                {
+                  "text": "200",
+                  "size_pt": 24.0,
+                  "bold": "1",
+                  "latin": "游ゴシック",
+                  "east_asian": "游ゴシック"
+                },
+                {
+                  "text": "Fold",
+                  "size_pt": 24.0,
+                  "bold": "1",
+                  "latin": "游ゴシック",
+                  "east_asian": "游ゴシック"
+                },
+                {
+                  "text": "数：",
+                  "size_pt": 24.0,
+                  "bold": "1",
+                  "latin": "游ゴシック",
+                  "east_asian": "游ゴシック"
+                },
+                {
+                  "text": "3",
+                  "size_pt": 24.0,
+                  "bold": "1",
+                  "latin": "游ゴシック",
+                  "east_asian": "游ゴシック"
+                },
+                {
+                  "text": "その他各モデルのパラメータは適切なものを設定した",
+                  "size_pt": 24.0,
+                  "bold": "1",
+                  "latin": "游ゴシック",
+                  "east_asian": "游ゴシック"
+                }
+              ],
+              "geometry": {
+                "x": 0.6090277777777777,
+                "y": 0.37407407407407406,
+                "w": 0.35,
+                "h": 0.4158738213278896
+              }
+            }
+          ],
+          "media": [
+            {
+              "part": "ppt/media/image1.png",
+              "geometry": {
+                "x": 0.01486340769903762,
+                "y": 0.023826480023330418,
+                "w": 0.038033136482939635,
+                "h": 0.06787255759696705
+              },
+              "area_fraction": 0.002581406246531629,
+              "sha256": "a54c551ef70d0082e1dbd62721eec2179252e1d5d87ce8df2fa1e2e7bb1ff044"
+            },
+            {
+              "part": "ppt/media/image4.png",
+              "geometry": {
+                "x": 0.09728160542432196,
+                "y": 0.28519782249441045,
+                "w": 0.46666661198600173,
+                "h": 0.6222221250121512
+              },
+              "area_fraction": 0.29037029098215106,
+              "sha256": "7e178aebfad110dd3493828a045f37ff81cad600fd30c993427446ba128b4ced"
+            }
+          ],
+          "xml_sha256": "b2843ede3c468097cc9be4a8ef2f4b310ffa6ae1ea364e3f0891adb50acb3e05"
+        },
+        {
+          "slide": 6,
+          "texts": [
+            "Tokyo University of Science",
+            "6",
+            "マスクによる精度低下の影響が大きい周波数帯はモデルごとに異なる",
+            "3. 説明性（周波数帯マスク）"
+          ],
+          "table_texts": [],
+          "text_characters": 74,
+          "paragraphs": 4,
+          "pictures": 2,
+          "picture_area_sum": 0.593009836093455,
+          "font_sizes_pt": [
+            12.0,
+            30.0,
+            32.0
+          ],
+          "shapes": [
+            {
+              "paragraphs": [
+                "Tokyo University of Science"
+              ],
+              "runs": [
+                {
+                  "text": "Tokyo University of Science",
+                  "size_pt": 12.0,
+                  "bold": null,
+                  "latin": "Source Han Sans JP",
+                  "east_asian": "Source Han Sans JP"
+                }
+              ],
+              "geometry": {
+                "x": 0.02378231627296588,
+                "y": 0.10072120151647711,
+                "w": 0.020195319335083114,
+                "h": 0.21957684456109652
+              }
+            },
+            {
+              "paragraphs": [
+                "6"
+              ],
+              "runs": [],
+              "geometry": {
+                "x": 0.014790791776027996,
+                "y": 0.9476997180907942,
+                "w": 0.032778652668416446,
+                "h": 0.04494011859628658
+              }
+            },
+            {
+              "paragraphs": [
+                "マスクによる精度低下の影響が大きい周波数帯はモデルごとに異なる"
+              ],
+              "runs": [
+                {
+                  "text": "マスクによる精度低下の影響が大きい周波数帯はモデルごとに異なる",
+                  "size_pt": 32.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                }
+              ],
+              "geometry": {
+                "x": 0.08194444444444444,
+                "y": 0.1382716049382716,
+                "w": 0.8472222222222222,
+                "h": 0.09382716049382717
+              }
+            },
+            {
+              "paragraphs": [
+                "3. 説明性（周波数帯マスク）"
+              ],
+              "runs": [
+                {
+                  "text": "3. ",
+                  "size_pt": 30.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                },
+                {
+                  "text": "説明性（周波数帯マスク）",
+                  "size_pt": 30.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                }
+              ],
+              "geometry": {
+                "x": 0.09879675196850393,
+                "y": 0.029653251676873726,
+                "w": 0.5277777777777778,
+                "h": 0.06810304267522116
+              }
+            }
+          ],
+          "media": [
+            {
+              "part": "ppt/media/image1.png",
+              "geometry": {
+                "x": 0.01486340769903762,
+                "y": 0.023826480023330418,
+                "w": 0.038033136482939635,
+                "h": 0.06787255759696705
+              },
+              "area_fraction": 0.002581406246531629,
+              "sha256": "a54c551ef70d0082e1dbd62721eec2179252e1d5d87ce8df2fa1e2e7bb1ff044"
+            },
+            {
+              "part": "ppt/media/image5.png",
+              "geometry": {
+                "x": 0.06848343175853018,
+                "y": 0.2672619811412462,
+                "w": 0.8849607939632546,
+                "h": 0.667180324681637
+              },
+              "area_fraction": 0.5904284298469235,
+              "sha256": "d47a86b7a7b271eb593e1682dada94e588c8eee69db1c72a032ad11583434412"
+            }
+          ],
+          "xml_sha256": "f1b02da9d02baf279d0797320f5af3b11871c1deda173d498054e1339e1e783d"
+        },
+        {
+          "slide": 7,
+          "texts": [
+            "Tokyo University of Science",
+            "7",
+            "同じ入力でも寄与分布は異なる",
+            "3. 説明性（Integrated Gradient）",
+            "※22 kHz・0 dB、ONB時点の同一データを入力",
+            "AlexNet",
+            "Conformer",
+            "入力"
+          ],
+          "table_texts": [],
+          "text_characters": 114,
+          "paragraphs": 8,
+          "pictures": 4,
+          "picture_area_sum": 0.4737656213328288,
+          "font_sizes_pt": [
+            12.0,
+            28.0,
+            30.0,
+            32.0,
+            40.0
+          ],
+          "shapes": [
+            {
+              "paragraphs": [
+                "Tokyo University of Science"
+              ],
+              "runs": [
+                {
+                  "text": "Tokyo University of Science",
+                  "size_pt": 12.0,
+                  "bold": null,
+                  "latin": "Source Han Sans JP",
+                  "east_asian": "Source Han Sans JP"
+                }
+              ],
+              "geometry": {
+                "x": 0.02378231627296588,
+                "y": 0.10072120151647711,
+                "w": 0.020195319335083114,
+                "h": 0.21957684456109652
+              }
+            },
+            {
+              "paragraphs": [
+                "7"
+              ],
+              "runs": [],
+              "geometry": {
+                "x": 0.014790791776027996,
+                "y": 0.9476997180907942,
+                "w": 0.032778652668416446,
+                "h": 0.04494011859628658
+              }
+            },
+            {
+              "paragraphs": [
+                "同じ入力でも寄与分布は異なる"
+              ],
+              "runs": [
+                {
+                  "text": "同じ入力でも寄与分布は異なる",
+                  "size_pt": 32.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                }
+              ],
+              "geometry": {
+                "x": 0.08680555555555555,
+                "y": 0.1382716049382716,
+                "w": 0.8402777777777778,
+                "h": 0.08888888888888889
+              }
+            },
+            {
+              "paragraphs": [
+                "3. 説明性（Integrated Gradient）"
+              ],
+              "runs": [
+                {
+                  "text": "3. ",
+                  "size_pt": 30.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                },
+                {
+                  "text": "説明性（",
+                  "size_pt": 30.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                },
+                {
+                  "text": "Integrated Gradient",
+                  "size_pt": 30.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                },
+                {
+                  "text": "）",
+                  "size_pt": 30.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                }
+              ],
+              "geometry": {
+                "x": 0.09879675196850393,
+                "y": 0.029653251676873726,
+                "w": 0.5277777777777778,
+                "h": 0.06810304267522116
+              }
+            },
+            {
+              "paragraphs": [
+                "※22 kHz・0 dB、ONB時点の同一データを入力"
+              ],
+              "runs": [
+                {
+                  "text": "※",
+                  "size_pt": 28.0,
+                  "bold": "1",
+                  "latin": "游ゴシック",
+                  "east_asian": "游ゴシック"
+                },
+                {
+                  "text": "22 kHz・0 dB、ONB",
+                  "size_pt": 28.0,
+                  "bold": "1",
+                  "latin": "游ゴシック",
+                  "east_asian": "游ゴシック"
+                },
+                {
+                  "text": "時点",
+                  "size_pt": 28.0,
+                  "bold": "1",
+                  "latin": "游ゴシック",
+                  "east_asian": "游ゴシック"
+                },
+                {
+                  "text": "の同一",
+                  "size_pt": 28.0,
+                  "bold": "1",
+                  "latin": "游ゴシック",
+                  "east_asian": "游ゴシック"
+                },
+                {
+                  "text": "データを入力",
+                  "size_pt": 28.0,
+                  "bold": "1",
+                  "latin": "游ゴシック",
+                  "east_asian": "游ゴシック"
+                }
+              ],
+              "geometry": {
+                "x": 0.09328297244094488,
+                "y": 0.9076105764557209,
+                "w": 0.5673465113735783,
+                "h": 0.09753086419753086
+              }
+            },
+            {
+              "paragraphs": [
+                "AlexNet"
+              ],
+              "runs": [
+                {
+                  "text": "AlexNet",
+                  "size_pt": 40.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                }
+              ],
+              "geometry": {
+                "x": 0.19531113298337707,
+                "y": 0.812588898609896,
+                "w": 0.18098868110236221,
+                "h": 0.09753086419753086
+              }
+            },
+            {
+              "paragraphs": [
+                "Conformer"
+              ],
+              "runs": [
+                {
+                  "text": "Conformer",
+                  "size_pt": 40.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                }
+              ],
+              "geometry": {
+                "x": 0.5739058945756781,
+                "y": 0.8181090696996208,
+                "w": 0.18098868110236221,
+                "h": 0.09753086419753086
+              }
+            },
+            {
+              "paragraphs": [
+                "入力"
+              ],
+              "runs": [
+                {
+                  "text": "入力",
+                  "size_pt": 40.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                }
+              ],
+              "geometry": {
+                "x": 0.8625,
+                "y": 0.33741732283464565,
+                "w": 0.1375,
+                "h": 0.09753086419753086
+              }
+            }
+          ],
+          "media": [
+            {
+              "part": "ppt/media/image1.png",
+              "geometry": {
+                "x": 0.01486340769903762,
+                "y": 0.023826480023330418,
+                "w": 0.038033136482939635,
+                "h": 0.06787255759696705
+              },
+              "area_fraction": 0.002581406246531629,
+              "sha256": "a54c551ef70d0082e1dbd62721eec2179252e1d5d87ce8df2fa1e2e7bb1ff044"
+            },
+            {
+              "part": "ppt/media/image6.png",
+              "geometry": {
+                "x": 0.075,
+                "y": 0.2379753086419753,
+                "w": 0.36197779965004373,
+                "h": 0.5801338582677166
+              },
+              "area_fraction": 0.20999557751823839,
+              "sha256": "9dc17cf1172a7fb45bf971a9ff3a4b0809c2c8e56c58ab2326669b3e2f02048c"
+            },
+            {
+              "part": "ppt/media/image7.png",
+              "geometry": {
+                "x": 0.4546888670166229,
+                "y": 0.23797521143190434,
+                "w": 0.36197779965004373,
+                "h": 0.5801338582677166
+              },
+              "area_fraction": 0.20999557751823839,
+              "sha256": "8423a974e3efbf8edcd07cfd945800f67de84a6348f77d81b69ab6df07256171"
+            },
+            {
+              "part": "ppt/media/image8.png",
+              "geometry": {
+                "x": 0.8085799431321085,
+                "y": 0.05129347720423836,
+                "w": 0.17891923665791776,
+                "h": 0.2861238456304073
+              },
+              "area_fraction": 0.051193060049820376,
+              "sha256": "2785013c82c2461f1b2269d13fafacb6428dafa643af4c05c84b1244087ba364"
+            }
+          ],
+          "xml_sha256": "1537328745f3d1fd5e6af39f196e2a1d363d78cc5ec286d560086496a347e7f5"
+        },
+        {
+          "slide": 8,
+          "texts": [
+            "Tokyo University of Science",
+            "9",
+            "4. 後期の研究計画",
+            "今ここ",
+            "今ここ"
+          ],
+          "table_texts": [
+            "大項目",
+            "小項目",
+            "9月",
+            "10月",
+            "11月",
+            "12月",
+            "1月",
+            "2月",
+            "① 評価設計・学習",
+            "データの確定",
+            "実験別に学習／テストデータを分割の実装",
+            "沸騰後のデータで閾値を設定・スクリーニング実装",
+            "上記実装でアンサンブル検証（全条件）",
+            "② アンサンブル手法",
+            "の確立",
+            "【",
+            "必要なら",
+            "】",
+            "単体モデルを下回る条件・要因を調査・整理",
+            "【",
+            "必要なら",
+            "】",
+            "必要に応じて新たなアンサンブル手法を調査・実装",
+            "【",
+            "必要なら",
+            "】",
+            "複数手法の比較でアンサンブル方法を確定",
+            "③ 説明性を用いた要",
+            "因分析・検証",
+            "説明性指標で特徴利用を可視化・比較",
+            "各指標を踏まえて学習・推論パイプラインに活用できるか模索・実装・考察",
+            "④ 修論執筆・発表準",
+            "備",
+            "背景・実験方法（など書ける範囲から進める）",
+            "結果・考察・結論の整理",
+            "論文執筆完了・発表資料作成・発表練習など"
+          ],
+          "text_characters": 363,
+          "paragraphs": 5,
+          "pictures": 1,
+          "picture_area_sum": 0.002581406246531629,
+          "font_sizes_pt": [
+            12.0,
+            24.0,
+            28.0,
+            30.0
+          ],
+          "shapes": [
+            {
+              "paragraphs": [
+                "Tokyo University of Science"
+              ],
+              "runs": [
+                {
+                  "text": "Tokyo University of Science",
+                  "size_pt": 12.0,
+                  "bold": null,
+                  "latin": "Source Han Sans JP",
+                  "east_asian": "Source Han Sans JP"
+                }
+              ],
+              "geometry": {
+                "x": 0.02378231627296588,
+                "y": 0.10072120151647711,
+                "w": 0.020195319335083114,
+                "h": 0.21957684456109652
+              }
+            },
+            {
+              "paragraphs": [
+                "9"
+              ],
+              "runs": [
+                {
+                  "text": "9",
+                  "size_pt": 24.0,
+                  "bold": null,
+                  "latin": null,
+                  "east_asian": null
+                }
+              ],
+              "geometry": {
+                "x": 0.014790791776027996,
+                "y": 0.9476997180907942,
+                "w": 0.032778652668416446,
+                "h": 0.04494011859628658
+              }
+            },
+            {
+              "paragraphs": [
+                "4. 後期の研究計画"
+              ],
+              "runs": [
+                {
+                  "text": "4. ",
+                  "size_pt": 30.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                },
+                {
+                  "text": "後期の研究計画",
+                  "size_pt": 30.0,
+                  "bold": "1",
+                  "latin": "Yu Gothic",
+                  "east_asian": "Yu Gothic"
+                }
+              ],
+              "geometry": {
+                "x": 0.09879675196850393,
+                "y": 0.029653251676873726,
+                "w": 0.5277777777777778,
+                "h": 0.06810304267522116
+              }
+            },
+            {
+              "paragraphs": [
+                "今ここ"
+              ],
+              "runs": [
+                {
+                  "text": "今ここ",
+                  "size_pt": 28.0,
+                  "bold": "1",
+                  "latin": "游ゴシック",
+                  "east_asian": "游ゴシック"
+                }
+              ],
+              "geometry": {
+                "x": 0.5536805555555555,
+                "y": 0.24098765432098765,
+                "w": 0.07657403762029746,
+                "h": 0.09753086419753086
+              }
+            },
+            {
+              "paragraphs": [
+                "今ここ"
+              ],
+              "runs": [
+                {
+                  "text": "今ここ",
+                  "size_pt": 28.0,
+                  "bold": "1",
+                  "latin": "游ゴシック",
+                  "east_asian": "游ゴシック"
+                }
+              ],
+              "geometry": {
+                "x": 0.5536805555555555,
+                "y": 0.5755555555555556,
+                "w": 0.07657403762029746,
+                "h": 0.09753086419753086
+              }
+            }
+          ],
+          "media": [
+            {
+              "part": "ppt/media/image1.png",
+              "geometry": {
+                "x": 0.01486340769903762,
+                "y": 0.023826480023330418,
+                "w": 0.038033136482939635,
+                "h": 0.06787255759696705
+              },
+              "area_fraction": 0.002581406246531629,
+              "sha256": "a54c551ef70d0082e1dbd62721eec2179252e1d5d87ce8df2fa1e2e7bb1ff044"
+            }
+          ],
+          "xml_sha256": "d394d507f67d3275783cb9362d363e580c16829bc3c5155d938937ef710d2043"
+        }
+      ],
+      "summary": {
+        "slide_count": 8,
+        "text_chars_median": 108.5,
+        "text_chars_range": [
+          54,
+          363
+        ],
+        "pictures_by_slide": [
+          0,
+          1,
+          1,
+          3,
+          2,
+          2,
+          4,
+          1
+        ],
+        "font_sizes_frequency": {
+          "40.0": 21,
+          "30.0": 16,
+          "66.0": 1,
+          "12.0": 7,
+          "44.0": 6,
+          "32.0": 12,
+          "25.0": 2,
+          "24.0": 21,
+          "28.0": 8
+        }
+      }
+    }
+  },
+  "comparison": {
+    "differing_slide_xml": [
+      1
+    ],
+    "text_difference_slides": [
+      1
+    ],
+    "matching_slide_media": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ]
+  },
+  "source_files_modified": false
+}

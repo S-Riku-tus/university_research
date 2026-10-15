@@ -1,0 +1,75 @@
+{
+  "scope": "2025 June11+18, seed42, 200 epochs, 1s/3kHz, within_wav_chunk, clean_only",
+  "evaluation_chunks_per_noise": 540,
+  "noise_conditions": [
+    "clean",
+    "0",
+    "-4",
+    "-8",
+    "-12",
+    "-16",
+    "-20"
+  ],
+  "regional_decompositions": 112,
+  "direction_groups": 56,
+  "correlation_rows": 280,
+  "existing_feature_rows": 98,
+  "reused_input_removal_rows": 12,
+  "identity_and_saved_metrics_checks": "passed",
+  "new_model_fits": 0,
+  "new_model_inference": 0,
+  "new_input_interventions": 0,
+  "sources": [
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\onb_comparison\\main_metrics.csv",
+      "sha256": "51dfe9e75bca3487ffa4f2f714d968d936639ff5f27f19d13f2d67b2e6943261"
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\heatflux_no_noise\\ensemble_training_oof_fit_f1.json",
+      "sha256": "8fe9019d4d229b21b120339508eedb958966489d5ec0e5f4d7e4d44899dde3ef"
+    },
+    {
+      "path": "experiments\\2026-10-07_onb_input_and_integration\\stage1\\metrics.csv",
+      "sha256": "84a634408f9e6696d3810e6602c77354352cca114229692e154cdf801e362f1a"
+    },
+    {
+      "path": "experiments\\2026-10-07_onb_input_and_integration\\stage3\\metrics.csv",
+      "sha256": "d58c6b0caf351da8e87bcfe4067c3fc34e106b2a06f82679da5709802c70aaff"
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\heatflux_no_noise\\fold_pred\\pred_f1_no_noise.csv",
+      "sha256": "ede56620159ec8155ad3fbe3c0207e02754d54b899d59013374f4c4726844032"
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\heatflux_reference_SNR=0\\fold_pred\\pred_f1_0.csv",
+      "sha256": "2eeef5a143cf5c12633c947d1e172764663b103c2879688cded017dcc420d29f"
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\heatflux_reference_SNR=-4\\fold_pred\\pred_f1_-4.csv",
+      "sha256": "9d944556f163ecba629b0bbb853bde3774552470fe1fb84a874550e619670c38"
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\heatflux_reference_SNR=-8\\fold_pred\\pred_f1_-8.csv",
+      "sha256": "18dcb5b527533c2259b6327d44cced9b72b29e4e104478598e480b59f52c0d3a"
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\heatflux_reference_SNR=-12\\fold_pred\\pred_f1_-12.csv",
+      "sha256": "6ab87e03e95d11dd515a04510805b95ab44256323d19be7d8f5c3715d268d44b"
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\heatflux_reference_SNR=-16\\fold_pred\\pred_f1_-16.csv",
+      "sha256": "4a4e958c9433854bf663f6172ec9d2c8e90426ad61a585f426d66ac3bec4db9e"
+    },
+    {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\heatflux_reference_SNR=-20\\fold_pred\\pred_f1_-20.csv",
+      "sha256": "17dbcb96f5ed652ca17ecb46996c32e18105d34580d46915ad256909517abe80"
+    }
+  ],
+  "sources_unchanged": true,
+  "limitations": [
+    "Fixed-fit input intervention and retraining input removal answer different questions.",
+    "Residual decomposition is an identity, not proof of the physical acoustic mechanism.",
+    "Feature dependence and integration benefit are compatible evidence, not isolated causal contribution.",
+    "Only existing target runs; no 2026 data or new July9 evaluation."
+  ]
+}
