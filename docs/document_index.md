@@ -1,13 +1,16 @@
 # 文書案内と更新ルール
 
-更新日: 2026-10-14。**現在の状態は一か所で更新し、過去の数値と判断は日付付き記録に残す。**
+更新日: 2026-10-15。**現在の状態は一か所で更新し、過去の数値と判断は日付付き記録に残す。**
 
 ## 読む順序と各文書の役割
 
 | 目的 | 読む文書 | 更新方法 |
 |---|---|---|
 | 次の作業を始める | [研究の現在地](research_status.md) | 状態・本人の希望・次の一手を更新する唯一の入口 |
-| 発表用ONBの条件とbarの可読性を確認する | [10/15条件説明](notes/2026-10-15_onb_presentation_run_conditions.md)、[設定提案](../configs/experiments/2026-10-15_onb_presentation_run_proposal.json)、[23 ptプレビューと検算](../experiments/2026-10-15_bar_label_readability/README.md) | 設定案と読み取り入力確認まで。入口の実験条件は未変更。barモデル名は修正済み。新学習/推論なし |
+| 10/16各ページの文・画像・後期計画・残る対応を確認する | [ページ別点検と計画](progress/2026-10-16_slide_readiness_and_semester_plan.md)、[基本11枚案](progress/2026-10-16_slide_content_plan.md)、[再実行の照合](../experiments/2026-10-15_presentation_readiness/run_consistency.json)、[図の出典](progress/assets/2026-10-16/asset_sources.json) | 143609と194258は全7条件・主指標・重みが丸め程度の差で一致。新図も使用可。後期計画を進捗へ合わせ、素材を準備。原PPTX保持、実反映は未実施 |
+| 今回完了したclean_onlyの結果を読む | [10/15 143609の結果分析](../experiments/2026-10-15_clean_only_result_analysis/README.md) | matched途中停止後、clean_onlyだけ分析。元3比の全域改善・近傍の交換・ONB段階の見逃し・q100を整理。検算・分析図・更新bar168図まで保存 |
+| 今日のONB 2実行の進み具合を確認する | [10/15 17:18の固定記録](../experiments/2026-10-15_onb_two_run_progress/README.md) | clean_onlyは全7条件・最終集計完了。matchedは3/7完了・−8処理中。性能分析は終了後で、時刻以降の進行は未確認 |
+| 発表用ONBの条件とbarの可読性を確認する | [10/15条件説明](notes/2026-10-15_onb_presentation_run_conditions.md)、[適用済み設定](../configs/experiments/2026-10-15_onb_presentation_run_applied.json)、[追加図のプレビューと再描画手順](../experiments/2026-10-15_bar_presentation_views/README.md) | 2025年統合・日内clean_only・200 epochsを本人が実行開始、結果分析は終了後。数字30 pt・固定抜粋・拡大表示を実装し過去の完了結果で確認。今回runは未読 |
 | 既存結果の説明への接続・10/16発表内容・最新の対象を確認する | [研究方針の最新整理](research_plan/2026-10-14_research_synthesis_and_presentation_policy.md)、[保存結果分析](../experiments/2026-10-14_error_feature_linkage/README.md)、[元PPTX書式](audits/2026-10-14_slide_style_and_content/style_analysis.md)、[各ページ内容案](progress/2026-10-16_slide_content_plan.md) | 分析・書式照合・ページ案は完了。自動重み切替は将来候補。修論完成後の最終確認は今回は対象外。原PPTXは保持 |
 | 完了した確認を除いた残課題・過去の精度逆転・後段の統合案を確認する | [10/14最新の3課題と追加回答](research_plan/2026-10-14_completed_checks_noise_history_and_future_ensembles.md) | 基盤・比較・悪化量・q100照合は完了。5を発表へ採用、6をつなぐ案、12の目的別統合と13の詳細改善は保留。学部/2025年追加録音/2026年新実験を区別する |
 | 理想の結論と2025年データでの課題・金曜論点を選ぶ | [10/14最新方針と22論点](research_plan/2026-10-14_ideal_conclusion_and_friday_issue_list.md)、[質問回答と本人の発表選択](research_plan/2026-10-14_friday_selection_and_question_answers.md)、[雑音悪化量の確認](../experiments/2026-10-14_2025_noise_degradation_review/README.md)、[q100旧新照合](audits/2026-10-14_user_direction_and_metric_review/q100_verification.json) | 最新本人選択を優先。比較は手段、有効条件の最終確認は後段。悪化量は集計完了。17の再掲・21の目次は発表に入れる |

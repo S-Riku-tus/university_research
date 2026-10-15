@@ -1,0 +1,20 @@
+{
+  "run_hash": "da540f2d",
+  "fit_id": "7560205f8feb",
+  "rmse_wins_out_of_7": {
+    "ensemble__original3_performance": 7,
+    "ensemble__original3_mse": 7,
+    "ensemble__original3_extra_trees": 4,
+    "ensemble__original3_hgb": 6,
+    "extra_trees": 7,
+    "hgb": 6,
+    "ensemble__simple_equal": 7
+  },
+  "clean_csv_identical_to_prior_200epoch_record": true,
+  "clean_only_scope": true,
+  "matched_read": false,
+  "five_clean_rmse": 27.799289633143545,
+  "five_minus20_rmse": 75.23257715816351,
+  "clean_fn_cases_with_any_positive_single": 16,
+  "clean_fn_all_singles_negative": 11
+}

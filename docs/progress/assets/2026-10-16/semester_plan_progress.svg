@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="1328.158594pt" height="538.618124pt" viewBox="0 0 1328.158594 538.618124" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2026-10-15T20:19:11.644214</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.8.4, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 538.618124 
+L 1328.158594 538.618124 
+L 1328.158594 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 305.758594 522.349937 
+L 1320.958594 522.349937 
+L 1320.958594 46.285937 
+L 305.758594 46.285937 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="line2d_1">
+    <path d="M 305.758594 522.349937 
+L 305.758594 46.285937 
+" clip-path="url(#p2273ad293a)" style="fill: none; stroke: #dce3e9; stroke-linecap: square"/>
+   </g>
+   <g id="line2d_2">
+    <path d="M 474.958594 522.349937 
+L 474.958594 46.285937 
+" clip-path="url(#p2273ad293a)" style="fill: none; stroke: #dce3e9; stroke-linecap: square"/>
+   </g>
+   <g id="line2d_3">
+    <path d="M 644.158594 522.349937 
+L 644.158594 46.285937 
+" clip-path="url(#p2273ad293a)" style="fill: none; stroke: #dce3e9; stroke-linecap: square"/>
+   </g>
+   <g id="line2d_4">
+    <path d="M 813.358594 522.349937 
+L 813.358594 46.285937 
+" clip-path="url(#p2273ad293a)" style="fill: none; stroke: #dce3e9; stroke-linecap: square"/>
+   </g>
+   <g id="line2d_5">
+    <path d="M 982.558594 522.349937 
+L 982.558594 46.285937 
+" clip-path="url(#p2273ad293a)" style="fill: none; stroke: #dce3e9; stroke-linecap: square"/>
+   </g>
+   <g id="line2d_6">
+    <path d="M 1151.758594 522.349937 
+L 1151.758594 46.285937 
+" clip-path="url(#p2273ad293a)" style="fill: none; stroke: #dce3e9; stroke-linecap: square"/>
+   </g>
+   <g id="line2d_7">
+    <path d="M 1320.958594 522.349937 
+L 1320.958594 46.285937 
+" clip-path="url(#p2273ad293a)" style="fill: none; stroke: #dce3e9; stroke-linecap: square"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 325.216594 80.515333 
+L 548.560594 80.515333 
+Q 557.020594 80.515333 557.020594 84.449746 
+L 557.020594 126.154526 
+Q 557.020594 130.088939 548.560594 130.088939 
+L 325.216594 130.088939 
+Q 316.756594 130.088939 316.756594 126.154526 
+L 316.756594 84.449746 
+Q 316.756594 80.515333 325.216594 80.515333 
+z
+" clip-path="url(#p2273ad293a)" style="fill: #3b9b88; stroke: #3b9b88; stroke-width: 2; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 404.740594 159.203597 
+L 548.560594 159.203597 
+Q 557.020594 159.203597 557.020594 163.13801 
+L 557.020594 204.84279 
+Q 557.020594 208.777204 548.560594 208.777204 
+L 404.740594 208.777204 
+Q 396.280594 208.777204 396.280594 204.84279 
+L 396.280594 163.13801 
+Q 396.280594 159.203597 404.740594 159.203597 
+z
+" clip-path="url(#p2273ad293a)" style="fill: #3b9b88; stroke: #3b9b88; stroke-width: 2; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 579.016594 159.203597 
+L 807.436594 159.203597 
+Q 815.896594 159.203597 815.896594 163.13801 
+L 815.896594 204.84279 
+Q 815.896594 208.777204 807.436594 208.777204 
+L 579.016594 208.777204 
+Q 570.556594 208.777204 570.556594 204.84279 
+L 570.556594 163.13801 
+Q 570.556594 159.203597 579.016594 159.203597 
+z
+" clip-path="url(#p2273ad293a)" style="fill: #208bdd; stroke: #208bdd; stroke-width: 2; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 582.400594 237.891861 
+L 1298.116594 237.891861 
+Q 1306.576594 237.891861 1306.576594 241.826275 
+L 1306.576594 283.531055 
+Q 1306.576594 287.465468 1298.116594 287.465468 
+L 582.400594 287.465468 
+Q 573.940594 287.465468 573.940594 283.531055 
+L 573.940594 241.826275 
+Q 573.940594 237.891861 582.400594 237.891861 
+z
+" clip-path="url(#p2273ad293a)" style="fill: #ffffff; stroke-dasharray: 7.4,3.2; stroke-dashoffset: 0; stroke: #c18435; stroke-width: 2; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 325.216594 316.580126 
+L 548.560594 316.580126 
+Q 557.020594 316.580126 557.020594 320.514539 
+L 557.020594 362.219319 
+Q 557.020594 366.153733 548.560594 366.153733 
+L 325.216594 366.153733 
+Q 316.756594 366.153733 316.756594 362.219319 
+L 316.756594 320.514539 
+Q 316.756594 316.580126 325.216594 316.580126 
+z
+" clip-path="url(#p2273ad293a)" style="fill: #3b9b88; stroke: #3b9b88; stroke-width: 2; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_8">
+    <path d="M 579.016594 316.580126 
+L 807.436594 316.580126 
+Q 815.896594 316.580126 815.896594 320.514539 
+L 815.896594 362.219319 
+Q 815.896594 366.153733 807.436594 366.153733 
+L 579.016594 366.153733 
+Q 570.556594 366.153733 570.556594 362.219319 
+L 570.556594 320.514539 
+Q 570.556594 316.580126 579.016594 316.580126 
+z
+" clip-path="url(#p2273ad293a)" style="fill: #208bdd; stroke: #208bdd; stroke-width: 2; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_9">
+    <path d="M 579.016594 395.26839 
+L 807.436594 395.26839 
+Q 815.896594 395.26839 815.896594 399.202804 
+L 815.896594 440.907584 
+Q 815.896594 444.841997 807.436594 444.841997 
+L 579.016594 444.841997 
+Q 570.556594 444.841997 570.556594 440.907584 
+L 570.556594 399.202804 
+Q 570.556594 395.26839 579.016594 395.26839 
+z
+" clip-path="url(#p2273ad293a)" style="fill: #208bdd; stroke: #208bdd; stroke-width: 2; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_10">
+    <path d="M 832.816594 395.26839 
+L 968.176594 395.26839 
+Q 976.636594 395.26839 976.636594 399.202804 
+L 976.636594 440.907584 
+Q 976.636594 444.841997 968.176594 444.841997 
+L 832.816594 444.841997 
+Q 824.356594 444.841997 824.356594 440.907584 
+L 824.356594 399.202804 
+Q 824.356594 395.26839 832.816594 395.26839 
+z
+" clip-path="url(#p2273ad293a)" style="fill: #208bdd; stroke: #208bdd; stroke-width: 2; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_11">
+    <path d="M 996.940594 395.26839 
+L 1298.116594 395.26839 
+Q 1306.576594 395.26839 1306.576594 399.202804 
+L 1306.576594 440.907584 
+Q 1306.576594 444.841997 1298.116594 444.841997 
+L 996.940594 444.841997 
+Q 988.480594 444.841997 988.480594 440.907584 
+L 988.480594 399.202804 
+Q 988.480594 395.26839 996.940594 395.26839 
+z
+" clip-path="url(#p2273ad293a)" style="fill: #208bdd; stroke: #208bdd; stroke-width: 2; stroke-linejoin: miter"/>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_8"/>
+     <g id="text_1">
+      <text style="font: 25px 'Yu Gothic'; text-anchor: middle" x="390.358594" y="26.305469" transform="rotate(-0 390.358594 26.305469)">9月</text>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_9"/>
+     <g id="text_2">
+      <text style="font: 25px 'Yu Gothic'; text-anchor: middle" x="559.558594" y="26.305469" transform="rotate(-0 559.558594 26.305469)">10月</text>
+     </g>
+    </g>
+    <g id="xtick_3">
+     <g id="line2d_10"/>
+     <g id="text_3">
+      <text style="font: 25px 'Yu Gothic'; text-anchor: middle" x="728.758594" y="26.305469" transform="rotate(-0 728.758594 26.305469)">11月</text>
+     </g>
+    </g>
+    <g id="xtick_4">
+     <g id="line2d_11"/>
+     <g id="text_4">
+      <text style="font: 25px 'Yu Gothic'; text-anchor: middle" x="897.958594" y="26.305469" transform="rotate(-0 897.958594 26.305469)">12月</text>
+     </g>
+    </g>
+    <g id="xtick_5">
+     <g id="line2d_12"/>
+     <g id="text_5">
+      <text style="font: 25px 'Yu Gothic'; text-anchor: middle" x="1067.158594" y="26.305469" transform="rotate(-0 1067.158594 26.305469)">1月</text>
+     </g>
+    </g>
+    <g id="xtick_6">
+     <g id="line2d_13"/>
+     <g id="text_6">
+      <text style="font: 25px 'Yu Gothic'; text-anchor: middle" x="1236.358594" y="26.305469" transform="rotate(-0 1236.358594 26.305469)">2月</text>
+     </g>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2">
+    <g id="ytick_1">
+     <g id="line2d_14"/>
+     <g id="text_7">
+      <text style="font: 23px 'Yu Gothic'; text-anchor: end" x="289.758594" y="114.527292" transform="rotate(-0 289.758594 114.527292)">① 評価条件・データ</text>
+     </g>
+    </g>
+    <g id="ytick_2">
+     <g id="line2d_15"/>
+     <g id="text_8">
+      <text style="font: 23px 'Yu Gothic'; text-anchor: end" x="289.758594" y="193.131103" transform="rotate(-0 289.758594 193.131103)">② アンサンブル手法の検証</text>
+     </g>
+    </g>
+    <g id="ytick_3">
+     <g id="line2d_16"/>
+     <g id="text_9">
+      <text style="font: 23px 'Yu Gothic'; text-anchor: end" x="289.758594" y="271.819368" transform="rotate(-0 289.758594 271.819368)">② 条件付きの追加候補</text>
+     </g>
+    </g>
+    <g id="ytick_4">
+     <g id="line2d_17"/>
+     <g id="text_10">
+      <text style="font: 23px 'Yu Gothic'; text-anchor: end" x="289.758594" y="350.507632" transform="rotate(-0 289.758594 350.507632)">③ 説明性・要因分析</text>
+     </g>
+    </g>
+    <g id="ytick_5">
+     <g id="line2d_18"/>
+     <g id="text_11">
+      <text style="font: 23px 'Yu Gothic'; text-anchor: end" x="289.758594" y="429.195897" transform="rotate(-0 289.758594 429.195897)">④ 修論・発表準備</text>
+     </g>
+    </g>
+   </g>
+   <g id="line2d_19">
+    <path d="M 559.558594 522.349937 
+L 559.558594 46.285937 
+" clip-path="url(#p2273ad293a)" style="fill: none; stroke-dasharray: 7.4,3.2; stroke-dashoffset: 0; stroke: #c18435; stroke-width: 2"/>
+   </g>
+   <g id="text_12">
+    <text style="fill: #c18435; font: 20px 'Yu Gothic'; text-anchor: start" x="564.634594" y="60.449825" transform="rotate(-0 564.634594 60.449825)">10/16</text>
+   </g>
+   <g id="text_13">
+    <text style="fill: #ffffff; font: 21px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif" transform="translate(373.888594 100.263448)">主系列の条件</text>
+    <text style="fill: #ffffff; font: 21px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif" transform="translate(373.888594 123.045823)">整備・実行済</text>
+   </g>
+   <g id="text_14">
+    <text style="fill: #ffffff; font: 21px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif" transform="translate(438.163172 178.951713)">3→4→5</text>
+    <text style="fill: #ffffff; font: 21px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif" transform="translate(445.150594 201.734088)">解析済</text>
+   </g>
+   <g id="text_15">
+    <text style="fill: #ffffff; font: 21px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif" transform="translate(609.226594 178.951713)">効果・採否理由を</text>
+    <text style="fill: #ffffff; font: 21px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif" transform="translate(609.226594 201.734088)">発表・修論へ整理</text>
+   </g>
+   <g id="text_16">
+    <text style="fill: #c18435; font: 21px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="940.258594" y="269.031165" transform="rotate(-0 940.258594 269.031165)">入力に応じた自動重み切替：時期未定・時間と費用に応じて判断</text>
+   </g>
+   <g id="text_17">
+    <text style="fill: #ffffff; font: 21px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif" transform="translate(352.888594 336.328242)">可視化・加工対照</text>
+    <text style="fill: #ffffff; font: 21px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif" transform="translate(384.388594 359.110617)">接続分析済</text>
+   </g>
+   <g id="text_18">
+    <text style="fill: #ffffff; font: 21px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif" transform="translate(609.226594 336.328242)">特徴利用と誤りの</text>
+    <text style="fill: #ffffff; font: 21px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif" transform="translate(640.726594 359.110617)">解釈・考察</text>
+   </g>
+   <g id="text_19">
+    <text style="fill: #ffffff; font: 21px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif" transform="translate(619.726594 415.016506)">目次・章別整理</text>
+    <text style="fill: #ffffff; font: 21px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif" transform="translate(630.226594 437.798881)">本文への展開</text>
+   </g>
+   <g id="text_20">
+    <text style="fill: #ffffff; font: 21px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif" transform="translate(847.996594 415.016506)">結果・考察</text>
+    <text style="fill: #ffffff; font: 21px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif" transform="translate(847.996594 437.798881)">結論の整理</text>
+   </g>
+   <g id="text_21">
+    <text style="fill: #ffffff; font: 21px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="1147.528594" y="426.407694" transform="rotate(-0 1147.528594 426.407694)">本文完成・発表準備</text>
+   </g>
+   <g id="text_22">
+    <text style="fill: #526779; font: 20px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start" x="305.758594" y="500.317223" transform="rotate(-0 305.758594 500.317223)">緑：完了した成果　青：現在〜今後の整理　点線：実施を約束しない候補</text>
+   </g>
+   <g id="text_23">
+    <text style="fill: #526779; font: 17px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: start" x="305.758594" y="528.644999" transform="rotate(-0 305.758594 528.644999)">時期は既存計画に基づく案。正式な提出期限・執筆完了を示すものではない。</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p2273ad293a">
+   <rect x="305.758594" y="46.285937" width="1015.2" height="476.064"/>
+  </clipPath>
+ </defs>
+</svg>

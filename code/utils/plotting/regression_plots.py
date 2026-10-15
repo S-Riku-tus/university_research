@@ -2,7 +2,17 @@ import os
 import textwrap
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.ticker import ScalarFormatter
+from matplotlib.ticker import MaxNLocator, ScalarFormatter
+
+
+# Fixed comparisons, independent of the metric values or model ranking.
+BAR_COMPARISON_GROUPS = {
+    "legacy4": ("RandomForest", "Conformer", "AlexNet", "Original three performance"),
+    "addition4": ("Original three MSE", "Original three + HGB",
+                  "Original three + ExtraTrees", "Original three + HGB + ExtraTrees"),
+    "integration5": ("Original three MSE", "HGB frequency34", "ExtraTrees frequency34",
+                     "Ensemble simple equal", "Original three + HGB + ExtraTrees"),
+}
 
 
 def _safe_stem(text, max_len=32):
@@ -73,10 +83,62 @@ class RegressionPlotter:
         plt.close()
 
     def plot_bar(self, metric_name, labels, values, errors, epochs, save_path, snr_value):
-        """モデル別の指標を棒グラフで保存 (R2 / 連続スコア ROC-AUC など)。"""
-        crowded = len(labels) > 6
+        """Save all models, fixed comparison subsets, and explicitly marked zooms.
+
+        Subsets reuse the exact input means, errors and colors. A comparison is
+        omitted when any of its required models is absent; no ranking is used.
+        """
+        labels = list(labels)
+        values = np.asarray(values, dtype=float)
+        errors = (np.full(len(labels), np.nan) if errors is None
+                  else np.asarray(errors, dtype=float))
+        if values.shape != (len(labels),) or errors.shape != values.shape:
+            raise ValueError("Bar labels, values and errors must have matching lengths")
+        if np.any(np.isfinite(errors) & (errors < 0)):
+            raise ValueError("Bar error sizes must be nonnegative")
+        if not labels:
+            return []
+        palette = ['c', 'cadetblue', 'skyblue', 'dodgerblue', 'steelblue', 'lightblue']
+        colors = [palette[i % len(palette)] for i in range(len(labels))]
+        views = [("", list(range(len(labels))))]
+        for name, selected in BAR_COMPARISON_GROUPS.items():
+            if all(labels.count(label) == 1 for label in selected):
+                views.append((name, [labels.index(label) for label in selected]))
+        files = []
+        for name, indices in views:
+            selected_values, selected_errors = values[indices], errors[indices]
+            limits = self._bar_limits(selected_values, selected_errors)
+            for zoom, ylim in ((False, limits[0]), (True, limits[1])):
+                if ylim is None:
+                    continue
+                files.append(self._plot_bar_view(
+                    metric_name, [labels[i] for i in indices], selected_values, selected_errors,
+                    [colors[i] for i in indices], epochs, save_path, snr_value, name, zoom, ylim))
+        return files
+
+    @staticmethod
+    def _bar_limits(values, errors):
+        finite = np.isfinite(values)
+        if not finite.any():
+            return (0., 1.05), None
+        error_sizes = np.where(np.isfinite(errors), errors, 0.)[finite]
+        low = float(np.min(values[finite] - error_sizes))
+        high = float(np.max(values[finite] + error_sizes))
+        span = max(high - low, max(abs(low), abs(high)) * .002, .002)
+        full = (min(0., low - .05 * span) if low < 0 else 0., max(1.05, high + .05 * span))
+        zoom_low = low - .15 * span
+        if low >= 0:
+            zoom_low = max(0., zoom_low)
+        zoom = (zoom_low, high + .65 * span)
+        # A broad or undefined metric range does not benefit from a second view.
+        if zoom[1] - zoom[0] >= .85 * (full[1] - full[0]):
+            zoom = None
+        return full, zoom
+
+    def _plot_bar_view(self, metric_name, labels, values, errors, colors, epochs,
+                       save_path, snr_value, view_name, zoom, ylim):
         axis_fontsize = 23
-        colors = ['c', 'cadetblue', 'skyblue', 'dodgerblue', 'steelblue', 'lightblue']
+        value_fontsize = 30
         display_label_aliases = {
             "RandomForest": "Random\nForest",
             "Conformer": "Conformer",
@@ -86,52 +148,82 @@ class RegressionPlotter:
             "Original three performance": "Original3\nperf",
             "Original three + HGB": "Original3\n+ HGB",
             "Original three + ExtraTrees": "Original3\n+ ET",
-            "Original three + HGB + ExtraTrees": "Original3\n+ HGB\n+ ET",
+            "Original three + HGB + ExtraTrees": "Original3\n+ HGB + ET",
             "Ensemble simple equal": "Equal\nmean",
         }
         display_labels = [display_label_aliases.get(label, textwrap.fill(
             str(label), width=12, break_long_words=True, break_on_hyphens=False)) for label in labels]
         label_lines = max((label.count("\n")+1 for label in display_labels), default=1)
-        fig = plt.figure(figsize=(max(9, 1.4 * len(labels)), 6.6 + .35*(label_lines-1)))
+        fig, ax = plt.subplots(figsize=(max(9, 1.4 * len(labels)), 6.6 + .35*(label_lines-1)))
         positions = np.arange(len(labels))
-        plt.bar(positions, values, color=colors[:len(labels)],
-                yerr=errors, capsize=5, width=0.5)
-        plt.ylim(0.0, 1.05)
+        error_sizes = np.where(np.isfinite(errors), errors, 0.)
+        ax.bar(positions, values, color=colors,
+               yerr=error_sizes if np.any(np.isfinite(errors)) else None, capsize=5, width=0.5)
+        ax.set_ylim(*ylim)
         display_metric_name = metric_name
         if metric_name == "R2 Score":
             display_metric_name = "R\u00b2 Score"
-        plt.ylabel(display_metric_name, fontsize=axis_fontsize)
-        plt.xticks(positions, display_labels, fontsize=axis_fontsize,
-                   rotation=0, ha="center", multialignment="center")
-        plt.gca().tick_params(axis="x", pad=9)
-        plt.yticks(fontsize=18)
+        ax.set_ylabel(display_metric_name, fontsize=axis_fontsize)
+        ax.set_xticks(positions, display_labels, fontsize=axis_fontsize,
+                      rotation=0, ha="center", multialignment="center")
+        ax.tick_params(axis="x", pad=9)
+        ax.tick_params(axis="y", labelsize=18)
+        if zoom:
+            ax.text(0., 1.04, "Zoomed y-axis", transform=ax.transAxes, fontsize=17)
+            ax.yaxis.set_major_locator(MaxNLocator(nbins=6))
+            formatter = ScalarFormatter(useOffset=False)
+            formatter.set_scientific(False)
+            ax.yaxis.set_major_formatter(formatter)
+            ax.grid(axis="y", alpha=.2)
+            ax.set_axisbelow(True)
+            if ylim[0] > 0:
+                for x in (0., 1.):
+                    ax.plot([x-.009, x+.009], [-.012, .012], transform=ax.transAxes,
+                            color="black", linewidth=1.5, clip_on=False)
+        annotations = []
         for i, v in enumerate(values):
-            if not np.isnan(v):
-                err = errors[i] if errors is not None and i < len(errors) else np.nan
-                if np.isnan(err):
+            if np.isfinite(v):
+                err = errors[i]
+                if not np.isfinite(err):
                     text = f'{v:.4f}'
                 else:
-                    text = f'{v:.4f} \u00b1 {err:.4f}'
-                plt.text(i, 0.03, text, ha='center', va='bottom',
-                         fontsize=20 if crowded else 25, color='black', rotation=90)
-        out_dir = os.path.join(save_path, "bar")
+                    separator = '\n' if zoom else ' '
+                    text = f'{v:.4f}{separator}\u00b1 {err:.4f}'
+                if zoom:
+                    annotation = ax.annotate(text, (i, v + error_sizes[i]), xytext=(0, 10),
+                                             textcoords="offset points", ha="center", va="bottom",
+                                             fontsize=value_fontsize, linespacing=1.)
+                else:
+                    annotation = ax.text(i, .035, text, transform=ax.get_xaxis_transform(),
+                                         ha="center", va="bottom", fontsize=value_fontsize,
+                                         color="black", rotation=90)
+                annotations.append((i, annotation))
+        out_dir = os.path.join(save_path, "bar", view_name)
         safe = _safe_stem(metric_name)
         plt.tight_layout()
         # Keep large labels; give them more horizontal space if the active font
         # is wider than expected. Text bounds are measured after wrapping.
         fig.canvas.draw()
         renderer = fig.canvas.get_renderer()
-        bounds = [label.get_window_extent(renderer) for label in plt.gca().get_xticklabels()]
+        bounds = [label.get_window_extent(renderer) for label in ax.get_xticklabels()]
+        widths = [bound.width for bound in bounds]
+        for i, annotation in annotations:
+            widths[i] = max(widths[i], annotation.get_window_extent(renderer).width)
         required_scale = max((
-            (left.width/2 + right.width/2 + 12) / ((right.x0+right.x1-left.x0-left.x1)/2)
-            for left, right in zip(bounds, bounds[1:])
+            (widths[i]/2 + widths[i+1]/2 + 18) / ((right.x0+right.x1-left.x0-left.x1)/2)
+            for i, (left, right) in enumerate(zip(bounds, bounds[1:]))
         ), default=1.)
         if required_scale > 1:
             fig.set_size_inches(fig.get_figwidth()*required_scale*1.04, fig.get_figheight())
             plt.tight_layout()
         snr_stem = _safe_stem(snr_value, max_len=16)
-        _save_current_figure(os.path.join(out_dir, f'{safe}_ep{epochs}_{snr_stem}.png'))
-        plt.close()
+        suffix = "_zoom" if zoom else ""
+        path = os.path.join(out_dir, f'{safe}_ep{epochs}_{snr_stem}{suffix}.png')
+        try:
+            _save_current_figure(path)
+        finally:
+            plt.close(fig)
+        return path
 
     def plot_ensemble_strategy_improvements(self, comparison_rows, save_path,
                                             snr_value):

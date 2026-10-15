@@ -126,7 +126,7 @@ VALIDATION_CONFIG = apply_onb_defaults({
     "learning_policy": {
         #   cross_day       = 学習実験とテスト実験を完全分離
         #   within_wav_chunk= 1実験内の全WAVから同率のchunkをテストへ分離
-        "evaluation_mode": "cross_day",
+        "evaluation_mode": "within_wav_chunk",
         "evaluation_settings": {
             #   2025.06.11_0.3_2
             #   2025.06.18_0.3_3
@@ -139,7 +139,7 @@ VALIDATION_CONFIG = apply_onb_defaults({
             },
             "within_wav_chunk": {
                 # 1実験フォルダ内の全WAVが、学習側とテスト側の両方に入る。
-                "experiment": "2026.10.07_0.3_1",
+                "experiment": "2025.06.11_0.3_2_6.18_0.3_3",
                 "test_fraction": 0.25,  # 各WAVのchunk数の25%をテスト専用にする。
                 "test_split_seed": 42,
             },
@@ -161,11 +161,10 @@ VALIDATION_CONFIG = apply_onb_defaults({
     "thresholds": {
         # ONBと確認された最初の測定点の熱流束と、その出典を一元管理する。
         # ONB直前の測定点を誤って閾値に使わないようにする。
-        # 今回はノートの沸騰開始1.2 Vに対応する、計算済みCSVのq[W/m²]を読む。
-        # CSV未生成ならNoneのまま、学習前に停止する。値を推定・流用しない。
-        "by_experiment": onb_threshold_by_experiment(csv_experiments=["2026.10.07_0.3_1"]),
-        "provenance_by_experiment": onb_threshold_provenance_by_experiment(
-            csv_experiments=["2026.10.07_0.3_1"]),
+        # 発表用の2025年6月データは、確認済みのONB閾値・出典を使う。
+        # 統合日の評価に加え、元の日付ごとの閾値による指標も保存する。
+        "by_experiment": onb_threshold_by_experiment(),
+        "provenance_by_experiment": onb_threshold_provenance_by_experiment(),
         "require_experiment_threshold": True,
         "onb_band_frac": 0.10,
         "report_source_day_metrics": True,  # 統合日の平均閾値評価と日別閾値評価を両方保存。
@@ -253,8 +252,8 @@ VALIDATION_CONFIG = apply_onb_defaults({
         # "save_fitted_artifacts": False,  # 予測だけを残す従来の軽量保存
         "verify_reloaded_artifacts": True,
         "verify_reloaded_evaluation_predictions": True,  # 全有効モデル・条件の評価予測を再読込で照合。
-        # 旧36 WAV・全7条件専用の固定プロトコル。今回の日の通常指標は別途保存される。
-        "main_comparison_report": False,
+        # 発表用の旧36 WAV・全7条件を、同じ評価chunk・日別ONBで集計する。
+        "main_comparison_report": True,
         "main_comparison_protocol": "configs/experiments/2026-10-06_onb_main_comparison_protocol.json",
     },
     "explainability": {

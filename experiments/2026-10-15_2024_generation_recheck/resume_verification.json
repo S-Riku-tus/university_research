@@ -1,0 +1,148 @@
+{
+  "checked_at_jst": "2026-10-15T20:27:27+09:00",
+  "script_sha256": "92c3e4fefac4b2f448af38f659e56d24d92509218d5794402f4e48547d6d5ab8",
+  "utility_sha256": "074daa82f344058a2783968eafd3aed5065c7774494c34b8cbdb7532a5dff3a7",
+  "save_date": 20261014,
+  "resume_existing": true,
+  "recomputed_reference_rms": 0.001419267743728807,
+  "recomputed_source_count": 77,
+  "existing_manifests_checked": 16,
+  "all_compatible": true,
+  "existing_manifests": [
+    {
+      "path": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2024.11.12_1_2.13_1\\data\\npy\\waterflow_20261014_0.5s\\global_reference_manifest.json",
+      "compatible": true,
+      "unchanged_hash_and_mtime": true,
+      "error": null
+    },
+    {
+      "path": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2024.11.12_1_2.13_1\\data\\npy\\waterflow_20261014_0.5s\\maxfreq=3kHz\\preprocess_manifest.json",
+      "compatible": true,
+      "unchanged_hash_and_mtime": true,
+      "error": null
+    },
+    {
+      "path": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2024.11.12_1_2.13_1\\data\\npy\\waterflow_20261014_0.5s\\maxfreq=5kHz\\preprocess_manifest.json",
+      "compatible": true,
+      "unchanged_hash_and_mtime": true,
+      "error": null
+    },
+    {
+      "path": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2024.11.12_1_2.13_1\\data\\npy\\waterflow_20261014_0.5s\\maxfreq=10kHz\\preprocess_manifest.json",
+      "compatible": true,
+      "unchanged_hash_and_mtime": true,
+      "error": null
+    },
+    {
+      "path": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2024.11.12_1_2.13_1\\data\\npy\\waterflow_20261014_0.5s\\maxfreq=15kHz\\preprocess_manifest.json",
+      "compatible": true,
+      "unchanged_hash_and_mtime": true,
+      "error": null
+    },
+    {
+      "path": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2024.11.12_1_2.13_1\\data\\npy\\waterflow_20261014_0.5s\\maxfreq=22kHz\\preprocess_manifest.json",
+      "compatible": true,
+      "unchanged_hash_and_mtime": true,
+      "error": null
+    },
+    {
+      "path": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2024.11.12_1_2.13_1\\data\\spectrogram_png\\waterflow_20261014_0.5s\\maxfreq=3kHz\\preprocess_manifest.json",
+      "compatible": true,
+      "unchanged_hash_and_mtime": true,
+      "error": null
+    },
+    {
+      "path": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2024.11.12_1_2.13_1\\data\\spectrogram_png\\waterflow_20261014_0.5s\\maxfreq=5kHz\\preprocess_manifest.json",
+      "compatible": true,
+      "unchanged_hash_and_mtime": true,
+      "error": null
+    },
+    {
+      "path": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2024.11.12_1_2.13_1\\data\\spectrogram_png\\waterflow_20261014_0.5s\\maxfreq=10kHz\\preprocess_manifest.json",
+      "compatible": true,
+      "unchanged_hash_and_mtime": true,
+      "error": null
+    },
+    {
+      "path": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2024.11.12_1_2.13_1\\data\\spectrogram_png\\waterflow_20261014_0.5s\\maxfreq=15kHz\\preprocess_manifest.json",
+      "compatible": true,
+      "unchanged_hash_and_mtime": true,
+      "error": null
+    },
+    {
+      "path": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2024.11.12_1_2.13_1\\data\\spectrogram_png\\waterflow_20261014_0.5s\\maxfreq=22kHz\\preprocess_manifest.json",
+      "compatible": true,
+      "unchanged_hash_and_mtime": true,
+      "error": null
+    },
+    {
+      "path": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2024.11.12_1_2.13_1\\data\\npy\\waterflow_20261014_1s\\global_reference_manifest.json",
+      "compatible": true,
+      "unchanged_hash_and_mtime": true,
+      "error": null
+    },
+    {
+      "path": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2024.11.12_1_2.13_1\\data\\npy\\waterflow_20261014_1s\\maxfreq=3kHz\\preprocess_manifest.json",
+      "compatible": true,
+      "unchanged_hash_and_mtime": true,
+      "error": null
+    },
+    {
+      "path": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2024.11.12_1_2.13_1\\data\\npy\\waterflow_20261014_1s\\maxfreq=5kHz\\preprocess_manifest.json",
+      "compatible": true,
+      "unchanged_hash_and_mtime": true,
+      "error": null
+    },
+    {
+      "path": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2024.11.12_1_2.13_1\\data\\spectrogram_png\\waterflow_20261014_1s\\maxfreq=3kHz\\preprocess_manifest.json",
+      "compatible": true,
+      "unchanged_hash_and_mtime": true,
+      "error": null
+    },
+    {
+      "path": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2024.11.12_1_2.13_1\\data\\spectrogram_png\\waterflow_20261014_1s\\maxfreq=5kHz\\preprocess_manifest.json",
+      "compatible": true,
+      "unchanged_hash_and_mtime": true,
+      "error": null
+    }
+  ],
+  "current_interruption_probes": [
+    {
+      "level": "heatflux_no_noise",
+      "source": "index=5.3.62e+04.wav",
+      "chunk_index": 0,
+      "npy_write": false,
+      "png_write": false,
+      "metadata_complete": true,
+      "action": "skip"
+    },
+    {
+      "level": "heatflux_reference_SNR=-4",
+      "source": "index=5.3.62e+04.wav",
+      "chunk_index": 10,
+      "npy_write": false,
+      "png_write": false,
+      "metadata_complete": false,
+      "action": "repair_manifest_only"
+    },
+    {
+      "level": "heatflux_reference_SNR=-4",
+      "source": "index=5.3.62e+04.wav",
+      "chunk_index": 11,
+      "npy_write": false,
+      "png_write": true,
+      "metadata_complete": false,
+      "action": "generate_missing_outputs"
+    },
+    {
+      "level": "heatflux_reference_SNR=-4",
+      "source": "index=5.3.62e+04.wav",
+      "chunk_index": 12,
+      "npy_write": true,
+      "png_write": true,
+      "metadata_complete": false,
+      "action": "generate_missing_outputs"
+    }
+  ],
+  "scope": "Read-only reference-RMS recalculation and existing manifest guards; only file-validity and manifest-membership decisions were evaluated for the interrupted chunks. No source spectrograms or output files generated. No code or dataset files modified."
+}

@@ -1,0 +1,103 @@
+{
+  "checked_at_jst": "2026-10-15T20:19:10.137709+09:00",
+  "first_run": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\15\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_143609",
+  "rerun": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\15\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_194258",
+  "run_hash": "da540f2d",
+  "scientific_conditions_equal": {
+    "run_hash": true,
+    "dataset": true,
+    "model_params": true,
+    "run_specs": true,
+    "learning_context": true,
+    "execution_config_hash": true,
+    "parameter_set_tag": true,
+    "validation_config_excluding_execution_ids": true
+  },
+  "allowed_config_difference": "output.execution_id and output.run_instance_id only",
+  "rerun_completed_conditions": 7,
+  "planned_conditions": 7,
+  "conditions": [
+    {
+      "noise": "clean",
+      "first_complete": true,
+      "rerun_complete": true,
+      "prediction_comparison": "equivalent_within_tolerance",
+      "max_absolute_prediction_difference_W_m2": 3.4924596548080444e-10,
+      "first_csv_sha256": "88d18630023e7c1119d3ce6441dc8e560a0e3e595b970d91686b086c922e9a7d",
+      "rerun_csv_sha256": "27e7f7af6d09ac046be37aab1c1b655b0907d99c23f1a75eba05846500404405"
+    },
+    {
+      "noise": "0",
+      "first_complete": true,
+      "rerun_complete": true,
+      "prediction_comparison": "equivalent_within_tolerance",
+      "max_absolute_prediction_difference_W_m2": 3.4924596548080444e-10,
+      "first_csv_sha256": "15dad04d399864cb048d36381028037c2adaeff23f53a54ada5a781c7012e3ec",
+      "rerun_csv_sha256": "50a07c696533fa1bd6dd3aa600b846df7820ccebadb389dd66a590ac18ffeb89"
+    },
+    {
+      "noise": "-4",
+      "first_complete": true,
+      "rerun_complete": true,
+      "prediction_comparison": "equivalent_within_tolerance",
+      "max_absolute_prediction_difference_W_m2": 3.4924596548080444e-10,
+      "first_csv_sha256": "e5cd0cf4588bcd129836578f37300f6f370de009e8587d01f862c165e23dffe5",
+      "rerun_csv_sha256": "7c8eb105d775a3bbe40e75516d4195057da140feed6c47a69857b17cf5662efa"
+    },
+    {
+      "noise": "-8",
+      "first_complete": true,
+      "rerun_complete": true,
+      "prediction_comparison": "equivalent_within_tolerance",
+      "max_absolute_prediction_difference_W_m2": 4.656612873077393e-10,
+      "first_csv_sha256": "61479747b7dfe3c23ed9d28a9833d046e6bf37e2e010b797f2255fe7df019dec",
+      "rerun_csv_sha256": "c6e7d25b4ccc3fa0bd926bf6cc6ac41a63a9bec1a49a06525a01b18fb669a2af"
+    },
+    {
+      "noise": "-12",
+      "first_complete": true,
+      "rerun_complete": true,
+      "prediction_comparison": "equivalent_within_tolerance",
+      "max_absolute_prediction_difference_W_m2": 3.4924596548080444e-10,
+      "first_csv_sha256": "abfcda58a6cbf1b2f131bc7d7fc655fdf2a3161c7751e89b64408606959a557f",
+      "rerun_csv_sha256": "ee624c21ac31e6ba315b16c533a96fc53cdbdcf8baa9a7f470df4ccbc4441322"
+    },
+    {
+      "noise": "-16",
+      "first_complete": true,
+      "rerun_complete": true,
+      "prediction_comparison": "equivalent_within_tolerance",
+      "max_absolute_prediction_difference_W_m2": 3.4924596548080444e-10,
+      "first_csv_sha256": "3b33b51bb8cf21bb0e4583a4f0b0b21e938478a84999108cbe086a6df173fe2b",
+      "rerun_csv_sha256": "cf513f9dd873992db2685919302d6f176ff9296b4ef7c0f616ed4bc7c714fcc2"
+    },
+    {
+      "noise": "-20",
+      "first_complete": true,
+      "rerun_complete": true,
+      "prediction_comparison": "equivalent_within_tolerance",
+      "max_absolute_prediction_difference_W_m2": 3.4924596548080444e-10,
+      "first_csv_sha256": "d96bc376f22150a5bcb6c8caad11394ec28e63ca5ae5b7a33e8f6439578ed342",
+      "rerun_csv_sha256": "2e5e317e93861f4d1bbc683eef9e9ff3cc9e8a1113f7b9cb5315f0a87c235070"
+    }
+  ],
+  "all_results_identical": false,
+  "all_results_numerically_equal": true,
+  "prediction_absolute_tolerance_W_m2": 1e-06,
+  "main_metric_comparison": {
+    "rows": 231,
+    "numeric_fields": 34,
+    "numeric_cells_compared": 7854,
+    "max_absolute_difference": 5.684341886080802e-14,
+    "equal_within_1e_minus9": true,
+    "fn_fp_tp_tn_q100_exactly_equal": true,
+    "ensemble_weights_tables_identical": false,
+    "max_ensemble_weight_difference": 4.996003610813204e-16,
+    "ensemble_weights_equivalent_within_1e_minus12": true,
+    "both_completion_audits_passed": true
+  },
+  "canonical_presentation_result": "143609 remains the documented source; 194258 figures can be used after equivalent metrics verification",
+  "matched_read": false,
+  "new_training": 0,
+  "new_inference": 0
+}

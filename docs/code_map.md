@@ -22,11 +22,14 @@
 | ONB閾値 | [onb_thresholds.py](../code/utils/experiment/onb_thresholds.py) | 3日分の正確な閾値と原資料の出典 |
 | 説明性 | [training_integration.py](../code/utils/explainability/training_integration.py)、[spectrogram_explainers.py](../code/utils/explainability/spectrogram_explainers.py) | TreeSHAP/IG/Grad-CAM/マスク、整合性・安定性・最終層ランダム化 |
 | 作図 | [regression_plots.py](../code/utils/plotting/regression_plots.py)、[noise_trend_plots.py](../code/utils/plotting/noise_trend_plots.py) | 損失・散布図・比較図・ノイズ別曲線 |
+| 棒グラフ再描画 | [replot_regression_bars.py](../code/replot_regression_bars.py) | 明示した完了runの保存CSVから、全方式・固定抜粋・拡大版を別フォルダへ保存。完了印/hashを検査し、学習・モデル推論なし |
 | 保存 | [result_paths.py](../code/utils/experiment/result_paths.py)、[run_helpers.py](../code/utils/experiment/run_helpers.py) | 実行日と実行ハッシュ/周波数/ノイズ、manifest、条件hash、再開判定 |
 
 ## 設定の正本
 
-**10/15の現行確認**：現在の入口は通常学習で、`execution.mode`切替や`--preflight`引数を備えていない。`learning_policy.evaluation_mode="cross_day"`、旧6月学習→新2026/10/7評価。発表用の2025年主条件とは異なるため、そのまま実行しない。[今回の条件案・入力確認](notes/2026-10-15_onb_presentation_run_conditions.md)を参照。提案JSONは未適用で、通常入口が自動読込するものではない。barモデル名の23 pt化は反映済み。
+**10/15の現行確認**：本人の追加指示で発表用の2025/6/11＋6/18統合・`within_wav_chunk`・clean_only・200 epochs・主比較表有効を通常入口へ反映。設定検査と全7条件36 WAV/1620学習/540評価のメタデータ確認が成功、新学習/推論は未実行。[適用条件・確認手順](notes/2026-10-15_onb_presentation_run_conditions.md)と[適用済み設定記録](../configs/experiments/2026-10-15_onb_presentation_run_applied.json)を参照。設定JSONは記録用で自動読込しない。通常入口には`execution.mode`切替や`--preflight`引数はない。barモデル名23 pt、5モデル統合の`Original3`／`+ HGB + ET`2行表示を確認済み。
+
+**同日・本人実行開始後の更新**：本人のONB実行は分析待ちとし、結果を読まずbarの数字30 pt・固定抜粋3構成・各構成の拡大版を追加した。[仕様・48図の確認・再描画手順](../experiments/2026-10-15_bar_presentation_views/README.md)。起動済みPythonへの修正の自動反映は保証しない。終了後は`replot_regression_bars.py --run-dir ...`で保存指標から再学習せず再描画できる。
 
 ### 10/14撤回前の保存fit入口の記録（現行手順ではない）
 

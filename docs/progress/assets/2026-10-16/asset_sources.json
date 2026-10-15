@@ -1,0 +1,71 @@
+{
+  "source_pptx": "研究進捗報告\\2026\\1016（研究進捗報告）\\研究進捗_柴崎陸_1016.pptx",
+  "source_pptx_sha256": "61ff57ee77725a23d67aa2aeed1d20461ad3e164552a9b65165f96cd39c8bbeb",
+  "source_unchanged": true,
+  "recap_assets": [
+    {
+      "output": "mask_recap_0918.png",
+      "source_part": "ppt/media/image5.png",
+      "sha256": "d47a86b7a7b271eb593e1682dada94e588c8eee69db1c72a032ad11583434412",
+      "operation": "verbatim extraction"
+    },
+    {
+      "output": "ig_alexnet_recap_0918.png",
+      "source_part": "ppt/media/image6.png",
+      "sha256": "9dc17cf1172a7fb45bf971a9ff3a4b0809c2c8e56c58ab2326669b3e2f02048c",
+      "operation": "verbatim extraction"
+    },
+    {
+      "output": "ig_transformer_recap_0918.png",
+      "source_part": "ppt/media/image7.png",
+      "sha256": "8423a974e3efbf8edcd07cfd945800f67de84a6348f77d81b69ab6df07256171",
+      "operation": "verbatim extraction"
+    }
+  ],
+  "generated_diagrams": [
+    "overview_pipeline",
+    "fixed_clean_evaluation",
+    "evaluation_and_models",
+    "semester_plan_progress"
+  ],
+  "current_result_figures": [
+    "current_regression_noise_trend",
+    "current_onb_false_negatives"
+  ],
+  "current_result_source": {
+    "path": "experiments\\2026-10-15_clean_only_result_analysis\\pooled_metrics.csv",
+    "sha256": "654a8e6a8fee1feaf6e8b06298b4aa453da4dd23f170762acc6fca2a497d0b20",
+    "run": "143609"
+  },
+  "rerun_bar_extracts": [
+    {
+      "output": "current_bar_clean_legacy4.png",
+      "source": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\15\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_194258\\maxfreq=3kHz\\heatflux_no_noise\\bar\\legacy4\\r2_ep200_no_noise_zoom.png",
+      "sha256": "9f85215ce2d779947b3a6802383c9cccc99b7d3e8c1cefff8156d4fe21ea8cec",
+      "operation": "verbatim copy from completed equivalent rerun 194258"
+    },
+    {
+      "output": "current_bar_clean_addition4.png",
+      "source": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\15\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_194258\\maxfreq=3kHz\\heatflux_no_noise\\bar\\addition4\\r2_ep200_no_noise_zoom.png",
+      "sha256": "f70cb3e539c5698b7c4b8625b1dd7096fa196d2cdb521e28710d0e8e229449f5",
+      "operation": "verbatim copy from completed equivalent rerun 194258"
+    },
+    {
+      "output": "current_bar_minus20_addition4.png",
+      "source": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\15\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_194258\\maxfreq=3kHz\\heatflux_reference_SNR=-20\\bar\\addition4\\r2_ep200_-20_zoom.png",
+      "sha256": "f5061cc4a905e4e654d13a16a9fd2e7bf5a5ab930e2b65407ac5714a07702ba3",
+      "operation": "verbatim copy from completed equivalent rerun 194258"
+    },
+    {
+      "output": "current_bar_minus20_integration5.png",
+      "source": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\15\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_194258\\maxfreq=3kHz\\heatflux_reference_SNR=-20\\bar\\integration5\\r2_ep200_-20_zoom.png",
+      "sha256": "2565c99065997ee5518cb76232718c6954304858605c27a7ba72aa0e62220830",
+      "operation": "verbatim copy from completed equivalent rerun 194258"
+    }
+  ],
+  "new_research_results": false,
+  "new_model_training": 0,
+  "new_model_inference": 0,
+  "semester_plan_is_proposal": true,
+  "formal_deadlines_verified": false
+}

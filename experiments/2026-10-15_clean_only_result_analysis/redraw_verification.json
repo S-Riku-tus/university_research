@@ -1,0 +1,11 @@
+{
+  "status": "passed",
+  "run_hash": "da540f2d",
+  "conditions": 7,
+  "png_files": 168,
+  "sources_unchanged": true,
+  "original_graphs_preserved": true,
+  "matched_read": false,
+  "new_fits": 0,
+  "new_model_inference": 0
+}

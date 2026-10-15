@@ -38,10 +38,10 @@
       "tick_fontsize": 23,
       "axis_fontsize": 23,
       "figure_size_inches": [
-        18.421410467977925,
-        7.3
+        21.260436949907973,
+        6.949999999999999
       ],
-      "minimum_label_gap_pixels": 19.519547101299963,
+      "minimum_label_gap_pixels": 22.09986296216607,
       "all_labels_inside_figure": true,
       "values_unchanged": true,
       "labels": [
@@ -50,7 +50,7 @@
         "AlexNet",
         "HGB34",
         "ExtraTrees\n34",
-        "Original3\n+ HGB\n+ ET",
+        "Original3\n+ HGB + ET",
         "Original3\nMSE",
         "Original3\nperf",
         "Original3\n+ HGB",
@@ -90,10 +90,10 @@
       "tick_fontsize": 23,
       "axis_fontsize": 23,
       "figure_size_inches": [
-        21.89754818485067,
-        7.3
+        25.064045697676686,
+        6.949999999999999
       ],
-      "minimum_label_gap_pixels": 22.980966727903933,
+      "minimum_label_gap_pixels": 26.021529609514346,
       "all_labels_inside_figure": true,
       "values_unchanged": true,
       "labels": [
@@ -102,7 +102,7 @@
         "AlexNet",
         "HGB34",
         "ExtraTrees\n34",
-        "Original3\n+ HGB\n+ ET",
+        "Original3\n+ HGB + ET",
         "Original3\nMSE",
         "Original3\nperf",
         "Original3\n+ HGB",

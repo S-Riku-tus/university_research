@@ -1,0 +1,16 @@
+{
+  "checked_at_jst": "2026-10-15T20:23:27.810243+09:00",
+  "local_links_checked": 52,
+  "main_slides": 11,
+  "generated_figure_pairs": 6,
+  "original_images_extracted": 3,
+  "equivalent_rerun_figures_copied": 4,
+  "all_copied_image_hashes_match_sources": true,
+  "source_pptx_unchanged": true,
+  "current_result_csv_unchanged": true,
+  "all_seven_rerun_conditions_numerically_equivalent": true,
+  "fn_fp_tp_tn_daily_q100_exactly_equal": true,
+  "new_model_fits": 0,
+  "new_inference": 0,
+  "presentation_body_edited": false
+}

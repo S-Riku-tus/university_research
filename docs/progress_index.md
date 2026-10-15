@@ -2,7 +2,37 @@
 
 このページは**日付ごとの履歴**。各節の「現在」「次にやること」は当時の記録であり、現在の未完了作業とは限らない。最新の状態は[研究の現在地](research_status.md)、更新関係は[文書案内](document_index.md)を読む。
 
-## 2026-10-15 発表用ONB条件提案とbarのモデル名23 pt化
+## 2026-10-15 10/16各ページ点検・後期計画・グラフ追加後の再実行照合
+
+- [文章・図・残る資料作業](progress/2026-10-16_slide_readiness_and_semester_plan.md)と[基本案](progress/2026-10-16_slide_content_plan.md)を本日完了の143609へ更新。主系列は採用結果として使うが全方式/全指標最適とはしない。
+- [再実行194258の20:19照合](../experiments/2026-10-15_presentation_readiness/run_consistency.json)。全7条件・主表まで完了、科学設定/hash一致。保存予測最大差4.6566e−10 W/m²、7854指標項目最大差5.6843e−14、重み差4.9960e−16、FN/FP/日別q100は完全一致。研究上同じ結果として新図を使用可。照合は完了、新学習/推論0、途中停止matched未読。
+- [後期計画図](progress/assets/2026-10-16/semester_plan_progress.png)を作成。元4区分を維持し、完了/現在以降/時期未定候補を分け、「確立」を「検証」へ変更する案。正式な提出期限や本文執筆済みは推定しない。図4組・今日の結果図2組・旧画像3点を準備し、原PPTXを保持した。
+
+## 2026-10-15 本人の途中停止連絡後：完了clean_onlyだけを分析
+
+- [結果と検算・図](../experiments/2026-10-15_clean_only_result_analysis/README.md)。`143609`だけを対象に全7条件・231指標行/42統合を保存予測から再計算し一致。matchedは未読・再実行なし。
+- 5の全域RMSEは従来performance/MSE元3を全7条件で改善。無雑音のMSE元3→5は34.07→27.80、−20は81.14→75.23、FN42→27/65→52。一方、−20近傍93.92→99.32は悪化し、増分47.07→47.43は小さくない。ONBそのもの30chunkの5見逃しは無雑音22・−20で30。全指標の一律優位ではなく領域別の交換として説明する。
+- 無雑音指標CSVは前回200 epochs保存値とhash一致。今回の同seed再現として扱う。分析図2組と依頼済みbar168図を別フォルダへ保存し、新fit/推論0、元run不変。
+
+## 2026-10-15 17:18：本人のONB 2実行の進行確認
+
+- [固定記録と根拠](../experiments/2026-10-15_onb_two_run_progress/README.md)。`143609`のclean_onlyは7/7条件と主比較表まで完了、CNN系8/8学習が200 epochs。
+- `152738`のmatchedは無雑音/0/−4の3/7完了、−8着手・内部検証完了前、−12/−16/−20未着手。完了CNN系24/56、全て200 epochs。約33分/条件の経過から残り約2時間が参考値。
+- manifest・完了印・epoch/保存照合・CSV件数・図ファイル名を確認し、性能値の分析は引き続き終了後。新fit/推論/再描画なし。barの追加図はまだ未出力で、終了後の再描画を残す。
+
+## 2026-10-15 実行開始後：barの数値拡大・固定抜粋・縦軸拡大
+
+- 本人がONBを実行開始。「結果の分析は終了後」を受け、今回runを探索・読込せず、学習へ介入せず作図だけを変更した。
+- [追加内容と表示確認](../experiments/2026-10-15_bar_presentation_views/README.md)。数字30 pt、既存11方式＋従来4/追加効果4/単体・統合5の固定抜粋、各構成の軸省略明示付き拡大版。値・SE・色を保持し、過去の完了CSVで48描画と関連5テスト成功。
+- [再描画入口](../code/replot_regression_bars.py)を追加。完了印とhashを確認し、保存CSVから別フォルダへ出力する。現在runには未適用、新fit/推論0、今回結果の分析なし。
+
+## 2026-10-15 追加指示：ONB発表条件の適用と5モデル統合ラベルの2行化
+
+- 先の提案後、本人の指示で通常入口を2025年6/11＋6/18統合・within_wav_chunk・clean_only・200 epochs・主比較表有効へ変更。[適用済み設定](../configs/experiments/2026-10-15_onb_presentation_run_applied.json)は`applied_not_run`。
+- [適用後入力確認](../experiments/2026-10-15_bar_label_readability/applied_run_input_check.json)で提案値と一致、7条件36 WAV/1620学習/540評価・全雑音の評価ID/正解一致。関連テスト5件合格。新学習/推論なし。
+- 5モデル統合の横軸名を`Original3`／`+ HGB + ET`の2行へ変更。4描画で23 pt一致・非重複・図内・値不変を再確認。[プレビュー](../experiments/2026-10-15_bar_label_readability/README.md)。
+
+## 2026-10-15 発表用ONB条件提案とbarのモデル名23 pt化（適用前の記録）
 
 - [条件説明](notes/2026-10-15_onb_presentation_run_conditions.md)と[提案JSON](../configs/experiments/2026-10-15_onb_presentation_run_proposal.json)を作成。保存結果の再描画を第一候補とし、再学習する場合も最新2025年200 epochs主条件を維持する。現行入口は新2026評価cross_dayのため設定変更が必要だが、今回は適用/本学習なし。
 - [入力確認](../experiments/2026-10-15_bar_label_readability/proposed_run_input_check.json)は全7条件36 WAV/1620学習/540評価で一致。通常入口をimportせず、配列・学習・推論なしで確認した。撤回前の`--preflight`説明を現行の手順として使わない。

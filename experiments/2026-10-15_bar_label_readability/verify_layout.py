@@ -31,6 +31,8 @@ def main():
         fig=plt.gcf();ax=plt.gca()
         fig.canvas.draw();renderer=fig.canvas.get_renderer()
         labels=ax.get_xticklabels()
+        if len(labels)==11:
+            assert "Original3\n+ HGB + ET" in [t.get_text() for t in labels]
         assert all(t.get_fontsize()==ax.yaxis.label.get_fontsize()==23 for t in labels)
         assert all(t.get_rotation()==0 for t in labels)
         bounds=[t.get_window_extent(renderer) for t in labels]
@@ -38,7 +40,10 @@ def main():
         assert not gaps or min(gaps)>=3, gaps
         assert all(b.x0>=0 and b.y0>=0 and b.x1<=fig.bbox.width and b.y1<=fig.bbox.height for b in bounds)
         heights=[rectangle.get_height() for rectangle in ax.patches]
-        assert np.allclose(heights,current_values)
+        view=Path(path).parent.name
+        selected=plots.BAR_COMPARISON_GROUPS.get(view,frame.model.tolist())
+        indices=[frame.model.tolist().index(label) for label in selected]
+        assert np.allclose(heights,current_values[indices])
         original_save(path)
         records.append({"path":str(Path(path).relative_to(OUT)),"model_count":len(labels),
                         "font":plt.rcParams["font.family"],"tick_fontsize":23,"axis_fontsize":23,

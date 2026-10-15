@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="1276.8pt" height="483.911936pt" viewBox="0 0 1276.8 483.911936" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2026-10-15T20:19:11.180133</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.8.4, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 483.911936 
+L 1276.8 483.911936 
+L 1276.8 0 
+L 0 0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 51.384 270.252614 
+L 404.856 270.252614 
+Q 427.5792 270.252614 427.5792 261.91644 
+L 427.5792 187.817112 
+Q 427.5792 179.480938 404.856 179.480938 
+L 51.384 179.480938 
+Q 28.6608 179.480938 28.6608 187.817112 
+L 28.6608 261.91644 
+Q 28.6608 270.252614 51.384 270.252614 
+z
+" clip-path="url(#pcd63757426)" style="fill: #e7f3fc; stroke: #208bdd; stroke-width: 1.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 449.04 270.252614 
+L 575.28 270.252614 
+Q 598.0032 270.252614 598.0032 261.91644 
+L 598.0032 187.817112 
+Q 598.0032 179.480938 575.28 179.480938 
+L 449.04 179.480938 
+Q 426.3168 179.480938 426.3168 187.817112 
+L 426.3168 261.91644 
+Q 426.3168 270.252614 449.04 270.252614 
+z
+" clip-path="url(#pcd63757426)" style="fill: #fff1df; stroke: #c18435; stroke-width: 1.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 695.208 191.522078 
+L 1225.416 191.522078 
+Q 1248.1392 191.522078 1248.1392 183.185904 
+L 1248.1392 109.086576 
+Q 1248.1392 100.750402 1225.416 100.750402 
+L 695.208 100.750402 
+Q 672.4848 100.750402 672.4848 109.086576 
+L 672.4848 183.185904 
+Q 672.4848 191.522078 695.208 191.522078 
+z
+" clip-path="url(#pcd63757426)" style="fill: #e7f3fc; stroke: #208bdd; stroke-width: 1.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 695.208 307.302278 
+L 1225.416 307.302278 
+Q 1248.1392 307.302278 1248.1392 298.966104 
+L 1248.1392 224.866776 
+Q 1248.1392 216.530602 1225.416 216.530602 
+L 695.208 216.530602 
+Q 672.4848 216.530602 672.4848 224.866776 
+L 672.4848 298.966104 
+Q 672.4848 307.302278 695.208 307.302278 
+z
+" clip-path="url(#pcd63757426)" style="fill: #e7f3fc; stroke: #208bdd; stroke-width: 1.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 695.208 423.082478 
+L 1225.416 423.082478 
+Q 1248.1392 423.082478 1248.1392 414.746304 
+L 1248.1392 340.646976 
+Q 1248.1392 332.310802 1225.416 332.310802 
+L 695.208 332.310802 
+Q 672.4848 332.310802 672.4848 340.646976 
+L 672.4848 414.746304 
+Q 672.4848 423.082478 695.208 423.082478 
+z
+" clip-path="url(#pcd63757426)" style="fill: #e7f3fc; stroke: #208bdd; stroke-width: 1.9; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_1">
+    <text style="fill: #526779; font: 27px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="310.176" y="57.048372" transform="rotate(-0 310.176 57.048372)">各録音の未使用区間を評価</text>
+   </g>
+   <g id="text_2">
+    <text style="fill: #526779; font: 24px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="310.176" y="140.063241" transform="rotate(-0 310.176 140.063241)">1録音 = 60 chunk（1秒ずつ）</text>
+   </g>
+   <g id="text_3">
+    <text style="fill: #526779; font: 25px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="228.12" y="232.429276" transform="rotate(-0 228.12 232.429276)">45：学習</text>
+   </g>
+   <g id="text_4">
+    <text style="fill: #526779; font: 23px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="512.16" y="231.824276" transform="rotate(-0 512.16 231.824276)">15：評価</text>
+   </g>
+   <g id="text_5">
+    <text style="fill: #526779; font: 25px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="310.176" y="362.1031" transform="rotate(-0 310.176 362.1031)">36録音：学習1620／評価540</text>
+   </g>
+   <g id="text_6">
+    <text style="fill: #526779; font: 26px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="941.376" y="56.745872" transform="rotate(-0 941.376 56.745872)">同じ単体予測から3／4／5を構成</text>
+   </g>
+   <g id="text_7">
+    <text style="fill: #526779; font: 22px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="960.312" y="152.79124" transform="rotate(-0 960.312 152.79124)">元3：RF・CNN＋Transformer・AlexNet</text>
+   </g>
+   <g id="text_8">
+    <text style="fill: #526779; font: 25px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="960.312" y="269.47894" transform="rotate(-0 960.312 269.47894)">4：元3＋HGB ／ 元3＋ET</text>
+   </g>
+   <g id="text_9">
+    <text style="fill: #526779; font: 26px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="960.312" y="385.56164" transform="rotate(-0 960.312 385.56164)">5：元3＋HGB＋ET</text>
+   </g>
+   <g id="text_10">
+    <text style="fill: #526779; font: 22px 'DejaVu Sans', 'Bitstream Vera Sans', 'Computer Modern Sans Serif', 'Lucida Grande', 'Verdana', 'Geneva', 'Lucid', 'Arial', 'Helvetica', 'Avant Garde', sans-serif; text-anchor: middle" x="638.4" y="473.123186" transform="rotate(-0 638.4 473.123186)">2025年6/11＋6/18，3 kHz・選別なし・clean_only</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="pcd63757426">
+   <rect x="7.2" y="7.2" width="1262.4" height="463.1208"/>
+  </clipPath>
+ </defs>
+</svg>

@@ -1,0 +1,1309 @@
+{
+  "as_of": "2026-10-15T17:18:30+09:00",
+  "scope": "Execution progress only; performance interpretation deferred until the ongoing run completes",
+  "new_fits": 0,
+  "new_model_inference": 0,
+  "raw_arrays_loaded": false,
+  "model_binaries_loaded": false,
+  "process_observation": {
+    "pid": 17004,
+    "started_at": "2026-10-15 15:27:35 +09:00",
+    "cpu_seconds_initial": 6858.375,
+    "command_line_unavailable": true,
+    "pid_association": "inferred from start time matching the 152738 run; not verified by command line",
+    "cpu_seconds_later": 7032.578125,
+    "later_observed_at": "2026-10-15T17:18:29+09:00",
+    "cpu_seconds_increased": true
+  },
+  "runs": [
+    {
+      "run_name": "onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_143609",
+      "directory": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\15\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_143609",
+      "policy": {
+        "training_noise": "clean_only",
+        "evaluation_mode": "within_wav_chunk",
+        "within_wav_chunk_experiment": "2025.06.11_0.3_2_6.18_0.3_3",
+        "test_fraction": 0.25,
+        "test_split_seed": 42,
+        "train_experiments": [
+          "2025.06.11_0.3_2_6.18_0.3_3"
+        ],
+        "test_experiments": [
+          "2025.06.11_0.3_2_6.18_0.3_3"
+        ]
+      },
+      "run_config": {
+        "smoke_test": false,
+        "epochs": 200,
+        "folds": 3,
+        "internal_validation_split": "chunk_kfold",
+        "color_channel": 1,
+        "random_seed": 42,
+        "cpu_threads": 2,
+        "deterministic_ops": true,
+        "loop_parameter_sets": true
+      },
+      "data_config": {
+        "experiment_names": [
+          "2025.06.11_0.3_2_6.18_0.3_3"
+        ],
+        "max_freq_hz_list": [
+          "maxfreq=3kHz"
+        ],
+        "chunk_seconds": 1,
+        "noise_dir_names": [
+          "heatflux_no_noise",
+          "heatflux_reference_SNR=0",
+          "heatflux_reference_SNR=-4",
+          "heatflux_reference_SNR=-8",
+          "heatflux_reference_SNR=-12",
+          "heatflux_reference_SNR=-16",
+          "heatflux_reference_SNR=-20"
+        ]
+      },
+      "completed_conditions": 7,
+      "total_conditions": 7,
+      "conditions": [
+        {
+          "noise": "heatflux_no_noise",
+          "exists": true,
+          "manifest": {
+            "path": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\15\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_143609\\maxfreq=3kHz\\heatflux_no_noise\\run_manifest.json",
+            "modified_at": "2026-10-15T14:36:10+09:00",
+            "bytes": 31687
+          },
+          "run_hash": "da540f2d",
+          "created_at": "2026-10-15T14:36:10",
+          "status": "completed",
+          "completed_marker": {
+            "path": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\15\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_143609\\maxfreq=3kHz\\heatflux_no_noise\\completed.json",
+            "modified_at": "2026-10-15T15:19:12+09:00",
+            "bytes": 72
+          },
+          "main_comparison_enabled": true,
+          "metrics_rows": 11,
+          "prediction_rows": 540,
+          "source_day_metric_rows": 33,
+          "internal_validation_record": {
+            "path": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\15\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_143609\\maxfreq=3kHz\\heatflux_no_noise\\internal_validation_fold1.json",
+            "modified_at": "2026-10-15T15:04:04+09:00",
+            "bytes": 655109
+          },
+          "internal_folds_recorded": 3,
+          "internal_keras_fits": [
+            {
+              "fold": 1,
+              "model": "conformer",
+              "requested_epochs": 200,
+              "epochs_completed": 200,
+              "requested_batch_size": 12,
+              "actual_batch_size": 12,
+              "stopped_by_memory_error": false
+            },
+            {
+              "fold": 1,
+              "model": "alexnet",
+              "requested_epochs": 200,
+              "epochs_completed": 200,
+              "requested_batch_size": 8,
+              "actual_batch_size": 8,
+              "stopped_by_memory_error": false
+            },
+            {
+              "fold": 2,
+              "model": "conformer",
+              "requested_epochs": 200,
+              "epochs_completed": 200,
+              "requested_batch_size": 12,
+              "actual_batch_size": 12,
+              "stopped_by_memory_error": false
+            },
+            {
+              "fold": 2,
+              "model": "alexnet",
+              "requested_epochs": 200,
+              "epochs_completed": 200,
+              "requested_batch_size": 8,
+              "actual_batch_size": 8,
+              "stopped_by_memory_error": false
+            },
+            {
+              "fold": 3,
+              "model": "conformer",
+              "requested_epochs": 200,
+              "epochs_completed": 200,
+              "requested_batch_size": 12,
+              "actual_batch_size": 12,
+              "stopped_by_memory_error": false
+            },
+            {
+              "fold": 3,
+              "model": "alexnet",
+              "requested_epochs": 200,
+              "epochs_completed": 200,
+              "requested_batch_size": 8,
+              "actual_batch_size": 8,
+              "stopped_by_memory_error": false
+            }
+          ],
+          "fitted_state_reference": {
+            "fit_id": "7560205f8feb",
+            "canonical_directory": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\15\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_143609\\maxfreq=3kHz\\heatflux_no_noise\\fitted_state\\fold1",
+            "manifest_exists": true
+          },
+          "splits": [
+            {
+              "fold": 1,
+              "fit_id": "7560205f8feb",
+              "n_training_chunks": 1620,
+              "n_evaluation_chunks": 540
+            }
+          ],
+          "bar_png_count": 4,
+          "bar_comparison_groups": []
+        },
+        {
+          "noise": "heatflux_reference_SNR=0",
+          "exists": true,
+          "manifest": {
+            "path": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\15\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_143609\\maxfreq=3kHz\\heatflux_reference_SNR=0\\run_manifest.json",
+            "modified_at": "2026-10-15T14:36:10+09:00",
+            "bytes": 31701
+          },
+          "run_hash": "da540f2d",
+          "created_at": "2026-10-15T14:36:10",
+          "status": "completed",
+          "completed_marker": {
+            "path": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\15\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_143609\\maxfreq=3kHz\\heatflux_reference_SNR=0\\completed.json",
+            "modified_at": "2026-10-15T15:19:16+09:00",
+            "bytes": 72
+          },
+          "main_comparison_enabled": true,
+          "metrics_rows": 11,
+          "prediction_rows": 540,
+          "source_day_metric_rows": 33,
+          "internal_validation_record": {
+            "path": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\15\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_143609\\maxfreq=3kHz\\heatflux_reference_SNR=0\\internal_validation_fold1.json",
+            "modified_at": "2026-10-15T15:04:04+09:00",
+            "bytes": 655109
+          },
+          "internal_folds_recorded": 3,
+          "internal_keras_fits": [
+            {
+              "fold": 1,
+              "model": "conformer",
+              "requested_epochs": 200,
+              "epochs_completed": 200,
+              "requested_batch_size": 12,
+              "actual_batch_size": 12,
+              "stopped_by_memory_error": false
+            },
+            {
+              "fold": 1,
+              "model": "alexnet",
+              "requested_epochs": 200,
+              "epochs_completed": 200,
+              "requested_batch_size": 8,
+              "actual_batch_size": 8,
+              "stopped_by_memory_error": false
+            },
+            {
+              "fold": 2,
+              "model": "conformer",
+              "requested_epochs": 200,
+              "epochs_completed": 200,
+              "requested_batch_size": 12,
+              "actual_batch_size": 12,
+              "stopped_by_memory_error": false
+            },
+            {
+              "fold": 2,
+              "model": "alexnet",
+              "requested_epochs": 200,
+              "epochs_completed": 200,
+              "requested_batch_size": 8,
+              "actual_batch_size": 8,
+              "stopped_by_memory_error": false
+            },
+            {
+              "fold": 3,
+              "model": "conformer",
+              "requested_epochs": 200,
+              "epochs_completed": 200,
+              "requested_batch_size": 12,
+              "actual_batch_size": 12,
+              "stopped_by_memory_error": false
+            },
+            {
+              "fold": 3,
+              "model": "alexnet",
+              "requested_epochs": 200,
+              "epochs_completed": 200,
+              "requested_batch_size": 8,
+              "actual_batch_size": 8,
+              "stopped_by_memory_error": false
+            }
+          ],
+          "fitted_state_reference": {
+            "fit_id": "7560205f8feb",
+            "canonical_directory": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\15\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_143609\\maxfreq=3kHz\\heatflux_no_noise\\fitted_state\\fold1",
+            "manifest_exists": true
+          },
+          "splits": [
+            {
+              "fold": 1,
+              "fit_id": "7560205f8feb",
+              "n_training_chunks": 1620,
+              "n_evaluation_chunks": 540
+            }
+          ],
+          "bar_png_count": 4,
+          "bar_comparison_groups": []
+        },
+        {
+          "noise": "heatflux_reference_SNR=-4",
+          "exists": true,
+          "manifest": {
+            "path": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\15\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_143609\\maxfreq=3kHz\\heatflux_reference_SNR=-4\\run_manifest.json",
+            "modified_at": "2026-10-15T14:36:10+09:00",
+            "bytes": 31705
+          },
+          "run_hash": "da540f2d",
+          "created_at": "2026-10-15T14:36:10",
+          "status": "completed",
+          "completed_marker": {
+            "path": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\15\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_143609\\maxfreq=3kHz\\heatflux_reference_SNR=-4\\completed.json",
+            "modified_at": "2026-10-15T15:19:19+09:00",
+            "bytes": 72
+          },
+          "main_comparison_enabled": true,
+          "metrics_rows": 11,
+          "prediction_rows": 540,
+          "source_day_metric_rows": 33,
+          "internal_validation_record": {
+            "path": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\15\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_143609\\maxfreq=3kHz\\heatflux_reference_SNR=-4\\internal_validation_fold1.json",
+            "modified_at": "2026-10-15T15:04:04+09:00",
+            "bytes": 655109
+          },
+          "internal_folds_recorded": 3,
+          "internal_keras_fits": [
+            {
+              "fold": 1,
+              "model": "conformer",
+              "requested_epochs": 200,
+              "epochs_completed": 200,
+              "requested_batch_size": 12,
+              "actual_batch_size": 12,
+              "stopped_by_memory_error": false
+            },
+            {
+              "fold": 1,
+              "model": "alexnet",
+              "requested_epochs": 200,
+              "epochs_completed": 200,
+              "requested_batch_size": 8,
+              "actual_batch_size": 8,
+              "stopped_by_memory_error": false
+            },
+            {
+              "fold": 2,
+              "model": "conformer",
+              "requested_epochs": 200,
+              "epochs_completed": 200,
+              "requested_batch_size": 12,
+              "actual_batch_size": 12,
+              "stopped_by_memory_error": false
+            },
+            {
+              "fold": 2,
+              "model": "alexnet",
+              "requested_epochs": 200,
+              "epochs_completed": 200,
+              "requested_batch_size": 8,
+              "actual_batch_size": 8,
+              "stopped_by_memory_error": false
+            },
+            {
+              "fold": 3,
+              "model": "conformer",
+              "requested_epochs": 200,
+              "epochs_completed": 200,
+              "requested_batch_size": 12,
+              "actual_batch_size": 12,
+              "stopped_by_memory_error": false
+            },
+            {
+              "fold": 3,
+              "model": "alexnet",
+              "requested_epochs": 200,
+              "epochs_completed": 200,
+              "requested_batch_size": 8,
+              "actual_batch_size": 8,
+              "stopped_by_memory_error": false
+            }
+          ],
+          "fitted_state_reference": {
+            "fit_id": "7560205f8feb",
+            "canonical_directory": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\15\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_143609\\maxfreq=3kHz\\heatflux_no_noise\\fitted_state\\fold1",
+            "manifest_exists": true
+          },
+          "splits": [
+            {
+              "fold": 1,
+              "fit_id": "7560205f8feb",
+              "n_training_chunks": 1620,
+              "n_evaluation_chunks": 540
+            }
+          ],
+          "bar_png_count": 4,
+          "bar_comparison_groups": []
+        },
+        {
+          "noise": "heatflux_reference_SNR=-8",
+          "exists": true,
+          "manifest": {
+            "path": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\15\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_143609\\maxfreq=3kHz\\heatflux_reference_SNR=-8\\run_manifest.json",
+            "modified_at": "2026-10-15T14:36:10+09:00",
+            "bytes": 31705
+          },
+          "run_hash": "da540f2d",
+          "created_at": "2026-10-15T14:36:10",
+          "status": "completed",
+          "completed_marker": {
+            "path": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\15\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_143609\\maxfreq=3kHz\\heatflux_reference_SNR=-8\\completed.json",
+            "modified_at": "2026-10-15T15:19:23+09:00",
+            "bytes": 72
+          },
+          "main_comparison_enabled": true,
+          "metrics_rows": 11,
+          "prediction_rows": 540,
+          "source_day_metric_rows": 33,
+          "internal_validation_record": {
+            "path": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\15\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_143609\\maxfreq=3kHz\\heatflux_reference_SNR=-8\\internal_validation_fold1.json",
+            "modified_at": "2026-10-15T15:04:04+09:00",
+            "bytes": 655109
+          },
+          "internal_folds_recorded": 3,
+          "internal_keras_fits": [
+            {
+              "fold": 1,
+              "model": "conformer",
+              "requested_epochs": 200,
+              "epochs_completed": 200,
+              "requested_batch_size": 12,
+              "actual_batch_size": 12,
+              "stopped_by_memory_error": false
+            },
+            {
+              "fold": 1,
+              "model": "alexnet",
+              "requested_epochs": 200,
+              "epochs_completed": 200,
+              "requested_batch_size": 8,
+              "actual_batch_size": 8,
+              "stopped_by_memory_error": false
+            },
+            {
+              "fold": 2,
+              "model": "conformer",
+              "requested_epochs": 200,
+              "epochs_completed": 200,
+              "requested_batch_size": 12,
+              "actual_batch_size": 12,
+              "stopped_by_memory_error": false
+            },
+            {
+              "fold": 2,
+              "model": "alexnet",
+              "requested_epochs": 200,
+              "epochs_completed": 200,
+              "requested_batch_size": 8,
+              "actual_batch_size": 8,
+              "stopped_by_memory_error": false
+            },
+            {
+              "fold": 3,
+              "model": "conformer",
+              "requested_epochs": 200,
+              "epochs_completed": 200,
+              "requested_batch_size": 12,
+              "actual_batch_size": 12,
+              "stopped_by_memory_error": false
+            },
+            {
+              "fold": 3,
+              "model": "alexnet",
+              "requested_epochs": 200,
+              "epochs_completed": 200,
+              "requested_batch_size": 8,
+              "actual_batch_size": 8,
+              "stopped_by_memory_error": false
+            }
+          ],
+          "fitted_state_reference": {
+            "fit_id": "7560205f8feb",
+            "canonical_directory": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\15\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_143609\\maxfreq=3kHz\\heatflux_no_noise\\fitted_state\\fold1",
+            "manifest_exists": true
+          },
+          "splits": [
+            {
+              "fold": 1,
+              "fit_id": "7560205f8feb",
+              "n_training_chunks": 1620,
+              "n_evaluation_chunks": 540
+            }
+          ],
+          "bar_png_count": 4,
+          "bar_comparison_groups": []
+        },
+        {
+          "noise": "heatflux_reference_SNR=-12",
+          "exists": true,
+          "manifest": {
+            "path": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\15\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_143609\\maxfreq=3kHz\\heatflux_reference_SNR=-12\\run_manifest.json",
+            "modified_at": "2026-10-15T14:36:10+09:00",
+            "bytes": 31709
+          },
+          "run_hash": "da540f2d",
+          "created_at": "2026-10-15T14:36:10",
+          "status": "completed",
+          "completed_marker": {
+            "path": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\15\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_143609\\maxfreq=3kHz\\heatflux_reference_SNR=-12\\completed.json",
+            "modified_at": "2026-10-15T15:19:26+09:00",
+            "bytes": 72
+          },
+          "main_comparison_enabled": true,
+          "metrics_rows": 11,
+          "prediction_rows": 540,
+          "source_day_metric_rows": 33,
+          "internal_validation_record": {
+            "path": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\15\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_143609\\maxfreq=3kHz\\heatflux_reference_SNR=-12\\internal_validation_fold1.json",
+            "modified_at": "2026-10-15T15:04:04+09:00",
+            "bytes": 655109
+          },
+          "internal_folds_recorded": 3,
+          "internal_keras_fits": [
+            {
+              "fold": 1,
+              "model": "conformer",
+              "requested_epochs": 200,
+              "epochs_completed": 200,
+              "requested_batch_size": 12,
+              "actual_batch_size": 12,
+              "stopped_by_memory_error": false
+            },
+            {
+              "fold": 1,
+              "model": "alexnet",
+              "requested_epochs": 200,
+              "epochs_completed": 200,
+              "requested_batch_size": 8,
+              "actual_batch_size": 8,
+              "stopped_by_memory_error": false
+            },
+            {
+              "fold": 2,
+              "model": "conformer",
+              "requested_epochs": 200,
+              "epochs_completed": 200,
+              "requested_batch_size": 12,
+              "actual_batch_size": 12,
+              "stopped_by_memory_error": false
+            },
+            {
+              "fold": 2,
+              "model": "alexnet",
+              "requested_epochs": 200,
+              "epochs_completed": 200,
+              "requested_batch_size": 8,
+              "actual_batch_size": 8,
+              "stopped_by_memory_error": false
+            },
+            {
+              "fold": 3,
+              "model": "conformer",
+              "requested_epochs": 200,
+              "epochs_completed": 200,
+              "requested_batch_size": 12,
+              "actual_batch_size": 12,
+              "stopped_by_memory_error": false
+            },
+            {
+              "fold": 3,
+              "model": "alexnet",
+              "requested_epochs": 200,
+              "epochs_completed": 200,
+              "requested_batch_size": 8,
+              "actual_batch_size": 8,
+              "stopped_by_memory_error": false
+            }
+          ],
+          "fitted_state_reference": {
+            "fit_id": "7560205f8feb",
+            "canonical_directory": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\15\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_143609\\maxfreq=3kHz\\heatflux_no_noise\\fitted_state\\fold1",
+            "manifest_exists": true
+          },
+          "splits": [
+            {
+              "fold": 1,
+              "fit_id": "7560205f8feb",
+              "n_training_chunks": 1620,
+              "n_evaluation_chunks": 540
+            }
+          ],
+          "bar_png_count": 4,
+          "bar_comparison_groups": []
+        },
+        {
+          "noise": "heatflux_reference_SNR=-16",
+          "exists": true,
+          "manifest": {
+            "path": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\15\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_143609\\maxfreq=3kHz\\heatflux_reference_SNR=-16\\run_manifest.json",
+            "modified_at": "2026-10-15T14:36:10+09:00",
+            "bytes": 31709
+          },
+          "run_hash": "da540f2d",
+          "created_at": "2026-10-15T14:36:10",
+          "status": "completed",
+          "completed_marker": {
+            "path": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\15\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_143609\\maxfreq=3kHz\\heatflux_reference_SNR=-16\\completed.json",
+            "modified_at": "2026-10-15T15:19:30+09:00",
+            "bytes": 72
+          },
+          "main_comparison_enabled": true,
+          "metrics_rows": 11,
+          "prediction_rows": 540,
+          "source_day_metric_rows": 33,
+          "internal_validation_record": {
+            "path": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\15\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_143609\\maxfreq=3kHz\\heatflux_reference_SNR=-16\\internal_validation_fold1.json",
+            "modified_at": "2026-10-15T15:04:04+09:00",
+            "bytes": 655109
+          },
+          "internal_folds_recorded": 3,
+          "internal_keras_fits": [
+            {
+              "fold": 1,
+              "model": "conformer",
+              "requested_epochs": 200,
+              "epochs_completed": 200,
+              "requested_batch_size": 12,
+              "actual_batch_size": 12,
+              "stopped_by_memory_error": false
+            },
+            {
+              "fold": 1,
+              "model": "alexnet",
+              "requested_epochs": 200,
+              "epochs_completed": 200,
+              "requested_batch_size": 8,
+              "actual_batch_size": 8,
+              "stopped_by_memory_error": false
+            },
+            {
+              "fold": 2,
+              "model": "conformer",
+              "requested_epochs": 200,
+              "epochs_completed": 200,
+              "requested_batch_size": 12,
+              "actual_batch_size": 12,
+              "stopped_by_memory_error": false
+            },
+            {
+              "fold": 2,
+              "model": "alexnet",
+              "requested_epochs": 200,
+              "epochs_completed": 200,
+              "requested_batch_size": 8,
+              "actual_batch_size": 8,
+              "stopped_by_memory_error": false
+            },
+            {
+              "fold": 3,
+              "model": "conformer",
+              "requested_epochs": 200,
+              "epochs_completed": 200,
+              "requested_batch_size": 12,
+              "actual_batch_size": 12,
+              "stopped_by_memory_error": false
+            },
+            {
+              "fold": 3,
+              "model": "alexnet",
+              "requested_epochs": 200,
+              "epochs_completed": 200,
+              "requested_batch_size": 8,
+              "actual_batch_size": 8,
+              "stopped_by_memory_error": false
+            }
+          ],
+          "fitted_state_reference": {
+            "fit_id": "7560205f8feb",
+            "canonical_directory": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\15\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_143609\\maxfreq=3kHz\\heatflux_no_noise\\fitted_state\\fold1",
+            "manifest_exists": true
+          },
+          "splits": [
+            {
+              "fold": 1,
+              "fit_id": "7560205f8feb",
+              "n_training_chunks": 1620,
+              "n_evaluation_chunks": 540
+            }
+          ],
+          "bar_png_count": 4,
+          "bar_comparison_groups": []
+        },
+        {
+          "noise": "heatflux_reference_SNR=-20",
+          "exists": true,
+          "manifest": {
+            "path": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\15\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_143609\\maxfreq=3kHz\\heatflux_reference_SNR=-20\\run_manifest.json",
+            "modified_at": "2026-10-15T14:36:10+09:00",
+            "bytes": 31709
+          },
+          "run_hash": "da540f2d",
+          "created_at": "2026-10-15T14:36:10",
+          "status": "completed",
+          "completed_marker": {
+            "path": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\15\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_143609\\maxfreq=3kHz\\heatflux_reference_SNR=-20\\completed.json",
+            "modified_at": "2026-10-15T15:19:33+09:00",
+            "bytes": 72
+          },
+          "main_comparison_enabled": true,
+          "metrics_rows": 11,
+          "prediction_rows": 540,
+          "source_day_metric_rows": 33,
+          "internal_validation_record": {
+            "path": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\15\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_143609\\maxfreq=3kHz\\heatflux_reference_SNR=-20\\internal_validation_fold1.json",
+            "modified_at": "2026-10-15T15:04:04+09:00",
+            "bytes": 655109
+          },
+          "internal_folds_recorded": 3,
+          "internal_keras_fits": [
+            {
+              "fold": 1,
+              "model": "conformer",
+              "requested_epochs": 200,
+              "epochs_completed": 200,
+              "requested_batch_size": 12,
+              "actual_batch_size": 12,
+              "stopped_by_memory_error": false
+            },
+            {
+              "fold": 1,
+              "model": "alexnet",
+              "requested_epochs": 200,
+              "epochs_completed": 200,
+              "requested_batch_size": 8,
+              "actual_batch_size": 8,
+              "stopped_by_memory_error": false
+            },
+            {
+              "fold": 2,
+              "model": "conformer",
+              "requested_epochs": 200,
+              "epochs_completed": 200,
+              "requested_batch_size": 12,
+              "actual_batch_size": 12,
+              "stopped_by_memory_error": false
+            },
+            {
+              "fold": 2,
+              "model": "alexnet",
+              "requested_epochs": 200,
+              "epochs_completed": 200,
+              "requested_batch_size": 8,
+              "actual_batch_size": 8,
+              "stopped_by_memory_error": false
+            },
+            {
+              "fold": 3,
+              "model": "conformer",
+              "requested_epochs": 200,
+              "epochs_completed": 200,
+              "requested_batch_size": 12,
+              "actual_batch_size": 12,
+              "stopped_by_memory_error": false
+            },
+            {
+              "fold": 3,
+              "model": "alexnet",
+              "requested_epochs": 200,
+              "epochs_completed": 200,
+              "requested_batch_size": 8,
+              "actual_batch_size": 8,
+              "stopped_by_memory_error": false
+            }
+          ],
+          "fitted_state_reference": {
+            "fit_id": "7560205f8feb",
+            "canonical_directory": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\15\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_143609\\maxfreq=3kHz\\heatflux_no_noise\\fitted_state\\fold1",
+            "manifest_exists": true
+          },
+          "splits": [
+            {
+              "fold": 1,
+              "fit_id": "7560205f8feb",
+              "n_training_chunks": 1620,
+              "n_evaluation_chunks": 540
+            }
+          ],
+          "bar_png_count": 4,
+          "bar_comparison_groups": []
+        }
+      ],
+      "unique_saved_final_fits": [
+        {
+          "fit_id": "7560205f8feb",
+          "models": [
+            "randomforest",
+            "conformer",
+            "alexnet",
+            "hgb",
+            "extra_trees"
+          ],
+          "ensemble_weights_count": 6,
+          "final_keras_fits": [
+            {
+              "model": "conformer",
+              "actual_batch_size": 12,
+              "requested_batch_size": 12,
+              "stopped_by_memory_error": null,
+              "epochs_completed": 200
+            },
+            {
+              "model": "alexnet",
+              "actual_batch_size": 8,
+              "requested_batch_size": 8,
+              "stopped_by_memory_error": null,
+              "epochs_completed": 200
+            }
+          ],
+          "reload_model_checks_passed": true,
+          "reload_evaluation_checks_passed": true,
+          "reloaded_predictions": 18900
+        }
+      ],
+      "confirmed_completed_keras_fits": 8,
+      "expected_keras_fits": 8,
+      "main_comparison_verification": {
+        "status": "passed",
+        "normal_150_epoch_main_run_completed": false,
+        "epochs_complete": true,
+        "requested_batch_sizes_completed": true,
+        "standard_configuration": false,
+        "smoke_test": false,
+        "noise_conditions": [
+          "clean",
+          "0",
+          "-4",
+          "-8",
+          "-12",
+          "-16",
+          "-20"
+        ],
+        "source_day_metric_rows": 231,
+        "fitted_models": 5,
+        "reloaded_evaluation_predictions": 18900,
+        "same_clean_fit_across_noise": true,
+        "same_evaluation_chunks_and_targets": true,
+        "internal_oof_coverage_and_no_shared_chunks": true,
+        "saved_weights_and_ensemble_predictions_verified": true,
+        "performance_improvement_required_for_completion": false,
+        "modified_at": "2026-10-15T15:19:37+09:00"
+      },
+      "performance_values_read_or_analyzed": false
+    },
+    {
+      "run_name": "onb_wc-t0611-v0611_ic3-nm_c1s_s0_e200_152738",
+      "directory": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\15\\onb_wc-t0611-v0611_ic3-nm_c1s_s0_e200_152738",
+      "policy": {
+        "training_noise": "matched",
+        "evaluation_mode": "within_wav_chunk",
+        "within_wav_chunk_experiment": "2025.06.11_0.3_2_6.18_0.3_3",
+        "test_fraction": 0.25,
+        "test_split_seed": 42,
+        "train_experiments": [
+          "2025.06.11_0.3_2_6.18_0.3_3"
+        ],
+        "test_experiments": [
+          "2025.06.11_0.3_2_6.18_0.3_3"
+        ]
+      },
+      "run_config": {
+        "smoke_test": false,
+        "epochs": 200,
+        "folds": 3,
+        "internal_validation_split": "chunk_kfold",
+        "color_channel": 1,
+        "random_seed": 42,
+        "cpu_threads": 2,
+        "deterministic_ops": true,
+        "loop_parameter_sets": true
+      },
+      "data_config": {
+        "experiment_names": [
+          "2025.06.11_0.3_2_6.18_0.3_3"
+        ],
+        "max_freq_hz_list": [
+          "maxfreq=3kHz"
+        ],
+        "chunk_seconds": 1,
+        "noise_dir_names": [
+          "heatflux_no_noise",
+          "heatflux_reference_SNR=0",
+          "heatflux_reference_SNR=-4",
+          "heatflux_reference_SNR=-8",
+          "heatflux_reference_SNR=-12",
+          "heatflux_reference_SNR=-16",
+          "heatflux_reference_SNR=-20"
+        ]
+      },
+      "completed_conditions": 3,
+      "total_conditions": 7,
+      "conditions": [
+        {
+          "noise": "heatflux_no_noise",
+          "exists": true,
+          "manifest": {
+            "path": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\15\\onb_wc-t0611-v0611_ic3-nm_c1s_s0_e200_152738\\maxfreq=3kHz\\heatflux_no_noise\\run_manifest.json",
+            "modified_at": "2026-10-15T15:27:38+09:00",
+            "bytes": 27370
+          },
+          "run_hash": "cbb27044",
+          "created_at": "2026-10-15T15:27:38",
+          "status": "completed",
+          "completed_marker": {
+            "path": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\15\\onb_wc-t0611-v0611_ic3-nm_c1s_s0_e200_152738\\maxfreq=3kHz\\heatflux_no_noise\\completed.json",
+            "modified_at": "2026-10-15T16:01:26+09:00",
+            "bytes": 72
+          },
+          "main_comparison_enabled": false,
+          "metrics_rows": 11,
+          "prediction_rows": 540,
+          "source_day_metric_rows": 33,
+          "internal_validation_record": {
+            "path": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\15\\onb_wc-t0611-v0611_ic3-nm_c1s_s0_e200_152738\\maxfreq=3kHz\\heatflux_no_noise\\internal_validation_fold1.json",
+            "modified_at": "2026-10-15T15:50:22+09:00",
+            "bytes": 655108
+          },
+          "internal_folds_recorded": 3,
+          "internal_keras_fits": [
+            {
+              "fold": 1,
+              "model": "conformer",
+              "requested_epochs": 200,
+              "epochs_completed": 200,
+              "requested_batch_size": 12,
+              "actual_batch_size": 12,
+              "stopped_by_memory_error": false
+            },
+            {
+              "fold": 1,
+              "model": "alexnet",
+              "requested_epochs": 200,
+              "epochs_completed": 200,
+              "requested_batch_size": 8,
+              "actual_batch_size": 8,
+              "stopped_by_memory_error": false
+            },
+            {
+              "fold": 2,
+              "model": "conformer",
+              "requested_epochs": 200,
+              "epochs_completed": 200,
+              "requested_batch_size": 12,
+              "actual_batch_size": 12,
+              "stopped_by_memory_error": false
+            },
+            {
+              "fold": 2,
+              "model": "alexnet",
+              "requested_epochs": 200,
+              "epochs_completed": 200,
+              "requested_batch_size": 8,
+              "actual_batch_size": 8,
+              "stopped_by_memory_error": false
+            },
+            {
+              "fold": 3,
+              "model": "conformer",
+              "requested_epochs": 200,
+              "epochs_completed": 200,
+              "requested_batch_size": 12,
+              "actual_batch_size": 12,
+              "stopped_by_memory_error": false
+            },
+            {
+              "fold": 3,
+              "model": "alexnet",
+              "requested_epochs": 200,
+              "epochs_completed": 200,
+              "requested_batch_size": 8,
+              "actual_batch_size": 8,
+              "stopped_by_memory_error": false
+            }
+          ],
+          "fitted_state_reference": {
+            "fit_id": "cc1dd22c1016",
+            "canonical_directory": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\15\\onb_wc-t0611-v0611_ic3-nm_c1s_s0_e200_152738\\maxfreq=3kHz\\heatflux_no_noise\\fitted_state\\fold1",
+            "manifest_exists": true
+          },
+          "splits": [
+            {
+              "fold": 1,
+              "fit_id": "cc1dd22c1016",
+              "n_training_chunks": 1620,
+              "n_evaluation_chunks": 540
+            }
+          ],
+          "bar_png_count": 4,
+          "bar_comparison_groups": []
+        },
+        {
+          "noise": "heatflux_reference_SNR=0",
+          "exists": true,
+          "manifest": {
+            "path": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\15\\onb_wc-t0611-v0611_ic3-nm_c1s_s0_e200_152738\\maxfreq=3kHz\\heatflux_reference_SNR=0\\run_manifest.json",
+            "modified_at": "2026-10-15T16:01:29+09:00",
+            "bytes": 27405
+          },
+          "run_hash": "cbb27044",
+          "created_at": "2026-10-15T16:01:29",
+          "status": "completed",
+          "completed_marker": {
+            "path": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\15\\onb_wc-t0611-v0611_ic3-nm_c1s_s0_e200_152738\\maxfreq=3kHz\\heatflux_reference_SNR=0\\completed.json",
+            "modified_at": "2026-10-15T16:34:35+09:00",
+            "bytes": 72
+          },
+          "main_comparison_enabled": false,
+          "metrics_rows": 11,
+          "prediction_rows": 540,
+          "source_day_metric_rows": 33,
+          "internal_validation_record": {
+            "path": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\15\\onb_wc-t0611-v0611_ic3-nm_c1s_s0_e200_152738\\maxfreq=3kHz\\heatflux_reference_SNR=0\\internal_validation_fold1.json",
+            "modified_at": "2026-10-15T16:23:07+09:00",
+            "bytes": 655634
+          },
+          "internal_folds_recorded": 3,
+          "internal_keras_fits": [
+            {
+              "fold": 1,
+              "model": "conformer",
+              "requested_epochs": 200,
+              "epochs_completed": 200,
+              "requested_batch_size": 12,
+              "actual_batch_size": 12,
+              "stopped_by_memory_error": false
+            },
+            {
+              "fold": 1,
+              "model": "alexnet",
+              "requested_epochs": 200,
+              "epochs_completed": 200,
+              "requested_batch_size": 8,
+              "actual_batch_size": 8,
+              "stopped_by_memory_error": false
+            },
+            {
+              "fold": 2,
+              "model": "conformer",
+              "requested_epochs": 200,
+              "epochs_completed": 200,
+              "requested_batch_size": 12,
+              "actual_batch_size": 12,
+              "stopped_by_memory_error": false
+            },
+            {
+              "fold": 2,
+              "model": "alexnet",
+              "requested_epochs": 200,
+              "epochs_completed": 200,
+              "requested_batch_size": 8,
+              "actual_batch_size": 8,
+              "stopped_by_memory_error": false
+            },
+            {
+              "fold": 3,
+              "model": "conformer",
+              "requested_epochs": 200,
+              "epochs_completed": 200,
+              "requested_batch_size": 12,
+              "actual_batch_size": 12,
+              "stopped_by_memory_error": false
+            },
+            {
+              "fold": 3,
+              "model": "alexnet",
+              "requested_epochs": 200,
+              "epochs_completed": 200,
+              "requested_batch_size": 8,
+              "actual_batch_size": 8,
+              "stopped_by_memory_error": false
+            }
+          ],
+          "fitted_state_reference": {
+            "fit_id": "b1a668626f05",
+            "canonical_directory": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\15\\onb_wc-t0611-v0611_ic3-nm_c1s_s0_e200_152738\\maxfreq=3kHz\\heatflux_reference_SNR=0\\fitted_state\\fold1",
+            "manifest_exists": true
+          },
+          "splits": [
+            {
+              "fold": 1,
+              "fit_id": "b1a668626f05",
+              "n_training_chunks": 1620,
+              "n_evaluation_chunks": 540
+            }
+          ],
+          "bar_png_count": 4,
+          "bar_comparison_groups": []
+        },
+        {
+          "noise": "heatflux_reference_SNR=-4",
+          "exists": true,
+          "manifest": {
+            "path": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\15\\onb_wc-t0611-v0611_ic3-nm_c1s_s0_e200_152738\\maxfreq=3kHz\\heatflux_reference_SNR=-4\\run_manifest.json",
+            "modified_at": "2026-10-15T16:34:38+09:00",
+            "bytes": 27412
+          },
+          "run_hash": "cbb27044",
+          "created_at": "2026-10-15T16:34:38",
+          "status": "completed",
+          "completed_marker": {
+            "path": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\15\\onb_wc-t0611-v0611_ic3-nm_c1s_s0_e200_152738\\maxfreq=3kHz\\heatflux_reference_SNR=-4\\completed.json",
+            "modified_at": "2026-10-15T17:07:31+09:00",
+            "bytes": 72
+          },
+          "main_comparison_enabled": false,
+          "metrics_rows": 11,
+          "prediction_rows": 540,
+          "source_day_metric_rows": 33,
+          "internal_validation_record": {
+            "path": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\15\\onb_wc-t0611-v0611_ic3-nm_c1s_s0_e200_152738\\maxfreq=3kHz\\heatflux_reference_SNR=-4\\internal_validation_fold1.json",
+            "modified_at": "2026-10-15T16:56:16+09:00",
+            "bytes": 654832
+          },
+          "internal_folds_recorded": 3,
+          "internal_keras_fits": [
+            {
+              "fold": 1,
+              "model": "conformer",
+              "requested_epochs": 200,
+              "epochs_completed": 200,
+              "requested_batch_size": 12,
+              "actual_batch_size": 12,
+              "stopped_by_memory_error": false
+            },
+            {
+              "fold": 1,
+              "model": "alexnet",
+              "requested_epochs": 200,
+              "epochs_completed": 200,
+              "requested_batch_size": 8,
+              "actual_batch_size": 8,
+              "stopped_by_memory_error": false
+            },
+            {
+              "fold": 2,
+              "model": "conformer",
+              "requested_epochs": 200,
+              "epochs_completed": 200,
+              "requested_batch_size": 12,
+              "actual_batch_size": 12,
+              "stopped_by_memory_error": false
+            },
+            {
+              "fold": 2,
+              "model": "alexnet",
+              "requested_epochs": 200,
+              "epochs_completed": 200,
+              "requested_batch_size": 8,
+              "actual_batch_size": 8,
+              "stopped_by_memory_error": false
+            },
+            {
+              "fold": 3,
+              "model": "conformer",
+              "requested_epochs": 200,
+              "epochs_completed": 200,
+              "requested_batch_size": 12,
+              "actual_batch_size": 12,
+              "stopped_by_memory_error": false
+            },
+            {
+              "fold": 3,
+              "model": "alexnet",
+              "requested_epochs": 200,
+              "epochs_completed": 200,
+              "requested_batch_size": 8,
+              "actual_batch_size": 8,
+              "stopped_by_memory_error": false
+            }
+          ],
+          "fitted_state_reference": {
+            "fit_id": "b1888dc5f40e",
+            "canonical_directory": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\15\\onb_wc-t0611-v0611_ic3-nm_c1s_s0_e200_152738\\maxfreq=3kHz\\heatflux_reference_SNR=-4\\fitted_state\\fold1",
+            "manifest_exists": true
+          },
+          "splits": [
+            {
+              "fold": 1,
+              "fit_id": "b1888dc5f40e",
+              "n_training_chunks": 1620,
+              "n_evaluation_chunks": 540
+            }
+          ],
+          "bar_png_count": 4,
+          "bar_comparison_groups": []
+        },
+        {
+          "noise": "heatflux_reference_SNR=-8",
+          "exists": true,
+          "manifest": {
+            "path": "\\\\?\\C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\15\\onb_wc-t0611-v0611_ic3-nm_c1s_s0_e200_152738\\maxfreq=3kHz\\heatflux_reference_SNR=-8\\run_manifest.json",
+            "modified_at": "2026-10-15T17:07:34+09:00",
+            "bytes": 27412
+          },
+          "run_hash": "cbb27044",
+          "created_at": "2026-10-15T17:07:34",
+          "status": "started_not_completed",
+          "completed_marker": null,
+          "main_comparison_enabled": false,
+          "metrics_rows": null,
+          "prediction_rows": null,
+          "source_day_metric_rows": null,
+          "internal_validation_record": null,
+          "bar_png_count": 0,
+          "bar_comparison_groups": []
+        },
+        {
+          "noise": "heatflux_reference_SNR=-12",
+          "exists": false,
+          "manifest": null,
+          "status": "not_started"
+        },
+        {
+          "noise": "heatflux_reference_SNR=-16",
+          "exists": false,
+          "manifest": null,
+          "status": "not_started"
+        },
+        {
+          "noise": "heatflux_reference_SNR=-20",
+          "exists": false,
+          "manifest": null,
+          "status": "not_started"
+        }
+      ],
+      "unique_saved_final_fits": [
+        {
+          "fit_id": "cc1dd22c1016",
+          "models": [
+            "randomforest",
+            "conformer",
+            "alexnet",
+            "hgb",
+            "extra_trees"
+          ],
+          "ensemble_weights_count": 6,
+          "final_keras_fits": [
+            {
+              "model": "conformer",
+              "actual_batch_size": 12,
+              "requested_batch_size": 12,
+              "stopped_by_memory_error": null,
+              "epochs_completed": 200
+            },
+            {
+              "model": "alexnet",
+              "actual_batch_size": 8,
+              "requested_batch_size": 8,
+              "stopped_by_memory_error": null,
+              "epochs_completed": 200
+            }
+          ],
+          "reload_model_checks_passed": true,
+          "reload_evaluation_checks_passed": true,
+          "reloaded_predictions": 2700
+        },
+        {
+          "fit_id": "b1a668626f05",
+          "models": [
+            "randomforest",
+            "conformer",
+            "alexnet",
+            "hgb",
+            "extra_trees"
+          ],
+          "ensemble_weights_count": 6,
+          "final_keras_fits": [
+            {
+              "model": "conformer",
+              "actual_batch_size": 12,
+              "requested_batch_size": 12,
+              "stopped_by_memory_error": null,
+              "epochs_completed": 200
+            },
+            {
+              "model": "alexnet",
+              "actual_batch_size": 8,
+              "requested_batch_size": 8,
+              "stopped_by_memory_error": null,
+              "epochs_completed": 200
+            }
+          ],
+          "reload_model_checks_passed": true,
+          "reload_evaluation_checks_passed": true,
+          "reloaded_predictions": 2700
+        },
+        {
+          "fit_id": "b1888dc5f40e",
+          "models": [
+            "randomforest",
+            "conformer",
+            "alexnet",
+            "hgb",
+            "extra_trees"
+          ],
+          "ensemble_weights_count": 6,
+          "final_keras_fits": [
+            {
+              "model": "conformer",
+              "actual_batch_size": 12,
+              "requested_batch_size": 12,
+              "stopped_by_memory_error": null,
+              "epochs_completed": 200
+            },
+            {
+              "model": "alexnet",
+              "actual_batch_size": 8,
+              "requested_batch_size": 8,
+              "stopped_by_memory_error": null,
+              "epochs_completed": 200
+            }
+          ],
+          "reload_model_checks_passed": true,
+          "reload_evaluation_checks_passed": true,
+          "reloaded_predictions": 2700
+        }
+      ],
+      "confirmed_completed_keras_fits": 24,
+      "expected_keras_fits": 56,
+      "main_comparison_verification": null,
+      "performance_values_read_or_analyzed": false
+    }
+  ],
+  "shared_configuration_checks": {
+    "run": true,
+    "data": true,
+    "models": true,
+    "ensemble": true,
+    "features": true,
+    "thresholds": true,
+    "acoustic_selection": true,
+    "explainability": true
+  },
+  "main_comparison_flags": [
+    true,
+    false
+  ]
+}

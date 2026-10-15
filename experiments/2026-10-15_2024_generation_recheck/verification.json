@@ -1,0 +1,84 @@
+{
+  "checked_at_jst": "2026-10-15T20:26:16+09:00",
+  "experiment": "2024.11.12_1_2.13_1",
+  "source_wav_count": 77,
+  "generation_process": {
+    "running": false,
+    "method": "Win32_Process command line inspection; only Anaconda Navigator Python processes present"
+  },
+  "expected_conditions": 70,
+  "condition_status": {
+    "complete_file_inventory": 42,
+    "partial": 7,
+    "not_started": 21
+  },
+  "npy_total": 361332,
+  "png_total": 361331,
+  "expected_total_each": 485100,
+  "latest_files": {
+    "npy": {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2024.11.12_1_2.13_1\\data\\npy\\waterflow_20261014_1s\\maxfreq=5kHz\\heatflux_reference_SNR=-4\\3.62e+04_src-index=5.3.62e+04_chunk-0011.npy",
+      "mtime_epoch": 1792055916.4906845,
+      "modified_jst": "2026-10-15T18:18:36+09:00",
+      "bytes": 200832
+    },
+    "spectrogram_png": {
+      "path": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2024.11.12_1_2.13_1\\data\\spectrogram_png\\waterflow_20261014_1s\\maxfreq=5kHz\\heatflux_reference_SNR=-4\\3.62e+04_src-index=5.3.62e+04_chunk-0010.png",
+      "mtime_epoch": 1792055916.2391405,
+      "modified_jst": "2026-10-15T18:18:36+09:00",
+      "bytes": 79549
+    }
+  },
+  "latest_file_content_checks": {
+    "npy": {
+      "readable": true,
+      "shape": [
+        224,
+        224
+      ],
+      "dtype": "float32",
+      "finite": true,
+      "nonnegative": true
+    },
+    "spectrogram_png": {
+      "readable": true,
+      "image_size": [
+        540,
+        540
+      ]
+    }
+  },
+  "unpaired_files": [
+    {
+      "condition": "1s/5kHz/heatflux_reference_SNR=-4",
+      "npy_only": [
+        "3.62e+04_src-index=5.3.62e+04_chunk-0011"
+      ],
+      "png_only": []
+    }
+  ],
+  "temporary_manifest_files": [],
+  "inventory_anomalies": {
+    "npy_zero_byte": 0,
+    "spectrogram_png_zero_byte": 0,
+    "npy_unexpected_size": 0,
+    "npy_unexpected": 0,
+    "spectrogram_png_unexpected": 0,
+    "npy_files_outside_manifest": 12,
+    "spectrogram_png_files_outside_manifest": 11,
+    "npy_manifest_files_missing": 0,
+    "spectrogram_png_manifest_files_missing": 0,
+    "npy_manifest_duplicate_rows": 0,
+    "spectrogram_png_manifest_duplicate_rows": 0
+  },
+  "previous_check": {
+    "checked_at_jst": "2026-10-15T10:53:23+09:00",
+    "npy_total": 183752,
+    "png_total": 183751
+  },
+  "progress_since_previous": {
+    "npy_added": 177580,
+    "png_added": 177580
+  },
+  "scope": "Full filename/count/size/manifest inventory and content checks only on the latest NPY and PNG. No model evaluation, no generation or code changes."
+}

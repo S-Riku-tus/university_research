@@ -1,0 +1,972 @@
+{
+  "status": "passed",
+  "source": "Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\regression_result\\npy\\ensemble\\202610\\06\\onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_193305\\maxfreq=3kHz\\heatflux_no_noise\\metrics_summary_no_noise.csv",
+  "source_sha256": "0f5ad8c30785f86a56837a4f4b601fa3e3fcd8c4c9dc7ebb73f1c9cad45f2ed2",
+  "source_unchanged": true,
+  "current_run_read": false,
+  "new_fits": 0,
+  "new_inference": 0,
+  "scope": "Presentation layout check using previously analyzed completed results only",
+  "renders": [
+    {
+      "path": "times\\bar\\r2_ep200_no_noise.png",
+      "model_count": 11,
+      "labels": [
+        "RandomForest",
+        "Conformer",
+        "AlexNet",
+        "HGB frequency34",
+        "ExtraTrees frequency34",
+        "Original three + HGB + ExtraTrees",
+        "Original three MSE",
+        "Original three performance",
+        "Original three + HGB",
+        "Original three + ExtraTrees",
+        "Ensemble simple equal"
+      ],
+      "font": [
+        "Times New Roman"
+      ],
+      "axis_fontsize": 23,
+      "value_fontsize": 30,
+      "zoom": false,
+      "values_unchanged": true,
+      "text_nonoverlap_and_inside_figure": true
+    },
+    {
+      "path": "times\\bar\\r2_ep200_no_noise_zoom.png",
+      "model_count": 11,
+      "labels": [
+        "RandomForest",
+        "Conformer",
+        "AlexNet",
+        "HGB frequency34",
+        "ExtraTrees frequency34",
+        "Original three + HGB + ExtraTrees",
+        "Original three MSE",
+        "Original three performance",
+        "Original three + HGB",
+        "Original three + ExtraTrees",
+        "Ensemble simple equal"
+      ],
+      "font": [
+        "Times New Roman"
+      ],
+      "axis_fontsize": 23,
+      "value_fontsize": 30,
+      "zoom": true,
+      "values_unchanged": true,
+      "text_nonoverlap_and_inside_figure": true
+    },
+    {
+      "path": "times\\bar\\legacy4\\r2_ep200_no_noise.png",
+      "model_count": 4,
+      "labels": [
+        "RandomForest",
+        "Conformer",
+        "AlexNet",
+        "Original three performance"
+      ],
+      "font": [
+        "Times New Roman"
+      ],
+      "axis_fontsize": 23,
+      "value_fontsize": 30,
+      "zoom": false,
+      "values_unchanged": true,
+      "text_nonoverlap_and_inside_figure": true
+    },
+    {
+      "path": "times\\bar\\legacy4\\r2_ep200_no_noise_zoom.png",
+      "model_count": 4,
+      "labels": [
+        "RandomForest",
+        "Conformer",
+        "AlexNet",
+        "Original three performance"
+      ],
+      "font": [
+        "Times New Roman"
+      ],
+      "axis_fontsize": 23,
+      "value_fontsize": 30,
+      "zoom": true,
+      "values_unchanged": true,
+      "text_nonoverlap_and_inside_figure": true
+    },
+    {
+      "path": "times\\bar\\addition4\\r2_ep200_no_noise.png",
+      "model_count": 4,
+      "labels": [
+        "Original three MSE",
+        "Original three + HGB",
+        "Original three + ExtraTrees",
+        "Original three + HGB + ExtraTrees"
+      ],
+      "font": [
+        "Times New Roman"
+      ],
+      "axis_fontsize": 23,
+      "value_fontsize": 30,
+      "zoom": false,
+      "values_unchanged": true,
+      "text_nonoverlap_and_inside_figure": true
+    },
+    {
+      "path": "times\\bar\\addition4\\r2_ep200_no_noise_zoom.png",
+      "model_count": 4,
+      "labels": [
+        "Original three MSE",
+        "Original three + HGB",
+        "Original three + ExtraTrees",
+        "Original three + HGB + ExtraTrees"
+      ],
+      "font": [
+        "Times New Roman"
+      ],
+      "axis_fontsize": 23,
+      "value_fontsize": 30,
+      "zoom": true,
+      "values_unchanged": true,
+      "text_nonoverlap_and_inside_figure": true
+    },
+    {
+      "path": "times\\bar\\integration5\\r2_ep200_no_noise.png",
+      "model_count": 5,
+      "labels": [
+        "Original three MSE",
+        "HGB frequency34",
+        "ExtraTrees frequency34",
+        "Ensemble simple equal",
+        "Original three + HGB + ExtraTrees"
+      ],
+      "font": [
+        "Times New Roman"
+      ],
+      "axis_fontsize": 23,
+      "value_fontsize": 30,
+      "zoom": false,
+      "values_unchanged": true,
+      "text_nonoverlap_and_inside_figure": true
+    },
+    {
+      "path": "times\\bar\\integration5\\r2_ep200_no_noise_zoom.png",
+      "model_count": 5,
+      "labels": [
+        "Original three MSE",
+        "HGB frequency34",
+        "ExtraTrees frequency34",
+        "Ensemble simple equal",
+        "Original three + HGB + ExtraTrees"
+      ],
+      "font": [
+        "Times New Roman"
+      ],
+      "axis_fontsize": 23,
+      "value_fontsize": 30,
+      "zoom": true,
+      "values_unchanged": true,
+      "text_nonoverlap_and_inside_figure": true
+    },
+    {
+      "path": "times\\bar\\roc_auc_cont_ep200_no_noise.png",
+      "model_count": 11,
+      "labels": [
+        "RandomForest",
+        "Conformer",
+        "AlexNet",
+        "HGB frequency34",
+        "ExtraTrees frequency34",
+        "Original three + HGB + ExtraTrees",
+        "Original three MSE",
+        "Original three performance",
+        "Original three + HGB",
+        "Original three + ExtraTrees",
+        "Ensemble simple equal"
+      ],
+      "font": [
+        "Times New Roman"
+      ],
+      "axis_fontsize": 23,
+      "value_fontsize": 30,
+      "zoom": false,
+      "values_unchanged": true,
+      "text_nonoverlap_and_inside_figure": true
+    },
+    {
+      "path": "times\\bar\\roc_auc_cont_ep200_no_noise_zoom.png",
+      "model_count": 11,
+      "labels": [
+        "RandomForest",
+        "Conformer",
+        "AlexNet",
+        "HGB frequency34",
+        "ExtraTrees frequency34",
+        "Original three + HGB + ExtraTrees",
+        "Original three MSE",
+        "Original three performance",
+        "Original three + HGB",
+        "Original three + ExtraTrees",
+        "Ensemble simple equal"
+      ],
+      "font": [
+        "Times New Roman"
+      ],
+      "axis_fontsize": 23,
+      "value_fontsize": 30,
+      "zoom": true,
+      "values_unchanged": true,
+      "text_nonoverlap_and_inside_figure": true
+    },
+    {
+      "path": "times\\bar\\legacy4\\roc_auc_cont_ep200_no_noise.png",
+      "model_count": 4,
+      "labels": [
+        "RandomForest",
+        "Conformer",
+        "AlexNet",
+        "Original three performance"
+      ],
+      "font": [
+        "Times New Roman"
+      ],
+      "axis_fontsize": 23,
+      "value_fontsize": 30,
+      "zoom": false,
+      "values_unchanged": true,
+      "text_nonoverlap_and_inside_figure": true
+    },
+    {
+      "path": "times\\bar\\legacy4\\roc_auc_cont_ep200_no_noise_zoom.png",
+      "model_count": 4,
+      "labels": [
+        "RandomForest",
+        "Conformer",
+        "AlexNet",
+        "Original three performance"
+      ],
+      "font": [
+        "Times New Roman"
+      ],
+      "axis_fontsize": 23,
+      "value_fontsize": 30,
+      "zoom": true,
+      "values_unchanged": true,
+      "text_nonoverlap_and_inside_figure": true
+    },
+    {
+      "path": "times\\bar\\addition4\\roc_auc_cont_ep200_no_noise.png",
+      "model_count": 4,
+      "labels": [
+        "Original three MSE",
+        "Original three + HGB",
+        "Original three + ExtraTrees",
+        "Original three + HGB + ExtraTrees"
+      ],
+      "font": [
+        "Times New Roman"
+      ],
+      "axis_fontsize": 23,
+      "value_fontsize": 30,
+      "zoom": false,
+      "values_unchanged": true,
+      "text_nonoverlap_and_inside_figure": true
+    },
+    {
+      "path": "times\\bar\\addition4\\roc_auc_cont_ep200_no_noise_zoom.png",
+      "model_count": 4,
+      "labels": [
+        "Original three MSE",
+        "Original three + HGB",
+        "Original three + ExtraTrees",
+        "Original three + HGB + ExtraTrees"
+      ],
+      "font": [
+        "Times New Roman"
+      ],
+      "axis_fontsize": 23,
+      "value_fontsize": 30,
+      "zoom": true,
+      "values_unchanged": true,
+      "text_nonoverlap_and_inside_figure": true
+    },
+    {
+      "path": "times\\bar\\integration5\\roc_auc_cont_ep200_no_noise.png",
+      "model_count": 5,
+      "labels": [
+        "Original three MSE",
+        "HGB frequency34",
+        "ExtraTrees frequency34",
+        "Ensemble simple equal",
+        "Original three + HGB + ExtraTrees"
+      ],
+      "font": [
+        "Times New Roman"
+      ],
+      "axis_fontsize": 23,
+      "value_fontsize": 30,
+      "zoom": false,
+      "values_unchanged": true,
+      "text_nonoverlap_and_inside_figure": true
+    },
+    {
+      "path": "times\\bar\\integration5\\roc_auc_cont_ep200_no_noise_zoom.png",
+      "model_count": 5,
+      "labels": [
+        "Original three MSE",
+        "HGB frequency34",
+        "ExtraTrees frequency34",
+        "Ensemble simple equal",
+        "Original three + HGB + ExtraTrees"
+      ],
+      "font": [
+        "Times New Roman"
+      ],
+      "axis_fontsize": 23,
+      "value_fontsize": 30,
+      "zoom": true,
+      "values_unchanged": true,
+      "text_nonoverlap_and_inside_figure": true
+    },
+    {
+      "path": "times\\bar\\pr_auc_cont_ep200_no_noise.png",
+      "model_count": 11,
+      "labels": [
+        "RandomForest",
+        "Conformer",
+        "AlexNet",
+        "HGB frequency34",
+        "ExtraTrees frequency34",
+        "Original three + HGB + ExtraTrees",
+        "Original three MSE",
+        "Original three performance",
+        "Original three + HGB",
+        "Original three + ExtraTrees",
+        "Ensemble simple equal"
+      ],
+      "font": [
+        "Times New Roman"
+      ],
+      "axis_fontsize": 23,
+      "value_fontsize": 30,
+      "zoom": false,
+      "values_unchanged": true,
+      "text_nonoverlap_and_inside_figure": true
+    },
+    {
+      "path": "times\\bar\\pr_auc_cont_ep200_no_noise_zoom.png",
+      "model_count": 11,
+      "labels": [
+        "RandomForest",
+        "Conformer",
+        "AlexNet",
+        "HGB frequency34",
+        "ExtraTrees frequency34",
+        "Original three + HGB + ExtraTrees",
+        "Original three MSE",
+        "Original three performance",
+        "Original three + HGB",
+        "Original three + ExtraTrees",
+        "Ensemble simple equal"
+      ],
+      "font": [
+        "Times New Roman"
+      ],
+      "axis_fontsize": 23,
+      "value_fontsize": 30,
+      "zoom": true,
+      "values_unchanged": true,
+      "text_nonoverlap_and_inside_figure": true
+    },
+    {
+      "path": "times\\bar\\legacy4\\pr_auc_cont_ep200_no_noise.png",
+      "model_count": 4,
+      "labels": [
+        "RandomForest",
+        "Conformer",
+        "AlexNet",
+        "Original three performance"
+      ],
+      "font": [
+        "Times New Roman"
+      ],
+      "axis_fontsize": 23,
+      "value_fontsize": 30,
+      "zoom": false,
+      "values_unchanged": true,
+      "text_nonoverlap_and_inside_figure": true
+    },
+    {
+      "path": "times\\bar\\legacy4\\pr_auc_cont_ep200_no_noise_zoom.png",
+      "model_count": 4,
+      "labels": [
+        "RandomForest",
+        "Conformer",
+        "AlexNet",
+        "Original three performance"
+      ],
+      "font": [
+        "Times New Roman"
+      ],
+      "axis_fontsize": 23,
+      "value_fontsize": 30,
+      "zoom": true,
+      "values_unchanged": true,
+      "text_nonoverlap_and_inside_figure": true
+    },
+    {
+      "path": "times\\bar\\addition4\\pr_auc_cont_ep200_no_noise.png",
+      "model_count": 4,
+      "labels": [
+        "Original three MSE",
+        "Original three + HGB",
+        "Original three + ExtraTrees",
+        "Original three + HGB + ExtraTrees"
+      ],
+      "font": [
+        "Times New Roman"
+      ],
+      "axis_fontsize": 23,
+      "value_fontsize": 30,
+      "zoom": false,
+      "values_unchanged": true,
+      "text_nonoverlap_and_inside_figure": true
+    },
+    {
+      "path": "times\\bar\\addition4\\pr_auc_cont_ep200_no_noise_zoom.png",
+      "model_count": 4,
+      "labels": [
+        "Original three MSE",
+        "Original three + HGB",
+        "Original three + ExtraTrees",
+        "Original three + HGB + ExtraTrees"
+      ],
+      "font": [
+        "Times New Roman"
+      ],
+      "axis_fontsize": 23,
+      "value_fontsize": 30,
+      "zoom": true,
+      "values_unchanged": true,
+      "text_nonoverlap_and_inside_figure": true
+    },
+    {
+      "path": "times\\bar\\integration5\\pr_auc_cont_ep200_no_noise.png",
+      "model_count": 5,
+      "labels": [
+        "Original three MSE",
+        "HGB frequency34",
+        "ExtraTrees frequency34",
+        "Ensemble simple equal",
+        "Original three + HGB + ExtraTrees"
+      ],
+      "font": [
+        "Times New Roman"
+      ],
+      "axis_fontsize": 23,
+      "value_fontsize": 30,
+      "zoom": false,
+      "values_unchanged": true,
+      "text_nonoverlap_and_inside_figure": true
+    },
+    {
+      "path": "times\\bar\\integration5\\pr_auc_cont_ep200_no_noise_zoom.png",
+      "model_count": 5,
+      "labels": [
+        "Original three MSE",
+        "HGB frequency34",
+        "ExtraTrees frequency34",
+        "Ensemble simple equal",
+        "Original three + HGB + ExtraTrees"
+      ],
+      "font": [
+        "Times New Roman"
+      ],
+      "axis_fontsize": 23,
+      "value_fontsize": 30,
+      "zoom": true,
+      "values_unchanged": true,
+      "text_nonoverlap_and_inside_figure": true
+    },
+    {
+      "path": "sans\\bar\\r2_ep200_no_noise.png",
+      "model_count": 11,
+      "labels": [
+        "RandomForest",
+        "Conformer",
+        "AlexNet",
+        "HGB frequency34",
+        "ExtraTrees frequency34",
+        "Original three + HGB + ExtraTrees",
+        "Original three MSE",
+        "Original three performance",
+        "Original three + HGB",
+        "Original three + ExtraTrees",
+        "Ensemble simple equal"
+      ],
+      "font": [
+        "DejaVu Sans"
+      ],
+      "axis_fontsize": 23,
+      "value_fontsize": 30,
+      "zoom": false,
+      "values_unchanged": true,
+      "text_nonoverlap_and_inside_figure": true
+    },
+    {
+      "path": "sans\\bar\\r2_ep200_no_noise_zoom.png",
+      "model_count": 11,
+      "labels": [
+        "RandomForest",
+        "Conformer",
+        "AlexNet",
+        "HGB frequency34",
+        "ExtraTrees frequency34",
+        "Original three + HGB + ExtraTrees",
+        "Original three MSE",
+        "Original three performance",
+        "Original three + HGB",
+        "Original three + ExtraTrees",
+        "Ensemble simple equal"
+      ],
+      "font": [
+        "DejaVu Sans"
+      ],
+      "axis_fontsize": 23,
+      "value_fontsize": 30,
+      "zoom": true,
+      "values_unchanged": true,
+      "text_nonoverlap_and_inside_figure": true
+    },
+    {
+      "path": "sans\\bar\\legacy4\\r2_ep200_no_noise.png",
+      "model_count": 4,
+      "labels": [
+        "RandomForest",
+        "Conformer",
+        "AlexNet",
+        "Original three performance"
+      ],
+      "font": [
+        "DejaVu Sans"
+      ],
+      "axis_fontsize": 23,
+      "value_fontsize": 30,
+      "zoom": false,
+      "values_unchanged": true,
+      "text_nonoverlap_and_inside_figure": true
+    },
+    {
+      "path": "sans\\bar\\legacy4\\r2_ep200_no_noise_zoom.png",
+      "model_count": 4,
+      "labels": [
+        "RandomForest",
+        "Conformer",
+        "AlexNet",
+        "Original three performance"
+      ],
+      "font": [
+        "DejaVu Sans"
+      ],
+      "axis_fontsize": 23,
+      "value_fontsize": 30,
+      "zoom": true,
+      "values_unchanged": true,
+      "text_nonoverlap_and_inside_figure": true
+    },
+    {
+      "path": "sans\\bar\\addition4\\r2_ep200_no_noise.png",
+      "model_count": 4,
+      "labels": [
+        "Original three MSE",
+        "Original three + HGB",
+        "Original three + ExtraTrees",
+        "Original three + HGB + ExtraTrees"
+      ],
+      "font": [
+        "DejaVu Sans"
+      ],
+      "axis_fontsize": 23,
+      "value_fontsize": 30,
+      "zoom": false,
+      "values_unchanged": true,
+      "text_nonoverlap_and_inside_figure": true
+    },
+    {
+      "path": "sans\\bar\\addition4\\r2_ep200_no_noise_zoom.png",
+      "model_count": 4,
+      "labels": [
+        "Original three MSE",
+        "Original three + HGB",
+        "Original three + ExtraTrees",
+        "Original three + HGB + ExtraTrees"
+      ],
+      "font": [
+        "DejaVu Sans"
+      ],
+      "axis_fontsize": 23,
+      "value_fontsize": 30,
+      "zoom": true,
+      "values_unchanged": true,
+      "text_nonoverlap_and_inside_figure": true
+    },
+    {
+      "path": "sans\\bar\\integration5\\r2_ep200_no_noise.png",
+      "model_count": 5,
+      "labels": [
+        "Original three MSE",
+        "HGB frequency34",
+        "ExtraTrees frequency34",
+        "Ensemble simple equal",
+        "Original three + HGB + ExtraTrees"
+      ],
+      "font": [
+        "DejaVu Sans"
+      ],
+      "axis_fontsize": 23,
+      "value_fontsize": 30,
+      "zoom": false,
+      "values_unchanged": true,
+      "text_nonoverlap_and_inside_figure": true
+    },
+    {
+      "path": "sans\\bar\\integration5\\r2_ep200_no_noise_zoom.png",
+      "model_count": 5,
+      "labels": [
+        "Original three MSE",
+        "HGB frequency34",
+        "ExtraTrees frequency34",
+        "Ensemble simple equal",
+        "Original three + HGB + ExtraTrees"
+      ],
+      "font": [
+        "DejaVu Sans"
+      ],
+      "axis_fontsize": 23,
+      "value_fontsize": 30,
+      "zoom": true,
+      "values_unchanged": true,
+      "text_nonoverlap_and_inside_figure": true
+    },
+    {
+      "path": "sans\\bar\\roc_auc_cont_ep200_no_noise.png",
+      "model_count": 11,
+      "labels": [
+        "RandomForest",
+        "Conformer",
+        "AlexNet",
+        "HGB frequency34",
+        "ExtraTrees frequency34",
+        "Original three + HGB + ExtraTrees",
+        "Original three MSE",
+        "Original three performance",
+        "Original three + HGB",
+        "Original three + ExtraTrees",
+        "Ensemble simple equal"
+      ],
+      "font": [
+        "DejaVu Sans"
+      ],
+      "axis_fontsize": 23,
+      "value_fontsize": 30,
+      "zoom": false,
+      "values_unchanged": true,
+      "text_nonoverlap_and_inside_figure": true
+    },
+    {
+      "path": "sans\\bar\\roc_auc_cont_ep200_no_noise_zoom.png",
+      "model_count": 11,
+      "labels": [
+        "RandomForest",
+        "Conformer",
+        "AlexNet",
+        "HGB frequency34",
+        "ExtraTrees frequency34",
+        "Original three + HGB + ExtraTrees",
+        "Original three MSE",
+        "Original three performance",
+        "Original three + HGB",
+        "Original three + ExtraTrees",
+        "Ensemble simple equal"
+      ],
+      "font": [
+        "DejaVu Sans"
+      ],
+      "axis_fontsize": 23,
+      "value_fontsize": 30,
+      "zoom": true,
+      "values_unchanged": true,
+      "text_nonoverlap_and_inside_figure": true
+    },
+    {
+      "path": "sans\\bar\\legacy4\\roc_auc_cont_ep200_no_noise.png",
+      "model_count": 4,
+      "labels": [
+        "RandomForest",
+        "Conformer",
+        "AlexNet",
+        "Original three performance"
+      ],
+      "font": [
+        "DejaVu Sans"
+      ],
+      "axis_fontsize": 23,
+      "value_fontsize": 30,
+      "zoom": false,
+      "values_unchanged": true,
+      "text_nonoverlap_and_inside_figure": true
+    },
+    {
+      "path": "sans\\bar\\legacy4\\roc_auc_cont_ep200_no_noise_zoom.png",
+      "model_count": 4,
+      "labels": [
+        "RandomForest",
+        "Conformer",
+        "AlexNet",
+        "Original three performance"
+      ],
+      "font": [
+        "DejaVu Sans"
+      ],
+      "axis_fontsize": 23,
+      "value_fontsize": 30,
+      "zoom": true,
+      "values_unchanged": true,
+      "text_nonoverlap_and_inside_figure": true
+    },
+    {
+      "path": "sans\\bar\\addition4\\roc_auc_cont_ep200_no_noise.png",
+      "model_count": 4,
+      "labels": [
+        "Original three MSE",
+        "Original three + HGB",
+        "Original three + ExtraTrees",
+        "Original three + HGB + ExtraTrees"
+      ],
+      "font": [
+        "DejaVu Sans"
+      ],
+      "axis_fontsize": 23,
+      "value_fontsize": 30,
+      "zoom": false,
+      "values_unchanged": true,
+      "text_nonoverlap_and_inside_figure": true
+    },
+    {
+      "path": "sans\\bar\\addition4\\roc_auc_cont_ep200_no_noise_zoom.png",
+      "model_count": 4,
+      "labels": [
+        "Original three MSE",
+        "Original three + HGB",
+        "Original three + ExtraTrees",
+        "Original three + HGB + ExtraTrees"
+      ],
+      "font": [
+        "DejaVu Sans"
+      ],
+      "axis_fontsize": 23,
+      "value_fontsize": 30,
+      "zoom": true,
+      "values_unchanged": true,
+      "text_nonoverlap_and_inside_figure": true
+    },
+    {
+      "path": "sans\\bar\\integration5\\roc_auc_cont_ep200_no_noise.png",
+      "model_count": 5,
+      "labels": [
+        "Original three MSE",
+        "HGB frequency34",
+        "ExtraTrees frequency34",
+        "Ensemble simple equal",
+        "Original three + HGB + ExtraTrees"
+      ],
+      "font": [
+        "DejaVu Sans"
+      ],
+      "axis_fontsize": 23,
+      "value_fontsize": 30,
+      "zoom": false,
+      "values_unchanged": true,
+      "text_nonoverlap_and_inside_figure": true
+    },
+    {
+      "path": "sans\\bar\\integration5\\roc_auc_cont_ep200_no_noise_zoom.png",
+      "model_count": 5,
+      "labels": [
+        "Original three MSE",
+        "HGB frequency34",
+        "ExtraTrees frequency34",
+        "Ensemble simple equal",
+        "Original three + HGB + ExtraTrees"
+      ],
+      "font": [
+        "DejaVu Sans"
+      ],
+      "axis_fontsize": 23,
+      "value_fontsize": 30,
+      "zoom": true,
+      "values_unchanged": true,
+      "text_nonoverlap_and_inside_figure": true
+    },
+    {
+      "path": "sans\\bar\\pr_auc_cont_ep200_no_noise.png",
+      "model_count": 11,
+      "labels": [
+        "RandomForest",
+        "Conformer",
+        "AlexNet",
+        "HGB frequency34",
+        "ExtraTrees frequency34",
+        "Original three + HGB + ExtraTrees",
+        "Original three MSE",
+        "Original three performance",
+        "Original three + HGB",
+        "Original three + ExtraTrees",
+        "Ensemble simple equal"
+      ],
+      "font": [
+        "DejaVu Sans"
+      ],
+      "axis_fontsize": 23,
+      "value_fontsize": 30,
+      "zoom": false,
+      "values_unchanged": true,
+      "text_nonoverlap_and_inside_figure": true
+    },
+    {
+      "path": "sans\\bar\\pr_auc_cont_ep200_no_noise_zoom.png",
+      "model_count": 11,
+      "labels": [
+        "RandomForest",
+        "Conformer",
+        "AlexNet",
+        "HGB frequency34",
+        "ExtraTrees frequency34",
+        "Original three + HGB + ExtraTrees",
+        "Original three MSE",
+        "Original three performance",
+        "Original three + HGB",
+        "Original three + ExtraTrees",
+        "Ensemble simple equal"
+      ],
+      "font": [
+        "DejaVu Sans"
+      ],
+      "axis_fontsize": 23,
+      "value_fontsize": 30,
+      "zoom": true,
+      "values_unchanged": true,
+      "text_nonoverlap_and_inside_figure": true
+    },
+    {
+      "path": "sans\\bar\\legacy4\\pr_auc_cont_ep200_no_noise.png",
+      "model_count": 4,
+      "labels": [
+        "RandomForest",
+        "Conformer",
+        "AlexNet",
+        "Original three performance"
+      ],
+      "font": [
+        "DejaVu Sans"
+      ],
+      "axis_fontsize": 23,
+      "value_fontsize": 30,
+      "zoom": false,
+      "values_unchanged": true,
+      "text_nonoverlap_and_inside_figure": true
+    },
+    {
+      "path": "sans\\bar\\legacy4\\pr_auc_cont_ep200_no_noise_zoom.png",
+      "model_count": 4,
+      "labels": [
+        "RandomForest",
+        "Conformer",
+        "AlexNet",
+        "Original three performance"
+      ],
+      "font": [
+        "DejaVu Sans"
+      ],
+      "axis_fontsize": 23,
+      "value_fontsize": 30,
+      "zoom": true,
+      "values_unchanged": true,
+      "text_nonoverlap_and_inside_figure": true
+    },
+    {
+      "path": "sans\\bar\\addition4\\pr_auc_cont_ep200_no_noise.png",
+      "model_count": 4,
+      "labels": [
+        "Original three MSE",
+        "Original three + HGB",
+        "Original three + ExtraTrees",
+        "Original three + HGB + ExtraTrees"
+      ],
+      "font": [
+        "DejaVu Sans"
+      ],
+      "axis_fontsize": 23,
+      "value_fontsize": 30,
+      "zoom": false,
+      "values_unchanged": true,
+      "text_nonoverlap_and_inside_figure": true
+    },
+    {
+      "path": "sans\\bar\\addition4\\pr_auc_cont_ep200_no_noise_zoom.png",
+      "model_count": 4,
+      "labels": [
+        "Original three MSE",
+        "Original three + HGB",
+        "Original three + ExtraTrees",
+        "Original three + HGB + ExtraTrees"
+      ],
+      "font": [
+        "DejaVu Sans"
+      ],
+      "axis_fontsize": 23,
+      "value_fontsize": 30,
+      "zoom": true,
+      "values_unchanged": true,
+      "text_nonoverlap_and_inside_figure": true
+    },
+    {
+      "path": "sans\\bar\\integration5\\pr_auc_cont_ep200_no_noise.png",
+      "model_count": 5,
+      "labels": [
+        "Original three MSE",
+        "HGB frequency34",
+        "ExtraTrees frequency34",
+        "Ensemble simple equal",
+        "Original three + HGB + ExtraTrees"
+      ],
+      "font": [
+        "DejaVu Sans"
+      ],
+      "axis_fontsize": 23,
+      "value_fontsize": 30,
+      "zoom": false,
+      "values_unchanged": true,
+      "text_nonoverlap_and_inside_figure": true
+    },
+    {
+      "path": "sans\\bar\\integration5\\pr_auc_cont_ep200_no_noise_zoom.png",
+      "model_count": 5,
+      "labels": [
+        "Original three MSE",
+        "HGB frequency34",
+        "ExtraTrees frequency34",
+        "Ensemble simple equal",
+        "Original three + HGB + ExtraTrees"
+      ],
+      "font": [
+        "DejaVu Sans"
+      ],
+      "axis_fontsize": 23,
+      "value_fontsize": 30,
+      "zoom": true,
+      "values_unchanged": true,
+      "text_nonoverlap_and_inside_figure": true
+    }
+  ]
+}
