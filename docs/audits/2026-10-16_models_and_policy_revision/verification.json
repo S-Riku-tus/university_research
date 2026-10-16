@@ -1,0 +1,42 @@
+{
+  "checked_at_jst": "2026-10-16T11:31:29.315796+09:00",
+  "source": "研究進捗報告\\2026\\1016（研究進捗報告）\\研究進捗_1016_編集用_修正版.pptx",
+  "source_sha256": "853dee396cf3c7ecf3f23b8550c68e364d2f997f17a23540995ca2bbe95747e7",
+  "source_unchanged": true,
+  "snapshot_matches_source": true,
+  "slides": 14,
+  "render_status": "completed",
+  "original_pptx_edited": false,
+  "new_training": 0,
+  "new_inference": 0,
+  "final_check_jst": "2026-10-16T11:48:04.695184+09:00",
+  "actual_slides": 14,
+  "proposed_slides_if_comparison_and_two_toc": 16,
+  "pages_visually_reviewed": [
+    5,
+    6,
+    11
+  ],
+  "deleted_onb_page_not_reintroduced": true,
+  "evaluation_split_not_added_to_model_page": true,
+  "previous_summary_page_not_automatically_added": true,
+  "source_unchanged_after_documentation": true,
+  "bachelor_pdf_sha256": "d91cc8167d16c412cbe8c7223f218a8f913b3b70e119f25d26b1aa8d47a88e63",
+  "bachelor_toc_source": "verified identical-hash cached PDF text, pages 3-4",
+  "bachelor_toc_image_not_available": true,
+  "bachelor_pdf_new_render": false,
+  "policy_comparison_source": "paired completed 2026-10-01 clean / 2026-10-03 matched, 150 epochs / internal WAV3-fold",
+  "latest_200epoch_result_not_mixed_with_old_matched": true,
+  "stopped_matched_not_read": true,
+  "figure_source_values_verified": true,
+  "new_model_fits": 0,
+  "new_input_interventions": 0,
+  "new_document_links_checked": 25,
+  "broken_new_document_links": 0,
+  "comparison_r2_image_cm": [
+    6.0,
+    7.5,
+    40.0,
+    14.78
+  ]
+}

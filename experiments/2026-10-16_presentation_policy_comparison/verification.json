@@ -1,0 +1,28 @@
+{
+  "sources": {
+    "experiments/2026-10-03_tuned_within_wav_matched_comparison/run_scope.json": "de7c14dc5bda9cd6e48ce1322e21a3c8364b84e3ee9aa5e9b714cd7d6f592d4b",
+    "experiments/2026-10-03_tuned_within_wav_matched_comparison/metrics_source_day_thresholds.csv": "f70a82e1ffd0f07af1a74f803a300b9bed34dbfd65cb85161e07196bdc51f5da",
+    "experiments/2026-10-03_tuned_within_wav_matched_comparison/clean_identity.csv": "d144a47697286664f39093220546ddd3ae11bb105c9e072a42503faa72aa6204",
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/ensemble/202610/01/onb_wc-t0611-v0611_iw3-nc_c1s_s0_e150_170655/noise_trends/performance_kfold/maxfreq=3kHz/chunk_held_out_day_r2.csv": "8927d5fe9af55af152ec31c4569d78c2a9a66e456ff3b2ec3008ddc09e4b7c59",
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/ensemble/202610/03/onb_wc-t0611-v0611_iw3-nm_c1s_s0_e150_153735/noise_trends/performance_kfold/maxfreq=3kHz/chunk_held_out_day_r2.csv": "e930af9fea9e83619939cdf505032354619c2f7a444021b165057b29d7854dc5"
+  },
+  "sources_unchanged": true,
+  "paired_policy_runs": {
+    "clean_only": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/ensemble/202610/01/onb_wc-t0611-v0611_iw3-nc_c1s_s0_e150_170655",
+    "matched": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/ensemble/202610/03/onb_wc-t0611-v0611_iw3-nm_c1s_s0_e150_153735"
+  },
+  "evaluation_n": 540,
+  "current_1015_run_not_mixed": true,
+  "old_noise_generator_not_mixed": true,
+  "stopped_matched_run_not_read": true,
+  "ensemble": "original three / performance weights",
+  "epochs": 150,
+  "internal_validation": "WAV 3-fold",
+  "new_training": 0,
+  "new_inference": 0,
+  "new_input_interventions": 0,
+  "trend_csv_matches_audited_metrics_at_saved_precision": true,
+  "max_r2_difference_from_six_decimal_trend": 4.603224150745433e-07,
+  "plotted_values": "audited full-precision metrics",
+  "no_noise_predictions_identical": true
+}

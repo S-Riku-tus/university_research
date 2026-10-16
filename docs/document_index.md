@@ -1,13 +1,19 @@
 # 文書案内と更新ルール
 
-更新日: 2026-10-15。**現在の状態は一か所で更新し、過去の数値と判断は日付付き記録に残す。**
+更新日: 2026-10-16。**現在の状態は一か所で更新し、過去の数値と判断は日付付き記録に残す。**
 
 ## 読む順序と各文書の役割
 
 | 目的 | 読む文書 | 更新方法 |
 |---|---|---|
 | 次の作業を始める | [研究の現在地](research_status.md) | 状態・本人の希望・次の一手を更新する唯一の入口 |
-| 本人作成の10/16修正版を直す | [実スライドのレビュー・差し替え文](progress/2026-10-16_created_slide_review.md)、[実描画一覧](audits/2026-10-15_created_deck_review/actual_deck_contact_sheet.png)、[図6枠の挿入位置](audits/2026-10-15_created_deck_review/figure_insertion_map.csv)、[確認記録](audits/2026-10-15_created_deck_review/README.md) | 本文・表・模式図を作成済みの11枚を実PowerPointで確認。図6枠と旧計画、用語/条件の補足を提案。主要数値23項目一致、元PPTX未編集 |
+| 最新14枚版の5・6・11と学習方針の比較を直す | [画面文・モデル追加理由・比較図・配置](progress/2026-10-16_models_policy_feedback_and_outline_revision.md)、[既存対応対照の2曲線](../experiments/2026-10-16_presentation_policy_comparison/README.md)、[PPTX確認](audits/2026-10-16_models_and_policy_revision/README.md) | 11:29更新の14枚版。ONB結果削除と6の分割省略を尊重。生成修正とclean_onlyの目的を分け、追加モデルを説明。新比較は過去の共通条件の完了対照、停止matched未読、原PPTX未編集 |
+| 修士研究全体として一貫した目次を作る | [最新6章案と各節への成果配置](research_plan/2026-10-16_unified_six_chapter_thesis_outline.md) | 本人提示の6章を基に、学部比較の節と直近の作業経緯を見出しから除く。性能評価と要因分析を分担。旧7章案は履歴として保持 |
+| 以前の細かな7章目次案を参照する | [旧7章案](research_plan/2026-10-16_detailed_master_thesis_outline.md) | 学部原本の構成と照合した当時の案。現在は上段の6章案を優先 |
+| 以前の15枚版に対する教授指摘の反映案を読む | [以前の16枚案・画面文・発話](progress/2026-10-16_professor_aligned_slide_and_talk_guide.md)、[当時の15枚との対応](audits/2026-10-16_professor_aligned_talk/page_map.csv)、[照合記録](audits/2026-10-16_professor_aligned_talk/README.md) | 以前の15枚へ到達点1枚を加える提案。現在の本人採否・番号・構成は上段の14枚版を優先 |
+| 教授の各指摘への対応状況を確認する | [9/18の5項目・以前の6論点・完了と残り](research_plan/2026-10-16_professor_feedback_response_status.md) | 原メモと最新完了結果を対応づける。解析済み・資料反映待ち・研究上未確認を分け、教授の了承は推定しない |
+| 本人が再編集した10/16の15枚版を直す | [最新レビュー・後期計画11行](progress/2026-10-16_updated_deck_and_plan_review.md)、[計画表PNG](progress/assets/2026-10-16/semester_plan_table_updated.png)、[実描画一覧](audits/2026-10-16_preference_deck_review/actual_deck_contact_sheet.png)、[図6枠の挿入位置](audits/2026-10-16_preference_deck_review/figure_insertion_map.csv)、[確認記録](audits/2026-10-16_preference_deck_review/README.md) | 10/16 10:18更新の15枚を実PowerPointで確認。本人の章区切りを保持。4大項目・11行の計画を実績へ更新する案、図6枠と文言・ページ番号の修正。原PPTX未編集 |
+| 再編集前の11枚版のレビュー履歴を読む | [以前の差し替え文](progress/2026-10-16_created_slide_review.md)、[以前の実描画一覧](audits/2026-10-15_created_deck_review/actual_deck_contact_sheet.png)、[以前の確認記録](audits/2026-10-15_created_deck_review/README.md) | 10/15確認時点の11枚版。数値23項目は保存結果と一致。最新15枚版のページ番号・採用構成は上段を使う |
 | 別AI案と本人の1〜22採否を踏まえた発表案を読む | [再検討11枚・採否照合・文章と配置](progress/2026-10-16_slide_reconciled_proposal.md)、[新配置見本PDF](progress/assets/2026-10-16/reconciled_preview/reconciled_slide_preview.pdf)、[照合記録](audits/2026-10-15_slide_reconciliation/README.md) | 進展先出し・旧問題1枚化を採用。q100/教授指摘/目次/後期計画を保持し、除外論点を主題へ戻さない。新案の本人採用は未確定、旧案保持 |
 | 10/16のスライドを文章と配置からすぐ作る | [貼り付け文章・cm座標・図の指定](progress/2026-10-16_slide_build_guide.md)、[11枚の見本PDF](progress/assets/2026-10-16/layout_preview/slide_layout_preview.pdf)、[一覧](progress/assets/2026-10-16/layout_preview/contact_sheet.png)、[確認記録](audits/2026-10-15_slide_layout_guide/README.md) | 原寸/書式/実図から各オブジェクトを具体化。原PPTX保持、PPTXの実編集は未実施 |
 | 10/16各ページの文・画像・後期計画・残る対応を確認する | [ページ別点検と計画](progress/2026-10-16_slide_readiness_and_semester_plan.md)、[基本11枚案](progress/2026-10-16_slide_content_plan.md)、[再実行の照合](../experiments/2026-10-15_presentation_readiness/run_consistency.json)、[図の出典](progress/assets/2026-10-16/asset_sources.json) | 143609と194258は全7条件・主指標・重みが丸め程度の差で一致。新図も使用可。後期計画を進捗へ合わせ、素材を準備。原PPTX保持、実反映は未実施 |

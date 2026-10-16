@@ -1,0 +1,82 @@
+{
+  "checked_at_jst": "2026-10-16T10:53:38.205284+09:00",
+  "guide": "docs/progress/2026-10-16_professor_aligned_slide_and_talk_guide.md",
+  "proposal_not_applied": true,
+  "source_deck": "研究進捗報告\\2026\\1016（研究進捗報告）\\研究進捗_1016_編集用_修正版.pptx",
+  "source_sha256": "0bb45aec432d42ca16581a306560e0f50a4d15030e8f33f586ad35ca29180d87",
+  "source_unchanged": true,
+  "actual_slide_count": 15,
+  "proposed_slide_count": 16,
+  "insert_after_current_page": 13,
+  "added_page_title": "?????????",
+  "chapter_dividers_preserved": true,
+  "six_figure_pages_unchanged": [
+    5,
+    8,
+    9,
+    11,
+    11,
+    12
+  ],
+  "prior_native_render_inherited": true,
+  "new_native_render": false,
+  "sources": [
+    {
+      "path": "docs/research_plan/2026-09-18_professor_discussion.md",
+      "sha256": "ea3f013ce743c5b27305615e2e5f1f409088d81cf25f5e54713e4cb567793c9d"
+    },
+    {
+      "path": "docs/research_plan/2026-10-16_professor_feedback_response_status.md",
+      "sha256": "0ecd9d574b69cf5e644a309049361af1b64449c8ddd2f4da2c3167bdb7eab255"
+    },
+    {
+      "path": "docs/research_plan/2026-10-14_research_synthesis_and_presentation_policy.md",
+      "sha256": "71ac1ea6673c3407016cb1045c805e1810ce63f1e656c137fc009980e1de9b27"
+    },
+    {
+      "path": "docs/progress/2026-10-16_slide_reconciled_proposal.md",
+      "sha256": "04bc21c1268138ad9183c7918f8cc4e5dd8af0d5768c56de394f62341b2b4e8a"
+    },
+    {
+      "path": "experiments/2026-10-15_clean_only_result_analysis/README.md",
+      "sha256": "1950a34f6fabc892d638b7c01635ded8875e2eb061cf165a96e4f7de3fbb726e"
+    },
+    {
+      "path": "experiments/2026-10-07_onb_input_and_integration/README.md",
+      "sha256": "f4b30d6f13e16717a0b16276f9117b662d1c2ba66bf013e62d2a9d87834e02f6"
+    },
+    {
+      "path": "experiments/2026-10-14_error_feature_linkage/history_figure_sources.json",
+      "sha256": "b23a98e2df81f01507f3b8482c3e97484d6e6452bd820bea1f5e5d528048a8c7"
+    },
+    {
+      "path": "experiments/2026-07-24_noise_shortcut_diagnostic/diagnostic_manifest.json",
+      "sha256": "29e40a7145902ad4f04cda3125e1820a28148fd834ed96e39857c8ca5aa9f43a"
+    },
+    {
+      "path": "experiments/2026-10-15_clean_only_result_analysis/recorded_onb_point_detection.csv",
+      "sha256": "fa824b22951550088b60d04f546f36a8e34ce0c339e18ef4107b74f2898f1969"
+    }
+  ],
+  "old_diagnostic_r2_aggregation": "mean across 3 KFold folds; June18/22kHz/PCA diagnostic",
+  "recorded_onb_detection_five": {
+    "clean": [
+      8,
+      30
+    ],
+    "-20": [
+      0,
+      30
+    ]
+  },
+  "onb_stage_counts_location": "speaker notes / backup; one-line limitation in main slides",
+  "physical_causality_not_claimed": true,
+  "new_model_fits": 0,
+  "new_inference": 0,
+  "new_input_interventions": 0,
+  "original_pptx_edited": false,
+  "model_code_edited": false,
+  "new_figure_generation": false,
+  "new_document_links_checked": 23,
+  "broken_new_document_links": 0
+}

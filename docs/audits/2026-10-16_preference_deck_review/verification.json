@@ -1,0 +1,49 @@
+{
+  "checked_at_jst": "2026-10-16T10:26:40.914224+09:00",
+  "source": "研究進捗報告\\2026\\1016（研究進捗報告）\\研究進捗_1016_編集用_修正版.pptx",
+  "source_sha256": "0bb45aec432d42ca16581a306560e0f50a4d15030e8f33f586ad35ca29180d87",
+  "source_unchanged": true,
+  "snapshot_matches_source": true,
+  "slides": 15,
+  "render_status": "completed",
+  "original_pptx_edited": false,
+  "new_training": 0,
+  "new_inference": 0,
+  "actual_page_numbers_used": true,
+  "table_pairs_equal_to_verified_previous_version": [
+    [
+      8,
+      6
+    ],
+    [
+      9,
+      7
+    ],
+    [
+      12,
+      9
+    ]
+  ],
+  "figure_slots": 6,
+  "figure_slot_actual_pages": [
+    5,
+    8,
+    9,
+    11,
+    11,
+    12
+  ],
+  "old_numbering_mixed": true,
+  "plan_table_rows": 11,
+  "plan_table_groups": 4,
+  "new_model_fits": 0,
+  "new_input_interventions": 0,
+  "new_plan_is_proposal": true,
+  "review_document": "docs/progress/2026-10-16_updated_deck_and_plan_review.md",
+  "all_rendered_slides_visually_reviewed": 15,
+  "plan_preview_visually_reviewed": true,
+  "source_unchanged_after_documentation": true,
+  "insertion_source_images_unchanged": true,
+  "new_document_links_verified": true,
+  "final_check_at_jst": "2026-10-16T10:32:56.491916+09:00"
+}
