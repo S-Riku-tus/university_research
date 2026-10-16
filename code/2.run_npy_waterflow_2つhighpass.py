@@ -30,7 +30,6 @@ MAX_FREQ_HZ = [3000, 5000, 10000, 15000, 22050]  # 3 kHz for the current ONB mod
 CHUNK_SECONDS_LIST = [0.5, 1]
 REFERENCE_SNR_DB = [None, 0, -4, -8, -12, -16, -20]  # None generates clean together with the noise levels.
 MAX_CHUNKS_PER_SOURCE = None  # Set 1 for a preview, with a separate SAVE_DATE tag.
-RESUME_EXISTING = True  # Keep completed outputs and fill missing files/manifest rows.
 
 AUDIO_SAMPLES_USED = 2646000
 SAVE_NPY = True
@@ -85,7 +84,6 @@ PREPROCESS_CONFIG = {
     "include_source_in_filename": True,
     "saved_array_dtype": "float32",
     "max_chunks_per_source": MAX_CHUNKS_PER_SOURCE,
-    "resume_existing": RESUME_EXISTING,
     "audio_loading": "scipy.io.wavfile + scipy.signal.resample_poly",
 }
 
@@ -204,16 +202,6 @@ def _write_reference_manifest(context, reference_rms, rms_by_path):
         context["base_npy_save_folder_path"],
         "global_reference_manifest.json",
     )
-    if RESUME_EXISTING and os.path.isfile(path):
-        with open(path, encoding="utf-8") as file:
-            previous = json.load(file)
-        for key in ("reference_rms", "filter", "source_count", "source_rms"):
-            if previous.get(key) != manifest[key]:
-                raise ValueError(
-                    f"Cannot resume: global reference {key} changed in {path}. "
-                    "Restore the original settings or use a new SAVE_DATE."
-                )
-        return
     with open(path, "w", encoding="utf-8") as file:
         json.dump(manifest, file, ensure_ascii=False, indent=2)
 
@@ -288,7 +276,7 @@ def run_all_experiments():
                 for wav_i, (filename, file_path) in enumerate(
                     zip(wav_files, wav_paths), start=1
                 ):
-                    counts = save_spectrogram_chunks_with_snr(
+                    save_spectrogram_chunks_with_snr(
                         file_path=file_path,
                         max_freq_hz=max_freq_hz,
                         chunk_seconds=chunk_seconds,
@@ -304,11 +292,7 @@ def run_all_experiments():
                     )
                     print(
                         f"---------- {wav_i} / {len(wav_files)} "
-                        f"({filename}) done! "
-                        f"[skipped chunks={counts['skipped_chunks']}, "
-                        f"NPY written={counts['npy_written']}, "
-                        f"PNG written={counts['png_written']}, "
-                        f"manifest repaired={counts['manifest_repaired']}] ----------"
+                        f"({filename}) done! ----------"
                     )
 
             del filtered_signal_by_path

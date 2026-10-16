@@ -1,0 +1,21 @@
+{
+  "checked_at_jst": "2026-10-15T21:14:22.424148+09:00",
+  "all_22_user_choices_mapped": true,
+  "slides": 11,
+  "source_hashes_unchanged": true,
+  "original_pptx_edited": false,
+  "previous_preview_preserved": true,
+  "local_links_checked": 26,
+  "geometry_failures": [],
+  "text_overflows": [],
+  "new_plots_from_saved_tables": 3,
+  "new_training": 0,
+  "new_inference": 0,
+  "new_input_interventions": 0,
+  "stopped_matched_read": false,
+  "not_yet_adopted_by_user": true,
+  "pdf_pages": 11,
+  "source_images_unchanged": true,
+  "visual_review": "All-slide montage and changed slides 4, 7, 8, 9 reviewed",
+  "protected_sources_still_unchanged_after_index_updates": true
+}

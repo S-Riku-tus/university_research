@@ -1,0 +1,55 @@
+{
+  "regional_bars": [
+    {
+      "noise": "clean",
+      "region_n": [
+        225,
+        30,
+        285
+      ],
+      "mse_reduction": [
+        -138.065506192179,
+        1296.3310478052776,
+        707.4189870772359
+      ]
+    },
+    {
+      "noise": "-20",
+      "region_n": [
+        225,
+        30,
+        285
+      ],
+      "mse_reduction": [
+        1514.564608786268,
+        -1044.8104809893794,
+        663.2084912363193
+      ]
+    }
+  ],
+  "error_group_shares": [
+    {
+      "noise": "clean",
+      "same_direction_percent": 54.65308001490256,
+      "opposite_signs_percent": 45.34691998509742
+    },
+    {
+      "noise": "-20",
+      "same_direction_percent": 87.15065669423076,
+      "opposite_signs_percent": 12.849343305769231
+    }
+  ],
+  "integration_time_permutation": {
+    "ensemble__original3_mse": {
+      "before": 34.068337534473685,
+      "after": 47.521222478376814
+    },
+    "ensemble__original3_hgb_extra_trees": {
+      "before": 27.79928963314355,
+      "after": 31.09815614913664
+    }
+  },
+  "high_q_definition": "ONB-and-above 315 minus near-ONB 30 = disjoint high-q 285",
+  "new_model_fits": 0,
+  "new_inference": 0
+}

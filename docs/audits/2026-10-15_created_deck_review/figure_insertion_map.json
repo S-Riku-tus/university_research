@@ -1,0 +1,110 @@
+[
+  {
+    "page": 4,
+    "label": "旧生成診断",
+    "file": "experiments/2026-10-14_error_feature_linkage/slide_old_noise_shortcut.png",
+    "slot_cm": [
+      4.2,
+      9.05,
+      23.8,
+      11.6
+    ],
+    "image_rect_cm": [
+      4.886,
+      9.05,
+      22.428,
+      11.6
+    ],
+    "source_sha256": "88f68b35b1a4f9f902327809ee962dcad0cb8b4e5c0b39d836af651e266274b0"
+  },
+  {
+    "page": 6,
+    "label": "全7条件RMSE",
+    "file": "docs/progress/assets/2026-10-16/current_regression_noise_trend.png",
+    "slot_cm": [
+      4.2,
+      9.05,
+      27.0,
+      13.1
+    ],
+    "image_rect_cm": [
+      4.215,
+      9.05,
+      26.97,
+      13.1
+    ],
+    "source_sha256": "005b4571b7a4fa50c222dc6d0569c7a2d3ab807f983813c05747732295603843"
+  },
+  {
+    "page": 7,
+    "label": "見逃し件数",
+    "file": "docs/progress/assets/2026-10-16/current_onb_false_negatives.png",
+    "slot_cm": [
+      4.2,
+      9.05,
+      26.5,
+      13.1
+    ],
+    "image_rect_cm": [
+      4.957,
+      9.05,
+      24.985,
+      13.1
+    ],
+    "source_sha256": "5a5e78daa9437933ac94dab0b6f0eaf3325e30c670a53cf852ef3d5bb718fd57"
+  },
+  {
+    "page": 8,
+    "label": "領域別MSE減少",
+    "file": "docs/progress/assets/2026-10-16/reconciled_preview/regional_mse_reduction.png",
+    "slot_cm": [
+      4.2,
+      9.05,
+      23.6,
+      12.35
+    ],
+    "image_rect_cm": [
+      5.606,
+      9.05,
+      20.789,
+      12.35
+    ],
+    "source_sha256": "e29ac41440a52742547b4d4d01c4b491ba14fe17cd33bb107c1d75b9a66b08e2"
+  },
+  {
+    "page": 8,
+    "label": "誤差方向群の寄与",
+    "file": "docs/progress/assets/2026-10-16/reconciled_preview/error_group_contribution.png",
+    "slot_cm": [
+      29.3,
+      9.05,
+      19.1,
+      12.35
+    ],
+    "image_rect_cm": [
+      29.3,
+      9.257,
+      19.1,
+      11.936
+    ],
+    "source_sha256": "2ccf62893efab32c95d7d881b65804d9824a80a5a89b10673d66d4eec5de7f02"
+  },
+  {
+    "page": 9,
+    "label": "時間順序加工",
+    "file": "docs/progress/assets/2026-10-16/reconciled_preview/time_permutation_models.png",
+    "slot_cm": [
+      4.2,
+      11.15,
+      25.5,
+      10.9
+    ],
+    "image_rect_cm": [
+      6.297,
+      11.15,
+      21.306,
+      10.9
+    ],
+    "source_sha256": "ff366a5725b8f075270c85bdcc0cce83b172bfbaba849179d74d9690769f7dfc"
+  }
+]

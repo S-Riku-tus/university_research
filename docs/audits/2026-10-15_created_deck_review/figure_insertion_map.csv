@@ -1,0 +1,7 @@
+﻿page,label,file,left_cm,top_cm,width_cm,height_cm
+4,旧生成診断,experiments/2026-10-14_error_feature_linkage/slide_old_noise_shortcut.png,4.886,9.05,22.428,11.6
+6,全7条件RMSE,docs/progress/assets/2026-10-16/current_regression_noise_trend.png,4.215,9.05,26.97,13.1
+7,見逃し件数,docs/progress/assets/2026-10-16/current_onb_false_negatives.png,4.957,9.05,24.985,13.1
+8,領域別MSE減少,docs/progress/assets/2026-10-16/reconciled_preview/regional_mse_reduction.png,5.606,9.05,20.789,12.35
+8,誤差方向群の寄与,docs/progress/assets/2026-10-16/reconciled_preview/error_group_contribution.png,29.3,9.257,19.1,11.936
+9,時間順序加工,docs/progress/assets/2026-10-16/reconciled_preview/time_permutation_models.png,6.297,11.15,21.306,10.9

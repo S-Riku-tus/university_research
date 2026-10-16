@@ -1,0 +1,144 @@
+{
+  "checks": [
+    {
+      "item": "page6 clean ensemble__original3_mse",
+      "displayed": 34.07,
+      "expected_rounded": 34.07,
+      "passed": true
+    },
+    {
+      "item": "page6 clean ensemble__original3_hgb_extra_trees",
+      "displayed": 27.8,
+      "expected_rounded": 27.8,
+      "passed": true
+    },
+    {
+      "item": "page6 -20 ensemble__original3_mse",
+      "displayed": 81.14,
+      "expected_rounded": 81.14,
+      "passed": true
+    },
+    {
+      "item": "page6 -20 ensemble__original3_hgb_extra_trees",
+      "displayed": 75.23,
+      "expected_rounded": 75.23,
+      "passed": true
+    },
+    {
+      "item": "page7 q100 2025.06.11_0.3_2 ensemble__original3_mse",
+      "displayed": 368.98,
+      "expected_rounded": 368.98,
+      "passed": true
+    },
+    {
+      "item": "page7 q100 2025.06.11_0.3_2 ensemble__original3_hgb_extra_trees",
+      "displayed": 368.98,
+      "expected_rounded": 368.98,
+      "passed": true
+    },
+    {
+      "item": "page7 q100 2025.06.18_0.3_3 ensemble__original3_mse",
+      "displayed": 434.02,
+      "expected_rounded": 434.02,
+      "passed": true
+    },
+    {
+      "item": "page7 q100 2025.06.18_0.3_3 ensemble__original3_hgb_extra_trees",
+      "displayed": 376.32,
+      "expected_rounded": 376.32,
+      "passed": true
+    },
+    {
+      "item": "page9 ensemble__original3_mse rmse_all_kW_m2__original",
+      "displayed": 34.07,
+      "expected_rounded": 34.07,
+      "passed": true
+    },
+    {
+      "item": "page9 ensemble__original3_mse rmse_all_kW_m2",
+      "displayed": 47.52,
+      "expected_rounded": 47.52,
+      "passed": true
+    },
+    {
+      "item": "page9 ensemble__original3_hgb_extra_trees rmse_all_kW_m2__original",
+      "displayed": 27.8,
+      "expected_rounded": 27.8,
+      "passed": true
+    },
+    {
+      "item": "page9 ensemble__original3_hgb_extra_trees rmse_all_kW_m2",
+      "displayed": 31.1,
+      "expected_rounded": 31.1,
+      "passed": true
+    },
+    {
+      "item": "page7 FN clean ensemble__original3_mse",
+      "displayed": 42.0,
+      "expected_rounded": 42.0,
+      "passed": true
+    },
+    {
+      "item": "page7 FP clean ensemble__original3_mse",
+      "displayed": 1.0,
+      "expected_rounded": 1.0,
+      "passed": true
+    },
+    {
+      "item": "page7 FN clean ensemble__original3_hgb_extra_trees",
+      "displayed": 27.0,
+      "expected_rounded": 27.0,
+      "passed": true
+    },
+    {
+      "item": "page7 FP clean ensemble__original3_hgb_extra_trees",
+      "displayed": 1.0,
+      "expected_rounded": 1.0,
+      "passed": true
+    },
+    {
+      "item": "page7 FN -20 ensemble__original3_mse",
+      "displayed": 65.0,
+      "expected_rounded": 65.0,
+      "passed": true
+    },
+    {
+      "item": "page7 FP -20 ensemble__original3_mse",
+      "displayed": 0.0,
+      "expected_rounded": 0.0,
+      "passed": true
+    },
+    {
+      "item": "page7 FN -20 ensemble__original3_hgb_extra_trees",
+      "displayed": 52.0,
+      "expected_rounded": 52.0,
+      "passed": true
+    },
+    {
+      "item": "page7 FP -20 ensemble__original3_hgb_extra_trees",
+      "displayed": 0.0,
+      "expected_rounded": 0.0,
+      "passed": true
+    },
+    {
+      "item": "page8 same-direction contribution -20",
+      "displayed": 87.15,
+      "expected_rounded": 87.15,
+      "passed": true
+    },
+    {
+      "item": "page6 clean-to-minus20 delta ensemble__original3_mse",
+      "displayed": 47.07,
+      "expected_rounded": 47.07,
+      "passed": true
+    },
+    {
+      "item": "page6 clean-to-minus20 delta ensemble__original3_hgb_extra_trees",
+      "displayed": 47.43,
+      "expected_rounded": 47.43,
+      "passed": true
+    }
+  ],
+  "all_passed": true,
+  "scope": "Displayed tables and numeric claims; not a new fit or scientific re-evaluation"
+}

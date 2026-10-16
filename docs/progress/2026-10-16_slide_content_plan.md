@@ -1,5 +1,7 @@
 # 10/16研究進捗発表 各スライドの内容案
 
+**別AI案と本人採否を踏まえた後続提案**：[再検討11枚・1〜22対応・文章/配置](2026-10-16_slide_reconciled_proposal.md)、[新配置見本PDF](assets/2026-10-16/reconciled_preview/reconciled_slide_preview.pdf)。進展先出しと旧問題1枚化を提案。本人の最終採用は未確定で、以下の旧順序と配置例も保持する。
+
 **作成に使う具体化版**：[貼り付け文章・cm座標・図表・口頭説明](2026-10-16_slide_build_guide.md)、[全11枚の配置見本PDF](assets/2026-10-16/layout_preview/slide_layout_preview.pdf)。以下の筋を保ち、4の模式図は縦3段で指定した。原PPTXは保持。
 
 作成日：2026-10-14。本人の最新返信、[完了確認を除いた方針](../research_plan/2026-10-14_completed_checks_noise_history_and_future_ensembles.md)、[今回の保存結果分析](../../experiments/2026-10-14_error_feature_linkage/README.md)、[10/16コピーと9/18版の書式分析](../audits/2026-10-14_slide_style_and_content/style_analysis.md)に基づく。

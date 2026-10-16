@@ -5,13 +5,10 @@ import math
 import os
 import re
 from datetime import datetime
-from functools import lru_cache
-import tempfile
 
 import librosa as lr
 import matplotlib.pyplot as plt
 import numpy as np
-from PIL import Image
 from scipy import signal
 from skimage.transform import resize
 
@@ -311,76 +308,10 @@ def write_chunk_manifest(out_dir, rows):
             int(float(row.get("chunk_index", 0))),
         )
 
-    # An interruption during CSV writing must leave the previous manifest intact.
-    temporary_path = None
-    try:
-        with tempfile.NamedTemporaryFile(
-            mode="w", newline="", encoding="utf-8", dir=out_dir,
-            prefix="chunk_manifest_", suffix=".tmp", delete=False,
-        ) as f:
-            temporary_path = f.name
-            writer = csv.DictWriter(f, fieldnames=fieldnames, extrasaction="ignore")
-            writer.writeheader()
-            writer.writerows(sorted(merged.values(), key=sort_key))
-        os.replace(temporary_path, manifest_path)
-    finally:
-        if temporary_path and os.path.isfile(temporary_path):
-            os.remove(temporary_path)
-
-
-@lru_cache(maxsize=16)
-def _manifest_filenames(manifest_path, modified_ns, size):
-    """Cache completed filenames while an unchanged manifest is reused by WAVs."""
-    with open(manifest_path, newline="", encoding="utf-8-sig") as file:
-        return frozenset(
-            row["sample_filename"] for row in csv.DictReader(file)
-            if row.get("sample_filename")
-        )
-
-
-def _recorded_filenames(folder):
-    if folder is None:
-        return frozenset()
-    path = os.path.join(folder, "chunk_manifest.csv")
-    try:
-        stat = os.stat(path)
-    except FileNotFoundError:
-        return frozenset()
-    return _manifest_filenames(path, stat.st_mtime_ns, stat.st_size)
-
-
-def _complete_npy(path, dtype):
-    """Check the NPY header and payload length without loading the full array."""
-    if path is None:
-        return False
-    try:
-        with open(path, "rb") as file:
-            version = np.lib.format.read_magic(file)
-            if version == (1, 0):
-                shape, fortran, saved_dtype = np.lib.format.read_array_header_1_0(file)
-            elif version == (2, 0):
-                shape, fortran, saved_dtype = np.lib.format.read_array_header_2_0(file)
-            else:
-                return False
-            return (
-                shape == (224, 224) and not fortran and saved_dtype == dtype
-                and os.fstat(file.fileno()).st_size == file.tell() + 224 * 224 * dtype.itemsize
-            )
-    except (OSError, ValueError, EOFError):
-        return False
-
-
-def _complete_png(path):
-    if path is None:
-        return False
-    try:
-        with Image.open(path) as image:
-            if image.format != "PNG":
-                return False
-            image.verify()
-        return True
-    except (OSError, ValueError, SyntaxError):
-        return False
+    with open(manifest_path, "w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=fieldnames, extrasaction="ignore")
+        writer.writeheader()
+        writer.writerows(sorted(merged.values(), key=sort_key))
 
 
 def write_preprocess_manifest(
@@ -504,24 +435,6 @@ def write_preprocess_manifest(
         },
     }
     manifest_path = os.path.join(out_dir, "preprocess_manifest.json")
-    if config.get("resume_existing", False) and os.path.isfile(manifest_path):
-        with open(manifest_path, encoding="utf-8") as file:
-            previous = json.load(file)
-        # Creation time and the spelling/case of Windows paths do not change data.
-        path_keys = {"source_audio_folder", "waterflow_path", "heat_flux_csv_path"}
-        for key, value in manifest.items():
-            if key in {"created_at", "script"}:
-                continue
-            saved_value = previous.get(key)
-            if key in path_keys and saved_value is not None:
-                value = os.path.normcase(os.path.abspath(value))
-                saved_value = os.path.normcase(os.path.abspath(saved_value))
-            if saved_value != value:
-                raise ValueError(
-                    f"Cannot resume: preprocessing {key} changed in {manifest_path}. "
-                    "Restore the original settings or use a new SAVE_DATE."
-                )
-        return
     with open(manifest_path, "w", encoding="utf-8") as f:
         json.dump(manifest, f, ensure_ascii=False, indent=2)
 
@@ -639,11 +552,6 @@ def save_spectrogram_chunks_with_snr(
     saved_array_dtype = np.dtype(
         config.get("saved_array_dtype", "float64")
     )
-    resume_existing = bool(config.get("resume_existing", False))
-    counts = {
-        "skipped_chunks": 0, "npy_written": 0, "png_written": 0,
-        "manifest_repaired": 0,
-    }
 
     for snr in snr_db:
         snr_label = (
@@ -668,9 +576,6 @@ def save_spectrogram_chunks_with_snr(
         else:
             png_snr_save_folder_path = None
 
-        recorded_npy = _recorded_filenames(npy_snr_save_folder_path) if resume_existing else frozenset()
-        recorded_png = _recorded_filenames(png_snr_save_folder_path) if resume_existing else frozenset()
-
         all_chunk_starts = list(range(0, len(y), data_length))
         max_chunks_per_source = config.get("max_chunks_per_source")
         if (
@@ -693,35 +598,6 @@ def save_spectrogram_chunks_with_snr(
         chunk_manifest_rows = []
         for i in chunk_starts:
             chunk_index = i // data_length
-            if include_source_in_filename:
-                safe_source = sanitize_label_for_filename(source_wav_id).replace(" ", "-")
-                file_stem = f"{extracted_label}_src-{safe_source}_chunk-{chunk_index:04d}"
-            else:
-                file_stem = f"{extracted_label}_{chunk_index}"
-            npy_save_path = (
-                os.path.join(npy_snr_save_folder_path, f"{file_stem}.npy")
-                if config["save_npy"] else None
-            )
-            png_save_path = (
-                os.path.join(png_snr_save_folder_path, f"{file_stem}.png")
-                if config["save_spectrogram_png"] else None
-            )
-            write_npy = config["save_npy"] and not (
-                resume_existing and _complete_npy(npy_save_path, saved_array_dtype)
-            )
-            write_png = config["save_spectrogram_png"] and not (
-                resume_existing and _complete_png(png_save_path)
-            )
-            metadata_complete = (
-                (not config["save_npy"] or f"{file_stem}.npy" in recorded_npy)
-                and (not config["save_spectrogram_png"] or f"{file_stem}.png" in recorded_png)
-            )
-            if resume_existing and not write_npy and not write_png:
-                if metadata_complete:
-                    counts["skipped_chunks"] += 1
-                    continue
-                counts["manifest_repaired"] += 1
-
             signal_chunk = y[i : i + data_length]
             unpadded_signal_samples = len(signal_chunk)
             if len(signal_chunk) < data_length:
@@ -776,22 +652,30 @@ def save_spectrogram_chunks_with_snr(
                     signal_chunk, scaled_noise_chunk
                 )
 
-            if write_png and npy_save_path is not None and not write_npy:
-                # Recover a missing PNG using its already completed model input.
-                resized_amplitude = np.load(npy_save_path, allow_pickle=False)
-            elif write_npy or write_png:
-                amplitude = calc_stft(
-                    model_input_chunk, config["sample_number"], sr
-                )
-                amplitude_cropped = amplitude[:, : max_k + 1]
-                resized_amplitude = resize(
-                    amplitude_cropped, (224, 224)
-                ).astype(saved_array_dtype, copy=False)
+            amplitude = calc_stft(
+                model_input_chunk, config["sample_number"], sr
+            )
+            amplitude_cropped = amplitude[:, : max_k + 1]
+            resized_amplitude = resize(
+                amplitude_cropped, (224, 224)
+            ).astype(saved_array_dtype, copy=False)
 
-            if write_npy:
+            if include_source_in_filename:
+                safe_source = sanitize_label_for_filename(source_wav_id).replace(
+                    " ", "-"
+                )
+                file_stem = (
+                    f"{extracted_label}_src-{safe_source}_"
+                    f"chunk-{chunk_index:04d}"
+                )
+            else:
+                file_stem = f"{extracted_label}_{chunk_index}"
+            if config["save_npy"]:
+                npy_save_path = os.path.join(
+                    npy_snr_save_folder_path, f"{file_stem}.npy"
+                )
                 np.save(npy_save_path, resized_amplitude)
-                counts["npy_written"] += 1
-            if write_png:
+            if config["save_spectrogram_png"]:
                 time_axis = np.linspace(
                     0, chunk_seconds, resized_amplitude.shape[0]
                 )
@@ -837,6 +721,9 @@ def save_spectrogram_chunks_with_snr(
                     left=0.25, right=0.85, top=0.85, bottom=0.25
                 )
 
+                png_save_path = os.path.join(
+                    png_snr_save_folder_path, f"{file_stem}.png"
+                )
                 pad_inches = 0.02 if config["png_with_axes"] else 0
                 plt.savefig(
                     png_save_path,
@@ -845,7 +732,6 @@ def save_spectrogram_chunks_with_snr(
                     pad_inches=pad_inches,
                 )
                 plt.close()
-                counts["png_written"] += 1
 
             row = {
                 "sample_filename": f"{file_stem}.npy",
@@ -909,8 +795,6 @@ def save_spectrogram_chunks_with_snr(
             write_chunk_manifest(
                 png_snr_save_folder_path, png_rows
             )
-
-    return counts
 
 
 def get_sorted_wav_files(folder_path):

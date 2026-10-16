@@ -1,0 +1,39 @@
+{
+  "checked_at_jst": "2026-10-15T23:23:13.272286+09:00",
+  "source": "研究進捗報告\\2026\\1016（研究進捗報告）\\研究進捗_1016_編集用_修正版.pptx",
+  "source_sha256": "a79879f279b2adccee02c5f21680364e9d6f6545c5633fd64449c93a4479d90d",
+  "source_unchanged": true,
+  "snapshot_matches_source": true,
+  "slides": 11,
+  "render_status": "completed",
+  "original_pptx_edited": false,
+  "new_training": 0,
+  "new_inference": 0,
+  "rendered_pages_viewed": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11
+  ],
+  "placeholder_slots": 6,
+  "placeholder_pages": [
+    4,
+    6,
+    7,
+    8,
+    9
+  ],
+  "numeric_items_checked": 23,
+  "all_displayed_numeric_items_match": true,
+  "native_powerpoint_render": true,
+  "source_figures_modified": false,
+  "local_markdown_links_checked": 22,
+  "review_document_ready": true
+}

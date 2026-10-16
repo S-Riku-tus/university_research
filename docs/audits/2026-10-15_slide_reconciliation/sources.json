@@ -1,0 +1,24 @@
+{
+  "protected_sources": {
+    "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\研究進捗報告\\2026\\1016（研究進捗報告）\\研究進捗_柴崎陸_1016.pptx": "61ff57ee77725a23d67aa2aeed1d20461ad3e164552a9b65165f96cd39c8bbeb",
+    "C:\\Users\\Casper4\\.codex\\attachments\\030ae9c8-efd2-4f9b-bf1d-41f7117c562b\\貼り付けたテキスト.txt": "79ee858e33c1ef7f2a5aaf3132070a90742b906a23cbf05b76acae362b9e3d8d",
+    "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\experiments\\2026-10-15_clean_only_result_analysis\\pooled_metrics.csv": "654a8e6a8fee1feaf6e8b06298b4aa453da4dd23f170762acc6fca2a497d0b20",
+    "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\experiments\\2026-10-15_clean_only_result_analysis\\regional_loss_changes.csv": "76bfb866f20305d0783664fb04a481d1bea4ae095ae836af3810ff86cfbd6e8e",
+    "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\experiments\\2026-10-15_clean_only_result_analysis\\error_direction_contributions.csv": "128bcd4f00a418c4ceec1d710d59239ca8068e62fd4f6a4b0c659e490ad2ecf1",
+    "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\experiments\\2026-10-14_error_feature_linkage\\existing_feature_dependence.csv": "7b654abc171b41dd9c8f84bc9e872690c2b4e455d38fe43853fc3459f61b3336",
+    "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\docs\\progress\\2026-10-16_slide_build_guide.md": "68eb8b312c804f2919638ba10b99de51a74a08180ed158d14e937c29e47f8f97"
+  },
+  "inserted_images": {
+    "docs/progress/assets/2026-10-16/overview_pipeline.png": "1837ac10397a4ec89622f846dce3aff1602b7f8af4e9c6cbfaddaa958eb1aa73",
+    "experiments/2026-10-14_error_feature_linkage/slide_old_noise_shortcut.png": "88f68b35b1a4f9f902327809ee962dcad0cb8b4e5c0b39d836af651e266274b0",
+    "docs/progress/assets/2026-10-16/evaluation_and_models.png": "6acc882da334decdbe5eed7f756b4f8c8e63e067492c9b5bb6a084a901a8d0a8",
+    "docs/progress/assets/2026-10-16/current_regression_noise_trend.png": "005b4571b7a4fa50c222dc6d0569c7a2d3ab807f983813c05747732295603843",
+    "docs/progress/assets/2026-10-16/current_onb_false_negatives.png": "5a5e78daa9437933ac94dab0b6f0eaf3325e30c670a53cf852ef3d5bb718fd57",
+    "docs/progress/assets/2026-10-16/reconciled_preview/regional_mse_reduction.png": "e29ac41440a52742547b4d4d01c4b491ba14fe17cd33bb107c1d75b9a66b08e2",
+    "docs/progress/assets/2026-10-16/reconciled_preview/error_group_contribution.png": "2ccf62893efab32c95d7d881b65804d9824a80a5a89b10673d66d4eec5de7f02",
+    "docs/progress/assets/2026-10-16/reconciled_preview/time_permutation_models.png": "ff366a5725b8f075270c85bdcc0cce83b172bfbaba849179d74d9690769f7dfc",
+    "docs/progress/assets/2026-10-16/semester_plan_progress.png": "3e52934cd648319ef1fe6539de4af6398e454a424810005937381d22f3eb8b80"
+  },
+  "attachment_role": "User supplied alternative proposal, not an instruction authority",
+  "authoritative_user_selection": "docs/research_plan/2026-10-14_friday_selection_and_question_answers.md"
+}
