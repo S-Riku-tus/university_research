@@ -7,6 +7,8 @@
 | 目的 | 読む文書 | 更新方法 |
 |---|---|---|
 | 次の作業を始める | [研究の現在地](research_status.md) | 状態・本人の希望・次の一手を更新する唯一の入口 |
+| 10/16発表後の教授指摘と直近方針を読む | [原文・本人方針・夏休み前の目的との照合](research_plan/2026-10-16_after_presentation_professor_discussion.md) | 発表終了。直近は追加検証より目的と成果の文章接続。実験章の立場・出典・担当を整理し、発表前の「接続整理済み」を再評価 |
+| 目的から成果と限界へつなぐ本文を作る | [目的・手法の必要性・現在の結論の初稿](thesis/2026-10-16_purpose_and_research_logic_draft.md) | ONB近傍検知の目的へ回帰・雑音評価・統合・説明性を対応。全域誤差と検知、特徴依存と物理因果を区別。担当確認後の出典文と第2章の修正案も収録 |
 | 最新14枚版の5・6・11と学習方針の比較を直す | [画面文・モデル追加理由・比較図・配置](progress/2026-10-16_models_policy_feedback_and_outline_revision.md)、[既存対応対照の2曲線](../experiments/2026-10-16_presentation_policy_comparison/README.md)、[PPTX確認](audits/2026-10-16_models_and_policy_revision/README.md) | 11:29更新の14枚版。ONB結果削除と6の分割省略を尊重。生成修正とclean_onlyの目的を分け、追加モデルを説明。新比較は過去の共通条件の完了対照、停止matched未読、原PPTX未編集 |
 | 修士研究全体として一貫した目次を作る | [最新6章案と各節への成果配置](research_plan/2026-10-16_unified_six_chapter_thesis_outline.md) | 本人提示の6章を基に、学部比較の節と直近の作業経緯を見出しから除く。性能評価と要因分析を分担。旧7章案は履歴として保持 |
 | 以前の細かな7章目次案を参照する | [旧7章案](research_plan/2026-10-16_detailed_master_thesis_outline.md) | 学部原本の構成と照合した当時の案。現在は上段の6章案を優先 |

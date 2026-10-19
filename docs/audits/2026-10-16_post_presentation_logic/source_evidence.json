@@ -1,0 +1,122 @@
+{
+  "primary_and_supporting_sources": [
+    {
+      "path": "研究進捗報告/研究計画の基本となる考え方_柴崎陸.docx",
+      "sha256": "73c087e5abd70292f6ec8064427421e5e7913a25dd0755736135c2407804f432",
+      "unchanged": true,
+      "selected_excerpts": [
+        {
+          "paragraph": 11,
+          "text": "本研究の目的は、プール沸騰音に含まれるONB近傍の微弱な時間・周波数特徴を、ノイズ下でも熱流束推定と沸騰開始点近傍の検知に利用できるかを明らかにすることである。そのために、音響スペクトログラムから熱流束を回帰し、予測熱流束の閾値処理によってONB近傍を検知する流れを用いる。さらに、入力表現、単体モデル、アンサンブル統合を比較し、どの構成がノイズ条件下でも安定した検知につながるか、またその判断根拠が物理的に妥当かを評価する。"
+        }
+      ]
+    },
+    {
+      "path": "研究進捗報告/2026_AE＿植木研＿8125517＿柴崎陸.docx",
+      "sha256": "44cbfbd996cf3666da33cc8537f26a90334246e0d1d126ecda9445663e43c26e",
+      "unchanged": true,
+      "selected_excerpts": [
+        {
+          "paragraph": 38,
+          "text": "研究計画：本研究の目的は、プール沸騰実験で得られる音響信号から熱流束を回帰予測し、その予測値を用いて沸騰開始点近傍を早期に検知できる手法を構築するとともに、モデルが利用している時間・周波数特徴を物理現象と対応づけて説明できるようにすることである。学部研究では、音響スペクトログラムを用いた熱流束回帰とONB閾値による沸騰発生検知の基本的成立性を示した。修士2年次では、この流れを発展させ、複数モデルを同一条件で調整・評価し、性能だけでなく生成AIの出力に対する説明性とONB近傍での信頼性まで含めて比較することを目指す。具体的には以下の3点の達成を目標とする。"
+        },
+        {
+          "paragraph": 39,
+          "text": "CNN系、CNN+Transformer系、RandomForest系の各モデルについて、入力前処理、学習条件、評価条件を整理し、熱流束回帰およびONB近傍検知の性能を同一条件で比較する。"
+        },
+        {
+          "paragraph": 40,
+          "text": "予測熱流束に基づくONB近傍の早期検知性能を、全体回帰精度だけでなく、ONB近傍誤差、見逃し率、検知遅れ、ノイズ条件下での安定性の観点から評価する。"
+        },
+        {
+          "paragraph": 41,
+          "text": "Grad-CAM、Integrated Gradients、Attention、SHAP、時間・周波数マスクなどを用いて、各モデルが熱流束予測に利用している特徴を可視化・定量化し、沸騰現象に関係する特徴と対応しているかを検討する。"
+        }
+      ]
+    },
+    {
+      "path": "研究進捗報告/2026/522（研究計画発表）/研究進捗_柴崎陸_0522.pptx",
+      "sha256": "b1540ab180f76b7b2b2830bbc2b3f0ecd0f1281d55f78ca2073e845a091a7892",
+      "unchanged": true,
+      "selected_excerpts": [
+        {
+          "slide": 6,
+          "text": "6\nTokyo University of Science\n\n\n\n\n\n\n\n研究目的\n学士研究と修士研究の違いをまとめた\n\n比較項目\n学士\n修士\n▶修士で深める観点\n研究目的\nスペクトログラムとCNN回帰で沸騰検知できるかを確認\nONB近傍の離散的な沸騰音特徴を、モデルがどう捉えるかを解析\n\n入力\n音響信号を画像として扱い、CNNに入力する\nSTFT窓幅変更、CWT、Mel spectrogramなどを比較\n\nモデル\n局所的な特徴から熱流束を予測（CNNのみ）\nAlexNetとConformer，ランダムフォレストを比較\n\n評価指標\n予測精度・分類性能を評価\nONB近傍誤差、検知遅れ、低FPR性能、条件外汎化も評価\n\n説明性\nなし\nGrad-CAM、Integrated Gradients、Attention Rollout、RISE、マスク実験\n\nデータ・実験条件\n同一条件内での再現性確認\nサブクール度、細線条件、ONB近傍刻み幅を変える\n"
+        },
+        {
+          "slide": 7,
+          "text": "7\nTokyo University of Science\n\n\n\n\n\n\n\n研究目的\n学士研究と修士研究の違いをまとめた\n\n比較項目\n学士\n修士\n▶修士で深める観点\n研究目的\nスペクトログラムとCNN回帰で沸騰検知できるかを確認\nONB近傍の離散的な沸騰音特徴を、モデルがどう捉えるかを解析\n「検知できる」→「なぜ検知できるか」\n入力\n音響信号を画像として扱い、CNNに入力する\nSTFT窓幅変更、CWT、Mel spectrogramなどを比較\nどの時間–周波数表現がONB近傍特徴を捉えやすいか\nモデル\n局所的な特徴から熱流束を予測（CNNのみ）\nAlexNetとConformer，ランダムフォレストを比較\n局所特徴だけでなく、時間的な出現・増加傾向を捉えられるか\n評価指標\n予測精度・分類性能を評価\nONB近傍誤差、検知遅れ、低FPR性能、条件外汎化も評価\n原子炉安全上重要な「早く・誤検知少なく」検知できるか\n説明性\nなし\nGrad-CAM、Integrated Gradients、Attention Rollout、RISE、マスク実験\nモデルの根拠が物理的に妥当か\nデータ・実験条件\n同一条件内での再現性確認\nサブクール度、細線条件、ONB近傍刻み幅を変える\n条件が変わっても検知できるか"
+        }
+      ]
+    },
+    {
+      "path": "研究進捗報告/2026/619（研究計画発表）/研究進捗_柴崎陸_0619.pptx",
+      "sha256": "cc0716c6ad5dee32a413e2326f259816fa41000b462c7fe9d5a4f7d8057b5a37",
+      "unchanged": true,
+      "selected_excerpts": [
+        {
+          "slide": 4,
+          "text": "4\nTokyo University of Science\n\n\n\n\n\n\n\n今回の進捗の位置づけ\n\nランダムフォレストを基準モデルとして回帰できる形で作成した\n今回できたこと\nランダムフォレストを独立した回帰モデルとして作成し，実行できるようにした\n音響データを.npy形式にし，入力から熱流束予測までの流れを確認\n6周波数上限 × 7ノイズ条件 = 42条件で評価\nランダムフォレストが現状の基準モデルとして比較的高い安定性を示すことを確認\n現在確認中のこと\nアンサンブルの取り扱い（より良い統合の仕方がないか？）\nchunk単位KFoldの妥当性\nAUC指標の扱い\n説明性評価の方法"
+        },
+        {
+          "slide": 5,
+          "text": "5\nTokyo University of Science\n\n\n\n\n\n\n\nランダムフォレストに入るまでのデータ処理\n\nスペクトログラムを1次元化し、PCAで圧縮してから学習する\nnpy スペクトログラム\n\nflatten : (N, 224×224)\n\nPCA : (N, 100)\n\nXGBRFRegressor\n\n予測熱流束\n\nONB しきい値で二値判定\nPCA・y のスケーリングは train fold のみで fit（validation 情報を前処理に使わない）"
+        }
+      ]
+    },
+    {
+      "path": "研究進捗報告/2026/724（中間発表）/研究進捗_柴崎陸_0724.pptx",
+      "sha256": "247322a09ce055d25a2b5ee55b3a844482da0dd7c204651122d4cd3e58879c0e",
+      "unchanged": true,
+      "selected_excerpts": [
+        {
+          "slide": 4,
+          "text": "4\nTokyo University of Science\n\n\n\n\n\n\n\n現在残っている課題と理由\n\nアンサンブルの実装を優先してしまっていたため，説明性が遅れ気味\n現在残っている課題\n1. 説明性出力の確認と解釈\n各手法による結果の確認\n各手法や条件間で結果の比較\n2. ONBに特化した検知手法について\nONB近傍の正式な定義\nONB近傍のデータの刻み幅や入力表現等の検討\nONB近傍の見逃し率や検知遅れ等の評価指標\n未完了となった理由\nConformerとAlexNetの精度が悪く，その修正に時間がかかった\n中間発表に向けて，説明性手法の実装を前倒しした"
+        },
+        {
+          "slide": 5,
+          "text": "5\nTokyo University of Science\n\n\n\n\n\n\n\n今後やること\n\n説明性の確認からONB評価定義・データ設計・再検証へ段階的に進める\n1  説明性出力を確認\n代表標本・モデル間・ノイズ条件間を比較\n2  ONB近傍評価を正式に定義\n近傍幅、Recall、False Negative、検知遅れ、評価単位\n3  ONB向けデータ・入力表現を設計\nONB前後の刻み、時間分解能、周波数表現\n4  評価分割と一般化条件を見直す\n元WAV単位、実験日単位、未知ノイズ条件\n5  単体モデル・アンサンブル・説明性を再検証\n最終モデルと主張できる範囲を確定"
+        },
+        {
+          "slide": 11,
+          "text": "Tokyo University of Science\n\n\n\n\n\n\n\n11\n説明性評価の現在の進捗\n\n説明結果の出力までは完了し、物理的解釈とモデル間比較を検証中\n完了したこと\nランダムフォレストのTreeSHAP\nConformer・AlexNetのIntegrated Gradients\n全モデルの周波数帯・時間帯マスクでの出力\n説明の安定性・ランダム化確認の出力\n現在確認していること\n入力スペクトログラムと説明画像の対応\n同一標本でのIGの整合性\nモデル間で重要領域が異なるか\nノイズ条件で重要領域が変化する理由\n重要領域を除くとONB性能が悪化するか"
+        }
+      ]
+    },
+    {
+      "path": "docs/research_plan/2026-05-22_after_presentation_concise.md",
+      "sha256": "6e005a384afb27f71f02b5b5414b758548bf103c0d2a9d84062b4b637846145d",
+      "role": "prior interpretation or results; not assumed verbatim professor speech"
+    },
+    {
+      "path": "docs/research_plan/2026-06-19_after_presentation.md",
+      "sha256": "5029e7c086cc8860417c517aa03af737bfb186ece060a78102120c3457828b5d",
+      "role": "prior interpretation or results; not assumed verbatim professor speech"
+    },
+    {
+      "path": "docs/research_plan/2026-07-24_current_progress_and_priorities.md",
+      "sha256": "ae3538fc257f790186b10d7b97bf6483d5c425c38d7ae746407e7d76597fa86f",
+      "role": "prior interpretation or results; not assumed verbatim professor speech"
+    },
+    {
+      "path": "docs/research_plan/2026-09-18_professor_discussion.md",
+      "sha256": "ea3f013ce743c5b27305615e2e5f1f409088d81cf25f5e54713e4cb567793c9d",
+      "role": "prior interpretation or results; not assumed verbatim professor speech"
+    },
+    {
+      "path": "experiments/2026-10-15_clean_only_result_analysis/README.md",
+      "sha256": "1950a34f6fabc892d638b7c01635ded8875e2eb061cf165a96e4f7de3fbb726e",
+      "role": "prior interpretation or results; not assumed verbatim professor speech"
+    },
+    {
+      "path": "experiments/2026-10-14_error_feature_linkage/README.md",
+      "sha256": "3ca841db5e45dab6792f2cbe42e7ede1b73d6bf68ded5ac533111c2e4d3b26b6",
+      "role": "prior interpretation or results; not assumed verbatim professor speech"
+    },
+    {
+      "path": "experiments/2026-10-07_onb_input_and_integration/README.md",
+      "sha256": "f4b30d6f13e16717a0b16276f9117b662d1c2ba66bf013e62d2a9d87834e02f6",
+      "role": "prior interpretation or results; not assumed verbatim professor speech"
+    }
+  ]
+}
