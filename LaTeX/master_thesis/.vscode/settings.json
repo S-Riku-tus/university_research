@@ -1,0 +1,14 @@
+{
+  "latex-workshop.latex.autoBuild.run": "never",
+  "latex-workshop.latex.outDir": "%DIR%/build",
+  "latex-workshop.latex.recipes": [
+    {"name": "Thesis (PowerShell + Tectonic)", "tools": ["thesis-build"]}
+  ],
+  "latex-workshop.latex.tools": [
+    {
+      "name": "thesis-build",
+      "command": "powershell.exe",
+      "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "%DIR%/build.ps1"]
+    }
+  ]
+}

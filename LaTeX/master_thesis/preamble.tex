@@ -1,0 +1,41 @@
+\usepackage{fontspec}
+\setmainfont[BoldFont=texgyretermes-bold.otf,ItalicFont=texgyretermes-italic.otf,BoldItalicFont=texgyretermes-bolditalic.otf]{texgyretermes-regular.otf}
+\setsansfont[BoldFont=texgyreheros-bold.otf]{texgyreheros-regular.otf}
+\setmonofont[Scale=MatchLowercase]{lmmono10-regular.otf}
+\setjamainfont[BoldFont=HaranoAjiMincho-Bold.otf]{HaranoAjiMincho-Regular.otf}
+\setjasansfont{HaranoAjiGothic-Medium.otf}
+\usepackage{amsmath,amssymb,bm}
+\usepackage{graphicx,booktabs,longtable,array,tabularx}
+\usepackage{xcolor}
+\usepackage{caption}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{url}
+\usepackage[unicode,bookmarksnumbered,colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\hypersetup{pdftitle={音響によるプール沸騰の熱流束回帰と沸騰開始判定におけるモデル統合の効果と限界（修士論文草稿）},pdfauthor={柴崎 陸},pdfsubject={2026年10月19日時点の保存結果に基づく執筆用草稿}}
+\graphicspath{{figures/}}
+\setlength{\emergencystretch}{3em}
+\setlength{\parindent}{1em}
+\setlength{\parskip}{0.2em}
+\renewcommand{\arraystretch}{1.16}
+\captionsetup{font=small,labelfont=bf}
+\setlist{itemsep=0.25em,topsep=0.4em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small 修士論文草稿：2026年10月19日}
+\fancyhead[R]{\small\nouppercase{\leftmark}}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{17pt}
+\renewcommand{\headrulewidth}{0.3pt}
+\newcommand{\kw}{\ensuremath{\mathrm{kW/m^2}}}
+\newcommand{\wm}{\ensuremath{\mathrm{W/m^2}}}
+\newcommand{\mseunit}{\ensuremath{(\mathrm{kW/m^2})^2}}
+\newcommand{\qonb}{q_{\mathrm{ONB},d}}
+\newcommand{\qhat}{\hat q}
+\newcommand{\need}[2]{\begin{quote}\small\color{red!65!black}\textbf{【要確認：#1】} #2\end{quote}}
+\newcommand{\finding}[1]{\par\noindent\textbf{#1}\par}
+\newcommand{\source}[1]{\par\smallskip{\footnotesize 出典：#1}\par}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\setcounter{tocdepth}{2}
+\setcounter{secnumdepth}{2}

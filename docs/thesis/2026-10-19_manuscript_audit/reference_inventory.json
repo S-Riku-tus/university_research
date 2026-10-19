@@ -1,0 +1,79 @@
+[
+  {
+    "path": "研究進捗報告/8121048_柴崎陸_最終投稿卒論.pdf",
+    "sha256": "d91cc8167d16c412cbe8c7223f218a8f913b3b70e119f25d26b1aa8d47a88e63",
+    "total_pdf_pages": 60,
+    "selected_pdf_pages": [
+      1,
+      2,
+      3,
+      4,
+      7,
+      8,
+      9,
+      16,
+      17,
+      32,
+      33
+    ],
+    "inspection": "selected text; not all-page visual review"
+  },
+  {
+    "path": "研究進捗報告/8124507_奥村修也_令和7年度修士論文-U.pdf",
+    "sha256": "6db11f99b3f1dd7664494ad77a321088eba36be177e09e29eda156ac3d4d8e87",
+    "total_pdf_pages": 46,
+    "selected_pdf_pages": [
+      1,
+      2,
+      3,
+      6,
+      23,
+      41,
+      42
+    ],
+    "inspection": "selected text; not all-page visual review"
+  },
+  {
+    "path": "研究進捗報告/8124532_手塚晃輔_令和7年度修士論文ーU.pdf",
+    "sha256": "8ef25b9c10d97138c9c7f66a8e1e76c9cf1e3c5fbb0765a0910a8d2057861ef8",
+    "total_pdf_pages": 63,
+    "selected_pdf_pages": [
+      1,
+      2,
+      3,
+      4,
+      7,
+      8,
+      9,
+      10,
+      34,
+      40,
+      58,
+      59
+    ],
+    "inspection": "selected text; not all-page visual review"
+  },
+  {
+    "path": "LaTeX/setting/LaTeX_setting.pptx",
+    "sha256": "ad77a9acac68cc601f4b89c258ab12fe3663cfe954a67dbca543c305f4f2b136",
+    "selected_slides": [
+      1,
+      4,
+      7,
+      26,
+      27,
+      28
+    ],
+    "inspection": "OOXML text; images and all-page rendering not reviewed"
+  },
+  {
+    "path": "LaTeX/sample/document.tex",
+    "sha256": "eaf8780a57409674c77035901f4885557f1b7ca92e4e960dfaad1d72e0979854",
+    "inspection": "source text"
+  },
+  {
+    "path": "LaTeX/setting/contents_of_json.txt",
+    "sha256": "f3858ea5f2a401ab12930d66813a14ee2410ec75c9d0184f4b4d05374f467f91",
+    "inspection": "source text"
+  }
+]

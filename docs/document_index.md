@@ -2,13 +2,16 @@
 
 更新日: 2026-10-19。**現在の状態は一か所で更新し、過去の数値と判断は日付付き記録に残す。**
 
-修論の目的から結論までを文章で点検する入口は、[10/19の6章本文案・暫定結論・根拠不足](thesis/2026-10-19_chapter_logic_and_evidence_review.md)。10/16初稿と6章目次を具体化し、各章の接続、既存結果で書けること、出典・文献・追加検証の不足、次の順序をまとめた。
+修論の研究整理用試作は、[全6章のLaTeX草稿PDF](../LaTeX/master_thesis/build/main.pdf)と[本文・不足・根拠・編集方法の説明](thesis/2026-10-19_latex_manuscript_and_remaining_work.md)。本人の最新の位置づけと12月末〜1月前半の本文完成希望を踏まえた[研究・執筆の時間配分](research_plan/2026-10-19_research_to_manuscript_december_schedule.md)を参照する。目的から結論までの検討過程は[10/19の章別本文骨格](thesis/2026-10-19_chapter_logic_and_evidence_review.md)に残す。
 
 ## 読む順序と各文書の役割
 
 | 目的 | 読む文書 | 更新方法 |
 |---|---|---|
 | 次の作業を始める | [研究の現在地](research_status.md) | 状態・本人の希望・次の一手を更新する唯一の入口 |
+| 12月末の本文完成から研究期間を逆算する | [試作の位置づけ・章別の現在地・時期別計画](research_plan/2026-10-19_research_to_manuscript_december_schedule.md) | 本人の完成希望は12月末、遅くとも1月前半。10〜11月に研究内容を検討・補強し、12月に本文統合・指導修正する提案。現構成・追加比較は確定済みとしない |
+| 全章草稿の後に何を進めるか判断する | [段階別の進め方と終了条件](research_plan/2026-10-19_after_draft_research_execution_plan.md)、[教授への相談文案](thesis/2026-10-19_supervisor_discussion_brief.md) | 必須の根拠確認と条件付き追加研究を区別。早めに目的・達成範囲を相談する提案で、追加実行の採用記録ではない |
+| 修論全章の草稿を読む・編集する | [PDF](../LaTeX/master_thesis/build/main.pdf)、[LaTeXと組版手順](../LaTeX/master_thesis/README.md)、[不足・根拠の説明](thesis/2026-10-19_latex_manuscript_and_remaining_work.md) | 52ページの執筆用草稿。6章・和英要旨・図表・参考文献・付録。赤字の不足16 IDを追跡。研究成果・出典の未確認と提出書式を残す |
 | 10/16発表後の教授指摘と直近方針を読む | [原文・本人方針・夏休み前の目的との照合](research_plan/2026-10-16_after_presentation_professor_discussion.md) | 発表終了。直近は追加検証より目的と成果の文章接続。実験章の立場・出典・担当を整理し、発表前の「接続整理済み」を再評価 |
 | 目的から成果と限界へつなぐ本文を作る | [目的・手法の必要性・現在の結論の初稿](thesis/2026-10-16_purpose_and_research_logic_draft.md) | ONB近傍検知の目的へ回帰・雑音評価・統合・説明性を対応。全域誤差と検知、特徴依存と物理因果を区別。担当確認後の出典文と第2章の修正案も収録 |
 | 最新14枚版の5・6・11と学習方針の比較を直す | [画面文・モデル追加理由・比較図・配置](progress/2026-10-16_models_policy_feedback_and_outline_revision.md)、[既存対応対照の2曲線](../experiments/2026-10-16_presentation_policy_comparison/README.md)、[PPTX確認](audits/2026-10-16_models_and_policy_revision/README.md) | 11:29更新の14枚版。ONB結果削除と6の分割省略を尊重。生成修正とclean_onlyの目的を分け、追加モデルを説明。新比較は過去の共通条件の完了対照、停止matched未読、原PPTX未編集 |

@@ -1,0 +1,7 @@
+/build/*
+!/build/main.pdf
+!/build/validation.json
+/.tools/
+/.cache/
+__pycache__/
+/smoke*

@@ -1,0 +1,26 @@
+% !TeX program = xelatex
+% !TeX encoding = UTF-8
+\documentclass[xelatex,ja=standard,a4paper,11pt,oneside]{bxjsreport}
+\input{preamble}
+\begin{document}
+\input{frontmatter}
+\tableofcontents
+\listoffigures
+{\small\listoftables}
+\clearpage
+\pagenumbering{arabic}
+\input{chapters/01_introduction}
+\input{chapters/02_data}
+\input{chapters/03_methods}
+\input{chapters/04_results}
+\input{chapters/05_discussion}
+\input{chapters/06_conclusions}
+\cleardoublepage
+\chapter*{謝辞}
+\addcontentsline{toc}{chapter}{謝辞}
+\need{F03}{指導，データ提供，計測，解析への協力者の氏名と役割を本人が確認して記入する．データ取得者が未確認のため，謝辞の相手や協力内容を推測では記載しない．}
+\input{references}
+\appendix
+\input{appendices/reproducibility}
+\input{appendices/gaps}
+\end{document}

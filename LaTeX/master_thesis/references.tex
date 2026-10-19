@@ -1,0 +1,100 @@
+\begin{thebibliography}{99}
+\addcontentsline{toc}{chapter}{参考文献}
+\bibitem{dunlap2023}
+C. Dunlap, H. Pandey, E. Weems and H. Hu,
+``Nonintrusive heat flux quantification using acoustic emissions during pool boiling,''
+\textit{Applied Thermal Engineering}, Vol. 228, 120558, 2023.
+\url{https://doi.org/10.1016/j.applthermaleng.2023.120558}.
+（本稿で確認した範囲：出版社の要旨・Highlights・公開抜粋．）
+
+\bibitem{barathula2023}
+S. Barathula, S. K. Chaitanya and K. Srinivasan,
+``Evaluation of machine learning models in the classification of pool boiling regimes up to critical heat flux based on boiling acoustics,''
+\textit{International Journal of Heat and Mass Transfer}, Vol. 201, 123623, 2023.
+\url{https://doi.org/10.1016/j.ijheatmasstransfer.2022.123623}.
+（本稿で確認した範囲：出版社の要旨・公開抜粋．）
+
+\bibitem{shibasaki2025}
+柴崎 陸，『CNNアンサンブル学習に基づく音響識別によるプール沸騰の発生検知』，東京理科大学 先進工学部 電子システム工学科，令和6年度卒業論文，2025年1月．
+（保存原本：\texttt{8121048\_柴崎陸\_最終投稿卒論.pdf}．）
+
+\bibitem{okumura2026}
+奥村 修也，『深層学習に基づく気液二相噴流の音響識別：回帰分析とノイズ耐性評価』，東京理科大学大学院 先進工学研究科 電子システム工学専攻，令和7年度修士論文，2026年1月．
+
+\bibitem{tezuka2026}
+手塚 晃輔，『サブクール沸騰の音響特性に関する実験的研究』，東京理科大学 先進工学研究科 電子システム工学専攻，令和7年度修士論文，2026年1月．特に第3章，第4章，第5章を参照．
+
+\bibitem{sundararajan2017}
+M. Sundararajan, A. Taly and Q. Yan,
+``Axiomatic Attribution for Deep Networks,''
+\textit{Proceedings of the 34th International Conference on Machine Learning},
+PMLR 70, pp. 3319--3328, 2017.
+\url{https://proceedings.mlr.press/v70/sundararajan17a.html}.
+
+\bibitem{xgbrf}
+XGBoost developers, ``Random Forests(TM) in XGBoost,'' official documentation.
+\url{https://xgboost.readthedocs.io/en/stable/tutorials/rf.html}.
+（参照日：2026年10月19日．実行時のパラメータは保存条件を使用．）
+
+\bibitem{vaswani2017}
+A. Vaswani, N. Shazeer, N. Parmar, J. Uszkoreit, L. Jones, A. N. Gomez, Ł. Kaiser and I. Polosukhin,
+``Attention Is All You Need,'' \textit{Advances in Neural Information Processing Systems}, Vol. 30, 2017.
+\url{https://arxiv.org/abs/1706.03762}.
+
+\bibitem{krizhevsky2012}
+A. Krizhevsky, I. Sutskever and G. E. Hinton,
+``ImageNet Classification with Deep Convolutional Neural Networks,''
+\textit{Advances in Neural Information Processing Systems}, Vol. 25, 2012.
+\url{https://proceedings.neurips.cc/paper/2012/hash/c399862d3b9d6b76c8436e924a68c45b-Abstract.html}.
+
+\bibitem{sklearnHGB}
+scikit-learn developers, ``HistGradientBoostingRegressor,'' official documentation.
+\url{https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.HistGradientBoostingRegressor.html}.
+（参照日：2026年10月19日．公開文書の既定値を当該実行条件として流用していない．）
+
+\bibitem{geurts2006}
+P. Geurts, D. Ernst and L. Wehenkel,
+``Extremely randomized trees,'' \textit{Machine Learning}, Vol. 63, pp. 3--42, 2006.
+\url{https://doi.org/10.1007/s10994-006-6226-1}.
+
+\bibitem{cawley2010}
+G. C. Cawley and N. L. C. Talbot,
+``On Over-fitting in Model Selection and Subsequent Selection Bias in Performance Evaluation,''
+\textit{Journal of Machine Learning Research}, Vol. 11, pp. 2079--2107, 2010.
+\url{https://www.jmlr.org/papers/v11/cawley10a.html}.
+
+\bibitem{tezuka2024}
+手塚 晃輔，植木 祥高，相澤 康介，荒 邦章，
+「サブクール沸騰の音響特性に関する実験的研究」，混相流シンポジウム2024，2024年9月．JAEA JOPSS収録の発表要旨，登録番号BB20240594．
+\url{https://jopss.jaea.go.jp/search/servlet/search?5081809=}.
+（要旨の解釈と2026年最終修論の結論を区別して参照．）
+
+\bibitem{localData}
+研究用データ仕様，\texttt{waterflow\_20260817\_1s}，2026年8月17日生成，9月3日構造確認．
+\path{configs/datasets/waterflow_20260817_1s.yaml}および生成時の\path{global_reference_manifest.json}（未公刊の保存資料）．
+
+\bibitem{localONB}
+研究用確認記録，「元WAV validation・音響選別・ONB・アンサンブル・IGの追跡監査」，2026年9月24日，第2節．
+\path{experiments/2026-09-24_selection_onb_ig_review/README.md}（未公刊）．採用数値の確認記録であり，原実験のONB観察記録は別途要確認．
+
+\bibitem{localMainRun}
+研究用保存実行・評価記録，clean\_only，200 epochs，2026年10月15日，実行143609，run hash \texttt{da540f2d}，fit ID \texttt{7560205f8feb}．
+主表・条件・検算：\path{experiments/2026-10-15_clean_only_result_analysis/}．
+元実行とCSVの識別情報は本稿の\path{data/source_manifest.json}に記載（未公刊）．
+
+\bibitem{localLink}
+研究用保存予測分析，「保存結果による誤り補完と特徴利用の接続」，2026年10月14日．
+\path{experiments/2026-10-14_error_feature_linkage/}（未公刊）．主実行と同じ条件・seedでの保存結果の分析であり，独立試験とは数えない．
+
+\bibitem{localInput}
+研究用入力対照記録，共通入力加工，元3比率の自由化，入力特徴除去と固定重み対照，2026年10月7日．
+\path{experiments/2026-10-07_onb_input_and_integration/}（未公刊）．
+
+\bibitem{localCode}
+研究用解析実装，音響要約特徴，回帰モデルおよび固定元3ブロック統合．
+\path{code/utils/dataloading/acoustic_summary_features.py}，
+\path{code/utils/models/regression/base_regression.py}，
+\path{code/utils/models/regression/acoustic_regression.py}，
+\path{code/utils/ensemble/fixed_core_stacking.py}．
+2026年10月19日の確認時点のSHA-256を本稿の\path{data/source_manifest.json}に保存．
+\end{thebibliography}
