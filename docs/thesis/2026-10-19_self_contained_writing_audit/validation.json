@@ -1,0 +1,19 @@
+{
+  "status": "passed",
+  "pdf_pages": 53,
+  "pdf_sha256": "19a3f0959b207e6ebb6c97dc758b520e8607cb9343f5a73782c25f81091ee8a7",
+  "purpose_pdf_page": 13,
+  "searched_terms": [
+    "学部",
+    "卒論",
+    "卒業論文",
+    "先輩"
+  ],
+  "pdf_matches": [],
+  "tex_matches": [],
+  "purpose_pages_out_of_bounds": [],
+  "comparison_protocol_status": "proposed_not_implemented_not_run",
+  "comparison_protocol_sha256": "6b67885ef1f66381dfe439f9b9056839f930611ac2acda7a0aebaf5086ba4de4",
+  "full_page_text_search_only": true,
+  "all_page_visual_review": false
+}

@@ -1,0 +1,23 @@
+{
+  "date": "2026-10-19",
+  "status": "passed",
+  "scope": "Expanded candidate configuration and routing; model implementations unchanged from preceding readiness check",
+  "candidate_count_by_model": {
+    "alexnet": 24,
+    "resnet50": 24,
+    "vgg16": 24
+  },
+  "independent_candidates": 72,
+  "folds": 3,
+  "candidate_fits": 216,
+  "epochs_per_fit": 200,
+  "unique_candidate_tags": 72,
+  "selection_scope": "Training OOF only; outer evaluation unchanged",
+  "related_tests_passed": 8,
+  "research_training_started": false,
+  "source_sha256": {
+    "code/run_ensemble_regression_onb.py": "baa0b8de5529ae1fa73855feb3b674c043ad6ed7eccea83623a31adeb378f996",
+    "tests/test_cnn_three.py": "6972a21156ae67e9e80df7dc0c15ea4ee7b6a22d7212f3e1b09148f868ceed39"
+  },
+  "previous_model_and_dataset_verification": "experiments/2026-10-19_cnn_three_execution_readiness/verification.json"
+}

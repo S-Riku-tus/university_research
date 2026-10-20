@@ -1,0 +1,157 @@
+{
+  "date": "2026-10-19",
+  "status": "ready_for_training_oof_search_not_research_run",
+  "active_models": [
+    "alexnet",
+    "resnet50",
+    "vgg16"
+  ],
+  "ensemble_strategies": [
+    "cnn3_mse",
+    "cnn3_performance",
+    "simple_equal"
+  ],
+  "model_checks": [
+    {
+      "model": "resnet50",
+      "input_shape": [
+        null,
+        224,
+        224,
+        1
+      ],
+      "output_shape": [
+        null,
+        1
+      ],
+      "parameters": 24172033,
+      "untrained_forward_pass_finite": true,
+      "build_and_forward_seconds": 0.757,
+      "device": "CPU",
+      "research_data_training": false
+    },
+    {
+      "model": "vgg16",
+      "input_shape": [
+        null,
+        224,
+        224,
+        1
+      ],
+      "output_shape": [
+        null,
+        1
+      ],
+      "parameters": 134263489,
+      "untrained_forward_pass_finite": true,
+      "build_and_forward_seconds": 0.407,
+      "device": "CPU",
+      "research_data_training": false
+    }
+  ],
+  "dataset_preflight": {
+    "status": "passed",
+    "standard_configuration": false,
+    "datasets": [
+      {
+        "noise_dir_name": "heatflux_no_noise",
+        "data_path": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\data\\npy\\waterflow_20260817_1s\\maxfreq=3kHz\\heatflux_no_noise",
+        "source_wavs": 36,
+        "input_chunks": 2160,
+        "training_chunks": 1620,
+        "evaluation_chunks": 540,
+        "evaluation_identity_sha256": "c2ac41e7a7894d3e4e62781b29a91c2894f01849d4fb328afa6629a499354458"
+      },
+      {
+        "noise_dir_name": "heatflux_reference_SNR=0",
+        "data_path": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\data\\npy\\waterflow_20260817_1s\\maxfreq=3kHz\\heatflux_reference_SNR=0",
+        "source_wavs": 36,
+        "input_chunks": 2160,
+        "training_chunks": 1620,
+        "evaluation_chunks": 540,
+        "evaluation_identity_sha256": "c2ac41e7a7894d3e4e62781b29a91c2894f01849d4fb328afa6629a499354458"
+      },
+      {
+        "noise_dir_name": "heatflux_reference_SNR=-4",
+        "data_path": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\data\\npy\\waterflow_20260817_1s\\maxfreq=3kHz\\heatflux_reference_SNR=-4",
+        "source_wavs": 36,
+        "input_chunks": 2160,
+        "training_chunks": 1620,
+        "evaluation_chunks": 540,
+        "evaluation_identity_sha256": "c2ac41e7a7894d3e4e62781b29a91c2894f01849d4fb328afa6629a499354458"
+      },
+      {
+        "noise_dir_name": "heatflux_reference_SNR=-8",
+        "data_path": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\data\\npy\\waterflow_20260817_1s\\maxfreq=3kHz\\heatflux_reference_SNR=-8",
+        "source_wavs": 36,
+        "input_chunks": 2160,
+        "training_chunks": 1620,
+        "evaluation_chunks": 540,
+        "evaluation_identity_sha256": "c2ac41e7a7894d3e4e62781b29a91c2894f01849d4fb328afa6629a499354458"
+      },
+      {
+        "noise_dir_name": "heatflux_reference_SNR=-12",
+        "data_path": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\data\\npy\\waterflow_20260817_1s\\maxfreq=3kHz\\heatflux_reference_SNR=-12",
+        "source_wavs": 36,
+        "input_chunks": 2160,
+        "training_chunks": 1620,
+        "evaluation_chunks": 540,
+        "evaluation_identity_sha256": "c2ac41e7a7894d3e4e62781b29a91c2894f01849d4fb328afa6629a499354458"
+      },
+      {
+        "noise_dir_name": "heatflux_reference_SNR=-16",
+        "data_path": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\data\\npy\\waterflow_20260817_1s\\maxfreq=3kHz\\heatflux_reference_SNR=-16",
+        "source_wavs": 36,
+        "input_chunks": 2160,
+        "training_chunks": 1620,
+        "evaluation_chunks": 540,
+        "evaluation_identity_sha256": "c2ac41e7a7894d3e4e62781b29a91c2894f01849d4fb328afa6629a499354458"
+      },
+      {
+        "noise_dir_name": "heatflux_reference_SNR=-20",
+        "data_path": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3\\2025.06.11_0.3_2_6.18_0.3_3\\data\\npy\\waterflow_20260817_1s\\maxfreq=3kHz\\heatflux_reference_SNR=-20",
+        "source_wavs": 36,
+        "input_chunks": 2160,
+        "training_chunks": 1620,
+        "evaluation_chunks": 540,
+        "evaluation_identity_sha256": "c2ac41e7a7894d3e4e62781b29a91c2894f01849d4fb328afa6629a499354458"
+      }
+    ],
+    "configured_noise_conditions": [
+      "clean",
+      "0",
+      "-4",
+      "-8",
+      "-12",
+      "-16",
+      "-20"
+    ]
+  },
+  "parameter_search": {
+    "enabled": true,
+    "independent_candidates": 9,
+    "folds": 3,
+    "expected_candidate_fits": 27,
+    "epochs": 200,
+    "evaluation_after_selection": "Set each lr and batch_size list to one adopted value and rerun the same entrypoint."
+  },
+  "verification_tests": {
+    "test_cnn_three": 3,
+    "existing_related_tests": 23,
+    "all_passed": true,
+    "synthetic_training_and_weight_reload": "real backbones at 32x32; one synthetic train_on_batch per new model",
+    "actual_input_224x224": "one untrained CPU forward pass per new model",
+    "research_data_fit_or_inference_executed": false,
+    "gpu_checked": false
+  },
+  "source_sha256": {
+    "code/run_ensemble_regression_onb.py": "f82817fc8f68b92fa0f23155f9d89fe74d27aca790b1ae463713e11386a18da9",
+    "code/utils/models/regression/base_regression.py": "9f7bd5f3db8d529ac25ea0b48fd7d6ed55f67206c53bdfa67888156e01beba9b",
+    "code/utils/config/onb_defaults.py": "cc8c2d9f8662904e2917073261e4d8a138ba0b8dc591c33c24ac30b334d98bed",
+    "code/utils/ensemble/fixed_core_stacking.py": "b62e53b2b0056c932bf693c860c6484bf357fda049ca966374db44b25a97377f",
+    "code/utils/ensemble/strategy_catalog.py": "f47aec08b7bbd8b8306cc31e5ab7e16f0a8bda1c350676b2790d99254e8b1a9a"
+  },
+  "previous_config": "configs/experiments/2026-10-19_before_cnn_three_validation_config.json",
+  "specialized_five_model_report_disabled": true,
+  "normal_metrics_and_source_day_reports_retained": true
+}

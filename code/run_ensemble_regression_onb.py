@@ -75,7 +75,8 @@ from utils.experiment.run_helpers import set_global_seed
 # 現在の設定の読み方:
 # ・目的: 同じ検証予測から単体モデルと各アンサンブル方式を比較する。
 # ・評価: cross_dayは別日、within_wav_chunkは各WAV内の未使用chunkをテストする。
-# ・モデル: 元RF、CNN＋Transformer、AlexNet、周波数34特徴HGB・ExtraTrees。
+# ・モデル: AlexNet・ResNet50・VGG16。変更前の5モデル設定は
+#   configs/experiments/2026-10-19_before_cnn_three_validation_config.json に保存。
 # ・統合方式: ensembleに列挙した全方式を実行・評価する。
 # ・説明性: 有効なデータ条件・モデル・foldについて指定手法を実行する。
 #
@@ -170,7 +171,8 @@ VALIDATION_CONFIG = apply_onb_defaults({
         "report_source_day_metrics": True,  # 統合日の平均閾値評価と日別閾値評価を両方保存。
     },
     "models": {
-        "enabled_keys": ["randomforest", "conformer", "alexnet", "hgb", "extra_trees"],
+        "enabled_keys": ["alexnet", "resnet50", "vgg16"],
+        # "enabled_keys": ["randomforest", "conformer", "alexnet", "hgb", "extra_trees"],
         "parameter_sets": {
             # 周波数ごとに独立した候補リストを持つ。選択中の周波数に
             # 対応する欄だけが使われ、全リストが1要素なら通常run、
@@ -178,7 +180,8 @@ VALIDATION_CONFIG = apply_onb_defaults({
             "type": "max_freq_active_model_grid",
             "by_max_freq_hz": {
                 "maxfreq=3kHz": {
-                    # 3 kHz・学習側OOF探索の採用値。
+                    # RF/CNN＋Transformer/HGB/ETは既存の採用値。
+                    # CNN 3種は学習率6通り×batch4通りをモデル別に探索する。
                     "randomforest": {
                         "n_estimators": [100],
                         "max_depth": [12],
@@ -190,8 +193,16 @@ VALIDATION_CONFIG = apply_onb_defaults({
                         "batch_size": [12],
                     },
                     "alexnet": {
-                        "lr": [0.003],
-                        "batch_size": [8],
+                        "lr": [0.0001, 0.0003, 0.001, 0.003, 0.005, 0.01],
+                        "batch_size": [4, 8, 16, 32, 64, 128],
+                    },
+                    "resnet50": {
+                        "lr": [0.0001, 0.0003, 0.001, 0.003, 0.005, 0.01],
+                        "batch_size": [4, 8, 16, 32, 64, 128],
+                    },
+                    "vgg16": {
+                        "lr": [0.0001, 0.0003, 0.001, 0.003, 0.005, 0.01],
+                        "batch_size": [4, 8, 16, 32, 64, 128],
                     },
                     "hgb": {
                         "max_iter": [150], "learning_rate": [0.05], "max_leaf_nodes": [31],
@@ -229,12 +240,14 @@ VALIDATION_CONFIG = apply_onb_defaults({
     "ensemble": {
         # 実装済み方式をここへ残し、使用する方式だけコメントを外す。
         "enabled_strategy_names": [
-            "original3_hgb_extra_trees",  # 主方式：元3内比率固定、元3総量25%以上・追加各5%以上。
-            "original3_mse",  # 同じ5単体予測から元3だけを使う公平な基準。
-            "original3_performance",  # 従来3モデルの重み方式も同じrunに保存。
-            "original3_hgb",  # 元3＋HGBの4モデル対照。
-            "original3_extra_trees",  # 元3＋ExtraTreesの4モデル対照。
-            "simple_equal",  # 5モデル等平均の固定対照。
+            "cnn3_mse",  # 現行と同じ学習側OOFのMSE重みをCNN 3種へ適用。
+            "cnn3_performance",  # 単体のOOF逆誤差による重み。
+            "simple_equal",  # CNN 3モデル等平均。
+            # "original3_hgb_extra_trees",  # 以下はRF/CNN＋Transformer/AlexNetを使う構成専用。
+            # "original3_mse",
+            # "original3_performance",
+            # "original3_hgb",
+            # "original3_extra_trees",
             # "performance_kfold",  # 全activeモデルの単体逆誤差重み。
             # "inner_holdout",  # 学習WAVの約20%を一度だけ分離し単体R²から重みを求める旧方式
             # "subset_equal_cv",  # OOF上で単体を含む全モデル部分集合から等重みの最良候補を選ぶ
@@ -252,8 +265,8 @@ VALIDATION_CONFIG = apply_onb_defaults({
         # "save_fitted_artifacts": False,  # 予測だけを残す従来の軽量保存
         "verify_reloaded_artifacts": True,
         "verify_reloaded_evaluation_predictions": True,  # 全有効モデル・条件の評価予測を再読込で照合。
-        # 発表用の旧36 WAV・全7条件を、同じ評価chunk・日別ONBで集計する。
-        "main_comparison_report": True,
+        # 5モデル専用の追加集計。CNN 3種では無効（通常指標・日別指標・予測保存は維持）。
+        "main_comparison_report": False,
         "main_comparison_protocol": "configs/experiments/2026-10-06_onb_main_comparison_protocol.json",
     },
     "explainability": {

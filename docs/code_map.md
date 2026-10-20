@@ -1,5 +1,7 @@
 # コード地図
 
+**10/19の通常入口更新**：[CNN 3種の実行手順](research_plan/2026-10-19_cnn_only_three_comparison_and_writing_policy.md)。現在はAlexNet/ResNet50/VGG16の候補探索設定。ResNet50/VGG16の入力をlog-powerへ統一し登録，既存のOOF重み処理へCNN3用方式を追加した。候補が複数なら学習側探索，すべて1個なら通常の7条件評価。変更前の5モデル設定は[JSON](../configs/experiments/2026-10-19_before_cnn_three_validation_config.json)に保持。以下の5モデル等の説明は利用可能な経路として残す。
+
 更新日: 2026-10-15。現在の設定・完了runは[研究の現在地](research_status.md)。通常の主実行は[run_ensemble_regression_onb.py](../code/run_ensemble_regression_onb.py)。
 
 ## 主経路と入出力

@@ -1,0 +1,164 @@
+{
+  "date": "2026-10-19",
+  "document_type": "research_comparison_protocol_not_runner_config",
+  "status": "implemented_ready_for_training_oof_search_not_run",
+  "implementation_record": "configs/experiments/2026-10-19_cnn_three_expanded_search_ready.json",
+  "verification_record": "experiments/2026-10-19_cnn_three_execution_readiness/verification.json",
+  "purpose": "Compare CNN-only and current regressor compositions under the same present-day pipeline, focusing on ONB-stage missed detections, false alarms, noise degradation, and predictive error structure.",
+  "discussion_record": "docs/research_plan/2026-10-19_cnn_only_three_comparison_and_writing_policy.md",
+  "automatic_application_to_main_config": false,
+  "production_config_changed": true,
+  "reference": {
+    "run": "143609",
+    "run_hash": "da540f2d",
+    "fit_id": "7560205f8feb",
+    "record": "experiments/2026-10-15_clean_only_result_analysis/README.md"
+  },
+  "arms": {
+    "A_cnn_three": [
+      "alexnet",
+      "resnet50",
+      "vgg16"
+    ],
+    "B_current_three": [
+      "randomforest",
+      "conformer",
+      "alexnet"
+    ],
+    "C_current_five": [
+      "randomforest",
+      "conformer",
+      "alexnet",
+      "hgb",
+      "extra_trees"
+    ]
+  },
+  "interpretation": {
+    "primary_comparison": "A versus B: equal model count, composition-level comparison",
+    "system_comparison": "A/B versus C: includes member count, representation and integration-constraint differences",
+    "conformer_label": "The current key refers to CNN+Transformer, not an assertion of the Conformer paper architecture.",
+    "development_comparison": "Newly tuned A versus frozen existing B/C includes unequal tuning histories. Stronger composition claims need comparable tuning opportunity or explicit limitations.",
+    "outer_test_status": "Repeatedly consulted development evaluation, not an untouched final independent test"
+  },
+  "proposed_common_conditions": {
+    "experiment": "2025.06.11_0.3_2_6.18_0.3_3",
+    "wav_count": 36,
+    "chunk_seconds": 1,
+    "max_frequency": "maxfreq=3kHz",
+    "input_shape": [
+      224,
+      224,
+      1
+    ],
+    "input_dataset": "waterflow_20260817_1s",
+    "selection_enabled": false,
+    "evaluation_mode": "within_wav_chunk",
+    "train_chunks_per_wav": 45,
+    "evaluation_chunks_per_wav": 15,
+    "training_chunk_count": 1620,
+    "evaluation_chunk_count": 540,
+    "require_saved_sample_id_identity": true,
+    "training_noise": "clean_only",
+    "internal_validation_split": "chunk_kfold",
+    "folds": 3,
+    "random_seed": 42,
+    "epochs": 200,
+    "reference_noise_levels": [
+      "clean",
+      "0",
+      "-4",
+      "-8",
+      "-12",
+      "-16",
+      "-20"
+    ],
+    "require_noise_segment_and_reference_identity": true,
+    "fixed_models_preprocessors_weights_across_noise": true,
+    "require_shared_label_scaling_and_onb_rules": true
+  },
+  "architecture_requirements": {
+    "cnn_input_transform": "log1p(max(power, 0) / 1e-12)",
+    "imagenet_pretraining": false,
+    "imagenet_rgb_preprocessing": false,
+    "output": "One continuous heat-flux regression output with the current target transformation and inverse transformation",
+    "regression_heads": "Record the selected regression implementations; do not silently replace heads or claim exact restoration of a past training run.",
+    "measure_before_training": [
+      "parameter_count",
+      "peak_memory",
+      "epoch_time",
+      "finite_output_and_loss",
+      "save_reload_prediction_agreement"
+    ]
+  },
+  "proposed_weight_fit": {
+    "arms_A_and_B": "The same nonnegative simplex MSE fit on aligned clean training OOF predictions",
+    "member_floor": 1e-06,
+    "sum_weights": 1.0,
+    "equal_weight_control": "Optional calculation from the same saved single-model predictions",
+    "arm_C": "Preserve the existing fixed-core/addition constraints and disclose them in the system comparison",
+    "onb_objective_reweighting": "Separate question; do not change it simultaneously in the composition comparison"
+  },
+  "initial_tuning_proposal_not_adopted": {
+    "selection_scope": "Outer training partition only",
+    "primary_metric": "Clean OOF all-range RMSE to match the composition comparison's existing optimization target",
+    "learning_rates": [
+      0.0003,
+      0.001,
+      0.003
+    ],
+    "initial_batch_size": 8,
+    "batch_size_resolution": "Confirm feasibility on training-side pilot inputs before ranking candidates",
+    "candidate_count_per_cnn": 3,
+    "max_inner_fits_for_A": 27,
+    "final_fits_for_A_after_selection": 3,
+    "pilot_and_optional_comparator_retuning_not_included_in_fit_count": true,
+    "outer_scores_used_for_selection": false,
+    "interpretation": "OOF candidate ranking and weight fit are development operations, not independent performance estimates. Do not add candidates until outer results improve."
+  },
+  "required_evaluation": [
+    "All-range R2/RMSE/MAE and bias",
+    "ONB-near errors with the actual sample count and stage coverage",
+    "Recorded ONB-stage TP/FN by source day",
+    "FN/FP/TP/TN and derived rates by day and noise level",
+    "Day-specific q100, without conversion to seconds",
+    "Absolute noisy error and clean-to-noisy degradation separately",
+    "Paired correction/new-error counts and regional error changes",
+    "Training/validation error, selected hyperparameters, fit time and memory"
+  ],
+  "resolved_implementation_requirements": [
+    "Add isolated comparison builders/registry entries for log-power ResNet50 and VGG16",
+    "The current fixed-core validator requires RF/CNN+Transformer/AlexNet and cannot directly fit arm A",
+    "Provide a comparison-only weighting path while retaining the current production strategy",
+    "Verify training-only candidate routing, aligned OOF IDs, saved artifacts, and prediction reload"
+  ],
+  "excluded_automatic_expansions": [
+    "Stopped matched runs",
+    "New 2026 data",
+    "New frequency or input-length search",
+    "Automatic input-dependent weight switching",
+    "Untouched-test or operational-reactor-performance claims"
+  ],
+  "expanded_search": {
+    "status": "applied_ready_not_run",
+    "learning_rates": [
+      0.0001,
+      0.0003,
+      0.001,
+      0.003,
+      0.005,
+      0.01
+    ],
+    "batch_sizes": [
+      4,
+      8,
+      16,
+      32
+    ],
+    "candidate_count_per_model": 24,
+    "total_candidates": 72,
+    "total_inner_fits": 216,
+    "epochs": 200,
+    "verification_record": "experiments/2026-10-19_cnn_three_execution_readiness/expanded_search_verification.json",
+    "note": "Earlier initial_tuning_proposal_not_adopted describes the prior small-grid proposal, not the active grid."
+  }
+}

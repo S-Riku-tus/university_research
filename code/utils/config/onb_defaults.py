@@ -23,6 +23,14 @@ def _build_alexnet(model_maker, **params):
     return model_maker.alexnet(**params)
 
 
+def _build_resnet50(model_maker, **params):
+    return model_maker.resnet50(**params)
+
+
+def _build_vgg16(model_maker, **params):
+    return model_maker.vgg16(**params)
+
+
 def _build_hgb(model_maker, **params):
     return model_maker.hgb_frequency34(**params)
 
@@ -86,6 +94,26 @@ def onb_model_specs(model_keys=None):
             "supported_max_freq_hz": ["maxfreq=3kHz"],
         },
     ]
+    registry.extend([
+        {
+            "key": "resnet50", "label": "ResNet50", "kind": "keras",
+            "builder": _build_resnet50,
+            "architecture": {
+                "input_transform": "log1p(power / 1e-12)",
+                "pretrained_weights": None,
+                "regression_head": "GlobalAveragePooling2D-Dense256-Dense256",
+            },
+        },
+        {
+            "key": "vgg16", "label": "VGG16", "kind": "keras",
+            "builder": _build_vgg16,
+            "architecture": {
+                "input_transform": "log1p(power / 1e-12)",
+                "pretrained_weights": None,
+                "regression_head": "Flatten-Dense4096-Dense4096",
+            },
+        },
+    ])
     keys = list(model_keys) if model_keys is not None else ["randomforest", "conformer", "alexnet"]
     by_key = {spec["key"]: spec for spec in registry}
     if not keys or len(keys) != len(set(keys)) or set(keys) - set(by_key):

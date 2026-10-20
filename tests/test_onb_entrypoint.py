@@ -38,7 +38,10 @@ class OnbEntrypointTest(unittest.TestCase):
         self.assertEqual(onb.LEARNING_POLICY["test_fraction"], .25)
         self.assertEqual(onb.NOISE_DIR_NAMES, onb.VALIDATION_CONFIG['data']['noise_dir_names'])
         self.assertIn('heatflux_no_noise', onb.NOISE_DIR_NAMES)
-        self.assertTrue(onb.VALIDATION_CONFIG["output"]["main_comparison_report"])
+        # The active CNN-only comparison retains regular reports, but the
+        # five-model-only supplemental exporter does not apply to it.
+        self.assertFalse(onb.VALIDATION_CONFIG["output"]["main_comparison_report"])
+        self.assertEqual(onb.MODEL_KEYS, ["alexnet", "resnet50", "vgg16"])
         policy = {**onb.VALIDATION_CONFIG["learning_policy"], "evaluation_mode": "cross_day"}
         names = resolve_experiment_names(onb.VALIDATION_CONFIG["data"], policy)
         resolved = normalize_learning_policy(policy, names)

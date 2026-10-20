@@ -2,6 +2,10 @@
 
 更新日: 2026-10-19。**現在の状態は一か所で更新し、過去の数値と判断は日付付き記録に残す。**
 
+CNN 3種の実行準備は，[実装内容・候補設定・探索から通常評価への切替](research_plan/2026-10-19_cnn_only_three_comparison_and_writing_policy.md)を参照。準備・動作確認済みと本番学習未実行を区別する。
+
+最新の記述方針と比較案は，[研究課題からの自立した説明・CNN 3種の構成比較](research_plan/2026-10-19_cnn_only_three_comparison_and_writing_policy.md)。本文は個人の研究経緯に言及しない。[先行する目的/結論/ONB評価の照合](thesis/2026-10-19_research_purpose_revision_and_alignment.md)には，夏以前の相談候補の根拠と確かさ，三つの問いへの現在の回答と未回答を残す。性能評価は手法の発展に必要な手段として位置づける。
+
 修論の研究整理用試作は、[全6章のLaTeX草稿PDF](../LaTeX/master_thesis/build/main.pdf)と[本文・不足・根拠・編集方法の説明](thesis/2026-10-19_latex_manuscript_and_remaining_work.md)。本人の最新の位置づけと12月末〜1月前半の本文完成希望を踏まえた[研究・執筆の時間配分](research_plan/2026-10-19_research_to_manuscript_december_schedule.md)を参照する。目的から結論までの検討過程は[10/19の章別本文骨格](thesis/2026-10-19_chapter_logic_and_evidence_review.md)に残す。
 
 ## 読む順序と各文書の役割

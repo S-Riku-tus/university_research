@@ -123,8 +123,11 @@ class RegressionModelMaker:
         return Model(x_in, output, name="alexnet_legacy_log")
 
     def vgg16(self):
-        model = Sequential()
-        model.add(Conv2D(64, (3, 3), activation='relu', padding='same', input_shape=self.input_shape))
+        """VGG16 regression head with the same log-power input as AlexNet."""
+        model = Sequential(name="vgg16_regression_log")
+        model.add(Input(shape=self.input_shape, name="spec_input"))
+        model.add(LogPowerCompression(scale=1e-12, name="log_power"))
+        model.add(Conv2D(64, (3, 3), activation='relu', padding='same'))
         model.add(Conv2D(64, (3, 3), activation='relu', padding='same'))
         model.add(MaxPooling2D((2, 2), strides=(2, 2)))
 
@@ -157,7 +160,11 @@ class RegressionModelMaker:
         return model
 
     def resnet50(self):
-        base_model = ResNet50(weights=None, include_top=False, input_shape=self.input_shape)
+        """Unpretrained ResNet50 regression with the common log-power input."""
+        x_in = Input(shape=self.input_shape, name="spec_input")
+        log_power = LogPowerCompression(scale=1e-12, name="log_power")(x_in)
+        base_model = ResNet50(weights=None, include_top=False,
+                              input_shape=self.input_shape, input_tensor=log_power)
         x = base_model.output
         # x = Flatten()(x)
         x = GlobalAveragePooling2D()(x)
@@ -166,7 +173,7 @@ class RegressionModelMaker:
         x = Dense(256, activation='relu')(x)
         x = Dropout(0.5)(x)
         x = Dense(1, activation='linear')(x)  # 回帰のための線形活性化関数
-        model = Model(inputs=base_model.input, outputs=x)
+        model = Model(inputs=x_in, outputs=x, name="resnet50_regression_log")
         return model
 
     def hgb_frequency34(self, **params):

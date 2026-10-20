@@ -1,10 +1,11 @@
-"""Training-OOF integration preserving the original three and their ratios."""
+"""Training-OOF integration of a three-model core and optional additions."""
 import numpy as np
 from scipy.optimize import minimize
 
 
 FIXED_CORE_STRATEGY = "fixed_core_oof"
 CORE_KEYS = ["randomforest", "conformer", "alexnet"]
+CNN_CORE_KEYS = ["alexnet", "resnet50", "vgg16"]
 FIXED_CORE_DEFAULTS = {
     "core_keys": CORE_KEYS,
     "core_rule": "mse",
@@ -19,8 +20,10 @@ FIXED_CORE_DEFAULTS = {
 
 def validate_options(options):
     core, added = list(options["core_keys"]), list(options["added_keys"])
-    if core != CORE_KEYS or len(added) != len(set(added)) or set(core) & set(added):
-        raise ValueError("Fixed-core integration requires the original three and distinct additions")
+    if (core not in (CORE_KEYS, CNN_CORE_KEYS)
+            or (core == CNN_CORE_KEYS and added)
+            or len(added) != len(set(added)) or set(core) & set(added)):
+        raise ValueError("Fixed-core integration requires a supported three-model core and distinct additions")
     if options["core_rule"] not in {"mse", "performance"}:
         raise ValueError("core_rule must be mse or performance")
     values = [options[k] for k in ["core_member_floor", "minimum_core_total", "minimum_added_member"]]
@@ -85,7 +88,7 @@ def fit_fixed_core_strategy(oof_predictions, targets, model_keys, options):
     weights.update({key: float(w) for key, w in zip(added_keys, block_weights[1:])})
     fitted = sum(np.asarray(oof_predictions[k])*w for k, w in weights.items())
     diagnostic = {"core_weights": {k: float(w) for k, w in zip(core_keys, core)},
-        "block_weights": {"original_three": float(block_weights[0]),
+        "block_weights": {("cnn_three" if core_keys == CNN_CORE_KEYS else "original_three"): float(block_weights[0]),
                           **{k: float(w) for k, w in zip(added_keys, block_weights[1:])}},
         "active_members": sum(w > 0 for w in weights.values()),
         "oof_fit_rmse_w_m2": float(np.sqrt(np.mean((fitted-y)**2))),

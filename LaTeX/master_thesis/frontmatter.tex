@@ -29,13 +29,13 @@
 
 本稿の主比較は，2025年6月11日・6月18日の既知録音に含まれる未使用1秒区間への適用である．未知の録音日や実機への一般化を検証した論文としては扱わない．また，著者は対象の実験・収録を実施していない．取得者・提供元および実験側のONB判定原資料には未確認事項があり，本文の赤字の\textbf{【要確認】}と付録の不足一覧で明示する．不足を隠す目的で章を省略したり，推測を観測事実に置き換えたりはしない．
 
-数値の主系列は10月15日完了のclean\_only実行143609であり，10月14日の保存予測分析と10月7日の入力対照は補助証拠として出典を分けた．新しい学習，モデル推論，音響入力の再生成は行っていない．既存の保存表・予測を組版用に再配置した図表を含む．学部論文と先輩2名の修士論文は構成・記述密度・関連知見の参考にし，その実験条件や成果を本研究の実施事実として転記していない．
+数値の主系列は10月15日完了のclean\_only実行143609であり，10月14日の保存予測分析と10月7日の入力対照は補助証拠として出典を分けた．新しい学習，モデル推論，音響入力の再生成は行っていない．既存の保存表・予測を組版用に再配置した図表を含む．引用資料の実験条件と本解析の対象条件を区別し，出典と対応関係を明記する．
 
 \need{F01}{正式題目，学位・専攻の表記，指導教員の肩書，提出年月，所定の表紙・余白・引用形式を提出要領に照合する．現在は計画書・過去の学位論文の表記を参考にした仮組版である．}
 
 \chapter*{要旨}
 \addcontentsline{toc}{chapter}{要旨}
-プール沸騰音響による核沸騰開始（ONB）近傍の検知では，全熱流束域の回帰誤差が小さいことと，開始付近の見逃しが少ないことを分けて評価する必要がある．本研究では，音響から熱流束を回帰し，日別のONB熱流束を閾値として判定する方法を対象に，異なる入力表現を用いるモデル統合の効果と限界を調べた．
+本研究は，ナトリウム冷却高速炉の炉心局所異常に伴う冷却材沸騰の早期把握に資する音響監視技術に向け，背景雑音下でも核沸騰開始（ONB）近傍を少ない見逃し・誤報で捉え，判断根拠を説明できる検知手法へ，熱流束回帰に基づく従来手法を発展させることを目的とする．その基礎検討として，水のプール沸騰音響から熱流束を回帰し，日別のONB熱流束を閾値として判定する方法に，異なる入力表現を用いるモデル統合を適用した．全熱流束域の回帰誤差と開始付近の判定を対応づけ，目的に対する改良と不足を調べた．
 
 既存の2025年6月11日・6月18日の計36録音から，各録音60個の1秒区間を作成し，45区間を学習，15区間を評価に用いた．評価は540区間であり，未知録音の評価ではない．3\,kHzを上限とするSTFT powerを用いる従来3モデルに，34個の音響要約特徴を用いるHistGradientBoostingとExtraTreesを追加した．無雑音学習側のout-of-fold予測で重みを求め，モデル，前処理および重みを無雑音と6段階の固定基準水流音付加条件で共通にした．全域回帰誤差，見逃し・誤報，ONB近傍誤差，日別の検知到達熱流束を比較した．
 
@@ -47,7 +47,7 @@
 
 \chapter*{Abstract}
 \addcontentsline{toc}{chapter}{Abstract}
-This study examines the benefits and limitations of model integration for heat-flux regression and onset-of-nucleate-boiling (ONB) decisions using pool-boiling acoustics. Existing recordings from June 11 and June 18, 2025 were divided into one-second segments. Forty-five segments per recording were used for training and fifteen for evaluation, giving 1,620 training and 540 evaluation segments from 36 recordings. This design evaluates unused segments of known recordings rather than unseen recording days.
+To support the future development of acoustic monitoring for coolant boiling associated with local core anomalies in sodium-cooled fast reactors, this study aims to advance a heat-flux-regression-based method toward onset-of-nucleate-boiling (ONB) detection under background noise with fewer missed detections and false alarms and with explainable acoustic evidence. As a fundamental study using water pool-boiling acoustics, model integration with different input representations was examined. Existing recordings from June 11 and June 18, 2025 were divided into one-second segments. Forty-five segments per recording were used for training and fifteen for evaluation, giving 1,620 training and 540 evaluation segments from 36 recordings. This design evaluates unused segments of known recordings rather than unseen recording days.
 
 Two regressors using 34 acoustic summary features, HistGradientBoosting and ExtraTrees, were added to three existing models. The models, preprocessing and integration weights fitted on clean training data were fixed across clean and six reference-level water-flow-noise conditions. The five-model integration reduced overall RMSE relative to the MSE-weighted original-three integration in all seven conditions, from 34.07 to 27.80 kW/m\textsuperscript{2} in the clean condition and from 81.14 to 75.23 kW/m\textsuperscript{2} at a reference SNR of $-20$ dB. However, the clean-to-noisy RMSE increase was not reduced. Only 8 of 30 evaluation segments at the recorded ONB stages were detected in the clean condition, and none at $-20$ dB. These 30 segments came from two recordings and do not represent 30 independent onset events.
 

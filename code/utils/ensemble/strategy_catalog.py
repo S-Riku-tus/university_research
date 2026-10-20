@@ -1,12 +1,21 @@
 from copy import deepcopy
 
 from utils.ensemble.crossfit_stacking import CROSSFIT_DEFAULTS
-from utils.ensemble.fixed_core_stacking import FIXED_CORE_DEFAULTS, FIXED_CORE_STRATEGY
+from utils.ensemble.fixed_core_stacking import CNN_CORE_KEYS, FIXED_CORE_DEFAULTS, FIXED_CORE_STRATEGY
 
 
 # Stable strategy definitions live here so experiment scripts only choose names.
 # Add or revise a reusable ensemble profile in this catalog, not in a run script.
 ENSEMBLE_STRATEGY_CATALOG = {
+    "cnn3_mse": {
+        "label": "CNN three MSE", "strategy": FIXED_CORE_STRATEGY,
+        "fixed_core": {**FIXED_CORE_DEFAULTS, "core_keys": CNN_CORE_KEYS},
+    },
+    "cnn3_performance": {
+        "label": "CNN three performance", "strategy": FIXED_CORE_STRATEGY,
+        "fixed_core": {**FIXED_CORE_DEFAULTS, "core_keys": CNN_CORE_KEYS,
+                       "core_rule": "performance"},
+    },
     "original3_performance": {
         "label": "Original three performance", "strategy": FIXED_CORE_STRATEGY,
         "fixed_core": {**FIXED_CORE_DEFAULTS, "core_rule": "performance"},
