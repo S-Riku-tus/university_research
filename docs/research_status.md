@@ -1,6 +1,8 @@
 # 研究の現在地と次にすること
 
-更新日: **2026-10-19（本人希望によりCNN 3種の探索を計72候補へ拡大）**。分位点ルール時点の状態は[変更前の記録](../experiments/2026-09-16_peak_height_selection/previous_documents/research_status.md)に保存した。
+更新日: **2026-10-20（修論試作後の論理・到達点・10月中の判断を整理）**。分位点ルール時点の状態は[変更前の記録](../experiments/2026-09-16_peak_height_selection/previous_documents/research_status.md)に保存した。
+
+**10/20・本人は実行より研究全体の再整理を希望**：[目的からのつながり・完了/未完了・今週と10月末の優先順位](research_plan/2026-10-20_october_research_logic_and_priorities.md)。10/16原指摘、修論試作、主結果・誤差/入力対照、CNN最新準備記録を照合。今週は目的→問い→根拠→限界と相談点を一枚にし、10月末に問い・章の役割・11月の補強を仮決定する案。開始段階の検知と全域改善を分け、原ONB/出典確認を優先する。日程・追加比較は提案であり採用/教授了承を意味しない。CNNは実装・72候補設定まで準備済み、記録上本番学習未起動という状態を維持。新学習・推論・入力加工・通常設定/修論本文変更なし。
 
 **10/19・本人希望でパラメータ探索を拡大**：[最新の候補と実行手順](research_plan/2026-10-19_cnn_only_three_comparison_and_writing_policy.md)，[拡大後設定](../configs/experiments/2026-10-19_cnn_three_expanded_search_ready.json)，[確認記録](../experiments/2026-10-19_cnn_three_execution_readiness/expanded_search_verification.json)。AlexNet/ResNet50/VGG16とも学習率6値`1e-4/3e-4/1e-3/3e-3/5e-3/1e-2`×batch4値`4/8/16/32`。各24候補・合計72候補，3-foldで216 fit，各200epochs。モデル別探索と学習側OOF選択を維持し，候補を1個ずつにして通常評価へ切り替える。データ・分割・モデル・指標に追加変更なし。関連8テスト合格，本番学習は未起動。下段の9候補は変更前の履歴。
 
