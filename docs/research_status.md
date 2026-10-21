@@ -1,6 +1,8 @@
 # 研究の現在地と次にすること
 
-更新日: **2026-10-19（本人希望によりCNN 3種の探索を計72候補へ拡大）**。分位点ルール時点の状態は[変更前の記録](../experiments/2026-09-16_peak_height_selection/previous_documents/research_status.md)に保存した。
+更新日: **2026-10-21（停止したCNN 3種の探索結果を保持し，再開設定を準備）**。分位点ルール時点の状態は[変更前の記録](../experiments/2026-09-16_peak_height_selection/previous_documents/research_status.md)に保存した。
+
+**10/21・探索の完了分を保持し，未完了だけを残した**：[再開手順](research_plan/2026-10-19_cnn_only_three_comparison_and_writing_policy.md)，[停止時の記録](../experiments/2026-10-21_cnn_three_tuning_recovery/interrupted_summary.json)，[再利用の事前照合](../experiments/2026-10-21_cnn_three_tuning_recovery/resume_preflight.json)，[再開設定](../configs/experiments/2026-10-21_cnn_three_recovery_ready.json)。実際の停止runはbatchが6値に拡大された108候補で，保存済み59候補＝AlexNet36/36・ResNet50 23/36・VGG16 0/36。AlexNetはclean学習側OOF全域RMSEの最小値からlr=0.01・batch32へ固定（41.209 kW/m²，外側性能ではない）。ResNet50の暫定最良は最終採用せず，残る13候補とVGG16の36候補を維持。元の59ファイルを保持し，現在候補の24件（AlexNet採用値1＋ResNet50 23）を照合済み結果として再利用する処理を追加。次回は残る49候補×3-fold＝147 fitから進む。学習ID/正解/分割/200 epochsと原本ハッシュを確認，関連9テスト合格。今回の研究データfit・推論・再開起動は0。下段の72候補・未起動は10/19の準備時点の履歴。
 
 **10/19・本人希望でパラメータ探索を拡大**：[最新の候補と実行手順](research_plan/2026-10-19_cnn_only_three_comparison_and_writing_policy.md)，[拡大後設定](../configs/experiments/2026-10-19_cnn_three_expanded_search_ready.json)，[確認記録](../experiments/2026-10-19_cnn_three_execution_readiness/expanded_search_verification.json)。AlexNet/ResNet50/VGG16とも学習率6値`1e-4/3e-4/1e-3/3e-3/5e-3/1e-2`×batch4値`4/8/16/32`。各24候補・合計72候補，3-foldで216 fit，各200epochs。モデル別探索と学習側OOF選択を維持し，候補を1個ずつにして通常評価へ切り替える。データ・分割・モデル・指標に追加変更なし。関連8テスト合格，本番学習は未起動。下段の9候補は変更前の履歴。
 

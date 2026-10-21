@@ -1,0 +1,1270 @@
+{
+  "date": "2026-10-21",
+  "source_run": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618",
+  "context": {
+    "run": {
+      "smoke_test": false,
+      "epochs": 200,
+      "folds": 3,
+      "internal_validation_split": "chunk_kfold",
+      "color_channel": 1,
+      "random_seed": 42,
+      "cpu_threads": 2,
+      "deterministic_ops": true,
+      "loop_parameter_sets": true
+    },
+    "data": {
+      "experiment_root": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3",
+      "result_model_group": "ensemble",
+      "noise_source": "waterflow",
+      "chunk_seconds": 1,
+      "experiment_names": [
+        "2025.06.11_0.3_2_6.18_0.3_3"
+      ],
+      "max_freq_hz_list": [
+        "maxfreq=3kHz"
+      ],
+      "noise_dir_names": [
+        "heatflux_no_noise",
+        "heatflux_reference_SNR=0",
+        "heatflux_reference_SNR=-4",
+        "heatflux_reference_SNR=-8",
+        "heatflux_reference_SNR=-12",
+        "heatflux_reference_SNR=-16",
+        "heatflux_reference_SNR=-20"
+      ],
+      "data_source_dir_by_experiment": {
+        "2025.06.11_0.3_2": "waterflow_20260817_{chunk_tag}",
+        "2025.06.18_0.3_3": "waterflow_20260817_{chunk_tag}",
+        "2025.06.11_0.3_2_6.18_0.3_3": "waterflow_20260817_{chunk_tag}",
+        "2025.07.09_0.3_1": "waterflow_20260817_{chunk_tag}",
+        "2026.10.07_0.3_1": "waterflow_20261007_{chunk_tag}"
+      }
+    },
+    "learning_policy": {
+      "training_noise": "clean_only",
+      "evaluation_mode": "within_wav_chunk",
+      "within_wav_chunk_experiment": "2025.06.11_0.3_2_6.18_0.3_3",
+      "test_fraction": 0.25,
+      "test_split_seed": 42,
+      "train_experiments": [
+        "2025.06.11_0.3_2_6.18_0.3_3"
+      ],
+      "test_experiments": [
+        "2025.06.11_0.3_2_6.18_0.3_3"
+      ]
+    },
+    "acoustic_selection": {
+      "mode": "peak_height",
+      "features_csv": "experiments/2026-09-16_peak_height_selection/peak_features.csv",
+      "feature": "peak_2100_2500_psd",
+      "peak_height_threshold": null,
+      "peak_height_threshold_by_experiment": {},
+      "protect_onb_band_frac": 0.1,
+      "apply_max_heat_flux_by_experiment": {},
+      "enabled": false
+    },
+    "thresholds": {
+      "by_experiment": {
+        "2025.06.11_0.3_2": 221505.1102,
+        "2025.06.18_0.3_3": 271677.6816,
+        "2025.06.11_0.3_2_6.18_0.3_3": 246591.3959,
+        "2025.07.09_0.3_1": 571694.252491167
+      },
+      "provenance_by_experiment": {
+        "2025.06.11_0.3_2": {
+          "threshold": 221505.1102,
+          "source": "experiments/2026-09-24_selection_onb_ig_review/README.md#2-onb値の確定",
+          "definition": "experiment-specific ONB confirmed for the current run"
+        },
+        "2025.06.18_0.3_3": {
+          "threshold": 271677.6816,
+          "source": "experiments/2026-09-24_selection_onb_ig_review/README.md#2-onb値の確定",
+          "definition": "experiment-specific ONB confirmed for the current run"
+        },
+        "2025.06.11_0.3_2_6.18_0.3_3": {
+          "threshold": 246591.3959,
+          "source": "experiments/2026-09-29_within_wav_chunk_combined/README.md",
+          "definition": "user-directed arithmetic mean of the confirmed 2025-06-11 and 2025-06-18 ONB thresholds for the combined-dataset comparison"
+        },
+        "2025.07.09_0.3_1": {
+          "threshold": 571694.252491167,
+          "source": "experiments/2026-09-24_selection_onb_ig_review/README.md#2-onb値の確定",
+          "definition": "experiment-specific ONB confirmed for the current run"
+        }
+      },
+      "require_experiment_threshold": true,
+      "onb_band_frac": 0.1,
+      "report_source_day_metrics": true
+    },
+    "features": {
+      "pca_components": 100,
+      "pca_transform_version": 2,
+      "acoustic_summary_version": null
+    },
+    "models": [
+      {
+        "key": "alexnet",
+        "label": "AlexNet",
+        "kind": "keras",
+        "architecture": {
+          "input_transform": "log1p(power / 1e-12)",
+          "regression_head": "Flatten-Dense4096-Dense4096"
+        }
+      },
+      {
+        "key": "resnet50",
+        "label": "ResNet50",
+        "kind": "keras",
+        "architecture": {
+          "input_transform": "log1p(power / 1e-12)",
+          "pretrained_weights": null,
+          "regression_head": "GlobalAveragePooling2D-Dense256-Dense256"
+        }
+      },
+      {
+        "key": "vgg16",
+        "label": "VGG16",
+        "kind": "keras",
+        "architecture": {
+          "input_transform": "log1p(power / 1e-12)",
+          "pretrained_weights": null,
+          "regression_head": "Flatten-Dense4096-Dense4096"
+        }
+      }
+    ],
+    "model_code_sha256": {
+      "code/utils/models/regression/base_regression.py": "9f7bd5f3db8d529ac25ea0b48fd7d6ed55f67206c53bdfa67888156e01beba9b",
+      "code/utils/models/regression/acoustic_regression.py": "3d10a4d4997da2558b6fdccd8612db538a0e04dfd6cacae4e7bb027862180ba9",
+      "code/utils/config/onb_defaults.py": "cc8c2d9f8662904e2917073261e4d8a138ba0b8dc591c33c24ac30b334d98bed",
+      "code/utils/training/model_training.py": "8f4f3617e061db095fcd6802194387da30a5c9470986f30d7f2e945db9bb944c",
+      "code/utils/training/internal_validation.py": "b4b1336cbb53e7cdc6cc52490873de8bb6c790e35b54b32463816066dd8d3497",
+      "code/utils/dataloading/dataloading_and_conversion.py": "c0626cc3680e4d6870d6abdec74cf3d9dc520b920cb91a8e8f6312accb9a21e3",
+      "code/utils/experiment/learning_policy.py": "de254923d001018e22a1dedceadcb46a98dc535d7521df853aa1341593805803",
+      "code/utils/experiment/acoustic_selection.py": "c55d32a709c338087257e4f20e0f893c8b55ac8f3de0f2bdf0d30dd627901450"
+    }
+  },
+  "candidates": [
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/01_alex_lr0p0001_bs4_691a4.json",
+      "sha256": "912fc3ffc17d9ea559537e138b1616f44d7b4ec996f9177da93cbe670c54108e",
+      "parameter_set": {
+        "name": "alexnet__lr=0.0001__batch_size=4",
+        "tag": "alex_lr0p0001_bs4_691a4",
+        "model_key": "alexnet",
+        "models": {
+          "alexnet": {
+            "lr": 0.0001,
+            "batch_size": 4
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/02_alex_lr0p0001_bs8_f5822.json",
+      "sha256": "b5cbe9c0dbfda6262ed48a6039612b5a051bcef458aeece7fb8c1e538541d9d6",
+      "parameter_set": {
+        "name": "alexnet__lr=0.0001__batch_size=8",
+        "tag": "alex_lr0p0001_bs8_f5822",
+        "model_key": "alexnet",
+        "models": {
+          "alexnet": {
+            "lr": 0.0001,
+            "batch_size": 8
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/03_alex_lr0p0001_bs16_00bfa.json",
+      "sha256": "51df56085866a265bbfa249bfa45fd88a3e0c744d33eaf747e0a7a5d9903cdea",
+      "parameter_set": {
+        "name": "alexnet__lr=0.0001__batch_size=16",
+        "tag": "alex_lr0p0001_bs16_00bfa",
+        "model_key": "alexnet",
+        "models": {
+          "alexnet": {
+            "lr": 0.0001,
+            "batch_size": 16
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/04_alex_lr0p0001_bs32_6a0bf.json",
+      "sha256": "39bf3ac01b39bbfaea0b659203216bc599de4fdb23f7fed003ce877acb542590",
+      "parameter_set": {
+        "name": "alexnet__lr=0.0001__batch_size=32",
+        "tag": "alex_lr0p0001_bs32_6a0bf",
+        "model_key": "alexnet",
+        "models": {
+          "alexnet": {
+            "lr": 0.0001,
+            "batch_size": 32
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/05_alex_lr0p0001_bs64_ca54f.json",
+      "sha256": "908ab8b66e3731bbf75d28ee9be527f7ec2f3b1008437d07d1c944c0e4a16a91",
+      "parameter_set": {
+        "name": "alexnet__lr=0.0001__batch_size=64",
+        "tag": "alex_lr0p0001_bs64_ca54f",
+        "model_key": "alexnet",
+        "models": {
+          "alexnet": {
+            "lr": 0.0001,
+            "batch_size": 64
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/06_alex_lr0p0001_bs12_fbc19.json",
+      "sha256": "745aab0fbb3dc5886e3a13f46bdcbe69e9ac2e74f289f484690a1deaf6d1f081",
+      "parameter_set": {
+        "name": "alexnet__lr=0.0001__batch_size=128",
+        "tag": "alex_lr0p0001_bs12_fbc19",
+        "model_key": "alexnet",
+        "models": {
+          "alexnet": {
+            "lr": 0.0001,
+            "batch_size": 128
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/07_alex_lr0p0003_bs4_33571.json",
+      "sha256": "e0992012c0ebaf1cf4adef0f0219109f78e8b648dab4be3863a0e89205720ce2",
+      "parameter_set": {
+        "name": "alexnet__lr=0.0003__batch_size=4",
+        "tag": "alex_lr0p0003_bs4_33571",
+        "model_key": "alexnet",
+        "models": {
+          "alexnet": {
+            "lr": 0.0003,
+            "batch_size": 4
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/08_alex_lr0p0003_bs8_3e6b4.json",
+      "sha256": "d94421101b5615f4e160142f35ad071e361a6af783007390e4145d4d49b997d4",
+      "parameter_set": {
+        "name": "alexnet__lr=0.0003__batch_size=8",
+        "tag": "alex_lr0p0003_bs8_3e6b4",
+        "model_key": "alexnet",
+        "models": {
+          "alexnet": {
+            "lr": 0.0003,
+            "batch_size": 8
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/09_alex_lr0p0003_bs16_00751.json",
+      "sha256": "4fcca080e98a004aa39ddf3f13a9a1db81552eb5230b9d687bff3076a2aa44e6",
+      "parameter_set": {
+        "name": "alexnet__lr=0.0003__batch_size=16",
+        "tag": "alex_lr0p0003_bs16_00751",
+        "model_key": "alexnet",
+        "models": {
+          "alexnet": {
+            "lr": 0.0003,
+            "batch_size": 16
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/10_alex_lr0p0003_bs32_52ce8.json",
+      "sha256": "f69447086aeb962e29f426ea6cacc10313a81f319733c00b91c70495b0ea1363",
+      "parameter_set": {
+        "name": "alexnet__lr=0.0003__batch_size=32",
+        "tag": "alex_lr0p0003_bs32_52ce8",
+        "model_key": "alexnet",
+        "models": {
+          "alexnet": {
+            "lr": 0.0003,
+            "batch_size": 32
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/11_alex_lr0p0003_bs64_a07ee.json",
+      "sha256": "f40362e6ccf3b68f15b6a6057d31a837ab34d7e80a686c74609a4820a2c52893",
+      "parameter_set": {
+        "name": "alexnet__lr=0.0003__batch_size=64",
+        "tag": "alex_lr0p0003_bs64_a07ee",
+        "model_key": "alexnet",
+        "models": {
+          "alexnet": {
+            "lr": 0.0003,
+            "batch_size": 64
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/12_alex_lr0p0003_bs12_00f14.json",
+      "sha256": "8fc8047b721d7b5e45a38064338533465e9edc9281787277372766c389a7fb24",
+      "parameter_set": {
+        "name": "alexnet__lr=0.0003__batch_size=128",
+        "tag": "alex_lr0p0003_bs12_00f14",
+        "model_key": "alexnet",
+        "models": {
+          "alexnet": {
+            "lr": 0.0003,
+            "batch_size": 128
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/13_alex_lr0p001_bs4_19872.json",
+      "sha256": "736f766c6da67670a397b399ff1604a7519640ea2f296fe785c89125df19fa58",
+      "parameter_set": {
+        "name": "alexnet__lr=0.001__batch_size=4",
+        "tag": "alex_lr0p001_bs4_19872",
+        "model_key": "alexnet",
+        "models": {
+          "alexnet": {
+            "lr": 0.001,
+            "batch_size": 4
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/14_alex_lr0p001_bs8_d6705.json",
+      "sha256": "a629b1465f801ac36e1a9385623e596b80dce6a53125a2334b4e3d87fa77f0c7",
+      "parameter_set": {
+        "name": "alexnet__lr=0.001__batch_size=8",
+        "tag": "alex_lr0p001_bs8_d6705",
+        "model_key": "alexnet",
+        "models": {
+          "alexnet": {
+            "lr": 0.001,
+            "batch_size": 8
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/15_alex_lr0p001_bs16_158d6.json",
+      "sha256": "52dbf9277adff2b9114e0657d19e5d89db392ebb1d8765a8c6fe6124a880b094",
+      "parameter_set": {
+        "name": "alexnet__lr=0.001__batch_size=16",
+        "tag": "alex_lr0p001_bs16_158d6",
+        "model_key": "alexnet",
+        "models": {
+          "alexnet": {
+            "lr": 0.001,
+            "batch_size": 16
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/16_alex_lr0p001_bs32_0f12a.json",
+      "sha256": "039df3bca4ae4ce85d571b2878a1b7a06f133891872ff80e466bd431de285f66",
+      "parameter_set": {
+        "name": "alexnet__lr=0.001__batch_size=32",
+        "tag": "alex_lr0p001_bs32_0f12a",
+        "model_key": "alexnet",
+        "models": {
+          "alexnet": {
+            "lr": 0.001,
+            "batch_size": 32
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/17_alex_lr0p001_bs64_6bdd1.json",
+      "sha256": "154fadb0e8f304999d18ad404346ab91c5bd37a723dfbabfa321977f19cc9b03",
+      "parameter_set": {
+        "name": "alexnet__lr=0.001__batch_size=64",
+        "tag": "alex_lr0p001_bs64_6bdd1",
+        "model_key": "alexnet",
+        "models": {
+          "alexnet": {
+            "lr": 0.001,
+            "batch_size": 64
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/18_alex_lr0p001_bs128_30d9b.json",
+      "sha256": "6d8e0779fc1ffa3557b4baefc8c90540694ed81eb6ab1bd05193562c497f679d",
+      "parameter_set": {
+        "name": "alexnet__lr=0.001__batch_size=128",
+        "tag": "alex_lr0p001_bs128_30d9b",
+        "model_key": "alexnet",
+        "models": {
+          "alexnet": {
+            "lr": 0.001,
+            "batch_size": 128
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/19_alex_lr0p003_bs4_d6d12.json",
+      "sha256": "a261623b19a7cdfaad1ca51c01893592477d1783fbd855a58258c20e253c6fee",
+      "parameter_set": {
+        "name": "alexnet__lr=0.003__batch_size=4",
+        "tag": "alex_lr0p003_bs4_d6d12",
+        "model_key": "alexnet",
+        "models": {
+          "alexnet": {
+            "lr": 0.003,
+            "batch_size": 4
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/20_alex_lr0p003_bs8_d6af6.json",
+      "sha256": "39182977faafa79c7b2140e4f74516ab452ed74ce5793ce439fcffc1d7bb6b7d",
+      "parameter_set": {
+        "name": "alexnet__lr=0.003__batch_size=8",
+        "tag": "alex_lr0p003_bs8_d6af6",
+        "model_key": "alexnet",
+        "models": {
+          "alexnet": {
+            "lr": 0.003,
+            "batch_size": 8
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/21_alex_lr0p003_bs16_a4469.json",
+      "sha256": "5ee38d5800430cd5a2d6a305fe00449679ee4c5abe2f95c7048cb8c03b164050",
+      "parameter_set": {
+        "name": "alexnet__lr=0.003__batch_size=16",
+        "tag": "alex_lr0p003_bs16_a4469",
+        "model_key": "alexnet",
+        "models": {
+          "alexnet": {
+            "lr": 0.003,
+            "batch_size": 16
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/22_alex_lr0p003_bs32_3b465.json",
+      "sha256": "f4ea1859ba57f5f31265246eef2afc0baa67618c193b91fe4804f36db11b5004",
+      "parameter_set": {
+        "name": "alexnet__lr=0.003__batch_size=32",
+        "tag": "alex_lr0p003_bs32_3b465",
+        "model_key": "alexnet",
+        "models": {
+          "alexnet": {
+            "lr": 0.003,
+            "batch_size": 32
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/23_alex_lr0p003_bs64_0c4f3.json",
+      "sha256": "0248bf82b820b446f1433ccd5349d49e2542c07eb60286f1d61e2135347f97dd",
+      "parameter_set": {
+        "name": "alexnet__lr=0.003__batch_size=64",
+        "tag": "alex_lr0p003_bs64_0c4f3",
+        "model_key": "alexnet",
+        "models": {
+          "alexnet": {
+            "lr": 0.003,
+            "batch_size": 64
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/24_alex_lr0p003_bs128_01a29.json",
+      "sha256": "70d05daeaf71793c351921fab34f22532ea04df0f4811e10da37b8318646ab98",
+      "parameter_set": {
+        "name": "alexnet__lr=0.003__batch_size=128",
+        "tag": "alex_lr0p003_bs128_01a29",
+        "model_key": "alexnet",
+        "models": {
+          "alexnet": {
+            "lr": 0.003,
+            "batch_size": 128
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/25_alex_lr0p005_bs4_f8c35.json",
+      "sha256": "a41dd64fff2ac4b87fe6fa3d8cb23d1a996ebc7fe7a7246c67963d7a8990ae1b",
+      "parameter_set": {
+        "name": "alexnet__lr=0.005__batch_size=4",
+        "tag": "alex_lr0p005_bs4_f8c35",
+        "model_key": "alexnet",
+        "models": {
+          "alexnet": {
+            "lr": 0.005,
+            "batch_size": 4
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/26_alex_lr0p005_bs8_b90f6.json",
+      "sha256": "58204d6fcf994eda7c16a5addf285c13f39516c752c0b384485eada6a77a6d3d",
+      "parameter_set": {
+        "name": "alexnet__lr=0.005__batch_size=8",
+        "tag": "alex_lr0p005_bs8_b90f6",
+        "model_key": "alexnet",
+        "models": {
+          "alexnet": {
+            "lr": 0.005,
+            "batch_size": 8
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/27_alex_lr0p005_bs16_1a3db.json",
+      "sha256": "61ec3b6fa7a1779176d82bd33a226e6302e22f408688bc259cfd5718daefac74",
+      "parameter_set": {
+        "name": "alexnet__lr=0.005__batch_size=16",
+        "tag": "alex_lr0p005_bs16_1a3db",
+        "model_key": "alexnet",
+        "models": {
+          "alexnet": {
+            "lr": 0.005,
+            "batch_size": 16
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/28_alex_lr0p005_bs32_af32f.json",
+      "sha256": "8680cf657f974a5d6015db8fa6f41d5e0372439d34b8135b14bb4b4dfd86fa4d",
+      "parameter_set": {
+        "name": "alexnet__lr=0.005__batch_size=32",
+        "tag": "alex_lr0p005_bs32_af32f",
+        "model_key": "alexnet",
+        "models": {
+          "alexnet": {
+            "lr": 0.005,
+            "batch_size": 32
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/29_alex_lr0p005_bs64_b38c5.json",
+      "sha256": "a775d1031f915965692ab5cf0ac7b32a95718973b7fc0ea0dbb7b46f7342cf05",
+      "parameter_set": {
+        "name": "alexnet__lr=0.005__batch_size=64",
+        "tag": "alex_lr0p005_bs64_b38c5",
+        "model_key": "alexnet",
+        "models": {
+          "alexnet": {
+            "lr": 0.005,
+            "batch_size": 64
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/30_alex_lr0p005_bs128_b2ff0.json",
+      "sha256": "d4905dd16febb6fefc3298bee78a2b71e97b96f750c8eeb3d9acd3b9772cbdbf",
+      "parameter_set": {
+        "name": "alexnet__lr=0.005__batch_size=128",
+        "tag": "alex_lr0p005_bs128_b2ff0",
+        "model_key": "alexnet",
+        "models": {
+          "alexnet": {
+            "lr": 0.005,
+            "batch_size": 128
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/31_alex_lr0p01_bs4_d862f.json",
+      "sha256": "fb9ee60d6928c45a84733d4080a62797d4e427aea2f25c6ad36329a2373bf574",
+      "parameter_set": {
+        "name": "alexnet__lr=0.01__batch_size=4",
+        "tag": "alex_lr0p01_bs4_d862f",
+        "model_key": "alexnet",
+        "models": {
+          "alexnet": {
+            "lr": 0.01,
+            "batch_size": 4
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/32_alex_lr0p01_bs8_53841.json",
+      "sha256": "63395fea50539f81c68c3fae827560bccf948588832c0fb77d90434c9b64d18c",
+      "parameter_set": {
+        "name": "alexnet__lr=0.01__batch_size=8",
+        "tag": "alex_lr0p01_bs8_53841",
+        "model_key": "alexnet",
+        "models": {
+          "alexnet": {
+            "lr": 0.01,
+            "batch_size": 8
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/33_alex_lr0p01_bs16_45215.json",
+      "sha256": "ef723c1c3c364ed7914882e33985021bd7730f358fae203dc2b89bb15c8c0f66",
+      "parameter_set": {
+        "name": "alexnet__lr=0.01__batch_size=16",
+        "tag": "alex_lr0p01_bs16_45215",
+        "model_key": "alexnet",
+        "models": {
+          "alexnet": {
+            "lr": 0.01,
+            "batch_size": 16
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/34_alex_lr0p01_bs32_49cb7.json",
+      "sha256": "4a96196becec6a3c07f04cd70a4675f16a37eee8468d7dee34751a6aa1bbb7e5",
+      "parameter_set": {
+        "name": "alexnet__lr=0.01__batch_size=32",
+        "tag": "alex_lr0p01_bs32_49cb7",
+        "model_key": "alexnet",
+        "models": {
+          "alexnet": {
+            "lr": 0.01,
+            "batch_size": 32
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/35_alex_lr0p01_bs64_095c3.json",
+      "sha256": "5fed17cfdf7f0cc0ee1c1c4c158d06b2e0aa15504a90b015f9af03875278bd08",
+      "parameter_set": {
+        "name": "alexnet__lr=0.01__batch_size=64",
+        "tag": "alex_lr0p01_bs64_095c3",
+        "model_key": "alexnet",
+        "models": {
+          "alexnet": {
+            "lr": 0.01,
+            "batch_size": 64
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/36_alex_lr0p01_bs128_dcfad.json",
+      "sha256": "f2e583e917f33752e053e8f18f7ed7639ed6540b7e5b2a91900e04c02ffa5927",
+      "parameter_set": {
+        "name": "alexnet__lr=0.01__batch_size=128",
+        "tag": "alex_lr0p01_bs128_dcfad",
+        "model_key": "alexnet",
+        "models": {
+          "alexnet": {
+            "lr": 0.01,
+            "batch_size": 128
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/37_resn_lr0p0001_bs4_5aa64.json",
+      "sha256": "65abcf84033d2ff5b2a9f0001999bc47e8c5ea0c0dfe2895dd298b1603183e1d",
+      "parameter_set": {
+        "name": "resnet50__lr=0.0001__batch_size=4",
+        "tag": "resn_lr0p0001_bs4_5aa64",
+        "model_key": "resnet50",
+        "models": {
+          "resnet50": {
+            "lr": 0.0001,
+            "batch_size": 4
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/38_resn_lr0p0001_bs8_fd1c8.json",
+      "sha256": "42ab42b5c7b51a2372fbfa830a93d7203ce22e4fc375c392c9b1b6eff8cf722c",
+      "parameter_set": {
+        "name": "resnet50__lr=0.0001__batch_size=8",
+        "tag": "resn_lr0p0001_bs8_fd1c8",
+        "model_key": "resnet50",
+        "models": {
+          "resnet50": {
+            "lr": 0.0001,
+            "batch_size": 8
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/39_resn_lr0p0001_bs16_30ad2.json",
+      "sha256": "a565db73636a4da5c19cf999ab168186f2f4496e810339f1517a80e4c8a874b8",
+      "parameter_set": {
+        "name": "resnet50__lr=0.0001__batch_size=16",
+        "tag": "resn_lr0p0001_bs16_30ad2",
+        "model_key": "resnet50",
+        "models": {
+          "resnet50": {
+            "lr": 0.0001,
+            "batch_size": 16
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/40_resn_lr0p0001_bs32_3f18c.json",
+      "sha256": "bc1393fe57dc42bfb894efb25e8019982c7a577ef771ba776e8fddd815bde55c",
+      "parameter_set": {
+        "name": "resnet50__lr=0.0001__batch_size=32",
+        "tag": "resn_lr0p0001_bs32_3f18c",
+        "model_key": "resnet50",
+        "models": {
+          "resnet50": {
+            "lr": 0.0001,
+            "batch_size": 32
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/41_resn_lr0p0001_bs64_ec11a.json",
+      "sha256": "b5cb2db0d95d4105a9524ed6efbb53995ade3376ca66058e7aa0dcc51d4f790e",
+      "parameter_set": {
+        "name": "resnet50__lr=0.0001__batch_size=64",
+        "tag": "resn_lr0p0001_bs64_ec11a",
+        "model_key": "resnet50",
+        "models": {
+          "resnet50": {
+            "lr": 0.0001,
+            "batch_size": 64
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/42_resn_lr0p0001_bs12_2e943.json",
+      "sha256": "079ab91899e5052cb292678516f28ea18ad820745eaf6e45fd7af768956fd71a",
+      "parameter_set": {
+        "name": "resnet50__lr=0.0001__batch_size=128",
+        "tag": "resn_lr0p0001_bs12_2e943",
+        "model_key": "resnet50",
+        "models": {
+          "resnet50": {
+            "lr": 0.0001,
+            "batch_size": 128
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/43_resn_lr0p0003_bs4_57e3b.json",
+      "sha256": "2b1ea6122a2cee9b2928dfee93354c0085616a18e383b45ecd8839dc4410314d",
+      "parameter_set": {
+        "name": "resnet50__lr=0.0003__batch_size=4",
+        "tag": "resn_lr0p0003_bs4_57e3b",
+        "model_key": "resnet50",
+        "models": {
+          "resnet50": {
+            "lr": 0.0003,
+            "batch_size": 4
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/44_resn_lr0p0003_bs8_66fbb.json",
+      "sha256": "b7b4777f03455b8cbcf7111fd53e41bb3a00464941e8bd2b0698889da9a4c434",
+      "parameter_set": {
+        "name": "resnet50__lr=0.0003__batch_size=8",
+        "tag": "resn_lr0p0003_bs8_66fbb",
+        "model_key": "resnet50",
+        "models": {
+          "resnet50": {
+            "lr": 0.0003,
+            "batch_size": 8
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/45_resn_lr0p0003_bs16_559d5.json",
+      "sha256": "aa94def8ddab53d0c5cf4c0007616a149fdb9a5fbfefc225b7de57d99a40bca7",
+      "parameter_set": {
+        "name": "resnet50__lr=0.0003__batch_size=16",
+        "tag": "resn_lr0p0003_bs16_559d5",
+        "model_key": "resnet50",
+        "models": {
+          "resnet50": {
+            "lr": 0.0003,
+            "batch_size": 16
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/46_resn_lr0p0003_bs32_cc37e.json",
+      "sha256": "8203595d1b7a607927f9d835bda511acfe59b9df15b86d0c5043e85a3aae3695",
+      "parameter_set": {
+        "name": "resnet50__lr=0.0003__batch_size=32",
+        "tag": "resn_lr0p0003_bs32_cc37e",
+        "model_key": "resnet50",
+        "models": {
+          "resnet50": {
+            "lr": 0.0003,
+            "batch_size": 32
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/47_resn_lr0p0003_bs64_d8c4d.json",
+      "sha256": "04fac9b68d84ed7eee66d851f1294eab9ce4a372c117560d55875deccd1cce42",
+      "parameter_set": {
+        "name": "resnet50__lr=0.0003__batch_size=64",
+        "tag": "resn_lr0p0003_bs64_d8c4d",
+        "model_key": "resnet50",
+        "models": {
+          "resnet50": {
+            "lr": 0.0003,
+            "batch_size": 64
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/48_resn_lr0p0003_bs12_eb246.json",
+      "sha256": "eccfb6f8cd87fd35312a0dc0c5e20d801eceed55142ff5f307eed1c0943a3a0d",
+      "parameter_set": {
+        "name": "resnet50__lr=0.0003__batch_size=128",
+        "tag": "resn_lr0p0003_bs12_eb246",
+        "model_key": "resnet50",
+        "models": {
+          "resnet50": {
+            "lr": 0.0003,
+            "batch_size": 128
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/49_resn_lr0p001_bs4_68d67.json",
+      "sha256": "8851cb8466887754f60271b5a9c5d4e9b09dfddc48ed91fcc00f8fba05af0378",
+      "parameter_set": {
+        "name": "resnet50__lr=0.001__batch_size=4",
+        "tag": "resn_lr0p001_bs4_68d67",
+        "model_key": "resnet50",
+        "models": {
+          "resnet50": {
+            "lr": 0.001,
+            "batch_size": 4
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/50_resn_lr0p001_bs8_58f8e.json",
+      "sha256": "eeca987a91965ebe19b9f81271745ac1ef9153c68110d6f66b9bb44ba8ae9a9c",
+      "parameter_set": {
+        "name": "resnet50__lr=0.001__batch_size=8",
+        "tag": "resn_lr0p001_bs8_58f8e",
+        "model_key": "resnet50",
+        "models": {
+          "resnet50": {
+            "lr": 0.001,
+            "batch_size": 8
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/51_resn_lr0p001_bs16_293f5.json",
+      "sha256": "434a8f514952be22ae00f5288a8c23df4bcc327959c093e5fa72fb7758578f5e",
+      "parameter_set": {
+        "name": "resnet50__lr=0.001__batch_size=16",
+        "tag": "resn_lr0p001_bs16_293f5",
+        "model_key": "resnet50",
+        "models": {
+          "resnet50": {
+            "lr": 0.001,
+            "batch_size": 16
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/52_resn_lr0p001_bs32_fc22f.json",
+      "sha256": "a53544ac2292257562c7aaa5bbc9ab9ea4fd2944344bb7a535736ffdee67cb7e",
+      "parameter_set": {
+        "name": "resnet50__lr=0.001__batch_size=32",
+        "tag": "resn_lr0p001_bs32_fc22f",
+        "model_key": "resnet50",
+        "models": {
+          "resnet50": {
+            "lr": 0.001,
+            "batch_size": 32
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/53_resn_lr0p001_bs64_66989.json",
+      "sha256": "3c874c7af77dcfc3af208322994c5723ee6686d6fd76b33c43567290fad798c8",
+      "parameter_set": {
+        "name": "resnet50__lr=0.001__batch_size=64",
+        "tag": "resn_lr0p001_bs64_66989",
+        "model_key": "resnet50",
+        "models": {
+          "resnet50": {
+            "lr": 0.001,
+            "batch_size": 64
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/54_resn_lr0p001_bs128_6ebfa.json",
+      "sha256": "12dda9683ab843d925bf10812ace3fbfa1a2462834ef4255f19191534fe24c7b",
+      "parameter_set": {
+        "name": "resnet50__lr=0.001__batch_size=128",
+        "tag": "resn_lr0p001_bs128_6ebfa",
+        "model_key": "resnet50",
+        "models": {
+          "resnet50": {
+            "lr": 0.001,
+            "batch_size": 128
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/55_resn_lr0p003_bs4_13eec.json",
+      "sha256": "7ecfa335ed47cf022c00d13e08550a3dbe14144d9b15062d7fba2d4bb5df91a3",
+      "parameter_set": {
+        "name": "resnet50__lr=0.003__batch_size=4",
+        "tag": "resn_lr0p003_bs4_13eec",
+        "model_key": "resnet50",
+        "models": {
+          "resnet50": {
+            "lr": 0.003,
+            "batch_size": 4
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/56_resn_lr0p003_bs8_c6c19.json",
+      "sha256": "0f91b38dd60a09e856602e4730535ffdde5f10b31a210fb19baf43f1845cdb29",
+      "parameter_set": {
+        "name": "resnet50__lr=0.003__batch_size=8",
+        "tag": "resn_lr0p003_bs8_c6c19",
+        "model_key": "resnet50",
+        "models": {
+          "resnet50": {
+            "lr": 0.003,
+            "batch_size": 8
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/57_resn_lr0p003_bs16_76728.json",
+      "sha256": "562efdcbdb86d66ed8aef7dfcba047fb5695ee43020c33a8aa9371a6ca170b32",
+      "parameter_set": {
+        "name": "resnet50__lr=0.003__batch_size=16",
+        "tag": "resn_lr0p003_bs16_76728",
+        "model_key": "resnet50",
+        "models": {
+          "resnet50": {
+            "lr": 0.003,
+            "batch_size": 16
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/58_resn_lr0p003_bs32_faf5a.json",
+      "sha256": "af14d3b30616c740841377d1bbf89fad3de1e7bed62414be9b2c76d04d1d18c9",
+      "parameter_set": {
+        "name": "resnet50__lr=0.003__batch_size=32",
+        "tag": "resn_lr0p003_bs32_faf5a",
+        "model_key": "resnet50",
+        "models": {
+          "resnet50": {
+            "lr": 0.003,
+            "batch_size": 32
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    },
+    {
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/59_resn_lr0p003_bs64_811b1.json",
+      "sha256": "e8b2ffe54c188b214a2939e53efd19041aa83a85df2fc578526a30baf4f29dfb",
+      "parameter_set": {
+        "name": "resnet50__lr=0.003__batch_size=64",
+        "tag": "resn_lr0p003_bs64_811b1",
+        "model_key": "resnet50",
+        "models": {
+          "resnet50": {
+            "lr": 0.003,
+            "batch_size": 64
+          }
+        },
+        "default_keras": {
+          "fit_verbose": 0,
+          "progress_interval_epochs": 10
+        }
+      }
+    }
+  ]
+}

@@ -8,6 +8,7 @@ and this module produces no outer-test score.
 """
 
 import csv
+import hashlib
 import json
 from pathlib import Path
 
@@ -27,7 +28,7 @@ from utils.experiment.learning_policy import (
 )
 from utils.experiment.result_paths import result_scope_dir_name
 from utils.experiment.run_helpers import json_default, safe_tag, set_global_seed
-from utils.training.internal_validation import fit_individual_performance_cv
+from utils.training.internal_validation import fit_individual_performance_cv, internal_splits
 
 
 SELECTION_METRIC = "rmse_all"
@@ -35,8 +36,89 @@ RELATIVE_TOLERANCE = 0.02
 
 
 def _write_json(path, value):
-    with Path(path).open("w", encoding="utf-8") as output:
+    path = Path(path)
+    temporary = path.with_name(path.name + ".tmp")
+    with temporary.open("w", encoding="utf-8") as output:
         json.dump(value, output, ensure_ascii=False, indent=2, default=json_default)
+    temporary.replace(path)
+
+
+def tuning_resume_context(config, specs):
+    """Bind cached OOF predictions to the data, fit policy and model code."""
+    root = Path(__file__).resolve().parents[3]
+    code_paths = [
+        "code/utils/models/regression/base_regression.py",
+        "code/utils/models/regression/acoustic_regression.py",
+        "code/utils/config/onb_defaults.py",
+        "code/utils/training/model_training.py",
+        "code/utils/training/internal_validation.py",
+        "code/utils/dataloading/dataloading_and_conversion.py",
+        "code/utils/experiment/learning_policy.py",
+        "code/utils/experiment/acoustic_selection.py",
+    ]
+    context = {key: config.get(key, {}) for key in (
+        "run", "data", "learning_policy", "acoustic_selection", "thresholds", "features")}
+    context["models"] = [{key: value for key, value in spec.items() if key != "builder"}
+                         for spec in specs]
+    context["model_code_sha256"] = {
+        name: hashlib.sha256((root / name).read_bytes()).hexdigest() for name in code_paths}
+    return json.loads(json.dumps(context, default=json_default))
+
+
+def _candidate_identity(parameter_set):
+    # Candidate names, indices and reporting defaults can change after a
+    # completed model is reduced to its adopted parameters.
+    defaults = {k: v for k, v in parameter_set.get("default_keras", {}).items()
+                if k not in {"fit_verbose", "progress_interval_epochs"}}
+    return json.dumps({"model_key": parameter_set["model_key"],
+                       "models": parameter_set.get("models", {}),
+                       "training_defaults": defaults}, sort_keys=True)
+
+
+def _resume_candidates(manifest_path, context):
+    root = Path(__file__).resolve().parents[3]
+    manifest_path = Path(manifest_path)
+    if not manifest_path.is_absolute():
+        manifest_path = root / manifest_path
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8-sig"))
+    if manifest["context"] != context:
+        raise ValueError("Tuning resume context differs: data, split, epochs or model code changed")
+    return {_candidate_identity(item["parameter_set"]): (root / item["path"], item["sha256"])
+            for item in manifest["candidates"]}
+
+
+def validate_resume_audit(saved, parameter_set, specs, metadata, targets, selector,
+                          folds, seed, epochs, method):
+    """Require the same training identities, folds and completed fit budget."""
+    if _candidate_identity(saved["parameter_set"]) != _candidate_identity(parameter_set):
+        raise ValueError("Tuning resume candidate parameters differ")
+    audit = saved["internal_validation"]
+    if (audit.get("test_used") is not False or audit.get("method") != method
+            or audit.get("random_state") != seed or len(audit["folds"]) != folds):
+        raise ValueError("Tuning resume internal validation policy differs")
+    samples = audit["samples"]
+    identity = lambda row: (str(row["experiment_name"]), str(row["source_wav_id"]), int(row["chunk_index"]))
+    if ([identity(row) for row in samples] != [identity(row) for row in metadata]
+            or not np.array_equal([row["heat_flux"] for row in samples], np.asarray(targets).ravel())):
+        raise ValueError("Tuning resume training sample identities or targets differ")
+    key = parameter_set["model_key"]
+    if not np.isfinite([row[key] for row in samples]).all():
+        raise ValueError("Tuning resume predictions are nonfinite")
+    for number, ((fit, held), record) in enumerate(zip(
+            internal_splits(metadata, folds, seed, method), audit["folds"]), 1):
+        retained, _ = selector.select([metadata[i] for i in fit])
+        if (record["fold"] != number or record["fit_indices"] != fit[retained].tolist()
+                or record["validation_indices"] != held.tolist()
+                or record["shared_samples"] != 0):
+            raise ValueError("Tuning resume training/validation partition differs")
+        if specs[0]["kind"] == "keras":
+            training = record["model_training"][key]
+            if (training.get("requested_epochs") != epochs
+                    or training.get("epochs_completed") != epochs
+                    or training.get("requested_batch_size") != specs[0]["batch_size"]
+                    or training.get("stopped_by_memory_error")):
+                raise ValueError("Tuning resume candidate did not complete the configured training budget")
+    return audit
 
 
 def _source_day(row):
@@ -205,10 +287,29 @@ def run_training_oof_tuning(
         config.get("acoustic_selection"),
         config["thresholds"].get("by_experiment", {}),
     )
-    output_dir = _output_directory(family, config, output_dir)
-    output_dir.mkdir(parents=True, exist_ok=False)
+    resume_config = config.get("models", {}).get("tuning_resume", {})
+    context = tuning_resume_context(config, enabled_specs)
+    cached = (_resume_candidates(resume_config["source_manifest"], context)
+              if resume_config.get("source_manifest") else {})
+    output_dir = _output_directory(family, config, output_dir or resume_config.get("output_dir"))
+    if output_dir.exists():
+        context_path = output_dir / "resume_context.json"
+        if not resume_config or not context_path.is_file():
+            raise ValueError("Existing tuning output requires an explicit resume configuration and context")
+        if json.loads(context_path.read_text(encoding="utf-8")) != context:
+            raise ValueError("Existing tuning output has a different resume context")
+    else:
+        output_dir.mkdir(parents=True, exist_ok=False)
+        _write_json(output_dir / "resume_context.json", context)
     audit_dir = output_dir / "candidate_audits"
-    audit_dir.mkdir()
+    audit_dir.mkdir(exist_ok=True)
+    # New complete candidates take precedence over the imported run. Atomic
+    # writes leave interrupted .tmp files out of this cache.
+    for path in sorted(audit_dir.glob("*.json")):
+        raw = path.read_bytes()
+        saved = json.loads(raw)
+        cached[_candidate_identity(saved["parameter_set"])] = (path, hashlib.sha256(raw).hexdigest())
+    _write_json(output_dir / "parameter_search_config.json", config)
 
     metric_name = str(selection_metric)
     allowed_metrics = {"rmse_all", "mae_all", "rmse_onb"}
@@ -216,6 +317,7 @@ def run_training_oof_tuning(
         raise ValueError(f"selection_metric must be one of {sorted(allowed_metrics)}")
     epochs = int(config["run"]["epochs"])
     all_rows, day_rows = [], []
+    reused_candidates, trained_candidates = 0, 0
     spec_by_key = {spec["key"]: spec for spec in enabled_specs}
     for candidate_index, parameter_set in enumerate(parameter_sets, 1):
         model_key = parameter_set.get("model_key")
@@ -234,20 +336,34 @@ def run_training_oof_tuning(
             f"{model_key} | {parameter_set['name']}",
             flush=True,
         )
-        set_global_seed(config["run"]["random_seed"])
-        _, audit = fit_individual_performance_cv(
-            trainer,
-            specs,
-            x[fit_indices],
-            y[fit_indices],
-            metadata_fit,
-            selector,
-            config["run"]["folds"],
-            config["run"]["random_seed"],
-            config["features"]["pca_components"],
-            {model_key: epochs},
-            method=internal_method,
-        )
+        source = None
+        identity = _candidate_identity(parameter_set)
+        if identity in cached:
+            source, expected_hash = cached[identity]
+            raw = source.read_bytes()
+            if hashlib.sha256(raw).hexdigest() != expected_hash:
+                raise ValueError(f"Tuning resume audit checksum differs: {source}")
+            audit = validate_resume_audit(
+                json.loads(raw), parameter_set, specs, metadata_fit, y[fit_indices], selector,
+                config["run"]["folds"], config["run"]["random_seed"], epochs, internal_method)
+            reused_candidates += 1
+            print(f"  reused completed OOF candidate: {source.name}", flush=True)
+        else:
+            set_global_seed(config["run"]["random_seed"])
+            _, audit = fit_individual_performance_cv(
+                trainer,
+                specs,
+                x[fit_indices],
+                y[fit_indices],
+                metadata_fit,
+                selector,
+                config["run"]["folds"],
+                config["run"]["random_seed"],
+                config["features"]["pca_components"],
+                {model_key: epochs},
+                method=internal_method,
+            )
+            trained_candidates += 1
         prediction = np.asarray([sample[model_key] for sample in audit["samples"]], dtype=float)
         metrics = oof_regression_metrics(
             y[fit_indices],
@@ -285,6 +401,7 @@ def run_training_oof_tuning(
             "parameter_set": parameter_set,
             "metrics": metrics,
             "internal_validation": audit,
+            "reused_from": str(source) if source else None,
         })
 
     _write_csv(output_dir / "candidate_metrics.csv", all_rows)
@@ -319,6 +436,8 @@ def run_training_oof_tuning(
         "folds": int(config["run"]["folds"]),
         "selection_metric": metric_name,
         "relative_tolerance": tolerance,
+        "reused_candidates": reused_candidates,
+        "trained_candidates": trained_candidates,
         "selected": selected,
         "normal_run_unchanged": True,
         "next_step": (

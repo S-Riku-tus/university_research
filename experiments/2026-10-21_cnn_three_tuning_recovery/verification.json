@@ -1,0 +1,54 @@
+{
+  "date": "2026-10-21",
+  "status": "recovery_ready_not_launched",
+  "selection": "minimum clean outer-training chunk3fold OOF rmse_all; not outer-test performance",
+  "adopted_alexnet": {
+    "completed_candidates": 36,
+    "original_candidates": 36,
+    "fully_searched": true,
+    "best_parameters": {
+      "batch_size": 32,
+      "lr": 0.01
+    },
+    "best_oof_rmse_W_m2": 41208.58714546935,
+    "selection_status": "adopt_from_completed_model_search",
+    "source_audit": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/34_alex_lr0p01_bs32_49cb7.json"
+  },
+  "recovery_preflight": "experiments/2026-10-21_cnn_three_tuning_recovery/resume_preflight.json",
+  "source_files_preserved_and_sha256_verified": 59,
+  "tests": [
+    {
+      "command": "python -X utf8 -m unittest discover -s tests -p test_training_oof_tuning.py",
+      "passed": 8
+    },
+    {
+      "command": "python -X utf8 -m unittest discover -s tests -p test_cnn_three.py -k test_candidates_stay_model_wise_and_singletons_enable_joint_run",
+      "passed": 1
+    },
+    {
+      "command": "git -c core.safecrlf=false diff --check",
+      "exit_code": 0
+    }
+  ],
+  "behaviors_checked": [
+    "imported OOF candidates cause no fit",
+    "new candidates alone are fitted",
+    "second resume reuses newly completed candidates",
+    "candidate rename and renumber do not trigger retraining",
+    "incomplete temporary files ignored",
+    "original audit bytes preserved",
+    "changed context or source checksum rejected",
+    "changed targets or folds rejected",
+    "incomplete epoch budget rejected"
+  ],
+  "research_data_training_started_this_task": false,
+  "outer_evaluation_started_this_task": false,
+  "partial_fold_resume_supported": false,
+  "notes": "The old tuning mode saved OOF predictions, not fitted model checkpoints. Missing candidate audits must be computed again; fixed final models are fitted during the later normal evaluation.",
+  "changed_code_sha256": {
+    "code/run_ensemble_regression_onb.py": "178e148e9d0eea398be7cfd54fa4b21d97a098e033cd4897721a5cf628063c1f",
+    "code/utils/experiment/training_oof_tuning.py": "ee7e509c09db4c1dfcc3acf5355758bb43c0e05bbcd2cd3461a0bfa46586adbf",
+    "tests/test_training_oof_tuning.py": "44c9e51e78be87df0db2058548f15cb0877730d9e8e2a773492d273615e77892",
+    "tests/test_cnn_three.py": "a3bf1d0d8b4a5100ab442d2c1726382abbdd4b9f1670d4d16ef783b876a90497"
+  }
+}

@@ -1,8 +1,8 @@
 # 文書案内と更新ルール
 
-更新日: 2026-10-19。**現在の状態は一か所で更新し、過去の数値と判断は日付付き記録に残す。**
+更新日: 2026-10-21。**現在の状態は一か所で更新し、過去の数値と判断は日付付き記録に残す。**
 
-CNN 3種の実行準備は，[実装内容・候補設定・探索から通常評価への切替](research_plan/2026-10-19_cnn_only_three_comparison_and_writing_policy.md)を参照。準備・動作確認済みと本番学習未実行を区別する。
+CNN 3種の停止後の再開は，[完了候補の採用・残る49候補・再開手順](research_plan/2026-10-19_cnn_only_three_comparison_and_writing_policy.md)，[停止時の59候補](../experiments/2026-10-21_cnn_three_tuning_recovery/interrupted_summary.json)，[再開設定](../configs/experiments/2026-10-21_cnn_three_recovery_ready.json)を参照。10/19の実行準備と，実際の探索の部分完了，再開未起動を区別する。
 
 最新の記述方針と比較案は，[研究課題からの自立した説明・CNN 3種の構成比較](research_plan/2026-10-19_cnn_only_three_comparison_and_writing_policy.md)。本文は個人の研究経緯に言及しない。[先行する目的/結論/ONB評価の照合](thesis/2026-10-19_research_purpose_revision_and_alignment.md)には，夏以前の相談候補の根拠と確かさ，三つの問いへの現在の回答と未回答を残す。性能評価は手法の発展に必要な手段として位置づける。
 
