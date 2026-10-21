@@ -1,4 +1,6 @@
 import contextlib
+from copy import deepcopy
+import hashlib
 import io
 import json
 from pathlib import Path
@@ -21,9 +23,12 @@ from utils.config.parameter_sets import (
     resolve_parameter_set,
 )
 from utils.experiment.learning_policy import normalize_learning_policy
+from utils.experiment.acoustic_selection import AcousticTrainingSelector
 from utils.experiment.training_oof_tuning import (
     oof_regression_metrics,
     run_training_oof_tuning,
+    tuning_resume_context,
+    validate_resume_audit,
 )
 
 
@@ -180,6 +185,93 @@ class TrainingOofTuningTest(unittest.TestCase):
             audit = json.loads(next((output_dir / "candidate_audits").glob("*.json")).read_text(encoding="utf-8"))
             self.assertEqual(audit["internal_validation"]["method"], "chunk_kfold")
             self.assertTrue(all(f["shared_samples"] == 0 for f in audit["internal_validation"]["folds"]))
+
+    def test_resume_reuses_imported_and_new_completed_candidates(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            policy = normalize_learning_policy({
+                "evaluation_mode": "within_wav_chunk", "within_wav_chunk_experiment": "day-a",
+                "training_noise": "clean_only", "test_fraction": 0.5, "test_split_seed": 42,
+            }, ["day-a"])
+            jobs, specs, _, config = fixture(
+                root, policy, evaluated_noises=("heatflux_no_noise",), days=("day-a",))
+            config.update({"acoustic_selection": {"enabled": False}, "thresholds": {
+                "by_experiment": {"day-a": 36.0}, "onb_band_frac": 0.1,
+                "provenance_by_experiment": {},
+            }})
+            candidate = {"name": "old-name", "tag": "old-tag", "model_key": "randomforest",
+                         "models": {"randomforest": {"max_depth": 3}}}
+            second = {"name": "fresh", "tag": "fresh", "model_key": "randomforest",
+                      "models": {"randomforest": {"max_depth": 4}}}
+
+            def run(output, candidates):
+                trainer = ObservedTrainer()
+                with contextlib.redirect_stdout(io.StringIO()), patch("gc.collect"), \
+                        patch("tensorflow.keras.backend.clear_session"):
+                    result = run_training_oof_tuning(
+                        jobs, policy, config, specs, candidates, trainer, output_dir=output)
+                return result, trainer
+
+            original = root / "original"
+            run(original, [candidate])
+            audit_path = next((original / "candidate_audits").glob("*.json"))
+            original_bytes = audit_path.read_bytes()
+            manifest = root / "manifest.json"
+            manifest.write_text(json.dumps({
+                "context": tuning_resume_context(config, specs), "candidates": [{
+                    "path": str(audit_path), "sha256": hashlib.sha256(original_bytes).hexdigest(),
+                    "parameter_set": candidate,
+                }],
+            }), encoding="utf-8")
+            config["models"]["tuning_resume"] = {"source_manifest": str(manifest)}
+            renamed = {**candidate, "name": "adopted", "tag": "adopted"}
+            recovered = root / "recovered"
+            result, trainer = run(recovered, [renamed, second])
+            self.assertEqual((result["reused_candidates"], result["trained_candidates"]), (1, 1))
+            self.assertEqual(len(trainer.fits), 3)
+            self.assertFalse(result["outer_test_used"])
+            self.assertEqual(result["selected"]["randomforest"]["candidate_name"], "adopted")
+            # A second interruption must also reuse candidates produced after
+            # recovery. Unfinished atomic writes are never treated as results.
+            (recovered / "candidate_audits" / "partial.json.tmp").write_text("{", encoding="utf-8")
+            result, trainer = run(recovered, [renamed, second])
+            self.assertEqual((result["reused_candidates"], result["trained_candidates"]), (2, 0))
+            self.assertEqual(len(trainer.fits), 0)
+            self.assertEqual(audit_path.read_bytes(), original_bytes)
+
+            config["run"]["epochs"] = 2
+            with self.assertRaisesRegex(ValueError, "resume context differs"):
+                run(root / "changed-context", [renamed])
+            config["run"]["epochs"] = 1
+            audit_path.write_bytes(original_bytes + b" ")
+            with self.assertRaisesRegex(ValueError, "checksum differs"):
+                run(root / "changed-audit", [renamed])
+
+            # Even a valid checksum must not allow a mismatched sample, fold,
+            # or unfinished neural-model fit into the candidate ranking.
+            saved = json.loads(original_bytes)
+            samples = saved["internal_validation"]["samples"]
+            metadata = [{k: sample[k] for k in ("experiment_name", "source_wav_id", "chunk_index")}
+                        for sample in samples]
+            targets = np.asarray([sample["heat_flux"] for sample in samples])
+            selector = AcousticTrainingSelector({"enabled": False}, {"day-a": 36.0})
+            options = (metadata, targets, selector, 3, 42, 1, "chunk_kfold")
+            altered = deepcopy(saved)
+            altered["internal_validation"]["samples"][0]["heat_flux"] += 1
+            with self.assertRaisesRegex(ValueError, "identities or targets differ"):
+                validate_resume_audit(altered, candidate, specs[:1], *options)
+            altered = deepcopy(saved)
+            altered["internal_validation"]["folds"][0]["fit_indices"] = []
+            with self.assertRaisesRegex(ValueError, "partition differs"):
+                validate_resume_audit(altered, candidate, specs[:1], *options)
+            altered = deepcopy(saved)
+            for fold in altered["internal_validation"]["folds"]:
+                fold["model_training"] = {"randomforest": {
+                    "requested_epochs": 1, "epochs_completed": 0, "requested_batch_size": 8,
+                    "stopped_by_memory_error": True,
+                }}
+            with self.assertRaisesRegex(ValueError, "did not complete"):
+                validate_resume_audit(altered, candidate, [{"kind": "keras", "batch_size": 8}], *options)
 
 
 if __name__ == "__main__":

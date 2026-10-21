@@ -28,15 +28,18 @@ class CnnThreeTest(unittest.TestCase):
         onb.validate_validation_config(onb.MODEL_SPECS)
         plan = onb.parameter_plan_for_max_freq("maxfreq=3kHz")
         self.assertTrue(plan["parameter_search_enabled"])
-        self.assertEqual(len(plan["parameter_sets"]), 72)  # Sum of grids, not 24**3.
+        self.assertEqual(len(plan["parameter_sets"]), 73)  # Adopted AlexNet + two 6x6 grids.
         for key in onb.MODEL_KEYS:
             candidates = [p for p in plan["parameter_sets"] if p["model_key"] == key]
-            self.assertEqual(len(candidates), 24)
-            self.assertEqual(len({(p["models"][key]["lr"], p["models"][key]["batch_size"]) for p in candidates}), 24)
+            expected = 1 if key == "alexnet" else 36
+            self.assertEqual(len(candidates), expected)
+            self.assertEqual(len({(p["models"][key]["lr"], p["models"][key]["batch_size"]) for p in candidates}), expected)
             for candidate in candidates:
                 specs = resolve_parameter_set(onb.MODEL_SPECS, candidate)
                 self.assertEqual([s["key"] for s in specs], [key])
-                self.assertIn(specs[0]["batch_size"], [4, 8, 16, 32])
+                self.assertIn(specs[0]["batch_size"], [4, 8, 16, 32, 64, 128])
+        self.assertEqual(plan["parameter_sets"][0]["models"]["alexnet"], {"lr": 0.01, "batch_size": 32})
+        self.assertTrue(onb.validation_config_snapshot("maxfreq=3kHz")["models"]["tuning_resume"]["source_manifest"])
 
         config = deepcopy(onb.VALIDATION_CONFIG["models"]["parameter_sets"])
         for key in onb.MODEL_KEYS:

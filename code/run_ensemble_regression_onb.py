@@ -173,6 +173,12 @@ VALIDATION_CONFIG = apply_onb_defaults({
     "models": {
         "enabled_keys": ["alexnet", "resnet50", "vgg16"],
         # "enabled_keys": ["randomforest", "conformer", "alexnet", "hgb", "extra_trees"],
+        "tuning_resume": {
+            # 学習側OOFの完了候補を再利用。再停止しても同じ保存先から続ける。
+            # 別の実験条件を探索する場合は、この欄を {} にして新規実行する。
+            "source_manifest": "experiments/2026-10-21_cnn_three_tuning_recovery/resume_manifest.json",
+            "output_dir": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/21/tuning_resume_190618",
+        },
         "parameter_sets": {
             # 周波数ごとに独立した候補リストを持つ。選択中の周波数に
             # 対応する欄だけが使われ、全リストが1要素なら通常run、
@@ -181,7 +187,7 @@ VALIDATION_CONFIG = apply_onb_defaults({
             "by_max_freq_hz": {
                 "maxfreq=3kHz": {
                     # RF/CNN＋Transformer/HGB/ETは既存の採用値。
-                    # CNN 3種は学習率6通り×batch4通りをモデル別に探索する。
+                    # AlexNetは36候補の最良値。残る2モデルは6×6候補を保持。
                     "randomforest": {
                         "n_estimators": [100],
                         "max_depth": [12],
@@ -193,8 +199,8 @@ VALIDATION_CONFIG = apply_onb_defaults({
                         "batch_size": [12],
                     },
                     "alexnet": {
-                        "lr": [0.0001, 0.0003, 0.001, 0.003, 0.005, 0.01],
-                        "batch_size": [4, 8, 16, 32, 64, 128],
+                        "lr": [0.01],
+                        "batch_size": [32],
                     },
                     "resnet50": {
                         "lr": [0.0001, 0.0003, 0.001, 0.003, 0.005, 0.01],
@@ -465,6 +471,7 @@ def validation_config_snapshot(max_freq_hz):
             "active_max_freq_hz": max_freq_hz,
             "parameter_sets": plan["parameter_sets"],
             "parameter_search_enabled": plan["parameter_search_enabled"],
+            "tuning_resume": dict(VALIDATION_CONFIG["models"].get("tuning_resume") or {}),
         },
         "ensemble": ENSEMBLE_MANAGER.snapshot(),
         "features": {

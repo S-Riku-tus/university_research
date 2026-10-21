@@ -1,6 +1,32 @@
 # 自立した研究課題からの記述と，CNN 3種を用いる構成比較案
 
-## 同日最新：本人希望により探索範囲を拡大
+## 10/21最新：停止した探索を保持して，未完了だけを再開する
+
+本人依頼に基づき，停止run `190618` の `candidate_audits` 59件を確認した。実行時にはbatch候補が `[4, 8, 16, 32, 64, 128]` へ増えており，各モデル36候補・合計108候補だった。旧runの原本は変更せず，[全59候補の指標](../../experiments/2026-10-21_cnn_three_tuning_recovery/completed_candidate_metrics.csv)と[停止時の条件・採用判断](../../experiments/2026-10-21_cnn_three_tuning_recovery/interrupted_summary.json)を保存した。
+
+| モデル | 完了した候補 | 現在の設定 | 新たに必要な候補 |
+|---|---:|---|---:|
+| AlexNet | 36/36 | lr=0.01，batch32へ固定 | 0 |
+| ResNet50 | 23/36 | 6×6の候補を保持し，完了23件を再利用 | 13 |
+| VGG16 | 0/36 | 6×6の候補を保持 | 36 |
+
+AlexNetの採用根拠はclean学習側OOF全域RMSEの最小値41.2086 kW/m²。探索範囲内の最良値であり，外側540区間の成績や雑音下性能ではない。ResNet50の現時点最良はlr=0.0001・batch32，OOF RMSE118.6641 kW/m²だが，未完了候補があるため暫定値として残し，まだ固定しない。
+
+再開設定はAlexNet1＋ResNet50 36＋VGG16 36＝73候補。このうち保存結果24候補（AlexNet採用値1＋ResNet50完了23）を飛ばし，残る49候補×3-fold＝147 fitを各200 epochsで進める。ResNet50の未完了はlr=0.003/batch128と，lr=0.005・0.01の各6 batch。VGG16は36候補すべて。保存されていない途中foldは復元できないため，その候補を3-foldの最初から実行する。
+
+再開は従来どおり，研究用Python環境から実行する。
+
+```powershell
+python code/run_ensemble_regression_onb.py
+```
+
+`models.tuning_resume` が原本59件の[再利用manifest](../../experiments/2026-10-21_cnn_three_tuning_recovery/resume_manifest.json)を読み，条件・モデルコード・原本ハッシュ・学習sample ID/正解・内部分割・学習完了回数を検査する。旧runには全体設定manifestがなく，今回，保存監査記録と現行データを照合して再利用対象を指定した。元の保存先は変更しない。再開後の保存先は同じ実験の `regression_result/npy/tuning/202610/21/tuning_resume_190618`。そこで新たに完了した候補も，再停止後は同じ入口で再利用する。JSONは一時ファイルから置換して保存し，不完全な一時ファイルは結果として読まない。
+
+[事前照合](../../experiments/2026-10-21_cnn_three_tuning_recovery/resume_preflight.json)で現在候補の再利用24件を確認。原本59件のハッシュは不変。関連9テストで，完了分の再利用・追加分だけのfit・再開先からの再開・原本保持・条件やデータの不一致時の停止を確認した。[変更前](../../configs/experiments/2026-10-21_cnn_three_interrupted_config.json)と[再開用設定](../../configs/experiments/2026-10-21_cnn_three_recovery_ready.json)を保存した。今回は本番学習を再開していない。
+
+探索完了後は，残る2モデルも選択値1個に固定してから，同じ入口で全7条件の通常評価へ進む。探索から通常評価への自動移行はしない。別の実験条件を新規探索する場合は `models.tuning_resume` を `{}` に戻す。以下は10/19時点の履歴であり，現在候補数・学習済み数は本節を優先する。
+
+## 10/19後続：本人希望により探索範囲を拡大
 
 少数候補に制限せず適切なパラメータを探したいという本人の希望を反映し，3モデルとも学習率`[0.0001, 0.0003, 0.001, 0.003, 0.005, 0.01]`，batch size `[4, 8, 16, 32]`へ変更した。1モデル24候補，3モデル合計72候補，3-foldで計216回の内部fit，各200 epochsを予定する。モデル間の候補は掛け合わせず，モデル別に探索する。
 

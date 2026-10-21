@@ -1,0 +1,48 @@
+{
+  "date": "2026-10-21",
+  "source_audits_unchanged": 59,
+  "configured_candidates": 73,
+  "reused_by_model": {
+    "alexnet": 1,
+    "resnet50": 23
+  },
+  "remaining_by_model": {
+    "resnet50": 13,
+    "vgg16": 36
+  },
+  "new_candidates": 49,
+  "new_fold_fits": 147,
+  "training_samples": 1620,
+  "outer_test_samples_not_scored": 540,
+  "checked": "source SHA256, training sample IDs/targets/order, all fold IDs and fit budget",
+  "research_data_array_loads": 0,
+  "research_data_fits": 0,
+  "outer_test_scored": false,
+  "validated_source_audits": [
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/34_alex_lr0p01_bs32_49cb7.json",
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/37_resn_lr0p0001_bs4_5aa64.json",
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/38_resn_lr0p0001_bs8_fd1c8.json",
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/39_resn_lr0p0001_bs16_30ad2.json",
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/40_resn_lr0p0001_bs32_3f18c.json",
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/41_resn_lr0p0001_bs64_ec11a.json",
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/42_resn_lr0p0001_bs12_2e943.json",
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/43_resn_lr0p0003_bs4_57e3b.json",
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/44_resn_lr0p0003_bs8_66fbb.json",
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/45_resn_lr0p0003_bs16_559d5.json",
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/46_resn_lr0p0003_bs32_cc37e.json",
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/47_resn_lr0p0003_bs64_d8c4d.json",
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/48_resn_lr0p0003_bs12_eb246.json",
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/49_resn_lr0p001_bs4_68d67.json",
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/50_resn_lr0p001_bs8_58f8e.json",
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/51_resn_lr0p001_bs16_293f5.json",
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/52_resn_lr0p001_bs32_fc22f.json",
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/53_resn_lr0p001_bs64_66989.json",
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/54_resn_lr0p001_bs128_6ebfa.json",
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/55_resn_lr0p003_bs4_13eec.json",
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/56_resn_lr0p003_bs8_c6c19.json",
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/57_resn_lr0p003_bs16_76728.json",
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/58_resn_lr0p003_bs32_faf5a.json",
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618/candidate_audits/59_resn_lr0p003_bs64_811b1.json"
+  ],
+  "resume_output": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/21/tuning_resume_190618"
+}
