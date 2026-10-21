@@ -1,5 +1,7 @@
 # 研究の現在地と次にすること
 
+**10/21・本人の最新意向に基づく研究全体の再検討**：[目的・RQ・成果・限界・追加研究の判断案](research_plan/2026-10-21_research_logic_reassessment_user_feedback.md)、[全検証の証拠台帳](research_plan/2026-10-21_research_activity_evidence_inventory.md)、[保存予測の軽量照合](../experiments/2026-10-21_research_logic_audit/README.md)。全域熱流束回帰とONB判定を二つの主要課題とし、誤差・入力依存・統合制約から改善と限界を説明する構成を提案。主系列の全7条件RMSE/総FN改善を再確認し、開始層と物理対応の限界も保持した。17:27 JSTの実保存CNN監査はAlex36・ResNet24・VGG0候補（停止記録よりResNet1件進展）。新学習・探索再開・推論・設定/修論本文変更なし。教授了承済み方針ではない。以下の競合マーカーと旧記録は今回修復せず保持し、現状判断は新しい保存監査を参照する。
+
 <<<<<<< HEAD
 更新日: **2026-10-20（修論試作後の論理・到達点・10月中の判断を整理）**。分位点ルール時点の状態は[変更前の記録](../experiments/2026-09-16_peak_height_selection/previous_documents/research_status.md)に保存した。
 

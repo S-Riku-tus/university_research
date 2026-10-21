@@ -1,0 +1,66 @@
+{
+  "status": "passed",
+  "checked_at_JST": "2026-10-21T17:30:18.583682+09:00",
+  "head": "259bd4b8c86669e92a4292f064270b6881b99b65",
+  "initial_worktree_clean": true,
+  "files": [
+    {
+      "path": "docs/research_plan/2026-10-21_research_logic_reassessment_user_feedback.md",
+      "characters": 35454,
+      "lines": 581,
+      "sha256": "0ee83e5840d1c46cf84672bdfae7b3d3a1e24bab8a5a17f274a3f4ae666c1c7d"
+    },
+    {
+      "path": "docs/research_plan/2026-10-21_research_activity_evidence_inventory.md",
+      "characters": 17241,
+      "lines": 108,
+      "sha256": "7b3c8052de72dc95508afc9da460a40b300b11971dc96bada7793e5ac4db18af"
+    },
+    {
+      "path": "experiments/2026-10-21_research_logic_audit/README.md",
+      "characters": 2736,
+      "lines": 51,
+      "sha256": "d0eaf0cad74deb99c6d94a5c5f68fffb95986e6dc1a332ede06a9cf93d328f55"
+    }
+  ],
+  "local_link_checks": 162,
+  "link_errors": [],
+  "main_ten_parts": true,
+  "inventory_unique_rows": 65,
+  "main_primary_table_numeric_checks": 70,
+  "whitespace_and_fences_passed": true,
+  "research_status_only_new_note_added": true,
+  "preexisting_committed_conflict_markers_preserved": true,
+  "tracked_changes": [
+    "docs/research_status.md"
+  ],
+  "untracked_files": [
+    "docs/research_plan/2026-10-21_research_activity_evidence_inventory.md",
+    "docs/research_plan/2026-10-21_research_logic_reassessment_user_feedback.md",
+    "experiments/2026-10-21_research_logic_audit/README.md",
+    "experiments/2026-10-21_research_logic_audit/audit_saved_evidence.py",
+    "experiments/2026-10-21_research_logic_audit/document_validation.json",
+    "experiments/2026-10-21_research_logic_audit/near_band_sensitivity_counts.csv",
+    "experiments/2026-10-21_research_logic_audit/onb_failure_feasibility.csv",
+    "experiments/2026-10-21_research_logic_audit/onb_stage_partition.csv",
+    "experiments/2026-10-21_research_logic_audit/primary_document_extracts.md",
+    "experiments/2026-10-21_research_logic_audit/recomputed_primary_metrics.csv",
+    "experiments/2026-10-21_research_logic_audit/recomputed_q100.csv",
+    "experiments/2026-10-21_research_logic_audit/verification.json"
+  ],
+  "git_diff_check_passed": true,
+  "physical_reference": {
+    "path": "研究進捗報告/8124532_手塚晃輔_令和7年度修士論文ーU.pdf",
+    "sha256": "8ef25b9c10d97138c9c7f66a8e1e76c9cf1e3c5fbb0765a0910a8d2057861ef8",
+    "selected_pdf_pages_read": [
+      58,
+      59
+    ],
+    "existing_temp_pdf_reader_used": true,
+    "no_dependency_install": true
+  },
+  "model_code_or_config_changed": false,
+  "model_fit_or_inference_performed": false,
+  "cnn_search_started_or_stopped": false,
+  "remote_write": false
+}
