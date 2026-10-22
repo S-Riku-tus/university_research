@@ -1,0 +1,364 @@
+{
+  "checked_at_jst": "2026-10-22T14:12:30+09:00",
+  "model": "resnet50",
+  "candidate_count": 36,
+  "selection_metric": "rmse_all",
+  "selection_scope": "clean outer-training 1620 samples, chunk3fold OOF, seed42, 200 epochs; not outer-test performance",
+  "complete_original_grid": true,
+  "all_fold_budgets_and_actual_batches_match": true,
+  "all_rmse_recomputed_from_saved_oof": true,
+  "selected": {
+    "parameters": {
+      "lr": 0.0001,
+      "batch_size": 32
+    },
+    "rmse_all_W_m2": 118664.06169012934,
+    "metrics": {
+      "n_samples": 1620,
+      "n_source_wavs": 36,
+      "r2": 0.8071324479983935,
+      "rmse_all": 118664.06169012934,
+      "mae_all": 93538.29407911684,
+      "bias_all": -4208.846574417114,
+      "n_pre_onb": 675,
+      "rmse_pre_onb": 100084.21621122908,
+      "bias_pre_onb": 60801.437557510064,
+      "false_positive_rate": 0.0,
+      "n_post_onb": 945,
+      "rmse_post_onb": 130323.58780496319,
+      "bias_post_onb": -50644.763811507946,
+      "recall": 0.7915343915343915,
+      "n_onb_band": 90,
+      "rmse_onb": 107439.82496617244,
+      "mae_onb": 102121.52337486112
+    },
+    "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/21/tuning_resume_190618/candidate_audits/05_resn_lr0p0001_bs32_3f18c.json",
+    "sha256": "c9a75c23e6a17e1b93aabfa4ec8fcf4de1df14a971322a60c8955afc372d81ec"
+  },
+  "source_audits": [
+    {
+      "parameters": {
+        "lr": 0.0001,
+        "batch_size": 32
+      },
+      "rmse_all_W_m2": 118664.06169012934,
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/21/tuning_resume_190618/candidate_audits/05_resn_lr0p0001_bs32_3f18c.json",
+      "sha256": "c9a75c23e6a17e1b93aabfa4ec8fcf4de1df14a971322a60c8955afc372d81ec"
+    },
+    {
+      "parameters": {
+        "lr": 0.0001,
+        "batch_size": 16
+      },
+      "rmse_all_W_m2": 122933.41775636714,
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/21/tuning_resume_190618/candidate_audits/04_resn_lr0p0001_bs16_30ad2.json",
+      "sha256": "4bcf50ab6eaa50120987d19732065d42d97f1c56751a4ecaf6a4440a49fe4170"
+    },
+    {
+      "parameters": {
+        "lr": 0.0001,
+        "batch_size": 128
+      },
+      "rmse_all_W_m2": 124180.01148865059,
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/21/tuning_resume_190618/candidate_audits/07_resn_lr0p0001_bs12_2e943.json",
+      "sha256": "8d107de0ab219fbb7aef988035bc9049afdb971f28374d1ed3a38ef69bac6e84"
+    },
+    {
+      "parameters": {
+        "lr": 0.0001,
+        "batch_size": 64
+      },
+      "rmse_all_W_m2": 126314.6844262806,
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/21/tuning_resume_190618/candidate_audits/06_resn_lr0p0001_bs64_ec11a.json",
+      "sha256": "628bb3d2b29214ec14024c06570c2debaad78a0d983c3344121d839ba554f011"
+    },
+    {
+      "parameters": {
+        "lr": 0.0003,
+        "batch_size": 128
+      },
+      "rmse_all_W_m2": 130248.82999431557,
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/21/tuning_resume_190618/candidate_audits/13_resn_lr0p0003_bs12_eb246.json",
+      "sha256": "5cd4c549e57aa3cb1d45374e10e3c02ecfd3f18081ba413444cc5da6003e3fa2"
+    },
+    {
+      "parameters": {
+        "lr": 0.0003,
+        "batch_size": 4
+      },
+      "rmse_all_W_m2": 130598.62279588128,
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/21/tuning_resume_190618/candidate_audits/08_resn_lr0p0003_bs4_57e3b.json",
+      "sha256": "fb359cc44a075e02b83222249ff1bbc50e02f2865f87bc90b5c58356b7bcc10b"
+    },
+    {
+      "parameters": {
+        "lr": 0.003,
+        "batch_size": 64
+      },
+      "rmse_all_W_m2": 138500.06421329966,
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/21/tuning_resume_190618/candidate_audits/24_resn_lr0p003_bs64_811b1.json",
+      "sha256": "152df6449d5674a2186c7b7f50b0ffe14a6131bae45e44abbf03285aee124bbd"
+    },
+    {
+      "parameters": {
+        "lr": 0.0001,
+        "batch_size": 8
+      },
+      "rmse_all_W_m2": 155124.34735425722,
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/21/tuning_resume_190618/candidate_audits/03_resn_lr0p0001_bs8_fd1c8.json",
+      "sha256": "804459495443915efe0e363427bca7eab118daa5c91b5545dce11ba303aa9417"
+    },
+    {
+      "parameters": {
+        "lr": 0.001,
+        "batch_size": 8
+      },
+      "rmse_all_W_m2": 156934.97993451895,
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/21/tuning_resume_190618/candidate_audits/15_resn_lr0p001_bs8_58f8e.json",
+      "sha256": "a01a62890ac450cdf36afcdf6a31aa2196d883c14d115933f9b4de1a0249f452"
+    },
+    {
+      "parameters": {
+        "lr": 0.005,
+        "batch_size": 8
+      },
+      "rmse_all_W_m2": 157881.5583281839,
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/21/tuning_resume_190618/candidate_audits/27_resn_lr0p005_bs8_ee63f.json",
+      "sha256": "c763720a79b64afaa71b474aba880ad886cff3a69d9d694d3f17e775ab2b05bf"
+    },
+    {
+      "parameters": {
+        "lr": 0.001,
+        "batch_size": 4
+      },
+      "rmse_all_W_m2": 159730.32717022492,
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/21/tuning_resume_190618/candidate_audits/14_resn_lr0p001_bs4_68d67.json",
+      "sha256": "308f77ca79e6d6e63e374613d39cf2e6aa2d173033f769e5b1ee7e6375f606eb"
+    },
+    {
+      "parameters": {
+        "lr": 0.0001,
+        "batch_size": 4
+      },
+      "rmse_all_W_m2": 164936.0630449773,
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/21/tuning_resume_190618/candidate_audits/02_resn_lr0p0001_bs4_5aa64.json",
+      "sha256": "684453fd949e93f7da4158028afc567e5fe104c50c6623b83d1246cb0aeeba86"
+    },
+    {
+      "parameters": {
+        "lr": 0.0003,
+        "batch_size": 64
+      },
+      "rmse_all_W_m2": 168384.58152268207,
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/21/tuning_resume_190618/candidate_audits/12_resn_lr0p0003_bs64_d8c4d.json",
+      "sha256": "fd28733b77f01d007f6576a8a44472f8fcf57f536b814550266321e5bedcfd86"
+    },
+    {
+      "parameters": {
+        "lr": 0.003,
+        "batch_size": 32
+      },
+      "rmse_all_W_m2": 172405.5460417643,
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/21/tuning_resume_190618/candidate_audits/23_resn_lr0p003_bs32_faf5a.json",
+      "sha256": "9fdb469131ffc6650480b21ee983b0169ea937ac2cea54abcec36e6ee6b3ba86"
+    },
+    {
+      "parameters": {
+        "lr": 0.005,
+        "batch_size": 128
+      },
+      "rmse_all_W_m2": 173548.07378664683,
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/21/tuning_resume_190618/candidate_audits/31_resn_lr0p005_bs128_ac440.json",
+      "sha256": "d8cf4251b1bda0356a8161edf2ccac39326a2d44399e1e541c3e591a4ef92578"
+    },
+    {
+      "parameters": {
+        "lr": 0.01,
+        "batch_size": 8
+      },
+      "rmse_all_W_m2": 174388.1707578591,
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/21/tuning_resume_190618/candidate_audits/33_resn_lr0p01_bs8_e6728.json",
+      "sha256": "febf467024c61eaa5a84309d166c5b9470ace982a45bcbafe76eaa22a08076a4"
+    },
+    {
+      "parameters": {
+        "lr": 0.005,
+        "batch_size": 64
+      },
+      "rmse_all_W_m2": 174766.51860863864,
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/21/tuning_resume_190618/candidate_audits/30_resn_lr0p005_bs64_00366.json",
+      "sha256": "bf5cb731bf465e2c9f198b8f571a98eba578ccb4ab7f98cbb2ada0a375679100"
+    },
+    {
+      "parameters": {
+        "lr": 0.001,
+        "batch_size": 16
+      },
+      "rmse_all_W_m2": 176533.77058471116,
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/21/tuning_resume_190618/candidate_audits/16_resn_lr0p001_bs16_293f5.json",
+      "sha256": "65ea430bc6f1b2efd0e67c894de9b7404fb22aea2d776a66306a41136044f64b"
+    },
+    {
+      "parameters": {
+        "lr": 0.01,
+        "batch_size": 64
+      },
+      "rmse_all_W_m2": 177040.43476786747,
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/21/tuning_resume_190618/candidate_audits/36_resn_lr0p01_bs64_3b144.json",
+      "sha256": "627f09de45906b5bad796c7b142862db845196b639889f7798c42dbe5288fa8b"
+    },
+    {
+      "parameters": {
+        "lr": 0.003,
+        "batch_size": 8
+      },
+      "rmse_all_W_m2": 177225.87880402216,
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/21/tuning_resume_190618/candidate_audits/21_resn_lr0p003_bs8_c6c19.json",
+      "sha256": "1a206c81950487d9ecd0cfecf2c2b5b289f5188631cc742b3d244bcc00a2c643"
+    },
+    {
+      "parameters": {
+        "lr": 0.0003,
+        "batch_size": 8
+      },
+      "rmse_all_W_m2": 177346.09776200133,
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/21/tuning_resume_190618/candidate_audits/09_resn_lr0p0003_bs8_66fbb.json",
+      "sha256": "8d5447c3ead8dfec1f83c3c20b61c6d332f22b488cb747910cddad392a6b13c2"
+    },
+    {
+      "parameters": {
+        "lr": 0.003,
+        "batch_size": 128
+      },
+      "rmse_all_W_m2": 179375.2469873726,
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/21/tuning_resume_190618/candidate_audits/25_resn_lr0p003_bs128_300d6.json",
+      "sha256": "a248b3520d319c3da47c909cfbad7f6b0d3e7834f6c4a1dd2b6f0f8b8b57361a"
+    },
+    {
+      "parameters": {
+        "lr": 0.0003,
+        "batch_size": 16
+      },
+      "rmse_all_W_m2": 181168.59095008852,
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/21/tuning_resume_190618/candidate_audits/10_resn_lr0p0003_bs16_559d5.json",
+      "sha256": "70f8cc16a434cd450b56592e5e57026b1fb2abd0b6268c4e9caeee624b857180"
+    },
+    {
+      "parameters": {
+        "lr": 0.01,
+        "batch_size": 32
+      },
+      "rmse_all_W_m2": 181549.99377341813,
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/21/tuning_resume_190618/candidate_audits/35_resn_lr0p01_bs32_18382.json",
+      "sha256": "d11551d6debc52027efe2312a55cc263db198c02a640022c821db192ea21494f"
+    },
+    {
+      "parameters": {
+        "lr": 0.003,
+        "batch_size": 16
+      },
+      "rmse_all_W_m2": 183097.1050789081,
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/21/tuning_resume_190618/candidate_audits/22_resn_lr0p003_bs16_76728.json",
+      "sha256": "4c4cc583dd677b0f1a749868eeead093771f7985c9fcef5dd942658f3cf29ba6"
+    },
+    {
+      "parameters": {
+        "lr": 0.005,
+        "batch_size": 32
+      },
+      "rmse_all_W_m2": 185048.54851461545,
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/21/tuning_resume_190618/candidate_audits/29_resn_lr0p005_bs32_4b77e.json",
+      "sha256": "7ac5a8f329f47dd96e414118ca1acbef7c19854beb9baa43ca4441a7850293b2"
+    },
+    {
+      "parameters": {
+        "lr": 0.001,
+        "batch_size": 32
+      },
+      "rmse_all_W_m2": 188718.90331085984,
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/21/tuning_resume_190618/candidate_audits/17_resn_lr0p001_bs32_fc22f.json",
+      "sha256": "4470fb6a59c4617d935c6a8fd1d432caee1b0f45b88a08d969aaba58d143df33"
+    },
+    {
+      "parameters": {
+        "lr": 0.01,
+        "batch_size": 128
+      },
+      "rmse_all_W_m2": 194550.53200296513,
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/21/tuning_resume_190618/candidate_audits/37_resn_lr0p01_bs128_8fa23.json",
+      "sha256": "6e1cbca297ac21d3a73e57b3eb1922e71fa1da2ed1d545f4b0332387d2d23b3d"
+    },
+    {
+      "parameters": {
+        "lr": 0.01,
+        "batch_size": 16
+      },
+      "rmse_all_W_m2": 203306.6424309131,
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/21/tuning_resume_190618/candidate_audits/34_resn_lr0p01_bs16_be060.json",
+      "sha256": "771ca0aa665950ff113abf47d77e8d7487a40e1d27ee54505746f60eb3f5539c"
+    },
+    {
+      "parameters": {
+        "lr": 0.005,
+        "batch_size": 16
+      },
+      "rmse_all_W_m2": 208717.42352749885,
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/21/tuning_resume_190618/candidate_audits/28_resn_lr0p005_bs16_2db71.json",
+      "sha256": "795d1fb2e938663b454e722c8e1b8f4f044578a631c8e27f4f54d742066fd58b"
+    },
+    {
+      "parameters": {
+        "lr": 0.001,
+        "batch_size": 64
+      },
+      "rmse_all_W_m2": 211355.3267283508,
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/21/tuning_resume_190618/candidate_audits/18_resn_lr0p001_bs64_66989.json",
+      "sha256": "29e3df8980e446b79bf2c7382bf663a1c1c263eed9bdc7e601b0a31ef201b729"
+    },
+    {
+      "parameters": {
+        "lr": 0.01,
+        "batch_size": 4
+      },
+      "rmse_all_W_m2": 321686.3160408142,
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/21/tuning_resume_190618/candidate_audits/32_resn_lr0p01_bs4_6f90e.json",
+      "sha256": "0a2a5c9a5df5af15f0b0aad63aaa4e435ac8a839ce80c714684d8b11535be002"
+    },
+    {
+      "parameters": {
+        "lr": 0.003,
+        "batch_size": 4
+      },
+      "rmse_all_W_m2": 344401.70331961854,
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/21/tuning_resume_190618/candidate_audits/20_resn_lr0p003_bs4_13eec.json",
+      "sha256": "8349737d97b4527a9814505406ad34694942643058bb328d7180f11e88ea9cf1"
+    },
+    {
+      "parameters": {
+        "lr": 0.001,
+        "batch_size": 128
+      },
+      "rmse_all_W_m2": 347023.9892865103,
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/21/tuning_resume_190618/candidate_audits/19_resn_lr0p001_bs128_6ebfa.json",
+      "sha256": "559b3685e8fcfabb9949cd071d5b25aa7e8b4460b988bf5f3d8161ad5b545c11"
+    },
+    {
+      "parameters": {
+        "lr": 0.0003,
+        "batch_size": 32
+      },
+      "rmse_all_W_m2": 361270.1146568421,
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/21/tuning_resume_190618/candidate_audits/11_resn_lr0p0003_bs32_cc37e.json",
+      "sha256": "60a6561c886cc029e43888909dd574f1b200fd1fdf2bee27a41081803a5734b1"
+    },
+    {
+      "parameters": {
+        "lr": 0.005,
+        "batch_size": 4
+      },
+      "rmse_all_W_m2": 540657.0773081613,
+      "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/21/tuning_resume_190618/candidate_audits/26_resn_lr0p005_bs4_13e96.json",
+      "sha256": "11bc9076aaa1f29ca2a4dccb07df9fa16993f669bd19913dfe55f720943bcd03"
+    }
+  ]
+}

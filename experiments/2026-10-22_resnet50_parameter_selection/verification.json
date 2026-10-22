@@ -1,0 +1,23 @@
+{
+  "date": "2026-10-22",
+  "change": "resnet50 grid fixed to clean training OOF best of all 36 candidates",
+  "configured_candidates": 38,
+  "configured_by_model": {
+    "alexnet": 1,
+    "resnet50": 1,
+    "vgg16": 36
+  },
+  "validated_reusable_by_model": {
+    "alexnet": 1,
+    "resnet50": 1,
+    "vgg16": 1
+  },
+  "remaining_by_model_at_check": {
+    "vgg16": 35
+  },
+  "resume_context_unchanged": true,
+  "non_resnet_grids_and_other_configuration_unchanged": true,
+  "all_36_resnet_source_audits_preserved": true,
+  "research_training_started": false,
+  "research_process_interrupted": false
+}

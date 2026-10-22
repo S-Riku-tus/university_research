@@ -1,5 +1,9 @@
 # 研究の現在地と次にすること
 
+**10/22・本人依頼でResNet50の採用値を固定**：[36候補の選択根拠](../experiments/2026-10-22_resnet50_parameter_selection/selection.json)，[順位表](../experiments/2026-10-22_resnet50_parameter_selection/candidate_ranking.csv)，[変更後設定](../configs/experiments/2026-10-22_resnet50_fixed_validation_config.json)。全36候補の3-fold・200 epochs・指定/実batchの一致と，保存OOFからの全域RMSE再計算を確認。最小値118.664 kW/m²のlr=0.0001・batch32だけを通常入口に残した（探索範囲内の学習側最良値であり外側性能ではない）。AlexNet1＋ResNet50 1＋VGG16 36＝計38候補。VGG16は完了1件を再利用し残る35件を保持。設定テスト1件合格，再開contextの不変と現在3候補の再利用を照合済み。実行中プロセスへの停止/再起動はなく，原結果と変更前設定を保持。現在動作中のプロセスは起動時設定を使い，今回の絞り込みは次回起動から反映される。
+
+**10/22 13:55 JST・CNN探索の実保存進捗を確認**：[監査記録](../experiments/2026-10-22_cnn_three_tuning_progress/status_135525.json)。AlexNet36/36・ResNet50 36/36・VGG16 1/36が保存済み。ResNet50の残り13候補も完了し，最小clean学習側OOF RMSEはlr=0.0001・batch32（118.664 kW/m²）。確認中の13:54 JSTにVGG16最初の候補（lr=0.0001・batch4）も完了した。研究用PythonプロセスとGPU使用率98〜99%を確認。残る未完了はVGG16の35候補で，現在fold/epochは未確認。探索の全体完了印・最終選択ファイルはまだなく，今回の確認では起動・停止・設定変更を行っていない。下段の競合マーカーと過去記録は保持。
+
 **10/21・本人の最新意向に基づく研究全体の再検討**：[目的・RQ・成果・限界・追加研究の判断案](research_plan/2026-10-21_research_logic_reassessment_user_feedback.md)、[全検証の証拠台帳](research_plan/2026-10-21_research_activity_evidence_inventory.md)、[保存予測の軽量照合](../experiments/2026-10-21_research_logic_audit/README.md)。全域熱流束回帰とONB判定を二つの主要課題とし、誤差・入力依存・統合制約から改善と限界を説明する構成を提案。主系列の全7条件RMSE/総FN改善を再確認し、開始層と物理対応の限界も保持した。17:27 JSTの実保存CNN監査はAlex36・ResNet24・VGG0候補（停止記録よりResNet1件進展）。新学習・探索再開・推論・設定/修論本文変更なし。教授了承済み方針ではない。以下の競合マーカーと旧記録は今回修復せず保持し、現状判断は新しい保存監査を参照する。
 
 <<<<<<< HEAD

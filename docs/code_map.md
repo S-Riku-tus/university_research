@@ -1,5 +1,7 @@
 # コード地図
 
+**10/22の採用値固定**：ResNet50の36候補が完了し，lr=0.0001・batch32へ固定。現在はAlexNet1＋ResNet50 1＋VGG16 36の38候補で，完了結果を再利用する。実行中プロセスは起動時設定を維持し，絞り込みは次回起動から反映。[選択根拠と再開照合](../experiments/2026-10-22_resnet50_parameter_selection/verification.json)。
+
 **10/21の探索再開**：AlexNetはlr=0.01・batch32へ固定，ResNet50/VGG16は各36候補を保持。`models.tuning_resume` と `utils/experiment/training_oof_tuning.py` が保存済み24候補を照合して飛ばし，残る49候補だけを学習する。再停止後は固定された再開先の完了候補も再利用。[条件と再開手順](research_plan/2026-10-19_cnn_only_three_comparison_and_writing_policy.md)。今回の再開起動は未実施。
 
 **10/19の通常入口更新**：[CNN 3種の実行手順](research_plan/2026-10-19_cnn_only_three_comparison_and_writing_policy.md)。現在はAlexNet/ResNet50/VGG16の候補探索設定。ResNet50/VGG16の入力をlog-powerへ統一し登録，既存のOOF重み処理へCNN3用方式を追加した。候補が複数なら学習側探索，すべて1個なら通常の7条件評価。変更前の5モデル設定は[JSON](../configs/experiments/2026-10-19_before_cnn_three_validation_config.json)に保持。以下の5モデル等の説明は利用可能な経路として残す。

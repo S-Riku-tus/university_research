@@ -1,5 +1,13 @@
 # 自立した研究課題からの記述と，CNN 3種を用いる構成比較案
 
+## 10/22最新：ResNet50の36候補を確認し，採用値1組へ固定
+
+本人依頼に基づき，ResNet50の全36候補（学習率6×batch6）の完了と保存OOF全域RMSEを確認した。3-fold，各200 epochs，指定/実batchの一致，学習側1620標本の一致を確認し，全RMSEを予測から再計算した。[全順位](../../experiments/2026-10-22_resnet50_parameter_selection/candidate_ranking.csv)の最小値はlr=0.0001・batch32，RMSE118.664 kW/m²。この探索範囲内の最良値だけを `VALIDATION_CONFIG` に残した。外側評価の最良値とはしない。
+
+[選択根拠](../../experiments/2026-10-22_resnet50_parameter_selection/selection.json)，[再開の照合記録](../../experiments/2026-10-22_resnet50_parameter_selection/verification.json)，[変更前設定](../../configs/experiments/2026-10-22_before_resnet50_fixed_validation_config.json)，[変更後設定](../../configs/experiments/2026-10-22_resnet50_fixed_validation_config.json)を保存。元の36結果は保持。AlexNetの採用値とVGG16の36候補は維持し，次回の設定は1＋1＋36＝38候補となる。確認時点でAlexNet1・ResNet50 1・VGG16 1の保存結果を再利用でき，未完了はVGG16の35候補だった。候補番号が変わってもパラメータの一致で照合するため，完了候補を再学習しない。
+
+設定と通常評価への切替を確認する既存テスト1件が合格した。実行中のプロセスは停止/再起動しておらず，そのプロセスは起動時の候補表で続行する。今回の設定変更は次回起動から反映される。全モデルを1候補に絞るまでは探索モードを維持する。以下の候補数と暫定値は各時点の履歴。
+
 ## 10/21最新：停止した探索を保持して，未完了だけを再開する
 
 本人依頼に基づき，停止run `190618` の `candidate_audits` 59件を確認した。実行時にはbatch候補が `[4, 8, 16, 32, 64, 128]` へ増えており，各モデル36候補・合計108候補だった。旧runの原本は変更せず，[全59候補の指標](../../experiments/2026-10-21_cnn_three_tuning_recovery/completed_candidate_metrics.csv)と[停止時の条件・採用判断](../../experiments/2026-10-21_cnn_three_tuning_recovery/interrupted_summary.json)を保存した。

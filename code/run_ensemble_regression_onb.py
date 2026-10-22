@@ -187,7 +187,7 @@ VALIDATION_CONFIG = apply_onb_defaults({
             "by_max_freq_hz": {
                 "maxfreq=3kHz": {
                     # RF/CNN＋Transformer/HGB/ETは既存の採用値。
-                    # AlexNetは36候補の最良値。残る2モデルは6×6候補を保持。
+                    # AlexNet/ResNet50は各36候補のOOF最良値。VGG16は6×6候補を保持。
                     "randomforest": {
                         "n_estimators": [100],
                         "max_depth": [12],
@@ -203,8 +203,8 @@ VALIDATION_CONFIG = apply_onb_defaults({
                         "batch_size": [32],
                     },
                     "resnet50": {
-                        "lr": [0.0001, 0.0003, 0.001, 0.003, 0.005, 0.01],
-                        "batch_size": [4, 8, 16, 32, 64, 128],
+                        "lr": [0.0001],
+                        "batch_size": [32],
                     },
                     "vgg16": {
                         "lr": [0.0001, 0.0003, 0.001, 0.003, 0.005, 0.01],

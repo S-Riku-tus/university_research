@@ -1,0 +1,119 @@
+{
+  "checked_at_jst": "2026-10-22T13:55:25+09:00",
+  "scope": "CNN three-model tuning progress only, clean training-partition chunk3fold OOF; not outer-test evaluation",
+  "models": {
+    "alexnet": {
+      "completed": 36,
+      "planned": 36,
+      "remaining": 0,
+      "best_parameters": {
+        "lr": 0.01,
+        "batch_size": 32
+      },
+      "best_training_oof_rmse_kW_m2": 41.208587145469345,
+      "best_audit": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/21/tuning_resume_190618/candidate_audits/01_alex_lr0p01_bs32_49cb7.json"
+    },
+    "resnet50": {
+      "completed": 36,
+      "planned": 36,
+      "remaining": 0,
+      "best_parameters": {
+        "lr": 0.0001,
+        "batch_size": 32
+      },
+      "best_training_oof_rmse_kW_m2": 118.66406169012934,
+      "best_audit": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/21/tuning_resume_190618/candidate_audits/05_resn_lr0p0001_bs32_3f18c.json"
+    },
+    "vgg16": {
+      "completed": 1,
+      "planned": 36,
+      "remaining": 35,
+      "best_parameters": {
+        "lr": 0.0001,
+        "batch_size": 4
+      },
+      "best_training_oof_rmse_kW_m2": 53.00468442740918,
+      "best_audit": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/21/tuning_resume_190618/candidate_audits/38_vgg1_lr0p0001_bs4_3e3c1.json"
+    }
+  },
+  "unique_completed": 73,
+  "remaining_candidates": 35,
+  "remaining_full_candidate_fold_fits": 105,
+  "remaining_fold_fits_note": "Includes the running candidate; its current fold/epoch is not saved in the candidate audits.",
+  "latest_saved_candidate": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/21/tuning_resume_190618/candidate_audits/38_vgg1_lr0p0001_bs4_3e3c1.json",
+  "latest_saved_at_jst": "2026-10-22T13:54:49+09:00",
+  "tuning_completed_flag": false,
+  "final_selection_file_exists": false,
+  "observed_process": {
+    "pid": 9712,
+    "command": [
+      "C:\\Users\\Casper4\\.conda\\envs\\TFGPU_shiba_2025\\python.exe",
+      "c:/Users/Casper4/Python/ueki/shibasaki/研究/code/run_ensemble_regression_onb.py"
+    ],
+    "started_at_jst": "2026-10-21T15:06:42+09:00",
+    "status": "running"
+  },
+  "gpu_sample": "NVIDIA GeForce RTX 4090, 98 %, 18927 MiB, 24564 MiB",
+  "current_work_inference": "Sequential runner has completed ResNet50 and one VGG16 candidate. Further VGG16 candidates remain; exact running fold/epoch is unverified.",
+  "conditions": {
+    "run": {
+      "smoke_test": false,
+      "epochs": 200,
+      "folds": 3,
+      "internal_validation_split": "chunk_kfold",
+      "color_channel": 1,
+      "random_seed": 42,
+      "cpu_threads": 2,
+      "deterministic_ops": true,
+      "loop_parameter_sets": true
+    },
+    "learning_policy": {
+      "training_noise": "clean_only",
+      "evaluation_mode": "within_wav_chunk",
+      "within_wav_chunk_experiment": "2025.06.11_0.3_2_6.18_0.3_3",
+      "test_fraction": 0.25,
+      "test_split_seed": 42,
+      "train_experiments": [
+        "2025.06.11_0.3_2_6.18_0.3_3"
+      ],
+      "test_experiments": [
+        "2025.06.11_0.3_2_6.18_0.3_3"
+      ]
+    },
+    "data": {
+      "experiment_root": "C:\\Users\\Casper4\\Python\\ueki\\shibasaki\\研究\\Pool_boiling\\Subcooling_20_degrees\\0.3",
+      "result_model_group": "ensemble",
+      "noise_source": "waterflow",
+      "chunk_seconds": 1,
+      "experiment_names": [
+        "2025.06.11_0.3_2_6.18_0.3_3"
+      ],
+      "max_freq_hz_list": [
+        "maxfreq=3kHz"
+      ],
+      "noise_dir_names": [
+        "heatflux_no_noise",
+        "heatflux_reference_SNR=0",
+        "heatflux_reference_SNR=-4",
+        "heatflux_reference_SNR=-8",
+        "heatflux_reference_SNR=-12",
+        "heatflux_reference_SNR=-16",
+        "heatflux_reference_SNR=-20"
+      ],
+      "data_source_dir_by_experiment": {
+        "2025.06.11_0.3_2": "waterflow_20260817_{chunk_tag}",
+        "2025.06.18_0.3_3": "waterflow_20260817_{chunk_tag}",
+        "2025.06.11_0.3_2_6.18_0.3_3": "waterflow_20260817_{chunk_tag}",
+        "2025.07.09_0.3_1": "waterflow_20260817_{chunk_tag}",
+        "2026.10.07_0.3_1": "waterflow_20261007_{chunk_tag}"
+      }
+    }
+  },
+  "config_path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/21/tuning_resume_190618/parameter_search_config.json",
+  "config_sha256": "d609a725c6b98eb55ddd0e8e07c8994b7f63a041e56b193e7a06ec044c0eb5f6",
+  "source_run_dirs": [
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/19/tuning_wc-t0611-v0611_ic3-nc_c1s_s0_e200_190618",
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/tuning/202610/21/tuning_resume_190618"
+  ],
+  "new_training_started_by_this_check": false
+}
