@@ -4,6 +4,8 @@
 
 要旨・6章・謝辞欄・参考文献・付録まで文章化した執筆用草稿です。未確認事項は本文の赤字「要確認：ID」と付録Bで追跡できます。題目・提出様式は仮です。
 
+同日後続の本人補足と卒論確認を受け、第2章へ研究室内データの由来、熱流束の具体式・定数・定常平均、動画目視ONBを追記しました。取得者個人名の特定は必須不足から外し、第5章に説明対象となる四つの性能差の案内を追加しています。[今回の記録](../../docs/thesis/2026-10-23_bachelor_methods_audit/README.md)、[今行う作業と説明案](../../docs/research_plan/2026-10-23_user_clarifications_and_chapter5_work.md)。CNN比較はVGG16完了待ち、追加検証の採否はその後です。
+
 本人の最新指示を基準に、全域熱流束推定とONB判定を二つの主要課題とし、改善・悪化の説明を含む三つの問いで目的・和英要旨・方法・結果・考察・結言を統一しました。元3比の全7条件の全域RMSE・総FN改善を主要成果として記し、開始段階・劣化量・物理的対応の限界も残しています。第2章は既存データの出典と解析条件です。
 
 現在のPDFは57ページ。変更前の[PDF](../../docs/thesis/2026-10-23_manuscript_alignment_audit/before_revision_main.pdf)と[ソース一式](../../docs/thesis/2026-10-23_manuscript_alignment_audit/before_revision_sources.zip)を保持しています。初版の説明は[10/19の記録](../../docs/thesis/2026-10-19_latex_manuscript_and_remaining_work.md)、今回確認できた原資料と残る質問は[出典確認票](../../docs/thesis/2026-10-23_data_provenance_and_confirmation_sheet.md)にあります。主結果・原データ・通常学習設定は変更していません。

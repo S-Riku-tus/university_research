@@ -1,5 +1,7 @@
 # 文書案内と更新ルール
 
+**10/23本人補足後の最新入口**：[卒論で確認した方法・用語の説明・第5章で今行う作業](research_plan/2026-10-23_user_clarifications_and_chapter5_work.md)。個人名の特定を必須工程から外し、卒論の式・平均・動画目視ONBを反映。CNN3と追加検証は本人指定の順序で待機し、今は既存結果の四つの現象を説明へつなげる。[確認記録](thesis/2026-10-23_bachelor_methods_audit/README.md)。
+
 **10/23提出後の次工程**：[提出済みWordを前提とする段階・優先度・終了条件](research_plan/2026-10-23_after_submitted_report_actions.md)。報告内容は共有済みとして、三問への回答の固定、原資料確認、未完CNN比較、必要な補強、12月初めの最終検証へ進む。[提出本文の確認記録](progress/2026-10-23_submitted_report_record.json)。研究全体の説明と草稿改訂の根拠は下のまとめに残す。
 
 **本人の最新指示を反映した現在の入口**：[10/23後続の研究全体のまとめと実施した次工程](research_plan/2026-10-23_current_research_summary_and_actions.md)。全域推定・ONB判定・改善理由の三問を現草稿へ反映した。[改訂PDF](../LaTeX/master_thesis/build/main.pdf)、[原データと正解の確認票](thesis/2026-10-23_data_provenance_and_confirmation_sheet.md)、[変更・検証記録](thesis/2026-10-23_manuscript_alignment_audit/README.md)を参照する。古い重心の文書は経緯として扱う。

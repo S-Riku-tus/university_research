@@ -1,13 +1,12 @@
 {
   "status": "passed",
   "chapters": 6,
-  "bibliography_items": 23,
-  "cited_items": 23,
-  "labels": 45,
+  "bibliography_items": 24,
+  "cited_items": 24,
+  "labels": 46,
   "figures_used": 4,
   "generated_tables": 10,
   "gap_ids": [
-    "D01",
     "D02",
     "D03",
     "D04",
@@ -24,7 +23,7 @@
     "V03",
     "V04"
   ],
-  "source_hashes_verified": 25,
+  "source_hashes_verified": 28,
   "historical_code_snapshots_verified": [
     "code/utils/models/regression/base_regression.py",
     "code/utils/ensemble/fixed_core_stacking.py"
@@ -39,12 +38,12 @@
   "errors": [],
   "pdf": {
     "pages": 57,
-    "bytes": 585286,
-    "sha256": "2057f9c8fe394a01bb255b953b2a79025ec8ae06067f359aa4ec35cce369e840",
+    "bytes": 589636,
+    "sha256": "dfdd8370221ea17242cb2336d85a3a69648cff1c69ad7e2aab5cd83cbc828746",
     "empty_pages": [],
     "replacement_characters": 0,
     "out_of_page_text": [],
-    "text_characters": 60642,
+    "text_characters": 61676,
     "preview_pages": [
       1,
       2,
@@ -56,7 +55,7 @@
       13,
       23,
       28,
-      42,
+      43,
       45,
       55,
       57

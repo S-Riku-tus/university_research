@@ -1,0 +1,25 @@
+{
+  "date": "2026-10-23",
+  "authority": "Latest user clarification in the current conversation",
+  "data_provenance": {
+    "source": "Experiments conducted within the user's own laboratory by other research members",
+    "main_dates": [
+      "2025-06-11",
+      "2025-06-18"
+    ],
+    "user_participated_in_these_acquisitions": false,
+    "individual_acquirer_name": "Unknown",
+    "name_identification_required_to_continue_analysis": false
+  },
+  "onb_definition": "Heat flux at which steam bubbles associated with nucleate boiling were first confirmed visually",
+  "per_second_synchronized_event_labels": "Not established by the user clarification or this document review; not required for the current heat-flux-stage evaluation",
+  "cnn_three": {
+    "user_reported": "VGG16 incomplete",
+    "result_analysis": "Wait until completion",
+    "runtime_monitoring_performed": false,
+    "process_control_performed": false
+  },
+  "additional_seed_or_objective_comparison": "Decision deferred until after the CNN-three comparison",
+  "current_work": "Explain existing performance differences using saved evidence; update data/method documentation and thesis",
+  "bachelor_method_scope": "Formula, stated constants, steady-voltage averaging and video-based visual ONB are confirmed for the cited thesis. Direct applicability of all settings and time ranges to the main 2025 dates has not been established."
+}

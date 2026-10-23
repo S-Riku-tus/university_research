@@ -30,7 +30,10 @@
     "experiments/2026-10-14_error_feature_linkage/existing_input_removal_summary.csv": "fb687f1c6723e428b792755ca8f5f0e7eebcd87ffbec0fd52e8e1018a2f2dc32",
     "experiments/2026-10-07_onb_input_and_integration/README.md": "f4b30d6f13e16717a0b16276f9117b662d1c2ba66bf013e62d2a9d87834e02f6",
     "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/data/npy/waterflow_20260817_1s/global_reference_manifest.json": "d0930973db25358b09b963dea5f6b4fa44a8b422eeacfc288a64a64f2840a378",
-    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/data/npy/waterflow_20260817_1s/maxfreq=3kHz/preprocess_manifest.json": "93e5a16d5105e5711c73a67e6fd6ddd945f17c14531c7d6d0240bb34b76adf97"
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/data/npy/waterflow_20260817_1s/maxfreq=3kHz/preprocess_manifest.json": "93e5a16d5105e5711c73a67e6fd6ddd945f17c14531c7d6d0240bb34b76adf97",
+    "研究進捗報告/8121048_柴崎陸_最終投稿卒論.pdf": "d91cc8167d16c412cbe8c7223f218a8f913b3b70e119f25d26b1aa8d47a88e63",
+    "docs/thesis/2026-10-23_bachelor_methods_audit/user_clarifications.json": "ba646a6ddb76e7b20f902ff2cc46a404f4fdda5f601a8d3c42d97fb8daebdf43",
+    "docs/thesis/2026-10-23_bachelor_methods_audit/bachelor_method_evidence.json": "c97b6163f669c529fa6d3c88e4ca2e4d410555995c034eef96609ff5ece0e115"
   },
   "prediction_figure_scope": [
     {
@@ -86,5 +89,17 @@
     }
   },
   "manuscript_revision_date": "2026-10-23",
-  "historical_code_scope": "Exact 2026-10-19 manuscript reference hashes; not a claim to reconstruct all 2026-10-15 execution sources."
+  "historical_code_scope": "Exact 2026-10-19 manuscript reference hashes; not a claim to reconstruct all 2026-10-15 execution sources.",
+  "bachelor_method_review": {
+    "date": "2026-10-23",
+    "source_pdf": "研究進捗報告/8121048_柴崎陸_最終投稿卒論.pdf",
+    "heat_flux_pdf_page": 15,
+    "heat_flux_printed_page": 11,
+    "visual_onb_pdf_page": 22,
+    "visual_onb_printed_page": 18,
+    "steady_mean_pdf_page": 38,
+    "steady_mean_printed_page": 34,
+    "direct_2025_acquisition_conditions_verified": false,
+    "user_clarification": "docs/thesis/2026-10-23_bachelor_methods_audit/user_clarifications.json"
+  }
 }
