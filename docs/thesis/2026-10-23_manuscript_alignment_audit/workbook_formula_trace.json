@@ -1,0 +1,34 @@
+[
+  {
+    "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/source_metadata/2025.06.11_0.3_2/2025.06.11_0.3_2.xlsx",
+    "sheets": [
+      "データ 8199 2391 2025_06_11 13_54_"
+    ],
+    "sheet_summaries": [
+      {
+        "xml": "xl/worksheets/sheet1.xml",
+        "dimension": {
+          "ref": "A1:N1247"
+        },
+        "formula_count": 0,
+        "first_formulas": []
+      }
+    ]
+  },
+  {
+    "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/source_metadata/2025.06.18_0.3_3/2025.06.18_0.3_3.xlsx",
+    "sheets": [
+      "データ 8199 2391 2025_06_18 14_06_"
+    ],
+    "sheet_summaries": [
+      {
+        "xml": "xl/worksheets/sheet1.xml",
+        "dimension": {
+          "ref": "A1:N1263"
+        },
+        "formula_count": 0,
+        "first_formulas": []
+      }
+    ]
+  }
+]

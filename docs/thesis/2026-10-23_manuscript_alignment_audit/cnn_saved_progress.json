@@ -1,0 +1,13 @@
+{
+  "checked_at_jst": "2026-10-23T12:14:54.818636+09:00",
+  "scope": "One-time read of saved candidate audit files; no process monitoring, training, OOF recomputation or outer evaluation. Duplicate parameter keys across folders counted once.",
+  "saved_file_count": 99,
+  "unique_completed_candidate_count": 73,
+  "counts_by_model": {
+    "alexnet": 36,
+    "resnet50": 36,
+    "vgg16": 1
+  },
+  "expected_original_grid_per_model": 36,
+  "tuning_or_process_actions": false
+}

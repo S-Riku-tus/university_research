@@ -20,6 +20,7 @@ def disk(path):
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--pdf',action='store_true')
+    parser.add_argument('--preview-dir',type=Path,help='Write this revision preview outside earlier audit folders')
     args=parser.parse_args()
     errors=[]
     sources=[HERE/'main.tex', HERE/'preamble.tex', HERE/'frontmatter.tex',HERE/'references.tex',
@@ -47,8 +48,20 @@ def main():
     listed=set(re.findall(r'^([DLFV]\d{2})\s*&',(HERE/'appendices/gaps.tex').read_text(encoding='utf-8'),re.M))
     if listed!=set(gaps):errors.append('Gap registry and inline markers differ')
     manifest=json.loads((HERE/'data/source_manifest.json').read_text(encoding='utf-8'))
+    historical_verified=[]
+    live_code_differences=[]
     for name,expected in manifest['source_sha256'].items():
-        actual=hashlib.sha256(disk(ROOT/name).read_bytes()).hexdigest()
+        source=ROOT/name
+        snapshot=manifest.get('historical_code_snapshots',{}).get(name)
+        if snapshot:
+            source=(HERE/snapshot['snapshot_path']).resolve()
+            if HERE.resolve() not in source.parents:
+                errors.append('Historical source outside manuscript: '+name)
+                continue
+            historical_verified.append(name)
+            if hashlib.sha256(disk(ROOT/name).read_bytes()).hexdigest()!=expected:
+                live_code_differences.append(name)
+        actual=hashlib.sha256(disk(source).read_bytes()).hexdigest()
         if actual!=expected:errors.append('Source changed: '+name)
     reference_inventory=ROOT/'docs/thesis/2026-10-19_manuscript_audit/reference_inventory.json'
     reference_count=0
@@ -77,6 +90,8 @@ def main():
             'bibliography_items':len(bibliography),'cited_items':len(cited),'labels':len(labels),
             'figures_used':len(figures),'generated_tables':len(list((HERE/'tables').glob('*.tex'))),
             'gap_ids':sorted(gaps),'source_hashes_verified':len(manifest['source_sha256']),
+            'historical_code_snapshots_verified':historical_verified,
+            'live_code_differs_from_preserved_reference':live_code_differences,
             'original_reference_hashes_verified':reference_count,
             'numeric_source_rows':len(metrics),'log_issues':warning_lines,'errors':errors}
     if args.pdf:
@@ -102,7 +117,7 @@ def main():
         if empty or replacement or out_of_page:errors.append('PDF text extraction or page bounds failed')
         if '??' in '\n'.join(texts):errors.append('Unresolved reference marker in PDF')
         result['status']='passed' if not errors else 'failed'
-        preview=ROOT/'docs/thesis/2026-10-19_manuscript_audit/preview'
+        preview=args.preview_dir.resolve() if args.preview_dir else ROOT/'docs/thesis/2026-10-19_manuscript_audit/preview'
         preview.mkdir(parents=True,exist_ok=True)
         candidates=[0,1,2]
         candidates += [i for i,s in enumerate(texts) if any(needle in re.sub(r'\s+','',s) for needle in ['1.3本研究の目的','3.5アンサンブル','4.1単体モデル','5.6特徴利用','6.1本研究で得られた','表B.1'])]

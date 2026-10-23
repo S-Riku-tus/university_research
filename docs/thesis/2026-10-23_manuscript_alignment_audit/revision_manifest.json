@@ -1,0 +1,63 @@
+{
+  "revision_at_jst": "2026-10-23T12:26:25.441454+09:00",
+  "authority": "Latest user instruction and latest research synthesis; not supervisor approval",
+  "main_run": "143609",
+  "run_hash": "da540f2d",
+  "fit_id": "7560205f8feb",
+  "new_model_fit_or_inference": false,
+  "pdf": {
+    "pages": 57,
+    "bytes": 585286,
+    "sha256": "2057f9c8fe394a01bb255b953b2a79025ec8ae06067f359aa4ec35cce369e840",
+    "empty_pages": [],
+    "replacement_characters": 0,
+    "out_of_page_text": [],
+    "text_characters": 60642,
+    "preview_pages": [
+      1,
+      2,
+      3,
+      5,
+      6,
+      7,
+      8,
+      13,
+      23,
+      28,
+      42,
+      45,
+      55,
+      57
+    ]
+  },
+  "source_sha256": {
+    "LaTeX/master_thesis/main.tex": "d5b839a021bff1a4618103518a729314224c9f669f82f4d20fdc8bca6f02c36a",
+    "LaTeX/master_thesis/preamble.tex": "93fad892ee928b4b8051dde7aa97126616326d156673a3692190e02a5c183913",
+    "LaTeX/master_thesis/frontmatter.tex": "b56cfb56e3f88feb3cf7179a4db93dc0d848bd8b5dff89af08cf423e5a950c82",
+    "LaTeX/master_thesis/references.tex": "3d7ab209905099054ef03896bcdf2ccbbc81b1806b42ff0456b64ee46d6c345b",
+    "LaTeX/master_thesis/README.md": "f0cf06d944df1c487ded16ad2b143956560d8e89525dc78a3dc09c974238e7d2",
+    "LaTeX/master_thesis/scripts/check_manuscript.py": "62ef66cd5b3961444c9fc6779ad4377f0be78d578c7886f3c8758e4f49e8dee7",
+    "LaTeX/master_thesis/data/source_manifest.json": "b30936114cf954d2e79d40ed5f7a1c9d83554f6b1e65e6d3bbf52a2db0acc70f",
+    "LaTeX/master_thesis/chapters/01_introduction.tex": "3e57e527c7920b2a8f017837b6f564360397829437da1e26ba705b626d9ba2c4",
+    "LaTeX/master_thesis/chapters/02_data.tex": "20aa3bef7352ad83bea46d91878004889b2473929ddcd5b2c82963a985bb894c",
+    "LaTeX/master_thesis/chapters/03_methods.tex": "553786614de35cff70d14fc56a34358696b10a52b7b373dd5f7e14e033c436a1",
+    "LaTeX/master_thesis/chapters/04_results.tex": "c289c13f0df7d63bf5382d2e11806d1682d33f107750662b88c839787fb2840a",
+    "LaTeX/master_thesis/chapters/05_discussion.tex": "3468698c9827f010d1dbcd8161993a308f2fcd57e310f6e6bd36c20089527246",
+    "LaTeX/master_thesis/chapters/06_conclusions.tex": "067da1b1ae3c61f29b45ca8a2ea26988ff42fc878a04a1e038e8517d19bf36a2",
+    "LaTeX/master_thesis/appendices/gaps.tex": "49b7dd08a62bb1fa8d99d0c286e81ed501682a2724476aa1099f3569a70f2426",
+    "LaTeX/master_thesis/appendices/reproducibility.tex": "113c16d30d37006a87da09e2c51a320b156db2143010626543d5c007407fbf2d",
+    "docs/research_plan/2026-10-23_current_research_summary_and_actions.md": "a59aad7a8670a7bd63b8b652823468902d0d07fac48260b6fbdae0def6b5ce3c",
+    "docs/thesis/2026-10-23_data_provenance_and_confirmation_sheet.md": "330a81a6cd10f51ef1720a443cfcf057667a0a548a60305fe5cbf9be53ed21e4",
+    "docs/thesis/2026-10-23_manuscript_alignment_audit/README.md": "a7021a61d471e6ec89ffeac3a4d52fbc9acfa0f2da42e789db8ec86ea4d93d31"
+  },
+  "new_feasibility_table_matches_prior_saved_diagnosis": true,
+  "original_metadata_6_hashes_unchanged": true,
+  "visually_reviewed_pdf_pages": [
+    13,
+    14,
+    39,
+    40,
+    45,
+    46
+  ]
+}

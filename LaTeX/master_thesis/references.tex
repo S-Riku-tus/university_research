@@ -14,6 +14,26 @@ S. Barathula, S. K. Chaitanya and K. Srinivasan,
 \url{https://doi.org/10.1016/j.ijheatmasstransfer.2022.123623}.
 （本稿で確認した範囲：出版社の要旨・公開抜粋．）
 
+\bibitem{ueki2025}
+Y. Ueki, I. Hirako, K. Tezuka, K. Aizawa and K. Ara,
+``Acoustic detection of boiling states by deep convolutional neural networks: Visual explanation of identification basis,''
+\textit{AI Thermal Fluids}, Vol. 4, 100021, 2025.
+\url{https://doi.org/10.1016/j.aitf.2025.100021}.
+（確認範囲：公開抄録・JAEA JOPSSの書誌，2026年10月23日参照．対象データの取得者の根拠には用いない．）
+
+\bibitem{ueki2026}
+植木 祥高，「音響応用による炉心内冷却材沸騰の検知手法創出研究」，
+\textit{混相流}，Vol. 40，No. 2，pp. 125--130，2026．
+\url{https://doi.org/10.3811/jjmf.2026.T010}．
+（確認範囲：J-STAGE書誌・公開抄録，2026年10月23日参照．PDF本文は未確認．）
+
+\bibitem{huang2026}
+P.-H. Huang, J. H. Seong, J. M. Castro-Aguilar, C. Vermeulen and E. M. O'Brien,
+``A non-intrusive framework using acoustic signals and deep learning for boiling diagnostics in visual-limited environments,''
+\textit{Scientific Reports}, Vol. 16, 14934, 2026.
+\url{https://doi.org/10.1038/s41598-026-41757-z}.
+（公開本文のAcoustic signal regression，Noise interference等を確認，2026年10月23日参照．）
+
 \bibitem{pnc1991}
 ``Preliminary experiment of boiling detection in the reactor vessel by acoustic method,''
 PNC TN9410 91-175, May 1991.
@@ -89,11 +109,19 @@ G. C. Cawley and N. L. C. Talbot,
 研究用入力対照記録，共通入力加工，元3比率の自由化，入力特徴除去と固定重み対照，2026年10月7日．
 \path{experiments/2026-10-07_onb_input_and_integration/}（未公刊）．
 
+\bibitem{localFeasibility}
+研究用保存予測診断，固定元3ブロックと配分下限の下でのONB見逃しの到達上限，2026年10月21日．
+\path{experiments/2026-10-21_research_logic_audit/onb_failure_feasibility.csv}および同フォルダの検算記録（未公刊）．基礎モデルの再学習を伴わない保存予測の事後診断．
+
+\bibitem{localMetadata}
+2025年6月11日・6月18日の電気計測保存資料，各日のCSV，XLSXおよびロガーCSV．統合データの\path{source_metadata/}と元の日別フォルダの同名6ファイルを照合．
+確認記録：\path{docs/thesis/2026-10-23_manuscript_alignment_audit/source_metadata_trace.json}，2026年10月23日（未公刊）．取得者およびONB原観察の確認とは区別する．
+
 \bibitem{localCode}
 研究用解析実装，音響要約特徴，回帰モデルおよび固定元3ブロック統合．
 \path{code/utils/dataloading/acoustic_summary_features.py}，
 \path{code/utils/models/regression/base_regression.py}，
 \path{code/utils/models/regression/acoustic_regression.py}，
 \path{code/utils/ensemble/fixed_core_stacking.py}．
-2026年10月19日の確認時点のSHA-256を本稿の\path{data/source_manifest.json}に保存．
+2026年10月19日の参照版のSHA-256を本稿の\path{data/source_manifest.json}に保存．後日変更された2コードは，同じhashの参照版を\path{data/source_snapshots/2026-10-19/}に保存し，現行コードと区別した．この保存版は草稿参照時点の版であり，実行時の全ソースの復元を意味しない．
 \end{thebibliography}

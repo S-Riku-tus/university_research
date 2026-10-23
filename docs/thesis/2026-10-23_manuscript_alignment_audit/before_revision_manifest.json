@@ -1,0 +1,30 @@
+{
+  "source_sha256": {
+    "LaTeX/master_thesis/main.tex": "d5b839a021bff1a4618103518a729314224c9f669f82f4d20fdc8bca6f02c36a",
+    "LaTeX/master_thesis/preamble.tex": "6c09ffd4fb8d23297ff8cb6c833343c98fec4b9759d8a706ba351a967e8bdb2f",
+    "LaTeX/master_thesis/frontmatter.tex": "adbce00db4f61fca2f9aa8a45e92fb251e17bfb6fd4e0737c95db23e63e539be",
+    "LaTeX/master_thesis/references.tex": "f20bc80fa552b4e9fc0b87b8d90d1a9759ec38a1a6598b3850dc5432d5cea027",
+    "LaTeX/master_thesis/README.md": "7f59da3c40feec0e273e8bbfc580f75efb30c4cc326c70d9e598405ea6a7b049",
+    "LaTeX/master_thesis/scripts/check_manuscript.py": "3921828a77adc8c00f5a9994e6eb515fc6d5584e99864f58dc11881ef34ba14c",
+    "LaTeX/master_thesis/chapters/01_introduction.tex": "35eebfb79c2e98039f5e115d7dd79b10772d8b739603808c75bf2fa8cc6a01b6",
+    "LaTeX/master_thesis/chapters/02_data.tex": "9ef1fe4b3b557b4053d7be1f3f23e402a2a1c06ce3787863fe0985c8336689f5",
+    "LaTeX/master_thesis/chapters/03_methods.tex": "a9c7397839bd37992bef4376519a619484f3d2c7c82b03122ec6c1ceafac7d77",
+    "LaTeX/master_thesis/chapters/04_results.tex": "e86998a347b7270c6192d4ed1c09fe3b2c279a32634dc12502d17b1425097079",
+    "LaTeX/master_thesis/chapters/05_discussion.tex": "d1ed000abeceee3ccf1cf8b1872e1f201da28d5450bd494137348d00397c2140",
+    "LaTeX/master_thesis/chapters/06_conclusions.tex": "a67c63ea8fff3ebb7a06d202b64f20cea63347691b1305feb8650bb8cd51a2d4",
+    "LaTeX/master_thesis/appendices/gaps.tex": "1bd891eec5e8d65b233af090447fd95ee8aa22835f14cd23cccad46dad039ad9",
+    "LaTeX/master_thesis/appendices/reproducibility.tex": "d45dcb5633ca13b829b8e8ebec656c673978247eca617bd495da67786a122cdf",
+    "LaTeX/master_thesis/tables/clean_models.tex": "5adbb47ae587adc3a40d7dcf41f9f7f8d03a3421a6339bcd29809d9fc9faaf74",
+    "LaTeX/master_thesis/tables/degradation.tex": "d81a87a73a6839363d848109e65ecaf3ba8c718df6b2f99ed6ccf3330a49de5b",
+    "LaTeX/master_thesis/tables/detection.tex": "0605b739aa62b18bec13b6dce75ae0610c70cae8efecb60823f03a1efaf06ff7",
+    "LaTeX/master_thesis/tables/directions.tex": "19f994fc99336240fecbc2862fa1472acab8e090f46f1ddc433707b2b61add7b",
+    "LaTeX/master_thesis/tables/noise_rmse.tex": "8056ed1b3072065c5957ae9a83d4753f86c1a5142decea03e80aaf2317abdddc",
+    "LaTeX/master_thesis/tables/noisy_models.tex": "955d095c728c5602ab36bcc1b09d85345d5153c4ce99db48761508ba0fc02420",
+    "LaTeX/master_thesis/tables/onset.tex": "282b38b8d4d841b47dfa19ae789800e8eb579a17373974cb2509949db3107c13",
+    "LaTeX/master_thesis/tables/q100.tex": "06b117d33f6dc5645cc95c5ea0f78f4b2b1b8df23c9a5dabc06a5dd9f324a9e0",
+    "LaTeX/master_thesis/tables/time_shuffle.tex": "8a4a58f052eeac622b59b7f6d11dee04219532007bf48f43e44ba5f34fcca522",
+    "LaTeX/master_thesis/tables/weights.tex": "64bf4c3b8d38091702e9c6a6054117789d2a7df386ce99d819b046c0c16ae134",
+    "LaTeX/master_thesis/build/validation.json": "c9d826ef8bd5db455ae4cebfbc42a9bbbb93841bcc4de4b969c6d8d593f2c574"
+  },
+  "previous_pdf_sha256": "19a3f0959b207e6ebb6c97dc758b520e8607cb9343f5a73782c25f81091ee8a7"
+}

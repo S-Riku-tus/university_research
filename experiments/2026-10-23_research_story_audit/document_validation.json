@@ -1,0 +1,25 @@
+{
+  "local_link_targets_checked": {
+    "docs\\research_plan\\2026-10-23_research_story_and_completion_map.md": 34,
+    "experiments\\2026-10-23_research_story_audit\\README.md": 6,
+    "docs\\research_status.md": 205,
+    "docs\\document_index.md": 203
+  },
+  "broken_links": [],
+  "cited_sources_unchanged": true,
+  "cited_source_count": 13,
+  "main_csv_checks": {
+    "all_7_rmse_lower_than_core3": true,
+    "all_7_fn_lower_than_core3": true,
+    "all_7_fp_same_as_core3": true,
+    "near_rmse_improved_conditions": [
+      "clean",
+      "-12",
+      "-16"
+    ],
+    "all_6_noise_degradation_greater_than_core3": true,
+    "gap_degradation_identity_verified_conditions": 7,
+    "saved_five_core_weights_equal_0p25_times_core3_mse": true
+  },
+  "new_text_files_trailing_whitespace": []
+}

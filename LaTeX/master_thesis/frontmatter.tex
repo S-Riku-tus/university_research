@@ -11,7 +11,7 @@
 \vspace{9mm}
 {\large 予測誤差と入力特徴への依存に基づく検討\par}
 \vfill
-{\large 2026年10月19日 現在\par}
+{\large 2026年10月23日 改訂\par}
 \vspace{8mm}
 {\large 指導教員　植木 祥高\par}
 \vspace{8mm}
@@ -25,7 +25,7 @@
 \pagenumbering{roman}
 \chapter*{本草稿の位置づけ}
 \addcontentsline{toc}{chapter}{本草稿の位置づけ}
-本稿は，2026年10月19日までに保存された研究計画，解析記録，実行条件，予測値および評価表に基づいて，研究目的から結論までを文章としてつなぐために作成した修士論文の草稿である．研究計画が目指したONB近傍の早期検知と説明性を維持し，現在確認できた成果と未達を同じ目的の下で記述する．目次案だけでなく，要旨，方法，図表を伴う結果，考察，結論までを記載した．
+本稿は，保存された研究計画，解析記録，実行条件，予測値および評価表に基づく修士論文の執筆用草稿である．2026年10月23日の本人の指示により，最新の研究整理を基準として，熱流束全域の推定とONB判定を二つの主要課題に置き，改善・悪化の説明を含む三つの問いへ本文を対応づけた．当初の開始近傍・物理的説明の目標も回答対象に残す．この改訂は草稿の研究上の位置づけをそろえるものであり，教授の了承や提出用完成稿を意味しない．
 
 本稿の主比較は，2025年6月11日・6月18日の既知録音に含まれる未使用1秒区間への適用である．未知の録音日や実機への一般化を検証した論文としては扱わない．また，著者は対象の実験・収録を実施していない．取得者・提供元および実験側のONB判定原資料には未確認事項があり，本文の赤字の\textbf{【要確認】}と付録の不足一覧で明示する．不足を隠す目的で章を省略したり，推測を観測事実に置き換えたりはしない．
 
@@ -35,20 +35,20 @@
 
 \chapter*{要旨}
 \addcontentsline{toc}{chapter}{要旨}
-本研究は，ナトリウム冷却高速炉の炉心局所異常に伴う冷却材沸騰の早期把握に資する音響監視技術に向け，背景雑音下でも核沸騰開始（ONB）近傍を少ない見逃し・誤報で捉え，判断根拠を説明できる検知手法へ，熱流束回帰に基づく従来手法を発展させることを目的とする．その基礎検討として，水のプール沸騰音響から熱流束を回帰し，日別のONB熱流束を閾値として判定する方法に，異なる入力表現を用いるモデル統合を適用した．全熱流束域の回帰誤差と開始付近の判定を対応づけ，目的に対する改良と不足を調べた．
+本研究は，音響による熱負荷と沸騰への移行の把握に向け，背景水流音下の熱流束推定誤差と，予測熱流束に基づく核沸騰開始（ONB）判定の見逃し・誤報を低減するモデル構成および統合条件を明らかにすることを目的とする．ナトリウム冷却高速炉での沸騰の早期把握を応用背景とし，水のプール沸騰の既存音響データを対象とする．全域熱流束推定とONB判定を二つの主要課題として評価し，その改善と悪化を誤差構造，入力依存および統合制約から分析した．
 
 既存の2025年6月11日・6月18日の計36録音から，各録音60個の1秒区間を作成し，45区間を学習，15区間を評価に用いた．評価は540区間であり，未知録音の評価ではない．3\,kHzを上限とするSTFT powerを用いる従来3モデルに，34個の音響要約特徴を用いるHistGradientBoostingとExtraTreesを追加した．無雑音学習側のout-of-fold予測で重みを求め，モデル，前処理および重みを無雑音と6段階の固定基準水流音付加条件で共通にした．全域回帰誤差，見逃し・誤報，ONB近傍誤差，日別の検知到達熱流束を比較した．
 
 5モデル統合の全域RMSEは，MSE基準の従来3モデル統合に対して全7条件で小さく，無雑音で34.07から27.80\,\kw{}，基準SNR $-20$\,dBで81.14から75.23\,\kw{}となった．総見逃し件数もそれぞれ42から27，65から52へ減少した．一方，無雑音から$-20$\,dBへのRMSE増加量は47.07から47.43\,\kw{}となり，この比較では悪化量の縮小は確認されなかった．記録上最初のONB段階に含まれる30評価区間のうち，5モデル統合が陽性としたのは無雑音8区間，$-20$\,dBで0区間であり，開始段階の十分な検知には至らなかった．
 
-保存予測の誤差分解から，統合の利得には過大・過小予測の相殺に加え，同方向に外れた予測の誤差縮小が含まれた．共通入力の時間行並べ替えではCNN系が変化し，要約特徴を用いる2モデルは不変であり，入力依存の違いを確認した．ただし，この違いが実際の水流雑音下の利得を生む因果割合や，利用帯域の物理音源は確定していない．以上から，現在のデータ範囲では統合による全域回帰と判定の部分的な改善を示せる一方，ONB発生段階の検知，未知日への適用および物理的な根拠の確定が残る．
+保存予測の誤差分解から，統合の利得には過大・過小予測の相殺に加え，同方向に外れた予測の誤差縮小が含まれた．共通入力の時間行並べ替えではCNN系が変化し，要約特徴を用いる2モデルは不変であり，入力依存の違いを確認した．また，元3内部比率と配分下限を維持する現制約では，$-20$\,dBの開始段階30区間は重み変更だけで陽性化できないことが上限診断から分かった．以上より，対象条件での全域熱流束推定と総判定の改善を示すとともに，開始段階の限界と，入力情報・統合目的・制約を対応づける必要性を具体化した．入力依存から物理音源の因果は確定できず，未知日・独立雑音・実際の発生時刻への一般化には追加の根拠を要する．
 
 \noindent\textbf{キーワード：}プール沸騰，ONB，音響，熱流束回帰，アンサンブル，入力依存
 
 \chapter*{Abstract}
 \addcontentsline{toc}{chapter}{Abstract}
-To support the future development of acoustic monitoring for coolant boiling associated with local core anomalies in sodium-cooled fast reactors, this study aims to advance a heat-flux-regression-based method toward onset-of-nucleate-boiling (ONB) detection under background noise with fewer missed detections and false alarms and with explainable acoustic evidence. As a fundamental study using water pool-boiling acoustics, model integration with different input representations was examined. Existing recordings from June 11 and June 18, 2025 were divided into one-second segments. Forty-five segments per recording were used for training and fifteen for evaluation, giving 1,620 training and 540 evaluation segments from 36 recordings. This design evaluates unused segments of known recordings rather than unseen recording days.
+This study aims to identify model configurations and integration conditions that improve heat-flux estimation and onset-of-nucleate-boiling (ONB) threshold decisions under added water-flow noise. Motivated by acoustic monitoring of coolant boiling in sodium-cooled fast reactors, the study uses existing water pool-boiling recordings. Overall heat-flux regression and ONB decisions are evaluated as two main performance tasks, and their gains and limitations are analyzed through residuals, input dependencies and integration constraints. Recordings from June 11 and June 18, 2025 were divided into one-second segments. Forty-five segments per recording were used for training and fifteen for evaluation, giving 1,620 training and 540 evaluation segments from 36 recordings. This design evaluates unused segments of known recordings rather than unseen recording days.
 
 Two regressors using 34 acoustic summary features, HistGradientBoosting and ExtraTrees, were added to three existing models. The models, preprocessing and integration weights fitted on clean training data were fixed across clean and six reference-level water-flow-noise conditions. The five-model integration reduced overall RMSE relative to the MSE-weighted original-three integration in all seven conditions, from 34.07 to 27.80 kW/m\textsuperscript{2} in the clean condition and from 81.14 to 75.23 kW/m\textsuperscript{2} at a reference SNR of $-20$ dB. However, the clean-to-noisy RMSE increase was not reduced. Only 8 of 30 evaluation segments at the recorded ONB stages were detected in the clean condition, and none at $-20$ dB. These 30 segments came from two recordings and do not represent 30 independent onset events.
 
-Residual analysis showed that error reduction involved both cancellation of opposite-sign errors and reduction within same-sign error groups. Common input perturbations also demonstrated different dependencies on within-segment temporal arrangement. These findings support partial improvements within the evaluated data, while adequate detection at the recorded onset stage, generalization to unseen days, and identification of physical sound sources remain unresolved.
+Residual analysis showed that error reduction involved both cancellation of opposite-sign errors and reduction within same-sign error groups. Common input perturbations demonstrated different dependencies on within-segment temporal arrangement. An upper-bound diagnosis showed that none of the 30 onset-stage segments at $-20$ dB could be made positive by reweighting under the current fixed-core constraints. These findings establish gains in overall regression and aggregate threshold decisions within the evaluated data, while identifying onset-stage limitations and the need to consider retained information, integration objectives and constraints together. Generalization to unseen days and independent noise, event-time detection, and identification of physical sound sources remain unverified.

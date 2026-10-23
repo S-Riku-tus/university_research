@@ -1,0 +1,14 @@
+{
+  "code/utils/models/regression/base_regression.py": {
+    "snapshot_path": "data/source_snapshots/2026-10-19/base_regression.py",
+    "sha256": "28ca74eb7e5873921b0dc4345b5e702476020e7b856b35151131fb590f26308c",
+    "content_commit": "d3589981a6ae1fcb633bb509467c02da0728e2d3",
+    "recovery": "Git content with pre-edit line endings restored; exact existing SHA-256 matched"
+  },
+  "code/utils/ensemble/fixed_core_stacking.py": {
+    "snapshot_path": "data/source_snapshots/2026-10-19/fixed_core_stacking.py",
+    "sha256": "7d798b355d5ddd8f4261b9f710698a02f44aac1efb248ec916e69b26a946eb0d",
+    "content_commit": "d3589981a6ae1fcb633bb509467c02da0728e2d3",
+    "recovery": "Git blob"
+  }
+}

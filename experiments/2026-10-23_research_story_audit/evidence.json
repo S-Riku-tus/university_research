@@ -1,0 +1,225 @@
+{
+  "created_at_jst": "2026-10-23T10:15:05.787219+09:00",
+  "scope": "Existing summary CSV reading, explanatory arithmetic, and current slide XML/image extraction. Prior raw-prediction audit is cited, not rerun.",
+  "new_model_fit_or_inference": false,
+  "raw_prediction_recomputation": false,
+  "raw_arrays_loaded": false,
+  "main_run": {
+    "run_hash": "da540f2d",
+    "fit_id": "7560205f8feb",
+    "train_n": 1620,
+    "evaluation_n": 540,
+    "source_wavs": 36,
+    "shared_source_wavs": 36,
+    "train_evaluation_same_chunk_overlap": 0,
+    "onset_evaluation_n": 30
+  },
+  "comparisons": [
+    {
+      "noise": "clean",
+      "core3": {
+        "rmse_kW_m2": 34.068337534473685,
+        "near_rmse_kW_m2": 39.58372441155756,
+        "fn": 42,
+        "fp": 1,
+        "recorded_onb_detected": 3,
+        "recorded_onb_n": 30,
+        "degradation_from_clean_kW_m2": 0.0
+      },
+      "five": {
+        "rmse_kW_m2": 27.799289633143545,
+        "near_rmse_kW_m2": 16.448105984728468,
+        "fn": 27,
+        "fp": 1,
+        "recorded_onb_detected": 8,
+        "recorded_onb_n": 30,
+        "degradation_from_clean_kW_m2": 0.0
+      },
+      "absolute_rmse_reduction_kW_m2": 6.26904790133014,
+      "degradation_reduction_kW_m2": 0.0
+    },
+    {
+      "noise": "0",
+      "core3": {
+        "rmse_kW_m2": 53.11999128695944,
+        "near_rmse_kW_m2": 55.39890872301332,
+        "fn": 45,
+        "fp": 0,
+        "recorded_onb_detected": 3,
+        "recorded_onb_n": 30,
+        "degradation_from_clean_kW_m2": 19.051653752485755
+      },
+      "five": {
+        "rmse_kW_m2": 50.27130922325269,
+        "near_rmse_kW_m2": 64.75497864154995,
+        "fn": 44,
+        "fp": 0,
+        "recorded_onb_detected": 2,
+        "recorded_onb_n": 30,
+        "degradation_from_clean_kW_m2": 22.47201959010915
+      },
+      "absolute_rmse_reduction_kW_m2": 2.8486820637067467,
+      "degradation_reduction_kW_m2": -3.420365837623393
+    },
+    {
+      "noise": "-4",
+      "core3": {
+        "rmse_kW_m2": 62.75799266515371,
+        "near_rmse_kW_m2": 77.53003194842877,
+        "fn": 52,
+        "fp": 0,
+        "recorded_onb_detected": 2,
+        "recorded_onb_n": 30,
+        "degradation_from_clean_kW_m2": 28.689655130680023
+      },
+      "five": {
+        "rmse_kW_m2": 61.946341112545085,
+        "near_rmse_kW_m2": 82.71438389171577,
+        "fn": 45,
+        "fp": 0,
+        "recorded_onb_detected": 2,
+        "recorded_onb_n": 30,
+        "degradation_from_clean_kW_m2": 34.14705147940154
+      },
+      "absolute_rmse_reduction_kW_m2": 0.8116515526086232,
+      "degradation_reduction_kW_m2": -5.457396348721517
+    },
+    {
+      "noise": "-8",
+      "core3": {
+        "rmse_kW_m2": 68.11947702480161,
+        "near_rmse_kW_m2": 99.82891779622244,
+        "fn": 57,
+        "fp": 0,
+        "recorded_onb_detected": 0,
+        "recorded_onb_n": 30,
+        "degradation_from_clean_kW_m2": 34.05113949032793
+      },
+      "five": {
+        "rmse_kW_m2": 66.6594869686529,
+        "near_rmse_kW_m2": 99.88971435535504,
+        "fn": 47,
+        "fp": 0,
+        "recorded_onb_detected": 2,
+        "recorded_onb_n": 30,
+        "degradation_from_clean_kW_m2": 38.860197335509355
+      },
+      "absolute_rmse_reduction_kW_m2": 1.4599900561487118,
+      "degradation_reduction_kW_m2": -4.809057845181428
+    },
+    {
+      "noise": "-12",
+      "core3": {
+        "rmse_kW_m2": 72.36798545015459,
+        "near_rmse_kW_m2": 115.02330339618756,
+        "fn": 60,
+        "fp": 0,
+        "recorded_onb_detected": 0,
+        "recorded_onb_n": 30,
+        "degradation_from_clean_kW_m2": 38.29964791568091
+      },
+      "five": {
+        "rmse_kW_m2": 69.01191537488127,
+        "near_rmse_kW_m2": 113.32346551197747,
+        "fn": 48,
+        "fp": 0,
+        "recorded_onb_detected": 1,
+        "recorded_onb_n": 30,
+        "degradation_from_clean_kW_m2": 41.212625741737725
+      },
+      "absolute_rmse_reduction_kW_m2": 3.3560700752733226,
+      "degradation_reduction_kW_m2": -2.9129778260568173
+    },
+    {
+      "noise": "-16",
+      "core3": {
+        "rmse_kW_m2": 76.13622480762753,
+        "near_rmse_kW_m2": 116.06170346874607,
+        "fn": 65,
+        "fp": 0,
+        "recorded_onb_detected": 0,
+        "recorded_onb_n": 30,
+        "degradation_from_clean_kW_m2": 42.06788727315384
+      },
+      "five": {
+        "rmse_kW_m2": 71.51275910093395,
+        "near_rmse_kW_m2": 112.92277674660674,
+        "fn": 50,
+        "fp": 0,
+        "recorded_onb_detected": 0,
+        "recorded_onb_n": 30,
+        "degradation_from_clean_kW_m2": 43.713469467790404
+      },
+      "absolute_rmse_reduction_kW_m2": 4.62346570669358,
+      "degradation_reduction_kW_m2": -1.6455821946365603
+    },
+    {
+      "noise": "-20",
+      "core3": {
+        "rmse_kW_m2": 81.13563292314747,
+        "near_rmse_kW_m2": 93.91755059675177,
+        "fn": 65,
+        "fp": 0,
+        "recorded_onb_detected": 0,
+        "recorded_onb_n": 30,
+        "degradation_from_clean_kW_m2": 47.067295388673784
+      },
+      "five": {
+        "rmse_kW_m2": 75.23257715816351,
+        "near_rmse_kW_m2": 99.32430111046745,
+        "fn": 52,
+        "fp": 0,
+        "recorded_onb_detected": 0,
+        "recorded_onb_n": 30,
+        "degradation_from_clean_kW_m2": 47.43328752501996
+      },
+      "absolute_rmse_reduction_kW_m2": 5.903055764983961,
+      "degradation_reduction_kW_m2": -0.3659921363461791
+    }
+  ],
+  "checks": {
+    "all_7_rmse_lower_than_core3": true,
+    "all_7_fn_lower_than_core3": true,
+    "all_7_fp_same_as_core3": true,
+    "near_rmse_improved_conditions": [
+      "clean",
+      "-12",
+      "-16"
+    ],
+    "all_6_noise_degradation_greater_than_core3": true,
+    "gap_degradation_identity_verified_conditions": 7,
+    "saved_five_core_weights_equal_0p25_times_core3_mse": true
+  },
+  "cnn_status_is_historical_snapshot": true,
+  "cnn_status_at": "2026-10-22T13:55:25+09:00",
+  "cnn_saved_completed_counts": {
+    "alexnet": 36,
+    "resnet50": 36,
+    "vgg16": 1
+  },
+  "resnet_selection_at": "2026-10-22T14:12:30+09:00",
+  "resnet_selected_parameters": {
+    "lr": 0.0001,
+    "batch_size": 32
+  },
+  "slide_count": 14,
+  "slide13_images": [
+    "experiments/2026-10-23_research_story_audit/slide13_outline_1.png",
+    "experiments/2026-10-23_research_story_audit/slide13_outline_2.png"
+  ],
+  "source_sha256": {
+    "experiments/2026-10-15_clean_only_result_analysis/pooled_metrics.csv": "654a8e6a8fee1feaf6e8b06298b4aa453da4dd23f170762acc6fca2a497d0b20",
+    "experiments/2026-10-15_clean_only_result_analysis/recorded_onb_point_detection.csv": "fa824b22951550088b60d04f546f36a8e34ce0c339e18ef4107b74f2898f1969",
+    "experiments/2026-10-21_research_logic_audit/verification.json": "51cc607aab8e23a5f055b256875216062dc33e2b372dabf4802aed5a856af0cf",
+    "experiments/2026-10-22_cnn_three_tuning_progress/status_135525.json": "e8248a95f430308edb7959e62c51421e70a3f947782cef562056f40658aded34",
+    "experiments/2026-10-22_resnet50_parameter_selection/selection.json": "aa336a831d078d00d265781b7a8ce974d8af0137708c8184941643a1c87071b4",
+    "研究進捗報告/2026/1016（研究進捗報告）/研究進捗_1016_編集用_修正版.pptx": "7258779c7144c7be1cdf8d9eb9f0b444c87824a0f1d5d34cec42305346e89a26",
+    "experiments/2026-10-15_clean_only_result_analysis/conditions.json": "327ff7a999647cc202db67e2131c17e60cb071a9009c5f0eda7913530bca64f7",
+    "experiments/2026-10-15_clean_only_result_analysis/weights.csv": "8296b72ee20e3a02eafc509e3a6e211a563345ef9d68f4bbdfd731b8bc1e3f3f",
+    "code/utils/dataloading/acoustic_summary_features.py": "fd5e17295e8a730db26edee7213ad80be803e4612ee30d9d7688b465564c99a7",
+    "code/utils/ensemble/fixed_core_stacking.py": "b62e53b2b0056c932bf693c860c6484bf357fda049ca966374db44b25a97377f",
+    "LaTeX/master_thesis/chapters/01_introduction.tex": "35eebfb79c2e98039f5e115d7dd79b10772d8b739603808c75bf2fa8cc6a01b6",
+    "LaTeX/master_thesis/chapters/06_conclusions.tex": "a67c63ea8fff3ebb7a06d202b64f20cea63347691b1305feb8650bb8cd51a2d4",
+    "LaTeX/master_thesis/references.tex": "f20bc80fa552b4e9fc0b87b8d90d1a9759ec38a1a6598b3850dc5432d5cea027"
+  }
+}

@@ -1,0 +1,48 @@
+[
+  {
+    "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/source_metadata/2025.06.11_0.3_2/2025.06.11_0.3_2.csv",
+    "sha256": "04c60101aca103316e2c9e1d5655ab4a8fae5f1290429f62b16915f23348dfc9",
+    "original_path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/2025.06.11_0.3_2.csv",
+    "original_exists": true,
+    "original_sha256_matches": true,
+    "encoding": "cp932"
+  },
+  {
+    "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/source_metadata/2025.06.11_0.3_2/2025.06.11_0.3_2.xlsx",
+    "sha256": "f06952c4de051233cc482a7d74f413d0243f0d841aee0c3c9445d9d074359f49",
+    "original_path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/2025.06.11_0.3_2.xlsx",
+    "original_exists": true,
+    "original_sha256_matches": true
+  },
+  {
+    "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/source_metadata/2025.06.11_0.3_2/データ 8199 2391 2025_06_11 13_54_22.csv",
+    "sha256": "a3ad051abefe779d95c7a4d9204ec0ea58f73473c72246c231b68f509a739eb0",
+    "original_path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/データ 8199 2391 2025_06_11 13_54_22.csv",
+    "original_exists": true,
+    "original_sha256_matches": true,
+    "encoding": "utf-16"
+  },
+  {
+    "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/source_metadata/2025.06.18_0.3_3/2025.06.18_0.3_3.csv",
+    "sha256": "0f01ec965effe71a6d96db5677665e5160c130bb2ffea10a19d3b5bb52bc4139",
+    "original_path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/2025.06.18_0.3_3.csv",
+    "original_exists": true,
+    "original_sha256_matches": true,
+    "encoding": "cp932"
+  },
+  {
+    "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/source_metadata/2025.06.18_0.3_3/2025.06.18_0.3_3.xlsx",
+    "sha256": "bee94247610a2b44f4858199ca88d4bae3d1103b2761bc8cf3a115a8c79407c2",
+    "original_path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/2025.06.18_0.3_3.xlsx",
+    "original_exists": true,
+    "original_sha256_matches": true
+  },
+  {
+    "path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/source_metadata/2025.06.18_0.3_3/データ 8199 2391 2025_06_18 14_06_20.csv",
+    "sha256": "b3bbaa20a292e2841ce54f95bde483acff6be2b530db621fde6594773f1cfe6c",
+    "original_path": "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.18_0.3_3/データ 8199 2391 2025_06_18 14_06_20.csv",
+    "original_exists": true,
+    "original_sha256_matches": true,
+    "encoding": "utf-16"
+  }
+]

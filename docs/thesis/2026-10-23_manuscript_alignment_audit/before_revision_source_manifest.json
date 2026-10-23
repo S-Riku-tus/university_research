@@ -1,0 +1,74 @@
+{
+  "date": "2026-10-19",
+  "main_run": "143609",
+  "run_hash": "da540f2d",
+  "fit_id": "7560205f8feb",
+  "unit": "kW/m2 unless explicitly stated",
+  "model_fit_or_inference_performed": false,
+  "source_sha256": {
+    "experiments/2026-10-15_clean_only_result_analysis/pooled_metrics.csv": "654a8e6a8fee1feaf6e8b06298b4aa453da4dd23f170762acc6fca2a497d0b20",
+    "experiments/2026-10-15_clean_only_result_analysis/recorded_onb_point_detection.csv": "fa824b22951550088b60d04f546f36a8e34ce0c339e18ef4107b74f2898f1969",
+    "experiments/2026-10-15_clean_only_result_analysis/q100_by_source_day.csv": "5d4ed1ffe18ab05962a884fb7b4daec33570d06078e244132124d40555ba4f55",
+    "experiments/2026-10-15_clean_only_result_analysis/weights.csv": "8296b72ee20e3a02eafc509e3a6e211a563345ef9d68f4bbdfd731b8bc1e3f3f",
+    "experiments/2026-10-15_clean_only_result_analysis/error_direction_contributions.csv": "128bcd4f00a418c4ceec1d710d59239ca8068e62fd4f6a4b0c659e490ad2ecf1",
+    "experiments/2026-10-14_error_feature_linkage/existing_feature_dependence.csv": "7b654abc171b41dd9c8f84bc9e872690c2b4e455d38fe43853fc3459f61b3336",
+    "experiments/2026-10-15_clean_only_result_analysis/conditions.json": "327ff7a999647cc202db67e2131c17e60cb071a9009c5f0eda7913530bca64f7",
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/ensemble/202610/15/onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_143609/maxfreq=3kHz/heatflux_no_noise/fold_pred/pred_f1_no_noise.csv": "88d18630023e7c1119d3ce6441dc8e560a0e3e595b970d91686b086c922e9a7d",
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2_6.18_0.3_3/regression_result/npy/ensemble/202610/15/onb_wc-t0611-v0611_ic3-nc_c1s_s0_e200_143609/maxfreq=3kHz/heatflux_reference_SNR=-20/fold_pred/pred_f1_-20.csv": "d96bc376f22150a5bcb6c8caad11394ec28e63ca5ae5b7a33e8f6439578ed342",
+    "configs/datasets/waterflow_20260817_1s.yaml": "5581c38662c3a2e17ba715025971cec3a114a5410fb4f229f09faa003dd78df7",
+    "code/utils/dataloading/acoustic_summary_features.py": "fd5e17295e8a730db26edee7213ad80be803e4612ee30d9d7688b465564c99a7",
+    "code/utils/models/regression/base_regression.py": "28ca74eb7e5873921b0dc4345b5e702476020e7b856b35151131fb590f26308c",
+    "code/utils/models/regression/acoustic_regression.py": "3d10a4d4997da2558b6fdccd8612db538a0e04dfd6cacae4e7bb027862180ba9",
+    "code/utils/ensemble/fixed_core_stacking.py": "7d798b355d5ddd8f4261b9f710698a02f44aac1efb248ec916e69b26a946eb0d",
+    "code/utils/dataloading/waterflow_preprocessing.py": "a102d389d60312c0507ea22f40ac0f8bb0195d44dfd9ca101d3446499cf2a0ff",
+    "docs/thesis/2026-10-19_chapter_logic_and_evidence_review.md": "33c15bec5f3e3805faf686e49f06c9cc0508971d0f4130395c56dc3687c98561",
+    "docs/research_plan/2026-10-16_unified_six_chapter_thesis_outline.md": "d441b6e2de90b4e6204492040d31231dd266158d29453dc8c0686dd903c0057e",
+    "docs/research_plan/2026-10-16_after_presentation_professor_discussion.md": "865060cc75b3d44f812c7e3e9d4db524fe5390c33f318ab1b1a35dd0b900ecd9",
+    "experiments/2026-10-15_clean_only_result_analysis/verification.json": "e5c5fe1727a1737356ff2af96f2a918c91c61e0fdf18c1fca4886b54ed96f9fb",
+    "experiments/2026-10-15_clean_only_result_analysis/README.md": "1950a34f6fabc892d638b7c01635ded8875e2eb061cf165a96e4f7de3fbb726e",
+    "experiments/2026-10-14_error_feature_linkage/regional_loss_decomposition.csv": "79471e45807f6a886a9454208e18d615e3a9267472d23dc395002b6d3844bae2",
+    "experiments/2026-10-14_error_feature_linkage/existing_input_removal_summary.csv": "fb687f1c6723e428b792755ca8f5f0e7eebcd87ffbec0fd52e8e1018a2f2dc32",
+    "experiments/2026-10-07_onb_input_and_integration/README.md": "f4b30d6f13e16717a0b16276f9117b662d1c2ba66bf013e62d2a9d87834e02f6",
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/data/npy/waterflow_20260817_1s/global_reference_manifest.json": "d0930973db25358b09b963dea5f6b4fa44a8b422eeacfc288a64a64f2840a378",
+    "Pool_boiling/Subcooling_20_degrees/0.3/2025.06.11_0.3_2/data/npy/waterflow_20260817_1s/maxfreq=3kHz/preprocess_manifest.json": "93e5a16d5105e5711c73a67e6fd6ddd945f17c14531c7d6d0240bb34b76adf97"
+  },
+  "prediction_figure_scope": [
+    {
+      "day": "2025.06.11_0.3_2",
+      "noise": "clean",
+      "n": 270,
+      "q_min_kW_m2": 3.28047e-07,
+      "q_max_kW_m2": 859.3439142
+    },
+    {
+      "day": "2025.06.18_0.3_3",
+      "noise": "clean",
+      "n": 270,
+      "q_min_kW_m2": -1.42e-09,
+      "q_max_kW_m2": 873.6370359
+    },
+    {
+      "day": "2025.06.11_0.3_2",
+      "noise": "-20",
+      "n": 270,
+      "q_min_kW_m2": 3.28047e-07,
+      "q_max_kW_m2": 859.3439142
+    },
+    {
+      "day": "2025.06.18_0.3_3",
+      "noise": "-20",
+      "n": 270,
+      "q_min_kW_m2": -1.42e-09,
+      "q_max_kW_m2": 873.6370359
+    }
+  ],
+  "intervention_names": [
+    "band_1700_2100_x0p1",
+    "band_2100_2500_x0p1",
+    "band_2500_2900_x0p1",
+    "global_power_x0p5",
+    "global_power_x2",
+    "time_permutation",
+    "unchanged"
+  ]
+}

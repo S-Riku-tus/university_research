@@ -1,0 +1,2 @@
+# Preserve the exact historical bytes used by the source manifest.
+*.py -text

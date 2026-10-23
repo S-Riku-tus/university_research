@@ -1,12 +1,12 @@
-# 修士論文草稿（2026年10月19日）
+# 修士論文草稿（2026年10月23日改訂）
 
-[PDFを読む](build/main.pdf) ／ [本文の入口](main.tex) ／ [不足・判断事項の説明](../../docs/thesis/2026-10-19_latex_manuscript_and_remaining_work.md)
+[改訂PDFを読む](build/main.pdf) ／ [本文の入口](main.tex) ／ [最新の研究全体のまとめ](../../docs/research_plan/2026-10-23_current_research_summary_and_actions.md) ／ [変更と検証の記録](../../docs/thesis/2026-10-23_manuscript_alignment_audit/README.md)
 
 要旨・6章・謝辞欄・参考文献・付録まで文章化した執筆用草稿です。未確認事項は本文の赤字「要確認：ID」と付録Bで追跡できます。題目・提出様式は仮です。
 
-目的はONB近傍の検知に置き、統合の全域回帰への利得と、ONB発生段階の未達を併記しました。第2章は既存データの出典と解析条件です。実験取得者を推測していません。
+本人の最新指示を基準に、全域熱流束推定とONB判定を二つの主要課題とし、改善・悪化の説明を含む三つの問いで目的・和英要旨・方法・結果・考察・結言を統一しました。元3比の全7条件の全域RMSE・総FN改善を主要成果として記し、開始段階・劣化量・物理的対応の限界も残しています。第2章は既存データの出典と解析条件です。
 
-10/19の本人指摘を受け，目的を「性能評価」から，雑音下の開始近傍検知と判断根拠の説明を備えた手法への発展に改訂しました。本文は研究課題から手法の必要性を説明する構成とし，個人の研究経緯への言及を除きました。[目的・結論・ONB評価の対応](../../docs/thesis/2026-10-19_research_purpose_revision_and_alignment.md)，[後続の記述方針とCNN 3種の比較案](../../docs/research_plan/2026-10-19_cnn_only_three_comparison_and_writing_policy.md)を参照してください。結果の数値は保持しています。
+現在のPDFは57ページ。変更前の[PDF](../../docs/thesis/2026-10-23_manuscript_alignment_audit/before_revision_main.pdf)と[ソース一式](../../docs/thesis/2026-10-23_manuscript_alignment_audit/before_revision_sources.zip)を保持しています。初版の説明は[10/19の記録](../../docs/thesis/2026-10-19_latex_manuscript_and_remaining_work.md)、今回確認できた原資料と残る質問は[出典確認票](../../docs/thesis/2026-10-23_data_provenance_and_confirmation_sheet.md)にあります。主結果・原データ・通常学習設定は変更していません。
 
 ## 編集とPDF作成
 
@@ -46,7 +46,13 @@ python .\scripts\prepare_materials.py
 python .\scripts\check_manuscript.py
 ```
 
-PDFの文字とページの追加検査は `python .\scripts\check_manuscript.py --pdf` で行います（PyMuPDFが必要）。原結果や先輩のPDFは変更しません。生データや学習済みモデルの再生成を行うコマンドは含めていません。
+PDFの文字・ページ・プレビューを検査する場合は、過去の監査画像を保持するため、今回の保存先を指定します（PyMuPDFが必要）。
+
+```powershell
+python .\scripts\check_manuscript.py --pdf --preview-dir '..\..\docs\thesis\2026-10-23_manuscript_alignment_audit\preview'
+```
+
+原結果や先輩のPDFは変更しません。生データや学習済みモデルの再生成を行うコマンドは含めていません。10/19の参照版から変更された2コードは、旧hashに一致する保存版を `data/source_snapshots/2026-10-19/` に置いて照合します。現在のコードを過去の実行版と見なしてhashを書き換える処理はしていません。
 
 ## 元のLaTeX資料との関係
 
